@@ -108,7 +108,7 @@ struct HistoryView: View {
                                 .chartYAxis {
                                     AxisMarks { value in
                                         AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
-                                            .foregroundStyle(Color.white.opacity(0.06))
+                                            .foregroundStyle(Color(.separator).opacity(0.3))
                                         AxisValueLabel {
                                             if let v = value.as(Double.self) {
                                                 Text(v.formatted(.number.notation(.compactName)))
@@ -151,7 +151,7 @@ struct HistoryView: View {
                                 .chartYAxis {
                                     AxisMarks { value in
                                         AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
-                                            .foregroundStyle(Color.white.opacity(0.06))
+                                            .foregroundStyle(Color(.separator).opacity(0.3))
                                         AxisValueLabel {
                                             if let v = value.as(Int.self) {
                                                 Text(v.formatted(.number.notation(.compactName)))

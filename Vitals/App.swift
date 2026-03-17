@@ -8,7 +8,6 @@ struct VitalsApp: App {
     var body: some Scene {
         WindowGroup {
             MainTabView()
-                .preferredColorScheme(.dark)
                 .task {
                     try? await healthKit.requestAuthorization()
                     healthKit.enableBackgroundDelivery()
@@ -50,7 +49,7 @@ struct MainTabView: View {
             .padding(.horizontal, 8)
             .padding(.vertical, 6)
             .background(.ultraThinMaterial.opacity(0.8), in: Capsule())
-            .overlay(Capsule().stroke(Color.white.opacity(0.06), lineWidth: 0.5))
+            .overlay(Capsule().stroke(Color(.separator).opacity(0.3), lineWidth: 0.5))
             .padding(.bottom, 12)
         }
         .ignoresSafeArea(edges: .bottom)
