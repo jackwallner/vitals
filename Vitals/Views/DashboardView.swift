@@ -30,7 +30,10 @@ struct DashboardView: View {
             if isLoading {
                 loadingView
             } else {
-                mainContent
+                GeometryReader { geo in
+                    let safeHeight = geo.size.height
+                    mainContent(availableHeight: safeHeight)
+                }
             }
         }
         .onChange(of: healthKit.isAuthorized) { _, authorized in
@@ -58,8 +61,10 @@ struct DashboardView: View {
         }
     }
 
-    private var mainContent: some View {
-        VStack(spacing: 0) {
+    private func mainContent(availableHeight: CGFloat) -> some View {
+        let ringSize: CGFloat = min(availableHeight * 0.3, 180)
+
+        return VStack(spacing: 0) {
             // Header
             VStack(alignment: .leading, spacing: 4) {
                 Text(greeting)
@@ -71,100 +76,82 @@ struct DashboardView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 24)
-            .padding(.top, 12)
+            .padding(.top, 16)
             .opacity(animateContent ? 1 : 0)
             .offset(y: animateContent ? 0 : 10)
 
-            Spacer()
+            Spacer(minLength: 12)
 
             // Calories ring
-            caloriesCard
-                .opacity(animateContent ? 1 : 0)
-                .scaleEffect(animateContent ? 1 : 0.9)
-
-            Spacer()
-
-            // Steps section
-            stepsCard
-                .padding(.horizontal, 24)
-                .opacity(animateContent ? 1 : 0)
-                .offset(y: animateContent ? 0 : 20)
-
-            Spacer()
-                .frame(height: 24)
-        }
-    }
-
-    private var caloriesCard: some View {
-        ZStack {
-            ProgressRing(
-                progress: animateRing ? calorieProgress : 0,
-                gradient: Theme.caloriesGradient,
-                glowColor: Theme.caloriesGlow,
-                lineWidth: 16,
-                size: 200
-            )
-
-            // Center content
-            VStack(spacing: 2) {
-                Text(totalCalories, format: .number.precision(.fractionLength(0)))
-                    .font(.system(size: 44, weight: .bold, design: .rounded))
-                    .foregroundStyle(Theme.textPrimary)
-                    .contentTransition(.numericText())
-                Text("calories")
-                    .font(.caption)
-                    .foregroundStyle(Theme.textSecondary)
-                    .textCase(.uppercase)
-                    .tracking(1.5)
-            }
-        }
-        .overlay(alignment: .bottom) {
-            // Active/resting breakdown
-            HStack(spacing: 24) {
-                MetricPill(
-                    label: "active",
-                    value: activeCalories,
-                    color: Theme.activePrimary
+            ZStack {
+                ProgressRing(
+                    progress: animateRing ? calorieProgress : 0,
+                    gradient: Theme.caloriesGradient,
+                    glowColor: Theme.caloriesGlow,
+                    lineWidth: 14,
+                    size: ringSize
                 )
-                MetricPill(
-                    label: "resting",
-                    value: restingCalories,
-                    color: Theme.restingPrimary
+
+                VStack(spacing: 2) {
+                    Text(totalCalories, format: .number.precision(.fractionLength(0)))
+                        .font(.system(size: 42, weight: .bold, design: .rounded))
+                        .foregroundStyle(Theme.textPrimary)
+                        .contentTransition(.numericText())
+                    Text("calories")
+                        .font(.caption)
+                        .foregroundStyle(Theme.textSecondary)
+                        .textCase(.uppercase)
+                        .tracking(1.5)
+                }
+            }
+            .opacity(animateContent ? 1 : 0)
+            .scaleEffect(animateContent ? 1 : 0.9)
+
+            // Active/resting pills
+            HStack(spacing: 16) {
+                MetricPill(label: "active", value: activeCalories, color: Theme.activePrimary)
+                MetricPill(label: "resting", value: restingCalories, color: Theme.restingPrimary)
+            }
+            .padding(.top, 16)
+            .opacity(animateContent ? 1 : 0)
+
+            Spacer(minLength: 16)
+
+            // Steps card
+            VStack(spacing: 14) {
+                HStack(alignment: .firstTextBaseline) {
+                    Image(systemName: "figure.walk")
+                        .font(.title3)
+                        .foregroundStyle(Theme.stepsPrimary)
+                    Text(steps, format: .number)
+                        .font(.system(size: 36, weight: .bold, design: .rounded))
+                        .foregroundStyle(Theme.textPrimary)
+                        .contentTransition(.numericText())
+                    Text("steps")
+                        .font(.caption)
+                        .foregroundStyle(Theme.textSecondary)
+                        .textCase(.uppercase)
+                        .tracking(1.5)
+                    Spacer()
+                    Text("\(Int(stepProgress * 100))%")
+                        .font(.subheadline.bold())
+                        .foregroundStyle(Theme.stepsPrimary)
+                }
+
+                StepProgressBar(
+                    progress: animateRing ? stepProgress : 0,
+                    gradient: Theme.stepsGradient,
+                    glowColor: Theme.stepsGlow
                 )
             }
-            .offset(y: 48)
-        }
-    }
+            .padding(Theme.cardPadding)
+            .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+            .padding(.horizontal, 24)
+            .opacity(animateContent ? 1 : 0)
+            .offset(y: animateContent ? 0 : 20)
 
-    private var stepsCard: some View {
-        VStack(spacing: 16) {
-            HStack(alignment: .firstTextBaseline) {
-                Image(systemName: "figure.walk")
-                    .font(.title3)
-                    .foregroundStyle(Theme.stepsPrimary)
-                Text(steps, format: .number)
-                    .font(.system(size: 40, weight: .bold, design: .rounded))
-                    .foregroundStyle(Theme.textPrimary)
-                    .contentTransition(.numericText())
-                Text("steps")
-                    .font(.caption)
-                    .foregroundStyle(Theme.textSecondary)
-                    .textCase(.uppercase)
-                    .tracking(1.5)
-                Spacer()
-                Text("\(Int(stepProgress * 100))%")
-                    .font(.subheadline.bold())
-                    .foregroundStyle(Theme.stepsPrimary)
-            }
-
-            StepProgressBar(
-                progress: animateRing ? stepProgress : 0,
-                gradient: Theme.stepsGradient,
-                glowColor: Theme.stepsGlow
-            )
         }
-        .padding(Theme.cardPadding)
-        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .padding(.bottom, 90)
     }
 
     private func refresh() async {
