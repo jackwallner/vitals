@@ -4,5 +4,9 @@
 <dict>
     <key>NSHealthShareUsageDescription</key>
     <string>Vitals reads your calorie and step data to display your daily health metrics.</string>
+    <key>WKApplication</key>
+    <true/>
+    <key>WKCompanionAppBundleIdentifier</key>
+    <string>com.jackwallner.vitals</string>
 </dict>
 </plist>

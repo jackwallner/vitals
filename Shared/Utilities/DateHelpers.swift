@@ -6,18 +6,27 @@ enum DateHelpers {
     }
 
     static func daysAgo(_ days: Int, from date: Date = .now) -> Date {
-        Calendar.current.date(byAdding: .day, value: -days, to: startOfDay(date))!
+        Calendar.current.date(byAdding: .day, value: -days, to: startOfDay(date))
+            ?? startOfDay(date)
     }
 
+    private static let shortDateFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "M/d"
+        return f
+    }()
+
+    private static let dayOfWeekFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "EEE"
+        return f
+    }()
+
     static func shortDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "M/d"
-        return formatter.string(from: date)
+        shortDateFormatter.string(from: date)
     }
 
     static func dayOfWeek(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEE"
-        return formatter.string(from: date)
+        dayOfWeekFormatter.string(from: date)
     }
 }
