@@ -6,88 +6,256 @@ struct HistoryView: View {
     @State private var selectedDays = 7
     @State private var records: [DayRecord] = []
     @State private var isLoading = true
+    @State private var animateContent = false
+
+    private var avgCalories: Double {
+        guard !records.isEmpty else { return 0 }
+        return records.map(\.totalCalories).reduce(0, +) / Double(records.count)
+    }
+
+    private var avgSteps: Int {
+        guard !records.isEmpty else { return 0 }
+        return records.map(\.steps).reduce(0, +) / records.count
+    }
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 16) {
-                Picker("Time Range", selection: $selectedDays) {
-                    Text("7 Days").tag(7)
-                    Text("30 Days").tag(30)
+        ZStack {
+            Theme.background.ignoresSafeArea()
+
+            VStack(spacing: 0) {
+                // Header
+                Text("History")
+                    .font(.title2.bold())
+                    .foregroundStyle(Theme.textPrimary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 24)
+                    .padding(.top, 12)
+
+                // Segmented control
+                HStack(spacing: 0) {
+                    SegmentButton(title: "7 Days", isSelected: selectedDays == 7) {
+                        selectedDays = 7
+                    }
+                    SegmentButton(title: "30 Days", isSelected: selectedDays == 30) {
+                        selectedDays = 30
+                    }
                 }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
+                .padding(3)
+                .background(Theme.cardSurface, in: Capsule())
+                .padding(.horizontal, 24)
+                .padding(.top, 16)
 
                 if isLoading {
                     Spacer()
                     ProgressView()
+                        .tint(Theme.textTertiary)
                     Spacer()
                 } else if records.isEmpty {
                     Spacer()
-                    Text("No data yet")
-                        .foregroundStyle(.secondary)
+                    VStack(spacing: 8) {
+                        Image(systemName: "chart.bar")
+                            .font(.system(size: 36))
+                            .foregroundStyle(Theme.textTertiary)
+                        Text("No data yet")
+                            .font(.subheadline)
+                            .foregroundStyle(Theme.textSecondary)
+                    }
                     Spacer()
                 } else {
-                    ScrollView {
-                        VStack(spacing: 24) {
-                            // Calories Chart
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Calories")
-                                    .font(.headline)
+                    ScrollView(showsIndicators: false) {
+                        VStack(spacing: 20) {
+                            // Averages row
+                            HStack(spacing: 12) {
+                                StatCard(
+                                    label: "Avg Calories",
+                                    value: avgCalories.formatted(.number.precision(.fractionLength(0))),
+                                    color: Theme.caloriesPrimary
+                                )
+                                StatCard(
+                                    label: "Avg Steps",
+                                    value: avgSteps.formatted(.number),
+                                    color: Theme.stepsPrimary
+                                )
+                            }
+
+                            // Calories chart
+                            ChartCard(title: "Calories") {
                                 Chart(records) { record in
                                     BarMark(
                                         x: .value("Date", record.date, unit: .day),
-                                        y: .value("Active", record.activeCalories)
+                                        y: .value("Calories", record.totalCalories)
                                     )
-                                    .foregroundStyle(.red)
-                                    BarMark(
-                                        x: .value("Date", record.date, unit: .day),
-                                        y: .value("Resting", record.restingCalories)
+                                    .foregroundStyle(
+                                        LinearGradient(
+                                            colors: [Theme.caloriesPrimary, Theme.caloriesSecondary],
+                                            startPoint: .bottom,
+                                            endPoint: .top
+                                        )
                                     )
-                                    .foregroundStyle(.orange.opacity(0.7))
+                                    .cornerRadius(4)
                                 }
-                                .chartYAxisLabel("kcal")
-                                .frame(height: 200)
+                                .chartXAxis {
+                                    AxisMarks(values: .stride(by: .day, count: selectedDays <= 7 ? 1 : 5)) { value in
+                                        AxisValueLabel {
+                                            if let date = value.as(Date.self) {
+                                                Text(DateHelpers.shortDate(date))
+                                                    .font(.caption2)
+                                                    .foregroundStyle(Theme.textTertiary)
+                                            }
+                                        }
+                                    }
+                                }
+                                .chartYAxis {
+                                    AxisMarks { value in
+                                        AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
+                                            .foregroundStyle(Color.white.opacity(0.06))
+                                        AxisValueLabel {
+                                            if let v = value.as(Double.self) {
+                                                Text(v.formatted(.number.notation(.compactName)))
+                                                    .font(.caption2)
+                                                    .foregroundStyle(Theme.textTertiary)
+                                            }
+                                        }
+                                    }
+                                }
+                                .frame(height: 180)
                             }
-                            .padding()
-                            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
 
-                            // Steps Chart
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Steps")
-                                    .font(.headline)
+                            // Steps chart
+                            ChartCard(title: "Steps") {
                                 Chart(records) { record in
                                     BarMark(
                                         x: .value("Date", record.date, unit: .day),
                                         y: .value("Steps", record.steps)
                                     )
-                                    .foregroundStyle(.blue)
+                                    .foregroundStyle(
+                                        LinearGradient(
+                                            colors: [Theme.stepsPrimary, Theme.stepsSecondary],
+                                            startPoint: .bottom,
+                                            endPoint: .top
+                                        )
+                                    )
+                                    .cornerRadius(4)
                                 }
-                                .frame(height: 200)
+                                .chartXAxis {
+                                    AxisMarks(values: .stride(by: .day, count: selectedDays <= 7 ? 1 : 5)) { value in
+                                        AxisValueLabel {
+                                            if let date = value.as(Date.self) {
+                                                Text(DateHelpers.shortDate(date))
+                                                    .font(.caption2)
+                                                    .foregroundStyle(Theme.textTertiary)
+                                            }
+                                        }
+                                    }
+                                }
+                                .chartYAxis {
+                                    AxisMarks { value in
+                                        AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
+                                            .foregroundStyle(Color.white.opacity(0.06))
+                                        AxisValueLabel {
+                                            if let v = value.as(Int.self) {
+                                                Text(v.formatted(.number.notation(.compactName)))
+                                                    .font(.caption2)
+                                                    .foregroundStyle(Theme.textTertiary)
+                                            }
+                                        }
+                                    }
+                                }
+                                .frame(height: 180)
                             }
-                            .padding()
-                            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
                         }
-                        .padding(.horizontal)
+                        .padding(.horizontal, 24)
+                        .padding(.top, 20)
+                        .padding(.bottom, 32)
+                        .opacity(animateContent ? 1 : 0)
+                        .offset(y: animateContent ? 0 : 15)
                     }
                 }
             }
-            .navigationTitle("History")
-            .onChange(of: selectedDays) { _, _ in
-                Task { await loadHistory() }
-            }
-            .task { await loadHistory() }
         }
+        .onChange(of: selectedDays) { _, _ in
+            animateContent = false
+            Task { await loadHistory() }
+        }
+        .task { await loadHistory() }
     }
 
     private func loadHistory() async {
         isLoading = true
         do {
             let history = try await healthKit.fetchHistory(days: selectedDays)
-            records = history.map { DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps) }
+            records = history.map {
+                DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
+            }
         } catch {
             print("Failed to fetch history: \(error)")
         }
         isLoading = false
+        withAnimation(.easeOut(duration: 0.4)) {
+            animateContent = true
+        }
+    }
+}
+
+// MARK: - Supporting Views
+
+private struct SegmentButton: View {
+    let title: String
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.subheadline.bold())
+                .foregroundStyle(isSelected ? Theme.textPrimary : Theme.textSecondary)
+                .padding(.vertical, 8)
+                .frame(maxWidth: .infinity)
+                .background(
+                    isSelected ? Theme.cardSurfaceLight : .clear,
+                    in: Capsule()
+                )
+        }
+        .buttonStyle(.plain)
+        .animation(.easeInOut(duration: 0.2), value: isSelected)
+    }
+}
+
+private struct StatCard: View {
+    let label: String
+    let value: String
+    let color: Color
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(label)
+                .font(.caption)
+                .foregroundStyle(Theme.textSecondary)
+                .textCase(.uppercase)
+                .tracking(0.8)
+            Text(value)
+                .font(.title3.bold().monospacedDigit())
+                .foregroundStyle(color)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(Theme.cardPadding)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+    }
+}
+
+private struct ChartCard<Content: View>: View {
+    let title: String
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(title)
+                .font(.headline)
+                .foregroundStyle(Theme.textPrimary)
+            content
+        }
+        .padding(Theme.cardPadding)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
     }
 }
 

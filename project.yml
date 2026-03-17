@@ -14,6 +14,7 @@ settings:
     CODE_SIGN_STYLE: Automatic
     MARKETING_VERSION: "1.0.0"
     CURRENT_PROJECT_VERSION: "1"
+    GENERATE_INFOPLIST_FILE: YES
 
 targets:
   Vitals:
@@ -29,7 +30,6 @@ targets:
         CODE_SIGN_ENTITLEMENTS: Vitals/Vitals.entitlements
     dependencies:
       - target: VitalsWidget
-      - target: VitalsWatch
 
   VitalsWatch:
     type: application
