@@ -28,13 +28,13 @@ final class HealthKitService: ObservableObject {
 
     func fetchTodayStats() async throws -> (active: Double, resting: Double, steps: Int) {
         let start = DateHelpers.startOfDay()
-        let predicate = HKQuery.predicateForSamples(withStart: start, end: .now, options: .strictStartDate)
+        nonisolated(unsafe) let predicate = HKQuery.predicateForSamples(withStart: start, end: .now, options: .strictStartDate)
 
-        let active = try await queryCumulativeSum(.activeEnergyBurned, unit: .kilocalorie(), predicate: predicate)
-        let resting = try await queryCumulativeSum(.basalEnergyBurned, unit: .kilocalorie(), predicate: predicate)
-        let steps = try await queryCumulativeSum(.stepCount, unit: .count(), predicate: predicate)
+        async let active = queryCumulativeSum(.activeEnergyBurned, unit: .kilocalorie(), predicate: predicate)
+        async let resting = queryCumulativeSum(.basalEnergyBurned, unit: .kilocalorie(), predicate: predicate)
+        async let steps = queryCumulativeSum(.stepCount, unit: .count(), predicate: predicate)
 
-        return (active: active, resting: resting, steps: Int(steps))
+        return try await (active: active, resting: resting, steps: Int(steps))
     }
 
     // MARK: - History
@@ -42,6 +42,12 @@ final class HealthKitService: ObservableObject {
     func fetchHistory(days: Int) async throws -> [(date: Date, active: Double, resting: Double, steps: Int)] {
         let start = DateHelpers.daysAgo(days)
         let end = DateHelpers.startOfDay(.now)
+        return try await fetchHistory(from: start, to: end)
+    }
+
+    func fetchHistory(from start: Date, to end: Date) async throws -> [(date: Date, active: Double, resting: Double, steps: Int)] {
+        let start = DateHelpers.startOfDay(start)
+        let end = DateHelpers.startOfDay(end)
         let interval = DateComponents(day: 1)
 
         let activeMap = try await queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: start, end: end, interval: interval)
@@ -61,6 +67,52 @@ final class HealthKitService: ObservableObject {
             current = next
         }
         return results
+    }
+
+    // MARK: - Pacing (average at this time of day over last 14 days)
+
+    func fetchPacing() async throws -> (avgCalories: Double, avgSteps: Int) {
+        let calendar = Calendar.current
+        let now = Date.now
+        let currentHour = calendar.component(.hour, from: now)
+        let currentMinute = calendar.component(.minute, from: now)
+        let fourteenDaysAgo = calendar.startOfDay(for: calendar.date(byAdding: .day, value: -14, to: now)!)
+
+        // 3 bulk queries instead of 42 individual ones
+        let interval = DateComponents(day: 1)
+        let today = calendar.startOfDay(for: now)
+
+        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: fourteenDaysAgo, end: today, interval: interval)
+        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: fourteenDaysAgo, end: today, interval: interval)
+        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: fourteenDaysAgo, end: today, interval: interval)
+
+        let (active, resting, steps) = try await (activeMap, restingMap, stepsMap)
+
+        // For each past day, calculate what was burned by this time of day
+        // Use the ratio: (currentHour*60 + currentMinute) / (24*60) as an approximation
+        let minutesSoFar = Double(currentHour * 60 + currentMinute)
+        let dayMinutes = 24.0 * 60.0
+        let dayFraction = minutesSoFar / dayMinutes
+
+        var totalCalories = 0.0
+        var totalSteps = 0.0
+        var daysCounted = 0
+
+        var current = fourteenDaysAgo
+        while current < today {
+            let dayCal = (active[current] ?? 0) + (resting[current] ?? 0)
+            let daySteps = steps[current] ?? 0
+            totalCalories += dayCal * dayFraction
+            totalSteps += daySteps * dayFraction
+            daysCounted += 1
+            current = calendar.date(byAdding: .day, value: 1, to: current)!
+        }
+
+        guard daysCounted > 0 else { return (0, 0) }
+        return (
+            avgCalories: totalCalories / Double(daysCounted),
+            avgSteps: Int(totalSteps / Double(daysCounted))
+        )
     }
 
     // MARK: - Background Delivery

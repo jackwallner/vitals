@@ -4,12 +4,18 @@ import SwiftData
 @main
 struct VitalsApp: App {
     @StateObject private var healthKit = HealthKitService.shared
+    @StateObject private var goals = GoalSettings.shared
 
     var body: some Scene {
         WindowGroup {
             MainTabView()
+                .preferredColorScheme(goals.appearance.colorScheme)
                 .task {
-                    try? await healthKit.requestAuthorization()
+                    do {
+                        try await healthKit.requestAuthorization()
+                    } catch {
+                        print("HealthKit authorization failed: \(error)")
+                    }
                     healthKit.enableBackgroundDelivery()
                 }
         }
@@ -66,9 +72,9 @@ private struct TabButton: View {
         Button(action: action) {
             VStack(spacing: 4) {
                 Image(systemName: icon)
-                    .font(.system(size: 18, weight: .medium))
+                    .font(.system(size: 18, weight: .medium, design: .rounded))
                 Text(label)
-                    .font(.system(size: 10, weight: .semibold))
+                    .font(.system(size: 10, weight: .semibold, design: .rounded))
             }
             .foregroundStyle(isSelected ? Theme.caloriesPrimary : Theme.textTertiary)
             .frame(width: 72, height: 44)
