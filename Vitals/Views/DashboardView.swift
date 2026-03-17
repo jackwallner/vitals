@@ -94,7 +94,7 @@ struct DashboardView: View {
 
                 VStack(spacing: 2) {
                     Text(totalCalories, format: .number.precision(.fractionLength(0)))
-                        .font(.system(size: 42, weight: .bold, design: .rounded))
+                        .font(Theme.bigNumber(42))
                         .foregroundStyle(Theme.textPrimary)
                         .contentTransition(.numericText())
                     Text("calories")
@@ -124,7 +124,7 @@ struct DashboardView: View {
                         .font(.title3)
                         .foregroundStyle(Theme.stepsPrimary)
                     Text(steps, format: .number)
-                        .font(.system(size: 36, weight: .bold, design: .rounded))
+                        .font(Theme.bigNumber(36))
                         .foregroundStyle(Theme.textPrimary)
                         .contentTransition(.numericText())
                     Text("steps")
