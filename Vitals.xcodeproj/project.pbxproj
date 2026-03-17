@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		08B27B65AD2FC365D0988CE6 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
 		0A15A50AFA7DC19834C3D106 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
+		0AC639F100296E17EF0A0680 /* GoalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6804EF421C3725E70674D40 /* GoalSettings.swift */; };
+		1039A99017046E5F1A2DAAF2 /* GoalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6804EF421C3725E70674D40 /* GoalSettings.swift */; };
 		109116DACEADF5842B690C38 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFC80E117FB844B9B2FB043 /* App.swift */; };
 		1E006B2434ECB58F1D51CB19 /* HealthRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */; };
 		24248C5CD47908B7188B3783 /* HealthRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */; };
@@ -19,24 +21,30 @@
 		5196C5E49115471C4A1E267E /* VitalsWatchWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 47E5A948D4ECA79121753114 /* VitalsWatchWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6B88B53A4076BB378D0F2087 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
 		6BD5AEA6B71B870CC53605AF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
+		72DEDC8616FEE6109AF0E931 /* GoalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6804EF421C3725E70674D40 /* GoalSettings.swift */; };
 		73E57B5289F6A146D19D6011 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
 		75A6835298F7F33CA2EF9884 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
 		7DE03846B38547D81722040A /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
 		812F324514C80810810339F9 /* VitalsWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AC24F002AF13CDC4C14F3E96 /* VitalsWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8BA4236445D489D8CCF15852 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
+		906DF508C80FAF1F80DCF0FC /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A2306ABF7BBFD87A49291EE7 /* PrivacyInfo.xcprivacy */; };
 		97B3284F672341E171AA3828 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEC52C3FC9793813DF64549 /* DashboardView.swift */; };
 		9F43DA0F666C0671FD71FD2D /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEC9E7DED1B1E70BAA8F0E1 /* TodayView.swift */; };
 		AD560B74ECBF3CAD26A75026 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
 		AE79C4EF14DDEFF19FE3342E /* HealthRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */; };
+		B40E7B002F3BECDCDAAE0925 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = FB79EE935FF815B366FB6D27 /* PrivacyInfo.xcprivacy */; };
 		BAAF27492ADCF82BF62686CA /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
 		C1E2EC8ECDAB52F888E0DF67 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
 		C4A7057EE61818DFBF13CF29 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E24C6F7550EC4501A69FE /* DateHelpers.swift */; };
+		D3679EA6FE8D16EF336052E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 207ADC8FCC7E1328298839A0 /* Assets.xcassets */; };
 		D5BDA6A6FBDE94D2D1ADD00A /* HealthRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */; };
+		DC24AE05CDB72AFF52FE97A2 /* GoalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6804EF421C3725E70674D40 /* GoalSettings.swift */; };
 		DC70232ABC8F8424A8F1C444 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C7498718A96BB0C7A0B880 /* App.swift */; };
 		E6E4E983389A2641C8483300 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E24C6F7550EC4501A69FE /* DateHelpers.swift */; };
 		EE8FA1155826C0A2643AC014 /* VitalsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86EC13F0E2855F9288631D7 /* VitalsWidget.swift */; };
 		FDC255EDF9FC897146209356 /* ProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971064F5F952A25427D7F46B /* ProgressRing.swift */; };
 		FDD2B3AC4FDAD33746E92A0A /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E152DC23E11DAD83864E5A /* HistoryView.swift */; };
+		FE5CF05C3EA0D9BD231CB733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA75A0BD07845E85F69ED5F7 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +90,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		207ADC8FCC7E1328298839A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2E891A2F146A996DD48C13CD /* VitalsWatchWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VitalsWatchWidget.entitlements; sourceTree = "<group>"; };
 		37181B9FB18AF45A44299F0F /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
 		47E5A948D4ECA79121753114 /* VitalsWatchWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VitalsWatchWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,17 +104,21 @@
 		971064F5F952A25427D7F46B /* ProgressRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRing.swift; sourceTree = "<group>"; };
 		97EA07C9EE670921AD6405A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		9EEC9E7DED1B1E70BAA8F0E1 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
+		A2306ABF7BBFD87A49291EE7 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		ABFC0C99D93138CE93AFFF04 /* VitalsWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VitalsWidget.entitlements; sourceTree = "<group>"; };
 		AC24F002AF13CDC4C14F3E96 /* VitalsWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = VitalsWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6804EF421C3725E70674D40 /* GoalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalSettings.swift; sourceTree = "<group>"; };
 		B98E24C6F7550EC4501A69FE /* DateHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelpers.swift; sourceTree = "<group>"; };
 		BFEC52C3FC9793813DF64549 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		DE8F114B3CE1940662993978 /* VitalsWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VitalsWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA172BB16DF599334E29D1F6 /* WatchComplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchComplication.swift; sourceTree = "<group>"; };
 		EA4AA93605DC7A1B0929C002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		EA75A0BD07845E85F69ED5F7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ECFC80E117FB844B9B2FB043 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		F86EC13F0E2855F9288631D7 /* VitalsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalsWidget.swift; sourceTree = "<group>"; };
 		FA098EAFC93DFDA55DE72ED4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		FB79EE935FF815B366FB6D27 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		FEDFD029845EFE870D5493E8 /* Vitals.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vitals.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -122,7 +135,9 @@
 			isa = PBXGroup;
 			children = (
 				ECFC80E117FB844B9B2FB043 /* App.swift */,
+				207ADC8FCC7E1328298839A0 /* Assets.xcassets */,
 				97EA07C9EE670921AD6405A1 /* Info.plist */,
+				FB79EE935FF815B366FB6D27 /* PrivacyInfo.xcprivacy */,
 				6898F91DD5FFFF1700A9C138 /* VitalsWatch.entitlements */,
 				229634990DFCDF5DD518DB01 /* Views */,
 			);
@@ -191,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */,
+				B6804EF421C3725E70674D40 /* GoalSettings.swift */,
 				37181B9FB18AF45A44299F0F /* HealthKitService.swift */,
 			);
 			path = Services;
@@ -212,7 +228,9 @@
 			isa = PBXGroup;
 			children = (
 				78C7498718A96BB0C7A0B880 /* App.swift */,
+				EA75A0BD07845E85F69ED5F7 /* Assets.xcassets */,
 				EA4AA93605DC7A1B0929C002 /* Info.plist */,
+				A2306ABF7BBFD87A49291EE7 /* PrivacyInfo.xcprivacy */,
 				FEDFD029845EFE870D5493E8 /* Vitals.entitlements */,
 				3FCD05611496A7067563B282 /* Views */,
 			);
@@ -245,6 +263,7 @@
 			buildConfigurationList = A0FFE089E393AFB408B10C58 /* Build configuration list for PBXNativeTarget "Vitals" */;
 			buildPhases = (
 				E2B5FAF8C998DA77EEB97062 /* Sources */,
+				617A97A5D0BD0F30C657225F /* Resources */,
 				C07BF02E508F8A98BC5024D1 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -281,6 +300,7 @@
 			buildConfigurationList = CDA263AD61FBC00EFB71421A /* Build configuration list for PBXNativeTarget "VitalsWatch" */;
 			buildPhases = (
 				06D4220970AD3BAEAAA50F64 /* Sources */,
+				26CAF9528CEF6DB42FA67F0B /* Resources */,
 				33F22AC153F0390CAB1CE7AA /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -322,19 +342,19 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					7F399A17E2AC88E07B83ADE5 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = YXG4MP6W39;
 						ProvisioningStyle = Automatic;
 					};
 					8CE4321B67221E8301492377 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = YXG4MP6W39;
 						ProvisioningStyle = Automatic;
 					};
 					BA7F93B3F4FA48491616A6FE = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = YXG4MP6W39;
 						ProvisioningStyle = Automatic;
 					};
 					F7D9E69E00CE7AA8C7C7BE09 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = YXG4MP6W39;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -361,6 +381,27 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		26CAF9528CEF6DB42FA67F0B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3679EA6FE8D16EF336052E7 /* Assets.xcassets in Resources */,
+				B40E7B002F3BECDCDAAE0925 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		617A97A5D0BD0F30C657225F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE5CF05C3EA0D9BD231CB733 /* Assets.xcassets in Resources */,
+				906DF508C80FAF1F80DCF0FC /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		06D4220970AD3BAEAAA50F64 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -369,6 +410,7 @@
 				109116DACEADF5842B690C38 /* App.swift in Sources */,
 				0A15A50AFA7DC19834C3D106 /* DataService.swift in Sources */,
 				E6E4E983389A2641C8483300 /* DateHelpers.swift in Sources */,
+				1039A99017046E5F1A2DAAF2 /* GoalSettings.swift in Sources */,
 				75A6835298F7F33CA2EF9884 /* HealthKitService.swift in Sources */,
 				24248C5CD47908B7188B3783 /* HealthRecord.swift in Sources */,
 				6BD5AEA6B71B870CC53605AF /* Theme.swift in Sources */,
@@ -382,6 +424,7 @@
 			files = (
 				8BA4236445D489D8CCF15852 /* DataService.swift in Sources */,
 				C4A7057EE61818DFBF13CF29 /* DateHelpers.swift in Sources */,
+				72DEDC8616FEE6109AF0E931 /* GoalSettings.swift in Sources */,
 				73E57B5289F6A146D19D6011 /* HealthKitService.swift in Sources */,
 				1E006B2434ECB58F1D51CB19 /* HealthRecord.swift in Sources */,
 				C1E2EC8ECDAB52F888E0DF67 /* Theme.swift in Sources */,
@@ -395,6 +438,7 @@
 			files = (
 				6B88B53A4076BB378D0F2087 /* DataService.swift in Sources */,
 				3739688FF9473C63ECADC605 /* DateHelpers.swift in Sources */,
+				DC24AE05CDB72AFF52FE97A2 /* GoalSettings.swift in Sources */,
 				7DE03846B38547D81722040A /* HealthKitService.swift in Sources */,
 				D5BDA6A6FBDE94D2D1ADD00A /* HealthRecord.swift in Sources */,
 				AD560B74ECBF3CAD26A75026 /* Theme.swift in Sources */,
@@ -410,6 +454,7 @@
 				97B3284F672341E171AA3828 /* DashboardView.swift in Sources */,
 				08B27B65AD2FC365D0988CE6 /* DataService.swift in Sources */,
 				3043AE177B63E341CB1554A9 /* DateHelpers.swift in Sources */,
+				0AC639F100296E17EF0A0680 /* GoalSettings.swift in Sources */,
 				BAAF27492ADCF82BF62686CA /* HealthKitService.swift in Sources */,
 				AE79C4EF14DDEFF19FE3342E /* HealthRecord.swift in Sources */,
 				FDD2B3AC4FDAD33746E92A0A /* HistoryView.swift in Sources */,
@@ -488,7 +533,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -500,7 +545,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -508,7 +553,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 6.0;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
 		};
@@ -522,11 +567,11 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.vitals.watchapp.complication;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.vitals.watch.widget;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Debug;
 		};
@@ -536,11 +581,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = VitalsWatch/VitalsWatch.entitlements;
 				INFOPLIST_FILE = VitalsWatch/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.vitals.watchapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.vitals.watch;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
 		};
@@ -571,11 +616,11 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.vitals.watchapp.complication;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.vitals.watch.widget;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
 		};
@@ -616,7 +661,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -634,7 +679,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -643,7 +688,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Debug;
 		};
@@ -669,11 +714,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = VitalsWatch/VitalsWatch.entitlements;
 				INFOPLIST_FILE = VitalsWatch/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.vitals.watchapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.vitals.watch;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Debug;
 		};

@@ -41,6 +41,7 @@ struct ProgressRing: View {
                 .shadow(color: glowColor, radius: 8, x: 0, y: 0)
         }
         .frame(width: size, height: size)
+        .accessibilityHidden(true)
     }
 }
 
