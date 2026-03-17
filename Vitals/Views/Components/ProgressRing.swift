@@ -26,7 +26,7 @@ struct ProgressRing: View {
             // Track
             Circle()
                 .stroke(
-                    Color.white.opacity(0.08),
+                    Theme.ringTrack,
                     style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
                 )
 
@@ -54,7 +54,7 @@ struct StepProgressBar: View {
             ZStack(alignment: .leading) {
                 // Track
                 Capsule()
-                    .fill(Color.white.opacity(0.08))
+                    .fill(Theme.ringTrack)
 
                 // Fill
                 Capsule()
