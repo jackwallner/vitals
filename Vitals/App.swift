@@ -17,6 +17,8 @@ struct VitalsApp: App {
                         Label("History", systemImage: "chart.bar.fill")
                     }
             }
+            .tint(Theme.caloriesPrimary)
+            .preferredColorScheme(.dark)
             .task {
                 try? await healthKit.requestAuthorization()
                 healthKit.enableBackgroundDelivery()

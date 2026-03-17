@@ -16,17 +16,18 @@ struct VitalsTimelineProvider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping @Sendable (Timeline<VitalsEntry>) -> Void) {
         Task { @MainActor in
             let entry = fetchLatestEntry()
-            let nextUpdate = Calendar.current.date(byAdding: .minute, value: 30, to: .now)!
+            let nextUpdate = Calendar.current.date(byAdding: .hour, value: 1, to: .now)
+                ?? .now.addingTimeInterval(3600)
             completion(Timeline(entries: [entry], policy: .after(nextUpdate)))
         }
     }
 
     @MainActor
     private func fetchLatestEntry() -> VitalsEntry {
-        let today = DateHelpers.startOfDay()
+        let todayKey = DailyHealthRecord.key(for: DateHelpers.startOfDay())
         let container = DataService.sharedModelContainer
         let descriptor = FetchDescriptor<DailyHealthRecord>(
-            predicate: #Predicate { $0.date == today }
+            predicate: #Predicate { $0.dateString == todayKey }
         )
 
         if let record = try? container.mainContext.fetch(descriptor).first {

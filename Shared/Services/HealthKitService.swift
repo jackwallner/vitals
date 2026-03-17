@@ -57,7 +57,8 @@ final class HealthKitService: ObservableObject {
                 resting: restingMap[current] ?? 0,
                 steps: Int(stepsMap[current] ?? 0)
             ))
-            current = Calendar.current.date(byAdding: .day, value: 1, to: current)!
+            guard let next = Calendar.current.date(byAdding: .day, value: 1, to: current) else { break }
+            current = next
         }
         return results
     }
@@ -97,9 +98,10 @@ final class HealthKitService: ObservableObject {
         let stats = try await fetchTodayStats()
         let context = DataService.sharedModelContainer.mainContext
         let today = DateHelpers.startOfDay()
+        let todayKey = DailyHealthRecord.key(for: today)
 
         let descriptor = FetchDescriptor<DailyHealthRecord>(
-            predicate: #Predicate { $0.date == today }
+            predicate: #Predicate { $0.dateString == todayKey }
         )
         let existing = try context.fetch(descriptor).first
 
@@ -124,12 +126,13 @@ final class HealthKitService: ObservableObject {
 
     // MARK: - Private Helpers
 
-    private func queryCumulativeSum(
+    private nonisolated func queryCumulativeSum(
         _ identifier: HKQuantityTypeIdentifier,
         unit: HKUnit,
         predicate: NSPredicate
     ) async throws -> Double {
-        try await withCheckedThrowingContinuation { continuation in
+        let store = self.store
+        return try await withCheckedThrowingContinuation { continuation in
             let query = HKStatisticsQuery(
                 quantityType: HKQuantityType(identifier),
                 quantitySamplePredicate: predicate,
@@ -146,14 +149,15 @@ final class HealthKitService: ObservableObject {
         }
     }
 
-    private func queryStatisticsCollection(
+    private nonisolated func queryStatisticsCollection(
         _ identifier: HKQuantityTypeIdentifier,
         unit: HKUnit,
         start: Date,
         end: Date,
         interval: DateComponents
     ) async throws -> [Date: Double] {
-        try await withCheckedThrowingContinuation { continuation in
+        let store = self.store
+        return try await withCheckedThrowingContinuation { continuation in
             let query = HKStatisticsCollectionQuery(
                 quantityType: HKQuantityType(identifier),
                 quantitySamplePredicate: nil,
@@ -173,7 +177,7 @@ final class HealthKitService: ObservableObject {
                 }
                 continuation.resume(returning: results)
             }
-            self.store.execute(query)
+            store.execute(query)
         }
     }
 }
