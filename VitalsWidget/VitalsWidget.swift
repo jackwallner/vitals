@@ -2,11 +2,20 @@ import WidgetKit
 import SwiftUI
 import SwiftData
 
+// MARK: - Goal Helper
+
+private func loadGoals() -> (calories: Double, steps: Int) {
+    let defaults = UserDefaults(suiteName: vitalsAppGroupID) ?? .standard
+    let cal = defaults.double(forKey: "calorieGoal")
+    let step = defaults.integer(forKey: "stepGoal")
+    return (cal > 0 ? cal : 2500, step > 0 ? step : 10000)
+}
+
 // MARK: - Timeline Provider
 
 struct VitalsTimelineProvider: TimelineProvider {
     func placeholder(in context: Context) -> VitalsEntry {
-        VitalsEntry(date: .now, totalCalories: 2450, activeCalories: 650, restingCalories: 1800, steps: 8234)
+        VitalsEntry(date: .now, totalCalories: 1240, activeCalories: 340, restingCalories: 900, steps: 4520, calorieGoal: 2500, stepGoal: 10000)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (VitalsEntry) -> Void) {
@@ -29,6 +38,7 @@ struct VitalsTimelineProvider: TimelineProvider {
         let descriptor = FetchDescriptor<DailyHealthRecord>(
             predicate: #Predicate { $0.dateString == todayKey }
         )
+        let goals = loadGoals()
 
         if let record = try? container.mainContext.fetch(descriptor).first {
             return VitalsEntry(
@@ -36,10 +46,12 @@ struct VitalsTimelineProvider: TimelineProvider {
                 totalCalories: record.totalCalories,
                 activeCalories: record.activeCalories,
                 restingCalories: record.restingCalories,
-                steps: record.steps
+                steps: record.steps,
+                calorieGoal: goals.calories,
+                stepGoal: goals.steps
             )
         }
-        return VitalsEntry(date: .now, totalCalories: 0, activeCalories: 0, restingCalories: 0, steps: 0)
+        return VitalsEntry(date: .now, totalCalories: 0, activeCalories: 0, restingCalories: 0, steps: 0, calorieGoal: goals.calories, stepGoal: goals.steps)
     }
 }
 
@@ -51,6 +63,8 @@ struct VitalsEntry: TimelineEntry {
     let activeCalories: Double
     let restingCalories: Double
     let steps: Int
+    let calorieGoal: Double
+    let stepGoal: Int
 }
 
 // MARK: - Widget Views
@@ -63,18 +77,24 @@ struct SmallWidgetView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Label("Calories", systemImage: "flame.fill")
                     .font(.caption2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Theme.textSecondary)
                 Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
-                    .font(.system(.title, design: .rounded, weight: .bold))
-                    .foregroundStyle(.orange)
+                    .font(Theme.bigNumber(28))
+                    .foregroundStyle(Theme.caloriesPrimary)
+                Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
+                    .font(.caption2)
+                    .foregroundStyle(Theme.textTertiary)
             }
             VStack(alignment: .leading, spacing: 2) {
                 Label("Steps", systemImage: "figure.walk")
                     .font(.caption2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Theme.textSecondary)
                 Text(entry.steps, format: .number)
-                    .font(.system(.title, design: .rounded, weight: .bold))
-                    .foregroundStyle(.blue)
+                    .font(Theme.bigNumber(28))
+                    .foregroundStyle(Theme.stepsPrimary)
+                Text("/ \(entry.stepGoal.formatted(.number))")
+                    .font(.caption2)
+                    .foregroundStyle(Theme.textTertiary)
             }
         }
         .containerBackground(.fill.tertiary, for: .widget)
@@ -90,34 +110,38 @@ struct MediumWidgetView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Label("Calories", systemImage: "flame.fill")
                         .font(.caption2)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Theme.textSecondary)
                     Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
-                        .font(.system(.title, design: .rounded, weight: .bold))
-                        .foregroundStyle(.orange)
+                        .font(Theme.bigNumber(28))
+                        .foregroundStyle(Theme.caloriesPrimary)
                 }
                 VStack(alignment: .leading, spacing: 2) {
                     Label("Steps", systemImage: "figure.walk")
                         .font(.caption2)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Theme.textSecondary)
                     Text(entry.steps, format: .number)
-                        .font(.system(.title, design: .rounded, weight: .bold))
-                        .foregroundStyle(.blue)
+                        .font(Theme.bigNumber(28))
+                        .foregroundStyle(Theme.stepsPrimary)
                 }
             }
             Spacer()
-            VStack(alignment: .trailing, spacing: 4) {
-                Text("Active")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-                Text(entry.activeCalories, format: .number.precision(.fractionLength(0)))
-                    .font(.caption.bold())
-                    .foregroundStyle(.red)
-                Text("Resting")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-                Text(entry.restingCalories, format: .number.precision(.fractionLength(0)))
-                    .font(.caption.bold())
-                    .foregroundStyle(.orange.opacity(0.7))
+            VStack(alignment: .trailing, spacing: 8) {
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("Active")
+                        .font(.caption2)
+                        .foregroundStyle(Theme.textTertiary)
+                    Text(entry.activeCalories, format: .number.precision(.fractionLength(0)))
+                        .font(.subheadline.bold().monospacedDigit())
+                        .foregroundStyle(Theme.activePrimary)
+                }
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("Resting")
+                        .font(.caption2)
+                        .foregroundStyle(Theme.textTertiary)
+                    Text(entry.restingCalories, format: .number.precision(.fractionLength(0)))
+                        .font(.subheadline.bold().monospacedDigit())
+                        .foregroundStyle(Theme.restingPrimary)
+                }
             }
         }
         .containerBackground(.fill.tertiary, for: .widget)
@@ -128,12 +152,14 @@ struct CircularAccessoryView: View {
     let entry: VitalsEntry
 
     var body: some View {
-        Gauge(value: min(entry.totalCalories, 3000), in: 0...3000) {
+        Gauge(value: min(entry.totalCalories, entry.calorieGoal), in: 0...entry.calorieGoal) {
             Image(systemName: "flame.fill")
         } currentValueLabel: {
             Text(entry.totalCalories / 1000, format: .number.precision(.fractionLength(1)))
+                .font(.system(.body, design: .rounded, weight: .bold))
         }
         .gaugeStyle(.accessoryCircular)
+        .tint(Theme.caloriesPrimary)
         .containerBackground(.fill.tertiary, for: .widget)
     }
 }
@@ -144,18 +170,18 @@ struct RectangularAccessoryView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text("Vitals")
-                .font(.headline)
+                .font(.system(.headline, design: .rounded))
                 .widgetAccentable()
-            HStack {
+            HStack(spacing: 4) {
                 Image(systemName: "flame.fill")
                 Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
+                    .font(.system(.caption, design: .rounded, weight: .semibold))
             }
-            .font(.caption)
-            HStack {
+            HStack(spacing: 4) {
                 Image(systemName: "figure.walk")
                 Text(entry.steps, format: .number)
+                    .font(.system(.caption, design: .rounded, weight: .semibold))
             }
-            .font(.caption)
         }
         .containerBackground(.fill.tertiary, for: .widget)
     }

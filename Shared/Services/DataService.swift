@@ -1,9 +1,12 @@
 import Foundation
 import SwiftData
 
+// Accessible from any isolation context (widgets, complications)
+let vitalsAppGroupID = "group.com.jackwallner.vitals"
+
 @MainActor
 enum DataService {
-    static let appGroupID = "group.com.jackwallner.vitals"
+    static let appGroupID = vitalsAppGroupID
 
     static var sharedModelContainer: ModelContainer = {
         let schema = Schema([DailyHealthRecord.self])
