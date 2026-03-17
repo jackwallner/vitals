@@ -166,7 +166,7 @@ struct HistoryView: View {
                         }
                         .padding(.horizontal, 24)
                         .padding(.top, 20)
-                        .padding(.bottom, 32)
+                        .padding(.bottom, 90)
                         .opacity(animateContent ? 1 : 0)
                         .offset(y: animateContent ? 0 : 15)
                     }
