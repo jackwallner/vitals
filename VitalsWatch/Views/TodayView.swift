@@ -1,5 +1,4 @@
 import SwiftUI
-import WatchKit
 
 struct TodayView: View {
     @StateObject private var healthKit = HealthKitService.shared
@@ -8,79 +7,104 @@ struct TodayView: View {
     @State private var restingCalories: Double = 0
     @State private var steps: Int = 0
     @State private var showBreakdown = false
+    @State private var isLoading = true
+    @State private var isRefreshing = false
+    @State private var hasLoadedOnce = false
+    @State private var loadError = false
 
     private var totalCalories: Double { activeCalories + restingCalories }
+    private var hasNoData: Bool { hasLoadedOnce && totalCalories == 0 && steps == 0 }
 
     var body: some View {
-        VStack(spacing: 12) {
-            Spacer(minLength: 4)
+        Group {
+            if isLoading {
+                ProgressView()
+                    .tint(Theme.textTertiary)
+            } else {
+                VStack(spacing: 12) {
+                    Spacer(minLength: 4)
 
-            // Calories
-            VStack(spacing: 2) {
-                Image(systemName: "flame.fill")
-                    .font(.caption)
-                    .foregroundStyle(Theme.caloriesPrimary)
-                Text(totalCalories, format: .number.precision(.fractionLength(0)))
-                    .font(Theme.bigNumber(38))
-                    .foregroundStyle(Theme.textPrimary)
-                    .contentTransition(.numericText())
-                Text("CALORIES")
-                    .font(.system(size: 9, weight: .medium, design: .rounded))
-                    .foregroundStyle(Theme.textSecondary)
-                    .tracking(1.2)
-            }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("Calories")
-            .accessibilityValue("\(Int(totalCalories)) calories")
-            .onTapGesture {
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    showBreakdown.toggle()
+                    // Calories
+                    VStack(spacing: 2) {
+                        Image(systemName: "flame.fill")
+                            .font(.caption)
+                            .foregroundStyle(Theme.caloriesPrimary)
+                        Text(totalCalories, format: .number.precision(.fractionLength(0)))
+                            .font(Theme.bigNumber(38))
+                            .foregroundStyle(Theme.textPrimary)
+                            .contentTransition(.numericText())
+                        Text("CALORIES")
+                            .font(.system(size: 9, weight: .medium, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                            .tracking(1.2)
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Calories")
+                    .accessibilityValue("\(Int(totalCalories)) calories")
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            showBreakdown.toggle()
+                        }
+                    }
+
+                    if showBreakdown {
+                        HStack(spacing: 8) {
+                            Label(activeCalories.formatted(.number.precision(.fractionLength(0))), systemImage: "flame.fill")
+                                .font(.system(size: 10, weight: .medium, design: .rounded))
+                                .foregroundStyle(Theme.activePrimary)
+                            Label(restingCalories.formatted(.number.precision(.fractionLength(0))), systemImage: "bed.double.fill")
+                                .font(.system(size: 10, weight: .medium, design: .rounded))
+                                .foregroundStyle(Theme.restingPrimary)
+                        }
+                    }
+
+                    // Divider
+                    Rectangle()
+                        .fill(Theme.cardSurface)
+                        .frame(height: 1)
+                        .padding(.horizontal, 20)
+
+                    // Steps
+                    VStack(spacing: 2) {
+                        Image(systemName: "figure.walk")
+                            .font(.caption)
+                            .foregroundStyle(Theme.stepsPrimary)
+                        Text(steps, format: .number)
+                            .font(Theme.bigNumber(38))
+                            .foregroundStyle(Theme.textPrimary)
+                            .contentTransition(.numericText())
+                        Text("STEPS")
+                            .font(.system(size: 9, weight: .medium, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                            .tracking(1.2)
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Steps")
+                    .accessibilityValue("\(steps) steps")
+
+                    if hasNoData {
+                        Text(loadError ? "Could not load data." : "No activity yet today.")
+                            .font(.system(size: 9, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                            .multilineTextAlignment(.center)
+                    }
+
+                    Spacer(minLength: 4)
                 }
             }
-
-            if showBreakdown {
-                HStack(spacing: 8) {
-                    Label(activeCalories.formatted(.number.precision(.fractionLength(0))), systemImage: "flame.fill")
-                        .font(.system(size: 10, weight: .medium, design: .rounded))
-                        .foregroundStyle(Theme.activePrimary)
-                    Label(restingCalories.formatted(.number.precision(.fractionLength(0))), systemImage: "bed.double.fill")
-                        .font(.system(size: 10, weight: .medium, design: .rounded))
-                        .foregroundStyle(Theme.restingPrimary)
-                }
+        }
+        .overlay(alignment: .top) {
+            if isRefreshing && !isLoading {
+                ProgressView()
+                    .controlSize(.mini)
+                    .tint(Theme.textTertiary)
+                    .padding(.top, 2)
+                    .transition(.opacity)
             }
-
-            // Divider
-            Rectangle()
-                .fill(Theme.cardSurface)
-                .frame(height: 1)
-                .padding(.horizontal, 20)
-
-            // Steps
-            VStack(spacing: 2) {
-                Image(systemName: "figure.walk")
-                    .font(.caption)
-                    .foregroundStyle(Theme.stepsPrimary)
-                Text(steps, format: .number)
-                    .font(Theme.bigNumber(38))
-                    .foregroundStyle(Theme.textPrimary)
-                    .contentTransition(.numericText())
-                Text("STEPS")
-                    .font(.system(size: 9, weight: .medium, design: .rounded))
-                    .foregroundStyle(Theme.textSecondary)
-                    .tracking(1.2)
-            }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("Steps")
-            .accessibilityValue("\(steps) steps")
-
-            Spacer(minLength: 4)
         }
         .background(Theme.background)
         .navigationTitle("Vitals")
         .task { await refresh() }
-        .onReceive(NotificationCenter.default.publisher(for: WKApplication.willEnterForegroundNotification)) { _ in
-            Task { await refresh() }
-        }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 Task { await refresh() }
@@ -89,14 +113,27 @@ struct TodayView: View {
     }
 
     private func refresh() async {
+        guard !isRefreshing else { return }
+        isRefreshing = true
+        defer { isRefreshing = false }
+
+        if !healthKit.isAuthorized {
+            try? await healthKit.requestAuthorization()
+        }
         do {
             let stats = try await healthKit.fetchTodayStats()
             activeCalories = stats.active
             restingCalories = stats.resting
             steps = stats.steps
-            try? await healthKit.refreshCache()
+            hasLoadedOnce = true
+            loadError = false
+            if isLoading { isLoading = false }
+            try? await healthKit.refreshCache(stats: stats)
         } catch {
             print("Failed to fetch stats: \(error)")
+            hasLoadedOnce = true
+            loadError = true
+            if isLoading { isLoading = false }
         }
     }
 }
