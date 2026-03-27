@@ -32,7 +32,6 @@
 		9F43DA0F666C0671FD71FD2D /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEC9E7DED1B1E70BAA8F0E1 /* TodayView.swift */; };
 		AD560B74ECBF3CAD26A75026 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
 		AE79C4EF14DDEFF19FE3342E /* HealthRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */; };
-		B293ED586430ED5D9823E530 /* VitalsWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = DE8F114B3CE1940662993978 /* VitalsWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B40E7B002F3BECDCDAAE0925 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = FB79EE935FF815B366FB6D27 /* PrivacyInfo.xcprivacy */; };
 		BAAF27492ADCF82BF62686CA /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
 		C1E2EC8ECDAB52F888E0DF67 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
@@ -56,13 +55,6 @@
 			remoteGlobalIDString = F7D9E69E00CE7AA8C7C7BE09;
 			remoteInfo = VitalsWidget;
 		};
-		BB5B4E7383A33A8F2AF4E8E2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 513ABABE1DF9156E4D5073DC /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BA7F93B3F4FA48491616A6FE;
-			remoteInfo = VitalsWatch;
-		};
 		FB3D1498B6BD514E9FC79908 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 513ABABE1DF9156E4D5073DC /* Project object */;
@@ -73,17 +65,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		2B0C79FEFF647573ED7A4145 /* Embed Watch Content */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
-			dstSubfolderSpec = 16;
-			files = (
-				B293ED586430ED5D9823E530 /* VitalsWatch.app in Embed Watch Content */,
-			);
-			name = "Embed Watch Content";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		33F22AC153F0390CAB1CE7AA /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -284,13 +265,11 @@
 				E2B5FAF8C998DA77EEB97062 /* Sources */,
 				617A97A5D0BD0F30C657225F /* Resources */,
 				C07BF02E508F8A98BC5024D1 /* Embed Foundation Extensions */,
-				2B0C79FEFF647573ED7A4145 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				0348D73FDE4D82204F98C98C /* PBXTargetDependency */,
-				0ECD67948A6FF7039342FA73 /* PBXTargetDependency */,
 			);
 			name = Vitals;
 			packageProductDependencies = (
@@ -491,11 +470,6 @@
 			isa = PBXTargetDependency;
 			target = F7D9E69E00CE7AA8C7C7BE09 /* VitalsWidget */;
 			targetProxy = A81CD494760A4463511AEAB7 /* PBXContainerItemProxy */;
-		};
-		0ECD67948A6FF7039342FA73 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BA7F93B3F4FA48491616A6FE /* VitalsWatch */;
-			targetProxy = BB5B4E7383A33A8F2AF4E8E2 /* PBXContainerItemProxy */;
 		};
 		758DB24DCFEAF5C44E6DC9EA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
