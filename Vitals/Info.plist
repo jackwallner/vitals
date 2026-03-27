@@ -8,7 +8,11 @@
 	<string>Vitals reads your calorie and step data to display your daily health metrics.</string>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>processing</string>
+		<string>fetch</string>
+	</array>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.jackwallner.vitals.refresh</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

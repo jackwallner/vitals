@@ -45,6 +45,7 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     dependencies:
       - target: VitalsWidget
+      - target: VitalsWatch
 
   VitalsWatch:
     type: application

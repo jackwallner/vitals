@@ -27,8 +27,10 @@ struct WatchTimelineProvider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping @Sendable (Timeline<WatchVitalsEntry>) -> Void) {
         Task { @MainActor in
             let entry = fetchLatestEntry()
-            let nextUpdate = Calendar.current.date(byAdding: .hour, value: 1, to: .now)
+            let oneHour = Calendar.current.date(byAdding: .hour, value: 1, to: .now)
                 ?? .now.addingTimeInterval(3600)
+            let midnight = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now)
+            let nextUpdate = min(oneHour, midnight)
             completion(Timeline(entries: [entry], policy: .after(nextUpdate)))
         }
     }
@@ -116,9 +118,9 @@ struct CaloriesRectangularView: View {
             }
             Spacer()
             if entry.calGoalEnabled {
-                Text("\(Int(min(entry.totalCalories / entry.calorieGoal, 1.0) * 100))%")
-                    .font(.system(.caption, design: .rounded, weight: .semibold))
-                    .foregroundStyle(Theme.caloriesPrimary)
+                Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(.secondary)
             }
         }
         .containerBackground(.fill.tertiary, for: .widget)
@@ -205,9 +207,9 @@ struct StepsRectangularView: View {
             }
             Spacer()
             if entry.stepGoalEnabled {
-                Text("\(Int(min(Double(entry.steps) / Double(entry.stepGoal), 1.0) * 100))%")
-                    .font(.system(.caption, design: .rounded, weight: .semibold))
-                    .foregroundStyle(Theme.stepsPrimary)
+                Text("/ \(entry.stepGoal.formatted(.number))")
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(.secondary)
             }
         }
         .containerBackground(.fill.tertiary, for: .widget)

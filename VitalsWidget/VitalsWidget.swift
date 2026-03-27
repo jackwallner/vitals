@@ -4,18 +4,20 @@ import SwiftData
 
 // MARK: - Goal Helper
 
-private func loadGoals() -> (calories: Double, steps: Int) {
+private func loadGoals() -> (calories: Double, steps: Int, calEnabled: Bool, stepEnabled: Bool) {
     let defaults = UserDefaults(suiteName: vitalsAppGroupID) ?? .standard
     let cal = defaults.double(forKey: "calorieGoal")
     let step = defaults.integer(forKey: "stepGoal")
-    return (cal > 0 ? cal : 2500, step > 0 ? step : 10000)
+    let calOn = defaults.object(forKey: "calorieGoalEnabled") as? Bool ?? true
+    let stepOn = defaults.object(forKey: "stepGoalEnabled") as? Bool ?? true
+    return (cal > 0 ? cal : 2500, step > 0 ? step : 10000, calOn, stepOn)
 }
 
 // MARK: - Timeline Provider
 
 struct VitalsTimelineProvider: TimelineProvider {
     func placeholder(in context: Context) -> VitalsEntry {
-        VitalsEntry(date: .now, totalCalories: 1240, activeCalories: 340, restingCalories: 900, steps: 4520, calorieGoal: 2500, stepGoal: 10000)
+        VitalsEntry(date: .now, totalCalories: 1240, activeCalories: 340, restingCalories: 900, steps: 4520, calorieGoal: 2500, stepGoal: 10000, calGoalEnabled: true, stepGoalEnabled: true)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (VitalsEntry) -> Void) {
@@ -25,8 +27,11 @@ struct VitalsTimelineProvider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping @Sendable (Timeline<VitalsEntry>) -> Void) {
         Task { @MainActor in
             let entry = fetchLatestEntry()
-            let nextUpdate = Calendar.current.date(byAdding: .hour, value: 1, to: .now)
+            // Schedule next update in 1 hour, or at midnight if that's sooner
+            let oneHour = Calendar.current.date(byAdding: .hour, value: 1, to: .now)
                 ?? .now.addingTimeInterval(3600)
+            let midnight = Calendar.current.startOfDay(for: Calendar.current.date(byAdding: .day, value: 1, to: .now) ?? .now)
+            let nextUpdate = min(oneHour, midnight)
             completion(Timeline(entries: [entry], policy: .after(nextUpdate)))
         }
     }
@@ -35,12 +40,13 @@ struct VitalsTimelineProvider: TimelineProvider {
     private func fetchLatestEntry() -> VitalsEntry {
         let todayKey = DailyHealthRecord.key(for: DateHelpers.startOfDay())
         let container = DataService.sharedModelContainer
-        let descriptor = FetchDescriptor<DailyHealthRecord>(
-            predicate: #Predicate { $0.dateString == todayKey }
-        )
         let goals = loadGoals()
 
-        if let record = try? container.mainContext.fetch(descriptor).first {
+        // Try today's record first
+        let todayDescriptor = FetchDescriptor<DailyHealthRecord>(
+            predicate: #Predicate { $0.dateString == todayKey }
+        )
+        if let record = try? container.mainContext.fetch(todayDescriptor).first {
             return VitalsEntry(
                 date: .now,
                 totalCalories: record.totalCalories,
@@ -48,10 +54,14 @@ struct VitalsTimelineProvider: TimelineProvider {
                 restingCalories: record.restingCalories,
                 steps: record.steps,
                 calorieGoal: goals.calories,
-                stepGoal: goals.steps
+                stepGoal: goals.steps,
+                calGoalEnabled: goals.calEnabled,
+                stepGoalEnabled: goals.stepEnabled
             )
         }
-        return VitalsEntry(date: .now, totalCalories: 0, activeCalories: 0, restingCalories: 0, steps: 0, calorieGoal: goals.calories, stepGoal: goals.steps)
+
+        // No record for today yet — show 0 (new day)
+        return VitalsEntry(date: .now, totalCalories: 0, activeCalories: 0, restingCalories: 0, steps: 0, calorieGoal: goals.calories, stepGoal: goals.steps, calGoalEnabled: goals.calEnabled, stepGoalEnabled: goals.stepEnabled)
     }
 }
 
@@ -65,6 +75,8 @@ struct VitalsEntry: TimelineEntry {
     let steps: Int
     let calorieGoal: Double
     let stepGoal: Int
+    let calGoalEnabled: Bool
+    let stepGoalEnabled: Bool
 }
 
 // MARK: - Widget Views
@@ -81,9 +93,11 @@ struct SmallWidgetView: View {
                 Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
                     .font(Theme.bigNumber(28))
                     .foregroundStyle(Theme.caloriesPrimary)
-                Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
-                    .font(.caption2)
-                    .foregroundStyle(Theme.textTertiary)
+                if entry.calGoalEnabled {
+                    Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
+                        .font(.caption2)
+                        .foregroundStyle(Theme.textTertiary)
+                }
             }
             VStack(alignment: .leading, spacing: 2) {
                 Label("Steps", systemImage: "figure.walk")
@@ -92,9 +106,11 @@ struct SmallWidgetView: View {
                 Text(entry.steps, format: .number)
                     .font(Theme.bigNumber(28))
                     .foregroundStyle(Theme.stepsPrimary)
-                Text("/ \(entry.stepGoal.formatted(.number))")
-                    .font(.caption2)
-                    .foregroundStyle(Theme.textTertiary)
+                if entry.stepGoalEnabled {
+                    Text("/ \(entry.stepGoal.formatted(.number))")
+                        .font(.caption2)
+                        .foregroundStyle(Theme.textTertiary)
+                }
             }
         }
         .containerBackground(.fill.tertiary, for: .widget)
@@ -111,17 +127,31 @@ struct MediumWidgetView: View {
                     Label("Calories", systemImage: "flame.fill")
                         .font(.caption2)
                         .foregroundStyle(Theme.textSecondary)
-                    Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
-                        .font(Theme.bigNumber(28))
-                        .foregroundStyle(Theme.caloriesPrimary)
+                    HStack(alignment: .firstTextBaseline, spacing: 4) {
+                        Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
+                            .font(Theme.bigNumber(28))
+                            .foregroundStyle(Theme.caloriesPrimary)
+                        if entry.calGoalEnabled {
+                            Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
+                                .font(.caption2)
+                                .foregroundStyle(Theme.textTertiary)
+                        }
+                    }
                 }
                 VStack(alignment: .leading, spacing: 2) {
                     Label("Steps", systemImage: "figure.walk")
                         .font(.caption2)
                         .foregroundStyle(Theme.textSecondary)
-                    Text(entry.steps, format: .number)
-                        .font(Theme.bigNumber(28))
-                        .foregroundStyle(Theme.stepsPrimary)
+                    HStack(alignment: .firstTextBaseline, spacing: 4) {
+                        Text(entry.steps, format: .number)
+                            .font(Theme.bigNumber(28))
+                            .foregroundStyle(Theme.stepsPrimary)
+                        if entry.stepGoalEnabled {
+                            Text("/ \(entry.stepGoal.formatted(.number))")
+                                .font(.caption2)
+                                .foregroundStyle(Theme.textTertiary)
+                        }
+                    }
                 }
             }
             Spacer()
@@ -152,15 +182,29 @@ struct CircularAccessoryView: View {
     let entry: VitalsEntry
 
     var body: some View {
-        Gauge(value: min(entry.totalCalories, entry.calorieGoal), in: 0...entry.calorieGoal) {
-            Image(systemName: "flame.fill")
-        } currentValueLabel: {
-            Text(entry.totalCalories / 1000, format: .number.precision(.fractionLength(1)))
-                .font(.system(.body, design: .rounded, weight: .bold))
+        if entry.calGoalEnabled {
+            Gauge(value: min(entry.totalCalories, entry.calorieGoal), in: 0...entry.calorieGoal) {
+                Image(systemName: "flame.fill")
+            } currentValueLabel: {
+                Text(entry.totalCalories / 1000, format: .number.precision(.fractionLength(1)))
+                    .font(.system(.body, design: .rounded, weight: .bold))
+            }
+            .gaugeStyle(.accessoryCircular)
+            .tint(Theme.caloriesPrimary)
+            .containerBackground(.fill.tertiary, for: .widget)
+        } else {
+            VStack(spacing: 1) {
+                Image(systemName: "flame.fill")
+                    .font(.caption)
+                    .foregroundStyle(Theme.caloriesPrimary)
+                Text(entry.totalCalories / 1000, format: .number.precision(.fractionLength(1)))
+                    .font(.system(.body, design: .rounded, weight: .bold))
+                Text("k cal")
+                    .font(.system(size: 8, design: .rounded))
+                    .foregroundStyle(.secondary)
+            }
+            .containerBackground(.fill.tertiary, for: .widget)
         }
-        .gaugeStyle(.accessoryCircular)
-        .tint(Theme.caloriesPrimary)
-        .containerBackground(.fill.tertiary, for: .widget)
     }
 }
 
@@ -176,11 +220,21 @@ struct RectangularAccessoryView: View {
                 Image(systemName: "flame.fill")
                 Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
                     .font(.system(.caption, design: .rounded, weight: .semibold))
+                if entry.calGoalEnabled {
+                    Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
+                        .font(.system(size: 8, design: .rounded))
+                        .foregroundStyle(.secondary)
+                }
             }
             HStack(spacing: 4) {
                 Image(systemName: "figure.walk")
                 Text(entry.steps, format: .number)
                     .font(.system(.caption, design: .rounded, weight: .semibold))
+                if entry.stepGoalEnabled {
+                    Text("/ \(entry.stepGoal.formatted(.number))")
+                        .font(.system(size: 8, design: .rounded))
+                        .foregroundStyle(.secondary)
+                }
             }
         }
         .containerBackground(.fill.tertiary, for: .widget)

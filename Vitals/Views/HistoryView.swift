@@ -10,9 +10,11 @@ struct HistoryView: View {
     @State private var showCustomRange = false
     @State private var records: [DayRecord] = []
     @State private var isLoading = true
+    @State private var isRefreshing = false
     @State private var animateContent = false
     @State private var showExportSheet = false
     @State private var showExportWarning = false
+    @State private var showExportError = false
     @State private var csvFile: CSVFile?
     @State private var selectedCalorieDate: Date?
     @State private var selectedStepDate: Date?
@@ -77,6 +79,13 @@ struct HistoryView: View {
                     Text("History")
                         .font(.title.bold())
                         .foregroundStyle(Theme.textPrimary)
+                    if isRefreshing && !isLoading {
+                        ProgressView()
+                            .controlSize(.small)
+                            .tint(Theme.textTertiary)
+                            .padding(.leading, 4)
+                            .transition(.opacity)
+                    }
                     Spacer()
                     if !records.isEmpty {
                         Button {
@@ -191,12 +200,12 @@ struct HistoryView: View {
                         .opacity(animateContent ? 1 : 0)
                         .offset(y: animateContent ? 0 : 15)
                     }
+                    .refreshable { await loadHistory() }
                 }
             }
         }
         .onChange(of: selectedPeriod) { _, _ in
             if selectedPeriod != .custom {
-                animateContent = false
                 Task { await loadHistory() }
             }
         }
@@ -205,7 +214,6 @@ struct HistoryView: View {
             CustomRangeSheet(start: $customStart, end: $customEnd) {
                 selectedPeriod = .custom
                 showCustomRange = false
-                animateContent = false
                 Task { await loadHistory() }
             }
             .presentationDetents([.medium])
@@ -222,6 +230,11 @@ struct HistoryView: View {
             if let csvFile {
                 ShareSheet(items: [csvFile.url])
             }
+        }
+        .alert("Export Failed", isPresented: $showExportError) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Could not save the export file. Please try again.")
         }
     }
 
@@ -357,14 +370,16 @@ struct HistoryView: View {
 
     private var xAxisStride: Int {
         let count = records.count
-        if count <= 7 { return 1 }
-        if count <= 30 { return 5 }
-        if count <= 90 { return 14 }
+        if count <= 10 { return 1 }
+        if count <= 31 { return 5 }
+        if count <= 91 { return 14 }
         return 30
     }
 
     private func loadHistory() async {
-        isLoading = true
+        let isFirstLoad = records.isEmpty
+        if isFirstLoad { isLoading = true }
+        isRefreshing = true
         selectedCalorieDate = nil
         selectedStepDate = nil
         do {
@@ -375,15 +390,20 @@ struct HistoryView: View {
                 history = try await healthKit.fetchHistory(days: selectedPeriod.days ?? 7)
             }
 
-            records = history.map {
-                DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
+            withAnimation(.easeOut(duration: 0.3)) {
+                records = history.map {
+                    DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
+                }
             }
         } catch {
             print("Failed to fetch history: \(error)")
         }
         isLoading = false
-        withAnimation(.easeOut(duration: 0.4)) {
-            animateContent = true
+        isRefreshing = false
+        if !animateContent {
+            withAnimation(.easeOut(duration: 0.4)) {
+                animateContent = true
+            }
         }
     }
 
@@ -397,10 +417,16 @@ struct HistoryView: View {
         }.joined(separator: "\n")
 
         let csv = header + rows
-        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("vitals_export.csv")
-        try? csv.write(to: tempURL, atomically: true, encoding: .utf8)
-        csvFile = CSVFile(url: tempURL)
-        showExportSheet = true
+        let timestamp = Int(Date.now.timeIntervalSince1970)
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("vitals_export_\(timestamp).csv")
+        do {
+            try csv.write(to: tempURL, atomically: true, encoding: .utf8)
+            csvFile = CSVFile(url: tempURL)
+            showExportSheet = true
+        } catch {
+            print("CSV export failed: \(error)")
+            showExportError = true
+        }
     }
 
     private func computeTrend(_ values: [Double]) -> Trend {
@@ -410,7 +436,7 @@ struct HistoryView: View {
         let secondHalf = Array(values.suffix(half))
         let firstAvg = firstHalf.reduce(0, +) / Double(firstHalf.count)
         let secondAvg = secondHalf.reduce(0, +) / Double(secondHalf.count)
-        guard firstAvg > 0 else { return .neutral }
+        guard firstAvg > 1 else { return .neutral }
         let change = (secondAvg - firstAvg) / firstAvg
         if change > 0.05 { return .up(change) }
         if change < -0.05 { return .down(change) }
@@ -501,11 +527,28 @@ private struct CustomRangeSheet: View {
     let onApply: () -> Void
     @Environment(\.dismiss) private var dismiss
 
+    private var isValid: Bool {
+        start < end && (Calendar.current.dateComponents([.day], from: start, to: end).day ?? 0) <= 730
+    }
+
     var body: some View {
         NavigationStack {
             Form {
                 DatePicker("Start", selection: $start, in: ...Date.now, displayedComponents: .date)
                 DatePicker("End", selection: $end, in: ...Date.now, displayedComponents: .date)
+                if !isValid {
+                    Section {
+                        if start >= end {
+                            Text("Start date must be before end date.")
+                                .foregroundStyle(.red)
+                                .font(.caption)
+                        } else {
+                            Text("Maximum range is 2 years.")
+                                .foregroundStyle(.red)
+                                .font(.caption)
+                        }
+                    }
+                }
             }
             .navigationTitle("Custom Range")
             .navigationBarTitleDisplayMode(.inline)
@@ -516,6 +559,7 @@ private struct CustomRangeSheet: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Apply") { onApply() }
                         .bold()
+                        .disabled(!isValid)
                 }
             }
         }

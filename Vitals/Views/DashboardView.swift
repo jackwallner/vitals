@@ -14,9 +14,12 @@ struct DashboardView: View {
     @State private var showSettings = false
     @State private var showBreakdown = false
     @State private var showOnboarding = false
-    @State private var showHealthKitDenied = false
+    @State private var pacingInsufficient = false
+    @State private var isRefreshing = false
+    @State private var hasLoadedOnce = false
 
     private var totalCalories: Double { activeCalories + restingCalories }
+    private var hasNoData: Bool { hasLoadedOnce && totalCalories == 0 && steps == 0 }
 
     private var calorieProgress: Double? {
         guard let goal = goals.calorieGoal, goal > 0 else { return nil }
@@ -41,9 +44,7 @@ struct DashboardView: View {
         ZStack {
             Theme.background.ignoresSafeArea()
 
-            if !healthKit.isAuthorized && !isLoading {
-                healthKitDeniedView
-            } else if isLoading {
+            if isLoading {
                 loadingView
             } else {
                 GeometryReader { geo in
@@ -60,46 +61,35 @@ struct DashboardView: View {
         .task {
             if !goals.hasCompletedSetup {
                 showOnboarding = true
+            } else {
+                await refresh()
             }
-            await refresh()
         }
-        .sheet(isPresented: $showSettings) {
+        .sheet(isPresented: $showSettings, onDismiss: {
+            Task { await refresh() }
+        }) {
             SettingsSheet(goals: goals)
                 .presentationDetents([.medium, .large])
         }
-        .sheet(isPresented: $showOnboarding) {
+        .sheet(isPresented: $showOnboarding, onDismiss: {
+            Task { await refresh() }
+        }) {
             OnboardingSheet(goals: goals)
                 .interactiveDismissDisabled()
         }
     }
 
-    private var healthKitDeniedView: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "heart.slash")
-                .font(.system(size: 48))
+    private var noDataHint: some View {
+        VStack(spacing: 6) {
+            Text("No activity recorded yet today.")
+                .font(.system(.caption, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
-            Text("Health Access Required")
-                .font(.system(.title3, design: .rounded, weight: .bold))
-                .foregroundStyle(Theme.textPrimary)
-            Text("Vitals needs access to HealthKit to display your calories and steps. Please enable access in Settings.")
-                .font(.system(.subheadline, design: .rounded))
-                .foregroundStyle(Theme.textSecondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 32)
-            Button {
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(url)
-                }
-            } label: {
-                Text("Open Settings")
-                    .font(.system(.headline, design: .rounded))
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 12)
-                    .background(Theme.caloriesPrimary, in: RoundedRectangle(cornerRadius: 12))
-                    .foregroundStyle(.white)
-            }
-            .buttonStyle(.plain)
+            Text("Make sure Health access is enabled in Settings.")
+                .font(.system(.caption2, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
         }
+        .multilineTextAlignment(.center)
+        .padding(.horizontal, 32)
     }
 
     private var loadingView: some View {
@@ -139,6 +129,13 @@ struct DashboardView: View {
                 Text(Date.now, format: .dateTime.weekday(.wide).month(.wide).day())
                     .font(.system(.title3, design: .rounded, weight: .bold))
                     .foregroundStyle(Theme.textPrimary)
+                if isRefreshing {
+                    ProgressView()
+                        .controlSize(.small)
+                        .tint(Theme.textTertiary)
+                        .padding(.leading, 4)
+                        .transition(.opacity)
+                }
                 Spacer()
                 Button {
                     showSettings = true
@@ -202,15 +199,23 @@ struct DashboardView: View {
                 }
 
                 // Calorie pacing
-                if goals.showPacing, let pacingCal = pacingCalories {
-                    PacingPill(
-                        current: totalCalories,
-                        typical: pacingCal,
-                        label: "cal",
-                        color: Theme.caloriesPrimary
-                    )
-                    .padding(.top, 10)
-                    .opacity(animateContent ? 1 : 0)
+                if goals.showPacing {
+                    if let pacingCal = pacingCalories {
+                        PacingPill(
+                            current: totalCalories,
+                            typical: pacingCal,
+                            label: "cal",
+                            color: Theme.caloriesPrimary
+                        )
+                        .padding(.top, 10)
+                        .opacity(animateContent ? 1 : 0)
+                    } else if pacingInsufficient {
+                        Text("Building pace data...")
+                            .font(.system(.caption2, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                            .padding(.top, 10)
+                            .opacity(animateContent ? 1 : 0)
+                    }
                 }
             }
 
@@ -238,14 +243,21 @@ struct DashboardView: View {
                             .textCase(.uppercase)
                             .tracking(1.5)
 
-                        if goals.showPacing, let pacingStep = pacingSteps {
-                            PacingPill(
-                                current: Double(steps),
-                                typical: Double(pacingStep),
-                                label: "steps",
-                                color: Theme.stepsPrimary
-                            )
-                            .padding(.top, 8)
+                        if goals.showPacing {
+                            if let pacingStep = pacingSteps {
+                                PacingPill(
+                                    current: Double(steps),
+                                    typical: Double(pacingStep),
+                                    label: "steps",
+                                    color: Theme.stepsPrimary
+                                )
+                                .padding(.top, 8)
+                            } else if pacingInsufficient {
+                                Text("Building pace data...")
+                                    .font(.system(.caption2, design: .rounded))
+                                    .foregroundStyle(Theme.textTertiary)
+                                    .padding(.top, 8)
+                            }
                         }
                     }
                     .accessibilityElement(children: .combine)
@@ -291,13 +303,19 @@ struct DashboardView: View {
                             )
                         }
 
-                        if goals.showPacing, let pacingStep = pacingSteps {
-                            PacingPill(
-                                current: Double(steps),
-                                typical: Double(pacingStep),
-                                label: "steps",
-                                color: Theme.stepsPrimary
-                            )
+                        if goals.showPacing {
+                            if let pacingStep = pacingSteps {
+                                PacingPill(
+                                    current: Double(steps),
+                                    typical: Double(pacingStep),
+                                    label: "steps",
+                                    color: Theme.stepsPrimary
+                                )
+                            } else if pacingInsufficient {
+                                Text("Building pace data...")
+                                    .font(.system(.caption2, design: .rounded))
+                                    .foregroundStyle(Theme.textTertiary)
+                            }
                         }
                     }
                     .accessibilityElement(children: .combine)
@@ -325,6 +343,11 @@ struct DashboardView: View {
                         .foregroundStyle(Theme.caloriesPrimary)
                 }
                 .opacity(animateContent ? 1 : 0)
+            }
+
+            if hasNoData {
+                noDataHint
+                    .opacity(animateContent ? 1 : 0)
             }
 
             Spacer(minLength: 16)
@@ -358,11 +381,20 @@ struct DashboardView: View {
     }
 
     private func refresh() async {
+        guard !isRefreshing else { return }
+        isRefreshing = true
+        defer { isRefreshing = false }
+
+        // Ensure authorization before first fetch
+        if !healthKit.isAuthorized {
+            try? await healthKit.requestAuthorization()
+        }
         do {
             let stats = try await healthKit.fetchTodayStats()
             activeCalories = stats.active
             restingCalories = stats.resting
             steps = stats.steps
+            hasLoadedOnce = true
 
             // Show UI immediately, don't wait for pacing/cache
             if isLoading {
@@ -375,19 +407,34 @@ struct DashboardView: View {
                 }
             }
 
-            // Load pacing and cache in background
-            try? await healthKit.refreshCache()
+            // Load pacing and cache in background (reuse stats, don't re-fetch)
+            try? await healthKit.refreshCache(stats: stats)
             if goals.showPacing {
                 if let pacing = try? await healthKit.fetchPacing() {
-                    if pacing.avgCalories > 0 { pacingCalories = pacing.avgCalories }
-                    if pacing.avgSteps > 0 { pacingSteps = pacing.avgSteps }
+                    if pacing.daysWithData >= 3 {
+                        pacingInsufficient = false
+                        if pacing.avgCalories > 0 { pacingCalories = pacing.avgCalories }
+                        if pacing.avgSteps > 0 { pacingSteps = pacing.avgSteps }
+                    } else if pacing.daysWithData > 0 {
+                        // Some data but not enough for reliable pacing
+                        pacingCalories = nil
+                        pacingSteps = nil
+                        pacingInsufficient = true
+                    } else {
+                        // No data at all (too early in the day or brand new user)
+                        pacingCalories = nil
+                        pacingSteps = nil
+                        pacingInsufficient = false
+                    }
                 }
             } else {
                 pacingCalories = nil
                 pacingSteps = nil
+                pacingInsufficient = false
             }
         } catch {
             print("Failed to fetch today stats: \(error)")
+            hasLoadedOnce = true
             if isLoading {
                 isLoading = false
                 withAnimation(.easeOut(duration: 0.5)) { animateContent = true }
@@ -461,6 +508,14 @@ private struct OnboardingSheet: View {
     @State private var wantStepGoal = true
     @State private var stepText = "10000"
 
+    private var calValid: Bool {
+        !wantCalGoal || (Double(calText) ?? 0) > 0
+    }
+
+    private var stepValid: Bool {
+        !wantStepGoal || (Int(stepText) ?? 0) > 0
+    }
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 32) {
@@ -483,14 +538,16 @@ private struct OnboardingSheet: View {
                         color: Theme.caloriesPrimary,
                         title: "Calorie Goal",
                         enabled: $wantCalGoal,
-                        text: $calText
+                        text: $calText,
+                        isValid: calValid
                     )
                     GoalRow(
                         icon: "figure.walk",
                         color: Theme.stepsPrimary,
                         title: "Step Goal",
                         enabled: $wantStepGoal,
-                        text: $stepText
+                        text: $stepText,
+                        isValid: stepValid
                     )
                 }
                 .padding(.horizontal, 24)
@@ -518,10 +575,16 @@ private struct OnboardingSheet: View {
                         .background(Theme.caloriesPrimary, in: RoundedRectangle(cornerRadius: 14))
                         .foregroundStyle(.white)
                 }
+                .disabled(!calValid || !stepValid)
+                .opacity(calValid && stepValid ? 1 : 0.5)
                 .padding(.horizontal, 24)
                 .padding(.bottom, 24)
             }
             .padding(.top, 48)
+            .onAppear {
+                // Mark setup as seen so force-quit won't re-show onboarding
+                goals.hasCompletedSetup = true
+            }
         }
     }
 }
@@ -532,6 +595,7 @@ private struct GoalRow: View {
     let title: String
     @Binding var enabled: Bool
     @Binding var text: String
+    var isValid: Bool = true
 
     var body: some View {
         VStack(spacing: 10) {
@@ -550,6 +614,11 @@ private struct GoalRow: View {
                     .font(.system(.body, design: .rounded))
                     .padding(12)
                     .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 10))
+                if !isValid {
+                    Text("Enter a valid number.")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
             }
         }
         .padding(16)
@@ -572,6 +641,14 @@ private struct SettingsSheet: View {
     @State private var showSteps = true
     @State private var appearance: AppAppearance = .system
 
+    private var calValid: Bool {
+        !calEnabled || (Double(calText) ?? 0) > 0
+    }
+
+    private var stepValid: Bool {
+        !stepEnabled || (Int(stepText) ?? 0) > 0
+    }
+
     var body: some View {
         NavigationStack {
             Form {
@@ -585,6 +662,11 @@ private struct SettingsSheet: View {
                     if calEnabled {
                         TextField("Daily calories", text: $calText)
                             .keyboardType(.numberPad)
+                        if !calValid {
+                            Text("Enter a valid number.")
+                                .font(.caption)
+                                .foregroundStyle(.red)
+                        }
                     }
                 }
 
@@ -593,6 +675,11 @@ private struct SettingsSheet: View {
                     if stepEnabled {
                         TextField("Daily steps", text: $stepText)
                             .keyboardType(.numberPad)
+                        if !stepValid {
+                            Text("Enter a valid number.")
+                                .font(.caption)
+                                .foregroundStyle(.red)
+                        }
                     }
                 }
 
@@ -636,6 +723,7 @@ private struct SettingsSheet: View {
                         dismiss()
                     }
                     .bold()
+                    .disabled(!calValid || !stepValid)
                 }
             }
             .onAppear {

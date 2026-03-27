@@ -12,8 +12,10 @@ final class DailyHealthRecord {
 
     var totalCalories: Double { activeCalories + restingCalories }
 
+    private static let gregorian = Calendar(identifier: .gregorian)
+
     init(date: Date, activeCalories: Double = 0, restingCalories: Double = 0, steps: Int = 0) {
-        let normalized = Calendar.current.startOfDay(for: date)
+        let normalized = Self.gregorian.startOfDay(for: date)
         self.dateString = Self.key(for: normalized)
         self.date = normalized
         self.activeCalories = activeCalories
@@ -22,14 +24,11 @@ final class DailyHealthRecord {
         self.lastUpdated = Date()
     }
 
-    private static let keyFormatter: DateFormatter = {
-        let f = DateFormatter()
-        f.dateFormat = "yyyy-MM-dd"
-        f.locale = Locale(identifier: "en_US_POSIX")
-        return f
-    }()
-
     static func key(for date: Date) -> String {
-        keyFormatter.string(from: date)
+        let cal = gregorian
+        let y = cal.component(.year, from: date)
+        let m = cal.component(.month, from: date)
+        let d = cal.component(.day, from: date)
+        return String(format: "%04d-%02d-%02d", y, m, d)
     }
 }

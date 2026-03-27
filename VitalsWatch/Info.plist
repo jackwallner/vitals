@@ -8,5 +8,9 @@
     <true/>
     <key>WKCompanionAppBundleIdentifier</key>
     <string>com.jackwallner.vitals</string>
+    <key>WKBackgroundModes</key>
+    <array>
+        <string>self-care</string>
+    </array>
 </dict>
 </plist>
