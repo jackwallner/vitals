@@ -2,6 +2,9 @@ import Foundation
 import HealthKit
 import SwiftData
 import WidgetKit
+#if os(watchOS)
+import WatchKit
+#endif
 
 @MainActor
 final class HealthKitService: ObservableObject {
@@ -153,6 +156,15 @@ final class HealthKitService: ObservableObject {
                     print("HKObserverQuery error for \(type): \(error)")
                     return
                 }
+                #if os(watchOS)
+                // On watchOS, don't do heavy work in the observer callback —
+                // the CAROUSEL watchdog has a tight CPU budget and will kill us.
+                // Just schedule a background refresh and let the protected handler do it.
+                WKApplication.shared().scheduleBackgroundRefresh(
+                    withPreferredDate: Date(timeIntervalSinceNow: 5),
+                    userInfo: nil
+                ) { _ in }
+                #else
                 Task { @MainActor in
                     // Debounce: multiple HK types often deliver simultaneously.
                     // Coalesce into a single refreshCache call.
@@ -163,6 +175,7 @@ final class HealthKitService: ObservableObject {
                         try? await self?.refreshCache()
                     }
                 }
+                #endif
             }
             store.execute(query)
         }
