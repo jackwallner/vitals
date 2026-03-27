@@ -41,27 +41,30 @@ final class HealthKitService: ObservableObject {
 
     func fetchHistory(days: Int) async throws -> [(date: Date, active: Double, resting: Double, steps: Int)] {
         let start = DateHelpers.daysAgo(days)
-        let end = DateHelpers.startOfDay(.now)
-        return try await fetchHistory(from: start, to: end)
+        return try await fetchHistory(from: start, to: .now)
     }
 
     func fetchHistory(from start: Date, to end: Date) async throws -> [(date: Date, active: Double, resting: Double, steps: Int)] {
         let start = DateHelpers.startOfDay(start)
-        let end = DateHelpers.startOfDay(end)
+        // Include today by pushing end to tomorrow's start
+        let endNormalized = DateHelpers.startOfDay(end)
+        let end = Calendar.current.date(byAdding: .day, value: 1, to: endNormalized) ?? endNormalized
         let interval = DateComponents(day: 1)
 
-        let activeMap = try await queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: start, end: end, interval: interval)
-        let restingMap = try await queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: start, end: end, interval: interval)
-        let stepsMap = try await queryStatisticsCollection(.stepCount, unit: .count(), start: start, end: end, interval: interval)
+        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: start, end: end, interval: interval)
+        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: start, end: end, interval: interval)
+        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: start, end: end, interval: interval)
+
+        let (active, resting, steps) = try await (activeMap, restingMap, stepsMap)
 
         var results: [(date: Date, active: Double, resting: Double, steps: Int)] = []
         var current = start
         while current < end {
             results.append((
                 date: current,
-                active: activeMap[current] ?? 0,
-                resting: restingMap[current] ?? 0,
-                steps: Int(stepsMap[current] ?? 0)
+                active: active[current] ?? 0,
+                resting: resting[current] ?? 0,
+                steps: Int(steps[current] ?? 0)
             ))
             guard let next = Calendar.current.date(byAdding: .day, value: 1, to: current) else { break }
             current = next
@@ -71,12 +74,16 @@ final class HealthKitService: ObservableObject {
 
     // MARK: - Pacing (average at this time of day over last 14 days)
 
-    func fetchPacing() async throws -> (avgCalories: Double, avgSteps: Int) {
+    func fetchPacing() async throws -> (avgCalories: Double, avgSteps: Int, daysWithData: Int) {
         let calendar = Calendar.current
         let now = Date.now
         let currentHour = calendar.component(.hour, from: now)
-        let currentMinute = calendar.component(.minute, from: now)
-        let fourteenDaysAgo = calendar.startOfDay(for: calendar.date(byAdding: .day, value: -14, to: now)!)
+
+        // Too early in the day for meaningful pacing
+        guard currentHour >= 6 else { return (0, 0, 0) }
+
+        guard let fourteenDaysAgoDate = calendar.date(byAdding: .day, value: -14, to: now) else { return (0, 0, 0) }
+        let fourteenDaysAgo = calendar.startOfDay(for: fourteenDaysAgoDate)
 
         // 3 bulk queries instead of 42 individual ones
         let interval = DateComponents(day: 1)
@@ -89,33 +96,40 @@ final class HealthKitService: ObservableObject {
         let (active, resting, steps) = try await (activeMap, restingMap, stepsMap)
 
         // For each past day, calculate what was burned by this time of day
-        // Use the ratio: (currentHour*60 + currentMinute) / (24*60) as an approximation
-        let minutesSoFar = Double(currentHour * 60 + currentMinute)
-        let dayMinutes = 24.0 * 60.0
-        let dayFraction = minutesSoFar / dayMinutes
+        // Use actual seconds elapsed since midnight / total seconds in today (handles DST 23/25h days)
+        let secondsSoFar = now.timeIntervalSince(today)
+        let endOfToday = calendar.date(byAdding: .day, value: 1, to: today) ?? today.addingTimeInterval(86400)
+        let totalSecondsToday = endOfToday.timeIntervalSince(today)
+        let dayFraction = min(secondsSoFar / totalSecondsToday, 1.0)
 
         var totalCalories = 0.0
         var totalSteps = 0.0
-        var daysCounted = 0
+        var daysWithData = 0
 
         var current = fourteenDaysAgo
         while current < today {
             let dayCal = (active[current] ?? 0) + (resting[current] ?? 0)
             let daySteps = steps[current] ?? 0
-            totalCalories += dayCal * dayFraction
-            totalSteps += daySteps * dayFraction
-            daysCounted += 1
-            current = calendar.date(byAdding: .day, value: 1, to: current)!
+            if dayCal > 0 || daySteps > 0 {
+                daysWithData += 1
+                totalCalories += dayCal * dayFraction
+                totalSteps += daySteps * dayFraction
+            }
+            guard let next = calendar.date(byAdding: .day, value: 1, to: current) else { break }
+            current = next
         }
 
-        guard daysCounted > 0 else { return (0, 0) }
+        guard daysWithData > 0 else { return (0, 0, 0) }
         return (
-            avgCalories: totalCalories / Double(daysCounted),
-            avgSteps: Int(totalSteps / Double(daysCounted))
+            avgCalories: totalCalories / Double(daysWithData),
+            avgSteps: Int(totalSteps / Double(daysWithData)),
+            daysWithData: daysWithData
         )
     }
 
     // MARK: - Background Delivery
+
+    private var pendingRefreshTask: Task<Void, Never>?
 
     func enableBackgroundDelivery() {
         guard HKHealthStore.isHealthDataAvailable() else { return }
@@ -132,22 +146,35 @@ final class HealthKitService: ObservableObject {
             }
 
             let query = HKObserverQuery(sampleType: type, predicate: nil) { [weak self] _, completionHandler, error in
-                guard error == nil else {
-                    completionHandler()
+                // Call completion handler immediately — watchOS kills the app
+                // if this isn't called within 15 seconds.
+                completionHandler()
+                if let error {
+                    print("HKObserverQuery error for \(type): \(error)")
                     return
                 }
-                nonisolated(unsafe) let handler = completionHandler
                 Task { @MainActor in
-                    try? await self?.refreshCache()
-                    handler()
+                    // Debounce: multiple HK types often deliver simultaneously.
+                    // Coalesce into a single refreshCache call.
+                    self?.pendingRefreshTask?.cancel()
+                    self?.pendingRefreshTask = Task {
+                        try? await Task.sleep(for: .milliseconds(500))
+                        guard !Task.isCancelled else { return }
+                        try? await self?.refreshCache()
+                    }
                 }
             }
             store.execute(query)
         }
     }
 
-    func refreshCache() async throws {
-        let stats = try await fetchTodayStats()
+    func refreshCache(stats: (active: Double, resting: Double, steps: Int)? = nil) async throws {
+        let resolvedStats: (active: Double, resting: Double, steps: Int)
+        if let stats {
+            resolvedStats = stats
+        } else {
+            resolvedStats = try await fetchTodayStats()
+        }
         let context = DataService.sharedModelContainer.mainContext
         let today = DateHelpers.startOfDay()
         let todayKey = DailyHealthRecord.key(for: today)
@@ -158,16 +185,16 @@ final class HealthKitService: ObservableObject {
         let existing = try context.fetch(descriptor).first
 
         if let record = existing {
-            record.activeCalories = stats.active
-            record.restingCalories = stats.resting
-            record.steps = stats.steps
+            record.activeCalories = resolvedStats.active
+            record.restingCalories = resolvedStats.resting
+            record.steps = resolvedStats.steps
             record.lastUpdated = .now
         } else {
             let record = DailyHealthRecord(
                 date: today,
-                activeCalories: stats.active,
-                restingCalories: stats.resting,
-                steps: stats.steps
+                activeCalories: resolvedStats.active,
+                restingCalories: resolvedStats.resting,
+                steps: resolvedStats.steps
             )
             context.insert(record)
         }

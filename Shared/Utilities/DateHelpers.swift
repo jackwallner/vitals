@@ -12,7 +12,7 @@ enum DateHelpers {
 
     private static let shortDateFormatter: DateFormatter = {
         let f = DateFormatter()
-        f.dateFormat = "M/d"
+        f.setLocalizedDateFormatFromTemplate("Md")
         return f
     }()
 
