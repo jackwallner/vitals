@@ -6,7 +6,7 @@
 - **Subtitle:** Calories & Steps Tracker
 - **Category:** Health & Fitness
 - **Secondary Category:** Lifestyle
-- **Age Rating:** 4+
+- **Age Rating:** 9+
 - **Price:** Free
 - **Copyright:** 2026 Jack Wallner
 
@@ -40,13 +40,13 @@ Initial release.
 
 ## Support URL
 
-https://github.com/jackwallner/vitals/issues
+https://jackwallner.github.io/vitals/support.html
 
 ## Privacy Policy URL
 
 https://jackwallner.github.io/vitals/privacy-policy.html
 
-(Host the docs/privacy-policy.html file via GitHub Pages — see instructions below)
+(Host the `docs/` folder via GitHub Pages — see instructions below)
 
 ## Screenshots Needed
 
@@ -65,13 +65,15 @@ Same 5 screenshots at smaller resolution.
 2. Complication on watch face (circular calories gauge)
 3. Complication on watch face (rectangular steps)
 
-## How to Publish Privacy Policy via GitHub Pages
+## How to Publish Support + Privacy Pages via GitHub Pages
 
 1. Push the `docs/` folder to the `main` branch on GitHub
 2. Go to github.com/jackwallner/vitals → Settings → Pages
 3. Set Source to "Deploy from a branch" → `main` → `/docs`
-4. Save — your policy will be at: https://jackwallner.github.io/vitals/privacy-policy.html
+4. Save — your pages will be at:
+   - https://jackwallner.github.io/vitals/privacy-policy.html
+   - https://jackwallner.github.io/vitals/support.html
 
 ## App Review Notes (optional, for Apple reviewer)
 
-Vitals is a personal health tracker that reads calorie and step data from HealthKit. It does not write to HealthKit. All data is stored locally on the device — there is no server component, no user accounts, and no data collection. The app requires HealthKit access to function; without it, an explanatory screen guides the user to enable access in Settings.
+Vitals is a personal health tracker that reads calorie and step data from HealthKit. It does not write to HealthKit. All data is stored locally on the device — there is no server component, no user accounts, and no data collection. The app requires HealthKit access to function; without it, an explanatory screen guides the user to enable access in Settings. Privacy Policy and Support links are available in the Settings sheet inside the app.

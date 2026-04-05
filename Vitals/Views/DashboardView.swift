@@ -1,5 +1,11 @@
 import SwiftUI
 
+private enum VitalsLinks {
+    static let privacyPolicy = URL(string: "https://jackwallner.github.io/vitals/privacy-policy.html")!
+    static let support = URL(string: "https://jackwallner.github.io/vitals/support.html")!
+    static let supportEmail = URL(string: "mailto:jackwallner@gmail.com")!
+}
+
 struct DashboardView: View {
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
@@ -708,6 +714,24 @@ private struct SettingsSheet: View {
                         }
                     }
                     .pickerStyle(.segmented)
+                }
+
+                Section {
+                    Link(destination: VitalsLinks.privacyPolicy) {
+                        Label("Privacy Policy", systemImage: "hand.raised")
+                    }
+
+                    Link(destination: VitalsLinks.support) {
+                        Label("Support", systemImage: "questionmark.circle")
+                    }
+
+                    Link(destination: VitalsLinks.supportEmail) {
+                        Label("Contact Support", systemImage: "envelope")
+                    }
+                } header: {
+                    Text("Help")
+                } footer: {
+                    Text("Vitals reads Apple Health data in read-only mode and keeps your health data on your device.")
                 }
             }
             .navigationTitle("Settings")
