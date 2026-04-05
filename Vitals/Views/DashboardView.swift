@@ -80,15 +80,31 @@ struct DashboardView: View {
     }
 
     private var noDataHint: some View {
-        VStack(spacing: 6) {
-            Text("No activity recorded yet today.")
+        VStack(spacing: 12) {
+            Image(systemName: "heart.slash")
+                .font(.system(size: 32))
+                .foregroundStyle(Theme.textTertiary)
+            Text("No Health Data")
+                .font(.system(.headline, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+            Text("Make sure Vitals has permission to read your health data in the Health app.")
                 .font(.system(.caption, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
-            Text("Make sure Health access is enabled in Settings.")
-                .font(.system(.caption2, design: .rounded))
-                .foregroundStyle(Theme.textTertiary)
+                .multilineTextAlignment(.center)
+            Button {
+                if let url = URL(string: "x-apple-health://") {
+                    UIApplication.shared.open(url)
+                }
+            } label: {
+                Text("Open Health")
+                    .font(.system(.subheadline, design: .rounded, weight: .medium))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+                    .background(Theme.caloriesPrimary, in: Capsule())
+            }
+            .buttonStyle(.plain)
         }
-        .multilineTextAlignment(.center)
         .padding(.horizontal, 32)
     }
 
@@ -581,10 +597,6 @@ private struct OnboardingSheet: View {
                 .padding(.bottom, 24)
             }
             .padding(.top, 48)
-            .onAppear {
-                // Mark setup as seen so force-quit won't re-show onboarding
-                goals.hasCompletedSetup = true
-            }
         }
     }
 }

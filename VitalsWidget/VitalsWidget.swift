@@ -60,8 +60,8 @@ struct VitalsTimelineProvider: TimelineProvider {
             )
         }
 
-        // No record for today yet — show 0 (new day)
-        return VitalsEntry(date: .now, totalCalories: 0, activeCalories: 0, restingCalories: 0, steps: 0, calorieGoal: goals.calories, stepGoal: goals.steps, calGoalEnabled: goals.calEnabled, stepGoalEnabled: goals.stepEnabled)
+        // No record for today — could be new day or HealthKit unavailable
+        return VitalsEntry(date: .now, totalCalories: 0, activeCalories: 0, restingCalories: 0, steps: 0, calorieGoal: goals.calories, stepGoal: goals.steps, calGoalEnabled: goals.calEnabled, stepGoalEnabled: goals.stepEnabled, dataAvailable: false)
     }
 }
 
@@ -77,6 +77,7 @@ struct VitalsEntry: TimelineEntry {
     let stepGoal: Int
     let calGoalEnabled: Bool
     let stepGoalEnabled: Bool
+    var dataAvailable: Bool = true
 }
 
 // MARK: - Widget Views
@@ -85,35 +86,48 @@ struct SmallWidgetView: View {
     let entry: VitalsEntry
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            VStack(alignment: .leading, spacing: 2) {
-                Label("Calories", systemImage: "flame.fill")
-                    .font(.caption2)
-                    .foregroundStyle(Theme.textSecondary)
-                Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
-                    .font(Theme.bigNumber(28))
-                    .foregroundStyle(Theme.caloriesPrimary)
-                if entry.calGoalEnabled {
-                    Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
+        if entry.dataAvailable {
+            VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Label("Calories", systemImage: "flame.fill")
                         .font(.caption2)
-                        .foregroundStyle(Theme.textTertiary)
+                        .foregroundStyle(Theme.textSecondary)
+                    Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
+                        .font(Theme.bigNumber(28))
+                        .foregroundStyle(Theme.caloriesPrimary)
+                    if entry.calGoalEnabled {
+                        Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
+                            .font(.caption2)
+                            .foregroundStyle(Theme.textTertiary)
+                    }
+                }
+                VStack(alignment: .leading, spacing: 2) {
+                    Label("Steps", systemImage: "figure.walk")
+                        .font(.caption2)
+                        .foregroundStyle(Theme.textSecondary)
+                    Text(entry.steps, format: .number)
+                        .font(Theme.bigNumber(28))
+                        .foregroundStyle(Theme.stepsPrimary)
+                    if entry.stepGoalEnabled {
+                        Text("/ \(entry.stepGoal.formatted(.number))")
+                            .font(.caption2)
+                            .foregroundStyle(Theme.textTertiary)
+                    }
                 }
             }
-            VStack(alignment: .leading, spacing: 2) {
-                Label("Steps", systemImage: "figure.walk")
+            .containerBackground(.fill.tertiary, for: .widget)
+        } else {
+            VStack(spacing: 8) {
+                Image(systemName: "heart.text.clipboard")
+                    .font(.title2)
+                    .foregroundStyle(Theme.textTertiary)
+                Text("Open Vitals to load health data.")
                     .font(.caption2)
-                    .foregroundStyle(Theme.textSecondary)
-                Text(entry.steps, format: .number)
-                    .font(Theme.bigNumber(28))
-                    .foregroundStyle(Theme.stepsPrimary)
-                if entry.stepGoalEnabled {
-                    Text("/ \(entry.stepGoal.formatted(.number))")
-                        .font(.caption2)
-                        .foregroundStyle(Theme.textTertiary)
-                }
+                    .foregroundStyle(Theme.textTertiary)
+                    .multilineTextAlignment(.center)
             }
+            .containerBackground(.fill.tertiary, for: .widget)
         }
-        .containerBackground(.fill.tertiary, for: .widget)
     }
 }
 
@@ -121,60 +135,77 @@ struct MediumWidgetView: View {
     let entry: VitalsEntry
 
     var body: some View {
-        HStack(spacing: 16) {
-            VStack(alignment: .leading, spacing: 12) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Label("Calories", systemImage: "flame.fill")
-                        .font(.caption2)
-                        .foregroundStyle(Theme.textSecondary)
-                    HStack(alignment: .firstTextBaseline, spacing: 4) {
-                        Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
-                            .font(Theme.bigNumber(28))
-                            .foregroundStyle(Theme.caloriesPrimary)
-                        if entry.calGoalEnabled {
-                            Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
-                                .font(.caption2)
-                                .foregroundStyle(Theme.textTertiary)
+        if entry.dataAvailable {
+            HStack(spacing: 16) {
+                VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Label("Calories", systemImage: "flame.fill")
+                            .font(.caption2)
+                            .foregroundStyle(Theme.textSecondary)
+                        HStack(alignment: .firstTextBaseline, spacing: 4) {
+                            Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
+                                .font(Theme.bigNumber(28))
+                                .foregroundStyle(Theme.caloriesPrimary)
+                            if entry.calGoalEnabled {
+                                Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
+                                    .font(.caption2)
+                                    .foregroundStyle(Theme.textTertiary)
+                            }
+                        }
+                    }
+                    VStack(alignment: .leading, spacing: 2) {
+                        Label("Steps", systemImage: "figure.walk")
+                            .font(.caption2)
+                            .foregroundStyle(Theme.textSecondary)
+                        HStack(alignment: .firstTextBaseline, spacing: 4) {
+                            Text(entry.steps, format: .number)
+                                .font(Theme.bigNumber(28))
+                                .foregroundStyle(Theme.stepsPrimary)
+                            if entry.stepGoalEnabled {
+                                Text("/ \(entry.stepGoal.formatted(.number))")
+                                    .font(.caption2)
+                                    .foregroundStyle(Theme.textTertiary)
+                            }
                         }
                     }
                 }
-                VStack(alignment: .leading, spacing: 2) {
-                    Label("Steps", systemImage: "figure.walk")
-                        .font(.caption2)
-                        .foregroundStyle(Theme.textSecondary)
-                    HStack(alignment: .firstTextBaseline, spacing: 4) {
-                        Text(entry.steps, format: .number)
-                            .font(Theme.bigNumber(28))
-                            .foregroundStyle(Theme.stepsPrimary)
-                        if entry.stepGoalEnabled {
-                            Text("/ \(entry.stepGoal.formatted(.number))")
-                                .font(.caption2)
-                                .foregroundStyle(Theme.textTertiary)
-                        }
+                Spacer()
+                VStack(alignment: .trailing, spacing: 8) {
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text("Active")
+                            .font(.caption2)
+                            .foregroundStyle(Theme.textTertiary)
+                        Text(entry.activeCalories, format: .number.precision(.fractionLength(0)))
+                            .font(.subheadline.bold().monospacedDigit())
+                            .foregroundStyle(Theme.activePrimary)
+                    }
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text("Resting")
+                            .font(.caption2)
+                            .foregroundStyle(Theme.textTertiary)
+                        Text(entry.restingCalories, format: .number.precision(.fractionLength(0)))
+                            .font(.subheadline.bold().monospacedDigit())
+                            .foregroundStyle(Theme.restingPrimary)
                     }
                 }
             }
-            Spacer()
-            VStack(alignment: .trailing, spacing: 8) {
-                VStack(alignment: .trailing, spacing: 2) {
-                    Text("Active")
+            .containerBackground(.fill.tertiary, for: .widget)
+        } else {
+            HStack(spacing: 12) {
+                Image(systemName: "heart.text.clipboard")
+                    .font(.title2)
+                    .foregroundStyle(Theme.textTertiary)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("No Health Data")
+                        .font(.system(.subheadline, design: .rounded, weight: .medium))
+                        .foregroundStyle(Theme.textSecondary)
+                    Text("Open Vitals to load your health data.")
                         .font(.caption2)
                         .foregroundStyle(Theme.textTertiary)
-                    Text(entry.activeCalories, format: .number.precision(.fractionLength(0)))
-                        .font(.subheadline.bold().monospacedDigit())
-                        .foregroundStyle(Theme.activePrimary)
-                }
-                VStack(alignment: .trailing, spacing: 2) {
-                    Text("Resting")
-                        .font(.caption2)
-                        .foregroundStyle(Theme.textTertiary)
-                    Text(entry.restingCalories, format: .number.precision(.fractionLength(0)))
-                        .font(.subheadline.bold().monospacedDigit())
-                        .foregroundStyle(Theme.restingPrimary)
                 }
             }
+            .containerBackground(.fill.tertiary, for: .widget)
         }
-        .containerBackground(.fill.tertiary, for: .widget)
     }
 }
 

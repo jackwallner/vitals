@@ -31,7 +31,11 @@ enum DataService {
         // Last resort: use in-memory store so the app at least launches
         print("DataService: falling back to in-memory store")
         let inMemory = ModelConfiguration("Vitals", schema: schema, isStoredInMemoryOnly: true, cloudKitDatabase: .none)
-        return try! ModelContainer(for: schema, configurations: [inMemory])
+        do {
+            return try ModelContainer(for: schema, configurations: [inMemory])
+        } catch {
+            fatalError("DataService: ModelContainer could not initialize even in-memory: \(error)")
+        }
     }()
 
     private static func makeContainer(schema: Schema, url: URL) -> ModelContainer? {
@@ -47,7 +51,8 @@ enum DataService {
     private static var containerURL: URL {
         let base = FileManager.default.containerURL(
             forSecurityApplicationGroupIdentifier: appGroupID
-        ) ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+        ) ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+            ?? FileManager.default.temporaryDirectory
         return base.appendingPathComponent("Vitals.store")
     }
 }

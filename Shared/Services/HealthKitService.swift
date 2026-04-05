@@ -160,7 +160,7 @@ final class HealthKitService: ObservableObject {
                 // On watchOS, don't do heavy work in the observer callback —
                 // the CAROUSEL watchdog has a tight CPU budget and will kill us.
                 // Just schedule a background refresh and let the protected handler do it.
-                DispatchQueue.main.async {
+                Task { @MainActor in
                     WKApplication.shared().scheduleBackgroundRefresh(
                         withPreferredDate: Date(timeIntervalSinceNow: 5),
                         userInfo: nil

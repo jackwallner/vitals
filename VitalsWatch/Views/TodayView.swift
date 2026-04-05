@@ -83,10 +83,15 @@ struct TodayView: View {
                     .accessibilityValue("\(steps) steps")
 
                     if hasNoData {
-                        Text(loadError ? "Could not load data." : "No activity yet today.")
-                            .font(.system(size: 9, design: .rounded))
-                            .foregroundStyle(Theme.textTertiary)
-                            .multilineTextAlignment(.center)
+                        VStack(spacing: 4) {
+                            Text(loadError ? "Could not load data." : "No health data available.")
+                                .font(.system(size: 10, design: .rounded))
+                                .foregroundStyle(Theme.textTertiary)
+                            Text("Check Health permissions\nin iPhone Settings.")
+                                .font(.system(size: 9, design: .rounded))
+                                .foregroundStyle(Theme.textTertiary)
+                        }
+                        .multilineTextAlignment(.center)
                     }
 
                     Spacer(minLength: 4)
