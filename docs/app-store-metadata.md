@@ -51,19 +51,22 @@ https://jackwallner.github.io/vitals/privacy-policy.html
 ## Screenshots Needed
 
 ### iPhone (6.7" display — iPhone 15 Pro Max / 17 Pro Max)
-1. Dashboard with calorie ring and steps card (data populated)
-2. Dashboard in minimal mode (no goals, clean counters)
-3. History view with 30-day chart and trend cards
-4. Settings sheet showing goal toggles and appearance
-5. Onboarding / welcome screen
+Generated examples live in `screenshots/` and can be refreshed with `./capture_screenshots.sh`.
+
+1. `screenshots/iphone-dashboard.png` — dashboard with calorie ring and steps card
+2. `screenshots/iphone-minimal.png` — dashboard in minimal mode
+3. `screenshots/iphone-history.png` — history view with 30-day chart and trend cards
+4. `screenshots/iphone-settings.png` — settings sheet showing goal toggles and appearance
+5. `screenshots/iphone-onboarding.png` — onboarding / welcome screen
 
 ### iPhone (6.1" display — iPhone 15 Pro / 17 Pro)
-Same 5 screenshots at smaller resolution.
+Still needed at smaller resolution if you plan to upload a dedicated 6.1" set.
 
 ### Apple Watch (Ultra 2)
-1. Today view showing calories and steps
-2. Complication on watch face (circular calories gauge)
-3. Complication on watch face (rectangular steps)
+1. `screenshots/watch-today.png` — today view showing calories and steps
+2. `screenshots/watch-breakdown.png` — breakdown view
+3. `screenshots/watch-help.png` — support / privacy help screen
+4. Optional complication-on-watch-face captures can still be added manually if you want App Store imagery that emphasizes complications
 
 ## How to Publish Support + Privacy Pages via GitHub Pages
 
@@ -76,4 +79,4 @@ Same 5 screenshots at smaller resolution.
 
 ## App Review Notes (optional, for Apple reviewer)
 
-Vitals is a personal health tracker that reads calorie and step data from HealthKit. It does not write to HealthKit. All data is stored locally on the device — there is no server component, no user accounts, and no data collection. The app requires HealthKit access to function; without it, an explanatory screen guides the user to enable access in Settings. Privacy Policy and Support links are available in the Settings sheet inside the app.
+Vitals is a personal health tracker that reads calorie and step data from HealthKit. It does not write to HealthKit. All data is stored locally on the device — there is no server component, no user accounts, and no data collection. The app requires HealthKit access to function; without it, an explanatory screen guides the user to enable access in Settings. Privacy Policy and Support links are available in the iPhone Settings sheet and the Apple Watch Help sheet.

@@ -65,10 +65,15 @@ struct DashboardView: View {
             Task { await refresh() }
         }
         .task {
-            if !goals.hasCompletedSetup {
+            if ScreenshotConfig.wantsOnboarding {
+                showOnboarding = true
+            } else if !goals.hasCompletedSetup {
                 showOnboarding = true
             } else {
                 await refresh()
+                if ScreenshotConfig.wantsSettingsSheet {
+                    showSettings = true
+                }
             }
         }
         .sheet(isPresented: $showSettings, onDismiss: {

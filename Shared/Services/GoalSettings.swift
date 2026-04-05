@@ -101,5 +101,28 @@ final class GoalSettings: ObservableObject {
         } else {
             self.stepGoal = nil
         }
+
+        applyScreenshotOverridesIfNeeded()
+    }
+
+    private func applyScreenshotOverridesIfNeeded() {
+        guard ScreenshotConfig.isEnabled else { return }
+
+        showCalories = true
+        showSteps = true
+        appearance = .system
+
+        if ScreenshotConfig.usesMinimalGoals {
+            calorieGoal = nil
+            stepGoal = nil
+            showPacing = false
+            hasCompletedSetup = true
+            return
+        }
+
+        calorieGoal = 2500
+        stepGoal = 10000
+        showPacing = true
+        hasCompletedSetup = !ScreenshotConfig.wantsOnboarding
     }
 }

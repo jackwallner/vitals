@@ -209,7 +209,12 @@ struct HistoryView: View {
                 Task { await loadHistory() }
             }
         }
-        .task { await loadHistory() }
+        .task {
+            if ScreenshotConfig.wantsHistoryTab {
+                selectedPeriod = .month
+            }
+            await loadHistory()
+        }
         .sheet(isPresented: $showCustomRange) {
             CustomRangeSheet(start: $customStart, end: $customEnd) {
                 selectedPeriod = .custom
