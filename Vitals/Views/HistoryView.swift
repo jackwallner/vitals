@@ -226,7 +226,12 @@ struct HistoryView: View {
         } message: {
             Text("This export contains sensitive health data including your daily calorie and step counts. Only share it with people and services you trust.")
         }
-        .sheet(isPresented: $showExportSheet) {
+        .sheet(isPresented: $showExportSheet, onDismiss: {
+            if let csvFile {
+                try? FileManager.default.removeItem(at: csvFile.url)
+                self.csvFile = nil
+            }
+        }) {
             if let csvFile {
                 ShareSheet(items: [csvFile.url])
             }
