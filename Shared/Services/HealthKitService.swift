@@ -22,6 +22,10 @@ final class HealthKitService: ObservableObject {
     // MARK: - Authorization
 
     func requestAuthorization() async throws {
+        if ScreenshotConfig.isEnabled {
+            isAuthorized = true
+            return
+        }
         guard HKHealthStore.isHealthDataAvailable() else { return }
         try await store.requestAuthorization(toShare: [], read: readTypes)
         isAuthorized = true
@@ -30,6 +34,11 @@ final class HealthKitService: ObservableObject {
     // MARK: - Today's Stats
 
     func fetchTodayStats() async throws -> (active: Double, resting: Double, steps: Int) {
+        #if DEBUG
+        if ScreenshotConfig.isEnabled {
+            return ScreenshotFixtures.todayStats()
+        }
+        #endif
         let start = DateHelpers.startOfDay()
         nonisolated(unsafe) let predicate = HKQuery.predicateForSamples(withStart: start, end: .now, options: .strictStartDate)
 
@@ -43,11 +52,22 @@ final class HealthKitService: ObservableObject {
     // MARK: - History
 
     func fetchHistory(days: Int) async throws -> [(date: Date, active: Double, resting: Double, steps: Int)] {
+        #if DEBUG
+        if ScreenshotConfig.isEnabled {
+            return ScreenshotFixtures.history(days: days)
+        }
+        #endif
         let start = DateHelpers.daysAgo(days)
         return try await fetchHistory(from: start, to: .now)
     }
 
     func fetchHistory(from start: Date, to end: Date) async throws -> [(date: Date, active: Double, resting: Double, steps: Int)] {
+        #if DEBUG
+        if ScreenshotConfig.isEnabled {
+            let dayCount = max(Calendar.current.dateComponents([.day], from: start, to: end).day ?? 0, 30)
+            return ScreenshotFixtures.history(days: dayCount, end: end)
+        }
+        #endif
         let start = DateHelpers.startOfDay(start)
         // Include today by pushing end to tomorrow's start
         let endNormalized = DateHelpers.startOfDay(end)
@@ -78,6 +98,11 @@ final class HealthKitService: ObservableObject {
     // MARK: - Pacing (average at this time of day over last 14 days)
 
     func fetchPacing() async throws -> (avgCalories: Double, avgSteps: Int, daysWithData: Int) {
+        #if DEBUG
+        if ScreenshotConfig.isEnabled {
+            return ScreenshotFixtures.pacing()
+        }
+        #endif
         let calendar = Calendar.current
         let now = Date.now
         let currentHour = calendar.component(.hour, from: now)
@@ -135,6 +160,7 @@ final class HealthKitService: ObservableObject {
     private var pendingRefreshTask: Task<Void, Never>?
 
     func enableBackgroundDelivery() {
+        if ScreenshotConfig.isEnabled { return }
         guard HKHealthStore.isHealthDataAvailable() else { return }
 
         let types: [HKQuantityType] = [

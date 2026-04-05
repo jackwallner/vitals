@@ -60,6 +60,13 @@ struct MainTabView: View {
     @State private var selectedTab = 0
     @State private var historyHasAppeared = false
 
+    init() {
+        if ScreenshotConfig.wantsHistoryTab {
+            _selectedTab = State(initialValue: 1)
+            _historyHasAppeared = State(initialValue: true)
+        }
+    }
+
     var body: some View {
         ZStack(alignment: .bottom) {
             // Keep both views alive, toggle visibility

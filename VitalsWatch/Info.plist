@@ -2,8 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
     <key>NSHealthShareUsageDescription</key>
-    <string>Vitals reads your calorie and step data to display your daily health metrics.</string>
+    <string>Vitals reads your Active Energy, Basal Energy, and Step Count from Apple Health to display your daily progress. Vitals never writes Health data.</string>
     <key>WKApplication</key>
     <true/>
     <key>WKCompanionAppBundleIdentifier</key>

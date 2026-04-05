@@ -1,5 +1,11 @@
 import SwiftUI
 
+private enum VitalsWatchLinks {
+    static let privacyPolicy = URL(string: "https://jackwallner.github.io/vitals/privacy-policy.html")!
+    static let support = URL(string: "https://jackwallner.github.io/vitals/support.html")!
+    static let supportEmail = URL(string: "mailto:jackwallner@gmail.com")!
+}
+
 struct TodayView: View {
     @StateObject private var healthKit = HealthKitService.shared
     @Environment(\.scenePhase) var scenePhase
@@ -11,6 +17,7 @@ struct TodayView: View {
     @State private var isRefreshing = false
     @State private var hasLoadedOnce = false
     @State private var loadError = false
+    @State private var showHelp = false
 
     private var totalCalories: Double { activeCalories + restingCalories }
     private var hasNoData: Bool { hasLoadedOnce && totalCalories == 0 && steps == 0 }
@@ -107,13 +114,38 @@ struct TodayView: View {
                     .transition(.opacity)
             }
         }
+        .overlay(alignment: .topTrailing) {
+            Button {
+                showHelp = true
+            } label: {
+                Image(systemName: "questionmark.circle")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(Theme.textSecondary)
+                    .padding(6)
+                    .background(Theme.cardSurface.opacity(0.8), in: Circle())
+            }
+            .buttonStyle(.plain)
+            .padding(.top, 2)
+            .padding(.trailing, 2)
+        }
         .background(Theme.background)
         .navigationTitle("Vitals")
-        .task { await refresh() }
+        .task {
+            await refresh()
+            if ScreenshotConfig.wantsWatchBreakdown {
+                showBreakdown = true
+            }
+            if ScreenshotConfig.wantsWatchHelp {
+                showHelp = true
+            }
+        }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 Task { await refresh() }
             }
+        }
+        .sheet(isPresented: $showHelp) {
+            WatchHelpView()
         }
     }
 
@@ -139,6 +171,42 @@ struct TodayView: View {
             hasLoadedOnce = true
             loadError = true
             if isLoading { isLoading = false }
+        }
+    }
+}
+
+private struct WatchHelpView: View {
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            List {
+                Section("Help") {
+                    Link(destination: VitalsWatchLinks.privacyPolicy) {
+                        Label("Privacy Policy", systemImage: "hand.raised")
+                    }
+
+                    Link(destination: VitalsWatchLinks.support) {
+                        Label("Support", systemImage: "questionmark.circle")
+                    }
+
+                    Link(destination: VitalsWatchLinks.supportEmail) {
+                        Label("Contact Support", systemImage: "envelope")
+                    }
+                }
+
+                Section("Health Data") {
+                    Text("Vitals reads Active Energy, Basal Energy, and Step Count from Apple Health in read-only mode.")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .navigationTitle("Help")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Done") { dismiss() }
+                }
+            }
         }
     }
 }
