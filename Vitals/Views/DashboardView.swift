@@ -214,10 +214,6 @@ struct DashboardView: View {
                                 MetricPill(label: "active", value: activeCalories, color: Theme.activePrimary)
                                 MetricPill(label: "resting", value: restingCalories, color: Theme.restingPrimary)
                             }
-                        } else {
-                            Text("Tap for breakdown")
-                                .font(.system(.caption2, design: .rounded))
-                                .foregroundStyle(Theme.textTertiary)
                         }
                     }
                     .buttonStyle(.plain)
