@@ -18,7 +18,7 @@ struct VitalsWatchApp: App {
     var body: some Scene {
         WindowGroup {
             TodayView()
-                .task { await Self.scheduleBackgroundRefresh() }
+                .task { Self.scheduleBackgroundRefresh() }
         }
         .modelContainer(DataService.sharedModelContainer)
         .backgroundTask(.appRefresh("vitals.watch.refresh")) {
