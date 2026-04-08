@@ -2,8 +2,8 @@ name: Vitals
 options:
   bundleIdPrefix: com.jackwallner
   deploymentTarget:
-    iOS: "26.0"
-    watchOS: "26.0"
+    iOS: "17.0"
+    watchOS: "10.0"
   xcodeVersion: "16.0"
   minimumXcodeGenVersion: "2.38"
 
@@ -13,7 +13,7 @@ settings:
     DEVELOPMENT_TEAM: YXG4MP6W39
     CODE_SIGN_STYLE: Automatic
     MARKETING_VERSION: "1.0.0"
-    CURRENT_PROJECT_VERSION: "1"
+    CURRENT_PROJECT_VERSION: "7"
     GENERATE_INFOPLIST_FILE: YES
 
 schemes:
@@ -21,6 +21,7 @@ schemes:
     build:
       targets:
         Vitals: all
+        VitalsWatch: all
     run:
       config: Debug
   VitalsWatch:
@@ -45,6 +46,8 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     dependencies:
       - target: VitalsWidget
+      - target: VitalsWatch
+        embed: true
 
   VitalsWatch:
     type: application
@@ -57,7 +60,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.jackwallner.vitals.watch
         INFOPLIST_FILE: VitalsWatch/Info.plist
         CODE_SIGN_ENTITLEMENTS: VitalsWatch/VitalsWatch.entitlements
-        WATCHOS_DEPLOYMENT_TARGET: "26.0"
+        WATCHOS_DEPLOYMENT_TARGET: "10.0"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     dependencies:
       - target: VitalsWatchWidget
@@ -85,4 +88,4 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.jackwallner.vitals.watch.widget
         INFOPLIST_FILE: VitalsWatchWidget/Info.plist
         CODE_SIGN_ENTITLEMENTS: VitalsWatchWidget/VitalsWatchWidget.entitlements
-        WATCHOS_DEPLOYMENT_TARGET: "26.0"
+        WATCHOS_DEPLOYMENT_TARGET: "10.0"
