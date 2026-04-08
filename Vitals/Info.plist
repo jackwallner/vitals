@@ -2,12 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleDisplayName</key>
+	<string>Total Calories - Daily Tracker</string>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSHealthShareUsageDescription</key>
-	<string>Vitals reads your Active Energy, Basal Energy, and Step Count from Apple Health to display your daily progress. Vitals never writes Health data.</string>
+	<string>Total Calories reads your Active Energy, Basal Energy, and Step Count from Apple Health to display your daily progress. Total Calories never writes Health data.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Total Calories does not write any data to Apple Health.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
