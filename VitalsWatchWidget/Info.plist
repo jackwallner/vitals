@@ -11,9 +11,9 @@
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
-    <string>Total Calories</string>
+    <string>Total Calories Watch Widget</string>
     <key>CFBundleDisplayName</key>
-    <string>Total Calories</string>
+    <string>Total Calories Watch Widget</string>
     <key>CFBundlePackageType</key>
     <string>XPC!</string>
     <key>CFBundleShortVersionString</key>
