@@ -148,15 +148,10 @@
         }
 
         .phone-frame img {
-            height: 520px;
+            height: 500px;
             border-radius: 32px;
             border: 1px solid rgba(0,0,0,0.08);
             box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.06);
-        }
-
-        .phone-frame.secondary img {
-            height: 480px;
-            margin-top: 40px;
         }
 
         /* Features */
@@ -322,7 +317,6 @@
 
             .showcase-inner { gap: 12px; }
             .phone-frame img { height: 400px; border-radius: 24px; }
-            .phone-frame.secondary img { height: 360px; margin-top: 32px; }
 
             .features-grid { grid-template-columns: 1fr; }
 
@@ -331,7 +325,7 @@
         }
 
         @media (max-width: 480px) {
-            .phone-frame.secondary { display: none; }
+            .phone-frame:not(:first-child) { display: none; }
             .phone-frame img { height: 440px; }
         }
     </style>
@@ -362,10 +356,10 @@
             <div class="phone-frame">
                 <img src="iphone-dashboard.png" alt="Total Calories dashboard with calorie ring and step count">
             </div>
-            <div class="phone-frame secondary">
+            <div class="phone-frame">
                 <img src="iphone-history.png" alt="30-day calorie and step history with trends">
             </div>
-            <div class="phone-frame secondary">
+            <div class="phone-frame">
                 <img src="iphone-minimal.png" alt="Minimal counter-only mode">
             </div>
         </div>
