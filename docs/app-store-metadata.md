@@ -94,8 +94,8 @@ Initial release.
 
 | Field | Value |
 |-------|-------|
-| Support URL | `https://jackwallner.github.io/total-calories-daily-tracker/support.html` |
-| Privacy Policy URL | `https://jackwallner.github.io/total-calories-daily-tracker/privacy-policy.html` |
+| Support URL | `https://jackwallner.github.io/vitals/support.html` |
+| Privacy Policy URL | `https://jackwallner.github.io/vitals/privacy-policy.html` |
 | Marketing URL | _(leave blank)_ |
 
 Verify both URLs return 200 before submitting. See GitHub Pages setup at the bottom of this file.
@@ -176,7 +176,7 @@ PRIVACY
 - No data leaves the device
 - No analytics, ads, tracking, or third-party SDKs
 - No network requests of any kind
-- Privacy Policy: https://jackwallner.github.io/total-calories-daily-tracker/privacy-policy.html
+- Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 
 Privacy Policy and Support links are accessible in the iPhone Settings sheet and Apple Watch Help sheet.
 
@@ -238,9 +238,9 @@ Optional: complication shown on a watch face.
 ## GitHub Pages Setup (for Support + Privacy URLs)
 
 1. Push the `docs/` folder to the `main` branch on GitHub
-2. Go to github.com/jackwallner/total-calories-daily-tracker > Settings > Pages
+2. Go to github.com/jackwallner/vitals > Settings > Pages
 3. Source: "Deploy from a branch" > `main` > `/docs`
 4. Save — pages will be live at:
-   - https://jackwallner.github.io/total-calories-daily-tracker/privacy-policy.html
-   - https://jackwallner.github.io/total-calories-daily-tracker/support.html
+   - https://jackwallner.github.io/vitals/privacy-policy.html
+   - https://jackwallner.github.io/vitals/support.html
 5. Wait 1-2 minutes, then verify both URLs load correctly
