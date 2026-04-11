@@ -1,82 +1,246 @@
-# App Store Metadata — Vitals
+# App Store Connect — Total Calories
+
+All fields below map directly to App Store Connect. Copy-paste each value into the corresponding field.
+
+---
 
 ## App Information
 
-- **App Name:** Vitals
-- **Subtitle:** Calories & Steps Tracker
-- **Category:** Health & Fitness
-- **Secondary Category:** Lifestyle
-- **Age Rating:** 9+
-- **Price:** Free
-- **Copyright:** 2026 Jack Wallner
+| Field | Value |
+|-------|-------|
+| App Name | `Total Calories - Daily Tracker` |
+| Subtitle | `Burned Calories & Step Count` |
+| Primary Language | English (U.S.) |
+| Category | Health & Fitness |
+| Secondary Category | Lifestyle |
+| Content Rights | Does not contain, show, or access third-party content |
+| Age Rating | 9+ (no objectionable content) |
+| Price | Free |
+| Copyright | `2026 Jack Wallner` |
+
+App Name is exactly 30 characters (the maximum). Subtitle is 28/30.
+
+---
 
 ## Description
 
-Track your daily calories burned and steps — simply and privately.
+Plain text only — no markdown, no HTML. Copy everything between the lines below.
 
-Vitals gives you a clean, glanceable view of your daily health metrics pulled directly from Apple Health. No accounts, no cloud sync, no tracking. Just your data, on your device.
+---COPY START---
 
-Features:
-- Total calories burned (active + resting) with tap-to-reveal breakdown
-- Daily step count with optional goals and progress rings
-- Pacing indicator showing how you compare to your 14-day average at this time of day
-- History charts with 7-day, 30-day, 90-day, 1-year, and custom date range views
-- Trend analysis and peak day highlights
-- CSV export for your records
-- Home screen and lock screen widgets
-- Apple Watch app with complications for your watch face
-- Light, dark, and system appearance options
-- First-launch setup to configure your goals — or skip for a pure counter experience
+Track your total daily calories burned and steps at a glance. Total Calories reads your data directly from Apple Health and keeps everything on your device. No accounts, no servers, no tracking.
 
-Your health data never leaves your device. No analytics. No ads. No servers.
+CALORIES & STEPS
+See your total calories burned — active plus resting — and your daily step count on one clean dashboard. Tap the calorie total to reveal the active vs. resting breakdown.
+
+GOALS & PROGRESS RINGS
+Set optional daily calorie and step goals. Watch your progress fill up with animated rings and progress bars. Or skip goals entirely and use it as a simple counter.
+
+PACING
+A built-in pace indicator compares your current day to your 14-day average at the same time of day. Know whether you're ahead or behind your usual pace.
+
+HISTORY & TRENDS
+View your full history: 7 days, 30 days, 90 days, 1 year, or any custom date range. See trend arrows, peak days, and export your data as a CSV file.
+
+WIDGETS & COMPLICATIONS
+Home screen and lock screen widgets show your calories and steps without opening the app. Apple Watch face complications keep your data visible all day.
+
+PRIVATE BY DESIGN
+All data stays on your device. No analytics, no ads, no servers, no account required. Read-only Apple Health access — the app never writes to your health records.
+
+Total Calories is not a medical device and is not intended to diagnose, treat, or prevent any medical condition. Always consult a healthcare professional for medical advice.
+
+---COPY END---
+
+The first sentence (visible "above the fold" before users tap "Read More") leads with the core value proposition and mentions Apple Health for discoverability. Description is ~1,350 characters (well under the 4,000 limit).
+
+---
+
+## Promotional Text
+
+Can be updated anytime without a new app version. Not indexed for search. 170 character max.
+
+```
+See your total calories burned and steps in one place. Private, simple, always up to date from Apple Health.
+```
+
+109/170 characters.
+
+---
 
 ## Keywords
 
-health, fitness, calories, steps, tracker, pedometer, activity, healthkit, widget, watch
+100 characters max. Comma-separated, no spaces after commas. Words from the App Name and Subtitle are already indexed — do NOT repeat them here.
+
+**Already indexed from name/subtitle:** total, calories, daily, tracker, burned, step, count
+
+```
+health,fitness,pedometer,activity,widget,watch,energy,exercise,walking,progress,goal,ring,TDEE,BMR
+```
+
+98/100 characters. All terms are unique and not in the name/subtitle.
+
+---
 
 ## What's New (Version 1.0.0)
 
+```
 Initial release.
+```
 
-## Support URL
+---
 
-https://jackwallner.github.io/vitals/support.html
+## URLs
 
-## Privacy Policy URL
+| Field | Value |
+|-------|-------|
+| Support URL | `https://jackwallner.github.io/total-calories-daily-tracker/support.html` |
+| Privacy Policy URL | `https://jackwallner.github.io/total-calories-daily-tracker/privacy-policy.html` |
+| Marketing URL | _(leave blank)_ |
 
-https://jackwallner.github.io/vitals/privacy-policy.html
+Verify both URLs return 200 before submitting. See GitHub Pages setup at the bottom of this file.
 
-(Host the `docs/` folder via GitHub Pages — see instructions below)
+---
 
-## Screenshots Needed
+## App Privacy (App Store Connect > App Privacy)
 
-### iPhone (6.7" display — iPhone 15 Pro Max / 17 Pro Max)
-Generated examples live in `screenshots/` and can be refreshed with `./capture_screenshots.sh`.
+### Do you or your third-party partners collect data from this app?
 
-1. `screenshots/iphone-dashboard.png` — dashboard with calorie ring and steps card
-2. `screenshots/iphone-minimal.png` — dashboard in minimal mode
-3. `screenshots/iphone-history.png` — history view with 30-day chart and trend cards
-4. `screenshots/iphone-settings.png` — settings sheet showing goal toggles and appearance
-5. `screenshots/iphone-onboarding.png` — onboarding / welcome screen
+**No.**
 
-### iPhone (6.1" display — iPhone 15 Pro / 17 Pro)
-Still needed at smaller resolution if you plan to upload a dedicated 6.1" set.
+The app reads HealthKit data and caches it locally via SwiftData. No data is transmitted off the device. On-device-only processing does not count as "collection" per Apple's privacy guidelines.
 
-### Apple Watch (Ultra 2)
-1. `screenshots/watch-today.png` — today view showing calories and steps
-2. `screenshots/watch-breakdown.png` — breakdown view
-3. `screenshots/watch-help.png` — support / privacy help screen
-4. Optional complication-on-watch-face captures can still be added manually if you want App Store imagery that emphasizes complications
+### Does this app track users?
 
-## How to Publish Support + Privacy Pages via GitHub Pages
+**No.**
+
+If Apple requires you to declare HealthKit under "Health & Fitness" data:
+
+| Data Type | Collected? | Purpose | Linked to Identity | Used for Tracking |
+|-----------|-----------|---------|-------------------|-------------------|
+| Health & Fitness | Not Collected | App Functionality | No | No |
+
+---
+
+## App Review
+
+### Contact Information
+
+| Field | Value |
+|-------|-------|
+| First Name | Jack |
+| Last Name | Wallner |
+| Email | jackwallner@gmail.com |
+| Phone | _(enter your phone number)_ |
+
+### Sign-In Required
+
+**No** — the app does not have user accounts or sign-in.
+
+### Notes for Review
+
+Copy everything between the lines below into the "Notes" field.
+
+---COPY START---
+
+Total Calories reads calorie and step data from Apple Health (HealthKit) in read-only mode. It does not write to HealthKit. All data is stored locally — no server, no accounts, no data collection.
+
+HEALTHKIT SETUP — PLEASE GRANT ACCESS WHEN PROMPTED
+
+On first launch, the app asks you to set optional goals (you may skip this). iOS then prompts for HealthKit read access. Please allow all three types:
+
+- Active Energy Burned
+- Basal Energy Burned
+- Step Count
+
+If access is denied, the app shows sample data with a banner indicating it is not real. This is intentional so users can preview the experience before granting access.
+
+iPHONE FEATURES
+
+- Dashboard with animated calorie ring and step progress bar
+- Tap to reveal active vs. resting calorie breakdown
+- Pacing indicator: current day vs. 14-day average at same time of day
+- History tab: bar charts for 7D / 30D / 90D / 1Y / custom range
+- Trend arrows and peak day highlights
+- CSV data export
+- Home screen widgets (small, medium) and lock screen widgets (circular, rectangular)
+- Settings: goals, display toggles, appearance (system / light / dark)
+
+APPLE WATCH
+
+The watch experience is delivered primarily through watch face complications (circular, rectangular, inline, corner). These show live calorie and step data. The companion watch app provides a today view and serves as the complication container.
+
+PRIVACY
+
+- Read-only HealthKit (never writes)
+- No data leaves the device
+- No analytics, ads, tracking, or third-party SDKs
+- No network requests of any kind
+- Privacy Policy: https://jackwallner.github.io/total-calories-daily-tracker/privacy-policy.html
+
+Privacy Policy and Support links are accessible in the iPhone Settings sheet and Apple Watch Help sheet.
+
+---COPY END---
+
+### Attachment (optional)
+
+If available, attach a short screen recording showing the dashboard, history tab, and a widget on the home screen. This helps reviewers see the full experience without needing their own health data.
+
+---
+
+## Screenshots Required
+
+### iPhone 6.7" (required)
+
+Device: iPhone 15 Pro Max or 17 Pro Max
+
+1. Dashboard with calorie ring and steps card (goals enabled)
+2. History view with 30-day chart and trend cards
+3. Dashboard in minimal / counter-only mode
+4. Settings sheet showing goal toggles and appearance
+5. Onboarding / welcome screen
+
+Lead with the dashboard screenshot — it shows the most functionality at a glance.
+
+### iPhone 6.1" (optional but recommended)
+
+Same 5 screenshots at 6.1" resolution (iPhone 15 Pro or 17 Pro).
+
+### Apple Watch (required)
+
+Device: Apple Watch Ultra 2 or Series 10
+
+1. Today view showing calories and steps
+2. Calorie breakdown overlay (active + resting)
+3. Help / support screen
+
+Optional: complication shown on a watch face.
+
+---
+
+## Pre-Submission Checklist
+
+- [ ] Privacy policy URL returns 200
+- [ ] Support URL returns 200
+- [ ] HealthKit usage descriptions are specific in both Info.plist files
+- [ ] App handles denied HealthKit permissions (shows sample data + banner)
+- [ ] App handles empty Health data without crashing
+- [ ] No health data stored in iCloud
+- [ ] App Privacy declarations completed in App Store Connect
+- [ ] Medical disclaimer in description
+- [ ] All required screenshot sizes uploaded
+- [ ] Review notes entered with HealthKit instructions
+- [ ] Phone number entered in review contact info
+- [ ] Build uploaded and selected for this version
+
+---
+
+## GitHub Pages Setup (for Support + Privacy URLs)
 
 1. Push the `docs/` folder to the `main` branch on GitHub
-2. Go to github.com/jackwallner/vitals → Settings → Pages
-3. Set Source to "Deploy from a branch" → `main` → `/docs`
-4. Save — your pages will be at:
-   - https://jackwallner.github.io/vitals/privacy-policy.html
-   - https://jackwallner.github.io/vitals/support.html
-
-## App Review Notes (optional, for Apple reviewer)
-
-Vitals is a personal health tracker that reads calorie and step data from HealthKit. It does not write to HealthKit. All data is stored locally on the device — there is no server component, no user accounts, and no data collection. The app requires HealthKit access to function; without it, an explanatory screen guides the user to enable access in Settings. Privacy Policy and Support links are available in the iPhone Settings sheet and the Apple Watch Help sheet.
+2. Go to github.com/jackwallner/total-calories-daily-tracker > Settings > Pages
+3. Source: "Deploy from a branch" > `main` > `/docs`
+4. Save — pages will be live at:
+   - https://jackwallner.github.io/total-calories-daily-tracker/privacy-policy.html
+   - https://jackwallner.github.io/total-calories-daily-tracker/support.html
+5. Wait 1-2 minutes, then verify both URLs load correctly
