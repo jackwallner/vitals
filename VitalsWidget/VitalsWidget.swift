@@ -4,13 +4,15 @@ import SwiftData
 
 // MARK: - Goal Helper
 
-private func loadGoals() -> (calories: Double, steps: Int, calEnabled: Bool, stepEnabled: Bool) {
+private func loadGoals() -> (calories: Double, steps: Int, calEnabled: Bool, stepEnabled: Bool, showCalories: Bool, showSteps: Bool) {
     let defaults = UserDefaults(suiteName: vitalsAppGroupID) ?? .standard
     let cal = defaults.double(forKey: "calorieGoal")
     let step = defaults.integer(forKey: "stepGoal")
     let calOn = defaults.object(forKey: "calorieGoalEnabled") as? Bool ?? true
     let stepOn = defaults.object(forKey: "stepGoalEnabled") as? Bool ?? true
-    return (cal > 0 ? cal : 2500, step > 0 ? step : 10000, calOn, stepOn)
+    let showCal = defaults.object(forKey: "showCalories") as? Bool ?? true
+    let showStep = defaults.object(forKey: "showSteps") as? Bool ?? true
+    return (cal > 0 ? cal : 2500, step > 0 ? step : 10000, calOn, stepOn, showCal, showStep)
 }
 
 // MARK: - Timeline Provider
@@ -56,12 +58,14 @@ struct VitalsTimelineProvider: TimelineProvider {
                 calorieGoal: goals.calories,
                 stepGoal: goals.steps,
                 calGoalEnabled: goals.calEnabled,
-                stepGoalEnabled: goals.stepEnabled
+                stepGoalEnabled: goals.stepEnabled,
+                showCalories: goals.showCalories,
+                showSteps: goals.showSteps
             )
         }
 
         // No record for today — could be new day or HealthKit unavailable
-        return VitalsEntry(date: .now, totalCalories: 0, activeCalories: 0, restingCalories: 0, steps: 0, calorieGoal: goals.calories, stepGoal: goals.steps, calGoalEnabled: goals.calEnabled, stepGoalEnabled: goals.stepEnabled, dataAvailable: false)
+        return VitalsEntry(date: .now, totalCalories: 0, activeCalories: 0, restingCalories: 0, steps: 0, calorieGoal: goals.calories, stepGoal: goals.steps, calGoalEnabled: goals.calEnabled, stepGoalEnabled: goals.stepEnabled, showCalories: goals.showCalories, showSteps: goals.showSteps, dataAvailable: false)
     }
 }
 
@@ -77,6 +81,8 @@ struct VitalsEntry: TimelineEntry {
     let stepGoal: Int
     let calGoalEnabled: Bool
     let stepGoalEnabled: Bool
+    var showCalories: Bool = true
+    var showSteps: Bool = true
     var dataAvailable: Bool = true
 }
 
@@ -88,31 +94,40 @@ struct SmallWidgetView: View {
     var body: some View {
         if entry.dataAvailable {
             VStack(alignment: .leading, spacing: 8) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Label("Calories", systemImage: "flame.fill")
-                        .font(.caption2)
-                        .foregroundStyle(Theme.textSecondary)
-                    Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
-                        .font(Theme.bigNumber(28))
-                        .foregroundStyle(Theme.caloriesPrimary)
-                    if entry.calGoalEnabled {
-                        Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
+                if entry.showCalories {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Label("Calories", systemImage: "flame.fill")
                             .font(.caption2)
-                            .foregroundStyle(Theme.textTertiary)
+                            .foregroundStyle(Theme.textSecondary)
+                        Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
+                            .font(Theme.bigNumber(entry.showSteps ? 28 : 36))
+                            .foregroundStyle(Theme.caloriesPrimary)
+                        if entry.calGoalEnabled {
+                            Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
+                                .font(.caption2)
+                                .foregroundStyle(Theme.textTertiary)
+                        }
                     }
                 }
-                VStack(alignment: .leading, spacing: 2) {
-                    Label("Steps", systemImage: "figure.walk")
-                        .font(.caption2)
-                        .foregroundStyle(Theme.textSecondary)
-                    Text(entry.steps, format: .number)
-                        .font(Theme.bigNumber(28))
-                        .foregroundStyle(Theme.stepsPrimary)
-                    if entry.stepGoalEnabled {
-                        Text("/ \(entry.stepGoal.formatted(.number))")
+                if entry.showSteps {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Label("Steps", systemImage: "figure.walk")
                             .font(.caption2)
-                            .foregroundStyle(Theme.textTertiary)
+                            .foregroundStyle(Theme.textSecondary)
+                        Text(entry.steps, format: .number)
+                            .font(Theme.bigNumber(entry.showCalories ? 28 : 36))
+                            .foregroundStyle(Theme.stepsPrimary)
+                        if entry.stepGoalEnabled {
+                            Text("/ \(entry.stepGoal.formatted(.number))")
+                                .font(.caption2)
+                                .foregroundStyle(Theme.textTertiary)
+                        }
                     }
+                }
+                if !entry.showCalories && !entry.showSteps {
+                    Text("No metrics enabled")
+                        .font(.caption2)
+                        .foregroundStyle(Theme.textTertiary)
                 }
             }
             .containerBackground(.fill.tertiary, for: .widget)
@@ -138,54 +153,65 @@ struct MediumWidgetView: View {
         if entry.dataAvailable {
             HStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: 12) {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Label("Calories", systemImage: "flame.fill")
-                            .font(.caption2)
-                            .foregroundStyle(Theme.textSecondary)
-                        HStack(alignment: .firstTextBaseline, spacing: 4) {
-                            Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
-                                .font(Theme.bigNumber(28))
-                                .foregroundStyle(Theme.caloriesPrimary)
-                            if entry.calGoalEnabled {
-                                Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
-                                    .font(.caption2)
-                                    .foregroundStyle(Theme.textTertiary)
+                    if entry.showCalories {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Label("Calories", systemImage: "flame.fill")
+                                .font(.caption2)
+                                .foregroundStyle(Theme.textSecondary)
+                            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                                Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
+                                    .font(Theme.bigNumber(entry.showSteps ? 28 : 36))
+                                    .foregroundStyle(Theme.caloriesPrimary)
+                                if entry.calGoalEnabled {
+                                    Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
+                                        .font(.caption2)
+                                        .foregroundStyle(Theme.textTertiary)
+                                }
                             }
                         }
                     }
-                    VStack(alignment: .leading, spacing: 2) {
-                        Label("Steps", systemImage: "figure.walk")
-                            .font(.caption2)
-                            .foregroundStyle(Theme.textSecondary)
-                        HStack(alignment: .firstTextBaseline, spacing: 4) {
-                            Text(entry.steps, format: .number)
-                                .font(Theme.bigNumber(28))
-                                .foregroundStyle(Theme.stepsPrimary)
-                            if entry.stepGoalEnabled {
-                                Text("/ \(entry.stepGoal.formatted(.number))")
-                                    .font(.caption2)
-                                    .foregroundStyle(Theme.textTertiary)
+                    if entry.showSteps {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Label("Steps", systemImage: "figure.walk")
+                                .font(.caption2)
+                                .foregroundStyle(Theme.textSecondary)
+                            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                                Text(entry.steps, format: .number)
+                                    .font(Theme.bigNumber(entry.showCalories ? 28 : 36))
+                                    .foregroundStyle(Theme.stepsPrimary)
+                                if entry.stepGoalEnabled {
+                                    Text("/ \(entry.stepGoal.formatted(.number))")
+                                        .font(.caption2)
+                                        .foregroundStyle(Theme.textTertiary)
+                                }
                             }
                         }
+                    }
+                    if !entry.showCalories && !entry.showSteps {
+                        Text("No metrics enabled")
+                            .font(.caption2)
+                            .foregroundStyle(Theme.textTertiary)
                     }
                 }
                 Spacer()
-                VStack(alignment: .trailing, spacing: 8) {
-                    VStack(alignment: .trailing, spacing: 2) {
-                        Text("Active")
-                            .font(.caption2)
-                            .foregroundStyle(Theme.textTertiary)
-                        Text(entry.activeCalories, format: .number.precision(.fractionLength(0)))
-                            .font(.subheadline.bold().monospacedDigit())
-                            .foregroundStyle(Theme.activePrimary)
-                    }
-                    VStack(alignment: .trailing, spacing: 2) {
-                        Text("Resting")
-                            .font(.caption2)
-                            .foregroundStyle(Theme.textTertiary)
-                        Text(entry.restingCalories, format: .number.precision(.fractionLength(0)))
-                            .font(.subheadline.bold().monospacedDigit())
-                            .foregroundStyle(Theme.restingPrimary)
+                if entry.showCalories {
+                    VStack(alignment: .trailing, spacing: 8) {
+                        VStack(alignment: .trailing, spacing: 2) {
+                            Text("Active")
+                                .font(.caption2)
+                                .foregroundStyle(Theme.textTertiary)
+                            Text(entry.activeCalories, format: .number.precision(.fractionLength(0)))
+                                .font(.subheadline.bold().monospacedDigit())
+                                .foregroundStyle(Theme.activePrimary)
+                        }
+                        VStack(alignment: .trailing, spacing: 2) {
+                            Text("Resting")
+                                .font(.caption2)
+                                .foregroundStyle(Theme.textTertiary)
+                            Text(entry.restingCalories, format: .number.precision(.fractionLength(0)))
+                                .font(.subheadline.bold().monospacedDigit())
+                                .foregroundStyle(Theme.restingPrimary)
+                        }
                     }
                 }
             }
@@ -247,24 +273,28 @@ struct RectangularAccessoryView: View {
             Text("Total Calories")
                 .font(.system(.headline, design: .rounded))
                 .widgetAccentable()
-            HStack(spacing: 4) {
-                Image(systemName: "flame.fill")
-                Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
-                    .font(.system(.caption, design: .rounded, weight: .semibold))
-                if entry.calGoalEnabled {
-                    Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
-                        .font(.system(size: 8, design: .rounded))
-                        .foregroundStyle(.secondary)
+            if entry.showCalories {
+                HStack(spacing: 4) {
+                    Image(systemName: "flame.fill")
+                    Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
+                        .font(.system(.caption, design: .rounded, weight: .semibold))
+                    if entry.calGoalEnabled {
+                        Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
+                            .font(.system(size: 8, design: .rounded))
+                            .foregroundStyle(.secondary)
+                    }
                 }
             }
-            HStack(spacing: 4) {
-                Image(systemName: "figure.walk")
-                Text(entry.steps, format: .number)
-                    .font(.system(.caption, design: .rounded, weight: .semibold))
-                if entry.stepGoalEnabled {
-                    Text("/ \(entry.stepGoal.formatted(.number))")
-                        .font(.system(size: 8, design: .rounded))
-                        .foregroundStyle(.secondary)
+            if entry.showSteps {
+                HStack(spacing: 4) {
+                    Image(systemName: "figure.walk")
+                    Text(entry.steps, format: .number)
+                        .font(.system(.caption, design: .rounded, weight: .semibold))
+                    if entry.stepGoalEnabled {
+                        Text("/ \(entry.stepGoal.formatted(.number))")
+                            .font(.system(size: 8, design: .rounded))
+                            .foregroundStyle(.secondary)
+                    }
                 }
             }
         }

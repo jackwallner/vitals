@@ -51,11 +51,17 @@ final class GoalSettings: ObservableObject {
     }
 
     @Published var showCalories: Bool {
-        didSet { defaults.set(showCalories, forKey: "showCalories") }
+        didSet {
+            defaults.set(showCalories, forKey: "showCalories")
+            WidgetCenter.shared.reloadAllTimelines()
+        }
     }
 
     @Published var showSteps: Bool {
-        didSet { defaults.set(showSteps, forKey: "showSteps") }
+        didSet {
+            defaults.set(showSteps, forKey: "showSteps")
+            WidgetCenter.shared.reloadAllTimelines()
+        }
     }
 
     // nil means "no goal" — just show the counter

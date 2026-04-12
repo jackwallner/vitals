@@ -4,13 +4,15 @@ import SwiftData
 
 // MARK: - Goal Helper
 
-private func loadGoals() -> (calories: Double, steps: Int, calEnabled: Bool, stepEnabled: Bool) {
+private func loadGoals() -> (calories: Double, steps: Int, calEnabled: Bool, stepEnabled: Bool, showCalories: Bool, showSteps: Bool) {
     let defaults = UserDefaults(suiteName: vitalsAppGroupID) ?? .standard
     let cal = defaults.double(forKey: "calorieGoal")
     let step = defaults.integer(forKey: "stepGoal")
     let calOn = defaults.object(forKey: "calorieGoalEnabled") as? Bool ?? true
     let stepOn = defaults.object(forKey: "stepGoalEnabled") as? Bool ?? true
-    return (cal > 0 ? cal : 2500, step > 0 ? step : 10000, calOn, stepOn)
+    let showCal = defaults.object(forKey: "showCalories") as? Bool ?? true
+    let showStep = defaults.object(forKey: "showSteps") as? Bool ?? true
+    return (cal > 0 ? cal : 2500, step > 0 ? step : 10000, calOn, stepOn, showCal, showStep)
 }
 
 // MARK: - Timeline Provider
@@ -52,7 +54,9 @@ struct WatchTimelineProvider: TimelineProvider {
                 calorieGoal: goals.calories,
                 stepGoal: goals.steps,
                 calGoalEnabled: goals.calEnabled,
-                stepGoalEnabled: goals.stepEnabled
+                stepGoalEnabled: goals.stepEnabled,
+                showCalories: goals.showCalories,
+                showSteps: goals.showSteps
             )
         }
         return WatchVitalsEntry(
@@ -63,6 +67,8 @@ struct WatchTimelineProvider: TimelineProvider {
             stepGoal: goals.steps,
             calGoalEnabled: goals.calEnabled,
             stepGoalEnabled: goals.stepEnabled,
+            showCalories: goals.showCalories,
+            showSteps: goals.showSteps,
             dataAvailable: false
         )
     }
@@ -78,6 +84,8 @@ struct WatchVitalsEntry: TimelineEntry {
     let stepGoal: Int
     let calGoalEnabled: Bool
     let stepGoalEnabled: Bool
+    var showCalories: Bool = true
+    var showSteps: Bool = true
     var dataAvailable: Bool = true
 }
 
@@ -299,7 +307,7 @@ struct CaloriesEntryView: View {
     let entry: WatchVitalsEntry
 
     var body: some View {
-        if !entry.dataAvailable {
+        if !entry.dataAvailable || !entry.showCalories {
             NoDataComplicationView()
         } else {
             switch family {
@@ -318,7 +326,7 @@ struct StepsEntryView: View {
     let entry: WatchVitalsEntry
 
     var body: some View {
-        if !entry.dataAvailable {
+        if !entry.dataAvailable || !entry.showSteps {
             NoDataComplicationView()
         } else {
             switch family {

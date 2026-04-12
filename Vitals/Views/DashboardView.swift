@@ -76,6 +76,7 @@ struct DashboardView: View {
     @State private var pacingInsufficient = false
     @State private var isRefreshing = false
     @State private var healthNotice: HealthNotice? = nil
+    @State private var lastRefreshDate: Date? = nil
 
     private var totalCalories: Double { activeCalories + restingCalories }
 
@@ -106,7 +107,10 @@ struct DashboardView: View {
                 loadingView
             } else {
                 GeometryReader { geo in
-                    mainContent(availableHeight: geo.size.height)
+                    ScrollView(showsIndicators: false) {
+                        mainContent(availableHeight: geo.size.height)
+                    }
+                    .refreshable { await refresh() }
                 }
             }
         }
@@ -208,28 +212,41 @@ struct DashboardView: View {
 
         return VStack(spacing: 0) {
             // Header
-            HStack {
-                Text(Date.now, format: .dateTime.weekday(.wide).month(.wide).day())
-                    .font(.system(.title3, design: .rounded, weight: .bold))
-                    .foregroundStyle(Theme.textPrimary)
-                if isRefreshing {
-                    ProgressView()
-                        .controlSize(.small)
-                        .tint(Theme.textTertiary)
-                        .padding(.leading, 4)
-                        .transition(.opacity)
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    Text(Date.now, format: .dateTime.weekday(.wide).month(.wide).day())
+                        .font(.system(.title3, design: .rounded, weight: .bold))
+                        .foregroundStyle(Theme.textPrimary)
+                    Spacer()
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "gearshape")
+                            .font(.body.weight(.medium))
+                            .foregroundStyle(Theme.textSecondary)
+                            .padding(10)
+                            .background(Theme.cardSurface, in: Circle())
+                    }
+                    .buttonStyle(.plain)
                 }
-                Spacer()
-                Button {
-                    showSettings = true
-                } label: {
-                    Image(systemName: "gearshape")
-                        .font(.body.weight(.medium))
-                        .foregroundStyle(Theme.textSecondary)
-                        .padding(10)
-                        .background(Theme.cardSurface, in: Circle())
+                HStack(spacing: 4) {
+                    if isRefreshing {
+                        ProgressView()
+                            .controlSize(.mini)
+                            .tint(Theme.textTertiary)
+                        Text("Refreshing...")
+                            .font(.system(.caption2, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                    } else if healthNotice == .sampleData {
+                        Text("Using sample data")
+                            .font(.system(.caption2, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                    } else if let date = lastRefreshDate {
+                        Text("Updated \(date, format: .dateTime.hour().minute())")
+                            .font(.system(.caption2, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                    }
                 }
-                .buttonStyle(.plain)
             }
             .padding(.horizontal, 24)
             .padding(.top, 16)
@@ -518,7 +535,10 @@ struct DashboardView: View {
     private func refresh() async {
         guard !isRefreshing else { return }
         isRefreshing = true
-        defer { isRefreshing = false }
+        defer {
+            isRefreshing = false
+            lastRefreshDate = .now
+        }
 
         if !healthKit.isAuthorized {
             let requestStatus = await healthKit.authorizationRequestStatus()

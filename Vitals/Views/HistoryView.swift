@@ -2,11 +2,40 @@ import SwiftUI
 import Charts
 import UniformTypeIdentifiers
 
+@MainActor
+private enum HistoryPrefs {
+    private static let defaults = UserDefaults(suiteName: vitalsAppGroupID) ?? .standard
+    private static let periodKey = "history.period"
+    private static let customStartKey = "history.customStart"
+    private static let customEndKey = "history.customEnd"
+
+    static func savedPeriod() -> HistoryView.Period {
+        guard let raw = defaults.string(forKey: periodKey) else { return .week }
+        return HistoryView.Period(rawValue: raw) ?? .week
+    }
+
+    static func savedCustomStart() -> Date {
+        let ti = defaults.double(forKey: customStartKey)
+        return ti > 0 ? Date(timeIntervalSince1970: ti) : DateHelpers.daysAgo(6)
+    }
+
+    static func savedCustomEnd() -> Date {
+        let ti = defaults.double(forKey: customEndKey)
+        return ti > 0 ? Date(timeIntervalSince1970: ti) : .now
+    }
+
+    static func save(period: HistoryView.Period, customStart: Date, customEnd: Date) {
+        defaults.set(period.rawValue, forKey: periodKey)
+        defaults.set(customStart.timeIntervalSince1970, forKey: customStartKey)
+        defaults.set(customEnd.timeIntervalSince1970, forKey: customEndKey)
+    }
+}
+
 struct HistoryView: View {
     @StateObject private var healthKit = HealthKitService.shared
-    @State private var selectedPeriod: Period = .week
-    @State private var customStart: Date = DateHelpers.daysAgo(6)
-    @State private var customEnd: Date = .now
+    @State private var selectedPeriod: Period = HistoryPrefs.savedPeriod()
+    @State private var customStart: Date = HistoryPrefs.savedCustomStart()
+    @State private var customEnd: Date = HistoryPrefs.savedCustomEnd()
     @State private var showCustomRange = false
     @State private var records: [DayRecord] = []
     @State private var isLoading = true
@@ -125,6 +154,13 @@ struct HistoryView: View {
                 .padding(.horizontal, 24)
                 .padding(.top, 16)
 
+                if selectedPeriod == .custom {
+                    Text("\(customStart, format: .dateTime.month(.abbreviated).day()) – \(customEnd, format: .dateTime.month(.abbreviated).day().year())")
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(Theme.textTertiary)
+                        .padding(.top, 4)
+                }
+
                 if isLoading {
                     Spacer()
                     ProgressView()
@@ -238,6 +274,7 @@ struct HistoryView: View {
         }
         .onChange(of: selectedPeriod) { _, _ in
             if selectedPeriod != .custom {
+                HistoryPrefs.save(period: selectedPeriod, customStart: customStart, customEnd: customEnd)
                 Task { await loadHistory() }
             }
         }
@@ -254,6 +291,7 @@ struct HistoryView: View {
             CustomRangeSheet(start: $customStart, end: $customEnd) {
                 selectedPeriod = .custom
                 showCustomRange = false
+                HistoryPrefs.save(period: .custom, customStart: customStart, customEnd: customEnd)
                 Task { await loadHistory() }
             }
             .presentationDetents([.medium])
