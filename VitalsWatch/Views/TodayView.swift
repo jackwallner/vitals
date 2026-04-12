@@ -223,10 +223,11 @@ struct TodayView: View {
                 applyReviewerSampleStats()
                 healthNotice = .sampleData
                 showLoadedStateIfNeeded()
-                return
+                try? await healthKit.requestAuthorization()
+                if !healthKit.isAuthorized { return }
+            } else {
+                try? await healthKit.requestAuthorization()
             }
-
-            try? await healthKit.requestAuthorization()
         }
         do {
             let stats = try await healthKit.fetchTodayStatsWithRetry()

@@ -543,16 +543,18 @@ struct DashboardView: View {
         if !healthKit.isAuthorized {
             let requestStatus = await healthKit.authorizationRequestStatus()
             if requestStatus != .unnecessary {
-                // .shouldRequest, .unknown, or nil — user hasn't completed auth yet
+                // Show sample data immediately so the screen isn't blank
                 try? healthKit.clearTodayCache()
                 applyReviewerSampleStats()
                 healthNotice = .sampleData
                 clearPacing()
                 showLoadedStateIfNeeded()
-                return
+                // Prompt HealthKit authorization right away over the sample data
+                try? await healthKit.requestAuthorization()
+                if !healthKit.isAuthorized { return }
+            } else {
+                try? await healthKit.requestAuthorization()
             }
-
-            try? await healthKit.requestAuthorization()
         }
         do {
             let stats = try await healthKit.fetchTodayStatsWithRetry()
