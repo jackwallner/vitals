@@ -218,7 +218,7 @@ struct TodayView: View {
 
         if !healthKit.isAuthorized {
             let requestStatus = await healthKit.authorizationRequestStatus()
-            if requestStatus == .shouldRequest {
+            if requestStatus != .unnecessary {
                 try? healthKit.clearTodayCache()
                 applyReviewerSampleStats()
                 healthNotice = .sampleData
