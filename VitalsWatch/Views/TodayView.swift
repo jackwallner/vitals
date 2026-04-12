@@ -6,7 +6,29 @@ private enum VitalsWatchLinks {
     static let supportEmail = URL(string: "mailto:jackwallner@gmail.com")!
 }
 
+private enum WatchHealthNotice: Equatable {
+    case sampleData
+    case noData
+    case cachedData
+    case loadError
+
+    var message: String {
+        switch self {
+        case .sampleData:
+            "Sample data preview.\nEnable Health access to see yours."
+        case .noData:
+            "No Health data yet.\nCheck Apple Health access on iPhone."
+        case .cachedData:
+            "Showing last saved data."
+        case .loadError:
+            "Couldn't load Health data."
+        }
+    }
+}
+
 struct TodayView: View {
+    private static let reviewerSampleStats = (active: 420.0, resting: 1380.0, steps: 6240)
+
     @StateObject private var healthKit = HealthKitService.shared
     @Environment(\.scenePhase) var scenePhase
     @State private var activeCalories: Double = 0
@@ -15,12 +37,10 @@ struct TodayView: View {
     @State private var showBreakdown = false
     @State private var isLoading = true
     @State private var isRefreshing = false
-    @State private var hasLoadedOnce = false
-    @State private var loadError = false
     @State private var showHelp = false
+    @State private var healthNotice: WatchHealthNotice? = nil
 
     private var totalCalories: Double { activeCalories + restingCalories }
-    private var hasNoData: Bool { hasLoadedOnce && totalCalories == 0 && steps == 0 }
 
     var body: some View {
         Group {
@@ -89,16 +109,22 @@ struct TodayView: View {
                     .accessibilityLabel("Steps")
                     .accessibilityValue("\(steps) steps")
 
-                    if hasNoData {
-                        VStack(spacing: 4) {
-                            Text(loadError ? "Could not load data." : "No health data available.")
-                                .font(.system(size: 10, design: .rounded))
-                                .foregroundStyle(Theme.textTertiary)
-                            Text("Check Health permissions\nin iPhone Settings.")
+                    if let healthNotice {
+                        VStack(spacing: 6) {
+                            Text(healthNotice.message)
                                 .font(.system(size: 9, design: .rounded))
                                 .foregroundStyle(Theme.textTertiary)
+                                .multilineTextAlignment(.center)
+
+                            if healthNotice == .sampleData {
+                                Button("Enable Health") {
+                                    handleHealthNoticeAction(healthNotice)
+                                }
+                                .font(.system(size: 10, weight: .semibold, design: .rounded))
+                                .buttonStyle(.borderedProminent)
+                                .tint(Theme.caloriesPrimary)
+                            }
                         }
-                        .multilineTextAlignment(.center)
                     }
 
                     Spacer(minLength: 4)
@@ -129,7 +155,12 @@ struct TodayView: View {
             .padding(.trailing, 2)
         }
         .background(Theme.background)
-        .navigationTitle("Vitals")
+        .navigationTitle("Total Calories")
+        .onChange(of: healthKit.isAuthorized) { _, authorized in
+            if authorized {
+                Task { await refresh() }
+            }
+        }
         .task {
             await refresh()
             if ScreenshotConfig.wantsWatchBreakdown {
@@ -149,28 +180,74 @@ struct TodayView: View {
         }
     }
 
+    private func applyStats(_ stats: (active: Double, resting: Double, steps: Int)) {
+        activeCalories = stats.active
+        restingCalories = stats.resting
+        steps = stats.steps
+    }
+
+    private func handleHealthNoticeAction(_ notice: WatchHealthNotice) {
+        guard notice == .sampleData else { return }
+
+        Task {
+            do {
+                try await healthKit.requestAuthorization()
+            } catch {
+                print("Failed to request watch HealthKit authorization: \(error)")
+                healthNotice = .loadError
+            }
+        }
+    }
+
+    private func applyReviewerSampleStats() {
+        applyStats(Self.reviewerSampleStats)
+    }
+
+    private func isAllZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
+        stats.active == 0 && stats.resting == 0 && stats.steps == 0
+    }
+
+    private func showLoadedStateIfNeeded() {
+        if isLoading { isLoading = false }
+    }
+
     private func refresh() async {
         guard !isRefreshing else { return }
         isRefreshing = true
         defer { isRefreshing = false }
 
         if !healthKit.isAuthorized {
+            let requestStatus = await healthKit.authorizationRequestStatus()
+            if requestStatus == .shouldRequest {
+                try? healthKit.clearTodayCache()
+                applyReviewerSampleStats()
+                healthNotice = .sampleData
+                showLoadedStateIfNeeded()
+                return
+            }
+
             try? await healthKit.requestAuthorization()
         }
         do {
-            let stats = try await healthKit.fetchTodayStats()
-            activeCalories = stats.active
-            restingCalories = stats.resting
-            steps = stats.steps
-            hasLoadedOnce = true
-            loadError = false
-            if isLoading { isLoading = false }
-            try? await healthKit.refreshCache(stats: stats)
+            let stats = try await healthKit.fetchTodayStatsWithRetry()
+            applyStats(stats)
+            healthNotice = isAllZero(stats) ? .noData : nil
+            showLoadedStateIfNeeded()
+            do {
+                try await healthKit.refreshCache(stats: stats)
+            } catch {
+                print("Failed to refresh watch cache: \(error)")
+            }
         } catch {
             print("Failed to fetch stats: \(error)")
-            hasLoadedOnce = true
-            loadError = true
-            if isLoading { isLoading = false }
+            if let cachedStats = try? healthKit.fetchCachedTodayStats() {
+                applyStats(cachedStats)
+                healthNotice = .cachedData
+            } else {
+                applyStats((active: 0, resting: 0, steps: 0))
+                healthNotice = .loadError
+            }
+            showLoadedStateIfNeeded()
         }
     }
 }
@@ -196,7 +273,7 @@ private struct WatchHelpView: View {
                 }
 
                 Section("Health Data") {
-                    Text("Vitals reads Active Energy, Basal Energy, and Step Count from Apple Health in read-only mode.")
+                    Text("Total Calories reads Active Energy, Basal Energy, and Step Count from Apple Health in read-only mode.")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                 }

@@ -21,6 +21,20 @@
                ReferencedContainer = "container:Vitals.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BA7F93B3F4FA48491616A6FE"
+               BuildableName = "VitalsWatch.app"
+               BlueprintName = "VitalsWatch"
+               ReferencedContainer = "container:Vitals.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

@@ -4,9 +4,62 @@ private enum VitalsLinks {
     static let privacyPolicy = URL(string: "https://jackwallner.github.io/vitals/privacy-policy.html")!
     static let support = URL(string: "https://jackwallner.github.io/vitals/support.html")!
     static let supportEmail = URL(string: "mailto:jackwallner@gmail.com")!
+    static let coachServices = URL(string: "https://www.e3fit.me/#services")!
+    static let coachContact = URL(string: "https://www.e3fit.me/#contact")!
+}
+
+private enum HealthNotice: Equatable {
+    case sampleData
+    case noData
+    case cachedData
+    case loadError
+
+    var iconName: String {
+        switch self {
+        case .sampleData: "info.circle.fill"
+        case .noData: "heart.text.clipboard"
+        case .cachedData: "clock.arrow.circlepath"
+        case .loadError: "exclamationmark.triangle.fill"
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .sampleData: "Sample data"
+        case .noData: "No Health data yet"
+        case .cachedData: "Showing last saved data"
+        case .loadError: "Couldn't refresh Health data"
+        }
+    }
+
+    var message: String {
+        switch self {
+        case .sampleData:
+            "Preview values are shown until you grant Apple Health access."
+        case .noData:
+            "If you just granted access, Apple Health may still be catching up. If this seems wrong, check Health access."
+        case .cachedData:
+            "We couldn't refresh right now, so the last saved values are still on screen."
+        case .loadError:
+            "Try reopening the app in a moment, or check Apple Health access."
+        }
+    }
+
+    var buttonTitle: String? {
+        switch self {
+        case .sampleData:
+            "Enable Health"
+        case .noData, .loadError:
+            "Open Health"
+        case .cachedData:
+            nil
+        }
+    }
 }
 
 struct DashboardView: View {
+    private static let reviewerSampleStats = (active: 420.0, resting: 1380.0, steps: 6240)
+
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
     @State private var activeCalories: Double = 0
@@ -22,10 +75,9 @@ struct DashboardView: View {
     @State private var showOnboarding = false
     @State private var pacingInsufficient = false
     @State private var isRefreshing = false
-    @State private var hasLoadedOnce = false
+    @State private var healthNotice: HealthNotice? = nil
 
     private var totalCalories: Double { activeCalories + restingCalories }
-    private var hasNoData: Bool { hasLoadedOnce && totalCalories == 0 && steps == 0 }
 
     private var calorieProgress: Double? {
         guard let goal = goals.calorieGoal, goal > 0 else { return nil }
@@ -90,33 +142,37 @@ struct DashboardView: View {
         }
     }
 
-    private var noDataHint: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "heart.slash")
-                .font(.system(size: 32))
-                .foregroundStyle(Theme.textTertiary)
-            Text("No Health Data")
-                .font(.system(.headline, design: .rounded))
-                .foregroundStyle(Theme.textSecondary)
-            Text("Make sure Vitals has permission to read your health data in the Health app.")
-                .font(.system(.caption, design: .rounded))
-                .foregroundStyle(Theme.textTertiary)
-                .multilineTextAlignment(.center)
-            Button {
-                if let url = URL(string: "x-apple-health://") {
-                    UIApplication.shared.open(url)
-                }
-            } label: {
-                Text("Open Health")
-                    .font(.system(.subheadline, design: .rounded, weight: .medium))
+    private func healthNoticeBanner(_ notice: HealthNotice) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: notice.iconName)
+                .foregroundStyle(.white.opacity(0.95))
+                .padding(.top, 2)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(notice.title)
+                    .font(.system(.caption, design: .rounded, weight: .semibold))
                     .foregroundStyle(.white)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 10)
-                    .background(Theme.caloriesPrimary, in: Capsule())
+                Text(notice.message)
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(.white.opacity(0.92))
+                    .fixedSize(horizontal: false, vertical: true)
             }
-            .buttonStyle(.plain)
+            Spacer(minLength: 0)
+            if let buttonTitle = notice.buttonTitle {
+                Button(buttonTitle) {
+                    handleHealthNoticeAction(notice)
+                }
+                .font(.system(.caption, design: .rounded, weight: .semibold))
+                .foregroundStyle(.white)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 4)
+                .background(.white.opacity(0.2), in: Capsule())
+                .buttonStyle(.plain)
+            }
         }
-        .padding(.horizontal, 32)
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+        .background(Theme.caloriesPrimary.opacity(0.85), in: RoundedRectangle(cornerRadius: 12))
+        .padding(.horizontal, 24)
     }
 
     private var loadingView: some View {
@@ -368,8 +424,8 @@ struct DashboardView: View {
                 .opacity(animateContent ? 1 : 0)
             }
 
-            if hasNoData {
-                noDataHint
+            if let healthNotice {
+                healthNoticeBanner(healthNotice)
                     .opacity(animateContent ? 1 : 0)
             }
 
@@ -403,36 +459,96 @@ struct DashboardView: View {
         .scaleEffect(animateContent ? 1 : 0.9)
     }
 
+    private func openHealthApp() {
+        if let url = URL(string: "x-apple-health://") {
+            UIApplication.shared.open(url)
+        }
+    }
+
+    private func handleHealthNoticeAction(_ notice: HealthNotice) {
+        switch notice {
+        case .sampleData:
+            Task {
+                do {
+                    try await healthKit.requestAuthorization()
+                } catch {
+                    print("Failed to request HealthKit authorization: \(error)")
+                    healthNotice = .loadError
+                }
+            }
+        case .noData, .loadError:
+            openHealthApp()
+        case .cachedData:
+            break
+        }
+    }
+
+    private func applyStats(_ stats: (active: Double, resting: Double, steps: Int)) {
+        activeCalories = stats.active
+        restingCalories = stats.resting
+        steps = stats.steps
+    }
+
+    private func applyReviewerSampleStats() {
+        applyStats(Self.reviewerSampleStats)
+    }
+
+    private func showLoadedStateIfNeeded() {
+        if isLoading {
+            isLoading = false
+            withAnimation(.easeOut(duration: 0.5)) {
+                animateContent = true
+            }
+            withAnimation(.spring(duration: 1.0, bounce: 0.15).delay(0.3)) {
+                animateRing = true
+            }
+        }
+    }
+
+    private func clearPacing() {
+        pacingCalories = nil
+        pacingSteps = nil
+        pacingInsufficient = false
+    }
+
+    private func isAllZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
+        stats.active == 0 && stats.resting == 0 && stats.steps == 0
+    }
+
     private func refresh() async {
         guard !isRefreshing else { return }
         isRefreshing = true
         defer { isRefreshing = false }
 
-        // Ensure authorization before first fetch
         if !healthKit.isAuthorized {
+            let requestStatus = await healthKit.authorizationRequestStatus()
+            if requestStatus == .shouldRequest {
+                try? healthKit.clearTodayCache()
+                applyReviewerSampleStats()
+                healthNotice = .sampleData
+                clearPacing()
+                showLoadedStateIfNeeded()
+                return
+            }
+
             try? await healthKit.requestAuthorization()
         }
         do {
-            let stats = try await healthKit.fetchTodayStats()
-            activeCalories = stats.active
-            restingCalories = stats.resting
-            steps = stats.steps
-            hasLoadedOnce = true
+            let stats = try await healthKit.fetchTodayStatsWithRetry()
+            applyStats(stats)
+            healthNotice = isAllZero(stats) ? .noData : nil
 
             // Show UI immediately, don't wait for pacing/cache
-            if isLoading {
-                isLoading = false
-                withAnimation(.easeOut(duration: 0.5)) {
-                    animateContent = true
-                }
-                withAnimation(.spring(duration: 1.0, bounce: 0.15).delay(0.3)) {
-                    animateRing = true
-                }
-            }
+            showLoadedStateIfNeeded()
 
             // Load pacing and cache in background (reuse stats, don't re-fetch)
-            try? await healthKit.refreshCache(stats: stats)
-            if goals.showPacing {
+            do {
+                try await healthKit.refreshCache(stats: stats)
+            } catch {
+                print("Failed to refresh today cache: \(error)")
+            }
+
+            if goals.showPacing && !isAllZero(stats) {
                 if let pacing = try? await healthKit.fetchPacing() {
                     if pacing.daysWithData >= 3 {
                         pacingInsufficient = false
@@ -449,19 +565,23 @@ struct DashboardView: View {
                         pacingSteps = nil
                         pacingInsufficient = false
                     }
+                } else {
+                    clearPacing()
                 }
             } else {
-                pacingCalories = nil
-                pacingSteps = nil
-                pacingInsufficient = false
+                clearPacing()
             }
         } catch {
             print("Failed to fetch today stats: \(error)")
-            hasLoadedOnce = true
-            if isLoading {
-                isLoading = false
-                withAnimation(.easeOut(duration: 0.5)) { animateContent = true }
+            if let cachedStats = try? healthKit.fetchCachedTodayStats() {
+                applyStats(cachedStats)
+                healthNotice = .cachedData
+            } else {
+                applyStats((active: 0, resting: 0, steps: 0))
+                healthNotice = .loadError
             }
+            clearPacing()
+            showLoadedStateIfNeeded()
         }
     }
 }
@@ -546,7 +666,7 @@ private struct OnboardingSheet: View {
                     Image(systemName: "heart.fill")
                         .font(.system(size: 48))
                         .foregroundStyle(Theme.caloriesPrimary)
-                    Text("Welcome to Vitals")
+                    Text("Welcome to Total Calories")
                         .font(.system(.largeTitle, design: .rounded, weight: .bold))
                     Text("Set up your daily goals, or skip to use as a simple counter.")
                         .font(.system(.subheadline, design: .rounded))
@@ -718,6 +838,16 @@ private struct SettingsSheet: View {
                 }
 
                 Section {
+                    CoachPromoCard(compact: true)
+                        .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
+                        .listRowBackground(Color.clear)
+                } header: {
+                    Text("Need a Coach")
+                } footer: {
+                    Text("External links open Elsa's E3 Fitness site in Safari.")
+                }
+
+                Section {
                     Link(destination: VitalsLinks.privacyPolicy) {
                         Label("Privacy Policy", systemImage: "hand.raised")
                     }
@@ -732,7 +862,7 @@ private struct SettingsSheet: View {
                 } header: {
                     Text("Help")
                 } footer: {
-                    Text("Vitals reads Apple Health data in read-only mode and keeps your health data on your device.")
+                    Text("Total Calories reads Apple Health data in read-only mode and keeps your health data on your device.")
                 }
             }
             .navigationTitle("Settings")
@@ -774,5 +904,223 @@ private struct SettingsSheet: View {
                 appearance = goals.appearance
             }
         }
+    }
+}
+
+private enum CoachBrand {
+    static let nearBlack = Color(red: 0.10, green: 0.10, blue: 0.10)
+    static let coconutCream = Color(red: 0.96, green: 0.94, blue: 0.90)
+    static let dustyRose = Color(red: 0.71, green: 0.52, blue: 0.52)
+    static let aquamarine = Color(red: 0.50, green: 0.78, blue: 0.77)
+}
+
+struct CoachPromoCard: View {
+    var compact = false
+
+    @Environment(\.colorScheme) private var colorScheme
+
+    private var backgroundGradient: LinearGradient {
+        LinearGradient(
+            colors: colorScheme == .dark
+                ? [CoachBrand.nearBlack, CoachBrand.nearBlack.opacity(0.88)]
+                : [CoachBrand.coconutCream, .white],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
+    private var titleColor: Color {
+        colorScheme == .dark ? CoachBrand.coconutCream : CoachBrand.nearBlack
+    }
+
+    private var secondaryColor: Color {
+        colorScheme == .dark ? CoachBrand.coconutCream.opacity(0.72) : CoachBrand.nearBlack.opacity(0.68)
+    }
+
+    private var borderColor: Color {
+        colorScheme == .dark ? CoachBrand.aquamarine.opacity(0.24) : CoachBrand.dustyRose.opacity(0.18)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: compact ? 14 : 18) {
+            HStack(alignment: .center, spacing: 14) {
+                Image("ElsaCoach")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: compact ? 62 : 88, height: compact ? 78 : 108)
+                    .clipShape(RoundedRectangle(cornerRadius: compact ? 18 : 22, style: .continuous))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: compact ? 18 : 22, style: .continuous)
+                            .strokeBorder(Color.white.opacity(colorScheme == .dark ? 0.08 : 0.45), lineWidth: 1)
+                    }
+
+                VStack(alignment: .leading, spacing: 8) {
+                    Image("E3Logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: compact ? 20 : 24)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(
+                            colorScheme == .dark ? CoachBrand.coconutCream : .white,
+                            in: RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        )
+                        .accessibilityHidden(true)
+
+                    Text("Need a coach?")
+                        .font(.system(compact ? .headline : .title3, design: .rounded, weight: .bold))
+                        .foregroundStyle(titleColor)
+
+                    Text("Virtual personal training and nutrition coaching with Elsa.")
+                        .font(.system(.subheadline, design: .rounded))
+                        .foregroundStyle(secondaryColor)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+
+                Spacer(minLength: 0)
+            }
+
+            if !compact {
+                Text("Build strength, confidence, and habits that last, with sessions scheduled directly with your coach.")
+                    .font(.system(.body, design: .rounded))
+                    .foregroundStyle(secondaryColor)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 8) {
+                    CoachTag(title: "Virtual sessions", systemImage: "video.fill", tint: CoachBrand.aquamarine)
+                    CoachTag(title: "Custom plans", systemImage: "checklist", tint: CoachBrand.dustyRose)
+                    CoachTag(title: "Nutrition support", systemImage: "leaf.fill", tint: CoachBrand.aquamarine)
+                }
+
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 8) {
+                        CoachTag(title: "Virtual sessions", systemImage: "video.fill", tint: CoachBrand.aquamarine)
+                        CoachTag(title: "Custom plans", systemImage: "checklist", tint: CoachBrand.dustyRose)
+                    }
+                    CoachTag(title: "Nutrition support", systemImage: "leaf.fill", tint: CoachBrand.aquamarine)
+                }
+            }
+
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 10) {
+                    CoachLinkButton(
+                        title: compact ? "Contact Elsa" : "Work with Elsa",
+                        systemImage: "arrow.up.right",
+                        destination: VitalsLinks.coachContact,
+                        prominent: true
+                    )
+                    CoachLinkButton(
+                        title: "View services",
+                        systemImage: "list.bullet.clipboard",
+                        destination: VitalsLinks.coachServices,
+                        prominent: false
+                    )
+                }
+
+                VStack(spacing: 10) {
+                    CoachLinkButton(
+                        title: compact ? "Contact Elsa" : "Work with Elsa",
+                        systemImage: "arrow.up.right",
+                        destination: VitalsLinks.coachContact,
+                        prominent: true
+                    )
+                    CoachLinkButton(
+                        title: "View services",
+                        systemImage: "list.bullet.clipboard",
+                        destination: VitalsLinks.coachServices,
+                        prominent: false
+                    )
+                }
+            }
+        }
+        .padding(compact ? 16 : 20)
+        .background(backgroundGradient, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .strokeBorder(borderColor, lineWidth: 1)
+        }
+        .shadow(
+            color: colorScheme == .dark ? .clear : CoachBrand.nearBlack.opacity(0.06),
+            radius: 18,
+            x: 0,
+            y: 10
+        )
+        .accessibilityElement(children: .contain)
+    }
+}
+
+private struct CoachTag: View {
+    let title: String
+    let systemImage: String
+    let tint: Color
+
+    @Environment(\.colorScheme) private var colorScheme
+
+    var body: some View {
+        HStack(spacing: 6) {
+            Image(systemName: systemImage)
+                .font(.system(.caption, design: .rounded, weight: .bold))
+            Text(title)
+                .font(.system(.caption, design: .rounded, weight: .medium))
+        }
+        .foregroundStyle(colorScheme == .dark ? CoachBrand.coconutCream : CoachBrand.nearBlack)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .background(
+            tint.opacity(colorScheme == .dark ? 0.18 : 0.12),
+            in: Capsule()
+        )
+    }
+}
+
+private struct CoachLinkButton: View {
+    let title: String
+    let systemImage: String
+    let destination: URL
+    let prominent: Bool
+
+    @Environment(\.colorScheme) private var colorScheme
+
+    var body: some View {
+        Link(destination: destination) {
+            HStack(spacing: 8) {
+                Text(title)
+                Image(systemName: systemImage)
+                    .font(.system(.caption, design: .rounded, weight: .bold))
+            }
+            .font(.system(.subheadline, design: .rounded, weight: .semibold))
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .padding(.horizontal, 14)
+            .background(background, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay {
+                if !prominent {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .strokeBorder(border, lineWidth: 1)
+                }
+            }
+            .foregroundStyle(foreground)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var background: Color {
+        if prominent {
+            return CoachBrand.dustyRose
+        }
+        return colorScheme == .dark ? CoachBrand.nearBlack.opacity(0.24) : .white.opacity(0.7)
+    }
+
+    private var foreground: Color {
+        if prominent {
+            return .white
+        }
+        return colorScheme == .dark ? CoachBrand.coconutCream : CoachBrand.nearBlack
+    }
+
+    private var border: Color {
+        colorScheme == .dark ? CoachBrand.aquamarine.opacity(0.22) : CoachBrand.nearBlack.opacity(0.08)
     }
 }

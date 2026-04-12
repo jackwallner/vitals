@@ -1,17 +1,20 @@
 import Foundation
 import HealthKit
+import os
 import SwiftData
 import WidgetKit
 #if os(watchOS)
 import WatchKit
 #endif
 
+private let healthKitLogger = Logger(subsystem: "com.jackwallner.vitals", category: "HealthKit")
+
 @MainActor
 final class HealthKitService: ObservableObject {
     static let shared = HealthKitService()
 
     private let store = HKHealthStore()
-    @Published var isAuthorized = false
+    @Published var isAuthorized = false // Tracks whether the authorization flow has completed this launch.
 
     private let readTypes: Set<HKObjectType> = [
         HKQuantityType(.activeEnergyBurned),
@@ -27,8 +30,37 @@ final class HealthKitService: ObservableObject {
             return
         }
         guard HKHealthStore.isHealthDataAvailable() else { return }
-        try await store.requestAuthorization(toShare: [], read: readTypes)
-        isAuthorized = true
+        healthKitLogger.info("Requesting HealthKit authorization for \(self.readTypes.count, privacy: .public) read types")
+        do {
+            try await store.requestAuthorization(toShare: [], read: readTypes)
+            isAuthorized = true
+            // Re-issue background delivery requests now that authorization has completed.
+            enableBackgroundDelivery()
+            healthKitLogger.info("HealthKit authorization request completed")
+        } catch {
+            healthKitLogger.error("HealthKit authorization request failed: \(String(describing: error), privacy: .public)")
+            throw error
+        }
+    }
+
+    func authorizationRequestStatus() async -> HKAuthorizationRequestStatus? {
+        if ScreenshotConfig.isEnabled {
+            return .unnecessary
+        }
+        guard HKHealthStore.isHealthDataAvailable() else { return nil }
+
+        return await withCheckedContinuation { continuation in
+            store.getRequestStatusForAuthorization(toShare: [], read: readTypes) { status, error in
+                if let error {
+                    healthKitLogger.error("Failed to fetch HealthKit authorization request status: \(String(describing: error), privacy: .public)")
+                    continuation.resume(returning: nil)
+                    return
+                }
+
+                healthKitLogger.info("HealthKit authorization request status: \(status.rawValue, privacy: .public)")
+                continuation.resume(returning: status)
+            }
+        }
     }
 
     // MARK: - Today's Stats
@@ -49,6 +81,31 @@ final class HealthKitService: ObservableObject {
         return try await (active: active, resting: resting, steps: Int(steps))
     }
 
+    func fetchTodayStatsWithRetry(
+        maxAttempts: Int = 3,
+        retryDelay: Duration = .seconds(1)
+    ) async throws -> (active: Double, resting: Double, steps: Int) {
+        var lastStats = (active: 0.0, resting: 0.0, steps: 0)
+
+        for attempt in 1...maxAttempts {
+            let stats = try await fetchTodayStats()
+            lastStats = stats
+
+            if !areAllStatsZero(stats) || attempt == maxAttempts {
+                if areAllStatsZero(stats) {
+                    healthKitLogger.notice("HealthKit returned all-zero stats after \(attempt, privacy: .public) attempts")
+                }
+                return stats
+            }
+
+            healthKitLogger.notice("HealthKit returned all-zero stats on attempt \(attempt, privacy: .public); retrying")
+            try? await Task.sleep(for: retryDelay)
+            if Task.isCancelled { return stats }
+        }
+
+        return lastStats
+    }
+
     // MARK: - History
 
     func fetchHistory(days: Int) async throws -> [(date: Date, active: Double, resting: Double, steps: Int)] {
@@ -57,7 +114,7 @@ final class HealthKitService: ObservableObject {
             return ScreenshotFixtures.history(days: days)
         }
         #endif
-        let start = DateHelpers.daysAgo(days)
+        let start = DateHelpers.daysAgo(max(days - 1, 0))
         return try await fetchHistory(from: start, to: .now)
     }
 
@@ -158,6 +215,7 @@ final class HealthKitService: ObservableObject {
     // MARK: - Background Delivery
 
     private var pendingRefreshTask: Task<Void, Never>?
+    private var observerQueriesInstalled = false
 
     func enableBackgroundDelivery() {
         if ScreenshotConfig.isEnabled { return }
@@ -171,15 +229,22 @@ final class HealthKitService: ObservableObject {
 
         for type in types {
             store.enableBackgroundDelivery(for: type, frequency: .hourly) { _, error in
-                if let error { print("Background delivery error for \(type): \(error)") }
+                if let error {
+                    healthKitLogger.error("Background delivery error for \(String(describing: type), privacy: .public): \(String(describing: error), privacy: .public)")
+                }
             }
+        }
 
+        guard !observerQueriesInstalled else { return }
+        observerQueriesInstalled = true
+
+        for type in types {
             let query = HKObserverQuery(sampleType: type, predicate: nil) { [weak self] _, completionHandler, error in
                 // Call completion handler immediately — watchOS kills the app
                 // if this isn't called within 15 seconds.
                 completionHandler()
                 if let error {
-                    print("HKObserverQuery error for \(type): \(error)")
+                    healthKitLogger.error("HKObserverQuery error for \(String(describing: type), privacy: .public): \(String(describing: error), privacy: .public)")
                     return
                 }
                 #if os(watchOS)
@@ -200,7 +265,11 @@ final class HealthKitService: ObservableObject {
                     self?.pendingRefreshTask = Task {
                         try? await Task.sleep(for: .milliseconds(500))
                         guard !Task.isCancelled else { return }
-                        try? await self?.refreshCache()
+                        do {
+                            try await self?.refreshCache()
+                        } catch {
+                            healthKitLogger.error("Observer-triggered cache refresh failed: \(String(describing: error), privacy: .public)")
+                        }
                     }
                 }
                 #endif
@@ -214,9 +283,21 @@ final class HealthKitService: ObservableObject {
         if let stats {
             resolvedStats = stats
         } else {
-            resolvedStats = try await fetchTodayStats()
+            resolvedStats = try await fetchTodayStatsWithRetry()
         }
-        let context = DataService.sharedModelContainer.mainContext
+
+        if areAllStatsZero(resolvedStats) {
+            let requestStatus = await authorizationRequestStatus()
+            if requestStatus == .shouldRequest {
+                healthKitLogger.notice("Clearing today cache because HealthKit authorization has not been requested yet")
+                try clearTodayCache()
+                return
+            }
+
+            healthKitLogger.notice("Persisting all-zero today stats after authorization flow completed")
+        }
+
+        let context = ModelContext(DataService.sharedModelContainer)
         let today = DateHelpers.startOfDay()
         let todayKey = DailyHealthRecord.key(for: today)
 
@@ -242,9 +323,47 @@ final class HealthKitService: ObservableObject {
 
         try context.save()
         WidgetCenter.shared.reloadAllTimelines()
+        healthKitLogger.info("Saved today cache and reloaded widget timelines")
+    }
+
+    func clearTodayCache() throws {
+        let context = ModelContext(DataService.sharedModelContainer)
+        let todayKey = DailyHealthRecord.key(for: DateHelpers.startOfDay())
+        let descriptor = FetchDescriptor<DailyHealthRecord>(
+            predicate: #Predicate { $0.dateString == todayKey }
+        )
+
+        let records = try context.fetch(descriptor)
+        guard !records.isEmpty else {
+            WidgetCenter.shared.reloadAllTimelines()
+            return
+        }
+
+        for record in records {
+            context.delete(record)
+        }
+
+        try context.save()
+        WidgetCenter.shared.reloadAllTimelines()
+        healthKitLogger.info("Cleared today cache and reloaded widget timelines")
+    }
+
+    func fetchCachedTodayStats() throws -> (active: Double, resting: Double, steps: Int)? {
+        let context = ModelContext(DataService.sharedModelContainer)
+        let todayKey = DailyHealthRecord.key(for: DateHelpers.startOfDay())
+        let descriptor = FetchDescriptor<DailyHealthRecord>(
+            predicate: #Predicate { $0.dateString == todayKey }
+        )
+
+        guard let record = try context.fetch(descriptor).first else { return nil }
+        return (active: record.activeCalories, resting: record.restingCalories, steps: record.steps)
     }
 
     // MARK: - Private Helpers
+
+    private func areAllStatsZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
+        stats.active == 0 && stats.resting == 0 && stats.steps == 0
+    }
 
     private nonisolated func queryCumulativeSum(
         _ identifier: HKQuantityTypeIdentifier,

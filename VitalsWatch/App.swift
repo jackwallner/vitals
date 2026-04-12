@@ -1,9 +1,64 @@
 import SwiftUI
 import SwiftData
 import WatchKit
+import WidgetKit
 import os
+#if canImport(WatchConnectivity)
+@preconcurrency import WatchConnectivity
+#endif
 
 private let logger = Logger(subsystem: "com.jackwallner.vitals.watch", category: "BackgroundRefresh")
+private let watchGoalSyncLogger = Logger(subsystem: "com.jackwallner.vitals.watch", category: "GoalSync")
+
+#if canImport(WatchConnectivity)
+private final class WatchGoalSyncService: NSObject, WCSessionDelegate {
+    nonisolated(unsafe) static let shared = WatchGoalSyncService()
+
+    private let defaults = UserDefaults(suiteName: vitalsAppGroupID) ?? .standard
+
+    func activate() {
+        guard WCSession.isSupported() else { return }
+        let session = WCSession.default
+        session.delegate = self
+        session.activate()
+        applyApplicationContext(session.receivedApplicationContext)
+    }
+
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        if let error {
+            watchGoalSyncLogger.error("WatchConnectivity activation failed: \(String(describing: error), privacy: .public)")
+            return
+        }
+
+        watchGoalSyncLogger.info("WatchConnectivity activated with state \(activationState.rawValue, privacy: .public)")
+        applyApplicationContext(session.receivedApplicationContext)
+    }
+
+    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+        applyApplicationContext(applicationContext)
+    }
+
+    private func applyApplicationContext(_ applicationContext: [String: Any]) {
+        guard !applicationContext.isEmpty else { return }
+
+        if let calorieGoalEnabled = applicationContext[GoalSyncKeys.calorieGoalEnabled] as? Bool {
+            defaults.set(calorieGoalEnabled, forKey: "calorieGoalEnabled")
+        }
+        if let stepGoalEnabled = applicationContext[GoalSyncKeys.stepGoalEnabled] as? Bool {
+            defaults.set(stepGoalEnabled, forKey: "stepGoalEnabled")
+        }
+        if let calorieGoal = applicationContext[GoalSyncKeys.calorieGoal] as? Double {
+            defaults.set(calorieGoal, forKey: "calorieGoal")
+        }
+        if let stepGoal = applicationContext[GoalSyncKeys.stepGoal] as? Int {
+            defaults.set(stepGoal, forKey: "stepGoal")
+        }
+
+        WidgetCenter.shared.reloadAllTimelines()
+        watchGoalSyncLogger.info("Applied synced goal settings on watch")
+    }
+}
+#endif
 
 @main
 struct VitalsWatchApp: App {
@@ -13,6 +68,9 @@ struct VitalsWatchApp: App {
         // Must run on every launch (including background) so observer queries are active.
         // This is lightweight — just registers HKObserverQuery objects, no blocking I/O.
         HealthKitService.shared.enableBackgroundDelivery()
+        #if canImport(WatchConnectivity)
+        WatchGoalSyncService.shared.activate()
+        #endif
     }
 
     var body: some Scene {

@@ -55,7 +55,16 @@ struct WatchTimelineProvider: TimelineProvider {
                 stepGoalEnabled: goals.stepEnabled
             )
         }
-        return WatchVitalsEntry(date: .now, totalCalories: 0, steps: 0, calorieGoal: goals.calories, stepGoal: goals.steps, calGoalEnabled: goals.calEnabled, stepGoalEnabled: goals.stepEnabled)
+        return WatchVitalsEntry(
+            date: .now,
+            totalCalories: 0,
+            steps: 0,
+            calorieGoal: goals.calories,
+            stepGoal: goals.steps,
+            calGoalEnabled: goals.calEnabled,
+            stepGoalEnabled: goals.stepEnabled,
+            dataAvailable: false
+        )
     }
 }
 
@@ -69,6 +78,40 @@ struct WatchVitalsEntry: TimelineEntry {
     let stepGoal: Int
     let calGoalEnabled: Bool
     let stepGoalEnabled: Bool
+    var dataAvailable: Bool = true
+}
+
+private struct NoDataComplicationView: View {
+    @Environment(\.widgetFamily) private var family
+
+    var body: some View {
+        switch family {
+        case .accessoryCircular:
+            Image(systemName: "heart.text.clipboard")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .containerBackground(.fill.tertiary, for: .widget)
+        case .accessoryRectangular:
+            VStack(alignment: .leading, spacing: 2) {
+                Text("No Health Data")
+                    .font(.system(.caption, design: .rounded, weight: .semibold))
+                Text("Open Total Calories")
+                    .font(.system(size: 10, design: .rounded))
+                    .foregroundStyle(.secondary)
+            }
+            .containerBackground(.fill.tertiary, for: .widget)
+        case .accessoryInline:
+            Text("Open app")
+                .containerBackground(.fill.tertiary, for: .widget)
+        case .accessoryCorner:
+            Text("--")
+                .widgetLabel { Text("Open app") }
+                .containerBackground(.fill.tertiary, for: .widget)
+        default:
+            Image(systemName: "heart.text.clipboard")
+                .containerBackground(.fill.tertiary, for: .widget)
+        }
+    }
 }
 
 // MARK: - Calories Complication Views
@@ -256,12 +299,16 @@ struct CaloriesEntryView: View {
     let entry: WatchVitalsEntry
 
     var body: some View {
-        switch family {
-        case .accessoryCircular: CaloriesCircularView(entry: entry)
-        case .accessoryRectangular: CaloriesRectangularView(entry: entry)
-        case .accessoryInline: CaloriesInlineView(entry: entry)
-        case .accessoryCorner: CaloriesCornerView(entry: entry)
-        default: CaloriesCircularView(entry: entry)
+        if !entry.dataAvailable {
+            NoDataComplicationView()
+        } else {
+            switch family {
+            case .accessoryCircular: CaloriesCircularView(entry: entry)
+            case .accessoryRectangular: CaloriesRectangularView(entry: entry)
+            case .accessoryInline: CaloriesInlineView(entry: entry)
+            case .accessoryCorner: CaloriesCornerView(entry: entry)
+            default: CaloriesCircularView(entry: entry)
+            }
         }
     }
 }
@@ -271,12 +318,16 @@ struct StepsEntryView: View {
     let entry: WatchVitalsEntry
 
     var body: some View {
-        switch family {
-        case .accessoryCircular: StepsCircularView(entry: entry)
-        case .accessoryRectangular: StepsRectangularView(entry: entry)
-        case .accessoryInline: StepsInlineView(entry: entry)
-        case .accessoryCorner: StepsCornerView(entry: entry)
-        default: StepsCircularView(entry: entry)
+        if !entry.dataAvailable {
+            NoDataComplicationView()
+        } else {
+            switch family {
+            case .accessoryCircular: StepsCircularView(entry: entry)
+            case .accessoryRectangular: StepsRectangularView(entry: entry)
+            case .accessoryInline: StepsInlineView(entry: entry)
+            case .accessoryCorner: StepsCornerView(entry: entry)
+            default: StepsCircularView(entry: entry)
+            }
         }
     }
 }

@@ -1,6 +1,67 @@
 import SwiftUI
 import SwiftData
 import BackgroundTasks
+import os
+#if canImport(WatchConnectivity)
+@preconcurrency import WatchConnectivity
+#endif
+
+private let goalSyncLogger = Logger(subsystem: "com.jackwallner.vitals", category: "GoalSync")
+
+#if canImport(WatchConnectivity)
+private final class PhoneGoalSyncService: NSObject, WCSessionDelegate {
+    nonisolated(unsafe) static let shared = PhoneGoalSyncService()
+
+    func activate() {
+        guard WCSession.isSupported() else { return }
+        let session = WCSession.default
+        session.delegate = self
+        session.activate()
+    }
+
+    @MainActor
+    func pushCurrentGoals(from goals: GoalSettings) {
+        guard WCSession.isSupported() else { return }
+        let session = WCSession.default
+        guard session.activationState == .activated else {
+            goalSyncLogger.info("Skipping goal sync because WatchConnectivity is not activated yet")
+            return
+        }
+
+        let payload: [String: Any] = [
+            GoalSyncKeys.calorieGoalEnabled: goals.calorieGoal != nil,
+            GoalSyncKeys.stepGoalEnabled: goals.stepGoal != nil,
+            GoalSyncKeys.calorieGoal: goals.calorieGoal ?? 2500,
+            GoalSyncKeys.stepGoal: goals.stepGoal ?? 10000,
+        ]
+
+        do {
+            try session.updateApplicationContext(payload)
+            goalSyncLogger.info("Pushed goal settings to watch")
+        } catch {
+            goalSyncLogger.error("Failed to push goal settings: \(String(describing: error), privacy: .public)")
+        }
+    }
+
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        if let error {
+            goalSyncLogger.error("WatchConnectivity activation failed: \(String(describing: error), privacy: .public)")
+            return
+        }
+
+        goalSyncLogger.info("WatchConnectivity activated with state \(activationState.rawValue, privacy: .public)")
+        Task { @MainActor in
+            PhoneGoalSyncService.shared.pushCurrentGoals(from: GoalSettings.shared)
+        }
+    }
+
+    func sessionDidBecomeInactive(_ session: WCSession) {}
+
+    func sessionDidDeactivate(_ session: WCSession) {
+        session.activate()
+    }
+}
+#endif
 
 @main
 struct VitalsApp: App {
@@ -17,12 +78,30 @@ struct VitalsApp: App {
         // Must run on every launch (including background) so observer queries are active
         HealthKitService.shared.enableBackgroundDelivery()
         Self.scheduleAppRefresh()
+        #if canImport(WatchConnectivity)
+        PhoneGoalSyncService.shared.activate()
+        #endif
     }
 
     var body: some Scene {
         WindowGroup {
             MainTabView()
                 .preferredColorScheme(goals.appearance.colorScheme)
+                .task {
+                    #if canImport(WatchConnectivity)
+                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                    #endif
+                }
+                .onChange(of: goals.calorieGoal) { _, _ in
+                    #if canImport(WatchConnectivity)
+                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                    #endif
+                }
+                .onChange(of: goals.stepGoal) { _, _ in
+                    #if canImport(WatchConnectivity)
+                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                    #endif
+                }
         }
         .modelContainer(DataService.sharedModelContainer)
     }
@@ -42,7 +121,13 @@ struct VitalsApp: App {
         scheduleAppRefresh()
 
         let refreshTask = Task { @MainActor in
-            try? await HealthKitService.shared.refreshCache()
+            do {
+                try await HealthKitService.shared.refreshCache()
+                return true
+            } catch {
+                print("Background app refresh failed: \(error)")
+                return false
+            }
         }
 
         task.expirationHandler = {
@@ -50,8 +135,8 @@ struct VitalsApp: App {
         }
 
         Task {
-            _ = await refreshTask.result
-            task.setTaskCompleted(success: true)
+            let success = await refreshTask.value
+            task.setTaskCompleted(success: success)
         }
     }
 }

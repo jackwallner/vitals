@@ -25,6 +25,13 @@ enum AppAppearance: Int, CaseIterable {
     }
 }
 
+enum GoalSyncKeys {
+    static let calorieGoal = "goalSync.calorieGoal"
+    static let stepGoal = "goalSync.stepGoal"
+    static let calorieGoalEnabled = "goalSync.calorieGoalEnabled"
+    static let stepGoalEnabled = "goalSync.stepGoalEnabled"
+}
+
 @MainActor
 final class GoalSettings: ObservableObject {
     static let shared = GoalSettings()

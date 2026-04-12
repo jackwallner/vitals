@@ -121,7 +121,7 @@ struct SmallWidgetView: View {
                 Image(systemName: "heart.text.clipboard")
                     .font(.title2)
                     .foregroundStyle(Theme.textTertiary)
-                Text("Open Vitals to load health data.")
+                Text("Open Total Calories to load health data.")
                     .font(.caption2)
                     .foregroundStyle(Theme.textTertiary)
                     .multilineTextAlignment(.center)
@@ -199,7 +199,7 @@ struct MediumWidgetView: View {
                     Text("No Health Data")
                         .font(.system(.subheadline, design: .rounded, weight: .medium))
                         .foregroundStyle(Theme.textSecondary)
-                    Text("Open Vitals to load your health data.")
+                    Text("Open Total Calories to load your health data.")
                         .font(.caption2)
                         .foregroundStyle(Theme.textTertiary)
                 }
@@ -244,7 +244,7 @@ struct RectangularAccessoryView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text("Vitals")
+            Text("Total Calories")
                 .font(.system(.headline, design: .rounded))
                 .widgetAccentable()
             HStack(spacing: 4) {
@@ -304,7 +304,7 @@ struct VitalsWidget: Widget {
         StaticConfiguration(kind: kind, provider: VitalsTimelineProvider()) { entry in
             VitalsWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("Vitals")
+        .configurationDisplayName("Total Calories")
         .description("Today's calories and steps.")
         .supportedFamilies([
             .systemSmall,

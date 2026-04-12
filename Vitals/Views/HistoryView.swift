@@ -5,7 +5,7 @@ import UniformTypeIdentifiers
 struct HistoryView: View {
     @StateObject private var healthKit = HealthKitService.shared
     @State private var selectedPeriod: Period = .week
-    @State private var customStart: Date = DateHelpers.daysAgo(7)
+    @State private var customStart: Date = DateHelpers.daysAgo(6)
     @State private var customEnd: Date = .now
     @State private var showCustomRange = false
     @State private var records: [DayRecord] = []
@@ -18,6 +18,7 @@ struct HistoryView: View {
     @State private var csvFile: CSVFile?
     @State private var selectedCalorieDate: Date?
     @State private var selectedStepDate: Date?
+    @State private var loadErrorMessage: String? = nil
 
     enum Period: String, CaseIterable {
         case week = "7D"
@@ -35,6 +36,10 @@ struct HistoryView: View {
             case .custom: nil
             }
         }
+    }
+
+    private var hasNoData: Bool {
+        records.isEmpty || records.allSatisfy { $0.totalCalories == 0 && $0.steps == 0 }
     }
 
     private var avgCalories: Double {
@@ -125,7 +130,28 @@ struct HistoryView: View {
                     ProgressView()
                         .tint(Theme.textTertiary)
                     Spacer()
-                } else if records.isEmpty {
+                } else if let loadErrorMessage, records.isEmpty {
+                    Spacer()
+                    VStack(spacing: 12) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .font(.system(size: 44))
+                            .foregroundStyle(Theme.textTertiary)
+                        Text("Couldn't Load History")
+                            .font(.system(.headline, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                        Text(loadErrorMessage)
+                            .font(.system(.subheadline, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 32)
+                        Button("Try Again") {
+                            Task { await loadHistory() }
+                        }
+                        .font(.system(.subheadline, design: .rounded, weight: .medium))
+                        .foregroundStyle(Theme.caloriesPrimary)
+                    }
+                    Spacer()
+                } else if hasNoData {
                     Spacer()
                     VStack(spacing: 12) {
                         Image(systemName: "figure.walk.motion")
@@ -149,6 +175,10 @@ struct HistoryView: View {
                 } else {
                     ScrollView(showsIndicators: false) {
                         VStack(spacing: 20) {
+                            if let loadErrorMessage {
+                                historyNoticeBanner(loadErrorMessage)
+                            }
+
                             // Summary cards
                             HStack(spacing: 12) {
                                 TrendCard(
@@ -193,6 +223,8 @@ struct HistoryView: View {
                                 stepsChart
                             }
 
+                            CoachPromoCard()
+
                         }
                         .padding(.horizontal, 24)
                         .padding(.top, 20)
@@ -208,6 +240,9 @@ struct HistoryView: View {
             if selectedPeriod != .custom {
                 Task { await loadHistory() }
             }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            Task { await loadHistory() }
         }
         .task {
             if ScreenshotConfig.wantsHistoryTab {
@@ -386,12 +421,33 @@ struct HistoryView: View {
         return 30
     }
 
+    private func historyNoticeBanner(_ message: String) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(Theme.caloriesPrimary)
+                .padding(.top, 2)
+            Text(message)
+                .font(.system(.caption, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
+        }
+        .padding(12)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+    }
+
     private func loadHistory() async {
         let isFirstLoad = records.isEmpty
         if isFirstLoad { isLoading = true }
         isRefreshing = true
         selectedCalorieDate = nil
         selectedStepDate = nil
+        loadErrorMessage = nil
+
+        if !healthKit.isAuthorized {
+            try? await healthKit.requestAuthorization()
+        }
+
         do {
             let history: [(date: Date, active: Double, resting: Double, steps: Int)]
             if selectedPeriod == .custom {
@@ -407,6 +463,9 @@ struct HistoryView: View {
             }
         } catch {
             print("Failed to fetch history: \(error)")
+            loadErrorMessage = records.isEmpty
+                ? "Try again in a moment or check Apple Health access."
+                : "Showing the last available data because refresh failed."
         }
         isLoading = false
         isRefreshing = false
