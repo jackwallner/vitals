@@ -7,19 +7,19 @@ private enum VitalsWatchLinks {
 }
 
 private enum WatchHealthNotice: Equatable {
-    case sampleData
+    case accessNeeded
     case noData
     case cachedData
     case loadError
 
     var message: String {
         switch self {
-        case .sampleData:
-            "Sample data preview.\nEnable Health access to see yours."
+        case .accessNeeded:
+            "Enable Apple Health access\nto load your real data."
         case .noData:
             "No Health data yet.\nCheck Apple Health access on iPhone."
         case .cachedData:
-            "Showing last saved data."
+            "Showing last good saved data."
         case .loadError:
             "Couldn't load Health data."
         }
@@ -27,8 +27,6 @@ private enum WatchHealthNotice: Equatable {
 }
 
 struct TodayView: View {
-    private static let reviewerSampleStats = (active: 420.0, resting: 1380.0, steps: 6240)
-
     @StateObject private var healthKit = HealthKitService.shared
     @Environment(\.scenePhase) var scenePhase
     @State private var activeCalories: Double = 0
@@ -116,7 +114,7 @@ struct TodayView: View {
                                 .foregroundStyle(Theme.textTertiary)
                                 .multilineTextAlignment(.center)
 
-                            if healthNotice == .sampleData {
+                            if healthNotice == .accessNeeded {
                                 Button("Enable Health") {
                                     handleHealthNoticeAction(healthNotice)
                                 }
@@ -187,7 +185,7 @@ struct TodayView: View {
     }
 
     private func handleHealthNoticeAction(_ notice: WatchHealthNotice) {
-        guard notice == .sampleData else { return }
+        guard notice == .accessNeeded else { return }
 
         Task {
             do {
@@ -197,10 +195,6 @@ struct TodayView: View {
                 healthNotice = .loadError
             }
         }
-    }
-
-    private func applyReviewerSampleStats() {
-        applyStats(Self.reviewerSampleStats)
     }
 
     private func isAllZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
@@ -214,25 +208,29 @@ struct TodayView: View {
     private func refresh() async {
         guard !isRefreshing else { return }
         isRefreshing = true
+        let cachedStats = try? healthKit.fetchCachedTodayStats()
+        let cachedHasData = cachedStats.map { healthKit.hasRecordedData($0) } ?? false
+
+        if isLoading, let cachedStats, cachedHasData {
+            applyStats(cachedStats)
+            healthNotice = .cachedData
+            showLoadedStateIfNeeded()
+        }
+
         defer { isRefreshing = false }
 
         if !healthKit.isAuthorized {
-            let requestStatus = await healthKit.authorizationRequestStatus()
-            if requestStatus != .unnecessary {
-                try? healthKit.clearTodayCache()
-                applyReviewerSampleStats()
-                healthNotice = .sampleData
-                showLoadedStateIfNeeded()
-                try? await healthKit.requestAuthorization()
-                if !healthKit.isAuthorized { return }
-            } else {
-                try? await healthKit.requestAuthorization()
-            }
+            try? await healthKit.requestAuthorization()
         }
         do {
             let stats = try await healthKit.fetchTodayStatsWithRetry()
-            applyStats(stats)
-            healthNotice = isAllZero(stats) ? .noData : nil
+            if isAllZero(stats), let cachedStats, cachedHasData {
+                applyStats(cachedStats)
+                healthNotice = .cachedData
+            } else {
+                applyStats(stats)
+                healthNotice = isAllZero(stats) ? .noData : nil
+            }
             showLoadedStateIfNeeded()
             do {
                 try await healthKit.refreshCache(stats: stats)

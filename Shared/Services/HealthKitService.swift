@@ -14,13 +14,31 @@ final class HealthKitService: ObservableObject {
     static let shared = HealthKitService()
 
     private let store = HKHealthStore()
-    @Published var isAuthorized = false // Tracks whether the authorization flow has completed this launch.
+    @Published var isAuthorized: Bool
 
     private let readTypes: Set<HKObjectType> = [
         HKQuantityType(.activeEnergyBurned),
         HKQuantityType(.basalEnergyBurned),
         HKQuantityType(.stepCount),
     ]
+
+    private init() {
+        if ScreenshotConfig.isEnabled {
+            isAuthorized = true
+        } else {
+            isAuthorized = false
+            // authorizationStatus(for:) only reports write/sharing auth — useless for
+            // read-only apps.  Use the async request-status API instead: .unnecessary
+            // means the user was already prompted (we can't know their answer for reads,
+            // but we should attempt to fetch data regardless).
+            Task {
+                let status = await self.authorizationRequestStatus()
+                if status == .unnecessary {
+                    self.isAuthorized = true
+                }
+            }
+        }
+    }
 
     // MARK: - Authorization
 
@@ -34,7 +52,6 @@ final class HealthKitService: ObservableObject {
         do {
             try await store.requestAuthorization(toShare: [], read: readTypes)
             isAuthorized = true
-            // Re-issue background delivery requests now that authorization has completed.
             enableBackgroundDelivery()
             healthKitLogger.info("HealthKit authorization request completed")
         } catch {
@@ -286,16 +303,9 @@ final class HealthKitService: ObservableObject {
             resolvedStats = try await fetchTodayStatsWithRetry()
         }
 
-        if areAllStatsZero(resolvedStats) {
-            let requestStatus = await authorizationRequestStatus()
-            if requestStatus == .shouldRequest {
-                healthKitLogger.notice("Clearing today cache because HealthKit authorization has not been requested yet")
-                try clearTodayCache()
-                return
-            }
-
-            healthKitLogger.notice("Persisting all-zero today stats after authorization flow completed")
-        }
+        healthKitLogger.info(
+            "Refreshing today cache with stats active=\(resolvedStats.active, privacy: .public) resting=\(resolvedStats.resting, privacy: .public) steps=\(resolvedStats.steps, privacy: .public)"
+        )
 
         let context = ModelContext(DataService.sharedModelContainer)
         let today = DateHelpers.startOfDay()
@@ -305,6 +315,29 @@ final class HealthKitService: ObservableObject {
             predicate: #Predicate { $0.dateString == todayKey }
         )
         let existing = try context.fetch(descriptor).first
+
+        if areAllStatsZero(resolvedStats) {
+            let requestStatus = await authorizationRequestStatus()
+            let existingHasData = existing.map {
+                hasRecordedData((active: $0.activeCalories, resting: $0.restingCalories, steps: $0.steps))
+            } ?? false
+
+            healthKitLogger.notice(
+                "Resolved all-zero today stats requestStatus=\(String(describing: requestStatus), privacy: .public) existingHasData=\(existingHasData, privacy: .public)"
+            )
+
+            if requestStatus == .shouldRequest {
+                healthKitLogger.notice("Skipping cache write for all-zero stats because authorization is not settled")
+                return
+            }
+
+            if existingHasData {
+                healthKitLogger.notice("Skipping cache overwrite because existing today cache already has non-zero values")
+                return
+            }
+
+            healthKitLogger.notice("Persisting all-zero today stats because there is no better same-day cache to preserve")
+        }
 
         if let record = existing {
             record.activeCalories = resolvedStats.active
@@ -355,8 +388,18 @@ final class HealthKitService: ObservableObject {
             predicate: #Predicate { $0.dateString == todayKey }
         )
 
-        guard let record = try context.fetch(descriptor).first else { return nil }
+        guard let record = try context.fetch(descriptor).first else {
+            healthKitLogger.info("No cached today stats found")
+            return nil
+        }
+        healthKitLogger.info(
+            "Loaded cached today stats active=\(record.activeCalories, privacy: .public) resting=\(record.restingCalories, privacy: .public) steps=\(record.steps, privacy: .public) lastUpdated=\(String(describing: record.lastUpdated), privacy: .public)"
+        )
         return (active: record.activeCalories, resting: record.restingCalories, steps: record.steps)
+    }
+
+    func hasRecordedData(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
+        stats.active > 0 || stats.resting > 0 || stats.steps > 0
     }
 
     // MARK: - Private Helpers
