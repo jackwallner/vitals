@@ -23,6 +23,9 @@ Package.resolved
 # CocoaPods
 Pods/
 
+# Headache Logger lives in https://github.com/jackwallner/headaches (nested git / ignored here)
+headaches/
+
 # Misc
 .DS_Store
 *.swp
