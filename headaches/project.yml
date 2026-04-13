@@ -13,7 +13,7 @@ settings:
     DEVELOPMENT_TEAM: YXG4MP6W39
     CODE_SIGN_STYLE: Automatic
     MARKETING_VERSION: "1.0"
-    CURRENT_PROJECT_VERSION: "12"
+    CURRENT_PROJECT_VERSION: "13"
     GENERATE_INFOPLIST_FILE: NO
 
 schemes:
@@ -21,9 +21,15 @@ schemes:
     build:
       targets:
         HeadacheLogger: all
+        HeadacheLoggerWidget: all
         HeadacheLoggerWatch: all
     run:
       config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: false
+      targets:
+        - HeadacheLoggerTests
   HeadacheLoggerWatch:
     build:
       targets:
@@ -47,8 +53,23 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         TARGETED_DEVICE_FAMILY: "1"
     dependencies:
+      - target: HeadacheLoggerWidget
       - target: HeadacheLoggerWatch
         embed: true
+
+  HeadacheLoggerWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: HeadacheLoggerWidget
+      - path: SharedHeadache
+      - path: HeadacheLogger/Models/HeadacheEvent.swift
+      - path: HeadacheLogger/Services/HeadacheModelStore.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jackwallner.headachelogger.widget
+        INFOPLIST_FILE: HeadacheLoggerWidget/Info.plist
+        CODE_SIGN_ENTITLEMENTS: HeadacheLoggerWidget/HeadacheLoggerWidget.entitlements
 
   HeadacheLoggerWatch:
     type: application

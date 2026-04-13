@@ -85,6 +85,16 @@ final class HeadacheLoggerTests: XCTestCase {
         XCTAssertEqual(event.captureStatus, .partial)
     }
 
+    func testFinalizeCaptureMarksPartialWhenBothSourcesUnavailable() {
+        let event = HeadacheEvent()
+        event.apply(HealthCaptureResult(status: .unavailable, message: nil, snapshot: nil))
+        event.apply(EnvironmentCaptureResult(status: .unavailable, message: nil, snapshot: nil))
+
+        event.finalizeCapture()
+
+        XCTAssertEqual(event.captureStatus, .partial)
+    }
+
     func testSleepIntervalMergeCombinesCloseSegments() {
         let t0 = Date(timeIntervalSince1970: 1_700_000_000)
         let a = SleepIntervalMerge.Interval(start: t0, end: t0.addingTimeInterval(3600))

@@ -368,9 +368,11 @@ final class HeadacheEvent {
             captureStatus = .complete
         case (.failed, .failed),
              (.failed, .unavailable),
-             (.unavailable, .failed),
-             (.unavailable, .unavailable):
+             (.unavailable, .failed):
             captureStatus = .failed
+        case (.unavailable, .unavailable):
+            // e.g. widget / offline log with no Health or weather in that process
+            captureStatus = .partial
         case (.pending, _), (_, .pending):
             captureStatus = .pending
         default:
