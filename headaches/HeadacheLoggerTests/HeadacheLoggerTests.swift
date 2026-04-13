@@ -2,6 +2,11 @@ import XCTest
 @testable import HeadacheLogger
 
 final class HeadacheLoggerTests: XCTestCase {
+    override class func setUp() {
+        super.setUp()
+        HeadacheAppGroup.userDefaults.set(true, forKey: HeadacheStorageKey.hasCompletedOnboarding.rawValue)
+    }
+
     func testPartOfDayMapping() {
         let calendar = Calendar(identifier: .gregorian)
 

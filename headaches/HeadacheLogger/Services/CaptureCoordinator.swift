@@ -8,6 +8,11 @@ final class CaptureCoordinator: ObservableObject {
     @Published var lastCapturedEventID: UUID?
 
     func captureHeadache(in context: ModelContext) {
+        guard HeadacheOnboardingStore.hasCompletedOnboarding || AppEnvironment.bypassOnboarding else {
+            bannerMessage = "Finish setup on your iPhone first."
+            return
+        }
+
         let event = HeadacheEvent()
         context.insert(event)
         lastCapturedEventID = event.id
@@ -27,11 +32,9 @@ final class CaptureCoordinator: ObservableObject {
         let timestamp = event.timestamp
 
         Task { @MainActor in
-            async let healthTask = HealthKitService.shared.captureSnapshot(at: timestamp)
-            async let environmentTask = EnvironmentService.shared.captureSnapshot(at: timestamp)
-
-            let health = await healthTask
-            let environment = await environmentTask
+            // Serialize Health then environment so two permission / heavy queries never race on first launch.
+            let health = await HealthKitService.shared.captureSnapshot(at: timestamp)
+            let environment = await EnvironmentService.shared.captureSnapshot(at: timestamp)
 
             var descriptor = FetchDescriptor<HeadacheEvent>(
                 predicate: #Predicate { $0.id == eventID }

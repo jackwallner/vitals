@@ -10,9 +10,14 @@
 		0A8924E6D51FD77217D15D72 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91367B1F7BDF8F54249C011B /* AppEnvironment.swift */; };
 		0BDA0F43A3DBCF726D2808F0 /* CaptureCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9017BED492A2E12B9B6E6710 /* CaptureCoordinator.swift */; };
 		15355C773AA6EC62A317CE4C /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4F5DFE3F1B9280D66F7F8B /* RootTabView.swift */; };
+		15FAF490AD8702BC97EE2792 /* HeadacheLoggerWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 929113AA327F62936E27766E /* HeadacheLoggerWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		241DD8715CD0129FEB0E4693 /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637BE807C4B06F925D4E872E /* AppAppearance.swift */; };
 		3D42B6E3B8CE8428D6E4E2C1 /* SleepIntervalMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BECD2401272F50D2B638AF /* SleepIntervalMerge.swift */; };
 		5AC9907AC49938F12C167AA6 /* HeadacheModelStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E751F1E7C7BA481BDAA80CC8 /* HeadacheModelStore.swift */; };
+		6CFD72F3A80156A2FB145833 /* PhoneWatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBAB3D4F53FE3E6F6A3972A /* PhoneWatchSession.swift */; };
+		7D78EBD5BA76358D7D4F22AD /* WatchRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D0A59FF265EBA9AB8F8D5 /* WatchRootView.swift */; };
+		8140D26D4D94F7E30B6B1F0A /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9374226F8FD525B4B20127E /* OnboardingView.swift */; };
+		91CDB6C33CBEDA295626BBF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B3C0026857E7B70CB3A1374 /* Assets.xcassets */; };
 		9464BD8B40A16D2F7896B2E4 /* EnvironmentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B16FC15F8E41B6B50325727 /* EnvironmentService.swift */; };
 		9BFB6F53C055BF3E8BCD2572 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8472C3F09A9A16899D362E3 /* HealthKitService.swift */; };
 		9D9AA6EE42868909A48B6A0C /* HeadacheLoggerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBB32A1879C8B3C1A1FBAAA /* HeadacheLoggerApp.swift */; };
@@ -20,13 +25,24 @@
 		A985C9AFC8D191117B378E26 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9C78392E24C65D489A0719 /* ShareSheet.swift */; };
 		AEB435D0B9D90A9DE04104C1 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9FDF0333E813841B3E325A /* HistoryView.swift */; };
 		B0506BCFEF861EE5962D48FC /* HeadacheLoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75B1D38A2F3FA4E4F7395C1 /* HeadacheLoggerTests.swift */; };
+		D2154AC55D1BE4F18F71BA40 /* HeadacheAppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC0792289CA354CC0B28C43 /* HeadacheAppGroup.swift */; };
+		D2A25F0E0B62B270B3DB00B6 /* HeadacheAppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC0792289CA354CC0B28C43 /* HeadacheAppGroup.swift */; };
 		D9447241D9F98FDCBFED788D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334426D57EADD647A3B13738 /* HomeView.swift */; };
 		DFBE92F8E24C185CF581D00D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92D22239C0ACC0D64E3DC4B0 /* Assets.xcassets */; };
 		E538D8F43DB4C45FE484D2B5 /* HeadacheEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B54EB5A64427B7DC43A2F /* HeadacheEvent.swift */; };
+		E623D1C2F71F3796060EE253 /* WatchConnectivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE39D707E377269384673F20 /* WatchConnectivityController.swift */; };
 		E938982AF2A9E8A440A41076 /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9559AD161DB11A658E6B00B1 /* ExportService.swift */; };
+		FC374774D642F632FF0C187D /* HeadacheLoggerWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8026F9C47B64B8A6FD41748E /* HeadacheLoggerWatchApp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A028ED7777135C564F14B43B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB1CD75571C6096FB24B924A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D5C1B40891CD144F38DCC318;
+			remoteInfo = HeadacheLoggerWatch;
+		};
 		C7644AEF84CB551BACBB441A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EB1CD75571C6096FB24B924A /* Project object */;
@@ -36,36 +52,75 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		67CCBC5A36D12815931CAB70 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				15FAF490AD8702BC97EE2792 /* HeadacheLoggerWatch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		028643EDD9B08EDA8DF0B000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0A4B54EB5A64427B7DC43A2F /* HeadacheEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadacheEvent.swift; sourceTree = "<group>"; };
 		254CAEEDC5A2E194D94ED45D /* HeadacheLoggerTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HeadacheLoggerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CBAB3D4F53FE3E6F6A3972A /* PhoneWatchSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneWatchSession.swift; sourceTree = "<group>"; };
 		334426D57EADD647A3B13738 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		48CE1BF4F327855139BB6EA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		5AC0792289CA354CC0B28C43 /* HeadacheAppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadacheAppGroup.swift; sourceTree = "<group>"; };
 		5F86B975265B817C3153C40E /* HeadacheLogger.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HeadacheLogger.entitlements; sourceTree = "<group>"; };
 		5FBB32A1879C8B3C1A1FBAAA /* HeadacheLoggerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadacheLoggerApp.swift; sourceTree = "<group>"; };
 		637BE807C4B06F925D4E872E /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
 		7B16FC15F8E41B6B50325727 /* EnvironmentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentService.swift; sourceTree = "<group>"; };
+		8026F9C47B64B8A6FD41748E /* HeadacheLoggerWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadacheLoggerWatchApp.swift; sourceTree = "<group>"; };
 		87BECD2401272F50D2B638AF /* SleepIntervalMerge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepIntervalMerge.swift; sourceTree = "<group>"; };
 		9017BED492A2E12B9B6E6710 /* CaptureCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureCoordinator.swift; sourceTree = "<group>"; };
 		91367B1F7BDF8F54249C011B /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		929113AA327F62936E27766E /* HeadacheLoggerWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HeadacheLoggerWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92D22239C0ACC0D64E3DC4B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9559AD161DB11A658E6B00B1 /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
+		9B3C0026857E7B70CB3A1374 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9B4F5DFE3F1B9280D66F7F8B /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		9E9FDF0333E813841B3E325A /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		9F9C78392E24C65D489A0719 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
 		A8472C3F09A9A16899D362E3 /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
+		AE39D707E377269384673F20 /* WatchConnectivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityController.swift; sourceTree = "<group>"; };
 		B75B1D38A2F3FA4E4F7395C1 /* HeadacheLoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadacheLoggerTests.swift; sourceTree = "<group>"; };
 		B769DAEFB80D24E6E5B23726 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C88D1313C9785E44B4C49729 /* HeadacheLoggerWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HeadacheLoggerWatch.entitlements; sourceTree = "<group>"; };
+		C9374226F8FD525B4B20127E /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		E51D0A59FF265EBA9AB8F8D5 /* WatchRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchRootView.swift; sourceTree = "<group>"; };
 		E751F1E7C7BA481BDAA80CC8 /* HeadacheModelStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadacheModelStore.swift; sourceTree = "<group>"; };
 		F790B5264C2F84568B71E41B /* HeadacheLogger.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HeadacheLogger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		12870099A3080103CBA93739 /* HeadacheLoggerWatch */ = {
+			isa = PBXGroup;
+			children = (
+				9B3C0026857E7B70CB3A1374 /* Assets.xcassets */,
+				C88D1313C9785E44B4C49729 /* HeadacheLoggerWatch.entitlements */,
+				8026F9C47B64B8A6FD41748E /* HeadacheLoggerWatchApp.swift */,
+				48CE1BF4F327855139BB6EA8 /* Info.plist */,
+				AE39D707E377269384673F20 /* WatchConnectivityController.swift */,
+				E51D0A59FF265EBA9AB8F8D5 /* WatchRootView.swift */,
+			);
+			path = HeadacheLoggerWatch;
+			sourceTree = "<group>";
+		};
 		2CD9FBF7829FE799B22F125B = {
 			isa = PBXGroup;
 			children = (
 				DE041BE3B5B6E822BC4C17D2 /* HeadacheLogger */,
 				58E0B70DD8BDD0AC07D0AFA0 /* HeadacheLoggerTests */,
+				12870099A3080103CBA93739 /* HeadacheLoggerWatch */,
+				6D88C178D52B76CBD87FC7E8 /* SharedHeadache */,
 				2D4619A774712F5E0995445C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -75,6 +130,7 @@
 			children = (
 				F790B5264C2F84568B71E41B /* HeadacheLogger.app */,
 				254CAEEDC5A2E194D94ED45D /* HeadacheLoggerTests.xctest */,
+				929113AA327F62936E27766E /* HeadacheLoggerWatch.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -85,6 +141,14 @@
 				B75B1D38A2F3FA4E4F7395C1 /* HeadacheLoggerTests.swift */,
 			);
 			path = HeadacheLoggerTests;
+			sourceTree = "<group>";
+		};
+		6D88C178D52B76CBD87FC7E8 /* SharedHeadache */ = {
+			isa = PBXGroup;
+			children = (
+				5AC0792289CA354CC0B28C43 /* HeadacheAppGroup.swift */,
+			);
+			path = SharedHeadache;
 			sourceTree = "<group>";
 		};
 		A660758C5C4FB2254EB12DEB /* Utilities */ = {
@@ -113,6 +177,7 @@
 				9559AD161DB11A658E6B00B1 /* ExportService.swift */,
 				E751F1E7C7BA481BDAA80CC8 /* HeadacheModelStore.swift */,
 				A8472C3F09A9A16899D362E3 /* HealthKitService.swift */,
+				2CBAB3D4F53FE3E6F6A3972A /* PhoneWatchSession.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -137,6 +202,7 @@
 			children = (
 				9E9FDF0333E813841B3E325A /* HistoryView.swift */,
 				334426D57EADD647A3B13738 /* HomeView.swift */,
+				C9374226F8FD525B4B20127E /* OnboardingView.swift */,
 				9B4F5DFE3F1B9280D66F7F8B /* RootTabView.swift */,
 				B769DAEFB80D24E6E5B23726 /* SettingsView.swift */,
 				9F9C78392E24C65D489A0719 /* ShareSheet.swift */,
@@ -153,16 +219,36 @@
 			buildPhases = (
 				89464F6A28B29E2F68F0A57B /* Sources */,
 				7334543B2A6C03A5E95FB5D7 /* Resources */,
+				67CCBC5A36D12815931CAB70 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				DBB1BA1BED695D606A2481F1 /* PBXTargetDependency */,
 			);
 			name = HeadacheLogger;
 			packageProductDependencies = (
 			);
 			productName = HeadacheLogger;
 			productReference = F790B5264C2F84568B71E41B /* HeadacheLogger.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D5C1B40891CD144F38DCC318 /* HeadacheLoggerWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 36E3B6524569EA0B449E4DE8 /* Build configuration list for PBXNativeTarget "HeadacheLoggerWatch" */;
+			buildPhases = (
+				8313209D82B4F5D8190D5175 /* Sources */,
+				3C4D8149C16C2F11226AFC10 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HeadacheLoggerWatch;
+			packageProductDependencies = (
+			);
+			productName = HeadacheLoggerWatch;
+			productReference = 929113AA327F62936E27766E /* HeadacheLoggerWatch.app */;
 			productType = "com.apple.product-type.application";
 		};
 		F455076FFCFCF8B2494EF2AF /* HeadacheLoggerTests */ = {
@@ -196,6 +282,10 @@
 						DevelopmentTeam = YXG4MP6W39;
 						ProvisioningStyle = Automatic;
 					};
+					D5C1B40891CD144F38DCC318 = {
+						DevelopmentTeam = YXG4MP6W39;
+						ProvisioningStyle = Automatic;
+					};
 					F455076FFCFCF8B2494EF2AF = {
 						DevelopmentTeam = YXG4MP6W39;
 						ProvisioningStyle = Automatic;
@@ -218,11 +308,20 @@
 			targets = (
 				B04FF1B2716F4FF668CB3377 /* HeadacheLogger */,
 				F455076FFCFCF8B2494EF2AF /* HeadacheLoggerTests */,
+				D5C1B40891CD144F38DCC318 /* HeadacheLoggerWatch */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3C4D8149C16C2F11226AFC10 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91CDB6C33CBEDA295626BBF9 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7334543B2A6C03A5E95FB5D7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -234,6 +333,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		8313209D82B4F5D8190D5175 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2154AC55D1BE4F18F71BA40 /* HeadacheAppGroup.swift in Sources */,
+				FC374774D642F632FF0C187D /* HeadacheLoggerWatchApp.swift in Sources */,
+				E623D1C2F71F3796060EE253 /* WatchConnectivityController.swift in Sources */,
+				7D78EBD5BA76358D7D4F22AD /* WatchRootView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		89464F6A28B29E2F68F0A57B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -243,12 +353,15 @@
 				0BDA0F43A3DBCF726D2808F0 /* CaptureCoordinator.swift in Sources */,
 				9464BD8B40A16D2F7896B2E4 /* EnvironmentService.swift in Sources */,
 				E938982AF2A9E8A440A41076 /* ExportService.swift in Sources */,
+				D2A25F0E0B62B270B3DB00B6 /* HeadacheAppGroup.swift in Sources */,
 				E538D8F43DB4C45FE484D2B5 /* HeadacheEvent.swift in Sources */,
 				9D9AA6EE42868909A48B6A0C /* HeadacheLoggerApp.swift in Sources */,
 				5AC9907AC49938F12C167AA6 /* HeadacheModelStore.swift in Sources */,
 				9BFB6F53C055BF3E8BCD2572 /* HealthKitService.swift in Sources */,
 				AEB435D0B9D90A9DE04104C1 /* HistoryView.swift in Sources */,
 				D9447241D9F98FDCBFED788D /* HomeView.swift in Sources */,
+				8140D26D4D94F7E30B6B1F0A /* OnboardingView.swift in Sources */,
+				6CFD72F3A80156A2FB145833 /* PhoneWatchSession.swift in Sources */,
 				15355C773AA6EC62A317CE4C /* RootTabView.swift in Sources */,
 				A2D71CF1BFC7D3DAD716F624 /* SettingsView.swift in Sources */,
 				A985C9AFC8D191117B378E26 /* ShareSheet.swift in Sources */,
@@ -272,6 +385,11 @@
 			target = B04FF1B2716F4FF668CB3377 /* HeadacheLogger */;
 			targetProxy = C7644AEF84CB551BACBB441A /* PBXContainerItemProxy */;
 		};
+		DBB1BA1BED695D606A2481F1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D5C1B40891CD144F38DCC318 /* HeadacheLoggerWatch */;
+			targetProxy = A028ED7777135C564F14B43B /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -290,6 +408,20 @@
 				PRODUCT_NAME = HeadacheLogger;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		0BB3BCD543C5ABC60C64D244 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HeadacheLoggerWatch/HeadacheLoggerWatch.entitlements;
+				INFOPLIST_FILE = HeadacheLoggerWatch/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.headachelogger.watch;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -346,7 +478,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 11;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -372,10 +504,10 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -395,6 +527,20 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HeadacheLogger.app/HeadacheLogger";
 			};
 			name = Release;
+		};
+		86F2D8043740F10D5EB2424C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HeadacheLoggerWatch/HeadacheLoggerWatch.entitlements;
+				INFOPLIST_FILE = HeadacheLoggerWatch/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.headachelogger.watch;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
 		};
 		C5D5D7342EE85EEFE64B07E0 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -431,7 +577,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 11;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -450,10 +596,10 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -482,6 +628,15 @@
 			buildConfigurations = (
 				26A5D4E51FE5B6EC60CF6220 /* Debug */,
 				C5D5D7342EE85EEFE64B07E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		36E3B6524569EA0B449E4DE8 /* Build configuration list for PBXNativeTarget "HeadacheLoggerWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86F2D8043740F10D5EB2424C /* Debug */,
+				0BB3BCD543C5ABC60C64D244 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

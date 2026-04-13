@@ -15,20 +15,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B04FF1B2716F4FF668CB3377"
-               BuildableName = "HeadacheLogger.app"
-               BlueprintName = "HeadacheLogger"
-               ReferencedContainer = "container:HeadacheLogger.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "D5C1B40891CD144F38DCC318"
                BuildableName = "HeadacheLoggerWatch.app"
                BlueprintName = "HeadacheLoggerWatch"
@@ -46,9 +32,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B04FF1B2716F4FF668CB3377"
-            BuildableName = "HeadacheLogger.app"
-            BlueprintName = "HeadacheLogger"
+            BlueprintIdentifier = "D5C1B40891CD144F38DCC318"
+            BuildableName = "HeadacheLoggerWatch.app"
+            BlueprintName = "HeadacheLoggerWatch"
             ReferencedContainer = "container:HeadacheLogger.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -69,9 +55,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B04FF1B2716F4FF668CB3377"
-            BuildableName = "HeadacheLogger.app"
-            BlueprintName = "HeadacheLogger"
+            BlueprintIdentifier = "D5C1B40891CD144F38DCC318"
+            BuildableName = "HeadacheLoggerWatch.app"
+            BlueprintName = "HeadacheLoggerWatch"
             ReferencedContainer = "container:HeadacheLogger.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -88,9 +74,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B04FF1B2716F4FF668CB3377"
-            BuildableName = "HeadacheLogger.app"
-            BlueprintName = "HeadacheLogger"
+            BlueprintIdentifier = "D5C1B40891CD144F38DCC318"
+            BuildableName = "HeadacheLoggerWatch.app"
+            BlueprintName = "HeadacheLoggerWatch"
             ReferencedContainer = "container:HeadacheLogger.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

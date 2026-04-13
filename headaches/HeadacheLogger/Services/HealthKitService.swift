@@ -99,6 +99,14 @@ actor HealthKitService {
             )
         }
 
+        if HeadacheOnboardingStore.declinedHealthRead {
+            return HealthCaptureResult(
+                status: .unavailable,
+                message: "Apple Health access was turned off during setup. You can enable it in Settings › Privacy › Health.",
+                snapshot: nil
+            )
+        }
+
         do {
             try await requestAuthorizationIfNeeded()
 
@@ -253,7 +261,26 @@ actor HealthKitService {
         }
     }
 
+    /// Call from onboarding so the first “Headache” tap does not show the Health permission sheet mid-capture.
+    func prepareAuthorizationDuringOnboarding() async throws {
+        guard HKHealthStore.isHealthDataAvailable() else { return }
+        guard !HeadacheOnboardingStore.declinedHealthRead else {
+            hasRequestedAuthorization = true
+            return
+        }
+        try await store.requestAuthorization(toShare: [], read: readTypes)
+        hasRequestedAuthorization = true
+    }
+
+    /// User chose not to connect Health during onboarding — skip future authorization prompts during capture.
+    func markHealthSkippedInOnboarding() {
+        hasRequestedAuthorization = true
+    }
+
     private func requestAuthorizationIfNeeded() async throws {
+        if HeadacheOnboardingStore.declinedHealthRead {
+            return
+        }
         guard !hasRequestedAuthorization else { return }
         try await store.requestAuthorization(toShare: [], read: readTypes)
         hasRequestedAuthorization = true

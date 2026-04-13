@@ -3,14 +3,45 @@ import Foundation
 
 /// Location + weather enrichment using Core Location and Open-Meteo (no WeatherKit entitlement required).
 @MainActor
-final class EnvironmentService: NSObject {
+final class EnvironmentService: NSObject, CLLocationManagerDelegate {
     static let shared = EnvironmentService()
 
     private let manager = CLLocationManager()
+    private var locationOnboardingContinuation: CheckedContinuation<Void, Never>?
 
     private override init() {
         super.init()
+        manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyKilometer
+    }
+
+    /// Call from onboarding so the first capture does not show the location sheet mid-query.
+    func prepareLocationAuthorizationDuringOnboarding() async {
+        guard CLLocationManager.locationServicesEnabled() else { return }
+        guard !HeadacheOnboardingStore.declinedLocation else { return }
+        switch manager.authorizationStatus {
+        case .notDetermined:
+            await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+                locationOnboardingContinuation = continuation
+                manager.requestWhenInUseAuthorization()
+            }
+        default:
+            break
+        }
+    }
+
+    func markLocationSkippedInOnboarding() {}
+
+    nonisolated func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        Task { @MainActor in
+            self.finishLocationOnboardingWaitIfReady()
+        }
+    }
+
+    private func finishLocationOnboardingWaitIfReady() {
+        guard manager.authorizationStatus != .notDetermined else { return }
+        locationOnboardingContinuation?.resume()
+        locationOnboardingContinuation = nil
     }
 
     func locationAuthorizationSummary() -> String {
@@ -31,6 +62,14 @@ final class EnvironmentService: NSObject {
 
     func captureSnapshot(at date: Date) async -> EnvironmentCaptureResult {
         _ = date
+        if HeadacheOnboardingStore.declinedLocation {
+            return EnvironmentCaptureResult(
+                status: .unavailable,
+                message: "Location was turned off during setup. Enable it in Settings › Privacy › Location to add weather and place context.",
+                snapshot: nil
+            )
+        }
+
         guard CLLocationManager.locationServicesEnabled() else {
             return EnvironmentCaptureResult(
                 status: .unavailable,
