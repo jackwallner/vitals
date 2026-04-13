@@ -66,6 +66,14 @@ See your total calories burned and steps in one place. Private, simple, always u
 
 109/170 characters.
 
+**Alternate (mentions widgets + Watch):**
+
+```
+Home screen widgets, Apple Watch complications, and a clean dashboard — all from Apple Health, all on device.
+```
+
+155/170 characters.
+
 ---
 
 ## Keywords
@@ -82,7 +90,51 @@ health,fitness,pedometer,activity,widget,watch,energy,exercise,walking,progress,
 
 ---
 
-## What's New (Version 1.0.0)
+## What's New (Version 1.1.0)
+
+Paste into **What’s New in This Version** (plain text, no markdown). This list covers **everything user-facing since 1.0.0** (git history through current `main`, including reliability work after the initial launch).
+
+**Full notes** (~1,900 characters — under the 4,000 limit):
+
+---COPY START---
+
+What’s new since 1.0.0
+
+Reliability & Apple Health
+• Fixes a rare crash during background refresh.
+• Better handling when connecting to Apple Health — authorization is coordinated with onboarding and refresh, so data loads more predictably.
+• Today’s calories and steps use the same daily totals logic as the History tab, so the dashboard and charts stay consistent.
+• Clearer messages when Health access is still needed, data is still syncing, or a refresh failed (instead of silent empty screens).
+
+Today & History
+• Pull down on Today to refresh; the screen shows when values were last updated.
+• History remembers your last period (7 / 30 / 90 / 365 days or a custom range) across launches.
+• History has improved error handling with retry when a load fails.
+
+Widgets, Lock Screen & Apple Watch
+• Home screen widgets, lock screen widgets, and watch complications respect which metrics you’ve turned on in Settings.
+• Widgets and complications show goal-style progress when you use goals, and scale better when only one metric is visible.
+• Calorie and step goals set on iPhone sync to Apple Watch for a consistent experience.
+
+Other
+• Optional coaching discovery (E3 Fitness) appears in Settings and History if you want to explore training services.
+• Privacy policy and support pages updated on the web site linked from the app.
+
+---COPY END---
+
+**Short notes** (if you prefer a compact App Store blurb):
+
+---COPY SHORT START---
+
+• Fixes background-refresh stability and Health loading edge cases.
+• Today’s totals now match History; pull to refresh on Today.
+• History remembers your chart period; better errors with retry.
+• Widgets & Watch complications respect your toggles and goals; goals sync phone ↔ watch.
+• Clearer Health permission and status messages.
+
+---COPY SHORT END---
+
+## What's New (Version 1.0.0) — archive
 
 ```
 Initial release.
@@ -153,7 +205,7 @@ On first launch, the app asks you to set optional goals (you may skip this). iOS
 - Basal Energy Burned
 - Step Count
 
-If access is denied, the app shows sample data with a banner indicating it is not real. This is intentional so users can preview the experience before granting access.
+If access is denied or not yet granted, the app shows a banner explaining that Health access is needed (no fake or placeholder health numbers). Users can open Settings or the Health app from that banner.
 
 iPHONE FEATURES
 
@@ -190,6 +242,23 @@ If available, attach a short screen recording showing the dashboard, history tab
 
 ## Screenshots Required
 
+### iPhone 6.5" Display (Media Manager slot)
+
+App Store Connect only accepts **exact** pixel sizes for this slot, for example:
+
+- **Portrait:** `1284 × 2778` or `1242 × 2688`
+- **Landscape:** `2778 × 1284` or `2688 × 1242`
+
+**Best source:** Xcode **Simulator** → choose a 6.5" class phone (e.g. iPhone 14 Pro Max / 16 Pro Max) → run the app → **File → Save Screen** (saves correct dimensions). Or full-resolution PNGs from a physical device export (Photos → Share → Save to Files), then resize if needed.
+
+**Resize tool (repo):** from the project root, with Pillow installed (`pip3 install Pillow`):
+
+```bash
+python3 scripts/letterbox_app_store_iphone65.py --out ./build/app_store_iphone65 ~/path/to/raw-screenshots/*.png
+```
+
+Outputs **1284×2778** letterboxed PNGs App Store Connect accepts. Use **high-resolution** sources — upscaling small thumbnails looks blurry in the store.
+
 ### iPhone 6.7" (required)
 
 Device: iPhone 15 Pro Max or 17 Pro Max
@@ -223,7 +292,7 @@ Optional: complication shown on a watch face.
 - [ ] Privacy policy URL returns 200
 - [ ] Support URL returns 200
 - [ ] HealthKit usage descriptions are specific in both Info.plist files
-- [ ] App handles denied HealthKit permissions (shows sample data + banner)
+- [ ] App handles denied HealthKit permissions (guidance + Settings link)
 - [ ] App handles empty Health data without crashing
 - [ ] No health data stored in iCloud
 - [ ] App Privacy declarations completed in App Store Connect

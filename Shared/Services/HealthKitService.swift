@@ -82,20 +82,67 @@ final class HealthKitService: ObservableObject {
 
     // MARK: - Today's Stats
 
+    /// Apple does not expose whether the user allowed *reads*; `getRequestStatus` only reflects whether
+    /// the permission sheet still needs to be shown. After that, always query — empty vs denied is indistinguishable.
+    func synchronizeAuthorizationStateForFetching() async {
+        if ScreenshotConfig.isEnabled {
+            isAuthorized = true
+            return
+        }
+        guard HKHealthStore.isHealthDataAvailable() else { return }
+        guard let status = await authorizationRequestStatus() else { return }
+        switch status {
+        case .shouldRequest:
+            do {
+                try await requestAuthorization()
+            } catch {
+                healthKitLogger.error("synchronizeAuthorizationStateForFetching: requestAuthorization failed: \(String(describing: error), privacy: .public)")
+            }
+        case .unnecessary:
+            isAuthorized = true
+        @unknown default:
+            isAuthorized = true
+        }
+    }
+
     func fetchTodayStats() async throws -> (active: Double, resting: Double, steps: Int) {
         #if DEBUG
         if ScreenshotConfig.isEnabled {
             return ScreenshotFixtures.todayStats()
         }
         #endif
-        let start = DateHelpers.startOfDay()
-        nonisolated(unsafe) let predicate = HKQuery.predicateForSamples(withStart: start, end: .now, options: .strictStartDate)
+        // Use the same HealthKit path as `fetchHistory` / the History tab: `HKStatisticsCollectionQuery`
+        // with a daily interval and *no* per-sample predicate. Apple documents collection queries for
+        // partitioning quantities into fixed intervals (e.g. days):
+        // https://developer.apple.com/documentation/healthkit/executing-statistics-collection-queries
+        //
+        // For a single calendar day, match the interval used across the rest of this file: `[dayStart, dayEnd)`
+        // where `dayEnd` is the start of the next day (same as `fetchHistory(from:to:)` after it extends `end`).
+        // Apple's statistical-queries sample also uses midnight → next midnight for the predicate window:
+        // https://developer.apple.com/documentation/healthkit/executing-statistical-queries
+        let calendar = Calendar.current
+        let dayStart = DateHelpers.startOfDay()
+        guard let dayEnd = calendar.date(byAdding: .day, value: 1, to: dayStart) else {
+            healthKitLogger.error("fetchTodayStats: could not compute start of tomorrow after dayStart")
+            throw NSError(
+                domain: "com.jackwallner.vitals.healthkit",
+                code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "Calendar could not compute end of day."]
+            )
+        }
+        let interval = DateComponents(day: 1)
 
-        async let active = queryCumulativeSum(.activeEnergyBurned, unit: .kilocalorie(), predicate: predicate)
-        async let resting = queryCumulativeSum(.basalEnergyBurned, unit: .kilocalorie(), predicate: predicate)
-        async let steps = queryCumulativeSum(.stepCount, unit: .count(), predicate: predicate)
+        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: dayStart, end: dayEnd, interval: interval)
+        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: dayStart, end: dayEnd, interval: interval)
+        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: dayStart, end: dayEnd, interval: interval)
 
-        return try await (active: active, resting: resting, steps: Int(steps))
+        let (active, resting, steps) = try await (activeMap, restingMap, stepsMap)
+
+        return (
+            active: active[dayStart] ?? 0,
+            resting: resting[dayStart] ?? 0,
+            steps: Int(steps[dayStart] ?? 0)
+        )
     }
 
     func fetchTodayStatsWithRetry(
@@ -406,29 +453,6 @@ final class HealthKitService: ObservableObject {
 
     private func areAllStatsZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
         stats.active == 0 && stats.resting == 0 && stats.steps == 0
-    }
-
-    private nonisolated func queryCumulativeSum(
-        _ identifier: HKQuantityTypeIdentifier,
-        unit: HKUnit,
-        predicate: NSPredicate
-    ) async throws -> Double {
-        let store = self.store
-        return try await withCheckedThrowingContinuation { continuation in
-            let query = HKStatisticsQuery(
-                quantityType: HKQuantityType(identifier),
-                quantitySamplePredicate: predicate,
-                options: .cumulativeSum
-            ) { _, statistics, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                    return
-                }
-                let value = statistics?.sumQuantity()?.doubleValue(for: unit) ?? 0
-                continuation.resume(returning: value)
-            }
-            store.execute(query)
-        }
     }
 
     private nonisolated func queryStatisticsCollection(

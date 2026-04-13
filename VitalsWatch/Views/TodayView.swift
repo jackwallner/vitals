@@ -219,9 +219,7 @@ struct TodayView: View {
 
         defer { isRefreshing = false }
 
-        if !healthKit.isAuthorized {
-            try? await healthKit.requestAuthorization()
-        }
+        await healthKit.synchronizeAuthorizationStateForFetching()
         do {
             let stats = try await healthKit.fetchTodayStatsWithRetry()
             if isAllZero(stats), let cachedStats, cachedHasData {
@@ -238,7 +236,8 @@ struct TodayView: View {
                 print("Failed to refresh watch cache: \(error)")
             }
         } catch {
-            print("Failed to fetch stats: \(error)")
+            let ns = error as NSError
+            print("Failed to fetch stats: \(error) domain=\(ns.domain) code=\(ns.code) userInfo=\(ns.userInfo)")
             if let cachedStats = try? healthKit.fetchCachedTodayStats() {
                 applyStats(cachedStats)
                 healthNotice = .cachedData

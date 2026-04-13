@@ -71,14 +71,12 @@ struct VitalsApp: App {
     private static let refreshTaskID = "com.jackwallner.vitals.refresh"
 
     init() {
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: Self.refreshTaskID, using: nil) { task in
+        // Run the launch handler on the main queue. With `using: nil` the system uses a
+        // background queue; referencing MainActor-isolated `Self` / `handleAppRefresh`
+        // from there trips Swift 6 executor checks (see _dispatch_assert_queue_fail).
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: Self.refreshTaskID, using: DispatchQueue.main) { task in
             guard let task = task as? BGAppRefreshTask else { return }
-            // BGTaskScheduler calls this closure on a background queue, but
-            // handleAppRefresh is @MainActor (inherited from App).  Hop to
-            // the main actor to avoid a Swift 6 isolation trap.
-            Task { @MainActor in
-                Self.handleAppRefresh(task)
-            }
+            Self.handleAppRefresh(task)
         }
         // Must run on every launch (including background) so observer queries are active
         HealthKitService.shared.enableBackgroundDelivery()

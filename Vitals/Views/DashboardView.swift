@@ -543,9 +543,7 @@ struct DashboardView: View {
             lastRefreshDate = .now
         }
 
-        if !healthKit.isAuthorized {
-            try? await healthKit.requestAuthorization()
-        }
+        await healthKit.synchronizeAuthorizationStateForFetching()
         do {
             let stats = try await healthKit.fetchTodayStatsWithRetry()
             if isAllZero(stats), let cachedStats, cachedHasData {
@@ -590,7 +588,8 @@ struct DashboardView: View {
                 clearPacing()
             }
         } catch {
-            print("Failed to fetch today stats: \(error)")
+            let ns = error as NSError
+            print("Failed to fetch today stats: \(error) domain=\(ns.domain) code=\(ns.code) userInfo=\(ns.userInfo)")
             if let cachedStats = try? healthKit.fetchCachedTodayStats() {
                 applyStats(cachedStats)
                 healthNotice = .cachedData
