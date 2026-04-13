@@ -1,0 +1,510 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A8924E6D51FD77217D15D72 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91367B1F7BDF8F54249C011B /* AppEnvironment.swift */; };
+		0BDA0F43A3DBCF726D2808F0 /* CaptureCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9017BED492A2E12B9B6E6710 /* CaptureCoordinator.swift */; };
+		15355C773AA6EC62A317CE4C /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4F5DFE3F1B9280D66F7F8B /* RootTabView.swift */; };
+		241DD8715CD0129FEB0E4693 /* AppAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637BE807C4B06F925D4E872E /* AppAppearance.swift */; };
+		3D42B6E3B8CE8428D6E4E2C1 /* SleepIntervalMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BECD2401272F50D2B638AF /* SleepIntervalMerge.swift */; };
+		5AC9907AC49938F12C167AA6 /* HeadacheModelStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E751F1E7C7BA481BDAA80CC8 /* HeadacheModelStore.swift */; };
+		9464BD8B40A16D2F7896B2E4 /* EnvironmentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B16FC15F8E41B6B50325727 /* EnvironmentService.swift */; };
+		9BFB6F53C055BF3E8BCD2572 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8472C3F09A9A16899D362E3 /* HealthKitService.swift */; };
+		9D9AA6EE42868909A48B6A0C /* HeadacheLoggerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBB32A1879C8B3C1A1FBAAA /* HeadacheLoggerApp.swift */; };
+		A2D71CF1BFC7D3DAD716F624 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769DAEFB80D24E6E5B23726 /* SettingsView.swift */; };
+		A985C9AFC8D191117B378E26 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9C78392E24C65D489A0719 /* ShareSheet.swift */; };
+		AEB435D0B9D90A9DE04104C1 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9FDF0333E813841B3E325A /* HistoryView.swift */; };
+		B0506BCFEF861EE5962D48FC /* HeadacheLoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75B1D38A2F3FA4E4F7395C1 /* HeadacheLoggerTests.swift */; };
+		D9447241D9F98FDCBFED788D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334426D57EADD647A3B13738 /* HomeView.swift */; };
+		DFBE92F8E24C185CF581D00D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92D22239C0ACC0D64E3DC4B0 /* Assets.xcassets */; };
+		E538D8F43DB4C45FE484D2B5 /* HeadacheEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B54EB5A64427B7DC43A2F /* HeadacheEvent.swift */; };
+		E938982AF2A9E8A440A41076 /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9559AD161DB11A658E6B00B1 /* ExportService.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C7644AEF84CB551BACBB441A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB1CD75571C6096FB24B924A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B04FF1B2716F4FF668CB3377;
+			remoteInfo = HeadacheLogger;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		028643EDD9B08EDA8DF0B000 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0A4B54EB5A64427B7DC43A2F /* HeadacheEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadacheEvent.swift; sourceTree = "<group>"; };
+		254CAEEDC5A2E194D94ED45D /* HeadacheLoggerTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HeadacheLoggerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		334426D57EADD647A3B13738 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		5F86B975265B817C3153C40E /* HeadacheLogger.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HeadacheLogger.entitlements; sourceTree = "<group>"; };
+		5FBB32A1879C8B3C1A1FBAAA /* HeadacheLoggerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadacheLoggerApp.swift; sourceTree = "<group>"; };
+		637BE807C4B06F925D4E872E /* AppAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearance.swift; sourceTree = "<group>"; };
+		7B16FC15F8E41B6B50325727 /* EnvironmentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentService.swift; sourceTree = "<group>"; };
+		87BECD2401272F50D2B638AF /* SleepIntervalMerge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepIntervalMerge.swift; sourceTree = "<group>"; };
+		9017BED492A2E12B9B6E6710 /* CaptureCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureCoordinator.swift; sourceTree = "<group>"; };
+		91367B1F7BDF8F54249C011B /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		92D22239C0ACC0D64E3DC4B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9559AD161DB11A658E6B00B1 /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
+		9B4F5DFE3F1B9280D66F7F8B /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
+		9E9FDF0333E813841B3E325A /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		9F9C78392E24C65D489A0719 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
+		A8472C3F09A9A16899D362E3 /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
+		B75B1D38A2F3FA4E4F7395C1 /* HeadacheLoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadacheLoggerTests.swift; sourceTree = "<group>"; };
+		B769DAEFB80D24E6E5B23726 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		E751F1E7C7BA481BDAA80CC8 /* HeadacheModelStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadacheModelStore.swift; sourceTree = "<group>"; };
+		F790B5264C2F84568B71E41B /* HeadacheLogger.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HeadacheLogger.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		2CD9FBF7829FE799B22F125B = {
+			isa = PBXGroup;
+			children = (
+				DE041BE3B5B6E822BC4C17D2 /* HeadacheLogger */,
+				58E0B70DD8BDD0AC07D0AFA0 /* HeadacheLoggerTests */,
+				2D4619A774712F5E0995445C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2D4619A774712F5E0995445C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F790B5264C2F84568B71E41B /* HeadacheLogger.app */,
+				254CAEEDC5A2E194D94ED45D /* HeadacheLoggerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		58E0B70DD8BDD0AC07D0AFA0 /* HeadacheLoggerTests */ = {
+			isa = PBXGroup;
+			children = (
+				B75B1D38A2F3FA4E4F7395C1 /* HeadacheLoggerTests.swift */,
+			);
+			path = HeadacheLoggerTests;
+			sourceTree = "<group>";
+		};
+		A660758C5C4FB2254EB12DEB /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				637BE807C4B06F925D4E872E /* AppAppearance.swift */,
+				91367B1F7BDF8F54249C011B /* AppEnvironment.swift */,
+				87BECD2401272F50D2B638AF /* SleepIntervalMerge.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		B20C1C2600A498C4125C8A82 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0A4B54EB5A64427B7DC43A2F /* HeadacheEvent.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		CA616C9CE434DC98180B3A59 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				9017BED492A2E12B9B6E6710 /* CaptureCoordinator.swift */,
+				7B16FC15F8E41B6B50325727 /* EnvironmentService.swift */,
+				9559AD161DB11A658E6B00B1 /* ExportService.swift */,
+				E751F1E7C7BA481BDAA80CC8 /* HeadacheModelStore.swift */,
+				A8472C3F09A9A16899D362E3 /* HealthKitService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		DE041BE3B5B6E822BC4C17D2 /* HeadacheLogger */ = {
+			isa = PBXGroup;
+			children = (
+				92D22239C0ACC0D64E3DC4B0 /* Assets.xcassets */,
+				5F86B975265B817C3153C40E /* HeadacheLogger.entitlements */,
+				5FBB32A1879C8B3C1A1FBAAA /* HeadacheLoggerApp.swift */,
+				028643EDD9B08EDA8DF0B000 /* Info.plist */,
+				B20C1C2600A498C4125C8A82 /* Models */,
+				CA616C9CE434DC98180B3A59 /* Services */,
+				A660758C5C4FB2254EB12DEB /* Utilities */,
+				E42CA87E0E84B5EC0BE6E597 /* Views */,
+			);
+			path = HeadacheLogger;
+			sourceTree = "<group>";
+		};
+		E42CA87E0E84B5EC0BE6E597 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9E9FDF0333E813841B3E325A /* HistoryView.swift */,
+				334426D57EADD647A3B13738 /* HomeView.swift */,
+				9B4F5DFE3F1B9280D66F7F8B /* RootTabView.swift */,
+				B769DAEFB80D24E6E5B23726 /* SettingsView.swift */,
+				9F9C78392E24C65D489A0719 /* ShareSheet.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B04FF1B2716F4FF668CB3377 /* HeadacheLogger */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EB0748D1970354F869ED2F7F /* Build configuration list for PBXNativeTarget "HeadacheLogger" */;
+			buildPhases = (
+				89464F6A28B29E2F68F0A57B /* Sources */,
+				7334543B2A6C03A5E95FB5D7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HeadacheLogger;
+			packageProductDependencies = (
+			);
+			productName = HeadacheLogger;
+			productReference = F790B5264C2F84568B71E41B /* HeadacheLogger.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F455076FFCFCF8B2494EF2AF /* HeadacheLoggerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F2D2FBA6AA6BDF23F03482E8 /* Build configuration list for PBXNativeTarget "HeadacheLoggerTests" */;
+			buildPhases = (
+				9AE839DFBC2F165B84E8936F /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				807AC39DA3576257C3E3745E /* PBXTargetDependency */,
+			);
+			name = HeadacheLoggerTests;
+			packageProductDependencies = (
+			);
+			productName = HeadacheLoggerTests;
+			productReference = 254CAEEDC5A2E194D94ED45D /* HeadacheLoggerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EB1CD75571C6096FB24B924A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					B04FF1B2716F4FF668CB3377 = {
+						DevelopmentTeam = YXG4MP6W39;
+						ProvisioningStyle = Automatic;
+					};
+					F455076FFCFCF8B2494EF2AF = {
+						DevelopmentTeam = YXG4MP6W39;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 0D7BAB45833882A4E4E7C997 /* Build configuration list for PBXProject "HeadacheLogger" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 2CD9FBF7829FE799B22F125B;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 2D4619A774712F5E0995445C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B04FF1B2716F4FF668CB3377 /* HeadacheLogger */,
+				F455076FFCFCF8B2494EF2AF /* HeadacheLoggerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7334543B2A6C03A5E95FB5D7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DFBE92F8E24C185CF581D00D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		89464F6A28B29E2F68F0A57B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				241DD8715CD0129FEB0E4693 /* AppAppearance.swift in Sources */,
+				0A8924E6D51FD77217D15D72 /* AppEnvironment.swift in Sources */,
+				0BDA0F43A3DBCF726D2808F0 /* CaptureCoordinator.swift in Sources */,
+				9464BD8B40A16D2F7896B2E4 /* EnvironmentService.swift in Sources */,
+				E938982AF2A9E8A440A41076 /* ExportService.swift in Sources */,
+				E538D8F43DB4C45FE484D2B5 /* HeadacheEvent.swift in Sources */,
+				9D9AA6EE42868909A48B6A0C /* HeadacheLoggerApp.swift in Sources */,
+				5AC9907AC49938F12C167AA6 /* HeadacheModelStore.swift in Sources */,
+				9BFB6F53C055BF3E8BCD2572 /* HealthKitService.swift in Sources */,
+				AEB435D0B9D90A9DE04104C1 /* HistoryView.swift in Sources */,
+				D9447241D9F98FDCBFED788D /* HomeView.swift in Sources */,
+				15355C773AA6EC62A317CE4C /* RootTabView.swift in Sources */,
+				A2D71CF1BFC7D3DAD716F624 /* SettingsView.swift in Sources */,
+				A985C9AFC8D191117B378E26 /* ShareSheet.swift in Sources */,
+				3D42B6E3B8CE8428D6E4E2C1 /* SleepIntervalMerge.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AE839DFBC2F165B84E8936F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B0506BCFEF861EE5962D48FC /* HeadacheLoggerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		807AC39DA3576257C3E3745E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B04FF1B2716F4FF668CB3377 /* HeadacheLogger */;
+			targetProxy = C7644AEF84CB551BACBB441A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		05D07D91CA0120FEDF44273B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HeadacheLogger/HeadacheLogger.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = HeadacheLogger/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.headachelogger;
+				PRODUCT_NAME = HeadacheLogger;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		0BC9EC4BAFB2245587B28380 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HeadacheLogger/HeadacheLogger.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = HeadacheLogger/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.headachelogger;
+				PRODUCT_NAME = HeadacheLogger;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		26A5D4E51FE5B6EC60CF6220 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 9;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = YXG4MP6W39;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		3B46BA36FCAD761CD9E1DEE7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.headachelogger.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HeadacheLogger.app/HeadacheLogger";
+			};
+			name = Release;
+		};
+		C5D5D7342EE85EEFE64B07E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 9;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = YXG4MP6W39;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		F588D2E308BBC74A347F6FF4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.headachelogger.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HeadacheLogger.app/HeadacheLogger";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0D7BAB45833882A4E4E7C997 /* Build configuration list for PBXProject "HeadacheLogger" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26A5D4E51FE5B6EC60CF6220 /* Debug */,
+				C5D5D7342EE85EEFE64B07E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EB0748D1970354F869ED2F7F /* Build configuration list for PBXNativeTarget "HeadacheLogger" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0BC9EC4BAFB2245587B28380 /* Debug */,
+				05D07D91CA0120FEDF44273B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F2D2FBA6AA6BDF23F03482E8 /* Build configuration list for PBXNativeTarget "HeadacheLoggerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F588D2E308BBC74A347F6FF4 /* Debug */,
+				3B46BA36FCAD761CD9E1DEE7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EB1CD75571C6096FB24B924A /* Project object */;
+}
