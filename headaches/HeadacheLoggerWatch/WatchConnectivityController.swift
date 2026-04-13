@@ -16,10 +16,6 @@ final class WatchConnectivityController: NSObject, ObservableObject {
     }
 
     func requestLogFromPhone() {
-        guard HeadacheOnboardingStore.hasCompletedOnboarding else {
-            statusMessage = "Finish setup on iPhone first."
-            return
-        }
         let session = WCSession.default
         guard session.activationState == .activated else {
             statusMessage = "Connecting to iPhone…"

@@ -2,7 +2,7 @@
 import Foundation
 import WatchConnectivity
 
-/// Receives “log headache” from the Watch companion after onboarding is complete.
+/// Receives “log headache” from the Watch companion (works even while iPhone onboarding is unfinished).
 final class PhoneWatchSession: NSObject, WCSessionDelegate, @unchecked Sendable {
     nonisolated(unsafe) static let shared = PhoneWatchSession()
 
@@ -49,7 +49,6 @@ final class PhoneWatchSession: NSObject, WCSessionDelegate, @unchecked Sendable 
     }
 
     private func handleHeadacheLogRequest() {
-        guard HeadacheOnboardingStore.hasCompletedOnboarding || AppEnvironment.bypassOnboarding else { return }
         onWatchRequestedCapture?()
     }
 }

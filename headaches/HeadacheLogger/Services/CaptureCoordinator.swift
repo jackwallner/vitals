@@ -7,10 +7,13 @@ final class CaptureCoordinator: ObservableObject {
     @Published var isCapturing = false
     @Published var lastCapturedEventID: UUID?
 
-    func captureHeadache(in context: ModelContext) {
-        guard HeadacheOnboardingStore.hasCompletedOnboarding || AppEnvironment.bypassOnboarding else {
-            bannerMessage = "Finish setup on your iPhone first."
-            return
+    /// - Parameter fromWatch: Watch requests bypass the iPhone onboarding gate so logging works from the watch immediately.
+    func captureHeadache(in context: ModelContext, fromWatch: Bool = false) {
+        if !fromWatch {
+            guard HeadacheOnboardingStore.hasCompletedOnboarding || AppEnvironment.bypassOnboarding else {
+                bannerMessage = "Finish setup on your iPhone first."
+                return
+            }
         }
 
         let event = HeadacheEvent()
