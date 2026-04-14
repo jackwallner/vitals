@@ -43,12 +43,12 @@ enum ScreenshotFixtures {
         }
     }
 
-    static func pacing() -> (avgCalories: Double, avgSteps: Int, daysWithData: Int) {
+    static func pacing() -> PacingResult {
         switch ScreenshotConfig.scene {
         case .minimal:
-            return (avgCalories: 2050, avgSteps: 7600, daysWithData: 14)
+            return PacingResult(avgCalories: 2050, avgSteps: 7600, calorieSampleDays: 14, stepSampleDays: 14)
         default:
-            return (avgCalories: 1980, avgSteps: 9150, daysWithData: 14)
+            return PacingResult(avgCalories: 1980, avgSteps: 9150, calorieSampleDays: 14, stepSampleDays: 14)
         }
     }
 

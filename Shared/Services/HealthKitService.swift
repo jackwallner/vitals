@@ -216,9 +216,9 @@ final class HealthKitService: ObservableObject {
         return results
     }
 
-    // MARK: - Pacing (average at this time of day over last 14 days)
+    // MARK: - Pacing (usual progress at this time of day)
 
-    func fetchPacing() async throws -> (avgCalories: Double, avgSteps: Int, daysWithData: Int) {
+    func fetchPacing(comparison: PacingComparison, lookback: PacingLookback) async throws -> PacingResult {
         #if DEBUG
         if ScreenshotConfig.isEnabled {
             return ScreenshotFixtures.pacing()
@@ -229,50 +229,68 @@ final class HealthKitService: ObservableObject {
         let currentHour = calendar.component(.hour, from: now)
 
         // Too early in the day for meaningful pacing
-        guard currentHour >= 6 else { return (0, 0, 0) }
+        guard currentHour >= 6 else {
+            healthKitLogger.debug("fetchPacing: skipped (before 6:00)")
+            return PacingResult(avgCalories: nil, avgSteps: nil, calorieSampleDays: 0, stepSampleDays: 0)
+        }
 
-        guard let fourteenDaysAgoDate = calendar.date(byAdding: .day, value: -14, to: now) else { return (0, 0, 0) }
-        let fourteenDaysAgo = calendar.startOfDay(for: fourteenDaysAgoDate)
-
-        // 3 bulk queries instead of 42 individual ones
-        let interval = DateComponents(day: 1)
+        let lookbackDays = lookback.rawValue
         let today = calendar.startOfDay(for: now)
+        guard let windowStartDate = calendar.date(byAdding: .day, value: -lookbackDays, to: now) else {
+            return PacingResult(avgCalories: nil, avgSteps: nil, calorieSampleDays: 0, stepSampleDays: 0)
+        }
+        let windowStart = calendar.startOfDay(for: windowStartDate)
+        let targetWeekday = calendar.component(.weekday, from: now)
 
-        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: fourteenDaysAgo, end: today, interval: interval)
-        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: fourteenDaysAgo, end: today, interval: interval)
-        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: fourteenDaysAgo, end: today, interval: interval)
+        let interval = DateComponents(day: 1)
+
+        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: windowStart, end: today, interval: interval)
+        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: windowStart, end: today, interval: interval)
+        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: windowStart, end: today, interval: interval)
 
         let (active, resting, steps) = try await (activeMap, restingMap, stepsMap)
 
-        // For each past day, calculate what was burned by this time of day
-        // Use actual seconds elapsed since midnight / total seconds in today (handles DST 23/25h days)
         let secondsSoFar = now.timeIntervalSince(today)
         let endOfToday = calendar.date(byAdding: .day, value: 1, to: today) ?? today.addingTimeInterval(86400)
         let totalSecondsToday = endOfToday.timeIntervalSince(today)
         let dayFraction = min(secondsSoFar / totalSecondsToday, 1.0)
 
-        var totalCalories = 0.0
-        var totalSteps = 0.0
-        var daysWithData = 0
+        var calorieWeighted = 0.0
+        var stepWeighted = 0.0
+        var calorieSampleDays = 0
+        var stepSampleDays = 0
 
-        var current = fourteenDaysAgo
-        while current < today {
-            let dayCal = (active[current] ?? 0) + (resting[current] ?? 0)
-            let daySteps = steps[current] ?? 0
-            if dayCal > 0 || daySteps > 0 {
-                daysWithData += 1
-                totalCalories += dayCal * dayFraction
-                totalSteps += daySteps * dayFraction
+        for dayOffset in 1...lookbackDays {
+            guard let day = calendar.date(byAdding: .day, value: -dayOffset, to: today) else { continue }
+            let dayStart = calendar.startOfDay(for: day)
+            if comparison == .dayOfWeek, calendar.component(.weekday, from: dayStart) != targetWeekday {
+                continue
             }
-            guard let next = calendar.date(byAdding: .day, value: 1, to: current) else { break }
-            current = next
+
+            let dayCal = (active[dayStart] ?? 0) + (resting[dayStart] ?? 0)
+            let daySteps = steps[dayStart] ?? 0
+            if dayCal > 0 {
+                calorieSampleDays += 1
+                calorieWeighted += dayCal * dayFraction
+            }
+            if daySteps > 0 {
+                stepSampleDays += 1
+                stepWeighted += Double(daySteps) * dayFraction
+            }
         }
 
-        guard daysWithData > 0 else { return (0, 0, 0) }
-        return (
-            avgCalories: totalCalories / Double(daysWithData),
-            avgSteps: Int(totalSteps / Double(daysWithData)),
-            daysWithData: daysWithData
+        let avgCalories: Double? = calorieSampleDays > 0 ? calorieWeighted / Double(calorieSampleDays) : nil
+        let avgSteps: Int? = stepSampleDays > 0 ? Int(stepWeighted / Double(stepSampleDays)) : nil
+
+        healthKitLogger.debug(
+            "fetchPacing: comparison=\(String(describing: comparison), privacy: .public) lookbackDays=\(lookbackDays, privacy: .public) calSamples=\(calorieSampleDays, privacy: .public) stepSamples=\(stepSampleDays, privacy: .public)"
+        )
+
+        return PacingResult(
+            avgCalories: avgCalories,
+            avgSteps: avgSteps,
+            calorieSampleDays: calorieSampleDays,
+            stepSampleDays: stepSampleDays
         )
     }
 

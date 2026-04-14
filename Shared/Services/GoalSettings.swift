@@ -32,6 +32,88 @@ enum GoalSyncKeys {
     static let stepGoalEnabled = "goalSync.stepGoalEnabled"
 }
 
+/// How to aggregate historical days when computing “usual” progress at this time of day.
+enum PacingComparison: Int, CaseIterable, Sendable {
+    /// Average only past days that match today’s weekday (e.g. compare Mondays to Mondays).
+    case dayOfWeek = 0
+    /// Average every day in the lookback window (subject to non-empty samples).
+    case allDays = 1
+
+    var label: String {
+        switch self {
+        case .dayOfWeek: "Same weekday"
+        case .allDays: "All days"
+        }
+    }
+}
+
+/// How far back to look for pacing samples (completed days before today; empty days excluded per metric).
+enum PacingLookback: Int, CaseIterable, Sendable {
+    case fourteenDays = 14
+    case thirtyDays = 30
+    case ninetyDays = 90
+    case oneYear = 365
+
+    static let `default` = PacingLookback.thirtyDays
+
+    var label: String {
+        switch self {
+        case .fourteenDays: "14 days"
+        case .thirtyDays: "30 days"
+        case .ninetyDays: "90 days"
+        case .oneYear: "1 year"
+        }
+    }
+}
+
+/// Usual calories/steps by this time of day; sample counts exclude empty days per metric.
+struct PacingResult: Sendable {
+    let avgCalories: Double?
+    let avgSteps: Int?
+    let calorieSampleDays: Int
+    let stepSampleDays: Int
+
+    /// Resolves optional dashboard values: needs enough non-empty sample days per visible metric.
+    func dashboardValues(minSamples: Int = 3, showCalories: Bool, showSteps: Bool) -> (
+        calories: Double?,
+        caloriesBuilding: Bool,
+        steps: Int?,
+        stepsBuilding: Bool
+    ) {
+        let calories: Double?
+        let caloriesBuilding: Bool
+        if showCalories {
+            if let avg = avgCalories, calorieSampleDays >= minSamples, avg > 0 {
+                calories = avg
+                caloriesBuilding = false
+            } else {
+                calories = nil
+                caloriesBuilding = calorieSampleDays > 0 && calorieSampleDays < minSamples
+            }
+        } else {
+            calories = nil
+            caloriesBuilding = false
+        }
+
+        let steps: Int?
+        let stepsBuilding: Bool
+        if showSteps {
+            if let avg = avgSteps, stepSampleDays >= minSamples, avg > 0 {
+                steps = avg
+                stepsBuilding = false
+            } else {
+                steps = nil
+                stepsBuilding = stepSampleDays > 0 && stepSampleDays < minSamples
+            }
+        } else {
+            steps = nil
+            stepsBuilding = false
+        }
+
+        return (calories, caloriesBuilding, steps, stepsBuilding)
+    }
+}
+
 @MainActor
 final class GoalSettings: ObservableObject {
     static let shared = GoalSettings()
@@ -48,6 +130,14 @@ final class GoalSettings: ObservableObject {
 
     @Published var showPacing: Bool {
         didSet { defaults.set(showPacing, forKey: "showPacing") }
+    }
+
+    @Published var pacingComparison: PacingComparison {
+        didSet { defaults.set(pacingComparison.rawValue, forKey: "pacingComparison") }
+    }
+
+    @Published var pacingLookback: PacingLookback {
+        didSet { defaults.set(pacingLookback.rawValue, forKey: "pacingLookbackDays") }
     }
 
     @Published var showCalories: Bool {
@@ -96,6 +186,18 @@ final class GoalSettings: ObservableObject {
         self.hasCompletedSetup = defaults.bool(forKey: "hasCompletedSetup")
         self.appearance = AppAppearance(rawValue: defaults.integer(forKey: "appearance")) ?? .system
         self.showPacing = defaults.object(forKey: "showPacing") as? Bool ?? true
+        if let raw = defaults.object(forKey: "pacingComparison") as? Int,
+           let mode = PacingComparison(rawValue: raw) {
+            self.pacingComparison = mode
+        } else {
+            self.pacingComparison = .dayOfWeek
+        }
+        if let raw = defaults.object(forKey: "pacingLookbackDays") as? Int,
+           let span = PacingLookback(rawValue: raw) {
+            self.pacingLookback = span
+        } else {
+            self.pacingLookback = .default
+        }
         self.showCalories = defaults.object(forKey: "showCalories") as? Bool ?? true
         self.showSteps = defaults.object(forKey: "showSteps") as? Bool ?? true
 

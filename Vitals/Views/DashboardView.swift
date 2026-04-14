@@ -71,7 +71,8 @@ struct DashboardView: View {
     @State private var showSettings = false
     @State private var showBreakdown = false
     @State private var showOnboarding = false
-    @State private var pacingInsufficient = false
+    @State private var pacingCaloriesInsufficient = false
+    @State private var pacingStepsInsufficient = false
     @State private var isRefreshing = false
     @State private var healthNotice: HealthNotice? = nil
     @State private var lastRefreshDate: Date? = nil
@@ -303,7 +304,7 @@ struct DashboardView: View {
                         )
                         .padding(.top, 10)
                         .opacity(animateContent ? 1 : 0)
-                    } else if pacingInsufficient {
+                    } else if pacingCaloriesInsufficient {
                         Text("Building pace data...")
                             .font(.system(.caption2, design: .rounded))
                             .foregroundStyle(Theme.textTertiary)
@@ -346,7 +347,7 @@ struct DashboardView: View {
                                     color: Theme.stepsPrimary
                                 )
                                 .padding(.top, 8)
-                            } else if pacingInsufficient {
+                            } else if pacingStepsInsufficient {
                                 Text("Building pace data...")
                                     .font(.system(.caption2, design: .rounded))
                                     .foregroundStyle(Theme.textTertiary)
@@ -405,7 +406,7 @@ struct DashboardView: View {
                                     label: "steps",
                                     color: Theme.stepsPrimary
                                 )
-                            } else if pacingInsufficient {
+                            } else if pacingStepsInsufficient {
                                 Text("Building pace data...")
                                     .font(.system(.caption2, design: .rounded))
                                     .foregroundStyle(Theme.textTertiary)
@@ -519,7 +520,8 @@ struct DashboardView: View {
     private func clearPacing() {
         pacingCalories = nil
         pacingSteps = nil
-        pacingInsufficient = false
+        pacingCaloriesInsufficient = false
+        pacingStepsInsufficient = false
     }
 
     private func isAllZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
@@ -565,22 +567,15 @@ struct DashboardView: View {
             }
 
             if goals.showPacing && !isAllZero(stats) {
-                if let pacing = try? await healthKit.fetchPacing() {
-                    if pacing.daysWithData >= 3 {
-                        pacingInsufficient = false
-                        if pacing.avgCalories > 0 { pacingCalories = pacing.avgCalories }
-                        if pacing.avgSteps > 0 { pacingSteps = pacing.avgSteps }
-                    } else if pacing.daysWithData > 0 {
-                        // Some data but not enough for reliable pacing
-                        pacingCalories = nil
-                        pacingSteps = nil
-                        pacingInsufficient = true
-                    } else {
-                        // No data at all (too early in the day or brand new user)
-                        pacingCalories = nil
-                        pacingSteps = nil
-                        pacingInsufficient = false
-                    }
+                if let pacing = try? await healthKit.fetchPacing(
+                    comparison: goals.pacingComparison,
+                    lookback: goals.pacingLookback
+                ) {
+                    let v = pacing.dashboardValues(showCalories: goals.showCalories, showSteps: goals.showSteps)
+                    pacingCalories = v.calories
+                    pacingCaloriesInsufficient = v.caloriesBuilding
+                    pacingSteps = v.steps
+                    pacingStepsInsufficient = v.stepsBuilding
                 } else {
                     clearPacing()
                 }
@@ -793,6 +788,8 @@ private struct SettingsSheet: View {
     @State private var stepEnabled = true
     @State private var stepText = ""
     @State private var pacingEnabled = true
+    @State private var pacingComparison: PacingComparison = .dayOfWeek
+    @State private var pacingLookback: PacingLookback = .default
     @State private var showCalories = true
     @State private var showSteps = true
     @State private var appearance: AppAppearance = .system
@@ -803,6 +800,14 @@ private struct SettingsSheet: View {
 
     private var stepValid: Bool {
         !stepEnabled || (Int(stepText) ?? 0) > 0
+    }
+
+    private var pacingFooter: String {
+        let window = pacingLookback.label.lowercased()
+        let basis = pacingComparison == .dayOfWeek
+            ? "Past \(window), same weekday as today."
+            : "Past \(window), every day."
+        return "Compares your progress so far to your usual at this time (Apple Health). \(basis) Empty days don’t count. Need 3+ days with data to show a comparison."
     }
 
     var body: some View {
@@ -841,8 +846,22 @@ private struct SettingsSheet: View {
 
                 Section {
                     Toggle("Show Pacing", isOn: $pacingEnabled)
+                    if pacingEnabled {
+                        Picker("Usual day is", selection: $pacingComparison) {
+                            ForEach(PacingComparison.allCases, id: \.self) { mode in
+                                Text(mode.label).tag(mode)
+                            }
+                        }
+                        Picker("Look back", selection: $pacingLookback) {
+                            ForEach(PacingLookback.allCases, id: \.self) { span in
+                                Text(span.label).tag(span)
+                            }
+                        }
+                    }
+                } header: {
+                    Text("Pacing")
                 } footer: {
-                    Text("Compare your current progress against your 14-day average at this time of day.")
+                    Text(pacingFooter)
                 }
 
                 Section("Appearance") {
@@ -901,6 +920,8 @@ private struct SettingsSheet: View {
                             goals.stepGoal = nil
                         }
                         goals.showPacing = pacingEnabled
+                        goals.pacingComparison = pacingComparison
+                        goals.pacingLookback = pacingLookback
                         goals.showCalories = showCalories
                         goals.showSteps = showSteps
                         goals.appearance = appearance
@@ -916,6 +937,8 @@ private struct SettingsSheet: View {
                 stepEnabled = goals.stepGoal != nil
                 stepText = goals.stepGoal.map { String($0) } ?? "10000"
                 pacingEnabled = goals.showPacing
+                pacingComparison = goals.pacingComparison
+                pacingLookback = goals.pacingLookback
                 showCalories = goals.showCalories
                 showSteps = goals.showSteps
                 appearance = goals.appearance
