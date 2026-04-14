@@ -21,6 +21,11 @@ xcodegen generate
 xcodebuild -project Vitals.xcodeproj -scheme Vitals -destination 'generic/platform=iOS' build
 
 # Deploy: open Vitals.xcodeproj in Xcode, select Vitals scheme, run on device
+
+# TestFlight (upload uses AppStoreUploadOptions.plist + Xcode’s App Store Connect login)
+./scripts/testflight.sh
+# Or upload an existing archive: ./scripts/upload-testflight.sh [build/Vitals.xcarchive]
+# API key upload: ./scripts/upload-testflight-api.sh (see script header)
 ```
 
 Always run `xcodegen generate` after adding/removing Swift files or changing `project.yml`.
