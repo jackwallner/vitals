@@ -43,6 +43,15 @@ enum ScreenshotFixtures {
         }
     }
 
+    static func dietaryEnergyToday() -> Double {
+        switch ScreenshotConfig.scene {
+        case .minimal:
+            return 1400
+        default:
+            return 1950
+        }
+    }
+
     static func pacing() -> PacingResult {
         switch ScreenshotConfig.scene {
         case .minimal:

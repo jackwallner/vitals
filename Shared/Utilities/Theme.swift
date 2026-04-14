@@ -35,6 +35,10 @@ enum Theme {
     static let activePrimary = Color(red: 1.0, green: 0.54, blue: 0.36)     // warm orange
     static let restingPrimary = Color(red: 0.55, green: 0.35, blue: 0.75)   // muted purple
 
+    // Net deficit (burned − food)
+    static let netDeficitPositive = Color(red: 0.18, green: 0.72, blue: 0.42) // green
+    static let netDeficitNegative = Color(red: 0.95, green: 0.45, blue: 0.35) // warm orange-red
+
     // MARK: - Constants
 
     static let cardRadius: CGFloat = 20

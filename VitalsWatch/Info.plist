@@ -23,7 +23,7 @@
     <key>ITSAppUsesNonExemptEncryption</key>
     <false/>
     <key>NSHealthShareUsageDescription</key>
-    <string>Total Calories reads your Active Energy, Basal Energy, and Step Count from Apple Health to display your daily progress. Total Calories never writes Health data.</string>
+    <string>Total Calories reads your Active Energy, Basal Energy, Step Count, and (on iPhone) Dietary Energy from Apple Health to display your daily progress. Total Calories never writes Health data.</string>
     <key>NSHealthUpdateUsageDescription</key>
     <string>Total Calories does not write any data to Apple Health.</string>
     <key>WKApplication</key>

@@ -20,6 +20,7 @@ final class HealthKitService: ObservableObject {
         HKQuantityType(.activeEnergyBurned),
         HKQuantityType(.basalEnergyBurned),
         HKQuantityType(.stepCount),
+        HKQuantityType(.dietaryEnergyConsumed),
     ]
 
     private init() {
@@ -170,6 +171,30 @@ final class HealthKitService: ObservableObject {
         return lastStats
     }
 
+    /// Dietary energy (food) logged for today in Health, in kilocalories (e.g. from MyFitnessPal).
+    func fetchDietaryEnergyToday() async throws -> Double {
+        #if DEBUG
+        if ScreenshotConfig.isEnabled {
+            return ScreenshotFixtures.dietaryEnergyToday()
+        }
+        #endif
+        let calendar = Calendar.current
+        let dayStart = DateHelpers.startOfDay()
+        guard let dayEnd = calendar.date(byAdding: .day, value: 1, to: dayStart) else {
+            healthKitLogger.error("fetchDietaryEnergyToday: could not compute end of day")
+            throw NSError(
+                domain: "com.jackwallner.vitals.healthkit",
+                code: 2,
+                userInfo: [NSLocalizedDescriptionKey: "Calendar could not compute end of day."]
+            )
+        }
+        let interval = DateComponents(day: 1)
+        let map = try await queryStatisticsCollection(.dietaryEnergyConsumed, unit: .kilocalorie(), start: dayStart, end: dayEnd, interval: interval)
+        let kcal = map[dayStart] ?? 0
+        healthKitLogger.debug("fetchDietaryEnergyToday: \(kcal, privacy: .public) kcal")
+        return kcal
+    }
+
     // MARK: - History
 
     func fetchHistory(days: Int) async throws -> [(date: Date, active: Double, resting: Double, steps: Int)] {
@@ -307,6 +332,7 @@ final class HealthKitService: ObservableObject {
             HKQuantityType(.activeEnergyBurned),
             HKQuantityType(.basalEnergyBurned),
             HKQuantityType(.stepCount),
+            HKQuantityType(.dietaryEnergyConsumed),
         ]
 
         for type in types {

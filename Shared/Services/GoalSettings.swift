@@ -154,6 +154,11 @@ final class GoalSettings: ObservableObject {
         }
     }
 
+    /// iOS dashboard: net deficit (burned − dietary energy from Health), e.g. food from MyFitnessPal via Health.
+    @Published var showNetCalories: Bool {
+        didSet { defaults.set(showNetCalories, forKey: "showNetCalories") }
+    }
+
     // nil means "no goal" — just show the counter
     @Published var calorieGoal: Double? {
         didSet {
@@ -200,6 +205,7 @@ final class GoalSettings: ObservableObject {
         }
         self.showCalories = defaults.object(forKey: "showCalories") as? Bool ?? true
         self.showSteps = defaults.object(forKey: "showSteps") as? Bool ?? true
+        self.showNetCalories = defaults.object(forKey: "showNetCalories") as? Bool ?? false
 
         let calEnabled = defaults.object(forKey: "calorieGoalEnabled") as? Bool ?? true
         if calEnabled {
@@ -225,6 +231,7 @@ final class GoalSettings: ObservableObject {
 
         showCalories = true
         showSteps = true
+        showNetCalories = false
         appearance = .system
 
         if ScreenshotConfig.usesMinimalGoals {

@@ -76,8 +76,21 @@ struct DashboardView: View {
     @State private var isRefreshing = false
     @State private var healthNotice: HealthNotice? = nil
     @State private var lastRefreshDate: Date? = nil
+    @State private var foodCalories: Double = 0
 
     private var totalCalories: Double { activeCalories + restingCalories }
+
+    /// Positive = burned more than logged food (deficit); negative = surplus.
+    private var netDeficit: Double { totalCalories - foodCalories }
+
+    private var visibleMetricCount: Int {
+        (goals.showCalories ? 1 : 0) + (goals.showSteps ? 1 : 0) + (goals.showNetCalories ? 1 : 0)
+    }
+
+    /// Only the net-deficit row is visible (no calorie ring / steps).
+    private var onlyNetMetric: Bool {
+        goals.showNetCalories && !goals.showCalories && !goals.showSteps
+    }
 
     private var calorieProgress: Double? {
         guard let goal = goals.calorieGoal, goal > 0 else { return nil }
@@ -93,9 +106,9 @@ struct DashboardView: View {
         goals.calorieGoal == nil && goals.stepGoal == nil && !goals.showPacing
     }
 
-    // Only one metric visible
+    /// Exactly one of calories / steps / net is enabled.
     private var isSingleMetric: Bool {
-        goals.showCalories != goals.showSteps
+        visibleMetricCount == 1
     }
 
     var body: some View {
@@ -197,12 +210,21 @@ struct DashboardView: View {
     private func mainContent(availableHeight: CGFloat) -> some View {
         // Scale fonts based on mode
         let calNumberSize: CGFloat = {
-            if isSingleMetric && !goals.showSteps { return min(availableHeight * 0.12, 100) }
+            if isSingleMetric && goals.showCalories && !goals.showSteps && !goals.showNetCalories {
+                return min(availableHeight * 0.12, 100)
+            }
             if isMinimalMode { return min(availableHeight * 0.10, 88) }
             return min(availableHeight * 0.06, 52)
         }()
         let stepsNumberSize: CGFloat = {
-            if isSingleMetric && !goals.showCalories { return min(availableHeight * 0.12, 100) }
+            if isSingleMetric && goals.showSteps && !goals.showCalories && !goals.showNetCalories {
+                return min(availableHeight * 0.12, 100)
+            }
+            if isMinimalMode { return min(availableHeight * 0.08, 68) }
+            return min(availableHeight * 0.048, 42)
+        }()
+        let netNumberSize: CGFloat = {
+            if onlyNetMetric { return min(availableHeight * 0.12, 100) }
             if isMinimalMode { return min(availableHeight * 0.08, 68) }
             return min(availableHeight * 0.048, 42)
         }()
@@ -320,7 +342,7 @@ struct DashboardView: View {
 
             // Steps section
             if goals.showSteps {
-                if isMinimalMode || (isSingleMetric && !goals.showCalories) {
+                if isMinimalMode || (isSingleMetric && goals.showSteps && !goals.showCalories) {
                     // Clean centered layout
                     VStack(spacing: 6) {
                         HStack(alignment: .firstTextBaseline, spacing: 10) {
@@ -424,8 +446,16 @@ struct DashboardView: View {
                 }
             }
 
+            if goals.showNetCalories && (goals.showCalories || goals.showSteps) {
+                Spacer(minLength: 16)
+            }
+
+            if goals.showNetCalories {
+                netDeficitSection(netNumberSize: netNumberSize)
+            }
+
             // Nothing enabled — gentle prompt
-            if !goals.showCalories && !goals.showSteps {
+            if !goals.showCalories && !goals.showSteps && !goals.showNetCalories {
                 VStack(spacing: 12) {
                     Image(systemName: "heart.text.clipboard")
                         .font(.system(size: 48))
@@ -448,6 +478,89 @@ struct DashboardView: View {
             Spacer(minLength: 16)
         }
         .padding(.bottom, 90)
+    }
+
+    private func netDeficitDisplayText(_ value: Double) -> String {
+        let r = Int(value.rounded())
+        if r > 0 {
+            return "+\(r)"
+        }
+        return "\(r)"
+    }
+
+    private func netDeficitAccent(_ deficit: Double) -> Color {
+        deficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative
+    }
+
+    private func netDeficitSection(netNumberSize: CGFloat) -> some View {
+        let deficit = netDeficit
+        let accent = netDeficitAccent(deficit)
+
+        return Group {
+            if onlyNetMetric {
+                VStack(spacing: 6) {
+                    HStack(alignment: .firstTextBaseline, spacing: 10) {
+                        Image(systemName: "leaf.circle.fill")
+                            .font(isSingleMetric ? .largeTitle : .title)
+                            .foregroundStyle(accent)
+                        Text(netDeficitDisplayText(deficit))
+                            .font(Theme.bigNumber(netNumberSize))
+                            .foregroundStyle(accent)
+                            .contentTransition(.numericText())
+                    }
+                    Text("net deficit")
+                        .font(.system(isSingleMetric ? .title3 : .subheadline, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .textCase(.uppercase)
+                        .tracking(1.5)
+                    Text("total burned minus food (Health)")
+                        .font(.system(.caption2, design: .rounded))
+                        .foregroundStyle(Theme.textTertiary)
+                        .multilineTextAlignment(.center)
+                    if foodCalories <= 0 {
+                        Text("No dietary energy in Health yet — connect a food app or log meals.")
+                            .font(.system(.caption2, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 8)
+                    }
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Net deficit")
+                .accessibilityValue("\(Int(deficit.rounded())) calories, total burned minus food logged in Health")
+                .opacity(animateContent ? 1 : 0)
+                .scaleEffect(animateContent ? 1 : 0.9)
+            } else {
+                VStack(spacing: 14) {
+                    HStack(alignment: .firstTextBaseline) {
+                        Image(systemName: "leaf.circle.fill")
+                            .font(.title2)
+                            .foregroundStyle(accent)
+                        Text(netDeficitDisplayText(deficit))
+                            .font(Theme.bigNumber(netNumberSize))
+                            .foregroundStyle(accent)
+                            .contentTransition(.numericText())
+                        Spacer()
+                    }
+                    Text("net deficit · burned − food")
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                    if foodCalories <= 0 {
+                        Text("No food calories in Health yet.")
+                            .font(.system(.caption2, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                    }
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Net deficit")
+                .accessibilityValue("\(Int(deficit.rounded())) calories")
+                .padding(Theme.cardPadding)
+                .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+                .padding(.horizontal, 24)
+                .opacity(animateContent ? 1 : 0)
+                .offset(y: animateContent ? 0 : 20)
+            }
+        }
     }
 
     private func calorieLabel(numberSize: CGFloat) -> some View {
@@ -566,6 +679,17 @@ struct DashboardView: View {
                 print("Failed to refresh today cache: \(error)")
             }
 
+            if goals.showNetCalories {
+                do {
+                    foodCalories = try await healthKit.fetchDietaryEnergyToday()
+                } catch {
+                    foodCalories = 0
+                    print("Failed to fetch dietary energy: \(error)")
+                }
+            } else {
+                foodCalories = 0
+            }
+
             if goals.showPacing && !isAllZero(stats) {
                 if let pacing = try? await healthKit.fetchPacing(
                     comparison: goals.pacingComparison,
@@ -593,6 +717,7 @@ struct DashboardView: View {
                 healthNotice = .loadError
             }
             clearPacing()
+            foodCalories = 0
             showLoadedStateIfNeeded()
         }
     }
@@ -792,6 +917,7 @@ private struct SettingsSheet: View {
     @State private var pacingLookback: PacingLookback = .default
     @State private var showCalories = true
     @State private var showSteps = true
+    @State private var showNetCalories = false
     @State private var appearance: AppAppearance = .system
 
     private var calValid: Bool {
@@ -813,9 +939,14 @@ private struct SettingsSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Display") {
+                Section {
                     Toggle("Show Calories", isOn: $showCalories)
                     Toggle("Show Steps", isOn: $showSteps)
+                    Toggle("Show Net Deficit", isOn: $showNetCalories)
+                } header: {
+                    Text("Display")
+                } footer: {
+                    Text("Net deficit is total calories burned (active + resting) minus food calories from Apple Health. Connect a food app like MyFitnessPal to Health to populate dietary energy.")
                 }
 
                 Section {
@@ -924,6 +1055,7 @@ private struct SettingsSheet: View {
                         goals.pacingLookback = pacingLookback
                         goals.showCalories = showCalories
                         goals.showSteps = showSteps
+                        goals.showNetCalories = showNetCalories
                         goals.appearance = appearance
                         dismiss()
                     }
@@ -941,6 +1073,7 @@ private struct SettingsSheet: View {
                 pacingLookback = goals.pacingLookback
                 showCalories = goals.showCalories
                 showSteps = goals.showSteps
+                showNetCalories = goals.showNetCalories
                 appearance = goals.appearance
             }
         }
