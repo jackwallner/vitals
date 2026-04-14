@@ -77,11 +77,20 @@ struct DashboardView: View {
     @State private var healthNotice: HealthNotice? = nil
     @State private var lastRefreshDate: Date? = nil
     @State private var foodCalories: Double = 0
+    /// True after we’ve successfully read dietary energy at least once this session (while net is on).
+    @State private var dietaryEnergyReady = false
+    /// True when the last dietary fetch failed (don’t treat as “0 kcal logged”).
+    @State private var dietaryEnergyFetchFailed = false
 
     private var totalCalories: Double { activeCalories + restingCalories }
 
     /// Positive = burned more than logged food (deficit); negative = surplus.
     private var netDeficit: Double { totalCalories - foodCalories }
+
+    /// Whether we can show a numeric net (not loading, not failed).
+    private var netDeficitNumericReady: Bool {
+        goals.showNetCalories && dietaryEnergyReady && !dietaryEnergyFetchFailed
+    }
 
     private var visibleMetricCount: Int {
         (goals.showCalories ? 1 : 0) + (goals.showSteps ? 1 : 0) + (goals.showNetCalories ? 1 : 0)
@@ -488,72 +497,84 @@ struct DashboardView: View {
         return "\(r)"
     }
 
-    private func netDeficitAccent(_ deficit: Double) -> Color {
-        deficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative
+    private func netDeficitStatusPill(deficit: Double) -> some View {
+        let surplus = deficit < 0
+        let label = surplus ? "Surplus" : "Deficit"
+        let color = surplus ? Theme.netDeficitNegative : Theme.netDeficitPositive
+        return Text(label)
+            .font(.system(.caption2, design: .rounded, weight: .semibold))
+            .foregroundStyle(color)
+            .padding(.horizontal, 11)
+            .padding(.vertical, 5)
+            .background(color.opacity(0.14), in: Capsule())
     }
 
     private func netDeficitSection(netNumberSize: CGFloat) -> some View {
         let deficit = netDeficit
-        let accent = netDeficitAccent(deficit)
 
         return Group {
             if onlyNetMetric {
-                VStack(spacing: 6) {
+                VStack(spacing: 8) {
                     HStack(alignment: .firstTextBaseline, spacing: 10) {
-                        Image(systemName: "leaf.circle.fill")
+                        Image(systemName: "arrow.left.arrow.right.circle.fill")
                             .font(isSingleMetric ? .largeTitle : .title)
-                            .foregroundStyle(accent)
-                        Text(netDeficitDisplayText(deficit))
-                            .font(Theme.bigNumber(netNumberSize))
-                            .foregroundStyle(accent)
-                            .contentTransition(.numericText())
+                            .foregroundStyle(Theme.netDeficitBrand)
+                        if netDeficitNumericReady {
+                            Text(netDeficitDisplayText(deficit))
+                                .font(Theme.bigNumber(netNumberSize))
+                                .foregroundStyle(Theme.textPrimary)
+                                .contentTransition(.numericText())
+                        } else {
+                            Text("—")
+                                .font(Theme.bigNumber(netNumberSize))
+                                .foregroundStyle(Theme.textTertiary)
+                        }
+                    }
+                    if netDeficitNumericReady {
+                        netDeficitStatusPill(deficit: deficit)
                     }
                     Text("net deficit")
                         .font(.system(isSingleMetric ? .title3 : .subheadline, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
                         .textCase(.uppercase)
                         .tracking(1.5)
-                    Text("total burned minus food (Health)")
-                        .font(.system(.caption2, design: .rounded))
-                        .foregroundStyle(Theme.textTertiary)
-                        .multilineTextAlignment(.center)
-                    if foodCalories <= 0 {
-                        Text("No dietary energy in Health yet — connect a food app or log meals.")
-                            .font(.system(.caption2, design: .rounded))
-                            .foregroundStyle(Theme.textTertiary)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 8)
-                    }
+                    netDeficitFootnote(centered: true)
                 }
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Net deficit")
-                .accessibilityValue("\(Int(deficit.rounded())) calories, total burned minus food logged in Health")
+                .accessibilityValue(netDeficitAccessibilitySummary(deficit: deficit))
                 .opacity(animateContent ? 1 : 0)
                 .scaleEffect(animateContent ? 1 : 0.9)
             } else {
-                VStack(spacing: 14) {
+                VStack(alignment: .leading, spacing: 12) {
                     HStack(alignment: .firstTextBaseline) {
-                        Image(systemName: "leaf.circle.fill")
+                        Image(systemName: "arrow.left.arrow.right.circle.fill")
                             .font(.title2)
-                            .foregroundStyle(accent)
-                        Text(netDeficitDisplayText(deficit))
-                            .font(Theme.bigNumber(netNumberSize))
-                            .foregroundStyle(accent)
-                            .contentTransition(.numericText())
-                        Spacer()
+                            .foregroundStyle(Theme.netDeficitBrand)
+                        if netDeficitNumericReady {
+                            Text(netDeficitDisplayText(deficit))
+                                .font(Theme.bigNumber(netNumberSize))
+                                .foregroundStyle(Theme.textPrimary)
+                                .contentTransition(.numericText())
+                        } else {
+                            Text("—")
+                                .font(Theme.bigNumber(netNumberSize))
+                                .foregroundStyle(Theme.textTertiary)
+                        }
+                        Spacer(minLength: 8)
+                        if netDeficitNumericReady {
+                            netDeficitStatusPill(deficit: deficit)
+                        }
                     }
-                    Text("net deficit · burned − food")
+                    Text("Burned − food (Health)")
                         .font(.system(.caption, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
-                    if foodCalories <= 0 {
-                        Text("No food calories in Health yet.")
-                            .font(.system(.caption2, design: .rounded))
-                            .foregroundStyle(Theme.textTertiary)
-                    }
+                    netDeficitFootnote(centered: false)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Net deficit")
-                .accessibilityValue("\(Int(deficit.rounded())) calories")
+                .accessibilityValue(netDeficitAccessibilitySummary(deficit: deficit))
                 .padding(Theme.cardPadding)
                 .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
                 .padding(.horizontal, 24)
@@ -561,6 +582,43 @@ struct DashboardView: View {
                 .offset(y: animateContent ? 0 : 20)
             }
         }
+    }
+
+    @ViewBuilder
+    private func netDeficitFootnote(centered: Bool) -> some View {
+        let align: TextAlignment = centered ? .center : .leading
+        if dietaryEnergyFetchFailed {
+            Text("Couldn’t read food calories from Health. Check Total Calories → Health permissions.")
+                .font(.system(.caption2, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
+                .multilineTextAlignment(align)
+                .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
+                .padding(.horizontal, centered ? 12 : 0)
+        } else if !dietaryEnergyReady {
+            Text("Loading food data from Health…")
+                .font(.system(.caption2, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
+                .multilineTextAlignment(align)
+                .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
+        } else if foodCalories <= 0 {
+            Text("No food in Health yet — sync a food app to Apple Health.")
+                .font(.system(.caption2, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
+                .multilineTextAlignment(align)
+                .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
+                .padding(.horizontal, centered ? 12 : 0)
+        }
+    }
+
+    private func netDeficitAccessibilitySummary(deficit: Double) -> String {
+        if dietaryEnergyFetchFailed {
+            return "Food data unavailable"
+        }
+        if !dietaryEnergyReady {
+            return "Loading"
+        }
+        let n = Int(deficit.rounded())
+        return "\(n) calories, \(deficit < 0 ? "surplus" : "deficit"), burned minus food from Health"
     }
 
     private func calorieLabel(numberSize: CGFloat) -> some View {
@@ -682,12 +740,16 @@ struct DashboardView: View {
             if goals.showNetCalories {
                 do {
                     foodCalories = try await healthKit.fetchDietaryEnergyToday()
+                    dietaryEnergyReady = true
+                    dietaryEnergyFetchFailed = false
                 } catch {
-                    foodCalories = 0
+                    dietaryEnergyFetchFailed = true
                     print("Failed to fetch dietary energy: \(error)")
                 }
             } else {
                 foodCalories = 0
+                dietaryEnergyReady = false
+                dietaryEnergyFetchFailed = false
             }
 
             if goals.showPacing && !isAllZero(stats) {
@@ -718,6 +780,8 @@ struct DashboardView: View {
             }
             clearPacing()
             foodCalories = 0
+            dietaryEnergyReady = false
+            dietaryEnergyFetchFailed = false
             showLoadedStateIfNeeded()
         }
     }
