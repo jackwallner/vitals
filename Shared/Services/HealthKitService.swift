@@ -61,6 +61,27 @@ final class HealthKitService: ObservableObject {
         }
     }
 
+    /// Read authorization for dietary energy (Apple does not throw on denied reads; queries return 0).
+    enum DietaryEnergyReadGate: Sendable {
+        case authorized
+        case denied
+        case notDetermined
+    }
+
+    func dietaryEnergyReadGate() -> DietaryEnergyReadGate {
+        guard HKHealthStore.isHealthDataAvailable() else { return .notDetermined }
+        switch store.authorizationStatus(for: HKQuantityType(.dietaryEnergyConsumed)) {
+        case .sharingDenied:
+            return .denied
+        case .notDetermined:
+            return .notDetermined
+        case .sharingAuthorized:
+            return .authorized
+        @unknown default:
+            return .authorized
+        }
+    }
+
     func authorizationRequestStatus() async -> HKAuthorizationRequestStatus? {
         if ScreenshotConfig.isEnabled {
             return .unnecessary
