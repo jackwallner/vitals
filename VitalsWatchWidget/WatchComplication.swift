@@ -317,17 +317,7 @@ struct CaloriesCornerView: View {
             .font(.title3)
             .foregroundStyle(Theme.caloriesPrimary)
             .widgetLabel {
-                if entry.calGoalEnabled {
-                    Gauge(
-                        value: min(entry.totalCalories, entry.calorieGoal),
-                        in: 0...max(entry.calorieGoal, 1)
-                    ) {
-                        Text(ComplicationFormat.shortCalories(entry.totalCalories, family: family))
-                    }
-                    .tint(Theme.caloriesPrimary)
-                } else {
-                    Text(ComplicationFormat.shortCalories(entry.totalCalories, family: family) + " cal")
-                }
+                Text(ComplicationFormat.shortCalories(entry.totalCalories, family: family) + " cal")
             }
             .containerBackground(.fill.tertiary, for: .widget)
     }
@@ -433,17 +423,7 @@ struct StepsCornerView: View {
             .font(.title3)
             .foregroundStyle(Theme.stepsPrimary)
             .widgetLabel {
-                if entry.stepGoalEnabled {
-                    Gauge(
-                        value: min(Double(entry.steps), Double(entry.stepGoal)),
-                        in: 0...max(Double(entry.stepGoal), 1)
-                    ) {
-                        Text(ComplicationFormat.shortSteps(entry.steps, family: family))
-                    }
-                    .tint(Theme.stepsPrimary)
-                } else {
-                    Text(ComplicationFormat.shortSteps(entry.steps, family: family) + " steps")
-                }
+                Text(ComplicationFormat.shortSteps(entry.steps, family: family) + " steps")
             }
             .containerBackground(.fill.tertiary, for: .widget)
     }
