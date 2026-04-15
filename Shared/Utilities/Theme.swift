@@ -35,8 +35,8 @@ enum Theme {
     static let activePrimary = Color(red: 1.0, green: 0.54, blue: 0.36)     // warm orange
     static let restingPrimary = Color(red: 0.55, green: 0.35, blue: 0.75)   // muted purple
 
-    // Net deficit (burned − food): icon + labels use a calm blue; sign uses pills only.
-    static let netDeficitBrand = Color(red: 0.30, green: 0.52, blue: 0.78)
+    // Net deficit (burned − food)
+    static let netDeficitBrand = Color(red: 0.62, green: 0.40, blue: 0.82)   // purple
     static let netDeficitPositive = Color(red: 0.20, green: 0.68, blue: 0.45)
     static let netDeficitNegative = Color(red: 0.92, green: 0.42, blue: 0.38)
 
