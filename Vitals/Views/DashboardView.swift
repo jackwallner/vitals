@@ -35,11 +35,11 @@ private enum HealthNotice: Equatable {
     var message: String {
         switch self {
         case .accessNeeded:
-            "Grant Apple Health access so Vitals can load your active calories, resting calories, and steps."
+            "Grant Apple Health access so Total Calories can load your active calories, resting calories, and steps."
         case .noData:
             "If you just granted access, Apple Health may still be catching up. If this seems wrong, check Health access."
         case .cachedData:
-            "Vitals kept the last good saved values on screen because the latest Health read looked incomplete."
+            "Showing the last good values because the latest Health read looked incomplete."
         case .loadError:
             "Try reopening the app in a moment, or check Apple Health access."
         }
@@ -132,6 +132,7 @@ struct DashboardView: View {
                 GeometryReader { geo in
                     ScrollView(showsIndicators: false) {
                         mainContent(availableHeight: geo.size.height)
+                            .frame(minHeight: geo.size.height)
                     }
                     .refreshable { await refresh() }
                 }
@@ -224,19 +225,8 @@ struct DashboardView: View {
     }
 
     private var loadingView: some View {
-        VStack(spacing: 16) {
-            ProgressRing(
-                progress: 0.7,
-                gradient: Theme.caloriesGradient,
-                glowColor: .clear,
-                lineWidth: 10,
-                size: 60
-            )
-            .opacity(0.3)
-            Text("Loading...")
-                .font(.subheadline)
-                .foregroundStyle(Theme.textTertiary)
-        }
+        ProgressView()
+            .tint(Theme.textTertiary)
     }
 
     private func mainContent(availableHeight: CGFloat) -> some View {
@@ -524,17 +514,6 @@ struct DashboardView: View {
         netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative
     }
 
-    private func netDeficitStatusPill(deficit: Double) -> some View {
-        let surplus = deficit < 0
-        let label = surplus ? "Surplus" : "Deficit"
-        let color = surplus ? Theme.netDeficitNegative : Theme.netDeficitPositive
-        return Text(label)
-            .font(.system(.caption2, design: .rounded, weight: .semibold))
-            .foregroundStyle(color)
-            .padding(.horizontal, 11)
-            .padding(.vertical, 5)
-            .background(color.opacity(0.14), in: Capsule())
-    }
 
     @ViewBuilder
     private func netDeficitBreakdownRow(centered: Bool) -> some View {
@@ -588,7 +567,7 @@ struct DashboardView: View {
                 .opacity(animateContent ? 1 : 0)
                 .scaleEffect(animateContent ? 1 : 0.9)
             } else {
-                VStack(alignment: .leading, spacing: 10) {
+                VStack(spacing: 10) {
                     HStack(alignment: .firstTextBaseline) {
                         if netDeficitNumericReady {
                             Text(netDeficitDisplayText(deficit))
@@ -605,10 +584,10 @@ struct DashboardView: View {
                             .foregroundStyle(Theme.textTertiary)
                         Spacer(minLength: 8)
                     }
-                    netDeficitBreakdownRow(centered: false)
-                    netDeficitFootnote(centered: false)
+                    netDeficitBreakdownRow(centered: true)
+                    netDeficitFootnote(centered: true)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity)
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Net calories")
                 .accessibilityValue(netDeficitAccessibilitySummary(deficit: deficit))
@@ -625,28 +604,28 @@ struct DashboardView: View {
     private func netDeficitFootnote(centered: Bool) -> some View {
         let align: TextAlignment = centered ? .center : .leading
         if dietaryEnergyFetchFailed {
-            Text("Couldn’t read food calories from Health. Check Total Calories → Health permissions.")
+            Text("Couldn't read food calories. Check Health permissions.")
                 .font(.system(.caption2, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
                 .multilineTextAlignment(align)
                 .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
                 .padding(.horizontal, centered ? 12 : 0)
         } else if dietaryEnergyAccessDenied {
-            Text("Health isn’t sharing food calories. Open the Health app → Sharing → Total Calories and allow Dietary Energy.")
+            Text("Health isn't sharing food calories. Open Health → Sharing → Total Calories and enable Dietary Energy.")
                 .font(.system(.caption2, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
                 .multilineTextAlignment(align)
                 .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
                 .padding(.horizontal, centered ? 12 : 0)
         } else if !dietaryEnergyReady {
-            Text("Waiting for Health permission to read food calories, or loading…")
+            Text("Loading food calories…")
                 .font(.system(.caption2, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
                 .multilineTextAlignment(align)
                 .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
                 .padding(.horizontal, centered ? 12 : 0)
         } else if foodCalories <= 0 {
-            Text("No food in Health yet — sync a food app to Apple Health.")
+            Text("No food logged today — sync a food-tracking app to Apple Health.")
                 .font(.system(.caption2, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
                 .multilineTextAlignment(align)
@@ -787,13 +766,15 @@ struct DashboardView: View {
 
             if goals.showNetCalories {
                 do {
-                    foodCalories = try await healthKit.fetchDietaryEnergyToday()
+                    let food = try await healthKit.fetchDietaryEnergyToday()
+                    foodCalories = food
                     // Apple provides no API to check read authorization — a successful
                     // fetch is the only reliable signal.  authorizationStatus(for:) only
                     // reports write/sharing status, which is always .notDetermined here.
                     dietaryEnergyReady = true
                     dietaryEnergyFetchFailed = false
                     dietaryEnergyAccessDenied = false
+                    try? healthKit.updateCachedFoodCalories(food)
                 } catch {
                     dietaryEnergyFetchFailed = true
                     dietaryEnergyAccessDenied = false
@@ -1021,8 +1002,6 @@ private struct GoalRow: View {
     }
 }
 
-// MARK: - Settings Sheet
-
 private struct SettingsSheet: View {
     @ObservedObject var goals: GoalSettings
     @Environment(\.dismiss) private var dismiss
@@ -1031,14 +1010,6 @@ private struct SettingsSheet: View {
     @State private var calText = ""
     @State private var stepEnabled = true
     @State private var stepText = ""
-    @State private var pacingEnabled = true
-    @State private var pacingComparison: PacingComparison = .dayOfWeek
-    @State private var pacingLookback: PacingLookback = .default
-    @State private var showCalories = true
-    @State private var showSteps = true
-    @State private var showNetCalories = false
-    @State private var appearance: AppAppearance = .system
-    @State private var dietaryAuthRequested = false
 
     private var calValid: Bool {
         !calEnabled || (Double(calText) ?? 0) > 0
@@ -1048,34 +1019,96 @@ private struct SettingsSheet: View {
         !stepEnabled || (Int(stepText) ?? 0) > 0
     }
 
+    private var showCaloriesBinding: Binding<Bool> {
+        Binding(
+            get: { goals.showCalories },
+            set: { goals.showCalories = $0 }
+        )
+    }
+
+    private var showStepsBinding: Binding<Bool> {
+        Binding(
+            get: { goals.showSteps },
+            set: { goals.showSteps = $0 }
+        )
+    }
+
+    private var showNetCaloriesBinding: Binding<Bool> {
+        Binding(
+            get: { goals.showNetCalories },
+            set: { goals.showNetCalories = $0 }
+        )
+    }
+
+    private var showPacingBinding: Binding<Bool> {
+        Binding(
+            get: { goals.showPacing },
+            set: { goals.showPacing = $0 }
+        )
+    }
+
+    private var pacingComparisonBinding: Binding<PacingComparison> {
+        Binding(
+            get: { goals.pacingComparison },
+            set: { goals.pacingComparison = $0 }
+        )
+    }
+
+    private var pacingLookbackBinding: Binding<PacingLookback> {
+        Binding(
+            get: { goals.pacingLookback },
+            set: { goals.pacingLookback = $0 }
+        )
+    }
+
+    private var appearanceBinding: Binding<AppAppearance> {
+        Binding(
+            get: { goals.appearance },
+            set: { goals.appearance = $0 }
+        )
+    }
+
     private var pacingFooter: String {
-        let window = pacingLookback.label.lowercased()
-        let basis = pacingComparison == .dayOfWeek
+        let window = goals.pacingLookback.label.lowercased()
+        let basis = goals.pacingComparison == .dayOfWeek
             ? "Past \(window), same weekday as today."
             : "Past \(window), every day."
         return "Compares your progress so far to your usual at this time (Apple Health). \(basis) Empty days don’t count. Need 3+ days with data to show a comparison."
+    }
+
+    private func applyGoalDrafts() {
+        if calEnabled {
+            if let cal = Double(calText), cal > 0 {
+                goals.calorieGoal = min(max(cal, 500), 50000)
+            }
+        } else {
+            goals.calorieGoal = nil
+        }
+
+        if stepEnabled {
+            if let step = Int(stepText), step > 0 {
+                goals.stepGoal = min(max(step, 100), 500000)
+            }
+        } else {
+            goals.stepGoal = nil
+        }
     }
 
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    Toggle("Show Calories", isOn: $showCalories)
-                    Toggle("Show Steps", isOn: $showSteps)
-                    Toggle("Show Net Deficit", isOn: $showNetCalories)
-                        .onChange(of: showNetCalories) { _, enabled in
-                            guard enabled, !dietaryAuthRequested else { return }
-                            dietaryAuthRequested = true
+                    Toggle("Show Calories", isOn: showCaloriesBinding)
+                    Toggle("Show Steps", isOn: showStepsBinding)
+                    Toggle("Show Net Deficit", isOn: showNetCaloriesBinding)
+                        .onChange(of: goals.showNetCalories) { _, enabled in
+                            guard enabled else { return }
                             Task {
-                                do {
-                                    try await HealthKitService.shared.requestDietaryAuthorization()
-                                } catch {
-                                    print("[Settings] Dietary auth request failed: \(error)")
-                                }
+                                try? await HealthKitService.shared.requestDietaryAuthorization()
                             }
                         }
                 } header: {
-                    Text("Display")
+                    Text("Dashboard")
                 } footer: {
                     Text("Net deficit is total calories burned (active + resting) minus food calories from Apple Health. Connect a food app like MyFitnessPal to Health to populate dietary energy.")
                 }
@@ -1091,9 +1124,6 @@ private struct SettingsSheet: View {
                                 .foregroundStyle(.red)
                         }
                     }
-                }
-
-                Section {
                     Toggle("Step Goal", isOn: $stepEnabled)
                     if stepEnabled {
                         TextField("Daily steps", text: $stepText)
@@ -1104,17 +1134,21 @@ private struct SettingsSheet: View {
                                 .foregroundStyle(.red)
                         }
                     }
+                } header: {
+                    Text("Goals")
+                } footer: {
+                    Text("Goal changes are saved when you tap Done. Everything else applies instantly.")
                 }
 
                 Section {
-                    Toggle("Show Pacing", isOn: $pacingEnabled)
-                    if pacingEnabled {
-                        Picker("Usual day is", selection: $pacingComparison) {
+                    Toggle("Show Pacing", isOn: showPacingBinding)
+                    if goals.showPacing {
+                        Picker("Usual day is", selection: pacingComparisonBinding) {
                             ForEach(PacingComparison.allCases, id: \.self) { mode in
                                 Text(mode.label).tag(mode)
                             }
                         }
-                        Picker("Look back", selection: $pacingLookback) {
+                        Picker("Look back", selection: pacingLookbackBinding) {
                             ForEach(PacingLookback.allCases, id: \.self) { span in
                                 Text(span.label).tag(span)
                             }
@@ -1127,22 +1161,12 @@ private struct SettingsSheet: View {
                 }
 
                 Section("Appearance") {
-                    Picker("Theme", selection: $appearance) {
+                    Picker("Theme", selection: appearanceBinding) {
                         ForEach(AppAppearance.allCases, id: \.self) { option in
                             Text(option.label).tag(option)
                         }
                     }
                     .pickerStyle(.segmented)
-                }
-
-                Section {
-                    CoachPromoCard(compact: true)
-                        .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
-                        .listRowBackground(Color.clear)
-                } header: {
-                    Text("Need a Coach")
-                } footer: {
-                    Text("External links open Elsa's E3 Fitness site in Safari.")
                 }
 
                 Section {
@@ -1162,50 +1186,37 @@ private struct SettingsSheet: View {
                 } footer: {
                     Text("Total Calories reads Apple Health data in read-only mode and keeps your health data on your device.")
                 }
+
+                Section {
+                    CoachPromoCard(compact: true)
+                        .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
+                        .listRowBackground(Color.clear)
+                } header: {
+                    Text("Need a Coach")
+                } footer: {
+                    Text("External links open Elsa's E3 Fitness site in Safari.")
+                }
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
-                }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
-                        if calEnabled, let cal = Double(calText), cal > 0 {
-                            goals.calorieGoal = min(max(cal, 500), 50000)
-                        } else if !calEnabled {
-                            goals.calorieGoal = nil
-                        }
-                        if stepEnabled, let step = Int(stepText), step > 0 {
-                            goals.stepGoal = min(max(step, 100), 500000)
-                        } else if !stepEnabled {
-                            goals.stepGoal = nil
-                        }
-                        goals.showPacing = pacingEnabled
-                        goals.pacingComparison = pacingComparison
-                        goals.pacingLookback = pacingLookback
-                        goals.showCalories = showCalories
-                        goals.showSteps = showSteps
-                        goals.showNetCalories = showNetCalories
-                        goals.appearance = appearance
+                    Button("Done") {
+                        applyGoalDrafts()
                         dismiss()
                     }
                     .bold()
                     .disabled(!calValid || !stepValid)
                 }
             }
+            .onDisappear {
+                applyGoalDrafts()
+            }
             .onAppear {
                 calEnabled = goals.calorieGoal != nil
                 calText = goals.calorieGoal.map { String(Int($0)) } ?? "2500"
                 stepEnabled = goals.stepGoal != nil
                 stepText = goals.stepGoal.map { String($0) } ?? "10000"
-                pacingEnabled = goals.showPacing
-                pacingComparison = goals.pacingComparison
-                pacingLookback = goals.pacingLookback
-                showCalories = goals.showCalories
-                showSteps = goals.showSteps
-                showNetCalories = goals.showNetCalories
-                appearance = goals.appearance
             }
         }
     }

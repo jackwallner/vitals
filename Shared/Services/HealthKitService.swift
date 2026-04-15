@@ -477,6 +477,21 @@ final class HealthKitService: ObservableObject {
         healthKitLogger.info("Saved today cache and reloaded widget timelines")
     }
 
+    func updateCachedFoodCalories(_ kcal: Double) throws {
+        let context = ModelContext(DataService.sharedModelContainer)
+        let todayKey = DailyHealthRecord.key(for: DateHelpers.startOfDay())
+        let descriptor = FetchDescriptor<DailyHealthRecord>(
+            predicate: #Predicate { $0.dateString == todayKey }
+        )
+        if let record = try context.fetch(descriptor).first {
+            record.foodCalories = kcal
+            record.lastUpdated = .now
+            try context.save()
+            WidgetCenter.shared.reloadAllTimelines()
+            healthKitLogger.info("Cached food calories: \(kcal, privacy: .public) kcal")
+        }
+    }
+
     func clearTodayCache() throws {
         let context = ModelContext(DataService.sharedModelContainer)
         let todayKey = DailyHealthRecord.key(for: DateHelpers.startOfDay())

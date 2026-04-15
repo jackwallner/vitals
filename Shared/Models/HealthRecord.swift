@@ -8,6 +8,7 @@ final class DailyHealthRecord {
     var activeCalories: Double
     var restingCalories: Double
     var steps: Int
+    var foodCalories: Double
     var lastUpdated: Date
 
     var totalCalories: Double { activeCalories + restingCalories }
@@ -21,6 +22,7 @@ final class DailyHealthRecord {
         self.activeCalories = activeCalories
         self.restingCalories = restingCalories
         self.steps = steps
+        self.foodCalories = 0
         self.lastUpdated = Date()
     }
 
