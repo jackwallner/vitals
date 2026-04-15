@@ -541,30 +541,20 @@ struct DashboardView: View {
         if netDeficitNumericReady {
             let burned = Int(totalCalories.rounded())
             let eaten = Int(foodCalories.rounded())
-            let result = Int(netDeficit.rounded())
-            let align: HorizontalAlignment = centered ? .center : .leading
+            let pillColor = netDeficitColor
 
-            VStack(alignment: align, spacing: 6) {
-                HStack(spacing: 6) {
-                    Text("\(burned)")
-                        .foregroundStyle(Theme.caloriesPrimary)
-                    Text("burned")
-                        .foregroundStyle(Theme.textTertiary)
-                    Text("−")
-                        .foregroundStyle(Theme.textTertiary)
-                    Text("\(eaten)")
-                        .foregroundStyle(Theme.netDeficitBrand)
-                    Text("eaten")
-                        .foregroundStyle(Theme.textTertiary)
-                    Text("=")
-                        .foregroundStyle(Theme.textTertiary)
-                    Text(netDeficitDisplayText(Double(result)))
-                        .foregroundStyle(netDeficitColor)
-                }
-                .font(.system(.subheadline, design: .rounded, weight: .semibold))
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
+            HStack(spacing: 5) {
+                Image(systemName: netDeficit >= 0 ? "arrow.up.right" : "arrow.down.right")
+                    .font(.system(.caption2, design: .rounded, weight: .bold))
+                Text("\(burned.formatted(.number)) burned − \(eaten.formatted(.number)) eaten")
+                    .font(.system(.caption2, design: .rounded))
             }
+            .foregroundStyle(pillColor)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(pillColor.opacity(0.1), in: Capsule())
+            .lineLimit(1)
+            .minimumScaleFactor(0.7)
         }
     }
 
@@ -583,9 +573,6 @@ struct DashboardView: View {
                         Text("—")
                             .font(Theme.bigNumber(netNumberSize))
                             .foregroundStyle(Theme.textTertiary)
-                    }
-                    if netDeficitNumericReady {
-                        netDeficitStatusPill(deficit: deficit)
                     }
                     netDeficitBreakdownRow(centered: true)
                     Text("net calories")
@@ -617,9 +604,6 @@ struct DashboardView: View {
                             .font(.system(.callout, design: .rounded, weight: .medium))
                             .foregroundStyle(Theme.textTertiary)
                         Spacer(minLength: 8)
-                        if netDeficitNumericReady {
-                            netDeficitStatusPill(deficit: deficit)
-                        }
                     }
                     netDeficitBreakdownRow(centered: false)
                     netDeficitFootnote(centered: false)
