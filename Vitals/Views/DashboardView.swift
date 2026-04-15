@@ -140,6 +140,18 @@ struct DashboardView: View {
         .onChange(of: healthKit.isAuthorized) { _, authorized in
             if authorized { Task { await refresh() } }
         }
+        .onChange(of: goals.showNetCalories) { _, enabled in
+            guard enabled else { return }
+            Task {
+                do {
+                    try await healthKit.requestAuthorization(includeDietaryEnergy: true)
+                } catch {
+                    dietaryEnergyFetchFailed = true
+                    print("Failed to request dietary Health authorization: \(error)")
+                }
+                await refresh()
+            }
+        }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             Task { await refresh() }
         }
@@ -753,20 +765,12 @@ struct DashboardView: View {
             if goals.showNetCalories {
                 do {
                     foodCalories = try await healthKit.fetchDietaryEnergyToday()
-                    switch healthKit.dietaryEnergyReadGate() {
-                    case .denied:
-                        dietaryEnergyAccessDenied = true
-                        dietaryEnergyReady = false
-                        dietaryEnergyFetchFailed = false
-                    case .notDetermined:
-                        dietaryEnergyAccessDenied = false
-                        dietaryEnergyReady = false
-                        dietaryEnergyFetchFailed = false
-                    case .authorized:
-                        dietaryEnergyAccessDenied = false
-                        dietaryEnergyReady = true
-                        dietaryEnergyFetchFailed = false
-                    }
+                    // Apple provides no API to check read authorization — a successful
+                    // fetch is the only reliable signal.  authorizationStatus(for:) only
+                    // reports write/sharing status, which is always .notDetermined here.
+                    dietaryEnergyReady = true
+                    dietaryEnergyFetchFailed = false
+                    dietaryEnergyAccessDenied = false
                 } catch {
                     dietaryEnergyFetchFailed = true
                     dietaryEnergyAccessDenied = false

@@ -16,12 +16,13 @@ final class HealthKitService: ObservableObject {
     private let store = HKHealthStore()
     @Published var isAuthorized: Bool
 
-    private let readTypes: Set<HKObjectType> = [
+    private let baseReadTypes: Set<HKObjectType> = [
         HKQuantityType(.activeEnergyBurned),
         HKQuantityType(.basalEnergyBurned),
         HKQuantityType(.stepCount),
-        HKQuantityType(.dietaryEnergyConsumed),
     ]
+
+    private let dietaryReadType: HKObjectType = HKQuantityType(.dietaryEnergyConsumed)
 
     private init() {
         if ScreenshotConfig.isEnabled {
@@ -33,7 +34,7 @@ final class HealthKitService: ObservableObject {
             // means the user was already prompted (we can't know their answer for reads,
             // but we should attempt to fetch data regardless).
             Task {
-                let status = await self.authorizationRequestStatus()
+                let status = await self.authorizationRequestStatus(includeDietaryEnergy: false)
                 if status == .unnecessary {
                     self.isAuthorized = true
                 }
@@ -43,13 +44,18 @@ final class HealthKitService: ObservableObject {
 
     // MARK: - Authorization
 
-    func requestAuthorization() async throws {
+    func requestAuthorization(includeDietaryEnergy: Bool = false) async throws {
         if ScreenshotConfig.isEnabled {
             isAuthorized = true
             return
         }
         guard HKHealthStore.isHealthDataAvailable() else { return }
-        healthKitLogger.info("Requesting HealthKit authorization for \(self.readTypes.count, privacy: .public) read types")
+        let readTypes = includeDietaryEnergy
+            ? baseReadTypes.union([dietaryReadType])
+            : baseReadTypes
+        healthKitLogger.info(
+            "Requesting HealthKit authorization for \(readTypes.count, privacy: .public) read types includeDietary=\(includeDietaryEnergy, privacy: .public)"
+        )
         do {
             try await store.requestAuthorization(toShare: [], read: readTypes)
             isAuthorized = true
@@ -61,32 +67,15 @@ final class HealthKitService: ObservableObject {
         }
     }
 
-    /// Read authorization for dietary energy (Apple does not throw on denied reads; queries return 0).
-    enum DietaryEnergyReadGate: Sendable {
-        case authorized
-        case denied
-        case notDetermined
-    }
 
-    func dietaryEnergyReadGate() -> DietaryEnergyReadGate {
-        guard HKHealthStore.isHealthDataAvailable() else { return .notDetermined }
-        switch store.authorizationStatus(for: HKQuantityType(.dietaryEnergyConsumed)) {
-        case .sharingDenied:
-            return .denied
-        case .notDetermined:
-            return .notDetermined
-        case .sharingAuthorized:
-            return .authorized
-        @unknown default:
-            return .authorized
-        }
-    }
-
-    func authorizationRequestStatus() async -> HKAuthorizationRequestStatus? {
+    func authorizationRequestStatus(includeDietaryEnergy: Bool = false) async -> HKAuthorizationRequestStatus? {
         if ScreenshotConfig.isEnabled {
             return .unnecessary
         }
         guard HKHealthStore.isHealthDataAvailable() else { return nil }
+        let readTypes = includeDietaryEnergy
+            ? baseReadTypes.union([dietaryReadType])
+            : baseReadTypes
 
         return await withCheckedContinuation { continuation in
             store.getRequestStatusForAuthorization(toShare: [], read: readTypes) { status, error in
@@ -112,11 +101,11 @@ final class HealthKitService: ObservableObject {
             return
         }
         guard HKHealthStore.isHealthDataAvailable() else { return }
-        guard let status = await authorizationRequestStatus() else { return }
+        guard let status = await authorizationRequestStatus(includeDietaryEnergy: false) else { return }
         switch status {
         case .shouldRequest:
             do {
-                try await requestAuthorization()
+                try await requestAuthorization(includeDietaryEnergy: false)
             } catch {
                 healthKitLogger.error("synchronizeAuthorizationStateForFetching: requestAuthorization failed: \(String(describing: error), privacy: .public)")
             }
@@ -520,7 +509,7 @@ final class HealthKitService: ObservableObject {
         stats.active == 0 && stats.resting == 0 && stats.steps == 0
     }
 
-    private nonisolated func queryStatisticsCollection(
+    private func queryStatisticsCollection(
         _ identifier: HKQuantityTypeIdentifier,
         unit: HKUnit,
         start: Date,
