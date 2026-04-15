@@ -99,6 +99,12 @@ struct VitalsWatchApp: App {
         // watchOS gives ~15s background budget — bail at 8s to leave margin.
         let work = Task { @MainActor in
             try await HealthKitService.shared.refreshCache()
+            let defaults = UserDefaults(suiteName: vitalsAppGroupID) ?? .standard
+            let showNet = defaults.object(forKey: "showNetCalories") as? Bool ?? false
+            if showNet {
+                let food = try await HealthKitService.shared.fetchDietaryEnergyToday()
+                try HealthKitService.shared.updateCachedFoodCalories(food)
+            }
         }
         Task {
             try? await Task.sleep(for: .seconds(8))

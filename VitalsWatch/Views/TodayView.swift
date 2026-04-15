@@ -270,6 +270,7 @@ struct TodayView: View {
             }
             if goals.showNetCalories {
                 do {
+                    try await healthKit.requestDietaryAuthorization()
                     let food = try await healthKit.fetchDietaryEnergyToday()
                     foodCalories = food
                     try healthKit.updateCachedFoodCalories(food)
