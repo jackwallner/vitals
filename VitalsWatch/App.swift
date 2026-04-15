@@ -53,6 +53,9 @@ private final class WatchGoalSyncService: NSObject, WCSessionDelegate {
         if let stepGoal = applicationContext[GoalSyncKeys.stepGoal] as? Int {
             defaults.set(stepGoal, forKey: "stepGoal")
         }
+        if let showNetCalories = applicationContext[GoalSyncKeys.showNetCalories] as? Bool {
+            defaults.set(showNetCalories, forKey: "showNetCalories")
+        }
 
         WidgetCenter.shared.reloadAllTimelines()
         watchGoalSyncLogger.info("Applied synced goal settings on watch")
