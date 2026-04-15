@@ -203,12 +203,11 @@ private struct NoDataComplicationView: View {
             Text("Open app")
                 .containerBackground(.fill.tertiary, for: .widget)
         case .accessoryCorner:
-            Text("--")
-                .font(.system(.caption, design: .rounded, weight: .bold))
+            Image(systemName: "heart.text.clipboard")
+                .font(.title3)
                 .foregroundStyle(.secondary)
                 .widgetLabel {
-                    Image(systemName: "heart.text.clipboard")
-                        .foregroundStyle(.secondary)
+                    Text("--")
                 }
                 .containerBackground(.fill.tertiary, for: .widget)
         default:
@@ -314,11 +313,8 @@ struct CaloriesCornerView: View {
     @Environment(\.widgetFamily) private var family
 
     var body: some View {
-        Text(ComplicationFormat.shortCalories(entry.totalCalories, family: family))
-            .font(.system(.caption, design: .rounded, weight: .bold))
-            .lineLimit(1)
-            .minimumScaleFactor(0.7)
-            .monospacedDigit()
+        Image(systemName: "flame.fill")
+            .font(.title3)
             .foregroundStyle(Theme.caloriesPrimary)
             .widgetLabel {
                 if entry.calGoalEnabled {
@@ -326,12 +322,11 @@ struct CaloriesCornerView: View {
                         value: min(entry.totalCalories, entry.calorieGoal),
                         in: 0...max(entry.calorieGoal, 1)
                     ) {
-                        Text("Calories")
+                        Text(ComplicationFormat.shortCalories(entry.totalCalories, family: family))
                     }
                     .tint(Theme.caloriesPrimary)
                 } else {
-                    Image(systemName: "flame.fill")
-                        .foregroundStyle(Theme.caloriesPrimary)
+                    Text(ComplicationFormat.shortCalories(entry.totalCalories, family: family) + " cal")
                 }
             }
             .containerBackground(.fill.tertiary, for: .widget)
@@ -434,11 +429,8 @@ struct StepsCornerView: View {
     @Environment(\.widgetFamily) private var family
 
     var body: some View {
-        Text(ComplicationFormat.shortSteps(entry.steps, family: family))
-            .font(.system(.caption, design: .rounded, weight: .bold))
-            .lineLimit(1)
-            .minimumScaleFactor(0.7)
-            .monospacedDigit()
+        Image(systemName: "figure.walk")
+            .font(.title3)
             .foregroundStyle(Theme.stepsPrimary)
             .widgetLabel {
                 if entry.stepGoalEnabled {
@@ -446,12 +438,11 @@ struct StepsCornerView: View {
                         value: min(Double(entry.steps), Double(entry.stepGoal)),
                         in: 0...max(Double(entry.stepGoal), 1)
                     ) {
-                        Text("Steps")
+                        Text(ComplicationFormat.shortSteps(entry.steps, family: family))
                     }
                     .tint(Theme.stepsPrimary)
                 } else {
-                    Image(systemName: "figure.walk")
-                        .foregroundStyle(Theme.stepsPrimary)
+                    Text(ComplicationFormat.shortSteps(entry.steps, family: family) + " steps")
                 }
             }
             .containerBackground(.fill.tertiary, for: .widget)
@@ -571,18 +562,12 @@ struct NetDeficitCornerView: View {
     let entry: WatchVitalsEntry
     @Environment(\.widgetFamily) private var family
 
-    private var color: Color { entry.netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative }
-
     var body: some View {
-        Text(ComplicationFormat.shortNetDeficit(entry.netDeficit, family: family))
-            .font(.system(.caption, design: .rounded, weight: .bold))
-            .lineLimit(1)
-            .minimumScaleFactor(0.7)
-            .monospacedDigit()
-            .foregroundStyle(color)
+        Image(systemName: "fork.knife")
+            .font(.title3)
+            .foregroundStyle(Theme.netDeficitBrand)
             .widgetLabel {
-                Image(systemName: "fork.knife")
-                    .foregroundStyle(Theme.netDeficitBrand)
+                Text(ComplicationFormat.shortNetDeficit(entry.netDeficit, family: family) + " net")
             }
             .containerBackground(.fill.tertiary, for: .widget)
     }
