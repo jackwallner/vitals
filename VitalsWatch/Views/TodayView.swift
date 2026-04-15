@@ -29,9 +29,11 @@ private enum WatchHealthNotice: Equatable {
 struct TodayView: View {
     @StateObject private var healthKit = HealthKitService.shared
     @Environment(\.scenePhase) var scenePhase
+    @StateObject private var goals = GoalSettings.shared
     @State private var activeCalories: Double = 0
     @State private var restingCalories: Double = 0
     @State private var steps: Int = 0
+    @State private var foodCalories: Double = 0
     @State private var showBreakdown = false
     @State private var isLoading = true
     @State private var isRefreshing = false
@@ -39,6 +41,7 @@ struct TodayView: View {
     @State private var healthNotice: WatchHealthNotice? = nil
 
     private var totalCalories: Double { activeCalories + restingCalories }
+    private var netDeficit: Double { totalCalories - foodCalories }
 
     var body: some View {
         Group {
@@ -106,6 +109,31 @@ struct TodayView: View {
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel("Steps")
                     .accessibilityValue("\(steps) steps")
+
+                    if goals.showNetCalories {
+                        // Divider
+                        Rectangle()
+                            .fill(Theme.cardSurface)
+                            .frame(height: 1)
+                            .padding(.horizontal, 20)
+
+                        VStack(spacing: 2) {
+                            Image(systemName: "fork.knife")
+                                .font(.caption)
+                                .foregroundStyle(Theme.netDeficitBrand)
+                            Text(netDeficitDisplayText(netDeficit))
+                                .font(Theme.bigNumber(32))
+                                .foregroundStyle(netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
+                                .contentTransition(.numericText())
+                            Text("NET CAL")
+                                .font(.system(size: 9, weight: .medium, design: .rounded))
+                                .foregroundStyle(Theme.textSecondary)
+                                .tracking(1.2)
+                        }
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("Net calories")
+                        .accessibilityValue("\(Int(netDeficit)) net calories")
+                    }
 
                     if let healthNotice {
                         VStack(spacing: 6) {
@@ -178,6 +206,11 @@ struct TodayView: View {
         }
     }
 
+    private func netDeficitDisplayText(_ value: Double) -> String {
+        let prefix = value >= 0 ? "+" : ""
+        return prefix + Int(value).formatted(.number)
+    }
+
     private func applyStats(_ stats: (active: Double, resting: Double, steps: Int)) {
         activeCalories = stats.active
         restingCalories = stats.resting
@@ -234,6 +267,15 @@ struct TodayView: View {
                 try await healthKit.refreshCache(stats: stats)
             } catch {
                 print("Failed to refresh watch cache: \(error)")
+            }
+            if goals.showNetCalories {
+                do {
+                    let food = try await healthKit.fetchDietaryEnergyToday()
+                    foodCalories = food
+                    try healthKit.updateCachedFoodCalories(food)
+                } catch {
+                    print("Failed to fetch dietary energy: \(error)")
+                }
             }
         } catch {
             let ns = error as NSError
