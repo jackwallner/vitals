@@ -520,6 +520,10 @@ struct DashboardView: View {
         return "\(r)"
     }
 
+    private var netDeficitColor: Color {
+        netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative
+    }
+
     private func netDeficitStatusPill(deficit: Double) -> some View {
         let surplus = deficit < 0
         let label = surplus ? "Surplus" : "Deficit"
@@ -532,31 +536,59 @@ struct DashboardView: View {
             .background(color.opacity(0.14), in: Capsule())
     }
 
+    @ViewBuilder
+    private func netDeficitBreakdownRow(centered: Bool) -> some View {
+        if netDeficitNumericReady {
+            let burned = Int(totalCalories.rounded())
+            let eaten = Int(foodCalories.rounded())
+            let result = Int(netDeficit.rounded())
+            let align: HorizontalAlignment = centered ? .center : .leading
+
+            VStack(alignment: align, spacing: 6) {
+                HStack(spacing: 6) {
+                    Text("\(burned)")
+                        .foregroundStyle(Theme.caloriesPrimary)
+                    Text("burned")
+                        .foregroundStyle(Theme.textTertiary)
+                    Text("−")
+                        .foregroundStyle(Theme.textTertiary)
+                    Text("\(eaten)")
+                        .foregroundStyle(Theme.netDeficitBrand)
+                    Text("eaten")
+                        .foregroundStyle(Theme.textTertiary)
+                    Text("=")
+                        .foregroundStyle(Theme.textTertiary)
+                    Text(netDeficitDisplayText(Double(result)))
+                        .foregroundStyle(netDeficitColor)
+                }
+                .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+            }
+        }
+    }
+
     private func netDeficitSection(netNumberSize: CGFloat) -> some View {
         let deficit = netDeficit
 
         return Group {
             if onlyNetMetric {
-                VStack(spacing: 8) {
-                    HStack(alignment: .firstTextBaseline, spacing: 10) {
-                        Image(systemName: "arrow.left.arrow.right.circle.fill")
-                            .font(isSingleMetric ? .largeTitle : .title)
-                            .foregroundStyle(Theme.netDeficitBrand)
-                        if netDeficitNumericReady {
-                            Text(netDeficitDisplayText(deficit))
-                                .font(Theme.bigNumber(netNumberSize))
-                                .foregroundStyle(Theme.textPrimary)
-                                .contentTransition(.numericText())
-                        } else {
-                            Text("—")
-                                .font(Theme.bigNumber(netNumberSize))
-                                .foregroundStyle(Theme.textTertiary)
-                        }
+                VStack(spacing: 10) {
+                    if netDeficitNumericReady {
+                        Text(netDeficitDisplayText(deficit))
+                            .font(Theme.bigNumber(netNumberSize))
+                            .foregroundStyle(netDeficitColor)
+                            .contentTransition(.numericText())
+                    } else {
+                        Text("—")
+                            .font(Theme.bigNumber(netNumberSize))
+                            .foregroundStyle(Theme.textTertiary)
                     }
                     if netDeficitNumericReady {
                         netDeficitStatusPill(deficit: deficit)
                     }
-                    Text("net deficit")
+                    netDeficitBreakdownRow(centered: true)
+                    Text("net calories")
                         .font(.system(isSingleMetric ? .title3 : .subheadline, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
                         .textCase(.uppercase)
@@ -564,39 +596,37 @@ struct DashboardView: View {
                     netDeficitFootnote(centered: true)
                 }
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel("Net deficit")
+                .accessibilityLabel("Net calories")
                 .accessibilityValue(netDeficitAccessibilitySummary(deficit: deficit))
                 .opacity(animateContent ? 1 : 0)
                 .scaleEffect(animateContent ? 1 : 0.9)
             } else {
-                VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: 10) {
                     HStack(alignment: .firstTextBaseline) {
-                        Image(systemName: "arrow.left.arrow.right.circle.fill")
-                            .font(.title2)
-                            .foregroundStyle(Theme.netDeficitBrand)
                         if netDeficitNumericReady {
                             Text(netDeficitDisplayText(deficit))
                                 .font(Theme.bigNumber(netNumberSize))
-                                .foregroundStyle(Theme.textPrimary)
+                                .foregroundStyle(netDeficitColor)
                                 .contentTransition(.numericText())
                         } else {
                             Text("—")
                                 .font(Theme.bigNumber(netNumberSize))
                                 .foregroundStyle(Theme.textTertiary)
                         }
+                        Text("net")
+                            .font(.system(.callout, design: .rounded, weight: .medium))
+                            .foregroundStyle(Theme.textTertiary)
                         Spacer(minLength: 8)
                         if netDeficitNumericReady {
                             netDeficitStatusPill(deficit: deficit)
                         }
                     }
-                    Text("Burned − food (Health)")
-                        .font(.system(.caption, design: .rounded))
-                        .foregroundStyle(Theme.textSecondary)
+                    netDeficitBreakdownRow(centered: false)
                     netDeficitFootnote(centered: false)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel("Net deficit")
+                .accessibilityLabel("Net calories")
                 .accessibilityValue(netDeficitAccessibilitySummary(deficit: deficit))
                 .padding(Theme.cardPadding)
                 .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
@@ -1024,6 +1054,7 @@ private struct SettingsSheet: View {
     @State private var showSteps = true
     @State private var showNetCalories = false
     @State private var appearance: AppAppearance = .system
+    @State private var dietaryAuthRequested = false
 
     private var calValid: Bool {
         !calEnabled || (Double(calText) ?? 0) > 0
@@ -1048,6 +1079,17 @@ private struct SettingsSheet: View {
                     Toggle("Show Calories", isOn: $showCalories)
                     Toggle("Show Steps", isOn: $showSteps)
                     Toggle("Show Net Deficit", isOn: $showNetCalories)
+                        .onChange(of: showNetCalories) { _, enabled in
+                            guard enabled, !dietaryAuthRequested else { return }
+                            dietaryAuthRequested = true
+                            Task {
+                                do {
+                                    try await HealthKitService.shared.requestDietaryAuthorization()
+                                } catch {
+                                    print("[Settings] Dietary auth request failed: \(error)")
+                                }
+                            }
+                        }
                 } header: {
                     Text("Display")
                 } footer: {
