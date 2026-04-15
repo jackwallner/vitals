@@ -2,6 +2,76 @@ import WidgetKit
 import SwiftUI
 import SwiftData
 
+// MARK: - Number Formatting
+
+private enum ComplicationFormat {
+    static func shortCalories(_ value: Double, family: WidgetFamily) -> String {
+        if family == .accessoryCorner || family == .accessoryInline || family == .accessoryCircular {
+            return compact(value)
+        }
+        if value >= 10_000 {
+            return compact(value)
+        }
+        return plain(value)
+    }
+
+    static func shortSteps(_ value: Int, family: WidgetFamily) -> String {
+        let asDouble = Double(value)
+        if family == .accessoryCorner || family == .accessoryInline || family == .accessoryCircular {
+            return compact(asDouble)
+        }
+        if value >= 10_000 {
+            return compact(asDouble)
+        }
+        return plain(asDouble)
+    }
+
+    static func goalSuffix(current: Double, goal: Double, family: WidgetFamily) -> String? {
+        // Trailing goal text is the first thing that gets clipped on small rectangular slots.
+        // Keep rectangular layouts focused on the primary metric for consistency.
+        _ = current
+        _ = goal
+        _ = family
+        return nil
+    }
+
+    static func goalSuffix(current: Int, goal: Int, family: WidgetFamily) -> String? {
+        _ = current
+        _ = goal
+        _ = family
+        return nil
+    }
+
+    private static func compact(_ value: Double) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.usesGroupingSeparator = false
+        formatter.maximumFractionDigits = value < 10_000 ? 1 : 0
+        formatter.minimumFractionDigits = 0
+
+        if value >= 999_500 {
+            let compactValue = value / 1_000_000
+            let text = formatter.string(from: NSNumber(value: compactValue)) ?? String(format: "%.1f", compactValue)
+            return "\(text)M"
+        }
+        if value >= 1_000 {
+            let compactValue = value / 1_000
+            let text = formatter.string(from: NSNumber(value: compactValue)) ?? String(format: "%.1f", compactValue)
+            return "\(text)K"
+        }
+        return formatter.string(from: NSNumber(value: value)) ?? String(format: "%.0f", value)
+    }
+
+    private static func plain(_ value: Double) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.usesGroupingSeparator = false
+        formatter.maximumFractionDigits = 0
+        formatter.minimumFractionDigits = 0
+        return formatter.string(from: NSNumber(value: value)) ?? String(format: "%.0f", value)
+    }
+}
+
 // MARK: - Goal Helper
 
 private func loadGoals() -> (calories: Double, steps: Int, calEnabled: Bool, stepEnabled: Bool, showCalories: Bool, showSteps: Bool) {
@@ -113,7 +183,12 @@ private struct NoDataComplicationView: View {
                 .containerBackground(.fill.tertiary, for: .widget)
         case .accessoryCorner:
             Text("--")
-                .widgetLabel { Text("Open app") }
+                .font(.system(.caption, design: .rounded, weight: .bold))
+                .foregroundStyle(.secondary)
+                .widgetLabel {
+                    Image(systemName: "heart.text.clipboard")
+                        .foregroundStyle(.secondary)
+                }
                 .containerBackground(.fill.tertiary, for: .widget)
         default:
             Image(systemName: "heart.text.clipboard")
@@ -126,14 +201,18 @@ private struct NoDataComplicationView: View {
 
 struct CaloriesCircularView: View {
     let entry: WatchVitalsEntry
+    @Environment(\.widgetFamily) private var family
 
     var body: some View {
         if entry.calGoalEnabled {
             Gauge(value: min(entry.totalCalories, entry.calorieGoal), in: 0...entry.calorieGoal) {
                 Image(systemName: "flame.fill")
             } currentValueLabel: {
-                Text(entry.totalCalories / 1000, format: .number.precision(.fractionLength(1)))
+                Text(ComplicationFormat.shortCalories(entry.totalCalories, family: family))
                     .font(.system(.body, design: .rounded, weight: .bold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.65)
+                    .monospacedDigit()
             }
             .gaugeStyle(.accessoryCircular)
             .tint(Theme.caloriesPrimary)
@@ -143,8 +222,11 @@ struct CaloriesCircularView: View {
                 Image(systemName: "flame.fill")
                     .font(.caption)
                     .foregroundStyle(Theme.caloriesPrimary)
-                Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
+                Text(ComplicationFormat.shortCalories(entry.totalCalories, family: family))
                     .font(.system(.body, design: .rounded, weight: .bold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.65)
+                    .monospacedDigit()
             }
             .containerBackground(.fill.tertiary, for: .widget)
         }
@@ -153,6 +235,7 @@ struct CaloriesCircularView: View {
 
 struct CaloriesRectangularView: View {
     let entry: WatchVitalsEntry
+    @Environment(\.widgetFamily) private var family
 
     var body: some View {
         HStack(spacing: 6) {
@@ -161,17 +244,30 @@ struct CaloriesRectangularView: View {
                 .foregroundStyle(Theme.caloriesPrimary)
                 .widgetAccentable()
             VStack(alignment: .leading, spacing: 1) {
-                Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
+                Text(ComplicationFormat.shortCalories(entry.totalCalories, family: family))
                     .font(.system(.title3, design: .rounded, weight: .bold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+                    .monospacedDigit()
                 Text("calories")
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
             }
             Spacer()
-            if entry.calGoalEnabled {
-                Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
+            if entry.calGoalEnabled,
+               let goalText = ComplicationFormat.goalSuffix(
+                   current: entry.totalCalories,
+                   goal: entry.calorieGoal,
+                   family: family
+               ) {
+                Text(goalText)
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                    .monospacedDigit()
             }
         }
         .containerBackground(.fill.tertiary, for: .widget)
@@ -180,31 +276,41 @@ struct CaloriesRectangularView: View {
 
 struct CaloriesInlineView: View {
     let entry: WatchVitalsEntry
+    @Environment(\.widgetFamily) private var family
 
     var body: some View {
-        Text("\(entry.totalCalories.formatted(.number.precision(.fractionLength(0)))) cal")
+        Text(ComplicationFormat.shortCalories(entry.totalCalories, family: family))
             .font(.system(.body, design: .rounded))
+            .lineLimit(1)
+            .minimumScaleFactor(0.65)
+            .monospacedDigit()
             .containerBackground(.fill.tertiary, for: .widget)
     }
 }
 
 struct CaloriesCornerView: View {
     let entry: WatchVitalsEntry
+    @Environment(\.widgetFamily) private var family
 
     var body: some View {
-        Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
-            .font(.system(.title3, design: .rounded, weight: .bold))
+        Text(ComplicationFormat.shortCalories(entry.totalCalories, family: family))
+            .font(.system(.caption, design: .rounded, weight: .bold))
+            .lineLimit(1)
+            .minimumScaleFactor(0.7)
+            .monospacedDigit()
             .foregroundStyle(Theme.caloriesPrimary)
             .widgetLabel {
                 if entry.calGoalEnabled {
-                    Gauge(value: min(entry.totalCalories, entry.calorieGoal), in: 0...entry.calorieGoal) {
-                        Text("cal")
+                    Gauge(
+                        value: min(entry.totalCalories, entry.calorieGoal),
+                        in: 0...max(entry.calorieGoal, 1)
+                    ) {
+                        Text("Calories")
                     }
                     .tint(Theme.caloriesPrimary)
-                    .gaugeStyle(.accessoryLinear)
                 } else {
-                    Text("cal")
-                        .font(.system(.caption, design: .rounded))
+                    Image(systemName: "flame.fill")
+                        .foregroundStyle(Theme.caloriesPrimary)
                 }
             }
             .containerBackground(.fill.tertiary, for: .widget)
@@ -215,14 +321,18 @@ struct CaloriesCornerView: View {
 
 struct StepsCircularView: View {
     let entry: WatchVitalsEntry
+    @Environment(\.widgetFamily) private var family
 
     var body: some View {
         if entry.stepGoalEnabled {
             Gauge(value: min(Double(entry.steps), Double(entry.stepGoal)), in: 0...Double(entry.stepGoal)) {
                 Image(systemName: "figure.walk")
             } currentValueLabel: {
-                Text(Double(entry.steps) / 1000, format: .number.precision(.fractionLength(1)))
+                Text(ComplicationFormat.shortSteps(entry.steps, family: family))
                     .font(.system(.body, design: .rounded, weight: .bold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.65)
+                    .monospacedDigit()
             }
             .gaugeStyle(.accessoryCircular)
             .tint(Theme.stepsPrimary)
@@ -232,8 +342,11 @@ struct StepsCircularView: View {
                 Image(systemName: "figure.walk")
                     .font(.caption)
                     .foregroundStyle(Theme.stepsPrimary)
-                Text(entry.steps, format: .number)
+                Text(ComplicationFormat.shortSteps(entry.steps, family: family))
                     .font(.system(.body, design: .rounded, weight: .bold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.65)
+                    .monospacedDigit()
             }
             .containerBackground(.fill.tertiary, for: .widget)
         }
@@ -242,6 +355,7 @@ struct StepsCircularView: View {
 
 struct StepsRectangularView: View {
     let entry: WatchVitalsEntry
+    @Environment(\.widgetFamily) private var family
 
     var body: some View {
         HStack(spacing: 6) {
@@ -250,17 +364,30 @@ struct StepsRectangularView: View {
                 .foregroundStyle(Theme.stepsPrimary)
                 .widgetAccentable()
             VStack(alignment: .leading, spacing: 1) {
-                Text(entry.steps, format: .number)
+                Text(ComplicationFormat.shortSteps(entry.steps, family: family))
                     .font(.system(.title3, design: .rounded, weight: .bold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+                    .monospacedDigit()
                 Text("steps")
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
             }
             Spacer()
-            if entry.stepGoalEnabled {
-                Text("/ \(entry.stepGoal.formatted(.number))")
+            if entry.stepGoalEnabled,
+               let goalText = ComplicationFormat.goalSuffix(
+                   current: entry.steps,
+                   goal: entry.stepGoal,
+                   family: family
+               ) {
+                Text(goalText)
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                    .monospacedDigit()
             }
         }
         .containerBackground(.fill.tertiary, for: .widget)
@@ -269,31 +396,41 @@ struct StepsRectangularView: View {
 
 struct StepsInlineView: View {
     let entry: WatchVitalsEntry
+    @Environment(\.widgetFamily) private var family
 
     var body: some View {
-        Text("\(entry.steps.formatted(.number)) steps")
+        Text(ComplicationFormat.shortSteps(entry.steps, family: family))
             .font(.system(.body, design: .rounded))
+            .lineLimit(1)
+            .minimumScaleFactor(0.65)
+            .monospacedDigit()
             .containerBackground(.fill.tertiary, for: .widget)
     }
 }
 
 struct StepsCornerView: View {
     let entry: WatchVitalsEntry
+    @Environment(\.widgetFamily) private var family
 
     var body: some View {
-        Text(entry.steps.formatted(.number))
-            .font(.system(.title3, design: .rounded, weight: .bold))
+        Text(ComplicationFormat.shortSteps(entry.steps, family: family))
+            .font(.system(.caption, design: .rounded, weight: .bold))
+            .lineLimit(1)
+            .minimumScaleFactor(0.7)
+            .monospacedDigit()
             .foregroundStyle(Theme.stepsPrimary)
             .widgetLabel {
                 if entry.stepGoalEnabled {
-                    Gauge(value: min(Double(entry.steps), Double(entry.stepGoal)), in: 0...Double(entry.stepGoal)) {
-                        Text("steps")
+                    Gauge(
+                        value: min(Double(entry.steps), Double(entry.stepGoal)),
+                        in: 0...max(Double(entry.stepGoal), 1)
+                    ) {
+                        Text("Steps")
                     }
                     .tint(Theme.stepsPrimary)
-                    .gaugeStyle(.accessoryLinear)
                 } else {
-                    Text("steps")
-                        .font(.system(.caption, design: .rounded))
+                    Image(systemName: "figure.walk")
+                        .foregroundStyle(Theme.stepsPrimary)
                 }
             }
             .containerBackground(.fill.tertiary, for: .widget)
