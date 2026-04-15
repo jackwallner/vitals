@@ -67,6 +67,23 @@ final class HealthKitService: ObservableObject {
         }
     }
 
+    /// Request authorization for dietary energy only. Calling this separately avoids a
+    /// HealthKit quirk where mixing already-authorized types with new ones can silently
+    /// suppress the permission sheet (especially when called shortly after a prior auth).
+    func requestDietaryAuthorization() async throws {
+        if ScreenshotConfig.isEnabled { return }
+        guard HKHealthStore.isHealthDataAvailable() else { return }
+        healthKitLogger.info("Requesting HealthKit authorization for dietary energy only")
+        do {
+            try await store.requestAuthorization(toShare: [], read: [dietaryReadType])
+            enableBackgroundDelivery()
+            healthKitLogger.info("Dietary energy authorization request completed")
+        } catch {
+            healthKitLogger.error("Dietary energy authorization request failed: \(String(describing: error), privacy: .public)")
+            throw error
+        }
+    }
+
 
     func authorizationRequestStatus(includeDietaryEnergy: Bool = false) async -> HKAuthorizationRequestStatus? {
         if ScreenshotConfig.isEnabled {

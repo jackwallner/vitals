@@ -143,12 +143,21 @@ struct DashboardView: View {
         .onChange(of: goals.showNetCalories) { _, enabled in
             guard enabled else { return }
             Task {
+                let statusBefore = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
+                print("[NetDeficit] Toggled ON — auth status before request: \(String(describing: statusBefore?.rawValue)) (0=unknown, 1=shouldRequest, 2=unnecessary)")
+
+                // Always request dietary auth separately — requesting only the new
+                // type avoids HealthKit silently suppressing the sheet when it's
+                // bundled with already-authorized types.
                 do {
-                    try await healthKit.requestAuthorization(includeDietaryEnergy: true)
+                    try await healthKit.requestDietaryAuthorization()
+                    let statusAfter = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
+                    print("[NetDeficit] requestDietaryAuthorization completed — auth status after: \(String(describing: statusAfter?.rawValue))")
                 } catch {
                     dietaryEnergyFetchFailed = true
-                    print("Failed to request dietary Health authorization: \(error)")
+                    print("[NetDeficit] requestDietaryAuthorization failed: \(error)")
                 }
+
                 await refresh()
             }
         }
