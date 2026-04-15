@@ -560,7 +560,7 @@ struct NetDeficitEntryView: View {
     let entry: WatchVitalsEntry
 
     var body: some View {
-        if !entry.dataAvailable || !entry.showNetCalories {
+        if !entry.dataAvailable {
             NoDataComplicationView()
         } else {
             switch family {

@@ -55,6 +55,9 @@ private final class WatchGoalSyncService: NSObject, WCSessionDelegate {
         }
         if let showNetCalories = applicationContext[GoalSyncKeys.showNetCalories] as? Bool {
             defaults.set(showNetCalories, forKey: "showNetCalories")
+            Task { @MainActor in
+                GoalSettings.shared.showNetCalories = showNetCalories
+            }
         }
 
         WidgetCenter.shared.reloadAllTimelines()
