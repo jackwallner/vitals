@@ -42,6 +42,7 @@ struct TodayView: View {
 
     private var totalCalories: Double { activeCalories + restingCalories }
     private var netDeficit: Double { totalCalories - foodCalories }
+    private var compactLayout: Bool { goals.showNetCalories }
 
     var body: some View {
         Group {
@@ -49,16 +50,16 @@ struct TodayView: View {
                 ProgressView()
                     .tint(Theme.textTertiary)
             } else {
-                VStack(spacing: 12) {
-                    Spacer(minLength: 4)
+                VStack(spacing: compactLayout ? 6 : 12) {
+                    Spacer(minLength: compactLayout ? 2 : 4)
 
                     // Calories
                     VStack(spacing: 2) {
                         Image(systemName: "flame.fill")
-                            .font(.caption)
+                            .font(.caption2)
                             .foregroundStyle(Theme.caloriesPrimary)
                         Text(totalCalories, format: .number.precision(.fractionLength(0)))
-                            .font(Theme.bigNumber(38))
+                            .font(Theme.bigNumber(compactLayout ? 28 : 38))
                             .foregroundStyle(Theme.textPrimary)
                             .contentTransition(.numericText())
                         Text("CALORIES")
@@ -95,10 +96,10 @@ struct TodayView: View {
                     // Steps
                     VStack(spacing: 2) {
                         Image(systemName: "figure.walk")
-                            .font(.caption)
+                            .font(.caption2)
                             .foregroundStyle(Theme.stepsPrimary)
                         Text(steps, format: .number)
-                            .font(Theme.bigNumber(38))
+                            .font(Theme.bigNumber(compactLayout ? 28 : 38))
                             .foregroundStyle(Theme.textPrimary)
                             .contentTransition(.numericText())
                         Text("STEPS")
@@ -122,7 +123,7 @@ struct TodayView: View {
                                 .font(.caption)
                                 .foregroundStyle(Theme.netDeficitBrand)
                             Text(netDeficitDisplayText(netDeficit))
-                                .font(Theme.bigNumber(32))
+                                .font(Theme.bigNumber(24))
                                 .foregroundStyle(netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
                                 .contentTransition(.numericText())
                             Text("NET CAL")

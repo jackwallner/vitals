@@ -30,10 +30,10 @@ private enum ComplicationFormat {
         let prefix = value >= 0 ? "+" : ""
         let absVal = abs(value)
         if family == .accessoryCorner || family == .accessoryInline || family == .accessoryCircular {
-            return prefix + compact(absVal)
+            return prefix + compactWholeNumber(absVal)
         }
         if absVal >= 10_000 {
-            return prefix + compact(absVal)
+            return prefix + compactWholeNumber(absVal)
         }
         return prefix + plain(absVal)
     }
@@ -72,6 +72,16 @@ private enum ComplicationFormat {
             return "\(text)K"
         }
         return formatter.string(from: NSNumber(value: value)) ?? String(format: "%.0f", value)
+    }
+
+    private static func compactWholeNumber(_ value: Double) -> String {
+        if value >= 999_500 {
+            return "\(Int(round(value / 1_000_000)))M"
+        }
+        if value >= 1_000 {
+            return "\(Int(round(value / 1_000)))K"
+        }
+        return "\(Int(round(value)))"
     }
 
     private static func plain(_ value: Double) -> String {

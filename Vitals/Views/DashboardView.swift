@@ -792,7 +792,10 @@ struct DashboardView: View {
                     comparison: goals.pacingComparison,
                     lookback: goals.pacingLookback
                 ) {
-                    let v = pacing.dashboardValues(showCalories: goals.showCalories, showSteps: goals.showSteps)
+                    // dayOfWeek with 14-day lookback yields at most 2 matching days,
+                    // so require fewer samples to avoid permanently showing "building".
+                    let minSamples = goals.pacingComparison == .dayOfWeek ? max(goals.pacingLookback.rawValue / 7, 1) : 3
+                    let v = pacing.dashboardValues(minSamples: minSamples, showCalories: goals.showCalories, showSteps: goals.showSteps)
                     pacingCalories = v.calories
                     pacingCaloriesInsufficient = v.caloriesBuilding
                     pacingSteps = v.steps
