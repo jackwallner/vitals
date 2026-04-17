@@ -31,6 +31,8 @@ enum GoalSyncKeys {
     static let calorieGoalEnabled = "goalSync.calorieGoalEnabled"
     static let stepGoalEnabled = "goalSync.stepGoalEnabled"
     static let showNetCalories = "goalSync.showNetCalories"
+    static let showCalories = "goalSync.showCalories"
+    static let showSteps = "goalSync.showSteps"
 }
 
 /// How to aggregate historical days when computing “usual” progress at this time of day.

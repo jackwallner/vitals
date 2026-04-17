@@ -34,6 +34,8 @@ private final class PhoneGoalSyncService: NSObject, WCSessionDelegate {
             GoalSyncKeys.calorieGoal: goals.calorieGoal ?? 2500,
             GoalSyncKeys.stepGoal: goals.stepGoal ?? 10000,
             GoalSyncKeys.showNetCalories: goals.showNetCalories,
+            GoalSyncKeys.showCalories: goals.showCalories,
+            GoalSyncKeys.showSteps: goals.showSteps,
         ]
 
         do {
@@ -107,6 +109,16 @@ struct VitalsApp: App {
                     #endif
                 }
                 .onChange(of: goals.showNetCalories) { _, _ in
+                    #if canImport(WatchConnectivity)
+                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                    #endif
+                }
+                .onChange(of: goals.showCalories) { _, _ in
+                    #if canImport(WatchConnectivity)
+                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                    #endif
+                }
+                .onChange(of: goals.showSteps) { _, _ in
                     #if canImport(WatchConnectivity)
                     PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
                     #endif

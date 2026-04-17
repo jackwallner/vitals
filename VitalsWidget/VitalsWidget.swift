@@ -64,7 +64,32 @@ struct VitalsTimelineProvider: TimelineProvider {
             )
         }
 
-        // No record for today — could be new day or HealthKit unavailable
+        // Fall back to the most recent prior day so the widget doesn't show
+        // a hard-zero "Open app" empty state every morning before the host app
+        // (or HKObserverQuery) writes a new same-day cache row.
+        var fetchPrior = FetchDescriptor<DailyHealthRecord>(
+            predicate: #Predicate { $0.dateString < todayKey }
+        )
+        fetchPrior.sortBy = [SortDescriptor(\DailyHealthRecord.dateString, order: .reverse)]
+        fetchPrior.fetchLimit = 1
+        if let prior = try? container.mainContext.fetch(fetchPrior).first {
+            return VitalsEntry(
+                date: .now,
+                totalCalories: prior.totalCalories,
+                activeCalories: prior.activeCalories,
+                restingCalories: prior.restingCalories,
+                steps: prior.steps,
+                calorieGoal: goals.calories,
+                stepGoal: goals.steps,
+                calGoalEnabled: goals.calEnabled,
+                stepGoalEnabled: goals.stepEnabled,
+                showCalories: goals.showCalories,
+                showSteps: goals.showSteps,
+                staleDate: prior.date
+            )
+        }
+
+        // No record at all — first launch or HealthKit unavailable
         return VitalsEntry(date: .now, totalCalories: 0, activeCalories: 0, restingCalories: 0, steps: 0, calorieGoal: goals.calories, stepGoal: goals.steps, calGoalEnabled: goals.calEnabled, stepGoalEnabled: goals.stepEnabled, showCalories: goals.showCalories, showSteps: goals.showSteps, dataAvailable: false)
     }
 }
@@ -84,9 +109,19 @@ struct VitalsEntry: TimelineEntry {
     var showCalories: Bool = true
     var showSteps: Bool = true
     var dataAvailable: Bool = true
+    /// When set, the values are from a prior day (today's cache hasn't been written yet).
+    var staleDate: Date? = nil
 }
 
 // MARK: - Widget Views
+
+private func staleLabel(for date: Date) -> String {
+    let cal = Calendar.current
+    if cal.isDateInYesterday(date) { return "Yesterday" }
+    let formatter = DateFormatter()
+    formatter.dateFormat = "EEE"
+    return formatter.string(from: date)
+}
 
 struct SmallWidgetView: View {
     let entry: VitalsEntry
@@ -94,6 +129,13 @@ struct SmallWidgetView: View {
     var body: some View {
         if entry.dataAvailable {
             VStack(alignment: .leading, spacing: 8) {
+                if let stale = entry.staleDate {
+                    Text(staleLabel(for: stale))
+                        .font(.system(size: 9, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Theme.textTertiary)
+                        .textCase(.uppercase)
+                        .tracking(0.6)
+                }
                 if entry.showCalories {
                     VStack(alignment: .leading, spacing: 2) {
                         Label("Calories", systemImage: "flame.fill")
@@ -151,7 +193,15 @@ struct MediumWidgetView: View {
 
     var body: some View {
         if entry.dataAvailable {
-            HStack(spacing: 16) {
+            VStack(alignment: .leading, spacing: 6) {
+                if let stale = entry.staleDate {
+                    Text(staleLabel(for: stale))
+                        .font(.system(size: 10, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Theme.textTertiary)
+                        .textCase(.uppercase)
+                        .tracking(0.6)
+                }
+                HStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: 12) {
                     if entry.showCalories {
                         VStack(alignment: .leading, spacing: 2) {
@@ -214,7 +264,8 @@ struct MediumWidgetView: View {
                         }
                     }
                 }
-            }
+                } // close inner HStack
+            } // close outer VStack
             .containerBackground(.fill.tertiary, for: .widget)
         } else {
             HStack(spacing: 12) {
@@ -270,9 +321,17 @@ struct RectangularAccessoryView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text("Total Calories")
-                .font(.system(.headline, design: .rounded))
-                .widgetAccentable()
+            HStack(spacing: 6) {
+                Text("Total Calories")
+                    .font(.system(.headline, design: .rounded))
+                    .widgetAccentable()
+                if let stale = entry.staleDate {
+                    Text(staleLabel(for: stale))
+                        .font(.system(size: 9, weight: .semibold, design: .rounded))
+                        .foregroundStyle(.secondary)
+                        .textCase(.uppercase)
+                }
+            }
             if entry.showCalories {
                 HStack(spacing: 4) {
                     Image(systemName: "flame.fill")

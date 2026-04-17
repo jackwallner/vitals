@@ -8,8 +8,34 @@ private enum VitalsLinks {
     static let coachContact = URL(string: "https://www.e3fit.me/#contact")!
 }
 
+/// Tracks which goals have been celebrated for a given day so we don't buzz
+/// repeatedly on every refresh once the user crosses their goal.
+@MainActor
+private enum GoalCelebration {
+    private static let defaults = UserDefaults(suiteName: vitalsAppGroupID) ?? .standard
+    private static let calorieKey = "goalCelebration.calorieDate"
+    private static let stepKey = "goalCelebration.stepDate"
+
+    static func shouldCelebrateCalories(for todayKey: String) -> Bool {
+        defaults.string(forKey: calorieKey) != todayKey
+    }
+
+    static func markCaloriesCelebrated(for todayKey: String) {
+        defaults.set(todayKey, forKey: calorieKey)
+    }
+
+    static func shouldCelebrateSteps(for todayKey: String) -> Bool {
+        defaults.string(forKey: stepKey) != todayKey
+    }
+
+    static func markStepsCelebrated(for todayKey: String) {
+        defaults.set(todayKey, forKey: stepKey)
+    }
+}
+
 private enum HealthNotice: Equatable {
     case accessNeeded
+    case accessBlocked
     case noData
     case cachedData
     case loadError
@@ -17,6 +43,7 @@ private enum HealthNotice: Equatable {
     var iconName: String {
         switch self {
         case .accessNeeded: "heart.text.square.fill"
+        case .accessBlocked: "lock.shield"
         case .noData: "heart.text.clipboard"
         case .cachedData: "clock.arrow.circlepath"
         case .loadError: "exclamationmark.triangle.fill"
@@ -26,6 +53,7 @@ private enum HealthNotice: Equatable {
     var title: String {
         switch self {
         case .accessNeeded: "Health access needed"
+        case .accessBlocked: "Health access is off"
         case .noData: "No Health data yet"
         case .cachedData: "Showing last saved data"
         case .loadError: "Couldn't refresh Health data"
@@ -36,6 +64,8 @@ private enum HealthNotice: Equatable {
         switch self {
         case .accessNeeded:
             "Grant Apple Health access so Total Calories can load your active calories, resting calories, and steps."
+        case .accessBlocked:
+            "Open Settings → Privacy → Health → Total Calories and turn on each category to load your data."
         case .noData:
             "If you just granted access, Apple Health may still be catching up. If this seems wrong, check Health access."
         case .cachedData:
@@ -49,6 +79,8 @@ private enum HealthNotice: Equatable {
         switch self {
         case .accessNeeded:
             "Enable Health"
+        case .accessBlocked:
+            "Open Settings"
         case .noData, .loadError:
             "Open Health"
         case .cachedData:
@@ -280,7 +312,7 @@ struct DashboardView: View {
                         Text("Refreshing...")
                             .font(.system(.caption2, design: .rounded))
                             .foregroundStyle(Theme.textTertiary)
-                    } else if healthNotice == .accessNeeded {
+                    } else if healthNotice == .accessNeeded || healthNotice == .accessBlocked {
                         Text("Waiting for Health access")
                             .font(.system(.caption2, design: .rounded))
                             .foregroundStyle(Theme.textTertiary)
@@ -330,9 +362,21 @@ struct DashboardView: View {
                                 MetricPill(label: "active", value: activeCalories, color: Theme.activePrimary)
                                 MetricPill(label: "resting", value: restingCalories, color: Theme.restingPrimary)
                             }
+                        } else {
+                            HStack(spacing: 4) {
+                                Text("Active / Resting")
+                                    .font(.system(.caption2, design: .rounded, weight: .medium))
+                                Image(systemName: "chevron.down")
+                                    .font(.system(.caption2, design: .rounded, weight: .bold))
+                            }
+                            .foregroundStyle(Theme.textTertiary)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(Theme.cardSurface, in: Capsule())
                         }
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(showBreakdown ? "Hide calorie breakdown" : "Show calorie breakdown")
                     .padding(.top, showBreakdown ? 16 : 8)
                     .opacity(animateContent ? 1 : 0)
                 }
@@ -679,17 +723,35 @@ struct DashboardView: View {
         }
     }
 
+    private func openAppSettings() {
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(url)
+        }
+    }
+
     private func handleHealthNoticeAction(_ notice: HealthNotice) {
         switch notice {
         case .accessNeeded:
             Task {
+                // If the system has already prompted (status == .unnecessary),
+                // requestAuthorization is a silent no-op for previously-denied
+                // categories. Surface a Settings deeplink instead so the user
+                // can recover.
+                let status = await healthKit.authorizationRequestStatus()
+                if status == .unnecessary {
+                    healthNotice = .accessBlocked
+                    return
+                }
                 do {
                     try await healthKit.requestAuthorization()
+                    await refresh()
                 } catch {
                     print("Failed to request HealthKit authorization: \(error)")
                     healthNotice = .loadError
                 }
             }
+        case .accessBlocked:
+            openAppSettings()
         case .noData, .loadError:
             openHealthApp()
         case .cachedData:
@@ -698,9 +760,44 @@ struct DashboardView: View {
     }
 
     private func applyStats(_ stats: (active: Double, resting: Double, steps: Int)) {
+        let prevTotal = activeCalories + restingCalories
+        let prevSteps = steps
+
         activeCalories = stats.active
         restingCalories = stats.resting
         steps = stats.steps
+
+        celebrateGoalsIfNeeded(prevTotal: prevTotal, prevSteps: prevSteps)
+    }
+
+    private func celebrateGoalsIfNeeded(prevTotal: Double, prevSteps: Int) {
+        let todayKey = DailyHealthRecord.key(for: Date())
+        let newTotal = activeCalories + restingCalories
+
+        var shouldBuzz = false
+
+        if let calGoal = goals.calorieGoal,
+           calGoal > 0,
+           newTotal >= calGoal,
+           prevTotal < calGoal,
+           GoalCelebration.shouldCelebrateCalories(for: todayKey) {
+            GoalCelebration.markCaloriesCelebrated(for: todayKey)
+            shouldBuzz = true
+        }
+
+        if let stepGoal = goals.stepGoal,
+           stepGoal > 0,
+           steps >= stepGoal,
+           prevSteps < stepGoal,
+           GoalCelebration.shouldCelebrateSteps(for: todayKey) {
+            GoalCelebration.markStepsCelebrated(for: todayKey)
+            shouldBuzz = true
+        }
+
+        if shouldBuzz {
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+        }
     }
 
     private func showLoadedStateIfNeeded() {
@@ -792,9 +889,18 @@ struct DashboardView: View {
                     comparison: goals.pacingComparison,
                     lookback: goals.pacingLookback
                 ) {
-                    // dayOfWeek with 14-day lookback yields at most 2 matching days,
-                    // so require fewer samples to avoid permanently showing "building".
-                    let minSamples = goals.pacingComparison == .dayOfWeek ? max(goals.pacingLookback.rawValue / 7, 1) : 3
+                    // dayOfWeek pacing only matches one weekday per week.
+                    // Cap the requirement at 4 samples — 1 Year × Same Weekday
+                    // would otherwise demand 52, which most users never hit
+                    // and would freeze the UI on "Building pace data".
+                    let minSamples: Int
+                    switch goals.pacingComparison {
+                    case .dayOfWeek:
+                        let raw = max(goals.pacingLookback.rawValue / 7, 1)
+                        minSamples = min(raw, 4)
+                    case .allDays:
+                        minSamples = 3
+                    }
                     let v = pacing.dashboardValues(minSamples: minSamples, showCalories: goals.showCalories, showSteps: goals.showSteps)
                     pacingCalories = v.calories
                     pacingCaloriesInsufficient = v.caloriesBuilding
@@ -949,7 +1055,17 @@ private struct OnboardingSheet: View {
                         goals.stepGoal = nil
                     }
                     goals.hasCompletedSetup = true
-                    dismiss()
+                    // Request HealthKit access now so the system sheet appears
+                    // while the user is still in the onboarding flow, instead of
+                    // surprising them after the dashboard has already rendered.
+                    Task {
+                        do {
+                            try await HealthKitService.shared.requestAuthorization()
+                        } catch {
+                            print("Onboarding HealthKit auth failed: \(error)")
+                        }
+                        dismiss()
+                    }
                 } label: {
                     Text("Get Started")
                         .font(.system(.headline, design: .rounded))

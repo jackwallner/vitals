@@ -174,8 +174,8 @@ final class HealthKitService: ObservableObject {
     }
 
     func fetchTodayStatsWithRetry(
-        maxAttempts: Int = 3,
-        retryDelay: Duration = .seconds(1)
+        maxAttempts: Int = 2,
+        retryDelay: Duration = .milliseconds(500)
     ) async throws -> (active: Double, resting: Double, steps: Int) {
         var lastStats = (active: 0.0, resting: 0.0, steps: 0)
 

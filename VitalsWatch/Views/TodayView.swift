@@ -8,6 +8,7 @@ private enum VitalsWatchLinks {
 
 private enum WatchHealthNotice: Equatable {
     case accessNeeded
+    case accessBlocked
     case noData
     case cachedData
     case loadError
@@ -16,6 +17,8 @@ private enum WatchHealthNotice: Equatable {
         switch self {
         case .accessNeeded:
             "Enable Apple Health access\nto load your real data."
+        case .accessBlocked:
+            "Open the Watch app on iPhone\n→ Privacy → Health to grant access."
         case .noData:
             "No Health data yet.\nCheck Apple Health access on iPhone."
         case .cachedData:
@@ -39,6 +42,8 @@ struct TodayView: View {
     @State private var isRefreshing = false
     @State private var showHelp = false
     @State private var healthNotice: WatchHealthNotice? = nil
+    /// Once we've resolved dietary auth (granted or denied), don't re-request on every refresh.
+    @State private var dietaryAuthResolved = false
 
     private var totalCalories: Double { activeCalories + restingCalories }
     private var netDeficit: Double { totalCalories - foodCalories }
@@ -151,6 +156,12 @@ struct TodayView: View {
                                 .buttonStyle(.borderedProminent)
                                 .tint(Theme.caloriesPrimary)
                             }
+                            if healthNotice == .accessBlocked {
+                                Text("Tap “Health Categories” inside\nthe Watch app on your iPhone.")
+                                    .font(.system(size: 9, design: .rounded))
+                                    .foregroundStyle(Theme.textTertiary)
+                                    .multilineTextAlignment(.center)
+                            }
                         }
                     }
 
@@ -222,8 +233,17 @@ struct TodayView: View {
         guard notice == .accessNeeded else { return }
 
         Task {
+            // If iOS already prompted (status == .unnecessary),
+            // requestAuthorization is a silent no-op for previously-denied
+            // categories. Surface a clearer notice instead.
+            let status = await healthKit.authorizationRequestStatus()
+            if status == .unnecessary {
+                healthNotice = .accessBlocked
+                return
+            }
             do {
                 try await healthKit.requestAuthorization()
+                await refresh()
             } catch {
                 print("Failed to request watch HealthKit authorization: \(error)")
                 healthNotice = .loadError
@@ -271,13 +291,26 @@ struct TodayView: View {
             }
             if goals.showNetCalories {
                 do {
-                    try await healthKit.requestDietaryAuthorization()
+                    if !dietaryAuthResolved {
+                        // Only call requestAuthorization once per session. After
+                        // the first call (granted or denied) the system caches the
+                        // answer; calling again is a silent no-op but generates
+                        // noisy logs every scenePhase active.
+                        let status = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
+                        if status == .shouldRequest {
+                            try await healthKit.requestDietaryAuthorization()
+                        }
+                        dietaryAuthResolved = true
+                    }
                     let food = try await healthKit.fetchDietaryEnergyToday()
                     foodCalories = food
                     try healthKit.updateCachedFoodCalories(food)
                 } catch {
                     print("Failed to fetch dietary energy: \(error)")
                 }
+            } else {
+                // Reset so toggling Net back on later will re-check status.
+                dietaryAuthResolved = false
             }
         } catch {
             let ns = error as NSError

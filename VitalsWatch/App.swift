@@ -59,6 +59,18 @@ private final class WatchGoalSyncService: NSObject, WCSessionDelegate {
                 GoalSettings.shared.showNetCalories = showNetCalories
             }
         }
+        if let showCalories = applicationContext[GoalSyncKeys.showCalories] as? Bool {
+            defaults.set(showCalories, forKey: "showCalories")
+            Task { @MainActor in
+                GoalSettings.shared.showCalories = showCalories
+            }
+        }
+        if let showSteps = applicationContext[GoalSyncKeys.showSteps] as? Bool {
+            defaults.set(showSteps, forKey: "showSteps")
+            Task { @MainActor in
+                GoalSettings.shared.showSteps = showSteps
+            }
+        }
 
         WidgetCenter.shared.reloadAllTimelines()
         watchGoalSyncLogger.info("Applied synced goal settings on watch")

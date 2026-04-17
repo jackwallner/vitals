@@ -37,7 +37,7 @@ GOALS & PROGRESS RINGS
 Set optional daily calorie and step goals. Watch your progress fill up with animated rings and progress bars. Or skip goals entirely and use it as a simple counter.
 
 PACING
-A built-in pace indicator compares your current day to your 14-day average at the same time of day. Know whether you're ahead or behind your usual pace.
+A built-in pace indicator compares your current day to your 30-day average at the same time of day. Know whether you're ahead or behind your usual pace.
 
 HISTORY & TRENDS
 View your full history: 7 days, 30 days, 90 days, 1 year, or any custom date range. See trend arrows, peak days, and export your data as a CSV file.
@@ -211,7 +211,7 @@ iPHONE FEATURES
 
 - Dashboard with animated calorie ring and step progress bar
 - Tap to reveal active vs. resting calorie breakdown
-- Pacing indicator: current day vs. 14-day average at same time of day
+- Pacing indicator: current day vs. configurable rolling average (default: 30 days, same weekday) at the same time of day
 - History tab: bar charts for 7D / 30D / 90D / 1Y / custom range
 - Trend arrows and peak day highlights
 - CSV data export

@@ -86,7 +86,7 @@ GoalSettings  →  UserDefaults (App Group)  →  Widgets read goals directly
 **HealthKitService** (singleton, `@MainActor`):
 - `fetchTodayStats()` → `(active: Double, resting: Double, steps: Int)`
 - `fetchHistory(days:)` / `fetchHistory(from:to:)` → array of daily records
-- `fetchPacing()` → 14-day average at current hour/minute
+- `fetchPacing(comparison:lookback:)` → rolling average at current hour/minute (default 30 days, same weekday)
 - `refreshCache()` → updates SwiftData + triggers widget reload
 
 **GoalSettings** (singleton, `@MainActor`, `ObservableObject`):
@@ -134,7 +134,7 @@ GoalSettings  →  UserDefaults (App Group)  →  Widgets read goals directly
 | `calorieGoal` | Double | 2500 | Daily calorie target |
 | `stepGoalEnabled` | Bool | true | Whether step goal is active |
 | `stepGoal` | Int | 10000 | Daily step target |
-| `showPacing` | Bool | true | Show pace vs 14-day average |
+| `showPacing` | Bool | true | Show pace vs rolling average (default 30 days, same weekday) |
 | `showCalories` | Bool | true | Display calories section |
 | `showSteps` | Bool | true | Display steps section |
 | `appearance` | Int | 0 | 0=system, 1=light, 2=dark |

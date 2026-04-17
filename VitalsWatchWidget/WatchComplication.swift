@@ -154,6 +154,32 @@ struct WatchTimelineProvider: TimelineProvider {
                 showNetCalories: goals.showNetCalories
             )
         }
+
+        // Fall back to the most recent prior cached day so complications
+        // don't show "Open app" empty state every morning before today's
+        // cache row exists.
+        var fetchPrior = FetchDescriptor<DailyHealthRecord>(
+            predicate: #Predicate { $0.dateString < todayKey }
+        )
+        fetchPrior.sortBy = [SortDescriptor(\DailyHealthRecord.dateString, order: .reverse)]
+        fetchPrior.fetchLimit = 1
+        if let prior = try? container.mainContext.fetch(fetchPrior).first {
+            return WatchVitalsEntry(
+                date: .now,
+                totalCalories: prior.totalCalories,
+                steps: prior.steps,
+                foodCalories: prior.foodCalories,
+                calorieGoal: goals.calories,
+                stepGoal: goals.steps,
+                calGoalEnabled: goals.calEnabled,
+                stepGoalEnabled: goals.stepEnabled,
+                showCalories: goals.showCalories,
+                showSteps: goals.showSteps,
+                showNetCalories: goals.showNetCalories,
+                staleDate: prior.date
+            )
+        }
+
         return WatchVitalsEntry(
             date: .now,
             totalCalories: 0,
@@ -186,6 +212,8 @@ struct WatchVitalsEntry: TimelineEntry {
     var showSteps: Bool = true
     var showNetCalories: Bool = false
     var dataAvailable: Bool = true
+    /// When set, the values are from a prior day (today's cache hasn't been written yet).
+    var staleDate: Date? = nil
 
     var netDeficit: Double { totalCalories - foodCalories }
 }
@@ -279,7 +307,7 @@ struct CaloriesRectangularView: View {
                     .lineLimit(1)
                     .minimumScaleFactor(0.7)
                     .monospacedDigit()
-                Text("calories")
+                Text(entry.staleDate != nil ? "yesterday" : "calories")
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
@@ -385,7 +413,7 @@ struct StepsRectangularView: View {
                     .lineLimit(1)
                     .minimumScaleFactor(0.7)
                     .monospacedDigit()
-                Text("steps")
+                Text(entry.staleDate != nil ? "yesterday" : "steps")
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
@@ -522,7 +550,7 @@ struct NetDeficitRectangularView: View {
                     .minimumScaleFactor(0.7)
                     .monospacedDigit()
                     .foregroundStyle(color)
-                Text("net cal")
+                Text(entry.staleDate != nil ? "yesterday" : "net cal")
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)

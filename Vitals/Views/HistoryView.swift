@@ -297,7 +297,7 @@ struct HistoryView: View {
             .presentationDetents([.medium])
         }
         .alert("Export Health Data", isPresented: $showExportWarning) {
-            Button("Export", role: .destructive) {
+            Button("Export") {
                 exportCSV()
             }
             Button("Cancel", role: .cancel) {}
