@@ -1,4 +1,5 @@
 import SwiftUI
+import HealthKit
 
 private enum VitalsWatchLinks {
     static let privacyPolicy = URL(string: "https://jackwallner.github.io/vitals/privacy-policy.html")!
@@ -18,7 +19,7 @@ private enum WatchHealthNotice: Equatable {
         case .accessNeeded:
             "Enable Apple Health access\nto load your real data."
         case .accessBlocked:
-            "Open the Watch app on iPhone\n→ Privacy → Health to grant access."
+            "Health access is off. On your iPhone: Settings → Privacy → Health → Total Calories."
         case .noData:
             "No Health data yet.\nCheck Apple Health access on iPhone."
         case .cachedData:
@@ -47,7 +48,16 @@ struct TodayView: View {
 
     private var totalCalories: Double { activeCalories + restingCalories }
     private var netDeficit: Double { totalCalories - foodCalories }
-    private var compactLayout: Bool { goals.showNetCalories }
+    private var compactLayout: Bool {
+        // When more than one metric is visible, compact the layout so they all fit on small watches.
+        let visibleCount = (goals.showCalories ? 1 : 0)
+            + (goals.showSteps ? 1 : 0)
+            + (goals.showNetCalories ? 1 : 0)
+        return visibleCount >= 2
+    }
+    private var allMetricsHidden: Bool {
+        !goals.showCalories && !goals.showSteps && !goals.showNetCalories
+    }
 
     var body: some View {
         Group {
@@ -58,70 +68,94 @@ struct TodayView: View {
                 VStack(spacing: compactLayout ? 6 : 12) {
                     Spacer(minLength: compactLayout ? 2 : 4)
 
+                    if allMetricsHidden {
+                        VStack(spacing: 6) {
+                            Image(systemName: "heart.text.clipboard")
+                                .font(.title3)
+                                .foregroundStyle(Theme.textTertiary)
+                            Text("No metrics enabled")
+                                .font(.system(size: 11, weight: .semibold, design: .rounded))
+                                .foregroundStyle(Theme.textSecondary)
+                            Text("Open Total Calories on your iPhone to turn one on.")
+                                .font(.system(size: 9, design: .rounded))
+                                .foregroundStyle(Theme.textTertiary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .padding(.horizontal, 6)
+                    }
+
                     // Calories
-                    VStack(spacing: 2) {
-                        Image(systemName: "flame.fill")
-                            .font(.caption2)
-                            .foregroundStyle(Theme.caloriesPrimary)
-                        Text(totalCalories, format: .number.precision(.fractionLength(0)))
-                            .font(Theme.bigNumber(compactLayout ? 28 : 38))
-                            .foregroundStyle(Theme.textPrimary)
-                            .contentTransition(.numericText())
-                        Text("CALORIES")
-                            .font(.system(size: 9, weight: .medium, design: .rounded))
-                            .foregroundStyle(Theme.textSecondary)
-                            .tracking(1.2)
-                    }
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Calories")
-                    .accessibilityValue("\(Int(totalCalories)) calories")
-                    .onTapGesture {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            showBreakdown.toggle()
+                    if goals.showCalories {
+                        VStack(spacing: 2) {
+                            Image(systemName: "flame.fill")
+                                .font(.caption2)
+                                .foregroundStyle(Theme.caloriesPrimary)
+                            Text(totalCalories, format: .number.precision(.fractionLength(0)))
+                                .font(Theme.bigNumber(compactLayout ? 28 : 38))
+                                .foregroundStyle(Theme.textPrimary)
+                                .contentTransition(.numericText())
+                            Text("CALORIES")
+                                .font(.system(size: 9, weight: .medium, design: .rounded))
+                                .foregroundStyle(Theme.textSecondary)
+                                .tracking(1.2)
+                        }
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("Calories")
+                        .accessibilityValue("\(Int(totalCalories)) calories")
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                showBreakdown.toggle()
+                            }
+                        }
+
+                        if showBreakdown {
+                            HStack(spacing: 8) {
+                                Label(activeCalories.formatted(.number.precision(.fractionLength(0))), systemImage: "flame.fill")
+                                    .font(.system(size: 10, weight: .medium, design: .rounded))
+                                    .foregroundStyle(Theme.activePrimary)
+                                Label(restingCalories.formatted(.number.precision(.fractionLength(0))), systemImage: "bed.double.fill")
+                                    .font(.system(size: 10, weight: .medium, design: .rounded))
+                                    .foregroundStyle(Theme.restingPrimary)
+                            }
                         }
                     }
 
-                    if showBreakdown {
-                        HStack(spacing: 8) {
-                            Label(activeCalories.formatted(.number.precision(.fractionLength(0))), systemImage: "flame.fill")
-                                .font(.system(size: 10, weight: .medium, design: .rounded))
-                                .foregroundStyle(Theme.activePrimary)
-                            Label(restingCalories.formatted(.number.precision(.fractionLength(0))), systemImage: "bed.double.fill")
-                                .font(.system(size: 10, weight: .medium, design: .rounded))
-                                .foregroundStyle(Theme.restingPrimary)
-                        }
-                    }
-
-                    // Divider
-                    Rectangle()
-                        .fill(Theme.cardSurface)
-                        .frame(height: 1)
-                        .padding(.horizontal, 20)
-
-                    // Steps
-                    VStack(spacing: 2) {
-                        Image(systemName: "figure.walk")
-                            .font(.caption2)
-                            .foregroundStyle(Theme.stepsPrimary)
-                        Text(steps, format: .number)
-                            .font(Theme.bigNumber(compactLayout ? 28 : 38))
-                            .foregroundStyle(Theme.textPrimary)
-                            .contentTransition(.numericText())
-                        Text("STEPS")
-                            .font(.system(size: 9, weight: .medium, design: .rounded))
-                            .foregroundStyle(Theme.textSecondary)
-                            .tracking(1.2)
-                    }
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Steps")
-                    .accessibilityValue("\(steps) steps")
-
-                    if goals.showNetCalories {
-                        // Divider
+                    // Divider between Calories and Steps (only when both visible)
+                    if goals.showCalories && goals.showSteps {
                         Rectangle()
                             .fill(Theme.cardSurface)
                             .frame(height: 1)
                             .padding(.horizontal, 20)
+                    }
+
+                    // Steps
+                    if goals.showSteps {
+                        VStack(spacing: 2) {
+                            Image(systemName: "figure.walk")
+                                .font(.caption2)
+                                .foregroundStyle(Theme.stepsPrimary)
+                            Text(steps, format: .number)
+                                .font(Theme.bigNumber(compactLayout ? 28 : 38))
+                                .foregroundStyle(Theme.textPrimary)
+                                .contentTransition(.numericText())
+                            Text("STEPS")
+                                .font(.system(size: 9, weight: .medium, design: .rounded))
+                                .foregroundStyle(Theme.textSecondary)
+                                .tracking(1.2)
+                        }
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("Steps")
+                        .accessibilityValue("\(steps) steps")
+                    }
+
+                    if goals.showNetCalories {
+                        // Divider above Net (only when an earlier metric is visible)
+                        if goals.showCalories || goals.showSteps {
+                            Rectangle()
+                                .fill(Theme.cardSurface)
+                                .frame(height: 1)
+                                .padding(.horizontal, 20)
+                        }
 
                         VStack(spacing: 2) {
                             Image(systemName: "fork.knife")
@@ -157,7 +191,7 @@ struct TodayView: View {
                                 .tint(Theme.caloriesPrimary)
                             }
                             if healthNotice == .accessBlocked {
-                                Text("Tap “Health Categories” inside\nthe Watch app on your iPhone.")
+                                Text("Enable Active Energy, Basal Energy,\nand Step Count for Total Calories.")
                                     .font(.system(size: 9, design: .rounded))
                                     .foregroundStyle(Theme.textTertiary)
                                     .multilineTextAlignment(.center)
@@ -252,7 +286,23 @@ struct TodayView: View {
     }
 
     private func isAllZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
-        stats.active == 0 && stats.resting == 0 && stats.steps == 0
+        HealthKitService.isAllZero(stats)
+    }
+
+    /// Same classification as Dashboard: on all-zero fetch with no cache, read HealthKit's
+    /// request-status to decide between `.accessNeeded` (never prompted) and `.accessBlocked`
+    /// (prompted, denied) so the watch can surface the right copy.
+    private func classifyEmptyFetchNotice(
+        requestStatus: HKAuthorizationRequestStatus?
+    ) -> WatchHealthNotice {
+        switch requestStatus {
+        case .shouldRequest:
+            return .accessNeeded
+        case .unnecessary:
+            return .accessBlocked
+        default:
+            return .noData
+        }
     }
 
     private func showLoadedStateIfNeeded() {
@@ -281,7 +331,12 @@ struct TodayView: View {
                 healthNotice = .cachedData
             } else {
                 applyStats(stats)
-                healthNotice = isAllZero(stats) ? .noData : nil
+                if isAllZero(stats) {
+                    let status = await healthKit.authorizationRequestStatus()
+                    healthNotice = classifyEmptyFetchNotice(requestStatus: status)
+                } else {
+                    healthNotice = nil
+                }
             }
             showLoadedStateIfNeeded()
             do {

@@ -97,7 +97,13 @@ struct VitalsWatchApp: App {
                 .task { Self.scheduleBackgroundRefresh() }
         }
         .modelContainer(DataService.sharedModelContainer)
-        .backgroundTask(.appRefresh("vitals.watch.refresh")) {
+        // Use the unnamed `.appRefresh` variant (BackgroundTask<String?, Void>)
+        // which matches refreshes scheduled by `WKApplication.scheduleBackgroundRefresh`
+        // (a legacy WatchKit API that carries no identifier). The identifier-parameter
+        // form `.appRefresh("…")` only matches `BGAppRefreshTaskRequest` submissions,
+        // which this app does not make on watchOS — so the previous wiring never
+        // delivered any background refreshes at all.
+        .backgroundTask(.appRefresh) { (_: String?) in
             await Self.handleBackgroundRefresh()
         }
     }

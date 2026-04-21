@@ -15,13 +15,40 @@ private enum HistoryPrefs {
     }
 
     static func savedCustomStart() -> Date {
-        let ti = defaults.double(forKey: customStartKey)
-        return ti > 0 ? Date(timeIntervalSince1970: ti) : DateHelpers.daysAgo(6)
+        sanitizedRange().start
     }
 
     static func savedCustomEnd() -> Date {
-        let ti = defaults.double(forKey: customEndKey)
-        return ti > 0 ? Date(timeIntervalSince1970: ti) : .now
+        sanitizedRange().end
+    }
+
+    /// Clamp persisted custom-range dates onto a valid window so a stale saved range
+    /// (e.g. "end = old Date.now") can't yield invalid inputs after the clock advances.
+    static func sanitizedRange() -> (start: Date, end: Date) {
+        let now = Date.now
+        let storedStartTi = defaults.double(forKey: customStartKey)
+        let storedEndTi = defaults.double(forKey: customEndKey)
+
+        let rawStart = storedStartTi > 0 ? Date(timeIntervalSince1970: storedStartTi) : DateHelpers.daysAgo(6)
+        let rawEnd = storedEndTi > 0 ? Date(timeIntervalSince1970: storedEndTi) : now
+
+        let end = min(rawEnd, now)
+        var start = min(rawStart, end)
+        if start >= end {
+            start = DateHelpers.daysAgo(6, from: end)
+        }
+        // CustomRangeSheet caps at 2 years; enforce the same bound on load.
+        let maxWindow: TimeInterval = 730 * 86_400
+        if end.timeIntervalSince(start) > maxWindow {
+            start = end.addingTimeInterval(-maxWindow)
+        }
+        // Only persist back if we actually changed something (avoid gratuitous writes).
+        let needsWriteback = abs(start.timeIntervalSince(rawStart)) > 1 || abs(end.timeIntervalSince(rawEnd)) > 1
+        if needsWriteback && storedStartTi > 0 && storedEndTi > 0 {
+            defaults.set(start.timeIntervalSince1970, forKey: customStartKey)
+            defaults.set(end.timeIntervalSince1970, forKey: customEndKey)
+        }
+        return (start, end)
     }
 
     static func save(period: HistoryView.Period, customStart: Date, customEnd: Date) {
@@ -79,14 +106,6 @@ struct HistoryView: View {
     private var avgSteps: Int {
         guard !records.isEmpty else { return 0 }
         return records.map(\.steps).reduce(0, +) / records.count
-    }
-
-    private var calorieTrend: Trend {
-        computeTrend(records.map(\.totalCalories))
-    }
-
-    private var stepTrend: Trend {
-        computeTrend(records.map { Double($0.steps) })
     }
 
     private var peakCalorieDay: DayRecord? {
@@ -215,18 +234,18 @@ struct HistoryView: View {
                                 historyNoticeBanner(loadErrorMessage)
                             }
 
-                            // Summary cards
+                            // Summary cards. Trend badge removed: the first-half-vs-second-half
+                            // comparison was ambiguous to users and the bar chart already shows
+                            // the shape of the period.
                             HStack(spacing: 12) {
-                                TrendCard(
+                                AverageCard(
                                     label: "Avg Calories",
                                     value: avgCalories.formatted(.number.precision(.fractionLength(0))),
-                                    trend: calorieTrend,
                                     color: Theme.caloriesPrimary
                                 )
-                                TrendCard(
+                                AverageCard(
                                     label: "Avg Steps",
                                     value: avgSteps.formatted(.number),
-                                    trend: stepTrend,
                                     color: Theme.stepsPrimary
                                 )
                             }
@@ -475,16 +494,23 @@ struct HistoryView: View {
     }
 
     private func loadHistory() async {
+        // Single-flight guard: the History view can be triggered by .task, pull-to-refresh,
+        // foreground notifications, and period changes at the same time. Without a guard
+        // these race into `records` and cause flicker / double HealthKit quota usage.
+        guard !isRefreshing else { return }
         let isFirstLoad = records.isEmpty
         if isFirstLoad { isLoading = true }
         isRefreshing = true
+        defer { isRefreshing = false }
         selectedCalorieDate = nil
         selectedStepDate = nil
         loadErrorMessage = nil
 
-        if !healthKit.isAuthorized {
-            try? await healthKit.requestAuthorization()
-        }
+        // Dashboard is always the first screen users see and owns the auth-request
+        // flow — here we just sync the cached state so `isAuthorized` is accurate
+        // before we attempt the fetch. Calling `requestAuthorization` again could
+        // trigger a duplicate permission sheet on fresh installs.
+        await healthKit.synchronizeAuthorizationStateForFetching()
 
         do {
             let history: [(date: Date, active: Double, resting: Double, steps: Int)]
@@ -506,7 +532,6 @@ struct HistoryView: View {
                 : "Showing the last available data because refresh failed."
         }
         isLoading = false
-        isRefreshing = false
         if !animateContent {
             withAnimation(.easeOut(duration: 0.4)) {
                 animateContent = true
@@ -515,12 +540,25 @@ struct HistoryView: View {
     }
 
     private func exportCSV() {
-        let header = "Date,Active Calories,Resting Calories,Total Calories,Steps\n"
+        // Force POSIX locale so that devices using non-Latin digit systems
+        // (Arabic, Persian, Thai, etc.) still emit ASCII dates that CSV parsers expect.
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = .current
         formatter.dateFormat = "yyyy-MM-dd"
 
-        let rows = records.map { r in
-            "\(formatter.string(from: r.date)),\(String(format: "%.0f", r.activeCalories)),\(String(format: "%.0f", r.restingCalories)),\(String(format: "%.0f", r.totalCalories)),\(r.steps)"
+        let columns = ["Date", "Active Calories", "Resting Calories", "Total Calories", "Steps"]
+        let header = columns.map(Self.csvEscape).joined(separator: ",") + "\n"
+
+        let rows = records.map { r -> String in
+            let fields = [
+                formatter.string(from: r.date),
+                String(format: "%.0f", r.activeCalories),
+                String(format: "%.0f", r.restingCalories),
+                String(format: "%.0f", r.totalCalories),
+                String(r.steps),
+            ]
+            return fields.map(Self.csvEscape).joined(separator: ",")
         }.joined(separator: "\n")
 
         let csv = header + rows
@@ -536,19 +574,16 @@ struct HistoryView: View {
         }
     }
 
-    private func computeTrend(_ values: [Double]) -> Trend {
-        guard values.count >= 4 else { return .neutral }
-        let half = values.count / 2
-        let firstHalf = Array(values.prefix(half))
-        let secondHalf = Array(values.suffix(half))
-        let firstAvg = firstHalf.reduce(0, +) / Double(firstHalf.count)
-        let secondAvg = secondHalf.reduce(0, +) / Double(secondHalf.count)
-        guard firstAvg > 1 else { return .neutral }
-        let change = (secondAvg - firstAvg) / firstAvg
-        if change > 0.05 { return .up(change) }
-        if change < -0.05 { return .down(change) }
-        return .neutral
+    /// RFC 4180 CSV escaping: double-quote any field that contains `,`, `"`, CR, or LF,
+    /// and double internal quotes. Numeric/date fields pass through unchanged today,
+    /// but routing every column through this helper prevents drift when we add text columns later.
+    private static func csvEscape(_ field: String) -> String {
+        let needsQuoting = field.contains(",") || field.contains("\"") || field.contains("\n") || field.contains("\r")
+        guard needsQuoting else { return field }
+        let escaped = field.replacingOccurrences(of: "\"", with: "\"\"")
+        return "\"\(escaped)\""
     }
+
 }
 
 // MARK: - Chart Selection
@@ -568,45 +603,6 @@ struct ChartSelection {
     }
 }
 
-// MARK: - Trend
-
-enum Trend {
-    case up(Double)
-    case down(Double)
-    case neutral
-
-    var icon: String {
-        switch self {
-        case .up: "arrow.up.right"
-        case .down: "arrow.down.right"
-        case .neutral: "arrow.right"
-        }
-    }
-
-    var color: Color {
-        switch self {
-        case .up: .green
-        case .down: Color(red: 1.0, green: 0.42, blue: 0.42)
-        case .neutral: Theme.textTertiary
-        }
-    }
-
-    var label: String {
-        switch self {
-        case .up(let pct): "+\(Int(pct * 100))%"
-        case .down(let pct): "\(Int(pct * 100))%"
-        case .neutral: "Flat"
-        }
-    }
-
-    var accessibilityDescription: String {
-        switch self {
-        case .up(let pct): "up \(Int(pct * 100)) percent"
-        case .down(let pct): "down \(Int(abs(pct) * 100)) percent"
-        case .neutral: "flat"
-        }
-    }
-}
 
 // MARK: - CSV File
 
@@ -697,10 +693,9 @@ private struct SegmentButton: View {
     }
 }
 
-private struct TrendCard: View {
+private struct AverageCard: View {
     let label: String
     let value: String
-    let trend: Trend
     let color: Color
 
     var body: some View {
@@ -713,20 +708,13 @@ private struct TrendCard: View {
             Text(value)
                 .font(.system(.title3, design: .rounded, weight: .bold).monospacedDigit())
                 .foregroundStyle(color)
-            HStack(spacing: 4) {
-                Image(systemName: trend.icon)
-                    .font(.caption2.bold())
-                Text(trend.label)
-                    .font(.caption2.bold())
-            }
-            .foregroundStyle(trend.color)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Theme.cardPadding)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
         .accessibilityElement(children: .combine)
         .accessibilityLabel(label)
-        .accessibilityValue("\(value), trending \(trend.accessibilityDescription)")
+        .accessibilityValue(value)
     }
 }
 

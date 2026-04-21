@@ -69,6 +69,23 @@ enum PacingLookback: Int, CaseIterable, Sendable {
     }
 }
 
+/// Effective minimum number of sample days required before pacing rendering is allowed.
+/// Must match the logic in `DashboardView.refresh()` so the Settings footer reports the
+/// same threshold the dashboard actually enforces.
+///
+/// For `.dayOfWeek`: `lookback / 7` is the maximum number of matching weekdays within
+/// the window, capped at 4 so "1 Year × Same Weekday" isn't blocked by a 52-day
+/// requirement. For `.allDays`: fixed at 3.
+func effectiveMinPacingSamples(for comparison: PacingComparison, lookback: PacingLookback) -> Int {
+    switch comparison {
+    case .dayOfWeek:
+        let raw = max(lookback.rawValue / 7, 1)
+        return min(raw, 4)
+    case .allDays:
+        return 3
+    }
+}
+
 /// Usual calories/steps by this time of day; sample counts exclude empty days per metric.
 struct PacingResult: Sendable {
     let avgCalories: Double?
@@ -159,7 +176,13 @@ final class GoalSettings: ObservableObject {
 
     /// iOS dashboard: net deficit (burned − dietary energy from Health), e.g. food from MyFitnessPal via Health.
     @Published var showNetCalories: Bool {
-        didSet { defaults.set(showNetCalories, forKey: "showNetCalories") }
+        didSet {
+            defaults.set(showNetCalories, forKey: "showNetCalories")
+            // Watch complications read this setting to gate the NetDeficit widget;
+            // iOS widget doesn't surface net deficit today but reload anyway for
+            // consistency with `showCalories` / `showSteps` and future-proofing.
+            WidgetCenter.shared.reloadAllTimelines()
+        }
     }
 
     // nil means "no goal" — just show the counter

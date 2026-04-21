@@ -175,16 +175,20 @@ struct MainTabView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            // Keep both views alive, toggle visibility
+            // Keep both views alive, toggle visibility. `.accessibilityHidden` on the
+            // inactive tab prevents VoiceOver's rotor from surfacing elements that are
+            // visually invisible (opacity 0) but still in the accessibility tree.
             DashboardView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .opacity(selectedTab == 0 ? 1 : 0)
                 .allowsHitTesting(selectedTab == 0)
+                .accessibilityHidden(selectedTab != 0)
             if historyHasAppeared {
                 HistoryView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .opacity(selectedTab == 1 ? 1 : 0)
                     .allowsHitTesting(selectedTab == 1)
+                    .accessibilityHidden(selectedTab != 1)
             }
 
             // Custom tab bar

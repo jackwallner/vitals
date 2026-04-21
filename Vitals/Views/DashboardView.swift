@@ -1,4 +1,5 @@
 import SwiftUI
+import HealthKit
 
 private enum VitalsLinks {
     static let privacyPolicy = URL(string: "https://jackwallner.github.io/vitals/privacy-policy.html")!
@@ -332,53 +333,52 @@ struct DashboardView: View {
 
             // Calories section
             if goals.showCalories {
-                if let progress = calorieProgress {
-                    ZStack {
-                        ProgressRing(
-                            progress: animateRing ? progress : 0,
-                            gradient: Theme.caloriesGradient,
-                            glowColor: Theme.caloriesGlow,
-                            lineWidth: ringLineWidth,
-                            size: ringSize
-                        )
+                // Ring (or bare number if no goal) — tapping toggles the Active/Resting
+                // breakdown. Intentionally a hidden affordance: discoverable via
+                // VoiceOver hint / a11y action, but no always-on chip cluttering the UI.
+                Group {
+                    if let progress = calorieProgress {
+                        ZStack {
+                            ProgressRing(
+                                progress: animateRing ? progress : 0,
+                                gradient: Theme.caloriesGradient,
+                                glowColor: Theme.caloriesGlow,
+                                lineWidth: ringLineWidth,
+                                size: ringSize
+                            )
+                            calorieLabel(numberSize: calNumberSize)
+                        }
+                    } else {
                         calorieLabel(numberSize: calNumberSize)
                     }
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Calorie progress")
-                    .accessibilityValue("\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories")
-                } else {
-                    calorieLabel(numberSize: calNumberSize)
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    guard !isMinimalMode else { return }
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        showBreakdown.toggle()
+                    }
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Calorie progress")
+                .accessibilityValue(calorieProgress != nil
+                    ? "\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories"
+                    : "\(Int(totalCalories)) calories")
+                .accessibilityHint(isMinimalMode ? "" : "Double tap to show active and resting breakdown.")
+                .accessibilityAction(named: showBreakdown ? "Hide breakdown" : "Show breakdown") {
+                    guard !isMinimalMode else { return }
+                    showBreakdown.toggle()
                 }
 
-                // Tap to show/hide breakdown
-                if !isMinimalMode {
-                    Button {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            showBreakdown.toggle()
-                        }
-                    } label: {
-                        if showBreakdown {
-                            HStack(spacing: 16) {
-                                MetricPill(label: "active", value: activeCalories, color: Theme.activePrimary)
-                                MetricPill(label: "resting", value: restingCalories, color: Theme.restingPrimary)
-                            }
-                        } else {
-                            HStack(spacing: 4) {
-                                Text("Active / Resting")
-                                    .font(.system(.caption2, design: .rounded, weight: .medium))
-                                Image(systemName: "chevron.down")
-                                    .font(.system(.caption2, design: .rounded, weight: .bold))
-                            }
-                            .foregroundStyle(Theme.textTertiary)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .background(Theme.cardSurface, in: Capsule())
-                        }
+                // Active/Resting pills revealed when the ring is tapped.
+                if !isMinimalMode && showBreakdown {
+                    HStack(spacing: 16) {
+                        MetricPill(label: "active", value: activeCalories, color: Theme.activePrimary)
+                        MetricPill(label: "resting", value: restingCalories, color: Theme.restingPrimary)
                     }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel(showBreakdown ? "Hide calorie breakdown" : "Show calorie breakdown")
-                    .padding(.top, showBreakdown ? 16 : 8)
+                    .padding(.top, 16)
                     .opacity(animateContent ? 1 : 0)
+                    .transition(.opacity)
                 }
 
                 // Calorie pacing
@@ -760,17 +760,20 @@ struct DashboardView: View {
     }
 
     private func applyStats(_ stats: (active: Double, resting: Double, steps: Int)) {
-        let prevTotal = activeCalories + restingCalories
-        let prevSteps = steps
-
         activeCalories = stats.active
         restingCalories = stats.resting
         steps = stats.steps
 
-        celebrateGoalsIfNeeded(prevTotal: prevTotal, prevSteps: prevSteps)
+        celebrateGoalsIfNeeded()
     }
 
-    private func celebrateGoalsIfNeeded(prevTotal: Double, prevSteps: Int) {
+    /// Fire a single haptic when the user first crosses a goal today.
+    /// Previously we required `prevTotal < goal` to ensure this represented a "transition",
+    /// but on cold-launch `prevTotal` is always 0 so the gate was vacuous anyway. Instead
+    /// we rely entirely on the persistent per-day key in `GoalCelebration` for dedupe:
+    /// first observation of (today, crossed) triggers one buzz; subsequent observations
+    /// of the same day are silent.
+    private func celebrateGoalsIfNeeded() {
         let todayKey = DailyHealthRecord.key(for: Date())
         let newTotal = activeCalories + restingCalories
 
@@ -779,7 +782,6 @@ struct DashboardView: View {
         if let calGoal = goals.calorieGoal,
            calGoal > 0,
            newTotal >= calGoal,
-           prevTotal < calGoal,
            GoalCelebration.shouldCelebrateCalories(for: todayKey) {
             GoalCelebration.markCaloriesCelebrated(for: todayKey)
             shouldBuzz = true
@@ -788,7 +790,6 @@ struct DashboardView: View {
         if let stepGoal = goals.stepGoal,
            stepGoal > 0,
            steps >= stepGoal,
-           prevSteps < stepGoal,
            GoalCelebration.shouldCelebrateSteps(for: todayKey) {
             GoalCelebration.markStepsCelebrated(for: todayKey)
             shouldBuzz = true
@@ -820,7 +821,32 @@ struct DashboardView: View {
     }
 
     private func isAllZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
-        stats.active == 0 && stats.resting == 0 && stats.steps == 0
+        HealthKitService.isAllZero(stats)
+    }
+
+    /// Classify the dashboard's recovery notice based on the most recent fetch result and
+    /// HealthKit authorization request status. Runs only when the fetch returned all-zero
+    /// and no same-day cache is present — otherwise the happy path / `.cachedData` paths
+    /// already handled it upstream.
+    ///
+    /// - `shouldRequest`: system has not yet presented the sheet (or it was interrupted) →
+    ///   surface `.accessNeeded` so users can retry the prompt.
+    /// - `unnecessary`: sheet was already presented. We cannot tell granted-but-empty apart
+    ///   from denied via the API, so we prefer `.accessBlocked` (Settings deep-link) because
+    ///   it's strictly more useful recovery than `.noData` (Health app) for denied users.
+    ///   A brand-new device that genuinely has no HealthKit samples will show `.accessBlocked`
+    ///   once; as soon as any sample arrives (including from the Watch) the banner clears.
+    private func classifyEmptyFetchNotice(
+        requestStatus: HKAuthorizationRequestStatus?
+    ) -> HealthNotice {
+        switch requestStatus {
+        case .shouldRequest:
+            return .accessNeeded
+        case .unnecessary:
+            return .accessBlocked
+        default:
+            return .noData
+        }
     }
 
     private func refresh() async {
@@ -835,10 +861,7 @@ struct DashboardView: View {
             showLoadedStateIfNeeded()
         }
 
-        defer {
-            isRefreshing = false
-            lastRefreshDate = .now
-        }
+        defer { isRefreshing = false }
 
         await healthKit.synchronizeAuthorizationStateForFetching()
         do {
@@ -848,8 +871,19 @@ struct DashboardView: View {
                 healthNotice = .cachedData
             } else {
                 applyStats(stats)
-                healthNotice = isAllZero(stats) ? .noData : nil
+                if isAllZero(stats) {
+                    // All-zero fetch with no cached backup: ask HealthKit whether the user
+                    // was already prompted so we can route them to Settings (blocked) instead
+                    // of a generic "no data yet" banner they can't recover from.
+                    let status = await healthKit.authorizationRequestStatus()
+                    healthNotice = classifyEmptyFetchNotice(requestStatus: status)
+                } else {
+                    healthNotice = nil
+                }
             }
+            // Only advance the "Updated HH:mm" header after a successful read
+            // so users aren't misled into thinking cached-after-failure data is fresh.
+            lastRefreshDate = .now
 
             // Show UI immediately, don't wait for pacing/cache
             showLoadedStateIfNeeded()
@@ -865,12 +899,26 @@ struct DashboardView: View {
                 do {
                     let food = try await healthKit.fetchDietaryEnergyToday()
                     foodCalories = food
-                    // Apple provides no API to check read authorization — a successful
-                    // fetch is the only reliable signal.  authorizationStatus(for:) only
-                    // reports write/sharing status, which is always .notDetermined here.
-                    dietaryEnergyReady = true
+                    // HealthKit does not expose read-auth directly: a denied read returns
+                    // 0 kcal without throwing, indistinguishable from "authorized, but no
+                    // food logged today". When today is 0 kcal we probe for ANY historical
+                    // sample — if none exist and the system has already shown the auth
+                    // sheet, we infer denial and surface the recovery footer.
+                    if food > 0 {
+                        dietaryEnergyAccessDenied = false
+                    } else {
+                        let status = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
+                        if status == .unnecessary {
+                            let hasAny = (try? await healthKit.hasAnyDietarySample()) ?? true
+                            dietaryEnergyAccessDenied = !hasAny
+                        } else {
+                            dietaryEnergyAccessDenied = false
+                        }
+                    }
+                    // Set ready last so UI reflects the final state (post-denial check)
+                    // and doesn't briefly show a stale numeric deficit.
                     dietaryEnergyFetchFailed = false
-                    dietaryEnergyAccessDenied = false
+                    dietaryEnergyReady = !dietaryEnergyAccessDenied
                     try? healthKit.updateCachedFoodCalories(food)
                 } catch {
                     dietaryEnergyFetchFailed = true
@@ -889,18 +937,12 @@ struct DashboardView: View {
                     comparison: goals.pacingComparison,
                     lookback: goals.pacingLookback
                 ) {
-                    // dayOfWeek pacing only matches one weekday per week.
-                    // Cap the requirement at 4 samples — 1 Year × Same Weekday
-                    // would otherwise demand 52, which most users never hit
-                    // and would freeze the UI on "Building pace data".
-                    let minSamples: Int
-                    switch goals.pacingComparison {
-                    case .dayOfWeek:
-                        let raw = max(goals.pacingLookback.rawValue / 7, 1)
-                        minSamples = min(raw, 4)
-                    case .allDays:
-                        minSamples = 3
-                    }
+                    // Shared helper keeps the Settings footer description in sync with
+                    // the effective gate (dayOfWeek caps at 4, allDays fixed at 3).
+                    let minSamples = effectiveMinPacingSamples(
+                        for: goals.pacingComparison,
+                        lookback: goals.pacingLookback
+                    )
                     let v = pacing.dashboardValues(minSamples: minSamples, showCalories: goals.showCalories, showSteps: goals.showSteps)
                     pacingCalories = v.calories
                     pacingCaloriesInsufficient = v.caloriesBuilding
@@ -1192,7 +1234,9 @@ private struct SettingsSheet: View {
         let basis = goals.pacingComparison == .dayOfWeek
             ? "Past \(window), same weekday as today."
             : "Past \(window), every day."
-        return "Compares your progress so far to your usual at this time (Apple Health). \(basis) Empty days don’t count. Need 3+ days with data to show a comparison."
+        let minSamples = effectiveMinPacingSamples(for: goals.pacingComparison, lookback: goals.pacingLookback)
+        let dayWord = minSamples == 1 ? "day" : "days"
+        return "Compares your progress so far to your usual at this time (Apple Health). \(basis) Empty days don’t count. Need \(minSamples)+ \(dayWord) with data to show a comparison."
     }
 
     private func applyGoalDrafts() {

@@ -128,6 +128,10 @@ final class HealthKitService: ObservableObject {
             }
         case .unnecessary:
             isAuthorized = true
+        case .unknown:
+            // HealthKit hasn't resolved status yet; leave isAuthorized unchanged
+            // so we try again on the next refresh.
+            break
         @unknown default:
             isAuthorized = true
         }
@@ -192,10 +196,42 @@ final class HealthKitService: ObservableObject {
 
             healthKitLogger.notice("HealthKit returned all-zero stats on attempt \(attempt, privacy: .public); retrying")
             try? await Task.sleep(for: retryDelay)
-            if Task.isCancelled { return stats }
+            // Propagate cancellation so upstream callers land in their catch
+            // block (cache fallback / loadError) instead of silently treating
+            // the interrupted retry as "HealthKit returned zero".
+            if Task.isCancelled { throw CancellationError() }
         }
 
         return lastStats
+    }
+
+    /// Probe whether the user has *any* dietary-energy sample in their Health store.
+    /// Used as a heuristic for dietary read-access: HealthKit does not expose read-auth
+    /// directly, so when `fetchDietaryEnergyToday()` returns 0 kcal we cannot tell
+    /// "denied" from "authorized but never logged food" without looking at history.
+    ///
+    /// Uses `HKSampleQuery` with `limit = 1` for efficiency — we only need existence.
+    /// Returns `false` if the user has never logged dietary energy OR if reads are denied
+    /// (HealthKit silently returns an empty array in both cases).
+    func hasAnyDietarySample() async throws -> Bool {
+        if ScreenshotConfig.isEnabled { return true }
+        guard HKHealthStore.isHealthDataAvailable() else { return false }
+        let type = HKQuantityType(.dietaryEnergyConsumed)
+        return try await withCheckedThrowingContinuation { continuation in
+            let query = HKSampleQuery(
+                sampleType: type,
+                predicate: nil,
+                limit: 1,
+                sortDescriptors: nil
+            ) { _, samples, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                continuation.resume(returning: !(samples ?? []).isEmpty)
+            }
+            store.execute(query)
+        }
     }
 
     /// Dietary energy (food) logged for today in Health, in kilocalories (e.g. from MyFitnessPal).
@@ -219,6 +255,13 @@ final class HealthKitService: ObservableObject {
         let map = try await queryStatisticsCollection(.dietaryEnergyConsumed, unit: .kilocalorie(), start: dayStart, end: dayEnd, interval: interval)
         let kcal = map[dayStart] ?? 0
         healthKitLogger.debug("fetchDietaryEnergyToday: \(kcal, privacy: .public) kcal")
+        // First non-zero read is our positive signal that dietary reads are authorized.
+        // Persist so future launches can keep the dietary observer installed even when
+        // Net Deficit happens to be toggled off at that moment.
+        if kcal > 0 && !dietaryBackgroundDeliveryEnabled {
+            dietaryBackgroundDeliveryEnabled = true
+            enableBackgroundDelivery()
+        }
         return kcal
     }
 
@@ -241,21 +284,21 @@ final class HealthKitService: ObservableObject {
             return ScreenshotFixtures.history(days: dayCount, end: end)
         }
         #endif
-        let start = DateHelpers.startOfDay(start)
+        let normalizedStart = DateHelpers.startOfDay(start)
         // Include today by pushing end to tomorrow's start
         let endNormalized = DateHelpers.startOfDay(end)
-        let end = Calendar.current.date(byAdding: .day, value: 1, to: endNormalized) ?? endNormalized
+        let queryEnd = Calendar.current.date(byAdding: .day, value: 1, to: endNormalized) ?? endNormalized
         let interval = DateComponents(day: 1)
 
-        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: start, end: end, interval: interval)
-        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: start, end: end, interval: interval)
-        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: start, end: end, interval: interval)
+        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval)
+        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval)
+        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: normalizedStart, end: queryEnd, interval: interval)
 
         let (active, resting, steps) = try await (activeMap, restingMap, stepsMap)
 
         var results: [(date: Date, active: Double, resting: Double, steps: Int)] = []
-        var current = start
-        while current < end {
+        var current = normalizedStart
+        while current < queryEnd {
             results.append((
                 date: current,
                 active: active[current] ?? 0,
@@ -349,18 +392,37 @@ final class HealthKitService: ObservableObject {
     // MARK: - Background Delivery
 
     private var pendingRefreshTask: Task<Void, Never>?
-    private var observerQueriesInstalled = false
+    private var installedObserverTypes: Set<String> = []
+
+    /// UserDefaults flag: once we've successfully read dietary energy at least once,
+    /// we know the user has granted access (or at least didn't deny read for it). Use
+    /// that as a signal to keep the dietary observer installed across launches even
+    /// when Net Deficit happens to be toggled off, so re-enabling Net Deficit later
+    /// doesn't lose live updates.
+    private var dietaryBackgroundDeliveryEnabled: Bool {
+        get { (UserDefaults(suiteName: vitalsAppGroupID) ?? .standard).bool(forKey: "dietaryBackgroundDeliveryEnabled") }
+        set { (UserDefaults(suiteName: vitalsAppGroupID) ?? .standard).set(newValue, forKey: "dietaryBackgroundDeliveryEnabled") }
+    }
 
     func enableBackgroundDelivery() {
         if ScreenshotConfig.isEnabled { return }
         guard HKHealthStore.isHealthDataAvailable() else { return }
 
-        let types: [HKQuantityType] = [
+        // Core types that every user pays for — small, granted at onboarding.
+        var types: [HKQuantityType] = [
             HKQuantityType(.activeEnergyBurned),
             HKQuantityType(.basalEnergyBurned),
             HKQuantityType(.stepCount),
-            HKQuantityType(.dietaryEnergyConsumed),
         ]
+
+        // Only register the dietary observer when we have positive signal that the
+        // user cares about it (Net Deficit is on, or we've successfully read dietary
+        // energy before). Otherwise the registration fails with "Authorization not
+        // determined" and produces noisy logs on every launch for Net-off users.
+        let includeDietary = GoalSettings.shared.showNetCalories || dietaryBackgroundDeliveryEnabled
+        if includeDietary {
+            types.append(HKQuantityType(.dietaryEnergyConsumed))
+        }
 
         for type in types {
             store.enableBackgroundDelivery(for: type, frequency: .hourly) { _, error in
@@ -370,10 +432,14 @@ final class HealthKitService: ObservableObject {
             }
         }
 
-        guard !observerQueriesInstalled else { return }
-        observerQueriesInstalled = true
-
+        // Install observer queries once per type (idempotent across reentries so a
+        // user flipping Net Deficit on later still gets a dietary observer without
+        // duplicating the existing active/basal/step queries).
         for type in types {
+            let identifier = type.identifier
+            guard !installedObserverTypes.contains(identifier) else { continue }
+            installedObserverTypes.insert(identifier)
+
             let query = HKObserverQuery(sampleType: type, predicate: nil) { [weak self] _, completionHandler, error in
                 // Call completion handler immediately — watchOS kills the app
                 // if this isn't called within 15 seconds.
@@ -537,8 +603,14 @@ final class HealthKitService: ObservableObject {
 
     // MARK: - Private Helpers
 
-    private func areAllStatsZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
+    /// Canonical "stats row is empty" check. Views should call this instead of defining
+    /// their own local `isAllZero` helpers so semantics stay in sync.
+    static func isAllZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
         stats.active == 0 && stats.resting == 0 && stats.steps == 0
+    }
+
+    private func areAllStatsZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
+        Self.isAllZero(stats)
     }
 
     private func queryStatisticsCollection(

@@ -1,5 +1,6 @@
 import Foundation
 import SwiftData
+import os
 
 // Accessible from any isolation context (widgets, complications)
 let vitalsAppGroupID = "group.com.jackwallner.vitals"
@@ -34,6 +35,12 @@ enum DataService {
         do {
             return try ModelContainer(for: schema, configurations: [inMemory])
         } catch {
+            // Leave a breadcrumb before we terminate so device Console shows the
+            // reason even when a crash report isn't surfaced. Keeping the fatalError
+            // because there is genuinely nothing we can do to render meaningful UI.
+            let logger = Logger(subsystem: "com.jackwallner.vitals", category: "DataService")
+            logger.critical("ModelContainer could not initialize even in-memory: \(String(describing: error), privacy: .public)")
+            assertionFailure("DataService: ModelContainer could not initialize even in-memory: \(error)")
             fatalError("DataService: ModelContainer could not initialize even in-memory: \(error)")
         }
     }()

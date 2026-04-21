@@ -289,6 +289,10 @@ struct MediumWidgetView: View {
 struct CircularAccessoryView: View {
     let entry: VitalsEntry
 
+    /// Circular accessory has no room for a "Yesterday" pill, so use dimmer styling
+    /// to signal stale data instead of silently rendering old numbers as if fresh.
+    private var staleOpacity: Double { entry.staleDate == nil ? 1.0 : 0.55 }
+
     var body: some View {
         if entry.calGoalEnabled {
             Gauge(value: min(entry.totalCalories, entry.calorieGoal), in: 0...entry.calorieGoal) {
@@ -299,6 +303,7 @@ struct CircularAccessoryView: View {
             }
             .gaugeStyle(.accessoryCircular)
             .tint(Theme.caloriesPrimary)
+            .opacity(staleOpacity)
             .containerBackground(.fill.tertiary, for: .widget)
         } else {
             VStack(spacing: 1) {
@@ -311,6 +316,7 @@ struct CircularAccessoryView: View {
                     .font(.system(size: 8, design: .rounded))
                     .foregroundStyle(.secondary)
             }
+            .opacity(staleOpacity)
             .containerBackground(.fill.tertiary, for: .widget)
         }
     }

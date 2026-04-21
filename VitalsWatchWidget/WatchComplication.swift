@@ -27,7 +27,9 @@ private enum ComplicationFormat {
     }
 
     static func shortNetDeficit(_ value: Double, family: WidgetFamily) -> String {
-        let prefix = value >= 0 ? "+" : ""
+        // Use U+2212 (MINUS SIGN) to match the numeric formatting style across the app
+        // and ensure the sign is visually readable even on small faces / monochrome tints.
+        let prefix = value >= 0 ? "+" : "\u{2212}"
         let absVal = abs(value)
         if family == .accessoryCorner || family == .accessoryInline || family == .accessoryCircular {
             return prefix + compactWholeNumber(absVal)
@@ -598,7 +600,7 @@ struct NetDeficitEntryView: View {
     let entry: WatchVitalsEntry
 
     var body: some View {
-        if !entry.dataAvailable {
+        if !entry.dataAvailable || !entry.showNetCalories {
             NoDataComplicationView()
         } else {
             switch family {
