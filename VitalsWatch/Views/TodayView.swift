@@ -122,14 +122,6 @@ struct TodayView: View {
                                 }
                             }
 
-                            if let calorieTrends {
-                                WatchTrendSection(trends: calorieTrends)
-                                    .padding(.top, compactLayout ? 2 : 4)
-                            } else if trendLoadFailed {
-                                Text("Trends unavailable")
-                                    .font(.system(size: 9, design: .rounded))
-                                    .foregroundStyle(Theme.textTertiary)
-                            }
                         }
 
                         // Divider between Calories and Steps (only when both visible)
@@ -185,6 +177,17 @@ struct TodayView: View {
                             .accessibilityElement(children: .combine)
                             .accessibilityLabel("Net calories")
                             .accessibilityValue("\(Int(netDeficit)) net calories")
+                        }
+
+                        if goals.showCalories {
+                            if let calorieTrends {
+                                WatchTrendSection(trends: calorieTrends, currentCalories: totalCalories)
+                                    .padding(.top, compactLayout ? 2 : 4)
+                            } else if trendLoadFailed {
+                                Text("Trends unavailable")
+                                    .font(.system(size: 9, design: .rounded))
+                                    .foregroundStyle(Theme.textTertiary)
+                            }
                         }
 
                         if let healthNotice {
@@ -416,31 +419,49 @@ struct TodayView: View {
 
 private struct WatchTrendSection: View {
     let trends: CalorieTrendSummary
+    let currentCalories: Double
 
     var body: some View {
-        VStack(spacing: 6) {
-            WatchTrendBars(points: trends.points)
-                .frame(height: 34)
-                .padding(.horizontal, 4)
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .firstTextBaseline) {
+                Text("History")
+                    .font(.system(size: 11, weight: .bold, design: .rounded))
+                    .foregroundStyle(Theme.textPrimary)
+                Spacer()
+                Text("Today \(currentCalories.formatted(.number.precision(.fractionLength(0))))")
+                    .font(.system(size: 9, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Theme.caloriesPrimary)
+            }
+
+            WatchTrendBars(points: trends.points, currentCalories: currentCalories)
+                .frame(height: 48)
 
             HStack(spacing: 6) {
-                WatchTrendCard(metric: trends.weekly)
-                WatchTrendCard(metric: trends.monthly)
+                WatchTrendCard(metric: trends.weekly, currentCalories: currentCalories)
+                WatchTrendCard(metric: trends.monthly, currentCalories: currentCalories)
             }
         }
-        .padding(8)
-        .background(Theme.cardSurface.opacity(0.65), in: RoundedRectangle(cornerRadius: 12))
+        .padding(10)
+        .background(Theme.cardSurface.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Calorie trends")
-        .accessibilityValue("\(trends.weekly.accessibilityText), \(trends.monthly.accessibilityText)")
+        .accessibilityLabel("Calorie history")
+        .accessibilityValue("Today \(Int(currentCalories)) calories, \(trends.weekly.accessibilityText), \(trends.monthly.accessibilityText)")
     }
 }
 
 private struct WatchTrendCard: View {
     let metric: CalorieTrendMetric
+    let currentCalories: Double
+
+    private var currentDeltaText: String {
+        guard let average = metric.average, average > 0 else { return "vs avg —" }
+        let delta = currentCalories - average
+        let prefix = delta >= 0 ? "+" : ""
+        return "\(prefix)\(delta.formatted(.number.precision(.fractionLength(0)))) today"
+    }
 
     var body: some View {
-        VStack(spacing: 2) {
+        VStack(alignment: .leading, spacing: 2) {
             Text(metric.title)
                 .font(.system(size: 8, weight: .semibold, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
@@ -449,34 +470,65 @@ private struct WatchTrendCard: View {
                 .font(.system(size: 14, weight: .bold, design: .rounded))
                 .foregroundStyle(Theme.textPrimary)
                 .minimumScaleFactor(0.7)
+            Text(currentDeltaText)
+                .font(.system(size: 8, weight: .medium, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.65)
             Text(metric.changeText)
                 .font(.system(size: 9, weight: .medium, design: .rounded))
                 .foregroundStyle(metric.changeColor)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
 private struct WatchTrendBars: View {
     let points: [CalorieTrendPoint]
+    let currentCalories: Double
 
     private var maxCalories: Double {
-        max(points.map(\.totalCalories).max() ?? 0, 1)
+        max(points.map(\.totalCalories).max() ?? 0, currentCalories, 1)
+    }
+
+    private var currentRatio: Double {
+        min(max(currentCalories / maxCalories, 0), 1)
     }
 
     var body: some View {
         GeometryReader { proxy in
-            HStack(alignment: .bottom, spacing: 1.5) {
-                ForEach(points) { point in
-                    RoundedRectangle(cornerRadius: 2)
-                        .fill(point.totalCalories > 0 ? Theme.caloriesGradient : LinearGradient(colors: [Theme.ringTrack], startPoint: .bottom, endPoint: .top))
-                        .frame(height: max(3, proxy.size.height * point.totalCalories / maxCalories))
-                        .opacity(point.totalCalories > 0 ? 1 : 0.35)
+            ZStack(alignment: .bottom) {
+                HStack(alignment: .bottom, spacing: 1.5) {
+                    ForEach(points) { point in
+                        RoundedRectangle(cornerRadius: 2)
+                            .fill(point.totalCalories > 0 ? Theme.caloriesGradient : LinearGradient(colors: [Theme.ringTrack], startPoint: .bottom, endPoint: .top))
+                            .frame(height: max(3, proxy.size.height * point.totalCalories / maxCalories))
+                            .opacity(point.totalCalories > 0 ? 0.86 : 0.3)
+                    }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+
+                VStack(spacing: 0) {
+                    Rectangle()
+                        .fill(Theme.caloriesPrimary.opacity(0.9))
+                        .frame(height: 1)
+                    Spacer(minLength: 0)
+                }
+                .frame(height: proxy.size.height * currentRatio)
+
+                HStack {
+                    Spacer()
+                    Text("now")
+                        .font(.system(size: 7, weight: .bold, design: .rounded))
+                        .foregroundStyle(Theme.caloriesPrimary)
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 1)
+                        .background(Theme.background.opacity(0.85), in: Capsule())
+                }
+                .offset(y: -(proxy.size.height * currentRatio) + 4)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         }
     }
 }
