@@ -639,6 +639,8 @@ final class HealthKitService: ObservableObject {
             let key = DailyHealthRecord.key(for: current)
             if let record = recordDict[key] {
                 results.append((date: record.date, active: record.activeCalories, resting: record.restingCalories, steps: record.steps))
+            } else {
+                results.append((date: current, active: 0, resting: 0, steps: 0))
             }
             guard let next = calendar.date(byAdding: .day, value: 1, to: current) else { break }
             current = next

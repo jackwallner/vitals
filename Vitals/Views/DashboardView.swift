@@ -895,6 +895,16 @@ struct DashboardView: View {
                 print("Failed to refresh today cache: \(error)")
             }
 
+            // Background history sync for the watch shared cache
+            Task(priority: .utility) {
+                do {
+                    let history = try await healthKit.fetchHistory(days: 90)
+                    try healthKit.saveHistoryToCache(history: history)
+                } catch {
+                    print("Background history cache sync failed: \(error)")
+                }
+            }
+
             if goals.showNetCalories {
                 do {
                     let food = try await healthKit.fetchDietaryEnergyToday()
