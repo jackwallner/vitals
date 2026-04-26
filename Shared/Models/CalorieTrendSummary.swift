@@ -19,8 +19,7 @@ struct CalorieTrendSummary {
             .sorted { $0.date < $1.date }
 
         guard let endDate = sorted.last?.date else { return nil }
-        let nonTodayPoints = sorted.filter { !calendar.isDateInToday($0.date) }
-        let visiblePoints = Array(nonTodayPoints.suffix(30))
+        let visiblePoints = Array(sorted.suffix(30))
         let weekly = CalorieTrendMetric.make(title: "7D AVG", periodDays: 7, points: sorted, endDate: endDate, calendar: calendar)
         let monthly = CalorieTrendMetric.make(title: "30D AVG", periodDays: 30, points: sorted, endDate: endDate, calendar: calendar)
 
@@ -56,7 +55,16 @@ struct CalorieTrendMetric {
 
     var accessibilityText: String {
         guard let average else { return "\(title) no data" }
-        return "\(title) \(Int(average)) calories per day over \(sampleDays) completed days, \(changeText)"
+        let trendLabel: String
+        if let percentChange {
+            let direction = percentChange >= 0 ? "up" : "down"
+            trendLabel = "\(direction) \(abs(percentChange).formatted(.number.precision(.fractionLength(0)))) percent from prior period"
+        } else if sampleDays > 0 {
+            trendLabel = "\(sampleDays) of \(expectedDays) days with data"
+        } else {
+            trendLabel = "no prior data for comparison"
+        }
+        return "\(title) \(Int(average)) calories per day over \(sampleDays) completed days, \(trendLabel)"
     }
 
     static func make(

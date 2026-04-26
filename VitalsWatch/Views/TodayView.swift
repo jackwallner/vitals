@@ -421,18 +421,22 @@ private struct WatchTrendSection: View {
     let trends: CalorieTrendSummary
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("History")
-                .font(.system(size: 11, weight: .bold, design: .rounded))
-                .foregroundStyle(Theme.textPrimary)
+        VStack(alignment: .leading, spacing: 12) {
+            WatchTrendPeriodSection(
+                title: "Last 7 Days",
+                points: Array(trends.points.suffix(7)),
+                metric: trends.weekly
+            )
 
-            WatchTrendBars(points: trends.points)
-                .frame(height: 44)
+            Rectangle()
+                .fill(Theme.cardSurface)
+                .frame(height: 1)
 
-            HStack(spacing: 6) {
-                WatchTrendCard(metric: trends.weekly)
-                WatchTrendCard(metric: trends.monthly)
-            }
+            WatchTrendPeriodSection(
+                title: "Last 30 Days",
+                points: trends.points,
+                metric: trends.monthly
+            )
         }
         .padding(10)
         .background(Theme.cardSurface.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
@@ -442,43 +446,47 @@ private struct WatchTrendSection: View {
     }
 }
 
-private struct WatchTrendCard: View {
+private struct WatchTrendPeriodSection: View {
+    let title: String
+    let points: [CalorieTrendPoint]
     let metric: CalorieTrendMetric
+
+    private var trendColor: Color {
+        guard let change = metric.percentChange else { return Theme.textTertiary }
+        return change >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative
+    }
 
     private var titleText: String {
         if metric.sampleDays < metric.expectedDays && metric.sampleDays > 0 {
-            return "\(metric.title) (\(metric.sampleDays))"
+            return "\(title) · \(metric.sampleDays)d"
         }
-        return metric.title
+        return title
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            Text(titleText)
-                .font(.system(size: 8, weight: .semibold, design: .rounded))
-                .foregroundStyle(Theme.textTertiary)
-                .tracking(0.8)
-
-            Text(metric.averageText)
-                .font(.system(size: 14, weight: .bold, design: .rounded))
-                .foregroundStyle(Theme.textPrimary)
-                .minimumScaleFactor(0.7)
-
-            if let change = metric.percentChange {
-                HStack(spacing: 2) {
-                    Image(systemName: change >= 0 ? "arrow.up" : "arrow.down")
-                        .font(.system(size: 7, weight: .bold, design: .rounded))
-                    Text("\(abs(change).formatted(.number.precision(.fractionLength(0))))%")
-                        .font(.system(size: 8, weight: .medium, design: .rounded))
-                }
-                .foregroundStyle(change >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
-            } else {
-                Text(metric.sampleDays > 0 ? "\(metric.sampleDays) days" : "No data")
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(titleText)
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .foregroundStyle(Theme.textPrimary)
+                Spacer()
+                Text(metric.changeText)
                     .font(.system(size: 8, weight: .medium, design: .rounded))
-                    .foregroundStyle(Theme.textTertiary)
+                    .foregroundStyle(trendColor)
             }
+
+            HStack(alignment: .firstTextBaseline, spacing: 3) {
+                Text(metric.averageText)
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .foregroundStyle(Theme.textPrimary)
+                Text("avg")
+                    .font(.system(size: 9, weight: .medium, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+            }
+
+            WatchTrendBars(points: points)
+                .frame(height: 28)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -493,15 +501,28 @@ private struct WatchTrendBars: View {
         GeometryReader { proxy in
             HStack(alignment: .bottom, spacing: 1.5) {
                 ForEach(points) { point in
+                    let isToday = Calendar.current.isDateInToday(point.date)
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(point.totalCalories > 0 ? Theme.caloriesGradient : LinearGradient(colors: [Theme.ringTrack], startPoint: .bottom, endPoint: .top))
+                        .fill(barFill(for: point, isToday: isToday))
                         .frame(height: max(3, proxy.size.height * point.totalCalories / maxCalories))
-                        .opacity(point.totalCalories > 0 ? 0.86 : 0.3)
+                        .opacity(barOpacity(for: point, isToday: isToday))
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         }
     }
+}
+
+private func barFill(for point: CalorieTrendPoint, isToday: Bool) -> LinearGradient {
+    if isToday {
+        return Theme.caloriesGradient
+    }
+    return point.totalCalories > 0 ? Theme.caloriesGradient : LinearGradient(colors: [Theme.ringTrack], startPoint: .bottom, endPoint: .top)
+}
+
+private func barOpacity(for point: CalorieTrendPoint, isToday: Bool) -> Double {
+    if isToday { return 1.0 }
+    return point.totalCalories > 0 ? 0.86 : 0.3
 }
 
 private struct WatchHelpView: View {
