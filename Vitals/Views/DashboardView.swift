@@ -305,13 +305,12 @@ struct DashboardView: View {
                     }
                     .buttonStyle(.plain)
                 }
-                HStack(spacing: 4) {
+                HStack(spacing: 6) {
                     if isRefreshing {
                         ProgressView()
-                            .controlSize(.mini)
                             .tint(Theme.textTertiary)
                         Text("Refreshing...")
-                            .font(.system(.caption2, design: .rounded))
+                            .font(.system(.caption, design: .rounded))
                             .foregroundStyle(Theme.textTertiary)
                     } else if healthNotice == .accessNeeded || healthNotice == .accessBlocked {
                         Text("Waiting for Health access")
@@ -328,6 +327,12 @@ struct DashboardView: View {
             .padding(.top, 16)
             .opacity(animateContent ? 1 : 0)
             .offset(y: animateContent ? 0 : 10)
+
+            if let healthNotice {
+                healthNoticeBanner(healthNotice)
+                    .padding(.horizontal, 24)
+                    .opacity(animateContent ? 1 : 0)
+            }
 
             Spacer(minLength: 16)
 
@@ -534,11 +539,6 @@ struct DashboardView: View {
                         .foregroundStyle(Theme.caloriesPrimary)
                 }
                 .opacity(animateContent ? 1 : 0)
-            }
-
-            if let healthNotice {
-                healthNoticeBanner(healthNotice)
-                    .opacity(animateContent ? 1 : 0)
             }
 
             Spacer(minLength: 16)
