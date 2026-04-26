@@ -37,6 +37,7 @@ struct CalorieTrendMetric {
     let title: String
     let average: Double?
     let sampleDays: Int
+    let expectedDays: Int
     let percentChange: Double?
 
     var averageText: String {
@@ -46,14 +47,15 @@ struct CalorieTrendMetric {
 
     var changeText: String {
         guard let percentChange else {
-            return sampleDays > 0 ? "\(sampleDays)d data" : "No data"
+            return sampleDays > 0 ? "\(sampleDays) of \(expectedDays) days" : "No data"
         }
-        return String(format: "%+.0f%%", percentChange)
+        let direction = percentChange >= 0 ? "↑" : "↓"
+        return "\(direction) \(abs(percentChange).formatted(.number.precision(.fractionLength(0))))%"
     }
 
     var accessibilityText: String {
         guard let average else { return "\(title) no data" }
-        return "\(title) \(Int(average)) calories per day, \(changeText)"
+        return "\(title) \(Int(average)) calories per day over \(sampleDays) completed days, \(changeText)"
     }
 
     static func make(
@@ -63,14 +65,20 @@ struct CalorieTrendMetric {
         endDate: Date,
         calendar: Calendar
     ) -> CalorieTrendMetric {
-        guard let currentStart = calendar.date(byAdding: .day, value: -(periodDays - 1), to: endDate),
+        // Use the most recent completed day (not today) as the reference for averages.
+        let completedPoints = points.filter { !calendar.isDateInToday($0.date) && $0.totalCalories > 0 }
+        guard let referenceDate = completedPoints.last?.date else {
+            return CalorieTrendMetric(title: title, average: nil, sampleDays: 0, expectedDays: periodDays, percentChange: nil)
+        }
+
+        guard let currentStart = calendar.date(byAdding: .day, value: -(periodDays - 1), to: referenceDate),
               let previousStart = calendar.date(byAdding: .day, value: -periodDays, to: currentStart),
               let previousEnd = calendar.date(byAdding: .day, value: -1, to: currentStart)
         else {
-            return CalorieTrendMetric(title: title, average: nil, sampleDays: 0, percentChange: nil)
+            return CalorieTrendMetric(title: title, average: nil, sampleDays: 0, expectedDays: periodDays, percentChange: nil)
         }
 
-        let currentPoints = points.filter { $0.date >= currentStart && $0.date <= endDate && $0.totalCalories > 0 }
+        let currentPoints = points.filter { $0.date >= currentStart && $0.date <= referenceDate && $0.totalCalories > 0 }
         let previousPoints = points.filter { $0.date >= previousStart && $0.date <= previousEnd && $0.totalCalories > 0 }
         let average = averageCalories(currentPoints)
         let previousAverage = averageCalories(previousPoints)
@@ -84,6 +92,7 @@ struct CalorieTrendMetric {
             title: title,
             average: average,
             sampleDays: currentPoints.count,
+            expectedDays: periodDays,
             percentChange: percentChange
         )
     }
