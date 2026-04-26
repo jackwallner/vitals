@@ -19,7 +19,8 @@ struct CalorieTrendSummary {
             .sorted { $0.date < $1.date }
 
         guard let endDate = sorted.last?.date else { return nil }
-        let visiblePoints = Array(sorted.suffix(30))
+        let nonTodayPoints = sorted.filter { !calendar.isDateInToday($0.date) }
+        let visiblePoints = Array(nonTodayPoints.suffix(30))
         let weekly = CalorieTrendMetric.make(title: "7D AVG", periodDays: 7, points: sorted, endDate: endDate, calendar: calendar)
         let monthly = CalorieTrendMetric.make(title: "30D AVG", periodDays: 30, points: sorted, endDate: endDate, calendar: calendar)
 

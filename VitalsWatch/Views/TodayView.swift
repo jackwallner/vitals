@@ -504,15 +504,6 @@ private struct WatchTrendBars: View {
     }
 }
 
-private extension CalorieTrendMetric {
-    var trendForegroundColor: Color {
-        guard let percentChange else { return Theme.textTertiary }
-        if percentChange > 0 { return Theme.netDeficitPositive }
-        if percentChange < 0 { return Theme.netDeficitNegative }
-        return Theme.textTertiary
-    }
-}
-
 private struct WatchHelpView: View {
     @Environment(\.dismiss) private var dismiss
 
