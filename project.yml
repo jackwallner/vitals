@@ -13,7 +13,7 @@ settings:
     DEVELOPMENT_TEAM: YXG4MP6W39
     CODE_SIGN_STYLE: Automatic
     MARKETING_VERSION: "1.3.0"
-    CURRENT_PROJECT_VERSION: "29"
+    CURRENT_PROJECT_VERSION: "30"
     GENERATE_INFOPLIST_FILE: NO
 
 schemes:
@@ -22,6 +22,10 @@ schemes:
       targets:
         Vitals: all
         VitalsWatch: all
+        VitalsTests: [test]
+    test:
+      targets:
+        - VitalsTests
     run:
       config: Debug
   VitalsWatch:
@@ -90,3 +94,14 @@ targets:
         INFOPLIST_FILE: VitalsWatchWidget/Info.plist
         CODE_SIGN_ENTITLEMENTS: VitalsWatchWidget/VitalsWatchWidget.entitlements
         WATCHOS_DEPLOYMENT_TARGET: "10.0"
+
+  VitalsTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: VitalsTests
+      - path: Shared/Models/CalorieTrendSummary.swift
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.jackwallner.vitals.tests

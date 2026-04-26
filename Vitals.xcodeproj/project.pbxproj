@@ -21,12 +21,14 @@
 		432DF5A74580379C50D494D4 /* WatchComplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA172BB16DF599334E29D1F6 /* WatchComplication.swift */; };
 		505A5802FE54E602AA80A146 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
 		5196C5E49115471C4A1E267E /* VitalsWatchWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 47E5A948D4ECA79121753114 /* VitalsWatchWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5A19413C5A9673172FC29C82 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		6B88B53A4076BB378D0F2087 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
 		6BD5AEA6B71B870CC53605AF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
 		72DEDC8616FEE6109AF0E931 /* GoalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6804EF421C3725E70674D40 /* GoalSettings.swift */; };
 		73E57B5289F6A146D19D6011 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
 		75A6835298F7F33CA2EF9884 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
 		7DE03846B38547D81722040A /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
+		7F8EA31FF10615BC980C2176 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		812F324514C80810810339F9 /* VitalsWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AC24F002AF13CDC4C14F3E96 /* VitalsWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8BA4236445D489D8CCF15852 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
 		906DF508C80FAF1F80DCF0FC /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A2306ABF7BBFD87A49291EE7 /* PrivacyInfo.xcprivacy */; };
@@ -41,10 +43,14 @@
 		BE538F50FDD4AC5E8444AD9E /* ScreenshotConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4334C2CE63928C06983EA7 /* ScreenshotConfig.swift */; };
 		C1E2EC8ECDAB52F888E0DF67 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
 		C4A7057EE61818DFBF13CF29 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E24C6F7550EC4501A69FE /* DateHelpers.swift */; };
+		C865D662C3A396B328E3D126 /* CalorieTrendSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5743BEFB90AAF6BA7EB81 /* CalorieTrendSummaryTests.swift */; };
+		CCD0C2EB0256EBD67EF1CB51 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
+		D256E97021F46CFAAD549760 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		D3679EA6FE8D16EF336052E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 207ADC8FCC7E1328298839A0 /* Assets.xcassets */; };
 		D5BDA6A6FBDE94D2D1ADD00A /* HealthRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */; };
 		DC24AE05CDB72AFF52FE97A2 /* GoalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6804EF421C3725E70674D40 /* GoalSettings.swift */; };
 		DC70232ABC8F8424A8F1C444 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C7498718A96BB0C7A0B880 /* App.swift */; };
+		E48D5DCE8E5EA92DBEA311A3 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		E6E4E983389A2641C8483300 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E24C6F7550EC4501A69FE /* DateHelpers.swift */; };
 		EE8FA1155826C0A2643AC014 /* VitalsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86EC13F0E2855F9288631D7 /* VitalsWidget.swift */; };
 		FDC255EDF9FC897146209356 /* ProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971064F5F952A25427D7F46B /* ProgressRing.swift */; };
@@ -114,8 +120,10 @@
 
 /* Begin PBXFileReference section */
 		207ADC8FCC7E1328298839A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		28B688A25476BF08977C9AB3 /* VitalsTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = VitalsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E891A2F146A996DD48C13CD /* VitalsWatchWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VitalsWatchWidget.entitlements; sourceTree = "<group>"; };
 		37181B9FB18AF45A44299F0F /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
+		3AA5743BEFB90AAF6BA7EB81 /* CalorieTrendSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieTrendSummaryTests.swift; sourceTree = "<group>"; };
 		47E5A948D4ECA79121753114 /* VitalsWatchWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VitalsWatchWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5067457F6627E7ABFE38988A /* Vitals.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Vitals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		689672535A7B63A46F54C799 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -124,6 +132,7 @@
 		78C7498718A96BB0C7A0B880 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		82E152DC23E11DAD83864E5A /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		91C056000F5C8A4A19422218 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieTrendSummary.swift; sourceTree = "<group>"; };
 		971064F5F952A25427D7F46B /* ProgressRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRing.swift; sourceTree = "<group>"; };
 		97EA07C9EE670921AD6405A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		9EEC9E7DED1B1E70BAA8F0E1 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
@@ -206,10 +215,19 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		5B70716389548B6ED5D2F486 /* VitalsTests */ = {
+			isa = PBXGroup;
+			children = (
+				3AA5743BEFB90AAF6BA7EB81 /* CalorieTrendSummaryTests.swift */,
+			);
+			path = VitalsTests;
+			sourceTree = "<group>";
+		};
 		760BA1666CEB8102A35FBB69 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				5067457F6627E7ABFE38988A /* Vitals.app */,
+				28B688A25476BF08977C9AB3 /* VitalsTests.xctest */,
 				DE8F114B3CE1940662993978 /* VitalsWatch.app */,
 				47E5A948D4ECA79121753114 /* VitalsWatchWidget.appex */,
 				AC24F002AF13CDC4C14F3E96 /* VitalsWidget.appex */,
@@ -242,6 +260,7 @@
 			children = (
 				C40233C79C2275CC382EA631 /* Shared */,
 				B97418C2E759BA3B9EC264C3 /* Vitals */,
+				5B70716389548B6ED5D2F486 /* VitalsTests */,
 				13C7D97F3FF103D58EE1A604 /* VitalsWatch */,
 				81B356B319B0F758FE949740 /* VitalsWatchWidget */,
 				3D513A1688AD29F5A1E012B7 /* VitalsWidget */,
@@ -275,6 +294,7 @@
 		E83033D1EACD5F013E76433B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */,
 				70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */,
 			);
 			path = Models;
@@ -342,6 +362,23 @@
 			productReference = DE8F114B3CE1940662993978 /* VitalsWatch.app */;
 			productType = "com.apple.product-type.application";
 		};
+		EF698115BC31C3766ED148BA /* VitalsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7EC310382ED2851563314C65 /* Build configuration list for PBXNativeTarget "VitalsTests" */;
+			buildPhases = (
+				8BB0A15AAA47A51F3CB75BEA /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VitalsTests;
+			packageProductDependencies = (
+			);
+			productName = VitalsTests;
+			productReference = 28B688A25476BF08977C9AB3 /* VitalsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F7D9E69E00CE7AA8C7C7BE09 /* VitalsWidget */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DC56BB572A4150027D57F9FF /* Build configuration list for PBXNativeTarget "VitalsWidget" */;
@@ -380,6 +417,10 @@
 						DevelopmentTeam = YXG4MP6W39;
 						ProvisioningStyle = Automatic;
 					};
+					EF698115BC31C3766ED148BA = {
+						DevelopmentTeam = YXG4MP6W39;
+						ProvisioningStyle = Automatic;
+					};
 					F7D9E69E00CE7AA8C7C7BE09 = {
 						DevelopmentTeam = YXG4MP6W39;
 						ProvisioningStyle = Automatic;
@@ -401,6 +442,7 @@
 			projectRoot = "";
 			targets = (
 				7F399A17E2AC88E07B83ADE5 /* Vitals */,
+				EF698115BC31C3766ED148BA /* VitalsTests */,
 				BA7F93B3F4FA48491616A6FE /* VitalsWatch */,
 				8CE4321B67221E8301492377 /* VitalsWatchWidget */,
 				F7D9E69E00CE7AA8C7C7BE09 /* VitalsWidget */,
@@ -435,6 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				109116DACEADF5842B690C38 /* App.swift in Sources */,
+				7F8EA31FF10615BC980C2176 /* CalorieTrendSummary.swift in Sources */,
 				0A15A50AFA7DC19834C3D106 /* DataService.swift in Sources */,
 				E6E4E983389A2641C8483300 /* DateHelpers.swift in Sources */,
 				1039A99017046E5F1A2DAAF2 /* GoalSettings.swift in Sources */,
@@ -450,6 +493,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D256E97021F46CFAAD549760 /* CalorieTrendSummary.swift in Sources */,
 				8BA4236445D489D8CCF15852 /* DataService.swift in Sources */,
 				C4A7057EE61818DFBF13CF29 /* DateHelpers.swift in Sources */,
 				72DEDC8616FEE6109AF0E931 /* GoalSettings.swift in Sources */,
@@ -465,6 +509,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E48D5DCE8E5EA92DBEA311A3 /* CalorieTrendSummary.swift in Sources */,
 				6B88B53A4076BB378D0F2087 /* DataService.swift in Sources */,
 				3739688FF9473C63ECADC605 /* DateHelpers.swift in Sources */,
 				DC24AE05CDB72AFF52FE97A2 /* GoalSettings.swift in Sources */,
@@ -476,11 +521,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8BB0A15AAA47A51F3CB75BEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCD0C2EB0256EBD67EF1CB51 /* CalorieTrendSummary.swift in Sources */,
+				C865D662C3A396B328E3D126 /* CalorieTrendSummaryTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E2B5FAF8C998DA77EEB97062 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				DC70232ABC8F8424A8F1C444 /* App.swift in Sources */,
+				5A19413C5A9673172FC29C82 /* CalorieTrendSummary.swift in Sources */,
 				97B3284F672341E171AA3828 /* DashboardView.swift in Sources */,
 				08B27B65AD2FC365D0988CE6 /* DataService.swift in Sources */,
 				3043AE177B63E341CB1554A9 /* DateHelpers.swift in Sources */,
@@ -515,6 +570,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		4AC1ADA6CCD216C57FDB0333 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.vitals.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		862AB7D3DDCABEABA517778F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -567,7 +638,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 30;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -695,7 +766,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 30;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -758,6 +829,22 @@
 			};
 			name = Debug;
 		};
+		E1437A38F35E9F4C3949C31A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.vitals.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		F115D707268CA4E0B2F0AE35 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -791,6 +878,15 @@
 			buildConfigurations = (
 				C714EB6E3FD1C27BB97F0E3D /* Debug */,
 				922A9658B4E59560A53E5547 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7EC310382ED2851563314C65 /* Build configuration list for PBXNativeTarget "VitalsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4AC1ADA6CCD216C57FDB0333 /* Debug */,
+				E1437A38F35E9F4C3949C31A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
