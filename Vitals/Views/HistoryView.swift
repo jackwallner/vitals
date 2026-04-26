@@ -525,6 +525,8 @@ struct HistoryView: View {
                     DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
                 }
             }
+            // Persist the fetched history to the shared cache so the watch can read it.
+            try? healthKit.saveHistoryToCache(history: history)
         } catch {
             print("Failed to fetch history: \(error)")
             loadErrorMessage = records.isEmpty

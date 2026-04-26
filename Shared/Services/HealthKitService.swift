@@ -311,6 +311,27 @@ final class HealthKitService: ObservableObject {
         return results
     }
 
+    /// WatchOS-only helper: merge HealthKit history with the shared SwiftData cache.
+    /// The paired iPhone populates this cache with full historical data; the watch's
+    /// local HealthKit store may only contain a subset, so cached entries take priority.
+    func fetchMergedHistory(days: Int) async throws -> [(date: Date, active: Double, resting: Double, steps: Int)] {
+        let healthKitHistory = try await fetchHistory(days: days)
+        let cachedHistory = try? fetchCachedHistory(days: days)
+        guard let cachedHistory, !cachedHistory.isEmpty else { return healthKitHistory }
+
+        var merged = healthKitHistory
+        let cachedDict = Dictionary(uniqueKeysWithValues: cachedHistory.map {
+            (DailyHealthRecord.key(for: $0.date), $0)
+        })
+        for (index, day) in merged.enumerated() {
+            let key = DailyHealthRecord.key(for: day.date)
+            if let cached = cachedDict[key], cached.active > 0 || cached.resting > 0 {
+                merged[index] = cached
+            }
+        }
+        return merged
+    }
+
     // MARK: - Pacing (usual progress at this time of day)
 
     func fetchPacing(comparison: PacingComparison, lookback: PacingLookback) async throws -> PacingResult {
@@ -595,6 +616,65 @@ final class HealthKitService: ObservableObject {
             "Loaded cached today stats active=\(record.activeCalories, privacy: .public) resting=\(record.restingCalories, privacy: .public) steps=\(record.steps, privacy: .public) lastUpdated=\(String(describing: record.lastUpdated), privacy: .public)"
         )
         return (active: record.activeCalories, resting: record.restingCalories, steps: record.steps)
+    }
+
+    func fetchCachedHistory(days: Int) throws -> [(date: Date, active: Double, resting: Double, steps: Int)] {
+        let context = ModelContext(DataService.sharedModelContainer)
+        let calendar = Calendar.current
+        let start = DateHelpers.daysAgo(max(days - 1, 0))
+        let end = DateHelpers.startOfDay()
+        let startKey = DailyHealthRecord.key(for: start)
+        let endKey = DailyHealthRecord.key(for: end)
+
+        let descriptor = FetchDescriptor<DailyHealthRecord>(
+            predicate: #Predicate { $0.dateString >= startKey && $0.dateString <= endKey },
+            sortBy: [SortDescriptor(\.date, order: .forward)]
+        )
+        let records = try context.fetch(descriptor)
+        let recordDict = Dictionary(uniqueKeysWithValues: records.map { (DailyHealthRecord.key(for: $0.date), $0) })
+
+        var results: [(date: Date, active: Double, resting: Double, steps: Int)] = []
+        var current = start
+        while current <= end {
+            let key = DailyHealthRecord.key(for: current)
+            if let record = recordDict[key] {
+                results.append((date: record.date, active: record.activeCalories, resting: record.restingCalories, steps: record.steps))
+            }
+            guard let next = calendar.date(byAdding: .day, value: 1, to: current) else { break }
+            current = next
+        }
+        healthKitLogger.info("Loaded cached history: \(results.count, privacy: .public) days from \(startKey, privacy: .public) to \(endKey, privacy: .public)")
+        return results
+    }
+
+    func saveHistoryToCache(history: [(date: Date, active: Double, resting: Double, steps: Int)]) throws {
+        let context = ModelContext(DataService.sharedModelContainer)
+        var inserted = 0
+        var updated = 0
+        for day in history {
+            let key = DailyHealthRecord.key(for: day.date)
+            let descriptor = FetchDescriptor<DailyHealthRecord>(
+                predicate: #Predicate { $0.dateString == key }
+            )
+            if let existing = try context.fetch(descriptor).first {
+                existing.activeCalories = day.active
+                existing.restingCalories = day.resting
+                existing.steps = day.steps
+                existing.lastUpdated = .now
+                updated += 1
+            } else {
+                let record = DailyHealthRecord(
+                    date: day.date,
+                    activeCalories: day.active,
+                    restingCalories: day.resting,
+                    steps: day.steps
+                )
+                context.insert(record)
+                inserted += 1
+            }
+        }
+        try context.save()
+        healthKitLogger.info("Saved history cache: \(inserted, privacy: .public) inserted, \(updated, privacy: .public) updated")
     }
 
     func hasRecordedData(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {

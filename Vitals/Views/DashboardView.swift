@@ -390,13 +390,13 @@ struct DashboardView: View {
                             label: "cal",
                             color: Theme.caloriesPrimary
                         )
-                        .padding(.top, 10)
+                        .padding(.top, 16)
                         .opacity(animateContent ? 1 : 0)
                     } else if pacingCaloriesInsufficient {
                         Text("Building pace data...")
                             .font(.system(.caption2, design: .rounded))
                             .foregroundStyle(Theme.textTertiary)
-                            .padding(.top, 10)
+                            .padding(.top, 16)
                             .opacity(animateContent ? 1 : 0)
                     }
                 }

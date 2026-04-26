@@ -229,20 +229,6 @@ struct TodayView: View {
                     .transition(.opacity)
             }
         }
-        .overlay(alignment: .topTrailing) {
-            Button {
-                showHelp = true
-            } label: {
-                Image(systemName: "questionmark.circle")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(Theme.textSecondary)
-                    .padding(6)
-                    .background(Theme.cardSurface.opacity(0.8), in: Circle())
-            }
-            .buttonStyle(.plain)
-            .padding(.top, 2)
-            .padding(.trailing, 2)
-        }
         .background(Theme.background)
         .navigationTitle("Total Calories")
         .onChange(of: healthKit.isAuthorized) { _, authorized in
@@ -407,7 +393,7 @@ struct TodayView: View {
         }
 
         do {
-            let history = try await healthKit.fetchHistory(days: 60)
+            let history = try await healthKit.fetchMergedHistory(days: 90)
             calorieTrends = CalorieTrendSummary.make(history: history)
             trendLoadFailed = calorieTrends == nil
         } catch {

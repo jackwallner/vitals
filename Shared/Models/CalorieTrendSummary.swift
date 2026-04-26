@@ -47,7 +47,7 @@ struct CalorieTrendMetric {
 
     var changeText: String {
         guard let percentChange else {
-            return sampleDays > 0 ? "\(sampleDays) of \(expectedDays) days" : "No data"
+            return sampleDays > 0 ? "—" : "No data"
         }
         let direction = percentChange >= 0 ? "↑" : "↓"
         return "\(direction) \(abs(percentChange).formatted(.number.precision(.fractionLength(0))))%"
