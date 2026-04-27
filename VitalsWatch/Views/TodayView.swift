@@ -425,28 +425,13 @@ private struct WatchTrendPeriodSection: View {
     let points: [CalorieTrendPoint]
     let metric: CalorieTrendMetric
 
-    private var trendColor: Color {
-        guard let change = metric.percentChange else { return Theme.textTertiary }
-        return change >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative
-    }
-
-    private var titleText: String {
-        if metric.sampleDays < metric.expectedDays && metric.sampleDays > 0 {
-            return "\(title) · \(metric.sampleDays)d"
-        }
-        return title
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .firstTextBaseline) {
-                Text(titleText)
+                Text(title)
                     .font(.system(size: 10, weight: .bold, design: .rounded))
                     .foregroundStyle(Theme.textPrimary)
                 Spacer()
-                Text(metric.changeText)
-                    .font(.system(size: 8, weight: .medium, design: .rounded))
-                    .foregroundStyle(trendColor)
             }
 
             HStack(alignment: .firstTextBaseline, spacing: 3) {
