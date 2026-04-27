@@ -393,7 +393,7 @@ struct TodayView: View {
         }
 
         do {
-            let history = try await healthKit.fetchMergedHistory(days: 90)
+            let history = try await healthKit.fetchMergedHistory(days: 30)
             calorieTrends = CalorieTrendSummary.make(history: history)
             trendLoadFailed = calorieTrends == nil
         } catch {
@@ -407,28 +407,16 @@ private struct WatchTrendSection: View {
     let trends: CalorieTrendSummary
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            WatchTrendPeriodSection(
-                title: "Last 7 Days",
-                points: Array(trends.points.suffix(7)),
-                metric: trends.weekly
-            )
-
-            Rectangle()
-                .fill(Theme.cardSurface)
-                .frame(height: 1)
-
-            WatchTrendPeriodSection(
-                title: "Last 30 Days",
-                points: trends.points,
-                metric: trends.monthly
-            )
-        }
+        WatchTrendPeriodSection(
+            title: "Last 7 Days",
+            points: Array(trends.points.suffix(7)),
+            metric: trends.weekly
+        )
         .padding(10)
         .background(Theme.cardSurface.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Calorie history")
-        .accessibilityValue("\(trends.weekly.accessibilityText), \(trends.monthly.accessibilityText)")
+        .accessibilityValue(trends.weekly.accessibilityText)
     }
 }
 
