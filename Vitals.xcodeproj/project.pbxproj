@@ -34,6 +34,7 @@
 		906DF508C80FAF1F80DCF0FC /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A2306ABF7BBFD87A49291EE7 /* PrivacyInfo.xcprivacy */; };
 		97B3284F672341E171AA3828 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEC52C3FC9793813DF64549 /* DashboardView.swift */; };
 		9F43DA0F666C0671FD71FD2D /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEC9E7DED1B1E70BAA8F0E1 /* TodayView.swift */; };
+		A18836B7544E3EA896EE185D /* StepTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9515296920AC1C61887CCD1C /* StepTrendSummary.swift */; };
 		AC9FF372460EE54FE7F7183D /* ScreenshotConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4334C2CE63928C06983EA7 /* ScreenshotConfig.swift */; };
 		AD560B74ECBF3CAD26A75026 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
 		AE79C4EF14DDEFF19FE3342E /* HealthRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */; };
@@ -42,16 +43,19 @@
 		BAAF27492ADCF82BF62686CA /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
 		BE538F50FDD4AC5E8444AD9E /* ScreenshotConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4334C2CE63928C06983EA7 /* ScreenshotConfig.swift */; };
 		C1E2EC8ECDAB52F888E0DF67 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
+		C1FB86ACB54B9B2B1BD3F3F9 /* StepTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9515296920AC1C61887CCD1C /* StepTrendSummary.swift */; };
 		C4A7057EE61818DFBF13CF29 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E24C6F7550EC4501A69FE /* DateHelpers.swift */; };
 		C865D662C3A396B328E3D126 /* CalorieTrendSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5743BEFB90AAF6BA7EB81 /* CalorieTrendSummaryTests.swift */; };
 		CCD0C2EB0256EBD67EF1CB51 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		D256E97021F46CFAAD549760 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		D3679EA6FE8D16EF336052E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 207ADC8FCC7E1328298839A0 /* Assets.xcassets */; };
 		D5BDA6A6FBDE94D2D1ADD00A /* HealthRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */; };
+		D608D6CA7702D1DE27D51DB3 /* StepTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9515296920AC1C61887CCD1C /* StepTrendSummary.swift */; };
 		DC24AE05CDB72AFF52FE97A2 /* GoalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6804EF421C3725E70674D40 /* GoalSettings.swift */; };
 		DC70232ABC8F8424A8F1C444 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C7498718A96BB0C7A0B880 /* App.swift */; };
 		E48D5DCE8E5EA92DBEA311A3 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		E6E4E983389A2641C8483300 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E24C6F7550EC4501A69FE /* DateHelpers.swift */; };
+		EBBF589BFA97F19A0C09DF22 /* StepTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9515296920AC1C61887CCD1C /* StepTrendSummary.swift */; };
 		EE8FA1155826C0A2643AC014 /* VitalsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86EC13F0E2855F9288631D7 /* VitalsWidget.swift */; };
 		FDC255EDF9FC897146209356 /* ProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971064F5F952A25427D7F46B /* ProgressRing.swift */; };
 		FDD2B3AC4FDAD33746E92A0A /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E152DC23E11DAD83864E5A /* HistoryView.swift */; };
@@ -132,6 +136,7 @@
 		78C7498718A96BB0C7A0B880 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		82E152DC23E11DAD83864E5A /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		91C056000F5C8A4A19422218 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		9515296920AC1C61887CCD1C /* StepTrendSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepTrendSummary.swift; sourceTree = "<group>"; };
 		952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieTrendSummary.swift; sourceTree = "<group>"; };
 		971064F5F952A25427D7F46B /* ProgressRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRing.swift; sourceTree = "<group>"; };
 		97EA07C9EE670921AD6405A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -296,6 +301,7 @@
 			children = (
 				952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */,
 				70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */,
+				9515296920AC1C61887CCD1C /* StepTrendSummary.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -484,6 +490,7 @@
 				75A6835298F7F33CA2EF9884 /* HealthKitService.swift in Sources */,
 				24248C5CD47908B7188B3783 /* HealthRecord.swift in Sources */,
 				BE538F50FDD4AC5E8444AD9E /* ScreenshotConfig.swift in Sources */,
+				C1FB86ACB54B9B2B1BD3F3F9 /* StepTrendSummary.swift in Sources */,
 				6BD5AEA6B71B870CC53605AF /* Theme.swift in Sources */,
 				9F43DA0F666C0671FD71FD2D /* TodayView.swift in Sources */,
 			);
@@ -500,6 +507,7 @@
 				73E57B5289F6A146D19D6011 /* HealthKitService.swift in Sources */,
 				1E006B2434ECB58F1D51CB19 /* HealthRecord.swift in Sources */,
 				AC9FF372460EE54FE7F7183D /* ScreenshotConfig.swift in Sources */,
+				A18836B7544E3EA896EE185D /* StepTrendSummary.swift in Sources */,
 				C1E2EC8ECDAB52F888E0DF67 /* Theme.swift in Sources */,
 				432DF5A74580379C50D494D4 /* WatchComplication.swift in Sources */,
 			);
@@ -516,6 +524,7 @@
 				7DE03846B38547D81722040A /* HealthKitService.swift in Sources */,
 				D5BDA6A6FBDE94D2D1ADD00A /* HealthRecord.swift in Sources */,
 				33A7D4611A50027B3C977301 /* ScreenshotConfig.swift in Sources */,
+				EBBF589BFA97F19A0C09DF22 /* StepTrendSummary.swift in Sources */,
 				AD560B74ECBF3CAD26A75026 /* Theme.swift in Sources */,
 				EE8FA1155826C0A2643AC014 /* VitalsWidget.swift in Sources */,
 			);
@@ -545,6 +554,7 @@
 				FDD2B3AC4FDAD33746E92A0A /* HistoryView.swift in Sources */,
 				FDC255EDF9FC897146209356 /* ProgressRing.swift in Sources */,
 				35923B494939FCA8447C37A0 /* ScreenshotConfig.swift in Sources */,
+				D608D6CA7702D1DE27D51DB3 /* StepTrendSummary.swift in Sources */,
 				505A5802FE54E602AA80A146 /* Theme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -638,7 +648,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 41;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -766,7 +776,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 40;
+				CURRENT_PROJECT_VERSION = 41;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

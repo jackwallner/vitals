@@ -45,6 +45,8 @@ struct TodayView: View {
     @State private var healthNotice: WatchHealthNotice? = nil
     @State private var calorieTrends: CalorieTrendSummary?
     @State private var trendLoadFailed = false
+    @State private var stepTrends: StepTrendSummary?
+    @State private var stepTrendLoadFailed = false
     /// Once we've resolved dietary auth (granted or denied), don't re-request on every refresh.
     @State private var dietaryAuthResolved = false
 
@@ -185,6 +187,17 @@ struct TodayView: View {
                                     .padding(.top, compactLayout ? 2 : 4)
                             } else if trendLoadFailed {
                                 Text("Trends unavailable")
+                                    .font(.system(size: 9, design: .rounded))
+                                    .foregroundStyle(Theme.textTertiary)
+                            }
+                        }
+
+                        if goals.showSteps {
+                            if let stepTrends {
+                                WatchStepTrendSection(trends: stepTrends)
+                                    .padding(.top, compactLayout ? 2 : 4)
+                            } else if stepTrendLoadFailed {
+                                Text("Step trends unavailable")
                                     .font(.system(size: 9, design: .rounded))
                                     .foregroundStyle(Theme.textTertiary)
                             }
@@ -371,6 +384,7 @@ struct TodayView: View {
                 dietaryAuthResolved = false
             }
             await loadCalorieTrendsIfNeeded()
+            await loadStepTrendsIfNeeded()
         } catch {
             let ns = error as NSError
             print("Failed to fetch stats: \(error) domain=\(ns.domain) code=\(ns.code) userInfo=\(ns.userInfo)")
@@ -399,6 +413,23 @@ struct TodayView: View {
         } catch {
             print("Failed to fetch watch calorie trends: \(error)")
             trendLoadFailed = calorieTrends == nil
+        }
+    }
+
+    private func loadStepTrendsIfNeeded() async {
+        guard goals.showSteps else {
+            stepTrends = nil
+            stepTrendLoadFailed = false
+            return
+        }
+
+        do {
+            let history = try await healthKit.fetchMergedHistory(days: 30)
+            stepTrends = StepTrendSummary.make(history: history)
+            stepTrendLoadFailed = stepTrends == nil
+        } catch {
+            print("Failed to fetch watch step trends: \(error)")
+            stepTrendLoadFailed = stepTrends == nil
         }
     }
 }
@@ -482,6 +513,87 @@ private func barFill(for point: CalorieTrendPoint, isToday: Bool) -> LinearGradi
 private func barOpacity(for point: CalorieTrendPoint, isToday: Bool) -> Double {
     if isToday { return 1.0 }
     return point.totalCalories > 0 ? 0.86 : 0.3
+}
+
+private struct WatchStepTrendSection: View {
+    let trends: StepTrendSummary
+
+    var body: some View {
+        WatchStepTrendPeriodSection(
+            title: "Last 7 Days",
+            points: Array(trends.points.suffix(7)),
+            metric: trends.weekly
+        )
+        .padding(10)
+        .background(Theme.cardSurface.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Step history")
+        .accessibilityValue(trends.weekly.accessibilityText)
+    }
+}
+
+private struct WatchStepTrendPeriodSection: View {
+    let title: String
+    let points: [StepTrendPoint]
+    let metric: StepTrendMetric
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(title)
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .foregroundStyle(Theme.textPrimary)
+                Spacer()
+            }
+
+            HStack(alignment: .firstTextBaseline, spacing: 3) {
+                Text(metric.averageText)
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .foregroundStyle(Theme.textPrimary)
+                Text("avg")
+                    .font(.system(size: 9, weight: .medium, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+            }
+
+            WatchStepTrendBars(points: points)
+                .frame(height: 28)
+        }
+    }
+}
+
+private struct WatchStepTrendBars: View {
+    let points: [StepTrendPoint]
+
+    private var maxSteps: Double {
+        max(Double(points.map(\.steps).max() ?? 0), 1)
+    }
+
+    var body: some View {
+        GeometryReader { proxy in
+            HStack(alignment: .bottom, spacing: 1.5) {
+                ForEach(points) { point in
+                    let isToday = Calendar.current.isDateInToday(point.date)
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(stepBarFill(for: point, isToday: isToday))
+                        .frame(height: max(3, proxy.size.height * Double(point.steps) / maxSteps))
+                        .opacity(stepBarOpacity(for: point, isToday: isToday))
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+        }
+    }
+}
+
+private func stepBarFill(for point: StepTrendPoint, isToday: Bool) -> LinearGradient {
+    if isToday {
+        return Theme.stepsGradient
+    }
+    return point.steps > 0 ? Theme.stepsGradient : LinearGradient(colors: [Theme.ringTrack], startPoint: .bottom, endPoint: .top)
+}
+
+private func stepBarOpacity(for point: StepTrendPoint, isToday: Bool) -> Double {
+    if isToday { return 1.0 }
+    return point.steps > 0 ? 0.86 : 0.3
 }
 
 private struct WatchHelpView: View {
