@@ -439,7 +439,7 @@ private struct WatchTrendSection: View {
 
     var body: some View {
         WatchTrendPeriodSection(
-            title: "Last 7 Days",
+            title: "Calories — Last 7 Days",
             points: Array(trends.points.suffix(7)),
             metric: trends.weekly
         )
@@ -520,7 +520,7 @@ private struct WatchStepTrendSection: View {
 
     var body: some View {
         WatchStepTrendPeriodSection(
-            title: "Last 7 Days",
+            title: "Steps — Last 7 Days",
             points: Array(trends.points.suffix(7)),
             metric: trends.weekly
         )
