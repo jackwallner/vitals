@@ -820,6 +820,70 @@ struct DashboardView: View {
         pacingStepsInsufficient = false
     }
 
+    private func loadDietaryEnergy() async {
+        guard goals.showNetCalories else {
+            foodCalories = 0
+            dietaryEnergyReady = false
+            dietaryEnergyFetchFailed = false
+            dietaryEnergyAccessDenied = false
+            return
+        }
+        do {
+            let food = try await healthKit.fetchDietaryEnergyToday()
+            foodCalories = food
+            // HealthKit does not expose read-auth directly: a denied read returns
+            // 0 kcal without throwing, indistinguishable from "authorized, but no
+            // food logged today". When today is 0 kcal we probe for ANY historical
+            // sample — if none exist and the system has already shown the auth
+            // sheet, we infer denial and surface the recovery footer.
+            if food > 0 {
+                dietaryEnergyAccessDenied = false
+            } else {
+                let status = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
+                if status == .unnecessary {
+                    let hasAny = (try? await healthKit.hasAnyDietarySample()) ?? true
+                    dietaryEnergyAccessDenied = !hasAny
+                } else {
+                    dietaryEnergyAccessDenied = false
+                }
+            }
+            // Set ready last so UI reflects the final state (post-denial check)
+            // and doesn't briefly show a stale numeric deficit.
+            dietaryEnergyFetchFailed = false
+            dietaryEnergyReady = !dietaryEnergyAccessDenied
+            try? healthKit.updateCachedFoodCalories(food)
+        } catch {
+            dietaryEnergyFetchFailed = true
+            dietaryEnergyAccessDenied = false
+            print("Failed to fetch dietary energy: \(error)")
+        }
+    }
+
+    private func loadPacing(stats: (active: Double, resting: Double, steps: Int)) async {
+        guard goals.showPacing, !isAllZero(stats) else {
+            clearPacing()
+            return
+        }
+        guard let pacing = try? await healthKit.fetchPacing(
+            comparison: goals.pacingComparison,
+            lookback: goals.pacingLookback
+        ) else {
+            clearPacing()
+            return
+        }
+        // Shared helper keeps the Settings footer description in sync with
+        // the effective gate (dayOfWeek caps at 4, allDays fixed at 3).
+        let minSamples = effectiveMinPacingSamples(
+            for: goals.pacingComparison,
+            lookback: goals.pacingLookback
+        )
+        let v = pacing.dashboardValues(minSamples: minSamples, showCalories: goals.showCalories, showSteps: goals.showSteps)
+        pacingCalories = v.calories
+        pacingCaloriesInsufficient = v.caloriesBuilding
+        pacingSteps = v.steps
+        pacingStepsInsufficient = v.stepsBuilding
+    }
+
     private func isAllZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
         HealthKitService.isAllZero(stats)
     }
@@ -863,7 +927,12 @@ struct DashboardView: View {
 
         defer { isRefreshing = false }
 
-        await healthKit.synchronizeAuthorizationStateForFetching()
+        // Skip the HK auth-status IPC roundtrip when already authorized —
+        // status doesn't change between refreshes, and the only branch that
+        // does anything new is `.shouldRequest`, which can't fire post-auth.
+        if !healthKit.isAuthorized {
+            await healthKit.synchronizeAuthorizationStateForFetching()
+        }
         do {
             let stats = try await healthKit.fetchTodayStatsWithRetry()
             if isAllZero(stats), let cachedStats, cachedHasData {
@@ -888,11 +957,14 @@ struct DashboardView: View {
             // Show UI immediately, don't wait for pacing/cache
             showLoadedStateIfNeeded()
 
-            // Load pacing and cache in background (reuse stats, don't re-fetch)
-            do {
-                try await healthKit.refreshCache(stats: stats)
-            } catch {
-                print("Failed to refresh today cache: \(error)")
+            // Fire-and-forget: stats are already applied; the SwiftData write
+            // and widget reload don't need to gate dietary/pacing fetches.
+            Task {
+                do {
+                    try await healthKit.refreshCache(stats: stats)
+                } catch {
+                    print("Failed to refresh today cache: \(error)")
+                }
             }
 
             // Background history sync for the watch shared cache
@@ -905,65 +977,11 @@ struct DashboardView: View {
                 }
             }
 
-            if goals.showNetCalories {
-                do {
-                    let food = try await healthKit.fetchDietaryEnergyToday()
-                    foodCalories = food
-                    // HealthKit does not expose read-auth directly: a denied read returns
-                    // 0 kcal without throwing, indistinguishable from "authorized, but no
-                    // food logged today". When today is 0 kcal we probe for ANY historical
-                    // sample — if none exist and the system has already shown the auth
-                    // sheet, we infer denial and surface the recovery footer.
-                    if food > 0 {
-                        dietaryEnergyAccessDenied = false
-                    } else {
-                        let status = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
-                        if status == .unnecessary {
-                            let hasAny = (try? await healthKit.hasAnyDietarySample()) ?? true
-                            dietaryEnergyAccessDenied = !hasAny
-                        } else {
-                            dietaryEnergyAccessDenied = false
-                        }
-                    }
-                    // Set ready last so UI reflects the final state (post-denial check)
-                    // and doesn't briefly show a stale numeric deficit.
-                    dietaryEnergyFetchFailed = false
-                    dietaryEnergyReady = !dietaryEnergyAccessDenied
-                    try? healthKit.updateCachedFoodCalories(food)
-                } catch {
-                    dietaryEnergyFetchFailed = true
-                    dietaryEnergyAccessDenied = false
-                    print("Failed to fetch dietary energy: \(error)")
-                }
-            } else {
-                foodCalories = 0
-                dietaryEnergyReady = false
-                dietaryEnergyFetchFailed = false
-                dietaryEnergyAccessDenied = false
-            }
-
-            if goals.showPacing && !isAllZero(stats) {
-                if let pacing = try? await healthKit.fetchPacing(
-                    comparison: goals.pacingComparison,
-                    lookback: goals.pacingLookback
-                ) {
-                    // Shared helper keeps the Settings footer description in sync with
-                    // the effective gate (dayOfWeek caps at 4, allDays fixed at 3).
-                    let minSamples = effectiveMinPacingSamples(
-                        for: goals.pacingComparison,
-                        lookback: goals.pacingLookback
-                    )
-                    let v = pacing.dashboardValues(minSamples: minSamples, showCalories: goals.showCalories, showSteps: goals.showSteps)
-                    pacingCalories = v.calories
-                    pacingCaloriesInsufficient = v.caloriesBuilding
-                    pacingSteps = v.steps
-                    pacingStepsInsufficient = v.stepsBuilding
-                } else {
-                    clearPacing()
-                }
-            } else {
-                clearPacing()
-            }
+            // Dietary and pacing are independent HK reads — run them concurrently
+            // so the slower of the two dominates instead of summing.
+            async let dietary: Void = loadDietaryEnergy()
+            async let pacing: Void = loadPacing(stats: stats)
+            _ = await (dietary, pacing)
         } catch {
             let ns = error as NSError
             print("Failed to fetch today stats: \(error) domain=\(ns.domain) code=\(ns.code) userInfo=\(ns.userInfo)")
