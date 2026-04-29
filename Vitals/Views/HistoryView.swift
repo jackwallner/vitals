@@ -101,14 +101,22 @@ struct HistoryView: View {
         records.isEmpty || records.allSatisfy { $0.totalCalories == 0 && $0.steps == 0 }
     }
 
+    private var totalCalories: Double {
+        records.map(\.totalCalories).reduce(0, +)
+    }
+
     private var avgCalories: Double {
         guard !records.isEmpty else { return 0 }
-        return records.map(\.totalCalories).reduce(0, +) / Double(records.count)
+        return totalCalories / Double(records.count)
+    }
+
+    private var totalSteps: Int {
+        records.map(\.steps).reduce(0, +)
     }
 
     private var avgSteps: Int {
         guard !records.isEmpty else { return 0 }
-        return records.map(\.steps).reduce(0, +) / records.count
+        return totalSteps / records.count
     }
 
     private var peakCalorieDay: DayRecord? {
@@ -145,9 +153,13 @@ struct HistoryView: View {
         !netRecords.isEmpty
     }
 
+    private var totalNetDeficit: Double {
+        netRecords.map { netDeficit(for: $0) }.reduce(0, +)
+    }
+
     private var avgNetDeficit: Double {
         guard !netRecords.isEmpty else { return 0 }
-        return netRecords.map { netDeficit(for: $0) }.reduce(0, +) / Double(netRecords.count)
+        return totalNetDeficit / Double(netRecords.count)
     }
 
     private var bestNetDay: DayRecord? {
@@ -275,14 +287,27 @@ struct HistoryView: View {
                                 historyNoticeBanner(loadErrorMessage)
                             }
 
-                            // Summary cards. Trend badge removed: the first-half-vs-second-half
-                            // comparison was ambiguous to users and the bar chart already shows
-                            // the shape of the period.
+                            // Summary cards grouped by metric: Calories, Steps, Net Deficit
+                            // Calories row
                             HStack(spacing: 12) {
+                                AverageCard(
+                                    label: "Total Calories",
+                                    value: totalCalories.formatted(.number.precision(.fractionLength(0))),
+                                    color: Theme.caloriesPrimary
+                                )
                                 AverageCard(
                                     label: "Avg Calories",
                                     value: avgCalories.formatted(.number.precision(.fractionLength(0))),
                                     color: Theme.caloriesPrimary
+                                )
+                            }
+
+                            // Steps row
+                            HStack(spacing: 12) {
+                                AverageCard(
+                                    label: "Total Steps",
+                                    value: totalSteps.formatted(.number),
+                                    color: Theme.stepsPrimary
                                 )
                                 AverageCard(
                                     label: "Avg Steps",
@@ -291,40 +316,18 @@ struct HistoryView: View {
                                 )
                             }
 
+                            // Net Deficit row (if enabled)
                             if goals.showNetCalories && hasNetData {
                                 HStack(spacing: 12) {
                                     AverageCard(
-                                        label: "Avg Net Deficit",
+                                        label: "Total Deficit",
+                                        value: formatSignedNet(totalNetDeficit),
+                                        color: netColor(for: totalNetDeficit)
+                                    )
+                                    AverageCard(
+                                        label: "Avg Deficit",
                                         value: formatSignedNet(avgNetDeficit),
                                         color: netColor(for: avgNetDeficit)
-                                    )
-                                    if let best = bestNetDay {
-                                        PeakCard(
-                                            label: "Best Net Day",
-                                            value: formatSignedNet(netDeficit(for: best)),
-                                            date: best.date,
-                                            color: netColor(for: netDeficit(for: best))
-                                        )
-                                    } else {
-                                        Color.clear
-                                    }
-                                }
-                            }
-
-                            // Peak days
-                            if let peakCal = peakCalorieDay, let peakStep = peakStepDay {
-                                HStack(spacing: 12) {
-                                    PeakCard(
-                                        label: "Best Calorie Day",
-                                        value: peakCal.totalCalories.formatted(.number.precision(.fractionLength(0))),
-                                        date: peakCal.date,
-                                        color: Theme.caloriesPrimary
-                                    )
-                                    PeakCard(
-                                        label: "Best Step Day",
-                                        value: peakStep.steps.formatted(.number),
-                                        date: peakStep.date,
-                                        color: Theme.stepsPrimary
                                     )
                                 }
                             }
