@@ -235,8 +235,13 @@ struct HistoryView: View {
 
                 if isLoading {
                     Spacer()
-                    ProgressView()
-                        .tint(Theme.textTertiary)
+                    VStack(spacing: 14) {
+                        LoadingBar(color: Theme.caloriesPrimary)
+                            .frame(width: 180)
+                        Text("Loading history…")
+                            .font(.system(.footnote, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                    }
                     Spacer()
                 } else if let loadErrorMessage, records.isEmpty {
                     Spacer()
@@ -370,6 +375,14 @@ struct HistoryView: View {
         }
         .onChange(of: goals.showNetCalories) { _, _ in
             Task { await loadHistory() }
+        }
+        .onChange(of: healthKit.isAuthorized) { _, newValue in
+            // Dashboard owns the auth grant flow; when it completes we may have
+            // been sitting on an empty/zero state, so refresh as soon as auth
+            // flips to true.
+            if newValue {
+                Task { await loadHistory() }
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             Task { await loadHistory() }
@@ -630,8 +643,6 @@ struct HistoryView: View {
         // foreground notifications, and period changes at the same time. Without a guard
         // these race into `records` and cause flicker / double HealthKit quota usage.
         guard !isRefreshing else { return }
-        let isFirstLoad = records.isEmpty
-        if isFirstLoad { isLoading = true }
         isRefreshing = true
         defer { isRefreshing = false }
         selectedCalorieDate = nil
@@ -639,11 +650,31 @@ struct HistoryView: View {
         selectedNetDate = nil
         loadErrorMessage = nil
 
-        // Dashboard is always the first screen users see and owns the auth-request
-        // flow — here we just sync the cached state so `isAuthorized` is accurate
-        // before we attempt the fetch. Calling `requestAuthorization` again could
-        // trigger a duplicate permission sheet on fresh installs.
-        await healthKit.synchronizeAuthorizationStateForFetching()
+        // Cache prime: paint instantly from SwiftData when we have any cached
+        // data for this period. HealthKit refresh below overwrites with fresh
+        // values when they arrive, so the user never stares at a blank spinner
+        // on returning visits. Only applies to fixed periods — custom ranges
+        // skip the cache (uncommon path, not worth a from/to overload).
+        if records.isEmpty, let days = selectedPeriod.days,
+           let cached = try? healthKit.fetchCachedHistory(days: days),
+           cached.contains(where: { $0.active > 0 || $0.resting > 0 || $0.steps > 0 }) {
+            records = cached.map {
+                DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
+            }
+            isLoading = false
+            if !animateContent {
+                withAnimation(.easeOut(duration: 0.4)) { animateContent = true }
+            }
+        }
+
+        let isFirstLoad = records.isEmpty
+        if isFirstLoad { isLoading = true }
+
+        // Dashboard exclusively owns the HealthKit auth-request flow. Calling
+        // synchronizeAuthorizationStateForFetching here previously raced the
+        // dashboard's permission sheet on fresh installs and left this load
+        // pending forever. We rely on the `.onChange(of: healthKit.isAuthorized)`
+        // observer below to reload once Dashboard finishes its grant.
 
         do {
             let history: [(date: Date, active: Double, resting: Double, steps: Int)]
@@ -846,6 +877,42 @@ private struct SegmentButton: View {
         }
         .buttonStyle(.plain)
         .animation(.easeInOut(duration: 0.2), value: isSelected)
+    }
+}
+
+/// Indeterminate animated linear bar — used in place of the system spinner
+/// so users see something *moving* during initial loads. A spinner reads as
+/// frozen on slow HealthKit fetches; a sweeping bar reads as live.
+private struct LoadingBar: View {
+    let color: Color
+    @State private var animating = false
+
+    var body: some View {
+        GeometryReader { geo in
+            let width = geo.size.width
+            let segmentWidth = max(width * 0.35, 60)
+            ZStack(alignment: .leading) {
+                Capsule()
+                    .fill(color.opacity(0.15))
+                Capsule()
+                    .fill(LinearGradient(
+                        colors: [color.opacity(0), color, color.opacity(0)],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    ))
+                    .frame(width: segmentWidth)
+                    .offset(x: animating ? width : -segmentWidth)
+            }
+        }
+        .frame(height: 4)
+        .onAppear {
+            withAnimation(.linear(duration: 1.1).repeatForever(autoreverses: false)) {
+                animating = true
+            }
+        }
+        .accessibilityElement()
+        .accessibilityLabel("Loading")
+        .accessibilityAddTraits(.updatesFrequently)
     }
 }
 
