@@ -47,6 +47,8 @@ struct TodayView: View {
     @State private var trendLoadFailed = false
     @State private var stepTrends: StepTrendSummary?
     @State private var stepTrendLoadFailed = false
+    @State private var netDeficitTrends: NetDeficitTrendSummary?
+    @State private var netDeficitTrendLoadFailed = false
     /// Once we've resolved dietary auth (granted or denied), don't re-request on every refresh.
     @State private var dietaryAuthResolved = false
 
@@ -201,6 +203,11 @@ struct TodayView: View {
                                     .font(.system(size: 9, design: .rounded))
                                     .foregroundStyle(Theme.textTertiary)
                             }
+                        }
+
+                        if goals.showNetCalories, let netDeficitTrends {
+                            WatchNetDeficitTrendSection(trends: netDeficitTrends)
+                                .padding(.top, compactLayout ? 2 : 4)
                         }
 
                         if let healthNotice {
@@ -385,6 +392,7 @@ struct TodayView: View {
             }
             await loadCalorieTrendsIfNeeded()
             await loadStepTrendsIfNeeded()
+            await loadNetDeficitTrendsIfNeeded()
         } catch {
             let ns = error as NSError
             print("Failed to fetch stats: \(error) domain=\(ns.domain) code=\(ns.code) userInfo=\(ns.userInfo)")
@@ -430,6 +438,37 @@ struct TodayView: View {
         } catch {
             print("Failed to fetch watch step trends: \(error)")
             stepTrendLoadFailed = stepTrends == nil
+        }
+    }
+
+    private func loadNetDeficitTrendsIfNeeded() async {
+        guard goals.showNetCalories else {
+            netDeficitTrends = nil
+            netDeficitTrendLoadFailed = false
+            return
+        }
+
+        do {
+            let history = try await healthKit.fetchMergedHistory(days: 30)
+            let dietary = try await healthKit.fetchDietaryHistory(days: 30)
+            let calendar = Calendar.current
+            let foodMap = Dictionary(uniqueKeysWithValues: dietary.map {
+                (calendar.startOfDay(for: $0.date), $0.foodCalories)
+            })
+            let summary = NetDeficitTrendSummary.make(history: history, foodByDate: foodMap)
+            // Only surface the section once at least one day in the window has food
+            // logged — otherwise it would just be a flat 0 chart.
+            if let summary, summary.weekly.sampleDays > 0 {
+                netDeficitTrends = summary
+                netDeficitTrendLoadFailed = false
+            } else {
+                netDeficitTrends = nil
+                netDeficitTrendLoadFailed = false
+            }
+        } catch {
+            print("Failed to fetch watch net deficit trends: \(error)")
+            netDeficitTrends = nil
+            netDeficitTrendLoadFailed = true
         }
     }
 }
@@ -594,6 +633,111 @@ private func stepBarFill(for point: StepTrendPoint, isToday: Bool) -> LinearGrad
 private func stepBarOpacity(for point: StepTrendPoint, isToday: Bool) -> Double {
     if isToday { return 1.0 }
     return point.steps > 0 ? 0.86 : 0.3
+}
+
+private struct WatchNetDeficitTrendSection: View {
+    let trends: NetDeficitTrendSummary
+
+    var body: some View {
+        WatchNetDeficitPeriodSection(
+            title: "Net Deficit — Last 7 Days",
+            points: Array(trends.points.suffix(7)),
+            metric: trends.weekly
+        )
+        .padding(10)
+        .background(Theme.cardSurface.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Net deficit history")
+        .accessibilityValue(trends.weekly.accessibilityText)
+    }
+}
+
+private struct WatchNetDeficitPeriodSection: View {
+    let title: String
+    let points: [NetDeficitTrendPoint]
+    let metric: NetDeficitTrendMetric
+
+    private var avgColor: Color {
+        guard let avg = metric.average else { return Theme.textPrimary }
+        return avg >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(title)
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .foregroundStyle(Theme.textPrimary)
+                Spacer()
+            }
+
+            HStack(alignment: .firstTextBaseline, spacing: 3) {
+                Text(metric.averageText)
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .foregroundStyle(avgColor)
+                Text("avg")
+                    .font(.system(size: 9, weight: .medium, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+            }
+
+            WatchNetDeficitBars(points: points)
+                .frame(height: 28)
+        }
+    }
+}
+
+/// Center-baseline bar chart: positive deficits grow up (green), negative grow down (red).
+/// Days without food logged render as a faint placeholder so the 7-day pattern stays visible.
+private struct WatchNetDeficitBars: View {
+    let points: [NetDeficitTrendPoint]
+
+    private var maxAbs: Double {
+        max(points.map { abs($0.netDeficit) }.max() ?? 0, 1)
+    }
+
+    var body: some View {
+        GeometryReader { proxy in
+            let halfHeight = proxy.size.height / 2
+            HStack(alignment: .center, spacing: 1.5) {
+                ForEach(points) { point in
+                    let isToday = Calendar.current.isDateInToday(point.date)
+                    let hasFood = point.food > 0
+                    let isPositive = point.netDeficit >= 0
+                    let magnitude = max(3, halfHeight * abs(point.netDeficit) / maxAbs)
+                    VStack(spacing: 0) {
+                        // Top half (positive deficits)
+                        if hasFood && isPositive {
+                            Spacer(minLength: 0)
+                            RoundedRectangle(cornerRadius: 2)
+                                .fill(Theme.netDeficitPositive)
+                                .frame(height: magnitude)
+                                .opacity(isToday ? 1.0 : 0.86)
+                        } else {
+                            Spacer(minLength: 0)
+                        }
+                        // Bottom half (negative deficits / no food placeholder)
+                        if hasFood && !isPositive {
+                            RoundedRectangle(cornerRadius: 2)
+                                .fill(Theme.netDeficitNegative)
+                                .frame(height: magnitude)
+                                .opacity(isToday ? 1.0 : 0.86)
+                            Spacer(minLength: 0)
+                        } else if !hasFood {
+                            RoundedRectangle(cornerRadius: 2)
+                                .fill(Theme.ringTrack)
+                                .frame(height: 3)
+                                .opacity(0.3)
+                            Spacer(minLength: 0)
+                        } else {
+                            Spacer(minLength: 0)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
 }
 
 private struct WatchHelpView: View {

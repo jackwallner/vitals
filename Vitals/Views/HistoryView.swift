@@ -60,11 +60,13 @@ private enum HistoryPrefs {
 
 struct HistoryView: View {
     @StateObject private var healthKit = HealthKitService.shared
+    @StateObject private var goals = GoalSettings.shared
     @State private var selectedPeriod: Period = HistoryPrefs.savedPeriod()
     @State private var customStart: Date = HistoryPrefs.savedCustomStart()
     @State private var customEnd: Date = HistoryPrefs.savedCustomEnd()
     @State private var showCustomRange = false
     @State private var records: [DayRecord] = []
+    @State private var foodByDay: [Date: Double] = [:]
     @State private var isLoading = true
     @State private var isRefreshing = false
     @State private var animateContent = false
@@ -74,6 +76,7 @@ struct HistoryView: View {
     @State private var csvFile: CSVFile?
     @State private var selectedCalorieDate: Date?
     @State private var selectedStepDate: Date?
+    @State private var selectedNetDate: Date?
     @State private var loadErrorMessage: String? = nil
 
     enum Period: String, CaseIterable {
@@ -120,6 +123,44 @@ struct HistoryView: View {
         guard let date else { return nil }
         let cal = Calendar.current
         return records.first { cal.isDate($0.date, inSameDayAs: date) }
+    }
+
+    // MARK: - Net Deficit Helpers
+
+    private func food(for date: Date) -> Double {
+        let key = Calendar.current.startOfDay(for: date)
+        return foodByDay[key] ?? 0
+    }
+
+    private func netDeficit(for record: DayRecord) -> Double {
+        record.totalCalories - food(for: record.date)
+    }
+
+    /// Days that have any food logged — the only days where Net Deficit is meaningful.
+    private var netRecords: [DayRecord] {
+        records.filter { food(for: $0.date) > 0 }
+    }
+
+    private var hasNetData: Bool {
+        !netRecords.isEmpty
+    }
+
+    private var avgNetDeficit: Double {
+        guard !netRecords.isEmpty else { return 0 }
+        return netRecords.map { netDeficit(for: $0) }.reduce(0, +) / Double(netRecords.count)
+    }
+
+    private var bestNetDay: DayRecord? {
+        netRecords.max(by: { netDeficit(for: $0) < netDeficit(for: $1) })
+    }
+
+    private func formatSignedNet(_ value: Double) -> String {
+        let r = Int(value.rounded())
+        return r > 0 ? "+\(r.formatted(.number))" : r.formatted(.number)
+    }
+
+    private func netColor(for value: Double) -> Color {
+        value >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative
     }
 
     var body: some View {
@@ -250,6 +291,26 @@ struct HistoryView: View {
                                 )
                             }
 
+                            if goals.showNetCalories && hasNetData {
+                                HStack(spacing: 12) {
+                                    AverageCard(
+                                        label: "Avg Net Deficit",
+                                        value: formatSignedNet(avgNetDeficit),
+                                        color: netColor(for: avgNetDeficit)
+                                    )
+                                    if let best = bestNetDay {
+                                        PeakCard(
+                                            label: "Best Net Day",
+                                            value: formatSignedNet(netDeficit(for: best)),
+                                            date: best.date,
+                                            color: netColor(for: netDeficit(for: best))
+                                        )
+                                    } else {
+                                        Color.clear
+                                    }
+                                }
+                            }
+
                             // Peak days
                             if let peakCal = peakCalorieDay, let peakStep = peakStepDay {
                                 HStack(spacing: 12) {
@@ -278,6 +339,13 @@ struct HistoryView: View {
                                 stepsChart
                             }
 
+                            // Net Deficit chart
+                            if goals.showNetCalories && hasNetData {
+                                ChartCard(title: "Net Deficit", selection: selectedNetRecord) {
+                                    netDeficitChart
+                                }
+                            }
+
                             CoachPromoCard()
 
                         }
@@ -296,6 +364,9 @@ struct HistoryView: View {
                 HistoryPrefs.save(period: selectedPeriod, customStart: customStart, customEnd: customEnd)
                 Task { await loadHistory() }
             }
+        }
+        .onChange(of: goals.showNetCalories) { _, _ in
+            Task { await loadHistory() }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             Task { await loadHistory() }
@@ -355,6 +426,14 @@ struct HistoryView: View {
         return ChartSelection(
             date: record.date,
             primary: ("Steps", record.steps.formatted(.number))
+        )
+    }
+
+    private var selectedNetRecord: ChartSelection? {
+        guard let record = recordForDate(selectedNetDate), food(for: record.date) > 0 else { return nil }
+        return ChartSelection(
+            date: record.date,
+            primary: ("Net", formatSignedNet(netDeficit(for: record)))
         )
     }
 
@@ -468,6 +547,56 @@ struct HistoryView: View {
         .frame(minHeight: 180, maxHeight: 240)
     }
 
+    private var netDeficitChart: some View {
+        Chart(netRecords) { record in
+            let value = netDeficit(for: record)
+            BarMark(
+                x: .value("Date", record.date, unit: .day),
+                y: .value("Net", value)
+            )
+            .foregroundStyle(value >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
+            .opacity(selectedNetDate == nil || Calendar.current.isDate(record.date, inSameDayAs: selectedNetDate!) ? 1.0 : 0.3)
+            .cornerRadius(4)
+
+            if netRecords.count > 1 {
+                RuleMark(y: .value("Average", avgNetDeficit))
+                    .foregroundStyle(Theme.netDeficitBrand.opacity(0.5))
+                    .lineStyle(StrokeStyle(lineWidth: 1, dash: [5, 3]))
+                    .annotation(position: .top, alignment: .trailing) {
+                        Text("avg")
+                            .font(.caption2)
+                            .foregroundStyle(Theme.textTertiary)
+                    }
+            }
+        }
+        .chartXSelection(value: $selectedNetDate)
+        .chartXAxis {
+            AxisMarks(values: .stride(by: .day, count: xAxisStride)) { value in
+                AxisValueLabel {
+                    if let date = value.as(Date.self) {
+                        Text(DateHelpers.shortDate(date))
+                            .font(.caption2)
+                            .foregroundStyle(Theme.textTertiary)
+                    }
+                }
+            }
+        }
+        .chartYAxis {
+            AxisMarks { value in
+                AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
+                    .foregroundStyle(Color(.separator).opacity(0.3))
+                AxisValueLabel {
+                    if let v = value.as(Double.self) {
+                        Text(v.formatted(.number.notation(.compactName)))
+                            .font(.caption2)
+                            .foregroundStyle(Theme.textTertiary)
+                    }
+                }
+            }
+        }
+        .frame(minHeight: 180, maxHeight: 240)
+    }
+
     // MARK: - Helpers
 
     private var xAxisStride: Int {
@@ -504,6 +633,7 @@ struct HistoryView: View {
         defer { isRefreshing = false }
         selectedCalorieDate = nil
         selectedStepDate = nil
+        selectedNetDate = nil
         loadErrorMessage = nil
 
         // Dashboard is always the first screen users see and owns the auth-request
@@ -520,10 +650,31 @@ struct HistoryView: View {
                 history = try await healthKit.fetchHistory(days: selectedPeriod.days ?? 7)
             }
 
+            // Only fetch dietary history when Net Deficit is enabled; failure here is
+            // non-fatal — calorie/step charts still render without it.
+            var foodMap: [Date: Double] = [:]
+            if goals.showNetCalories {
+                do {
+                    let dietary: [(date: Date, foodCalories: Double)]
+                    if selectedPeriod == .custom {
+                        dietary = try await healthKit.fetchDietaryHistory(from: customStart, to: customEnd)
+                    } else {
+                        dietary = try await healthKit.fetchDietaryHistory(days: selectedPeriod.days ?? 7)
+                    }
+                    let cal = Calendar.current
+                    for day in dietary {
+                        foodMap[cal.startOfDay(for: day.date)] = day.foodCalories
+                    }
+                } catch {
+                    print("Failed to fetch dietary history: \(error)")
+                }
+            }
+
             withAnimation(.easeOut(duration: 0.3)) {
                 records = history.map {
                     DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
                 }
+                foodByDay = foodMap
             }
             // Persist the fetched history to the shared cache so the watch can read it.
             try? healthKit.saveHistoryToCache(history: history)

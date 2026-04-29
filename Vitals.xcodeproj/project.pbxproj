@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		08B27B65AD2FC365D0988CE6 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
+		09743D7BE9223C40B5B56D88 /* NetDeficitTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */; };
 		0A15A50AFA7DC19834C3D106 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
 		0AC639F100296E17EF0A0680 /* GoalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6804EF421C3725E70674D40 /* GoalSettings.swift */; };
 		1039A99017046E5F1A2DAAF2 /* GoalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6804EF421C3725E70674D40 /* GoalSettings.swift */; };
@@ -19,9 +20,11 @@
 		35923B494939FCA8447C37A0 /* ScreenshotConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4334C2CE63928C06983EA7 /* ScreenshotConfig.swift */; };
 		3739688FF9473C63ECADC605 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E24C6F7550EC4501A69FE /* DateHelpers.swift */; };
 		432DF5A74580379C50D494D4 /* WatchComplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA172BB16DF599334E29D1F6 /* WatchComplication.swift */; };
+		48F82FDD56F577609761DC28 /* NetDeficitTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */; };
 		505A5802FE54E602AA80A146 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
 		5196C5E49115471C4A1E267E /* VitalsWatchWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 47E5A948D4ECA79121753114 /* VitalsWatchWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5A19413C5A9673172FC29C82 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
+		60592DE2EE57591183C06DD0 /* NetDeficitTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */; };
 		6B88B53A4076BB378D0F2087 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
 		6BD5AEA6B71B870CC53605AF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
 		72DEDC8616FEE6109AF0E931 /* GoalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6804EF421C3725E70674D40 /* GoalSettings.swift */; };
@@ -57,6 +60,7 @@
 		E6E4E983389A2641C8483300 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E24C6F7550EC4501A69FE /* DateHelpers.swift */; };
 		EBBF589BFA97F19A0C09DF22 /* StepTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9515296920AC1C61887CCD1C /* StepTrendSummary.swift */; };
 		EE8FA1155826C0A2643AC014 /* VitalsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86EC13F0E2855F9288631D7 /* VitalsWidget.swift */; };
+		F31C7C2C587EAEDF9B70C692 /* NetDeficitTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */; };
 		FDC255EDF9FC897146209356 /* ProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971064F5F952A25427D7F46B /* ProgressRing.swift */; };
 		FDD2B3AC4FDAD33746E92A0A /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E152DC23E11DAD83864E5A /* HistoryView.swift */; };
 		FE5CF05C3EA0D9BD231CB733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA75A0BD07845E85F69ED5F7 /* Assets.xcassets */; };
@@ -129,6 +133,7 @@
 		37181B9FB18AF45A44299F0F /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
 		3AA5743BEFB90AAF6BA7EB81 /* CalorieTrendSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieTrendSummaryTests.swift; sourceTree = "<group>"; };
 		47E5A948D4ECA79121753114 /* VitalsWatchWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VitalsWatchWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetDeficitTrendSummary.swift; sourceTree = "<group>"; };
 		5067457F6627E7ABFE38988A /* Vitals.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Vitals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		689672535A7B63A46F54C799 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		6898F91DD5FFFF1700A9C138 /* VitalsWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VitalsWatch.entitlements; sourceTree = "<group>"; };
@@ -301,6 +306,7 @@
 			children = (
 				952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */,
 				70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */,
+				4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */,
 				9515296920AC1C61887CCD1C /* StepTrendSummary.swift */,
 			);
 			path = Models;
@@ -489,6 +495,7 @@
 				1039A99017046E5F1A2DAAF2 /* GoalSettings.swift in Sources */,
 				75A6835298F7F33CA2EF9884 /* HealthKitService.swift in Sources */,
 				24248C5CD47908B7188B3783 /* HealthRecord.swift in Sources */,
+				F31C7C2C587EAEDF9B70C692 /* NetDeficitTrendSummary.swift in Sources */,
 				BE538F50FDD4AC5E8444AD9E /* ScreenshotConfig.swift in Sources */,
 				C1FB86ACB54B9B2B1BD3F3F9 /* StepTrendSummary.swift in Sources */,
 				6BD5AEA6B71B870CC53605AF /* Theme.swift in Sources */,
@@ -506,6 +513,7 @@
 				72DEDC8616FEE6109AF0E931 /* GoalSettings.swift in Sources */,
 				73E57B5289F6A146D19D6011 /* HealthKitService.swift in Sources */,
 				1E006B2434ECB58F1D51CB19 /* HealthRecord.swift in Sources */,
+				09743D7BE9223C40B5B56D88 /* NetDeficitTrendSummary.swift in Sources */,
 				AC9FF372460EE54FE7F7183D /* ScreenshotConfig.swift in Sources */,
 				A18836B7544E3EA896EE185D /* StepTrendSummary.swift in Sources */,
 				C1E2EC8ECDAB52F888E0DF67 /* Theme.swift in Sources */,
@@ -523,6 +531,7 @@
 				DC24AE05CDB72AFF52FE97A2 /* GoalSettings.swift in Sources */,
 				7DE03846B38547D81722040A /* HealthKitService.swift in Sources */,
 				D5BDA6A6FBDE94D2D1ADD00A /* HealthRecord.swift in Sources */,
+				48F82FDD56F577609761DC28 /* NetDeficitTrendSummary.swift in Sources */,
 				33A7D4611A50027B3C977301 /* ScreenshotConfig.swift in Sources */,
 				EBBF589BFA97F19A0C09DF22 /* StepTrendSummary.swift in Sources */,
 				AD560B74ECBF3CAD26A75026 /* Theme.swift in Sources */,
@@ -552,6 +561,7 @@
 				BAAF27492ADCF82BF62686CA /* HealthKitService.swift in Sources */,
 				AE79C4EF14DDEFF19FE3342E /* HealthRecord.swift in Sources */,
 				FDD2B3AC4FDAD33746E92A0A /* HistoryView.swift in Sources */,
+				60592DE2EE57591183C06DD0 /* NetDeficitTrendSummary.swift in Sources */,
 				FDC255EDF9FC897146209356 /* ProgressRing.swift in Sources */,
 				35923B494939FCA8447C37A0 /* ScreenshotConfig.swift in Sources */,
 				D608D6CA7702D1DE27D51DB3 /* StepTrendSummary.swift in Sources */,
@@ -648,7 +658,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -776,7 +786,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

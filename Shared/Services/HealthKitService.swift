@@ -265,6 +265,33 @@ final class HealthKitService: ObservableObject {
         return kcal
     }
 
+    /// Daily dietary energy (food) totals between two dates, in kilocalories.
+    /// Returns one entry per day in the window (zero where no samples exist).
+    func fetchDietaryHistory(days: Int) async throws -> [(date: Date, foodCalories: Double)] {
+        let start = DateHelpers.daysAgo(max(days - 1, 0))
+        return try await fetchDietaryHistory(from: start, to: .now)
+    }
+
+    func fetchDietaryHistory(from start: Date, to end: Date) async throws -> [(date: Date, foodCalories: Double)] {
+        #if DEBUG
+        if ScreenshotConfig.isEnabled { return [] }
+        #endif
+        let normalizedStart = DateHelpers.startOfDay(start)
+        let endNormalized = DateHelpers.startOfDay(end)
+        let queryEnd = Calendar.current.date(byAdding: .day, value: 1, to: endNormalized) ?? endNormalized
+        let interval = DateComponents(day: 1)
+        let map = try await queryStatisticsCollection(.dietaryEnergyConsumed, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval)
+
+        var results: [(date: Date, foodCalories: Double)] = []
+        var current = normalizedStart
+        while current < queryEnd {
+            results.append((date: current, foodCalories: map[current] ?? 0))
+            guard let next = Calendar.current.date(byAdding: .day, value: 1, to: current) else { break }
+            current = next
+        }
+        return results
+    }
+
     // MARK: - History
 
     func fetchHistory(days: Int) async throws -> [(date: Date, active: Double, resting: Double, steps: Int)] {
