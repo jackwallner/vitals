@@ -106,8 +106,9 @@ struct HistoryView: View {
     }
 
     private var avgCalories: Double {
-        guard !records.isEmpty else { return 0 }
-        return totalCalories / Double(records.count)
+        let nonZero = records.filter { $0.totalCalories > 0 }
+        guard !nonZero.isEmpty else { return 0 }
+        return nonZero.map(\.totalCalories).reduce(0, +) / Double(nonZero.count)
     }
 
     private var totalSteps: Int {
@@ -115,8 +116,82 @@ struct HistoryView: View {
     }
 
     private var avgSteps: Int {
-        guard !records.isEmpty else { return 0 }
-        return totalSteps / records.count
+        let nonZero = records.filter { $0.steps > 0 }
+        guard !nonZero.isEmpty else { return 0 }
+        return nonZero.map(\.steps).reduce(0, +) / nonZero.count
+    }
+
+    // MARK: - Chart Data (aggregated for longer periods)
+
+    private var shouldAggregateByWeek: Bool {
+        selectedPeriod == .threeMonths
+    }
+
+    private var shouldAggregateByMonth: Bool {
+        selectedPeriod == .year
+    }
+
+    private var calorieChartData: [(date: Date, value: Double, id: UUID)] {
+        if shouldAggregateByMonth {
+            return aggregateByMonth(records: records).map { ($0.monthStart, $0.avgCalories, $0.id) }
+        } else if shouldAggregateByWeek {
+            return aggregateByWeek(records: records).map { ($0.weekStart, $0.avgCalories, $0.id) }
+        } else {
+            return records.map { ($0.date, $0.totalCalories, $0.id) }
+        }
+    }
+
+    private var stepsChartData: [(date: Date, value: Double, id: UUID)] {
+        if shouldAggregateByMonth {
+            return aggregateByMonth(records: records).map { ($0.monthStart, Double($0.avgSteps), $0.id) }
+        } else if shouldAggregateByWeek {
+            return aggregateByWeek(records: records).map { ($0.weekStart, Double($0.avgSteps), $0.id) }
+        } else {
+            return records.map { ($0.date, Double($0.steps), $0.id) }
+        }
+    }
+
+    private var chartAvgCalories: Double {
+        let data = calorieChartData
+        guard !data.isEmpty else { return 0 }
+        return data.map(\.value).reduce(0, +) / Double(data.count)
+    }
+
+    private var chartAvgSteps: Double {
+        let data = stepsChartData
+        guard !data.isEmpty else { return 0 }
+        return data.map(\.value).reduce(0, +) / Double(data.count)
+    }
+
+    private var netDeficitChartData: [(date: Date, value: Double, id: UUID)] {
+        if shouldAggregateByMonth {
+            let months = aggregateByMonth(records: netRecords)
+            return months.map { month -> (Date, Double, UUID) in
+                let netVals = netRecords.filter {
+                    Calendar.current.isDate($0.date, equalTo: month.monthStart, toGranularity: .month)
+                }.map { netDeficit(for: $0) }
+                let avg = netVals.isEmpty ? 0.0 : netVals.reduce(0, +) / Double(netVals.count)
+                return (month.monthStart, avg, month.id)
+            }
+        } else if shouldAggregateByWeek {
+            let weeks = aggregateByWeek(records: netRecords)
+            return weeks.map { week -> (Date, Double, UUID) in
+                let netVals = netRecords.filter {
+                    let weekStart = DateHelpers.startOfWeek($0.date)
+                    return Calendar.current.isDate(weekStart, equalTo: week.weekStart, toGranularity: .day)
+                }.map { netDeficit(for: $0) }
+                let avg = netVals.isEmpty ? 0.0 : netVals.reduce(0, +) / Double(netVals.count)
+                return (week.weekStart, avg, week.id)
+            }
+        } else {
+            return netRecords.map { ($0.date, netDeficit(for: $0), $0.id) }
+        }
+    }
+
+    private var chartAvgNetDeficit: Double {
+        let data = netDeficitChartData
+        guard !data.isEmpty else { return 0 }
+        return data.map(\.value).reduce(0, +) / Double(data.count)
     }
 
     private var peakCalorieDay: DayRecord? {
@@ -296,13 +371,13 @@ struct HistoryView: View {
                             // Calories row
                             HStack(spacing: 12) {
                                 AverageCard(
-                                    label: "Total Calories",
-                                    value: totalCalories.formatted(.number.precision(.fractionLength(0))),
+                                    label: "Avg Calories",
+                                    value: avgCalories.formatted(.number.precision(.fractionLength(0))),
                                     color: Theme.caloriesPrimary
                                 )
                                 AverageCard(
-                                    label: "Avg Calories",
-                                    value: avgCalories.formatted(.number.precision(.fractionLength(0))),
+                                    label: "Total Calories",
+                                    value: totalCalories.formatted(.number.precision(.fractionLength(0))),
                                     color: Theme.caloriesPrimary
                                 )
                             }
@@ -310,13 +385,13 @@ struct HistoryView: View {
                             // Steps row
                             HStack(spacing: 12) {
                                 AverageCard(
-                                    label: "Total Steps",
-                                    value: totalSteps.formatted(.number),
+                                    label: "Avg Steps",
+                                    value: avgSteps.formatted(.number),
                                     color: Theme.stepsPrimary
                                 )
                                 AverageCard(
-                                    label: "Avg Steps",
-                                    value: avgSteps.formatted(.number),
+                                    label: "Total Steps",
+                                    value: totalSteps.formatted(.number),
                                     color: Theme.stepsPrimary
                                 )
                             }
@@ -325,14 +400,14 @@ struct HistoryView: View {
                             if goals.showNetCalories && hasNetData {
                                 HStack(spacing: 12) {
                                     AverageCard(
-                                        label: "Total Deficit",
-                                        value: formatSignedNet(totalNetDeficit),
-                                        color: netColor(for: totalNetDeficit)
-                                    )
-                                    AverageCard(
                                         label: "Avg Deficit",
                                         value: formatSignedNet(avgNetDeficit),
                                         color: netColor(for: avgNetDeficit)
+                                    )
+                                    AverageCard(
+                                        label: "Total Deficit",
+                                        value: formatSignedNet(totalNetDeficit),
+                                        color: netColor(for: totalNetDeficit)
                                     )
                                 }
                             }
@@ -454,10 +529,10 @@ struct HistoryView: View {
     }
 
     private var caloriesChart: some View {
-        Chart(records) { record in
+        Chart(calorieChartData, id: \.id) { item in
             BarMark(
-                x: .value("Date", record.date, unit: .day),
-                y: .value("Calories", record.totalCalories)
+                x: .value("Date", item.date, unit: chartDateUnit),
+                y: .value("Calories", item.value)
             )
             .foregroundStyle(
                 LinearGradient(
@@ -466,11 +541,11 @@ struct HistoryView: View {
                     endPoint: .top
                 )
             )
-            .opacity(selectedCalorieDate == nil || Calendar.current.isDate(record.date, inSameDayAs: selectedCalorieDate!) ? 1.0 : 0.3)
+            .opacity(selectedCalorieDate == nil || Calendar.current.isDate(item.date, equalTo: selectedCalorieDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3)
             .cornerRadius(4)
 
-            if records.count > 1 {
-                RuleMark(y: .value("Average", avgCalories))
+            if calorieChartData.count > 1 {
+                RuleMark(y: .value("Average", chartAvgCalories))
                     .foregroundStyle(Theme.caloriesPrimary.opacity(0.5))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [5, 3]))
                     .annotation(position: .top, alignment: .trailing) {
@@ -482,10 +557,10 @@ struct HistoryView: View {
         }
         .chartXSelection(value: $selectedCalorieDate)
         .chartXAxis {
-            AxisMarks(values: .stride(by: .day, count: xAxisStride)) { value in
+            AxisMarks(values: .stride(by: chartXAxisStrideBy, count: chartXAxisStrideCount)) { value in
                 AxisValueLabel {
                     if let date = value.as(Date.self) {
-                        Text(DateHelpers.shortDate(date))
+                        Text(chartDateLabel(date))
                             .font(.caption2)
                             .foregroundStyle(Theme.textTertiary)
                     }
@@ -509,10 +584,10 @@ struct HistoryView: View {
     }
 
     private var stepsChart: some View {
-        Chart(records) { record in
+        Chart(stepsChartData, id: \.id) { item in
             BarMark(
-                x: .value("Date", record.date, unit: .day),
-                y: .value("Steps", record.steps)
+                x: .value("Date", item.date, unit: chartDateUnit),
+                y: .value("Steps", item.value)
             )
             .foregroundStyle(
                 LinearGradient(
@@ -521,11 +596,11 @@ struct HistoryView: View {
                     endPoint: .top
                 )
             )
-            .opacity(selectedStepDate == nil || Calendar.current.isDate(record.date, inSameDayAs: selectedStepDate!) ? 1.0 : 0.3)
+            .opacity(selectedStepDate == nil || Calendar.current.isDate(item.date, equalTo: selectedStepDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3)
             .cornerRadius(4)
 
-            if records.count > 1 {
-                RuleMark(y: .value("Average", avgSteps))
+            if stepsChartData.count > 1 {
+                RuleMark(y: .value("Average", chartAvgSteps))
                     .foregroundStyle(Theme.stepsPrimary.opacity(0.5))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [5, 3]))
                     .annotation(position: .top, alignment: .trailing) {
@@ -537,10 +612,10 @@ struct HistoryView: View {
         }
         .chartXSelection(value: $selectedStepDate)
         .chartXAxis {
-            AxisMarks(values: .stride(by: .day, count: xAxisStride)) { value in
+            AxisMarks(values: .stride(by: chartXAxisStrideBy, count: chartXAxisStrideCount)) { value in
                 AxisValueLabel {
                     if let date = value.as(Date.self) {
-                        Text(DateHelpers.shortDate(date))
+                        Text(chartDateLabel(date))
                             .font(.caption2)
                             .foregroundStyle(Theme.textTertiary)
                     }
@@ -552,7 +627,7 @@ struct HistoryView: View {
                 AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
                     .foregroundStyle(Color(.separator).opacity(0.3))
                 AxisValueLabel {
-                    if let v = value.as(Int.self) {
+                    if let v = value.as(Double.self) {
                         Text(v.formatted(.number.notation(.compactName)))
                             .font(.caption2)
                             .foregroundStyle(Theme.textTertiary)
@@ -564,18 +639,18 @@ struct HistoryView: View {
     }
 
     private var netDeficitChart: some View {
-        Chart(netRecords) { record in
-            let value = netDeficit(for: record)
+        Chart(netDeficitChartData, id: \.id) { item in
+            let value = item.value
             BarMark(
-                x: .value("Date", record.date, unit: .day),
+                x: .value("Date", item.date, unit: chartDateUnit),
                 y: .value("Net", value)
             )
             .foregroundStyle(value >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
-            .opacity(selectedNetDate == nil || Calendar.current.isDate(record.date, inSameDayAs: selectedNetDate!) ? 1.0 : 0.3)
+            .opacity(selectedNetDate == nil || Calendar.current.isDate(item.date, equalTo: selectedNetDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3)
             .cornerRadius(4)
 
-            if netRecords.count > 1 {
-                RuleMark(y: .value("Average", avgNetDeficit))
+            if netDeficitChartData.count > 1 {
+                RuleMark(y: .value("Average", chartAvgNetDeficit))
                     .foregroundStyle(Theme.netDeficitBrand.opacity(0.5))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [5, 3]))
                     .annotation(position: .top, alignment: .trailing) {
@@ -587,10 +662,10 @@ struct HistoryView: View {
         }
         .chartXSelection(value: $selectedNetDate)
         .chartXAxis {
-            AxisMarks(values: .stride(by: .day, count: xAxisStride)) { value in
+            AxisMarks(values: .stride(by: chartXAxisStrideBy, count: chartXAxisStrideCount)) { value in
                 AxisValueLabel {
                     if let date = value.as(Date.self) {
-                        Text(DateHelpers.shortDate(date))
+                        Text(chartDateLabel(date))
                             .font(.caption2)
                             .foregroundStyle(Theme.textTertiary)
                     }
@@ -615,12 +690,46 @@ struct HistoryView: View {
 
     // MARK: - Helpers
 
-    private var xAxisStride: Int {
+    private var chartDateUnit: Calendar.Component {
+        if shouldAggregateByMonth { return .month }
+        if shouldAggregateByWeek { return .weekOfYear }
+        return .day
+    }
+
+    private var chartDateGranularity: Calendar.Component {
+        if shouldAggregateByMonth { return .month }
+        if shouldAggregateByWeek { return .weekOfYear }
+        return .day
+    }
+
+    private var chartXAxisStrideBy: Calendar.Component {
+        if shouldAggregateByMonth { return .month }
+        if shouldAggregateByWeek { return .weekOfYear }
+        return .day
+    }
+
+    private var chartXAxisStrideCount: Int {
+        if shouldAggregateByMonth {
+            return 1  // Every month
+        }
+        if shouldAggregateByWeek {
+            return 2  // Every 2 weeks for 90-day view
+        }
         let count = records.count
         if count <= 10 { return 1 }
         if count <= 31 { return 5 }
         if count <= 91 { return 14 }
         return 30
+    }
+
+    private func chartDateLabel(_ date: Date) -> String {
+        if shouldAggregateByMonth {
+            return DateHelpers.shortMonth(date)
+        }
+        if shouldAggregateByWeek {
+            return DateHelpers.mediumDate(date)
+        }
+        return DateHelpers.shortDate(date)
     }
 
     private func historyNoticeBanner(_ message: String) -> some View {
@@ -1014,4 +1123,64 @@ struct DayRecord: Identifiable {
     let steps: Int
 
     var totalCalories: Double { activeCalories + restingCalories }
+}
+
+// MARK: - Aggregated Data for Charts
+
+struct WeekRecord: Identifiable {
+    let id = UUID()
+    let weekStart: Date
+    let totalCalories: Double
+    let avgCalories: Double
+    let totalSteps: Int
+    let avgSteps: Int
+    let dayCount: Int
+}
+
+struct MonthRecord: Identifiable {
+    let id = UUID()
+    let monthStart: Date
+    let totalCalories: Double
+    let avgCalories: Double
+    let totalSteps: Int
+    let avgSteps: Int
+    let dayCount: Int
+}
+
+// MARK: - Aggregation Helpers
+
+private func aggregateByWeek(records: [DayRecord], calendar: Calendar = .current) -> [WeekRecord] {
+    let grouped = Dictionary(grouping: records) { DateHelpers.startOfWeek($0.date, calendar: calendar) }
+    return grouped.sorted { $0.key < $1.key }.map { weekStart, days in
+        let totalCal = days.map(\.totalCalories).reduce(0, +)
+        let totalStp = days.map(\.steps).reduce(0, +)
+        let nonZeroCal = days.filter { $0.totalCalories > 0 }
+        let nonZeroStp = days.filter { $0.steps > 0 }
+        return WeekRecord(
+            weekStart: weekStart,
+            totalCalories: totalCal,
+            avgCalories: nonZeroCal.isEmpty ? 0 : nonZeroCal.map(\.totalCalories).reduce(0, +) / Double(nonZeroCal.count),
+            totalSteps: totalStp,
+            avgSteps: nonZeroStp.isEmpty ? 0 : nonZeroStp.map(\.steps).reduce(0, +) / nonZeroStp.count,
+            dayCount: days.count
+        )
+    }
+}
+
+private func aggregateByMonth(records: [DayRecord], calendar: Calendar = .current) -> [MonthRecord] {
+    let grouped = Dictionary(grouping: records) { DateHelpers.startOfMonth($0.date, calendar: calendar) }
+    return grouped.sorted { $0.key < $1.key }.map { monthStart, days in
+        let totalCal = days.map(\.totalCalories).reduce(0, +)
+        let totalStp = days.map(\.steps).reduce(0, +)
+        let nonZeroCal = days.filter { $0.totalCalories > 0 }
+        let nonZeroStp = days.filter { $0.steps > 0 }
+        return MonthRecord(
+            monthStart: monthStart,
+            totalCalories: totalCal,
+            avgCalories: nonZeroCal.isEmpty ? 0 : nonZeroCal.map(\.totalCalories).reduce(0, +) / Double(nonZeroCal.count),
+            totalSteps: totalStp,
+            avgSteps: nonZeroStp.isEmpty ? 0 : nonZeroStp.map(\.steps).reduce(0, +) / nonZeroStp.count,
+            dayCount: days.count
+        )
+    }
 }
