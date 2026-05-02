@@ -307,6 +307,83 @@
 
         .privacy a:hover { text-decoration: underline; }
 
+        /* More Info */
+        .more-info {
+            padding: 64px 24px;
+            background: #fff;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .more-info-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .more-info-header h2 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .more-info-header p {
+            font-size: 17px;
+            color: #6e6e73;
+        }
+
+        .more-info-content {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .more-info-section {
+            margin-bottom: 40px;
+        }
+
+        .more-info-section h3 {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #86868b;
+            margin-bottom: 12px;
+        }
+
+        .more-info-section p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #1d1d1f;
+            margin-bottom: 12px;
+        }
+
+        .more-info-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .more-info-section strong {
+            font-weight: 600;
+        }
+
+        .specs-table {
+            width: 100%;
+            font-size: 14px;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        .specs-table td {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .specs-table td:first-child {
+            color: #86868b;
+            width: 140px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         /* CTA */
         .cta {
             text-align: center;
@@ -462,6 +539,42 @@
             <h2>Private by design</h2>
             <p>Total Calories reads from Apple Health in read-only mode. No accounts, no analytics, no ads, no third-party SDKs, no network requests. Your data never leaves your device.</p>
             <a href="privacy-policy.html">Privacy Policy &rarr;</a>
+        </div>
+    </section>
+
+    <section class="more-info">
+        <div class="container">
+            <div class="more-info-header">
+                <h2>More info</h2>
+                <p>How it's built and why it matters.</p>
+            </div>
+            <div class="more-info-content">
+                <div class="more-info-section">
+                    <h3>The Pitch</h3>
+                    <p>Most calorie trackers make you log every meal manually and create an account. I wanted something that just shows what Apple Health already knows — passive tracking, zero friction.</p>
+                    <p>Total Calories reads your active energy and steps from HealthKit, calculates a simple total, and displays it on your wrist. No signup, no cloud, no tracking.</p>
+                </div>
+
+                <div class="more-info-section">
+                    <h3>Specs</h3>
+                    <table class="specs-table">
+                        <tr><td>Platform</td><td>iOS 17+, watchOS 10+</td></tr>
+                        <tr><td>Language</td><td>Swift 6 with strict concurrency</td></tr>
+                        <tr><td>Framework</td><td>SwiftUI · HealthKit · WidgetKit</td></tr>
+                        <tr><td>Data</td><td>Read-only HealthKit access, local only</td></tr>
+                        <tr><td>Storage</td><td>SwiftData cache shared via App Group</td></tr>
+                        <tr><td>Widgets</td><td>Home Screen, Lock Screen, StandBy, watchOS complications</td></tr>
+                    </table>
+                </div>
+
+                <div class="more-info-section">
+                    <h3>What Mattered</h3>
+                    <p><strong>Zero-config setup.</strong> Open the app, grant HealthKit permission, done. No onboarding flow, no tutorial, no account creation. The first screen shows yesterday's data immediately.</p>
+                    <p><strong>Watch-first design.</strong> The Apple Watch app isn't an afterthought — it's the primary interface. The iPhone app exists for detailed history and settings. Both share a SwiftData cache via App Group.</p>
+                    <p><strong>Widget reliability.</strong> Widgets refresh on a timeline, not on open. Background tasks keep the cache warm. The complication updates within 15 minutes of HealthKit changes.</p>
+                    <p><strong>Privacy as a feature.</strong> No analytics, no crash reporting, no accounts. The app doesn't know who you are. Reviewers have flagged this positively — it's a selling point, not a limitation.</p>
+                </div>
+            </div>
         </div>
     </section>
 
