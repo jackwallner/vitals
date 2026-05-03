@@ -7,6 +7,8 @@ private enum VitalsLinks {
     static let supportEmail = URL(string: "mailto:jackwallner@gmail.com")!
     static let coachServices = URL(string: "https://www.e3fit.me/#services")!
     static let coachContact = URL(string: "https://www.e3fit.me/#contact")!
+    static let standardEULA = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
+    static let manageSubscriptions = URL(string: "https://apps.apple.com/account/subscriptions")!
 }
 
 /// Tracks which goals have been celebrated for a given day so we don't buzz
@@ -1193,12 +1195,14 @@ private struct GoalRow: View {
 
 private struct SettingsSheet: View {
     @ObservedObject var goals: GoalSettings
+    @EnvironmentObject private var store: StoreService
     @Environment(\.dismiss) private var dismiss
 
     @State private var calEnabled = true
     @State private var calText = ""
     @State private var stepEnabled = true
     @State private var stepText = ""
+    @State private var showPaywall = false
 
     private var calValid: Bool {
         !calEnabled || (Double(calText) ?? 0) > 0
@@ -1288,6 +1292,8 @@ private struct SettingsSheet: View {
     var body: some View {
         NavigationStack {
             Form {
+                vitalsPlusSection
+
                 Section {
                     Toggle("Show Calories", isOn: showCaloriesBinding)
                     Toggle("Show Steps", isOn: showStepsBinding)
@@ -1409,6 +1415,65 @@ private struct SettingsSheet: View {
                 stepEnabled = goals.stepGoal != nil
                 stepText = goals.stepGoal.map { String($0) } ?? "10000"
             }
+            .sheet(isPresented: $showPaywall) {
+                PaywallView()
+                    .environmentObject(store)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var vitalsPlusSection: some View {
+        Section {
+            if store.isPro {
+                HStack(spacing: 12) {
+                    Image(systemName: "checkmark.seal.fill")
+                        .font(.system(size: 22, weight: .semibold))
+                        .foregroundStyle(Theme.caloriesPrimary)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Vitals+ Active")
+                            .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                            .foregroundStyle(Theme.textPrimary)
+                        Text("Thanks for supporting the app.")
+                            .font(.system(.caption, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                    }
+                }
+                Link(destination: VitalsLinks.manageSubscriptions) {
+                    Label("Manage Subscription", systemImage: "creditcard")
+                }
+            } else {
+                Button {
+                    showPaywall = true
+                } label: {
+                    HStack(spacing: 12) {
+                        ZStack {
+                            Circle()
+                                .fill(Theme.caloriesGradient)
+                                .frame(width: 32, height: 32)
+                            Image(systemName: "sparkles")
+                                .font(.system(size: 14, weight: .bold))
+                                .foregroundStyle(.white)
+                        }
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Unlock Vitals+")
+                                .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                                .foregroundStyle(Theme.textPrimary)
+                            Text("PDF reports, custom-range exports, deep trends.")
+                                .font(.system(.caption, design: .rounded))
+                                .foregroundStyle(Theme.textSecondary)
+                                .lineLimit(2)
+                        }
+                        Spacer(minLength: 0)
+                        Image(systemName: "chevron.right")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(Theme.textTertiary)
+                    }
+                }
+                .buttonStyle(.plain)
+            }
+        } header: {
+            Text("Vitals+")
         }
     }
 }

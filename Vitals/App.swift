@@ -70,6 +70,7 @@ private final class PhoneGoalSyncService: NSObject, WCSessionDelegate {
 struct VitalsApp: App {
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
+    @StateObject private var store = StoreService.shared
 
     private static let refreshTaskID = "com.jackwallner.vitals.refresh"
 
@@ -84,6 +85,7 @@ struct VitalsApp: App {
         // Must run on every launch (including background) so observer queries are active
         HealthKitService.shared.enableBackgroundDelivery()
         Self.scheduleAppRefresh()
+        StoreService.shared.start()
         #if canImport(WatchConnectivity)
         PhoneGoalSyncService.shared.activate()
         #endif
@@ -92,7 +94,11 @@ struct VitalsApp: App {
     var body: some Scene {
         WindowGroup {
             MainTabView()
+                .environmentObject(store)
                 .preferredColorScheme(goals.appearance.colorScheme)
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                    Task { await store.updateCustomerProductStatus() }
+                }
                 .task {
                     #if canImport(WatchConnectivity)
                     PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)

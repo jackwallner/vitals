@@ -28,6 +28,7 @@ schemes:
         - VitalsTests
     run:
       config: Debug
+      storeKitConfiguration: Vitals.storekit
   VitalsWatch:
     build:
       targets:
@@ -42,6 +43,8 @@ targets:
     sources:
       - path: Vitals
       - path: Shared
+      - path: Vitals.storekit
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.jackwallner.vitals

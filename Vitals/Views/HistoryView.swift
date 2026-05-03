@@ -61,12 +61,14 @@ private enum HistoryPrefs {
 struct HistoryView: View {
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
+    @EnvironmentObject private var store: StoreService
     @State private var selectedPeriod: Period = HistoryPrefs.savedPeriod()
     @State private var customStart: Date = HistoryPrefs.savedCustomStart()
     @State private var customEnd: Date = HistoryPrefs.savedCustomEnd()
     @State private var showCustomRange = false
     @State private var records: [DayRecord] = []
     @State private var foodByDay: [Date: Double] = [:]
+    @State private var previousRecords: [DayRecord] = []
     @State private var isLoading = true
     @State private var isRefreshing = false
     @State private var animateContent = false
@@ -74,6 +76,11 @@ struct HistoryView: View {
     @State private var showExportWarning = false
     @State private var showExportError = false
     @State private var csvFile: CSVFile?
+    @State private var pdfFile: PDFFile?
+    @State private var showPDFShareSheet = false
+    @State private var showPaywall = false
+    @State private var isGeneratingPDF = false
+    @State private var pdfErrorMessage: String?
     @State private var selectedCalorieDate: Date?
     @State private var selectedStepDate: Date?
     @State private var selectedNetDate: Date?
@@ -270,6 +277,30 @@ struct HistoryView: View {
                     Spacer()
                     if !records.isEmpty {
                         Button {
+                            handleSummaryReportTap()
+                        } label: {
+                            ZStack {
+                                Image(systemName: "doc.richtext")
+                                    .font(.body.weight(.medium))
+                                    .foregroundStyle(Theme.caloriesPrimary)
+                                if !store.isPro {
+                                    Image(systemName: "lock.fill")
+                                        .font(.system(size: 9, weight: .bold))
+                                        .foregroundStyle(.white)
+                                        .padding(3)
+                                        .background(Theme.caloriesPrimary, in: Circle())
+                                        .offset(x: 10, y: -10)
+                                }
+                            }
+                            .frame(width: 22, height: 22)
+                            .padding(10)
+                            .background(Theme.cardSurface, in: Circle())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(store.isPro ? "Generate summary report" : "Vitals Plus summary report (locked)")
+                        .disabled(isGeneratingPDF)
+
+                        Button {
                             showExportWarning = true
                         } label: {
                             Image(systemName: "square.and.arrow.up")
@@ -429,6 +460,14 @@ struct HistoryView: View {
                                 }
                             }
 
+                            DeepTrendsCard(
+                                isPro: store.isPro,
+                                calorieTrend: deepCalorieTrend,
+                                stepTrend: deepStepTrend,
+                                periodLabel: deepTrendsPeriodLabel,
+                                onUpgrade: { showPaywall = true }
+                            )
+
                             CoachPromoCard()
 
                         }
@@ -500,6 +539,134 @@ struct HistoryView: View {
         } message: {
             Text("Could not save the export file. Please try again.")
         }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
+                .environmentObject(store)
+        }
+        .sheet(isPresented: $showPDFShareSheet, onDismiss: {
+            if let pdfFile {
+                try? FileManager.default.removeItem(at: pdfFile.url)
+                self.pdfFile = nil
+            }
+        }) {
+            if let pdfFile {
+                ShareSheet(items: [pdfFile.url])
+            }
+        }
+        .alert("Report Failed", isPresented: Binding(get: { pdfErrorMessage != nil }, set: { if !$0 { pdfErrorMessage = nil } })) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(pdfErrorMessage ?? "")
+        }
+        .overlay(alignment: .center) {
+            if isGeneratingPDF {
+                VStack(spacing: 12) {
+                    ProgressView()
+                        .tint(Theme.caloriesPrimary)
+                    Text("Generating report…")
+                        .font(.system(.footnote, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                }
+                .padding(20)
+                .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 16))
+                .shadow(radius: 12)
+            }
+        }
+    }
+
+    // MARK: - Vitals+ Summary Report
+
+    private func handleSummaryReportTap() {
+        if !store.isPro {
+            showPaywall = true
+            return
+        }
+        Task { await generateSummaryPDF() }
+    }
+
+    private func generateSummaryPDF() async {
+        guard !isGeneratingPDF else { return }
+        isGeneratingPDF = true
+        defer { isGeneratingPDF = false }
+
+        let reportDays: [ReportDay] = records.map { rec in
+            ReportDay(
+                date: rec.date,
+                activeCalories: rec.activeCalories,
+                restingCalories: rec.restingCalories,
+                steps: rec.steps,
+                foodCalories: foodByDay[Calendar.current.startOfDay(for: rec.date)]
+            )
+        }
+        let prevDays: [ReportDay] = previousRecords.map { rec in
+            ReportDay(
+                date: rec.date,
+                activeCalories: rec.activeCalories,
+                restingCalories: rec.restingCalories,
+                steps: rec.steps,
+                foodCalories: nil
+            )
+        }
+        let start = records.map(\.date).min() ?? Date.now
+        let end = records.map(\.date).max() ?? Date.now
+
+        let report = SummaryReportGenerator.make(
+            title: reportTitle,
+            periodStart: start,
+            periodEnd: end,
+            days: reportDays,
+            previousDays: prevDays,
+            calorieGoal: goals.calorieGoal,
+            stepGoal: goals.stepGoal
+        )
+
+        do {
+            let url = try SummaryReportPDF.render(report)
+            pdfFile = PDFFile(url: url)
+            showPDFShareSheet = true
+        } catch {
+            pdfErrorMessage = "Could not generate the PDF report. Please try again."
+        }
+    }
+
+    private var reportTitle: String {
+        switch selectedPeriod {
+        case .week: return "7-Day Summary"
+        case .month: return "30-Day Summary"
+        case .threeMonths: return "90-Day Summary"
+        case .year: return "Annual Summary"
+        case .custom: return "Vitals Summary"
+        }
+    }
+
+    // MARK: - Deep Trends (Vitals+)
+
+    private var deepTrendsPeriodLabel: String {
+        switch selectedPeriod {
+        case .week: return "vs. previous week"
+        case .month: return "vs. previous 30 days"
+        case .threeMonths: return "vs. previous 90 days"
+        case .year: return "vs. previous year"
+        case .custom: return "vs. previous range"
+        }
+    }
+
+    private var deepCalorieTrend: Double? {
+        let curr = avgCalories
+        let prevNonZero = previousRecords.filter { $0.totalCalories > 0 }
+        guard !prevNonZero.isEmpty else { return nil }
+        let prev = prevNonZero.map(\.totalCalories).reduce(0, +) / Double(prevNonZero.count)
+        guard prev > 0, curr > 0 else { return nil }
+        return ((curr - prev) / prev) * 100
+    }
+
+    private var deepStepTrend: Double? {
+        let curr = Double(avgSteps)
+        let prevNonZero = previousRecords.filter { $0.steps > 0 }
+        guard !prevNonZero.isEmpty else { return nil }
+        let prev = Double(prevNonZero.map(\.steps).reduce(0, +)) / Double(prevNonZero.count)
+        guard prev > 0, curr > 0 else { return nil }
+        return ((curr - prev) / prev) * 100
     }
 
     // MARK: - Chart Views
@@ -821,6 +988,11 @@ struct HistoryView: View {
             }
             // Persist the fetched history to the shared cache so the watch can read it.
             try? healthKit.saveHistoryToCache(history: history)
+
+            // Fire-and-forget: load the immediately preceding window for trend
+            // calculations. Failure here is silent — the deep trends card just
+            // shows an empty state and the report skips trend pills.
+            await loadPreviousWindow(history: history)
         } catch {
             print("Failed to fetch history: \(error)")
             loadErrorMessage = records.isEmpty
@@ -832,6 +1004,37 @@ struct HistoryView: View {
             withAnimation(.easeOut(duration: 0.4)) {
                 animateContent = true
             }
+        }
+    }
+
+    /// Load the window of equal length preceding the current selection, used for
+    /// period-over-period trend calculations on the Deep Trends card and PDF report.
+    private func loadPreviousWindow(history: [(date: Date, active: Double, resting: Double, steps: Int)]) async {
+        guard let earliest = history.map(\.date).min() else {
+            previousRecords = []
+            return
+        }
+        let cal = Calendar.current
+        let priorEnd = cal.date(byAdding: .day, value: -1, to: earliest) ?? earliest
+        let lengthDays: Int
+        switch selectedPeriod {
+        case .week, .month, .threeMonths, .year:
+            lengthDays = selectedPeriod.days ?? 0
+        case .custom:
+            lengthDays = max(1, cal.dateComponents([.day], from: customStart, to: customEnd).day ?? 0)
+        }
+        guard lengthDays > 0 else {
+            previousRecords = []
+            return
+        }
+        let priorStart = cal.date(byAdding: .day, value: -(lengthDays - 1), to: priorEnd) ?? priorEnd
+        do {
+            let prev = try await healthKit.fetchHistory(from: priorStart, to: priorEnd)
+            previousRecords = prev.map {
+                DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
+            }
+        } catch {
+            previousRecords = []
         }
     }
 
@@ -904,6 +1107,108 @@ struct ChartSelection {
 
 struct CSVFile {
     let url: URL
+}
+
+struct PDFFile {
+    let url: URL
+}
+
+// MARK: - Deep Trends Card (Vitals+)
+
+private struct DeepTrendsCard: View {
+    let isPro: Bool
+    let calorieTrend: Double?
+    let stepTrend: Double?
+    let periodLabel: String
+    let onUpgrade: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(spacing: 8) {
+                Image(systemName: isPro ? "chart.line.uptrend.xyaxis" : "lock.fill")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(Theme.caloriesPrimary)
+                Text("Deep Trends")
+                    .font(.headline)
+                    .foregroundStyle(Theme.textPrimary)
+                Spacer()
+                if !isPro {
+                    Text("Vitals+")
+                        .font(.system(size: 10, weight: .bold, design: .rounded))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(Theme.caloriesPrimary.opacity(0.15), in: Capsule())
+                        .foregroundStyle(Theme.caloriesPrimary)
+                }
+            }
+
+            Text(periodLabel)
+                .font(.system(.caption, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
+
+            if isPro {
+                HStack(spacing: 12) {
+                    TrendStat(label: "Calories", trend: calorieTrend, color: Theme.caloriesPrimary)
+                    TrendStat(label: "Steps", trend: stepTrend, color: Theme.stepsPrimary)
+                }
+            } else {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Compare this period to the one before it. See whether you’re trending up or down on calories and steps.")
+                        .font(.system(.subheadline, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Button(action: onUpgrade) {
+                        Text("Unlock with Vitals+")
+                            .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                            .background(Theme.caloriesGradient, in: Capsule())
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+        .padding(Theme.cardPadding)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+    }
+}
+
+private struct TrendStat: View {
+    let label: String
+    let trend: Double?
+    let color: Color
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(label)
+                .font(.caption)
+                .foregroundStyle(Theme.textSecondary)
+                .textCase(.uppercase)
+                .tracking(0.8)
+            if let trend {
+                let isUp = trend >= 0
+                let signColor = isUp ? Theme.netDeficitPositive : Theme.netDeficitNegative
+                HStack(spacing: 4) {
+                    Image(systemName: isUp ? "arrow.up.right" : "arrow.down.right")
+                        .font(.system(size: 12, weight: .bold))
+                    Text("\(abs(Int(trend.rounded())))%")
+                        .font(.system(.title3, design: .rounded, weight: .bold).monospacedDigit())
+                }
+                .foregroundStyle(signColor)
+            } else {
+                Text("—")
+                    .font(.system(.title3, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.textTertiary)
+                Text("Need more data")
+                    .font(.caption2)
+                    .foregroundStyle(Theme.textTertiary)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(12)
+        .background(color.opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
+    }
 }
 
 // MARK: - ShareSheet

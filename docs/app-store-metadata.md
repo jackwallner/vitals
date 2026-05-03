@@ -313,3 +313,83 @@ Optional: complication shown on a watch face.
    - https://jackwallner.github.io/vitals/privacy-policy.html
    - https://jackwallner.github.io/vitals/support.html
 5. Wait 1-2 minutes, then verify both URLs load correctly
+
+---
+
+## Vitals+ Subscription (App Store Connect Setup)
+
+The app ships with StoreKit 2 code expecting two products in a subscription
+group named **Vitals+**. Until these exist in App Store Connect, the paywall
+will show "Subscriptions unavailable." Local Simulator testing works against
+`Vitals.storekit` without ASC configuration.
+
+### One-time Setup
+
+1. **Agreements, Tax, and Banking** (App Store Connect → Business)
+   - Sign Paid Apps agreement
+   - Add tax forms (W-9 for US)
+   - Add banking info
+   - Cannot ship subscriptions without these
+
+2. **Create the subscription group**
+   - My Apps → Vitals → Monetization → Subscriptions → Create
+   - Reference Name: `Vitals+`
+   - Localized Display Name (English): `Vitals+`
+
+3. **Create products in the group**
+
+| Product ID | Reference Name | Duration | Price |
+|------------|----------------|----------|-------|
+| `com.jackwallner.vitals.plus.monthly` | Vitals+ Monthly | 1 Month | $1.99 |
+| `com.jackwallner.vitals.plus.yearly` | Vitals+ Yearly | 1 Year | $14.99 |
+
+   For each product:
+   - Localized display name (e.g. "Vitals+ Monthly")
+   - Localized description ("Unlock Monthly PDF Summaries & Deep Trends.")
+   - Review screenshot showing the paywall
+
+4. **Introductory offer (free trial)**
+   - On each product → Subscription Pricing → Promotional Offers → Add Introductory Offer
+   - Type: Free
+   - Duration: 1 Week
+   - Eligibility: New Subscribers
+   - Apply to all storefronts
+
+5. **Subscription review information**
+   - Screenshot of paywall
+   - Review notes: "Subscription unlocks PDF Monthly Summary report (History tab → top-right doc icon) and Deep Trends comparison card. Free tier remains fully functional."
+
+### App Information
+
+- **App Privacy** → confirm "Purchases" data type is declared
+- **App Description** → add a paragraph about Vitals+
+- **What's New** → call out the Vitals+ launch
+- **EULA** → using Apple's standard EULA (no custom EULA upload needed since the paywall links to Apple's standard at https://www.apple.com/legal/internet-services/itunes/dev/stdeula/)
+
+### Subscription Disclosure (Required)
+
+The paywall must show — and does — the following before purchase:
+- Subscription title
+- Length of subscription period
+- Price per period
+- Cancel-anytime / auto-renew language
+- Privacy Policy link
+- Terms of Use (EULA) link
+- Restore Purchases button
+
+### Local Testing
+
+- **Simulator**: `Vitals.storekit` is wired to the Vitals scheme. Run the app, open Settings → Vitals+, hit Unlock. Purchases auto-clear via Debug → StoreKit → Manage Transactions in Xcode.
+- **TestFlight**: subs work in Sandbox once products are in Ready to Submit state in ASC. Use a Sandbox tester account from ASC → Users and Access → Sandbox.
+
+### Pre-Submission Checklist (Vitals+)
+
+- [ ] Paid Apps agreement signed; tax + banking complete
+- [ ] Both subscription products created and in "Ready to Submit"
+- [ ] 7-day free trial configured on both products
+- [ ] Subscription review screenshot uploaded
+- [ ] Subscription review notes entered
+- [ ] App Privacy declaration includes Purchases data type
+- [ ] Tested purchase + restore in Sandbox / TestFlight
+- [ ] Tested cancel flow (subscription deactivates `isPro` after period end)
+- [ ] App description mentions Vitals+
