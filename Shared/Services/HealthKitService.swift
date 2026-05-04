@@ -205,35 +205,6 @@ final class HealthKitService: ObservableObject {
         return lastStats
     }
 
-    /// Probe whether the user has *any* dietary-energy sample in their Health store.
-    /// Used as a heuristic for dietary read-access: HealthKit does not expose read-auth
-    /// directly, so when `fetchDietaryEnergyToday()` returns 0 kcal we cannot tell
-    /// "denied" from "authorized but never logged food" without looking at history.
-    ///
-    /// Uses `HKSampleQuery` with `limit = 1` for efficiency — we only need existence.
-    /// Returns `false` if the user has never logged dietary energy OR if reads are denied
-    /// (HealthKit silently returns an empty array in both cases).
-    func hasAnyDietarySample() async throws -> Bool {
-        if ScreenshotConfig.isEnabled { return true }
-        guard HKHealthStore.isHealthDataAvailable() else { return false }
-        let type = HKQuantityType(.dietaryEnergyConsumed)
-        return try await withCheckedThrowingContinuation { continuation in
-            let query = HKSampleQuery(
-                sampleType: type,
-                predicate: nil,
-                limit: 1,
-                sortDescriptors: nil
-            ) { _, samples, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                    return
-                }
-                continuation.resume(returning: !(samples ?? []).isEmpty)
-            }
-            store.execute(query)
-        }
-    }
-
     /// Dietary energy (food) logged for today in Health, in kilocalories (e.g. from MyFitnessPal).
     func fetchDietaryEnergyToday() async throws -> Double {
         #if DEBUG

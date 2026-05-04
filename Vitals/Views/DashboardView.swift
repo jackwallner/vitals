@@ -116,17 +116,15 @@ struct DashboardView: View {
     @State private var dietaryEnergyReady = false
     /// True when the last dietary fetch failed (don’t treat as “0 kcal logged”).
     @State private var dietaryEnergyFetchFailed = false
-    /// True when HealthKit reports read access denied for dietary energy (queries return 0 without error).
-    @State private var dietaryEnergyAccessDenied = false
 
     private var totalCalories: Double { activeCalories + restingCalories }
 
     /// Positive = burned more than logged food (deficit); negative = surplus.
     private var netDeficit: Double { totalCalories - foodCalories }
 
-    /// Whether we can show a numeric net (not loading, not failed, not denied).
+    /// Whether we can show a numeric net (not loading, not failed).
     private var netDeficitNumericReady: Bool {
-        goals.showNetCalories && dietaryEnergyReady && !dietaryEnergyFetchFailed && !dietaryEnergyAccessDenied
+        goals.showNetCalories && dietaryEnergyReady && !dietaryEnergyFetchFailed
     }
 
     private var visibleMetricCount: Int {
@@ -656,13 +654,6 @@ struct DashboardView: View {
                 .multilineTextAlignment(align)
                 .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
                 .padding(.horizontal, centered ? 12 : 0)
-        } else if dietaryEnergyAccessDenied {
-            Text("Health isn't sharing food calories. Open Health → Sharing → Total Calories and enable Dietary Energy.")
-                .font(.system(.caption2, design: .rounded))
-                .foregroundStyle(Theme.textTertiary)
-                .multilineTextAlignment(align)
-                .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
-                .padding(.horizontal, centered ? 12 : 0)
         } else if !dietaryEnergyReady {
             Text("Loading food calories…")
                 .font(.system(.caption2, design: .rounded))
@@ -683,9 +674,6 @@ struct DashboardView: View {
     private func netDeficitAccessibilitySummary(deficit: Double) -> String {
         if dietaryEnergyFetchFailed {
             return "Food data unavailable"
-        }
-        if dietaryEnergyAccessDenied {
-            return "Food sharing denied in Health"
         }
         if !dietaryEnergyReady {
             return "Waiting for Health permission or loading food data"
@@ -827,36 +815,20 @@ struct DashboardView: View {
             foodCalories = 0
             dietaryEnergyReady = false
             dietaryEnergyFetchFailed = false
-            dietaryEnergyAccessDenied = false
             return
         }
         do {
             let food = try await healthKit.fetchDietaryEnergyToday()
             foodCalories = food
-            // HealthKit does not expose read-auth directly: a denied read returns
-            // 0 kcal without throwing, indistinguishable from "authorized, but no
-            // food logged today". When today is 0 kcal we probe for ANY historical
-            // sample — if none exist and the system has already shown the auth
-            // sheet, we infer denial and surface the recovery footer.
-            if food > 0 {
-                dietaryEnergyAccessDenied = false
-            } else {
-                let status = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
-                if status == .unnecessary {
-                    let hasAny = (try? await healthKit.hasAnyDietarySample()) ?? true
-                    dietaryEnergyAccessDenied = !hasAny
-                } else {
-                    dietaryEnergyAccessDenied = false
-                }
-            }
-            // Set ready last so UI reflects the final state (post-denial check)
-            // and doesn't briefly show a stale numeric deficit.
+            // Apple intentionally hides read authorization status; a successful
+            // fetch is the only reliable signal. 0 kcal is a valid result
+            // (no food logged), not an error. Display the numeric result.
             dietaryEnergyFetchFailed = false
-            dietaryEnergyReady = !dietaryEnergyAccessDenied
+            dietaryEnergyReady = true
             try? healthKit.updateCachedFoodCalories(food)
         } catch {
             dietaryEnergyFetchFailed = true
-            dietaryEnergyAccessDenied = false
+            dietaryEnergyReady = false
             print("Failed to fetch dietary energy: \(error)")
         }
     }
@@ -998,7 +970,6 @@ struct DashboardView: View {
             foodCalories = 0
             dietaryEnergyReady = false
             dietaryEnergyFetchFailed = false
-            dietaryEnergyAccessDenied = false
             showLoadedStateIfNeeded()
         }
     }

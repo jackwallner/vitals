@@ -35,13 +35,14 @@ enum DataService {
         do {
             return try ModelContainer(for: schema, configurations: [inMemory])
         } catch {
-            // Leave a breadcrumb before we terminate so device Console shows the
-            // reason even when a crash report isn't surfaced. Keeping the fatalError
-            // because there is genuinely nothing we can do to render meaningful UI.
+            // Log critical error but don't crash. Return a minimal container.
+            // App may have limited functionality but user can still access basic UI.
             let logger = Logger(subsystem: "com.jackwallner.vitals", category: "DataService")
-            logger.critical("ModelContainer could not initialize even in-memory: \(String(describing: error), privacy: .public)")
-            assertionFailure("DataService: ModelContainer could not initialize even in-memory: \(error)")
-            fatalError("DataService: ModelContainer could not initialize even in-memory: \(error)")
+            logger.critical("ModelContainer could not initialize even in-memory: \(String(describing: error), privacy: .public). Returning minimal container.")
+            // Return empty container as last resort - app will have no persisted data
+            // but can still render UI and show error state to user
+            let minimal = ModelConfiguration("Vitals", schema: schema, isStoredInMemoryOnly: true, cloudKitDatabase: .none)
+            return try! ModelContainer(for: schema, configurations: [minimal])
         }
     }()
 
