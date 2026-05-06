@@ -1,7 +1,23 @@
 {
   "identifier" : "VitalsStoreKitConfig",
   "nonRenewingSubscriptions" : [],
-  "products" : [],
+  "products" : [
+    {
+      "displayPrice" : "29.99",
+      "familyShareable" : false,
+      "internalID" : "21555201",
+      "localizations" : [
+        {
+          "description" : "Unlock Vitals+ for life — one-time purchase",
+          "displayName" : "Vitals+ Lifetime",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.jackwallner.vitals.plus.lifetime",
+      "referenceName" : "Vitals+ Lifetime",
+      "type" : "NonConsumable"
+    }
+  ],
   "settings" : {
     "_applicationInternalID" : "0",
     "_developerTeamID" : "YXG4MP6W39",

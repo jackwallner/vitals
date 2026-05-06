@@ -3,11 +3,14 @@ import StoreKit
 import Combine
 import os
 
-/// Vitals+ subscription product identifiers. Must match App Store Connect and `Vitals.storekit`.
+/// Vitals+ product identifiers. Must match App Store Connect and `Vitals.storekit`.
 enum VitalsProduct {
     static let monthly = "com.jackwallner.vitals.plus.monthly"
     static let yearly = "com.jackwallner.vitals.plus.yearly"
-    static let all: [String] = [monthly, yearly]
+    static let lifetime = "com.jackwallner.vitals.plus.lifetime"
+    static let subscriptions: [String] = [monthly, yearly]
+    static let nonConsumables: [String] = [lifetime]
+    static let all: [String] = subscriptions + nonConsumables
 }
 
 @MainActor
@@ -91,19 +94,19 @@ final class StoreService: ObservableObject {
 
     /// Re-checks the device's current entitlements. Call on launch and on
     /// foregrounding so cancellations / billing failures flip `isPro` off promptly.
+    /// Lifetime entitlements never expire, so any non-revoked match is sufficient.
     func updateCustomerProductStatus() async {
-        var hasActiveSubscription = false
+        var entitled = false
         for await result in Transaction.currentEntitlements {
             guard let transaction = try? checkVerified(result) else { continue }
-            if VitalsProduct.all.contains(transaction.productID) {
-                if transaction.revocationDate == nil {
-                    hasActiveSubscription = true
-                }
+            guard VitalsProduct.all.contains(transaction.productID) else { continue }
+            if transaction.revocationDate == nil {
+                entitled = true
             }
         }
-        if isPro != hasActiveSubscription {
-            isPro = hasActiveSubscription
-            logger.info("isPro updated to \(hasActiveSubscription, privacy: .public)")
+        if isPro != entitled {
+            isPro = entitled
+            logger.info("isPro updated to \(entitled, privacy: .public)")
         }
     }
 
@@ -137,7 +140,11 @@ final class StoreService: ObservableObject {
 }
 
 extension Product {
-    /// Localized "/month" or "/year" suffix for paywall display.
+    /// True when this product is a one-time non-consumable (lifetime), not a subscription.
+    var isLifetime: Bool { type == .nonConsumable }
+
+    /// Localized "/month" or "/year" suffix for paywall display. Lifetime falls back to
+    /// the raw display price ("$29.99") since there is no recurring period.
     var pricePeriodLabel: String {
         guard let period = subscription?.subscriptionPeriod else { return displayPrice }
         let unit: String

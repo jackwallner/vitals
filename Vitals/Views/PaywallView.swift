@@ -25,6 +25,10 @@ struct PaywallView: View {
         store.products.first { $0.id == VitalsProduct.yearly }
     }
 
+    private var lifetimeProduct: Product? {
+        store.products.first { $0.id == VitalsProduct.lifetime }
+    }
+
     private var resolvedSelection: Product? {
         let id = selectedProductID ?? VitalsProduct.yearly
         return store.products.first { $0.id == id }
@@ -188,6 +192,15 @@ struct PaywallView: View {
                         selectedProductID = monthly.id
                     }
                 }
+                if let lifetime = lifetimeProduct {
+                    ProductCard(
+                        product: lifetime,
+                        isSelected: selectedProductID == lifetime.id,
+                        badge: "One-time"
+                    ) {
+                        selectedProductID = lifetime.id
+                    }
+                }
             }
         }
     }
@@ -222,7 +235,11 @@ struct PaywallView: View {
             .buttonStyle(.plain)
             .disabled(resolvedSelection == nil || store.purchaseInFlight)
 
-            if let intro = resolvedSelection?.introOfferLabel {
+            if let product = resolvedSelection, product.isLifetime {
+                Text("One-time purchase. No subscription.")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+            } else if let intro = resolvedSelection?.introOfferLabel {
                 Text("Includes a \(intro). Cancel anytime.")
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
@@ -236,6 +253,9 @@ struct PaywallView: View {
 
     private var ctaLabel: String {
         guard let product = resolvedSelection else { return "Subscribe" }
+        if product.isLifetime {
+            return "Buy Lifetime — \(product.displayPrice)"
+        }
         if product.introOfferLabel != nil {
             return "Start Free Trial"
         }
@@ -263,7 +283,10 @@ struct PaywallView: View {
     }
 
     private var disclaimerText: String {
-        "Payment will be charged to your Apple ID account at confirmation of purchase. Subscription auto-renews unless cancelled at least 24 hours before the end of the current period. Manage or cancel anytime in Settings → Apple ID → Subscriptions."
+        if let product = resolvedSelection, product.isLifetime {
+            return "Lifetime is a one-time purchase charged to your Apple ID at confirmation. It does not auto-renew. Restoring is available on any device signed in to the same Apple ID."
+        }
+        return "Payment will be charged to your Apple ID account at confirmation of purchase. Subscription auto-renews unless cancelled at least 24 hours before the end of the current period. Manage or cancel anytime in Settings → Apple ID → Subscriptions."
     }
 
     // MARK: - Helpers
@@ -342,10 +365,10 @@ private struct ProductCard: View {
                                 .foregroundStyle(Theme.caloriesPrimary)
                         }
                     }
-                    Text(product.pricePeriodLabel)
+                    Text(product.isLifetime ? product.displayPrice + " · pay once" : product.pricePeriodLabel)
                         .font(.system(.footnote, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
-                    if let intro = product.introOfferLabel {
+                    if !product.isLifetime, let intro = product.introOfferLabel {
                         Text(intro + " — then renews")
                             .font(.system(.caption2, design: .rounded))
                             .foregroundStyle(Theme.textTertiary)
