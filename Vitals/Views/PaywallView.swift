@@ -127,13 +127,13 @@ struct PaywallView: View {
         VStack(alignment: .leading, spacing: 14) {
             FeatureRow(
                 icon: "doc.richtext.fill",
-                title: "Monthly Summary PDFs",
-                detail: "Print-ready reports with charts, trends, and your highlights."
+                title: "PDF Reports — Any Range",
+                detail: "Print-ready summaries with charts, trends, and a daily breakdown table."
             )
             FeatureRow(
                 icon: "calendar.badge.clock",
-                title: "Custom-Range Reports",
-                detail: "Export any date range — quarterly, year-end, or your own window."
+                title: "Quarterly & Annual Recaps",
+                detail: "Multi-page reports auto-paginate with weekly aggregation for long ranges."
             )
             FeatureRow(
                 icon: "chart.line.uptrend.xyaxis",

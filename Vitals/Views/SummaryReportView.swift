@@ -116,35 +116,87 @@ struct SummaryReportView: View {
         }
     }
 
+    /// Switch to weekly aggregation for ranges > 90 days so bars stay legible.
+    private var useWeeklyAggregation: Bool { report.days.count > 90 }
+
     private var caloriesChart: some View {
-        ReportChartCard(title: "Total Calories", color: reportCalorieColor) {
-            Chart(report.days) { day in
-                BarMark(
-                    x: .value("Date", day.date, unit: .day),
-                    y: .value("Calories", day.totalCalories)
-                )
-                .foregroundStyle(reportCalorieColor)
-                .cornerRadius(2)
+        ReportChartCard(
+            title: useWeeklyAggregation ? "Weekly Calories (sum)" : "Total Calories",
+            color: reportCalorieColor
+        ) {
+            Group {
+                if useWeeklyAggregation {
+                    Chart(report.weeklyAggregates) { week in
+                        BarMark(
+                            x: .value("Week", week.weekStart, unit: .weekOfYear),
+                            y: .value("Calories", week.totalCalories)
+                        )
+                        .foregroundStyle(reportCalorieColor)
+                        .cornerRadius(2)
+                    }
+                    .chartXAxis { weeklyAxisMarks }
+                    .chartYAxis { yAxisMarks }
+                } else {
+                    Chart(report.days) { day in
+                        BarMark(
+                            x: .value("Date", day.date, unit: .day),
+                            y: .value("Calories", day.totalCalories)
+                        )
+                        .foregroundStyle(reportCalorieColor)
+                        .cornerRadius(2)
+                    }
+                    .chartXAxis { axisMarks }
+                    .chartYAxis { yAxisMarks }
+                }
             }
-            .chartXAxis { axisMarks }
-            .chartYAxis { yAxisMarks }
             .frame(height: 130)
         }
     }
 
     private var stepsChart: some View {
-        ReportChartCard(title: "Steps", color: reportStepsColor) {
-            Chart(report.days) { day in
-                BarMark(
-                    x: .value("Date", day.date, unit: .day),
-                    y: .value("Steps", day.steps)
-                )
-                .foregroundStyle(reportStepsColor)
-                .cornerRadius(2)
+        ReportChartCard(
+            title: useWeeklyAggregation ? "Weekly Steps (sum)" : "Steps",
+            color: reportStepsColor
+        ) {
+            Group {
+                if useWeeklyAggregation {
+                    Chart(report.weeklyAggregates) { week in
+                        BarMark(
+                            x: .value("Week", week.weekStart, unit: .weekOfYear),
+                            y: .value("Steps", week.totalSteps)
+                        )
+                        .foregroundStyle(reportStepsColor)
+                        .cornerRadius(2)
+                    }
+                    .chartXAxis { weeklyAxisMarks }
+                    .chartYAxis { yAxisMarks }
+                } else {
+                    Chart(report.days) { day in
+                        BarMark(
+                            x: .value("Date", day.date, unit: .day),
+                            y: .value("Steps", day.steps)
+                        )
+                        .foregroundStyle(reportStepsColor)
+                        .cornerRadius(2)
+                    }
+                    .chartXAxis { axisMarks }
+                    .chartYAxis { yAxisMarks }
+                }
             }
-            .chartXAxis { axisMarks }
-            .chartYAxis { yAxisMarks }
             .frame(height: 130)
+        }
+    }
+
+    private var weeklyAxisMarks: some AxisContent {
+        AxisMarks(values: .stride(by: .weekOfYear, count: max(1, report.weeklyAggregates.count / 8))) { value in
+            AxisValueLabel {
+                if let date = value.as(Date.self) {
+                    Text(Self.dateFmt.string(from: date))
+                        .font(.system(size: 8))
+                        .foregroundStyle(.gray)
+                }
+            }
+            AxisGridLine().foregroundStyle(Color.black.opacity(0.06))
         }
     }
 
@@ -347,18 +399,116 @@ private struct HighlightTile: View {
     }
 }
 
+// MARK: - Data Table Page (multi-page PDF support)
+
+/// A single page of the daily breakdown table appended after the summary page.
+/// Used for ranges > 31 days where the bar chart alone can't show every day's numbers.
+struct SummaryReportTablePage: View {
+    let report: SummaryReport
+    let pageDays: [ReportDay]
+    let pageNumber: Int
+    let pageCount: Int
+
+    private let pageWidth: CGFloat = 612
+    private let pageHeight: CGFloat = 792
+    private let margin: CGFloat = 36
+
+    private static let dateFmt: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "EEE, MMM d, yyyy"
+        return f
+    }()
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Vitals+")
+                        .font(.system(size: 12, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color(red: 1.0, green: 0.42, blue: 0.42))
+                    Text("\(report.title) — Daily Breakdown")
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
+                        .foregroundStyle(.black)
+                }
+                Spacer()
+                Text("Page \(pageNumber) of \(pageCount)")
+                    .font(.system(size: 10, design: .rounded))
+                    .foregroundStyle(.gray)
+            }
+            Rectangle().fill(Color.black.opacity(0.08)).frame(height: 1)
+
+            tableHeader
+            ForEach(pageDays) { day in
+                tableRow(day)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(margin)
+        .frame(width: pageWidth, height: pageHeight, alignment: .topLeading)
+        .background(Color.white)
+        .environment(\.colorScheme, .light)
+    }
+
+    private var tableHeader: some View {
+        HStack(spacing: 0) {
+            Text("DATE")
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Text("ACTIVE")
+                .frame(width: 80, alignment: .trailing)
+            Text("RESTING")
+                .frame(width: 80, alignment: .trailing)
+            Text("TOTAL")
+                .frame(width: 80, alignment: .trailing)
+            Text("STEPS")
+                .frame(width: 80, alignment: .trailing)
+        }
+        .font(.system(size: 9, weight: .semibold, design: .rounded))
+        .foregroundStyle(.gray)
+        .tracking(0.6)
+        .padding(.bottom, 4)
+    }
+
+    private func tableRow(_ day: ReportDay) -> some View {
+        HStack(spacing: 0) {
+            Text(Self.dateFmt.string(from: day.date))
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Text(formatNumber(day.activeCalories))
+                .frame(width: 80, alignment: .trailing)
+            Text(formatNumber(day.restingCalories))
+                .frame(width: 80, alignment: .trailing)
+            Text(formatNumber(day.totalCalories))
+                .frame(width: 80, alignment: .trailing)
+                .fontWeight(.semibold)
+            Text(formatNumber(Double(day.steps)))
+                .frame(width: 80, alignment: .trailing)
+        }
+        .font(.system(size: 10, design: .rounded).monospacedDigit())
+        .foregroundStyle(.black)
+        .padding(.vertical, 3)
+        .background(
+            day.totalCalories == 0 && day.steps == 0
+                ? Color(white: 0.97)
+                : Color.clear
+        )
+    }
+
+    private func formatNumber(_ value: Double) -> String {
+        guard value > 0 else { return "—" }
+        return value.formatted(.number.precision(.fractionLength(0)))
+    }
+}
+
 // MARK: - PDF Rendering
 
 @MainActor
 enum SummaryReportPDF {
-    /// Renders a `SummaryReport` to a PDF on disk and returns the file URL.
-    /// Caller is responsible for cleaning up the file (typically after the share sheet dismisses).
-    static func render(_ report: SummaryReport) throws -> URL {
-        let view = SummaryReportView(report: report)
-        let renderer = ImageRenderer(content: view)
-        renderer.proposedSize = ProposedViewSize(width: 612, height: 792)
-        renderer.scale = 2.0
+    /// Rows per data-table page. Tuned so 50 rows fit a Letter page with margins.
+    private static let rowsPerTablePage = 50
 
+    /// Renders a `SummaryReport` to a PDF on disk and returns the file URL.
+    /// Page 1 is always the summary. For ranges > 31 days, additional data-table
+    /// pages are appended. Caller is responsible for cleaning up the file.
+    static func render(_ report: SummaryReport) throws -> URL {
         let safeTitle = report.title.replacingOccurrences(of: "/", with: "-")
         let url = FileManager.default.temporaryDirectory
             .appendingPathComponent("Vitals_\(safeTitle)_\(Int(Date.now.timeIntervalSince1970)).pdf")
@@ -368,13 +518,39 @@ enum SummaryReportPDF {
             throw NSError(domain: "Vitals.PDF", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not create PDF context."])
         }
 
-        renderer.render { size, renderAction in
+        // Page 1: summary
+        try renderPage(SummaryReportView(report: report), into: context)
+
+        // Pages 2+: daily breakdown table (only when range > 31 days)
+        if report.days.count > 31 {
+            let chunks = stride(from: 0, to: report.days.count, by: rowsPerTablePage).map { start -> [ReportDay] in
+                let end = min(start + rowsPerTablePage, report.days.count)
+                return Array(report.days[start..<end])
+            }
+            let totalPages = 1 + chunks.count
+            for (idx, chunk) in chunks.enumerated() {
+                let page = SummaryReportTablePage(
+                    report: report,
+                    pageDays: chunk,
+                    pageNumber: idx + 2,
+                    pageCount: totalPages
+                )
+                try renderPage(page, into: context)
+            }
+        }
+
+        context.closePDF()
+        return url
+    }
+
+    private static func renderPage<V: View>(_ view: V, into context: CGContext) throws {
+        let renderer = ImageRenderer(content: view)
+        renderer.proposedSize = ProposedViewSize(width: 612, height: 792)
+        renderer.scale = 2.0
+        renderer.render { _, renderAction in
             context.beginPDFPage(nil)
             renderAction(context)
             context.endPDFPage()
         }
-        context.closePDF()
-
-        return url
     }
 }

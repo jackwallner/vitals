@@ -51,6 +51,36 @@ struct SummaryReport: Sendable {
         f.dateFormat = "MMMM d, yyyy"
         return "\(f.string(from: periodStart)) – \(f.string(from: periodEnd))"
     }
+
+    /// Weekly buckets ending Sunday. Used by the PDF chart when `days.count > 90`
+    /// to keep bar widths legible. Empty days inside a week still count toward the
+    /// week's totals (gaps look the same as zero-activity days).
+    var weeklyAggregates: [WeeklyAggregate] {
+        let cal = Calendar(identifier: .gregorian)
+        let grouped = Dictionary(grouping: days) { day -> Date in
+            cal.dateInterval(of: .weekOfYear, for: day.date)?.start ?? cal.startOfDay(for: day.date)
+        }
+        return grouped.map { weekStart, items in
+            WeeklyAggregate(
+                weekStart: weekStart,
+                totalCalories: items.map(\.totalCalories).reduce(0, +),
+                totalSteps: items.map(\.steps).reduce(0, +),
+                dayCount: items.count
+            )
+        }
+        .sorted { $0.weekStart < $1.weekStart }
+    }
+}
+
+struct WeeklyAggregate: Sendable, Identifiable {
+    let id = UUID()
+    let weekStart: Date
+    let totalCalories: Double
+    let totalSteps: Int
+    let dayCount: Int
+
+    var avgDailyCalories: Double { dayCount > 0 ? totalCalories / Double(dayCount) : 0 }
+    var avgDailySteps: Int { dayCount > 0 ? totalSteps / dayCount : 0 }
 }
 
 @MainActor
