@@ -69,6 +69,7 @@ struct HistoryView: View {
     @State private var records: [DayRecord] = []
     @State private var foodByDay: [Date: Double] = [:]
     @State private var previousRecords: [DayRecord] = []
+    @State private var yearAgoRecords: [DayRecord] = []
     @State private var isLoading = true
     @State private var isRefreshing = false
     @State private var animateContent = false
@@ -464,6 +465,8 @@ struct HistoryView: View {
                                 isPro: store.isPro,
                                 calorieTrend: deepCalorieTrend,
                                 stepTrend: deepStepTrend,
+                                yoyCalorieTrend: yoyCalorieTrend,
+                                yoyStepTrend: yoyStepTrend,
                                 periodLabel: deepTrendsPeriodLabel,
                                 onUpgrade: { showPaywall = true }
                             )
@@ -656,6 +659,24 @@ struct HistoryView: View {
         let prevNonZero = previousRecords.filter { $0.totalCalories > 0 }
         guard !prevNonZero.isEmpty else { return nil }
         let prev = prevNonZero.map(\.totalCalories).reduce(0, +) / Double(prevNonZero.count)
+        guard prev > 0, curr > 0 else { return nil }
+        return ((curr - prev) / prev) * 100
+    }
+
+    private var yoyCalorieTrend: Double? {
+        let curr = avgCalories
+        let yaNonZero = yearAgoRecords.filter { $0.totalCalories > 0 }
+        guard !yaNonZero.isEmpty else { return nil }
+        let prev = yaNonZero.map(\.totalCalories).reduce(0, +) / Double(yaNonZero.count)
+        guard prev > 0, curr > 0 else { return nil }
+        return ((curr - prev) / prev) * 100
+    }
+
+    private var yoyStepTrend: Double? {
+        let curr = Double(avgSteps)
+        let yaNonZero = yearAgoRecords.filter { $0.steps > 0 }
+        guard !yaNonZero.isEmpty else { return nil }
+        let prev = Double(yaNonZero.map(\.steps).reduce(0, +)) / Double(yaNonZero.count)
         guard prev > 0, curr > 0 else { return nil }
         return ((curr - prev) / prev) * 100
     }
@@ -993,6 +1014,7 @@ struct HistoryView: View {
             // calculations. Failure here is silent — the deep trends card just
             // shows an empty state and the report skips trend pills.
             await loadPreviousWindow(history: history)
+            await loadYearAgoWindow(history: history)
         } catch {
             print("Failed to fetch history: \(error)")
             loadErrorMessage = records.isEmpty
@@ -1021,7 +1043,7 @@ struct HistoryView: View {
         case .week, .month, .threeMonths, .year:
             lengthDays = selectedPeriod.days ?? 0
         case .custom:
-            lengthDays = max(1, cal.dateComponents([.day], from: customStart, to: customEnd).day ?? 0)
+            lengthDays = max(1, (cal.dateComponents([.day], from: customStart, to: customEnd).day ?? 0) + 1)
         }
         guard lengthDays > 0 else {
             previousRecords = []
@@ -1035,6 +1057,30 @@ struct HistoryView: View {
             }
         } catch {
             previousRecords = []
+        }
+    }
+
+    /// Load the same calendar window shifted back one year, used for the year-over-year
+    /// comparison row in Deep Trends (Vitals+). Silent on failure.
+    private func loadYearAgoWindow(history: [(date: Date, active: Double, resting: Double, steps: Int)]) async {
+        guard let earliest = history.map(\.date).min(),
+              let latest = history.map(\.date).max() else {
+            yearAgoRecords = []
+            return
+        }
+        let cal = Calendar.current
+        guard let yaStart = cal.date(byAdding: .year, value: -1, to: earliest),
+              let yaEnd = cal.date(byAdding: .year, value: -1, to: latest) else {
+            yearAgoRecords = []
+            return
+        }
+        do {
+            let ya = try await healthKit.fetchHistory(from: yaStart, to: yaEnd)
+            yearAgoRecords = ya.map {
+                DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
+            }
+        } catch {
+            yearAgoRecords = []
         }
     }
 
@@ -1119,8 +1165,12 @@ private struct DeepTrendsCard: View {
     let isPro: Bool
     let calorieTrend: Double?
     let stepTrend: Double?
+    let yoyCalorieTrend: Double?
+    let yoyStepTrend: Double?
     let periodLabel: String
     let onUpgrade: () -> Void
+
+    private var hasYoyData: Bool { yoyCalorieTrend != nil || yoyStepTrend != nil }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -1142,18 +1192,33 @@ private struct DeepTrendsCard: View {
                 }
             }
 
-            Text(periodLabel)
-                .font(.system(.caption, design: .rounded))
-                .foregroundStyle(Theme.textTertiary)
-
             if isPro {
-                HStack(spacing: 12) {
-                    TrendStat(label: "Calories", trend: calorieTrend, color: Theme.caloriesPrimary)
-                    TrendStat(label: "Steps", trend: stepTrend, color: Theme.stepsPrimary)
+                VStack(alignment: .leading, spacing: 14) {
+                    Text(periodLabel)
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(Theme.textTertiary)
+                    HStack(spacing: 12) {
+                        TrendStat(label: "Calories", trend: calorieTrend, color: Theme.caloriesPrimary)
+                        TrendStat(label: "Steps", trend: stepTrend, color: Theme.stepsPrimary)
+                    }
+
+                    if hasYoyData {
+                        Divider().background(Theme.textTertiary.opacity(0.2))
+                        Text("vs. same period last year")
+                            .font(.system(.caption, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                        HStack(spacing: 12) {
+                            TrendStat(label: "Calories", trend: yoyCalorieTrend, color: Theme.caloriesPrimary)
+                            TrendStat(label: "Steps", trend: yoyStepTrend, color: Theme.stepsPrimary)
+                        }
+                    }
                 }
             } else {
+                Text(periodLabel)
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("Compare this period to the one before it. See whether you’re trending up or down on calories and steps.")
+                    Text("See whether you’re trending up or down on calories and steps — vs. the previous period and the same period last year.")
                         .font(.system(.subheadline, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
