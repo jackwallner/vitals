@@ -41,7 +41,7 @@
         "url": "https://jackwallner.github.io/vitals/",
         "downloadUrl": "https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504",
         "screenshot": "https://jackwallner.github.io/vitals/iphone-dashboard.png",
-        "softwareVersion": "1.2.0",
+        "softwareVersion": "1.3.4",
         "author": {
             "@type": "Person",
             "name": "Jack Wallner"
@@ -506,12 +506,12 @@
             <div class="feature-card">
                 <span class="label">Net Deficit</span>
                 <h3>Burned minus eaten</h3>
-                <p>Connect a food app like MyFitnessPal to Apple Health and see your net calorie balance in real time.</p>
+                <p>Connect a food app like MyFitnessPal to Apple Health and see your net balance live on the dashboard, plus daily history and totals.</p>
             </div>
             <div class="feature-card">
                 <span class="label">Pacing</span>
                 <h3>Ahead or behind</h3>
-                <p>A pace indicator compares your current day to your 30-day average at the same time of day.</p>
+                <p>Compare your current day to your rolling average at the same time. Choose same-weekday or all-days, over 14, 30, 90, or 365 days.</p>
             </div>
             <div class="feature-card">
                 <span class="label">Widgets</span>
@@ -519,14 +519,19 @@
                 <p>Calories and steps on your home screen or lock screen without opening the app.</p>
             </div>
             <div class="feature-card">
+                <span class="label">Apple Watch</span>
+                <h3>Complications &amp; trends</h3>
+                <p>Circular, rectangular, inline, and corner complications, plus 7-day calorie and step trends right on your wrist.</p>
+            </div>
+            <div class="feature-card">
+                <span class="label">Vitals+</span>
+                <h3>PDF summary reports</h3>
+                <p>An optional subscription unlocks shareable monthly PDF summaries with deeper trends. Everything else stays free.</p>
+            </div>
+            <div class="feature-card">
                 <span class="label">Appearance</span>
                 <h3>Light &amp; dark mode</h3>
                 <p>Follows your system setting automatically, or lock it to light or dark in the app settings.</p>
-            </div>
-            <div class="feature-card">
-                <span class="label">Apple Watch</span>
-                <h3>Complications</h3>
-                <p>Your data on your watch face all day &mdash; circular, rectangular, inline, and corner styles.</p>
             </div>
         </div>
     </section>
@@ -558,7 +563,7 @@
                 <div class="more-info-section">
                     <h3>Specs</h3>
                     <table class="specs-table">
-                        <tr><td>Platform</td><td>iOS 17+, watchOS 10+</td></tr>
+                        <tr><td>Platform</td><td>iOS 26+, watchOS 26+</td></tr>
                         <tr><td>Language</td><td>Swift 6 with strict concurrency</td></tr>
                         <tr><td>Framework</td><td>SwiftUI · HealthKit · WidgetKit</td></tr>
                         <tr><td>Data</td><td>Read-only HealthKit access, local only</td></tr>
@@ -573,6 +578,7 @@
                     <p><strong>Watch-first design.</strong> The Apple Watch app isn't an afterthought — it's the primary interface. The iPhone app exists for detailed history and settings. Both share a SwiftData cache via App Group.</p>
                     <p><strong>Widget reliability.</strong> Widgets refresh on a timeline, not on open. Background tasks keep the cache warm. The complication updates within 15 minutes of HealthKit changes.</p>
                     <p><strong>Privacy as a feature.</strong> No analytics, no crash reporting, no accounts. The app doesn't know who you are. Reviewers have flagged this positively — it's a selling point, not a limitation.</p>
+                    <p><strong>Free first, paid optional.</strong> Every core feature is free forever. Vitals+ is a small subscription that adds monthly PDF reports and deeper trends — purchase state is handled by StoreKit on-device, no backend involved.</p>
                 </div>
             </div>
         </div>

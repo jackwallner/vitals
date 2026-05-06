@@ -45,6 +45,9 @@ View your full history: 7 days, 30 days, 90 days, 1 year, or any custom date ran
 WIDGETS & COMPLICATIONS
 Home screen and lock screen widgets show your calories and steps without opening the app. Apple Watch face complications keep your data visible all day.
 
+VITALS+ (OPTIONAL SUBSCRIPTION)
+Unlock deeper insights with Vitals+. Generate beautifully styled PDF summary reports for any date range — complete with charts, trend arrows, and daily breakdown tables. Deep Trends shows period-over-period and year-over-year comparisons so you can see whether your calories and steps are trending up or down. Quarterly and annual recap reports auto-paginate with weekly aggregation. All reports are generated on-device — nothing leaves your phone. The free tier remains fully functional without a subscription.
+
 PRIVATE BY DESIGN
 All data stays on your device. No analytics, no ads, no servers, no account required. Read-only Apple Health access — the app never writes to your health records.
 
@@ -52,7 +55,7 @@ Total Calories is not a medical device and is not intended to diagnose, treat, o
 
 ---COPY END---
 
-The first sentence (visible "above the fold" before users tap "Read More") leads with the core value proposition and mentions Apple Health for discoverability. Description is ~1,350 characters (well under the 4,000 limit).
+The first sentence (visible "above the fold" before users tap "Read More") leads with the core value proposition and mentions Apple Health for discoverability. Description is ~2,100 characters (well under the 4,000 limit).
 
 ---
 
@@ -89,6 +92,41 @@ health,fitness,pedometer,activity,widget,watch,energy,exercise,walking,progress,
 98/100 characters. All terms are unique and not in the name/subtitle.
 
 ---
+
+## What's New (Version 1.3.4 — Vitals+ Launch)
+
+Paste into **What's New in This Version** (plain text, no markdown).
+
+**Full notes** (~1,500 characters — under the 4,000 limit):
+
+---COPY START---
+
+Introducing Vitals+ — deeper insights and shareable PDF reports for power users.
+
+NEW — VITALS+ SUBSCRIPTION (OPTIONAL)
+• PDF Summary Reports: Generate print-ready reports for any date range with charts, trend arrows, and daily breakdown tables.
+• Deep Trends: Period-over-period and year-over-year comparison cards show whether your calories and steps are trending up or down.
+• Quarterly & Annual Recaps: Multi-page reports auto-paginate with weekly aggregation for long ranges.
+• Lifetime Option: One-time purchase available — no subscription needed.
+• All reports are generated on-device. Nothing leaves your phone.
+• The free tier remains fully functional. Vitals+ builds on top.
+
+The paywall includes a 7-day free trial on monthly and yearly plans, plus a Restore Purchases button. Manage or cancel anytime in Settings → Apple ID → Subscriptions.
+
+---COPY END---
+
+**Short notes**:
+
+---COPY SHORT START---
+
+• Vitals+ subscription: PDF summary reports with charts, trends, and daily breakdowns.
+• Deep Trends: period-over-period and year-over-year calorie & step comparisons.
+• Quarterly & annual multi-page recap reports.
+• Lifetime one-time purchase option.
+• 7-day free trial on monthly/yearly plans.
+• All reports generated on-device — fully private.
+
+---COPY SHORT END---
 
 ## What's New (Version 1.1.0)
 
@@ -230,6 +268,17 @@ PRIVACY
 - No network requests of any kind
 - Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 
+VITALS+ SUBSCRIPTION
+
+- Optional auto-renewable subscription (monthly $1.99, yearly $14.99)
+- Lifetime one-time purchase ($29.99) also available
+- 7-day free trial on monthly and yearly plans
+- Unlocks: PDF Summary Reports (History tab → doc icon) and Deep Trends comparison card
+- Free tier remains fully functional without subscription
+- Paywall accessible via Settings → Vitals+ → Unlock Vitals+
+- Restore Purchases button on paywall
+- Manage/cancel: Settings → Apple ID → Subscriptions
+
 Privacy Policy and Support links are accessible in the iPhone Settings sheet and Apple Watch Help sheet.
 
 ---COPY END---
@@ -268,6 +317,7 @@ Device: iPhone 15 Pro Max or 17 Pro Max
 3. Dashboard in minimal / counter-only mode
 4. Settings sheet showing goal toggles and appearance
 5. Onboarding / welcome screen
+6. Vitals+ paywall (use the `paywall` screenshot scene — `ScreenshotConfig.wantsPaywall`)
 
 Lead with the dashboard screenshot — it shows the most functionality at a glance.
 
@@ -295,12 +345,18 @@ Optional: complication shown on a watch face.
 - [ ] App handles denied HealthKit permissions (guidance + Settings link)
 - [ ] App handles empty Health data without crashing
 - [ ] No health data stored in iCloud
-- [ ] App Privacy declarations completed in App Store Connect
+- [ ] App Privacy declarations completed in App Store Connect (include Purchases)
 - [ ] Medical disclaimer in description
-- [ ] All required screenshot sizes uploaded
-- [ ] Review notes entered with HealthKit instructions
+- [ ] All required screenshot sizes uploaded (include paywall screenshot)
+- [ ] Review notes entered with HealthKit instructions + Vitals+ subscription info
 - [ ] Phone number entered in review contact info
 - [ ] Build uploaded and selected for this version
+- [ ] Paid Apps agreement signed; tax + banking complete
+- [ ] Subscription products created in ASC (monthly, yearly, lifetime)
+- [ ] 7-day free trial configured on monthly + yearly
+- [ ] Subscription review screenshot uploaded
+- [ ] Tested purchase + restore in Sandbox / TestFlight
+- [ ] Tested cancel flow (isPro deactivates after period end)
 
 ---
 
@@ -336,7 +392,7 @@ will show "Subscriptions unavailable." Local Simulator testing works against
    - Reference Name: `Vitals+`
    - Localized Display Name (English): `Vitals+`
 
-3. **Create products in the group**
+3. **Create subscription products in the group**
 
 | Product ID | Reference Name | Duration | Price |
 |------------|----------------|----------|-------|
@@ -345,19 +401,32 @@ will show "Subscriptions unavailable." Local Simulator testing works against
 
    For each product:
    - Localized display name (e.g. "Vitals+ Monthly")
-   - Localized description ("Unlock Monthly PDF Summaries & Deep Trends.")
+   - Localized description ("Unlock PDF summary reports and Deep Trends.")
    - Review screenshot showing the paywall
 
-4. **Introductory offer (free trial)**
-   - On each product → Subscription Pricing → Promotional Offers → Add Introductory Offer
+4. **Create the lifetime in-app purchase** (separate from the subscription group)
+   - My Apps → Vitals → Monetization → In-App Purchases → Create
+   - Type: **Non-Consumable**
+
+| Product ID | Reference Name | Price |
+|------------|----------------|-------|
+| `com.jackwallner.vitals.plus.lifetime` | Vitals+ Lifetime | $29.99 |
+
+   - Localized display name ("Vitals+ Lifetime")
+   - Localized description ("One-time purchase. Unlocks PDF summary reports and Deep Trends forever.")
+   - Review screenshot showing the paywall
+
+5. **Introductory offer (free trial — subscriptions only)**
+   - On the monthly and yearly products → Subscription Pricing → Promotional Offers → Add Introductory Offer
    - Type: Free
    - Duration: 1 Week
    - Eligibility: New Subscribers
    - Apply to all storefronts
+   - (The lifetime non-consumable does not get a trial.)
 
-5. **Subscription review information**
+6. **Subscription review information**
    - Screenshot of paywall
-   - Review notes: "Subscription unlocks PDF Monthly Summary report (History tab → top-right doc icon) and Deep Trends comparison card. Free tier remains fully functional."
+   - Review notes: "Subscription unlocks PDF Summary Reports (History tab → top-right doc icon) and the Deep Trends comparison card. Lifetime non-consumable grants the same entitlement permanently. Free tier remains fully functional."
 
 ### App Information
 
@@ -386,10 +455,11 @@ The paywall must show — and does — the following before purchase:
 
 - [ ] Paid Apps agreement signed; tax + banking complete
 - [ ] Both subscription products created and in "Ready to Submit"
-- [ ] 7-day free trial configured on both products
+- [ ] Lifetime non-consumable IAP created and in "Ready to Submit"
+- [ ] 7-day free trial configured on monthly + yearly
 - [ ] Subscription review screenshot uploaded
 - [ ] Subscription review notes entered
 - [ ] App Privacy declaration includes Purchases data type
-- [ ] Tested purchase + restore in Sandbox / TestFlight
+- [ ] Tested purchase + restore in Sandbox / TestFlight (all 3 SKUs)
 - [ ] Tested cancel flow (subscription deactivates `isPro` after period end)
 - [ ] App description mentions Vitals+

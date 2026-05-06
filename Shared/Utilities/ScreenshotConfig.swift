@@ -9,6 +9,7 @@ enum ScreenshotScene: String {
     case watchToday
     case watchBreakdown
     case watchHelp
+    case paywall
 }
 
 enum ScreenshotConfig {
@@ -28,6 +29,7 @@ enum ScreenshotConfig {
     static var wantsWatchHelp: Bool { scene == .watchHelp }
     static var wantsWatchBreakdown: Bool { scene == .watchBreakdown }
     static var usesMinimalGoals: Bool { scene == .minimal }
+    static var wantsPaywall: Bool { scene == .paywall }
 }
 
 #if DEBUG

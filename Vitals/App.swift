@@ -171,6 +171,7 @@ struct VitalsApp: App {
 struct MainTabView: View {
     @State private var selectedTab = 0
     @State private var historyHasAppeared = false
+    @State private var showPaywallScreenshot = ScreenshotConfig.wantsPaywall
 
     init() {
         if ScreenshotConfig.wantsHistoryTab {
@@ -221,6 +222,9 @@ struct MainTabView: View {
             .padding(.bottom, 12)
         }
         .ignoresSafeArea(edges: .bottom)
+        .sheet(isPresented: $showPaywallScreenshot) {
+            PaywallView()
+        }
     }
 }
 

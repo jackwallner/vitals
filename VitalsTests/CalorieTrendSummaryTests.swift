@@ -3,8 +3,8 @@ import XCTest
 final class CalorieTrendSummaryTests: XCTestCase {
     func testWeeklyAndMonthlyAveragesExcludeToday() throws {
         let calendar = Calendar(identifier: .gregorian)
-        let end = try XCTUnwrap(calendar.date(from: DateComponents(year: 2026, month: 4, day: 26)))
-        // 60 days ending Apr 26; today (index 59) is excluded from averages.
+        let end = calendar.startOfDay(for: Date.now)
+        // 60 days ending today; today (index 59) is excluded from averages.
         let history = makeHistory(days: 60, ending: end, calendar: calendar) { index in
             if index >= 53 { return (active: 700.0, resting: 1_700.0) }
             if index >= 30 { return (active: 600.0, resting: 1_600.0) }
@@ -38,8 +38,8 @@ final class CalorieTrendSummaryTests: XCTestCase {
 
     func testZeroAndNegativeDaysAreExcludedFromAverages() throws {
         let calendar = Calendar(identifier: .gregorian)
-        let end = try XCTUnwrap(calendar.date(from: DateComponents(year: 2026, month: 4, day: 26)))
-        // 14 days ending Apr 26; today (index 13) excluded from averages.
+        let end = calendar.startOfDay(for: Date.now)
+        // 14 days ending today; today (index 13) excluded from averages.
         let history = makeHistory(days: 14, ending: end, calendar: calendar) { index in
             switch index {
             case 7, 8, 9:
