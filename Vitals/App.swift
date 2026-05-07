@@ -171,6 +171,7 @@ struct VitalsApp: App {
 struct MainTabView: View {
     @State private var selectedTab = 0
     @State private var historyHasAppeared = false
+    @State private var plusHasAppeared = false
     @State private var showPaywallScreenshot = ScreenshotConfig.wantsPaywall
 
     init() {
@@ -182,9 +183,10 @@ struct MainTabView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            // Keep both views alive, toggle visibility. `.accessibilityHidden` on the
-            // inactive tab prevents VoiceOver's rotor from surfacing elements that are
-            // visually invisible (opacity 0) but still in the accessibility tree.
+            // Keep views alive, toggle visibility. `.accessibilityHidden` on
+            // inactive tabs prevents VoiceOver's rotor from surfacing elements
+            // that are visually invisible (opacity 0) but still in the
+            // accessibility tree.
             DashboardView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .opacity(selectedTab == 0 ? 1 : 0)
@@ -196,6 +198,13 @@ struct MainTabView: View {
                     .opacity(selectedTab == 1 ? 1 : 0)
                     .allowsHitTesting(selectedTab == 1)
                     .accessibilityHidden(selectedTab != 1)
+            }
+            if plusHasAppeared {
+                PlusView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .opacity(selectedTab == 2 ? 1 : 0)
+                    .allowsHitTesting(selectedTab == 2)
+                    .accessibilityHidden(selectedTab != 2)
             }
 
             // Custom tab bar
@@ -213,6 +222,15 @@ struct MainTabView: View {
                 ) {
                     if !historyHasAppeared { historyHasAppeared = true }
                     selectedTab = 1
+                }
+
+                TabButton(
+                    icon: "sparkles",
+                    label: "Plus",
+                    isSelected: selectedTab == 2
+                ) {
+                    if !plusHasAppeared { plusHasAppeared = true }
+                    selectedTab = 2
                 }
             }
             .padding(.horizontal, 8)
