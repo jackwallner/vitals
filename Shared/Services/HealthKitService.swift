@@ -28,7 +28,10 @@ final class HealthKitService: ObservableObject {
         if ScreenshotConfig.isEnabled {
             isAuthorized = true
         } else {
-            isAuthorized = false
+            // Seed from the last known answer so cold launch skips the HK IPC roundtrip
+            // and the dashboard stops gating its first fetch on `synchronizeAuthorization`.
+            let cached = (UserDefaults(suiteName: vitalsAppGroupID) ?? .standard).bool(forKey: "hkAuthGranted")
+            isAuthorized = cached
             // authorizationStatus(for:) only reports write/sharing auth — useless for
             // read-only apps.  Use the async request-status API instead: .unnecessary
             // means the user was already prompted (we can't know their answer for reads,
@@ -37,6 +40,7 @@ final class HealthKitService: ObservableObject {
                 let status = await self.authorizationRequestStatus(includeDietaryEnergy: false)
                 if status == .unnecessary {
                     self.isAuthorized = true
+                    (UserDefaults(suiteName: vitalsAppGroupID) ?? .standard).set(true, forKey: "hkAuthGranted")
                 }
             }
         }
@@ -59,6 +63,7 @@ final class HealthKitService: ObservableObject {
         do {
             try await store.requestAuthorization(toShare: [], read: readTypes)
             isAuthorized = true
+            (UserDefaults(suiteName: vitalsAppGroupID) ?? .standard).set(true, forKey: "hkAuthGranted")
             enableBackgroundDelivery()
             healthKitLogger.info("HealthKit authorization request completed")
         } catch {
@@ -647,33 +652,72 @@ final class HealthKitService: ObservableObject {
         return results
     }
 
+    /// Background-friendly variant of `saveHistoryToCache` — usable from any actor.
+    /// Writes through a freshly-spawned `ModelContext` so it doesn't compete with
+    /// the dashboard's main-thread work. The `Date` element is the row identity
+    /// (as a normalized day-start), avoiding any `(Double, Double, Int)` tuple
+    /// across-actor sendability noise.
+    nonisolated static func saveHistoryToCacheInBackground(
+        _ history: [(date: Date, active: Double, resting: Double, steps: Int)],
+        container: ModelContainer
+    ) throws {
+        guard !history.isEmpty else { return }
+        let context = ModelContext(container)
+        try writeHistoryToContext(history, context: context)
+    }
+
     func saveHistoryToCache(history: [(date: Date, active: Double, resting: Double, steps: Int)]) throws {
+        guard !history.isEmpty else { return }
         let context = ModelContext(DataService.sharedModelContainer)
+        try Self.writeHistoryToContext(history, context: context)
+    }
+
+    private nonisolated static func writeHistoryToContext(
+        _ history: [(date: Date, active: Double, resting: Double, steps: Int)],
+        context: ModelContext
+    ) throws {
+
+        // Single ranged fetch + in-memory diff. Replaces N fetches (one per day) with one,
+        // which is the difference between linear and quadratic-ish behavior as the store grows.
+        let keys = history.map { DailyHealthRecord.key(for: $0.date) }
+        guard let minKey = keys.min(), let maxKey = keys.max() else { return }
+        let descriptor = FetchDescriptor<DailyHealthRecord>(
+            predicate: #Predicate { $0.dateString >= minKey && $0.dateString <= maxKey }
+        )
+        let existing = try context.fetch(descriptor)
+        let existingByKey = Dictionary(uniqueKeysWithValues: existing.map { ($0.dateString, $0) })
+
         var inserted = 0
         var updated = 0
+        let now = Date.now
         for day in history {
             let key = DailyHealthRecord.key(for: day.date)
-            let descriptor = FetchDescriptor<DailyHealthRecord>(
-                predicate: #Predicate { $0.dateString == key }
-            )
-            if let existing = try context.fetch(descriptor).first {
-                existing.activeCalories = day.active
-                existing.restingCalories = day.resting
-                existing.steps = day.steps
-                existing.lastUpdated = .now
+            if let record = existingByKey[key] {
+                // Skip writes when nothing changed — avoids dirtying the context and
+                // turns a no-op refresh into a near-zero-cost call.
+                if record.activeCalories == day.active,
+                   record.restingCalories == day.resting,
+                   record.steps == day.steps {
+                    continue
+                }
+                record.activeCalories = day.active
+                record.restingCalories = day.resting
+                record.steps = day.steps
+                record.lastUpdated = now
                 updated += 1
             } else {
-                let record = DailyHealthRecord(
+                context.insert(DailyHealthRecord(
                     date: day.date,
                     activeCalories: day.active,
                     restingCalories: day.resting,
                     steps: day.steps
-                )
-                context.insert(record)
+                ))
                 inserted += 1
             }
         }
-        try context.save()
+        if inserted > 0 || updated > 0 {
+            try context.save()
+        }
         healthKitLogger.info("Saved history cache: \(inserted, privacy: .public) inserted, \(updated, privacy: .public) updated")
     }
 

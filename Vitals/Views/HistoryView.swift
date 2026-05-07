@@ -1008,7 +1008,11 @@ struct HistoryView: View {
                 foodByDay = foodMap
             }
             // Persist the fetched history to the shared cache so the watch can read it.
-            try? healthKit.saveHistoryToCache(history: history)
+            // Run on a background context so the History view stays responsive.
+            let container = DataService.sharedModelContainer
+            Task.detached(priority: .background) {
+                try? HealthKitService.saveHistoryToCacheInBackground(history, container: container)
+            }
 
             // Fire-and-forget: load the immediately preceding window for trend
             // calculations. Failure here is silent — the deep trends card just

@@ -810,6 +810,29 @@ struct DashboardView: View {
         pacingStepsInsufficient = false
     }
 
+    private func scheduleThrottledHistorySync() {
+        let key = "lastHistoryCacheSyncDate"
+        let defaults = UserDefaults(suiteName: vitalsAppGroupID) ?? .standard
+        if let last = defaults.object(forKey: key) as? Date,
+           Date.now.timeIntervalSince(last) < 30 * 60 {
+            return
+        }
+        // Fetch on main (HK queries hand off to a background thread internally), but
+        // perform the SwiftData write nonisolated so the dashboard never waits on it.
+        let container = DataService.sharedModelContainer
+        Task(priority: .background) {
+            do {
+                let history = try await healthKit.fetchHistory(days: 90)
+                try await Task.detached(priority: .background) {
+                    try HealthKitService.saveHistoryToCacheInBackground(history, container: container)
+                }.value
+                defaults.set(Date.now, forKey: key)
+            } catch {
+                print("Background history cache sync failed: \(error)")
+            }
+        }
+    }
+
     private func loadDietaryEnergy() async {
         guard goals.showNetCalories else {
             foodCalories = 0
@@ -941,15 +964,10 @@ struct DashboardView: View {
                 }
             }
 
-            // Background history sync for the watch shared cache
-            Task(priority: .utility) {
-                do {
-                    let history = try await healthKit.fetchHistory(days: 90)
-                    try healthKit.saveHistoryToCache(history: history)
-                } catch {
-                    print("Background history cache sync failed: \(error)")
-                }
-            }
+            // Background history sync for the watch shared cache.
+            // Throttle to avoid running 90 daily HK queries + a SwiftData write on every
+            // foreground enter; the watch only needs reasonably fresh data, not real-time.
+            scheduleThrottledHistorySync()
 
             // Dietary and pacing are independent HK reads — run them concurrently
             // so the slower of the two dominates instead of summing.
