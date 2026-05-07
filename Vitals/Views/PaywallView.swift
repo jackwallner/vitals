@@ -39,17 +39,34 @@ struct PaywallView: View {
             ZStack {
                 Theme.background.ignoresSafeArea()
 
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 28) {
-                        header
-                        featureList
-                        productOptions
-                        ctaButton
-                        legalFooter
+                ScrollViewReader { proxy in
+                    ScrollView(showsIndicators: false) {
+                        VStack(spacing: paywallSectionSpacing) {
+                            header
+                            featureList
+                            productOptions
+                            ctaButton
+                                .id("paywallCTA")
+                            legalFooter
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.top, paywallTopPadding)
+                        .padding(.bottom, 32)
                     }
-                    .padding(.horizontal, 24)
-                    .padding(.top, 16)
-                    .padding(.bottom, 32)
+                    .onAppear {
+                        #if DEBUG
+                        if ScreenshotConfig.wantsPaywall {
+                            // Scroll so the CTA + products are both visible in the
+                            // App Store screenshot. .bottom centers it lower in the
+                            // viewport, leaving the products and disclaimer in frame.
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                withAnimation(nil) {
+                                    proxy.scrollTo("paywallCTA", anchor: .bottom)
+                                }
+                            }
+                        }
+                        #endif
+                    }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -152,6 +169,47 @@ struct PaywallView: View {
 
     @ViewBuilder
     private var productOptions: some View {
+        #if DEBUG
+        if ScreenshotConfig.wantsPaywall {
+            screenshotProductOptions
+        } else {
+            productOptionsLive
+        }
+        #else
+        productOptionsLive
+        #endif
+    }
+
+    #if DEBUG
+    private var screenshotProductOptions: some View {
+        VStack(spacing: 12) {
+            ScreenshotProductCard(
+                title: "Vitals+ Yearly",
+                priceLine: "$14.99/year",
+                introLine: "7-day free trial — then renews",
+                badge: "Save 37%",
+                isSelected: true
+            )
+            ScreenshotProductCard(
+                title: "Vitals+ Monthly",
+                priceLine: "$1.99/month",
+                introLine: "7-day free trial — then renews",
+                badge: nil,
+                isSelected: false
+            )
+            ScreenshotProductCard(
+                title: "Vitals+ Lifetime",
+                priceLine: "$29.99 · pay once",
+                introLine: nil,
+                badge: "One-time",
+                isSelected: false
+            )
+        }
+    }
+    #endif
+
+    @ViewBuilder
+    private var productOptionsLive: some View {
         if store.isLoadingProducts && store.products.isEmpty {
             HStack {
                 Spacer()
@@ -235,23 +293,53 @@ struct PaywallView: View {
             .buttonStyle(.plain)
             .disabled(resolvedSelection == nil || store.purchaseInFlight)
 
-            if let product = resolvedSelection, product.isLifetime {
-                Text("One-time purchase. No subscription.")
-                    .font(.system(.caption, design: .rounded))
-                    .foregroundStyle(Theme.textTertiary)
-            } else if let intro = resolvedSelection?.introOfferLabel {
-                Text("Includes a \(intro). Cancel anytime.")
-                    .font(.system(.caption, design: .rounded))
-                    .foregroundStyle(Theme.textTertiary)
-            } else {
-                Text("Auto-renews until cancelled.")
-                    .font(.system(.caption, design: .rounded))
-                    .foregroundStyle(Theme.textTertiary)
-            }
+            ctaSubtitle
+                .font(.system(.caption, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
         }
     }
 
+    private var paywallSectionSpacing: CGFloat {
+        #if DEBUG
+        if ScreenshotConfig.wantsPaywall { return 18 }
+        #endif
+        return 28
+    }
+
+    private var paywallTopPadding: CGFloat {
+        #if DEBUG
+        if ScreenshotConfig.wantsPaywall { return 4 }
+        #endif
+        return 16
+    }
+
+    @ViewBuilder
+    private var ctaSubtitle: some View {
+        #if DEBUG
+        if ScreenshotConfig.wantsPaywall {
+            Text("Includes a 7-day free trial. Cancel anytime.")
+        } else if let product = resolvedSelection, product.isLifetime {
+            Text("One-time purchase. No subscription.")
+        } else if let intro = resolvedSelection?.introOfferLabel {
+            Text("Includes a \(intro). Cancel anytime.")
+        } else {
+            Text("Auto-renews until cancelled.")
+        }
+        #else
+        if let product = resolvedSelection, product.isLifetime {
+            Text("One-time purchase. No subscription.")
+        } else if let intro = resolvedSelection?.introOfferLabel {
+            Text("Includes a \(intro). Cancel anytime.")
+        } else {
+            Text("Auto-renews until cancelled.")
+        }
+        #endif
+    }
+
     private var ctaLabel: String {
+        #if DEBUG
+        if ScreenshotConfig.wantsPaywall { return "Start Free Trial" }
+        #endif
         guard let product = resolvedSelection else { return "Subscribe" }
         if product.isLifetime {
             return "Buy Lifetime — \(product.displayPrice)"
@@ -283,6 +371,11 @@ struct PaywallView: View {
     }
 
     private var disclaimerText: String {
+        #if DEBUG
+        if ScreenshotConfig.wantsPaywall {
+            return "Payment will be charged to your Apple ID account at confirmation of purchase. Subscription auto-renews unless cancelled at least 24 hours before the end of the current period. Manage or cancel anytime in Settings → Apple ID → Subscriptions."
+        }
+        #endif
         if let product = resolvedSelection, product.isLifetime {
             return "Lifetime is a one-time purchase charged to your Apple ID at confirmation. It does not auto-renew. Restoring is available on any device signed in to the same Apple ID."
         }
@@ -330,6 +423,62 @@ private struct FeatureRow: View {
         }
     }
 }
+
+#if DEBUG
+private struct ScreenshotProductCard: View {
+    let title: String
+    let priceLine: String
+    let introLine: String?
+    let badge: String?
+    let isSelected: Bool
+
+    var body: some View {
+        HStack(alignment: .center, spacing: 14) {
+            ZStack {
+                Circle()
+                    .stroke(isSelected ? Theme.caloriesPrimary : Theme.textTertiary.opacity(0.4), lineWidth: 2)
+                    .frame(width: 22, height: 22)
+                if isSelected {
+                    Circle()
+                        .fill(Theme.caloriesPrimary)
+                        .frame(width: 12, height: 12)
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 8) {
+                    Text(title)
+                        .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                        .foregroundStyle(Theme.textPrimary)
+                    if let badge {
+                        Text(badge)
+                            .font(.system(size: 10, weight: .bold, design: .rounded))
+                            .padding(.horizontal, 7)
+                            .padding(.vertical, 3)
+                            .background(Theme.caloriesPrimary.opacity(0.15), in: Capsule())
+                            .foregroundStyle(Theme.caloriesPrimary)
+                    }
+                }
+                Text(priceLine)
+                    .font(.system(.footnote, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                if let introLine {
+                    Text(introLine)
+                        .font(.system(.caption2, design: .rounded))
+                        .foregroundStyle(Theme.textTertiary)
+                }
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(16)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .overlay(
+            RoundedRectangle(cornerRadius: Theme.cardRadius)
+                .stroke(isSelected ? Theme.caloriesPrimary : Color.clear, lineWidth: 2)
+        )
+    }
+}
+#endif
 
 private struct ProductCard: View {
     let product: Product
