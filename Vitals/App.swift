@@ -271,6 +271,7 @@ private struct PremiumFeaturesView: View {
     @State private var restoreMessage: String?
     @State private var pdfFile: PDFFile?
     @State private var pdfTitle = "Vitals+ Report"
+    @State private var pdfShareText = SummaryReportShareText.appStoreURL
     @State private var showPDFPreviewSheet = false
     @State private var isGeneratingReport = false
     @State private var reportErrorMessage: String?
@@ -287,7 +288,7 @@ private struct PremiumFeaturesView: View {
                 Theme.background.ignoresSafeArea()
 
                 ScrollView(showsIndicators: false) {
-                    VStack(spacing: 18) {
+                    VStack(spacing: 20) {
                         premiumHeader
 
                         VStack(spacing: 12) {
@@ -324,7 +325,7 @@ private struct PremiumFeaturesView: View {
                         accountSection
                     }
                     .padding(.horizontal, 24)
-                    .padding(.top, 12)
+                    .padding(.top, 20)
                     .padding(.bottom, 96)
                 }
             }
@@ -343,7 +344,7 @@ private struct PremiumFeaturesView: View {
                 }
             }) {
                 if let pdfFile {
-                    PDFPreviewSheet(title: pdfTitle, url: pdfFile.url)
+                    PDFPreviewSheet(title: pdfTitle, url: pdfFile.url, shareText: pdfShareText)
                 }
             }
             .alert("Vitals+", isPresented: Binding(get: { restoreMessage != nil }, set: { if !$0 { restoreMessage = nil } })) {
@@ -359,8 +360,8 @@ private struct PremiumFeaturesView: View {
             .overlay(alignment: .center) {
                 if isGeneratingReport {
                     VStack(spacing: 12) {
-                        ProgressView()
-                            .tint(Theme.caloriesPrimary)
+                        LoadingBar(color: Theme.caloriesPrimary)
+                            .frame(width: 180)
                         Text("Generating report…")
                             .font(.system(.footnote, design: .rounded))
                             .foregroundStyle(Theme.textSecondary)
@@ -479,6 +480,7 @@ private struct PremiumFeaturesView: View {
             )
             let url = try SummaryReportPDF.render(report)
             pdfTitle = title
+            pdfShareText = SummaryReportShareText.make(report: report)
             pdfFile = PDFFile(url: url)
             showPDFPreviewSheet = true
         } catch {

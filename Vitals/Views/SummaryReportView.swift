@@ -380,9 +380,45 @@ enum SummaryReportPDF {
     }
 }
 
+enum SummaryReportShareText {
+    static let appStoreURL = "https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504"
+
+    static func make(report: SummaryReport) -> String {
+        let calorieTrend = emojiLine(label: "calories", percent: report.calorieTrendPct)
+        let stepTrend = emojiLine(label: "steps", percent: report.stepTrendPct)
+        let goalBlocks = goalBlockLine(report: report)
+        return """
+        Vitals+ \(report.title) 💪
+        \(goalBlocks)
+        🔥 Avg calories: \(report.avgCalories.formatted(.number.precision(.fractionLength(0))))
+        👟 Avg steps: \(report.avgSteps.formatted(.number))
+        \(calorieTrend)
+        \(stepTrend)
+
+        Track yours: \(appStoreURL)
+        """
+    }
+
+    private static func emojiLine(label: String, percent: Double?) -> String {
+        guard let percent else { return "⬜️ \(label.capitalized): more data needed" }
+        let arrow = percent >= 0 ? "↗️" : "↘️"
+        return "\(arrow) \(label.capitalized): \(abs(Int(percent.rounded())))% \(percent >= 0 ? "up" : "down")"
+    }
+
+    private static func goalBlockLine(report: SummaryReport) -> String {
+        let dayCount = max(report.days.count, 1)
+        let calorieRatio = min(Double(report.calorieGoalHitDays) / Double(dayCount), 1)
+        let stepRatio = min(Double(report.stepGoalHitDays) / Double(dayCount), 1)
+        let filled = Int(((calorieRatio + stepRatio) / 2 * 5).rounded())
+        let blocks = (0..<5).map { $0 < filled ? "🟩" : "⬜️" }.joined()
+        return "\(blocks) Goals: 🔥 \(report.calorieGoalHitDays)/\(dayCount)  👟 \(report.stepGoalHitDays)/\(dayCount)"
+    }
+}
+
 struct PDFPreviewSheet: View {
     let title: String
     let url: URL
+    let shareText: String
 
     @Environment(\.dismiss) private var dismiss
 
@@ -397,8 +433,15 @@ struct PDFPreviewSheet: View {
                         Button("Done") { dismiss() }
                     }
                     ToolbarItem(placement: .topBarTrailing) {
-                        ShareLink(item: url) {
-                            Image(systemName: "square.and.arrow.up")
+                        HStack(spacing: 16) {
+                            ShareLink(item: shareText) {
+                                Image(systemName: "message.fill")
+                            }
+                            .accessibilityLabel("Share with friends")
+                            ShareLink(item: url) {
+                                Image(systemName: "square.and.arrow.up")
+                            }
+                            .accessibilityLabel("Share PDF")
                         }
                     }
                 }

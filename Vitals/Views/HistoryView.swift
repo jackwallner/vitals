@@ -8,6 +8,7 @@ private enum HistoryPrefs {
     private static let periodKey = "history.period"
     private static let customStartKey = "history.customStart"
     private static let customEndKey = "history.customEnd"
+    private static let monthlySummaryGeneratedMonthKey = "history.monthlySummaryGeneratedMonth"
 
     static func savedPeriod() -> HistoryView.Period {
         guard let raw = defaults.string(forKey: periodKey) else { return .week }
@@ -56,6 +57,19 @@ private enum HistoryPrefs {
         defaults.set(customStart.timeIntervalSince1970, forKey: customStartKey)
         defaults.set(customEnd.timeIntervalSince1970, forKey: customEndKey)
     }
+
+    static func generatedMonthlySummaryMonth() -> String? {
+        defaults.string(forKey: monthlySummaryGeneratedMonthKey)
+    }
+
+    static func saveGeneratedMonthlySummaryMonth(_ date: Date = Date.now) {
+        defaults.set(monthKey(for: date), forKey: monthlySummaryGeneratedMonthKey)
+    }
+
+    static func monthKey(for date: Date) -> String {
+        let comps = Calendar.current.dateComponents([.year, .month], from: date)
+        return "\(comps.year ?? 0)-\(comps.month ?? 0)"
+    }
 }
 
 enum HistoryFocus: Equatable {
@@ -85,6 +99,7 @@ struct HistoryView: View {
     @State private var showExportError = false
     @State private var csvFile: CSVFile?
     @State private var pdfFile: PDFFile?
+    @State private var pdfShareText = SummaryReportShareText.appStoreURL
     @State private var showPDFShareSheet = false
     @State private var showPaywall = false
     @State private var isGeneratingPDF = false
@@ -94,6 +109,7 @@ struct HistoryView: View {
     @State private var selectedNetDate: Date?
     @State private var loadErrorMessage: String? = nil
     @State private var generateReportAfterCustomApply = false
+    @State private var generatedMonthlySummaryMonth: String? = HistoryPrefs.generatedMonthlySummaryMonth()
 
     init(focus: HistoryFocus? = nil) {
         self.focus = focus
@@ -150,6 +166,14 @@ struct HistoryView: View {
     private var avgSteps: Int {
         guard !records.isEmpty else { return 0 }
         return Int((Double(totalSteps) / Double(records.count)).rounded())
+    }
+
+    private var currentMonthKey: String {
+        HistoryPrefs.monthKey(for: Date.now)
+    }
+
+    private var shouldOfferMonthlySummary: Bool {
+        store.isPro && generatedMonthlySummaryMonth != currentMonthKey && records.count >= 7
     }
 
     // MARK: - Chart Data (aggregated for longer periods)
@@ -419,7 +443,9 @@ struct HistoryView: View {
                                 historyNoticeBanner(focusNotice, systemImage: "sparkles")
                             }
 
-                            historyVitalsPlusSection
+                            if shouldOfferMonthlySummary {
+                                monthlySummaryPrompt
+                            }
 
                             // Summary cards grouped by metric: Calories, Steps, Net Deficit
                             // Calories row
@@ -483,10 +509,12 @@ struct HistoryView: View {
                                 }
                             }
 
+                            historyVitalsPlusSection
+
                             DeepTrendsCard(
                                 isPro: store.isPro,
-                                calorieTrend: deepCalorieTrend,
-                                stepTrend: deepStepTrend,
+                                insights: deepTrendInsights,
+                                highlights: deepTrendHighlights,
                                 periodLabel: deepTrendsPeriodLabel,
                                 onUpgrade: { showPaywall = true }
                             )
@@ -580,7 +608,7 @@ struct HistoryView: View {
             }
         }) {
             if let pdfFile {
-                PDFPreviewSheet(title: reportTitle, url: pdfFile.url)
+                PDFPreviewSheet(title: reportTitle, url: pdfFile.url, shareText: pdfShareText)
             }
         }
         .alert("Report Failed", isPresented: Binding(get: { pdfErrorMessage != nil }, set: { if !$0 { pdfErrorMessage = nil } })) {
@@ -591,8 +619,8 @@ struct HistoryView: View {
         .overlay(alignment: .center) {
             if isGeneratingPDF {
                 VStack(spacing: 12) {
-                    ProgressView()
-                        .tint(Theme.caloriesPrimary)
+                    LoadingBar(color: Theme.caloriesPrimary)
+                        .frame(width: 180)
                     Text("Generating report…")
                         .font(.system(.footnote, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
@@ -663,6 +691,41 @@ struct HistoryView: View {
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
     }
 
+    private var monthlySummaryPrompt: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "calendar.badge.sparkles")
+                .font(.system(size: 20, weight: .semibold))
+                .foregroundStyle(Theme.caloriesPrimary)
+                .frame(width: 30, height: 30)
+                .background(Theme.caloriesPrimary.opacity(0.12), in: Circle())
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Your monthly summary is ready")
+                    .font(.system(.subheadline, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.textPrimary)
+                Text("Generate a fresh 30-day PDF once a month, then preview or share it.")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+            Button("Generate") {
+                Task { await generateSummaryPDF(markMonthlyGenerated: true, forcedTitle: "Monthly Summary") }
+            }
+            .font(.system(.caption, design: .rounded, weight: .bold))
+            .foregroundStyle(.white)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(Theme.caloriesGradient, in: Capsule())
+            .disabled(isGeneratingPDF)
+        }
+        .padding(14)
+        .background(Theme.caloriesPrimary.opacity(0.08), in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .overlay(
+            RoundedRectangle(cornerRadius: Theme.cardRadius)
+                .stroke(Theme.caloriesPrimary.opacity(0.18), lineWidth: 1)
+        )
+    }
+
     // MARK: - Vitals+ Summary Report
 
     private func handleSummaryReportTap() {
@@ -673,7 +736,7 @@ struct HistoryView: View {
         Task { await generateSummaryPDF() }
     }
 
-    private func generateSummaryPDF() async {
+    private func generateSummaryPDF(markMonthlyGenerated: Bool = false, forcedTitle: String? = nil) async {
         guard !isGeneratingPDF else { return }
         isGeneratingPDF = true
         defer { isGeneratingPDF = false }
@@ -701,7 +764,7 @@ struct HistoryView: View {
         let end = records.map(\.date).max() ?? Date.now
 
         let report = SummaryReportGenerator.make(
-            title: reportTitle,
+            title: forcedTitle ?? reportTitle,
             periodStart: start,
             periodEnd: end,
             days: reportDays,
@@ -713,6 +776,11 @@ struct HistoryView: View {
         do {
             let url = try SummaryReportPDF.render(report)
             pdfFile = PDFFile(url: url)
+            pdfShareText = SummaryReportShareText.make(report: report)
+            if markMonthlyGenerated {
+                HistoryPrefs.saveGeneratedMonthlySummaryMonth()
+                generatedMonthlySummaryMonth = currentMonthKey
+            }
             showPDFShareSheet = true
         } catch {
             pdfErrorMessage = "Could not generate the PDF report. Please try again."
@@ -741,20 +809,92 @@ struct HistoryView: View {
         }
     }
 
-    private var deepCalorieTrend: Double? {
-        let curr = avgCalories
+    private var previousAverageCalories: Double? {
         let prevNonZero = previousRecords.filter { $0.totalCalories > 0 }
         guard !prevNonZero.isEmpty else { return nil }
-        let prev = prevNonZero.map(\.totalCalories).reduce(0, +) / Double(prevNonZero.count)
+        return prevNonZero.map(\.totalCalories).reduce(0, +) / Double(prevNonZero.count)
+    }
+
+    private var previousAverageSteps: Double? {
+        let prevNonZero = previousRecords.filter { $0.steps > 0 }
+        guard !prevNonZero.isEmpty else { return nil }
+        return Double(prevNonZero.map(\.steps).reduce(0, +)) / Double(prevNonZero.count)
+    }
+
+    private var deepTrendInsights: [DeepTrendInsight] {
+        var insights: [DeepTrendInsight] = []
+        if let prev = previousAverageCalories, prev > 0 {
+            let delta = avgCalories - prev
+            let percent = (delta / prev) * 100
+            insights.append(
+                DeepTrendInsight(
+                    title: "Calories",
+                    icon: "flame.fill",
+                    current: avgCalories.formatted(.number.precision(.fractionLength(0))),
+                    previous: prev.formatted(.number.precision(.fractionLength(0))),
+                    change: signedValue(delta.formatted(.number.precision(.fractionLength(0)))),
+                    percent: signedPercent(percent),
+                    narrative: abs(delta) < 1 ? "Calories held steady day-to-day." : "You averaged \(abs(Int(delta.rounded())).formatted(.number)) \(delta >= 0 ? "more" : "fewer") calories per day.",
+                    color: Theme.caloriesPrimary,
+                    isUp: delta >= 0
+                )
+            )
+        }
+        if let prev = previousAverageSteps, prev > 0 {
+            let current = Double(avgSteps)
+            let delta = current - prev
+            let percent = (delta / prev) * 100
+            insights.append(
+                DeepTrendInsight(
+                    title: "Steps",
+                    icon: "figure.walk",
+                    current: avgSteps.formatted(.number),
+                    previous: Int(prev.rounded()).formatted(.number),
+                    change: signedValue(Int(delta.rounded()).formatted(.number)),
+                    percent: signedPercent(percent),
+                    narrative: abs(delta) < 1 ? "Steps held steady day-to-day." : "You averaged \(abs(Int(delta.rounded())).formatted(.number)) \(delta >= 0 ? "more" : "fewer") steps per day.",
+                    color: Theme.stepsPrimary,
+                    isUp: delta >= 0
+                )
+            )
+        }
+        return insights
+    }
+
+    private var deepTrendHighlights: [String] {
+        var highlights: [String] = []
+        let activeDays = records.filter { $0.totalCalories > 0 || $0.steps > 0 }.count
+        if !records.isEmpty {
+            highlights.append("\(activeDays) of \(records.count) days had calories or steps logged.")
+        }
+        if let peakCalorieDay {
+            highlights.append("Peak calories: \(peakCalorieDay.totalCalories.formatted(.number.precision(.fractionLength(0)))) on \(DateHelpers.shortDate(peakCalorieDay.date)).")
+        }
+        if let peakStepDay {
+            highlights.append("Peak steps: \(peakStepDay.steps.formatted(.number)) on \(DateHelpers.shortDate(peakStepDay.date)).")
+        }
+        return highlights
+    }
+
+    private func signedValue(_ value: String) -> String {
+        value.hasPrefix("-") ? value : "+\(value)"
+    }
+
+    private func signedPercent(_ value: Double) -> String {
+        let rounded = Int(value.rounded())
+        return rounded >= 0 ? "+\(rounded)%" : "\(rounded)%"
+    }
+
+    private var deepCalorieTrend: Double? {
+        let curr = avgCalories
+        guard let prev = previousAverageCalories else { return nil }
         guard prev > 0 else { return nil }
         return ((curr - prev) / prev) * 100
     }
 
     private var deepStepTrend: Double? {
         let curr = Double(avgSteps)
-        let prevNonZero = previousRecords.filter { $0.steps > 0 }
-        guard !prevNonZero.isEmpty else { return nil }
-        let prev = Double(prevNonZero.map(\.steps).reduce(0, +)) / Double(prevNonZero.count)
+        guard let prev = previousAverageSteps else { return nil }
         guard prev > 0 else { return nil }
         return ((curr - prev) / prev) * 100
     }
@@ -1291,15 +1431,28 @@ private struct VitalsPlusHistoryRow: View {
     }
 }
 
+private struct DeepTrendInsight: Identifiable {
+    let id = UUID()
+    let title: String
+    let icon: String
+    let current: String
+    let previous: String
+    let change: String
+    let percent: String
+    let narrative: String
+    let color: Color
+    let isUp: Bool
+}
+
 private struct DeepTrendsCard: View {
     let isPro: Bool
-    let calorieTrend: Double?
-    let stepTrend: Double?
+    let insights: [DeepTrendInsight]
+    let highlights: [String]
     let periodLabel: String
     let onUpgrade: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 8) {
                 Image(systemName: isPro ? "chart.line.uptrend.xyaxis" : "lock.fill")
                     .font(.system(size: 14, weight: .semibold))
@@ -1321,13 +1474,37 @@ private struct DeepTrendsCard: View {
                 .foregroundStyle(Theme.textTertiary)
 
             if isPro {
-                HStack(spacing: 12) {
-                    TrendStat(label: "Calories", trend: calorieTrend, color: Theme.caloriesPrimary)
-                    TrendStat(label: "Steps", trend: stepTrend, color: Theme.stepsPrimary)
+                if insights.isEmpty {
+                    Text("Deep Trends need a previous matching range with calories or steps before they can compare your momentum.")
+                        .font(.system(.subheadline, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                } else {
+                    VStack(spacing: 12) {
+                        ForEach(insights) { insight in
+                            DeepTrendInsightRow(insight: insight)
+                        }
+                    }
+                    if !highlights.isEmpty {
+                        VStack(alignment: .leading, spacing: 8) {
+                            ForEach(highlights, id: \.self) { highlight in
+                                HStack(alignment: .top, spacing: 8) {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .font(.system(size: 12, weight: .semibold))
+                                        .foregroundStyle(Theme.caloriesPrimary)
+                                        .padding(.top, 2)
+                                    Text(highlight)
+                                        .font(.system(.caption, design: .rounded))
+                                        .foregroundStyle(Theme.textSecondary)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                }
+                            }
+                        }
+                    }
                 }
             } else {
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("Compare this period to the one before it. See whether you’re trending up or down on calories and steps.")
+                    Text("Compare this period against the matching previous range with current averages, prior averages, absolute deltas, percent movement, and peak-day highlights.")
                         .font(.system(.subheadline, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -1348,40 +1525,65 @@ private struct DeepTrendsCard: View {
     }
 }
 
-private struct TrendStat: View {
-    let label: String
-    let trend: Double?
-    let color: Color
+private struct DeepTrendInsightRow: View {
+    let insight: DeepTrendInsight
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(label)
-                .font(.caption)
-                .foregroundStyle(Theme.textSecondary)
-                .textCase(.uppercase)
-                .tracking(0.8)
-            if let trend {
-                let isUp = trend >= 0
-                let signColor = isUp ? Theme.netDeficitPositive : Theme.netDeficitNegative
-                HStack(spacing: 4) {
-                    Image(systemName: isUp ? "arrow.up.right" : "arrow.down.right")
-                        .font(.system(size: 12, weight: .bold))
-                    Text("\(abs(Int(trend.rounded())))%")
-                        .font(.system(.title3, design: .rounded, weight: .bold).monospacedDigit())
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .top, spacing: 10) {
+                Image(systemName: insight.icon)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(insight.color)
+                    .frame(width: 28, height: 28)
+                    .background(insight.color.opacity(0.12), in: Circle())
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(insight.title)
+                        .font(.system(.subheadline, design: .rounded, weight: .bold))
+                        .foregroundStyle(Theme.textPrimary)
+                    Text(insight.narrative)
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
-                .foregroundStyle(signColor)
-            } else {
-                Text("—")
-                    .font(.system(.title3, design: .rounded, weight: .bold))
-                    .foregroundStyle(Theme.textTertiary)
-                Text("Need more data")
-                    .font(.caption2)
-                    .foregroundStyle(Theme.textTertiary)
+                Spacer(minLength: 0)
+                HStack(spacing: 4) {
+                    Image(systemName: insight.isUp ? "arrow.up.right" : "arrow.down.right")
+                    Text(insight.percent)
+                }
+                .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
+                .foregroundStyle(insight.isUp ? Theme.netDeficitPositive : Theme.netDeficitNegative)
+            }
+
+            HStack(spacing: 8) {
+                DeepTrendMiniStat(label: "Current", value: insight.current)
+                DeepTrendMiniStat(label: "Previous", value: insight.previous)
+                DeepTrendMiniStat(label: "Change", value: insight.change)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(12)
-        .background(color.opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
+        .padding(14)
+        .background(insight.color.opacity(0.08), in: RoundedRectangle(cornerRadius: 14))
+    }
+}
+
+private struct DeepTrendMiniStat: View {
+    let label: String
+    let value: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(label)
+                .font(.system(size: 9, weight: .bold, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
+                .textCase(.uppercase)
+                .tracking(0.6)
+            Text(value)
+                .font(.system(.caption, design: .rounded, weight: .bold).monospacedDigit())
+                .foregroundStyle(Theme.textPrimary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -1471,7 +1673,7 @@ private struct SegmentButton: View {
 /// Indeterminate animated linear bar — used in place of the system spinner
 /// so users see something *moving* during initial loads. A spinner reads as
 /// frozen on slow HealthKit fetches; a sweeping bar reads as live.
-private struct LoadingBar: View {
+struct LoadingBar: View {
     let color: Color
     @State private var animating = false
 
