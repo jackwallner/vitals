@@ -1,5 +1,5 @@
 import SwiftUI
-import StoreKit
+@preconcurrency import RevenueCat
 
 /// Static URLs surfaced from the paywall — Apple requires both an EULA (we use the
 /// standard one) and a Privacy Policy link before the StoreKit purchase buttons.
@@ -12,32 +12,32 @@ struct PaywallView: View {
     @EnvironmentObject private var store: StoreService
     @Environment(\.dismiss) private var dismiss
 
-    @State private var selectedProductID: String? = nil
+    @State private var selectedPackageID: String? = nil
     @State private var purchaseError: String? = nil
     @State private var restoreMessage: String? = nil
     @State private var showSuccess = false
 
-    private var monthlyProduct: Product? {
-        store.products.first { $0.id == VitalsProduct.monthly }
+    private var monthlyPackage: Package? {
+        store.products.first { $0.vitalsPackageKind == .monthly }
     }
 
-    private var yearlyProduct: Product? {
-        store.products.first { $0.id == VitalsProduct.yearly }
+    private var yearlyPackage: Package? {
+        store.products.first { $0.vitalsPackageKind == .yearly }
     }
 
-    private var lifetimeProduct: Product? {
-        store.products.first { $0.id == VitalsProduct.lifetime }
+    private var lifetimePackage: Package? {
+        store.products.first { $0.vitalsPackageKind == .lifetime }
     }
 
-    private var resolvedSelection: Product? {
-        if let selectedProductID, let selected = store.products.first(where: { $0.id == selectedProductID }) {
+    private var resolvedSelection: Package? {
+        if let selectedPackageID, let selected = store.products.first(where: { $0.identifier == selectedPackageID }) {
             return selected
         }
-        return yearlyProduct ?? monthlyProduct ?? lifetimeProduct
+        return yearlyPackage ?? monthlyPackage ?? lifetimePackage
     }
 
     private var trialPitch: String? {
-        [yearlyProduct, monthlyProduct].compactMap { $0?.introOfferLabel }.first
+        [yearlyPackage, monthlyPackage].compactMap { $0?.vitalsIntroOfferLabel }.first
     }
 
     var body: some View {
@@ -68,7 +68,6 @@ struct PaywallView: View {
                     Button("Restore") {
                         Task {
                             await store.restorePurchases()
-                            await store.updateCustomerProductStatus()
                             if store.isPro {
                                 showSuccess = true
                             } else {
@@ -83,8 +82,8 @@ struct PaywallView: View {
                 if store.products.isEmpty {
                     await store.fetchProducts()
                 }
-                if selectedProductID == nil {
-                    selectedProductID = resolvedSelection?.id
+                if selectedPackageID == nil {
+                    selectedPackageID = resolvedSelection?.identifier
                 }
             }
             .onChange(of: store.isPro) { _, isPro in
@@ -128,7 +127,7 @@ struct PaywallView: View {
                 .font(.system(size: 34, weight: .bold, design: .rounded))
                 .foregroundStyle(Theme.textPrimary)
 
-            Text(trialPitch.map { "Start with a \($0). Then unlock deeper insights and shareable reports." } ?? "Deeper insights and shareable PDF reports for power users.")
+            Text(trialPitch.map { "Start with a \($0) — then unlock deeper insights and shareable reports." } ?? "Deeper insights and shareable PDF reports for power users.")
                 .font(.system(.subheadline, design: .rounded))
                 .foregroundStyle(Theme.textSecondary)
                 .multilineTextAlignment(.center)
@@ -180,7 +179,7 @@ struct PaywallView: View {
             .padding(.vertical, 24)
         } else if store.products.isEmpty {
             VStack(spacing: 8) {
-                Text(store.lastError ?? "Subscriptions unavailable.")
+                Text(store.lastError ?? "Subscriptions unavailable. Check your connection and try again.")
                     .font(.system(.subheadline, design: .rounded))
                     .foregroundStyle(Theme.textSecondary)
                     .multilineTextAlignment(.center)
@@ -193,31 +192,31 @@ struct PaywallView: View {
             .padding(.vertical, 16)
         } else {
             VStack(spacing: 12) {
-                if let yearly = yearlyProduct {
+                if let yearly = yearlyPackage {
                     ProductCard(
-                        product: yearly,
-                        isSelected: selectedProductID == yearly.id,
-                        badge: savingsBadge(monthly: monthlyProduct, yearly: yearly)
+                        package: yearly,
+                        isSelected: selectedPackageID == yearly.identifier,
+                        badge: savingsBadge(monthly: monthlyPackage, yearly: yearly)
                     ) {
-                        selectedProductID = yearly.id
+                        selectedPackageID = yearly.identifier
                     }
                 }
-                if let monthly = monthlyProduct {
+                if let monthly = monthlyPackage {
                     ProductCard(
-                        product: monthly,
-                        isSelected: selectedProductID == monthly.id,
+                        package: monthly,
+                        isSelected: selectedPackageID == monthly.identifier,
                         badge: nil
                     ) {
-                        selectedProductID = monthly.id
+                        selectedPackageID = monthly.identifier
                     }
                 }
-                if let lifetime = lifetimeProduct {
+                if let lifetime = lifetimePackage {
                     ProductCard(
-                        product: lifetime,
-                        isSelected: selectedProductID == lifetime.id,
+                        package: lifetime,
+                        isSelected: selectedPackageID == lifetime.identifier,
                         badge: "One-time"
                     ) {
-                        selectedProductID = lifetime.id
+                        selectedPackageID = lifetime.identifier
                     }
                 }
             }
@@ -227,10 +226,10 @@ struct PaywallView: View {
     private var ctaButton: some View {
         VStack(spacing: 10) {
             Button {
-                guard let product = resolvedSelection else { return }
+                guard let package = resolvedSelection else { return }
                 Task {
                     do {
-                        _ = try await store.purchase(product)
+                        _ = try await store.purchase(package)
                     } catch {
                         purchaseError = (error as NSError).localizedDescription
                     }
@@ -258,15 +257,15 @@ struct PaywallView: View {
                 Text("Waiting for the App Store purchase sheet…")
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
-            } else if resolvedSelection?.id == VitalsProduct.lifetime {
+            } else if resolvedSelection?.vitalsPackageKind == .lifetime {
                 Text("One-time purchase. No subscription or renewal.")
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
-            } else if let intro = resolvedSelection?.introOfferLabel {
+            } else if let intro = resolvedSelection?.vitalsIntroOfferLabel {
                 Text("Includes a \(intro). Cancel anytime.")
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
-            } else {
+            } else if resolvedSelection != nil {
                 Text("Auto-renews until cancelled.")
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
@@ -275,14 +274,16 @@ struct PaywallView: View {
     }
 
     private var ctaLabel: String {
-        guard let product = resolvedSelection else { return store.isLoadingProducts ? "Loading…" : "Subscriptions Unavailable" }
-        if product.introOfferLabel != nil {
+        guard let package = resolvedSelection else {
+            return store.isLoadingProducts ? "Loading…" : "Subscriptions Unavailable"
+        }
+        if package.vitalsIntroOfferLabel != nil {
             return "Start Free Trial"
         }
-        if product.id == VitalsProduct.lifetime {
-            return "Buy Lifetime — \(product.displayPrice)"
+        if package.vitalsPackageKind == .lifetime {
+            return "Buy Lifetime — \(package.storeProduct.localizedPriceString)"
         }
-        return "Subscribe — \(product.displayPrice)"
+        return "Subscribe — \(package.storeProduct.localizedPriceString)"
     }
 
     private var legalFooter: some View {
@@ -311,10 +312,10 @@ struct PaywallView: View {
 
     // MARK: - Helpers
 
-    private func savingsBadge(monthly: Product?, yearly: Product?) -> String? {
+    private func savingsBadge(monthly: Package?, yearly: Package?) -> String? {
         guard let monthly, let yearly else { return nil }
-        let monthlyDouble = NSDecimalNumber(decimal: monthly.price).doubleValue
-        let yearlyDouble = NSDecimalNumber(decimal: yearly.price).doubleValue
+        let monthlyDouble = NSDecimalNumber(decimal: monthly.storeProduct.price).doubleValue
+        let yearlyDouble = NSDecimalNumber(decimal: yearly.storeProduct.price).doubleValue
         let monthlyAnnualized = monthlyDouble * 12
         guard monthlyAnnualized > 0 else { return nil }
         let savings = (monthlyAnnualized - yearlyDouble) / monthlyAnnualized
@@ -352,7 +353,7 @@ private struct FeatureRow: View {
 }
 
 private struct ProductCard: View {
-    let product: Product
+    let package: Package
     let isSelected: Bool
     let badge: String?
     let action: () -> Void
@@ -373,7 +374,7 @@ private struct ProductCard: View {
 
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(spacing: 8) {
-                        Text(product.displayName)
+                        Text(package.vitalsDisplayName)
                             .font(.system(.subheadline, design: .rounded, weight: .semibold))
                             .foregroundStyle(Theme.textPrimary)
                         if let badge {
@@ -385,10 +386,10 @@ private struct ProductCard: View {
                                 .foregroundStyle(Theme.caloriesPrimary)
                         }
                     }
-                    Text(product.pricePeriodLabel)
+                    Text(package.vitalsPriceLabel)
                         .font(.system(.footnote, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
-                    if let intro = product.introOfferLabel {
+                    if let intro = package.vitalsIntroOfferLabel {
                         Text(intro + " — then renews")
                             .font(.system(.caption2, design: .rounded))
                             .foregroundStyle(Theme.textTertiary)

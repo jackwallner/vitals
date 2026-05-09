@@ -1,159 +1,79 @@
 import Foundation
-import StoreKit
 import Combine
 import os
+@preconcurrency import RevenueCat
 
 /// Vitals+ subscription product identifiers. Must match App Store Connect and `Vitals.storekit`.
 enum VitalsProduct {
-    static let monthly = "com.jackwallner.vitals.monthly"
-    static let yearly = "com.jackwallner.vitals.yearly"
-    static let lifetime = "com.jackwallner.vitals.plus.lifetime"
-    static let all: [String] = [monthly, yearly, lifetime]
+    static let lifetime = "lifetime"
+    static let yearly = "yearly"
+    static let monthly = "monthly"
+    static let all: [String] = [lifetime, yearly, monthly]
 }
 
-@MainActor
-final class StoreService: ObservableObject {
-    static let shared = StoreService()
+enum RevenueCatConfig {
+    static let apiKey = "test_vTWUOqDAlDjyOpIAeDZiFCsmqFQ"
+    static let proEntitlement = "Total Calories - Daily Tracker Pro"
+    static let fallbackEntitlement = "pro"
+}
 
-    @Published private(set) var products: [Product] = []
-    @Published private(set) var isPro: Bool = false
-    @Published private(set) var purchaseInFlight: Bool = false
-    @Published private(set) var isLoadingProducts: Bool = false
-    @Published private(set) var lastError: String?
+enum PurchaseState {
+    case purchased
+    case cancelled
+    case pending
+}
 
-    private var updatesTask: Task<Void, Never>?
-    private let logger = Logger(subsystem: "com.jackwallner.vitals", category: "Store")
+enum RevenueCatPackageKind: Int {
+    case lifetime = 0
+    case yearly = 1
+    case monthly = 2
+    case other = 3
+}
 
-    private init() {}
-
-    /// Call once on app launch — starts the long-running Transaction.updates listener and
-    /// hydrates `isPro` from current entitlements.
-    func start() {
-        #if DEBUG
-        if ScreenshotConfig.wantsPremiumActive {
-            isPro = true
-        }
-        #endif
-        if updatesTask == nil {
-            updatesTask = Task(priority: .background) { [weak self] in
-                guard let self else { return }
-                for await result in Transaction.updates {
-                    await self.handle(transactionResult: result)
-                }
+extension RevenueCatPackageKind {
+    init(package: Package) {
+        switch package.packageType {
+        case .lifetime:
+            self = .lifetime
+        case .annual:
+            self = .yearly
+        case .monthly:
+            self = .monthly
+        default:
+            let identifiers = [package.identifier, package.storeProduct.productIdentifier].map { $0.lowercased() }
+            if identifiers.contains(where: { $0.contains(VitalsProduct.lifetime) }) {
+                self = .lifetime
+            } else if identifiers.contains(where: { $0.contains(VitalsProduct.yearly) || $0.contains("annual") }) {
+                self = .yearly
+            } else if identifiers.contains(where: { $0.contains(VitalsProduct.monthly) }) {
+                self = .monthly
+            } else {
+                self = .other
             }
-        }
-        Task { await updateCustomerProductStatus() }
-        Task { await fetchProducts() }
-    }
-
-    deinit {
-        updatesTask?.cancel()
-    }
-
-    func fetchProducts() async {
-        isLoadingProducts = true
-        defer { isLoadingProducts = false }
-        do {
-            let fetched = try await Product.products(for: VitalsProduct.all)
-            // Sort: monthly first, then yearly. Stable order means the paywall doesn't
-            // shuffle as products load.
-            products = fetched.sorted { lhs, rhs in
-                guard let lIdx = VitalsProduct.all.firstIndex(of: lhs.id),
-                      let rIdx = VitalsProduct.all.firstIndex(of: rhs.id) else {
-                    return lhs.id < rhs.id
-                }
-                return lIdx < rIdx
-            }
-            lastError = nil
-        } catch {
-            logger.error("Product fetch failed: \(String(describing: error), privacy: .public)")
-            lastError = "Couldn't load subscription options. Check your connection and try again."
-        }
-    }
-
-    /// Performs a purchase. Returns the verified Transaction on success, nil on user cancel
-    /// or pending state. Throws on unverified or system errors so the caller can present them.
-    @discardableResult
-    func purchase(_ product: Product) async throws -> Transaction? {
-        purchaseInFlight = true
-        defer { purchaseInFlight = false }
-
-        let result = try await product.purchase()
-        switch result {
-        case .success(let verification):
-            let transaction = try checkVerified(verification)
-            await transaction.finish()
-            await updateCustomerProductStatus()
-            return transaction
-        case .userCancelled:
-            return nil
-        case .pending:
-            // "Ask to Buy" or SCA — entitlement will arrive later via Transaction.updates.
-            return nil
-        @unknown default:
-            return nil
-        }
-    }
-
-    /// Re-checks the device's current entitlements. Call on launch and on
-    /// foregrounding so cancellations / billing failures flip `isPro` off promptly.
-    func updateCustomerProductStatus() async {
-        isPro = false
-        #if DEBUG
-        if ScreenshotConfig.wantsPremiumActive {
-            isPro = true
-            return
-        }
-        #endif
-        var hasActiveSubscription = false
-        for await result in Transaction.currentEntitlements {
-            guard let transaction = try? checkVerified(result) else { continue }
-            if VitalsProduct.all.contains(transaction.productID) {
-                if transaction.revocationDate == nil {
-                    hasActiveSubscription = true
-                }
-            }
-        }
-        if isPro != hasActiveSubscription {
-            isPro = hasActiveSubscription
-            logger.info("isPro updated to \(hasActiveSubscription, privacy: .public)")
-        }
-    }
-
-    func restorePurchases() async {
-        lastError = nil
-        do {
-            try await AppStore.sync()
-            await updateCustomerProductStatus()
-            lastError = nil
-        } catch {
-            logger.error("Restore failed: \(String(describing: error), privacy: .public)")
-            lastError = "Couldn't restore purchases. Try again."
-        }
-    }
-
-    // MARK: - Private
-
-    private func handle(transactionResult: VerificationResult<Transaction>) async {
-        guard let transaction = try? checkVerified(transactionResult) else { return }
-        await transaction.finish()
-        await updateCustomerProductStatus()
-    }
-
-    private func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {
-        switch result {
-        case .unverified(_, let error):
-            throw error
-        case .verified(let safe):
-            return safe
         }
     }
 }
 
-extension Product {
-    /// Localized "/month" or "/year" suffix for paywall display.
-    var pricePeriodLabel: String {
-        guard let period = subscription?.subscriptionPeriod else { return displayPrice }
+extension Package {
+    var vitalsPackageKind: RevenueCatPackageKind {
+        RevenueCatPackageKind(package: self)
+    }
+
+    var vitalsDisplayName: String {
+        switch vitalsPackageKind {
+        case .lifetime:
+            return "Lifetime"
+        case .yearly:
+            return "Yearly"
+        case .monthly:
+            return "Monthly"
+        case .other:
+            return storeProduct.localizedTitle
+        }
+    }
+
+    var vitalsPriceLabel: String {
+        guard let period = storeProduct.subscriptionPeriod else { return storeProduct.localizedPriceString }
         let unit: String
         switch period.unit {
         case .day: unit = period.value == 1 ? "day" : "days"
@@ -163,18 +83,17 @@ extension Product {
         @unknown default: unit = ""
         }
         if period.value == 1 {
-            return "\(displayPrice) / \(unit)"
+            return "\(storeProduct.localizedPriceString) / \(unit)"
         } else {
-            return "\(displayPrice) / \(period.value) \(unit)"
+            return "\(storeProduct.localizedPriceString) / \(period.value) \(unit)"
         }
     }
 
-    /// "7-day free trial" type string when an introductory free offer is configured.
-    var introOfferLabel: String? {
-        guard let intro = subscription?.introductoryOffer, intro.paymentMode == .freeTrial else {
+    var vitalsIntroOfferLabel: String? {
+        guard let intro = storeProduct.introductoryDiscount, intro.paymentMode == .freeTrial else {
             return nil
         }
-        let period = intro.period
+        let period = intro.subscriptionPeriod
         let unit: String
         switch period.unit {
         case .day: unit = period.value == 1 ? "day" : "days"
@@ -183,12 +102,165 @@ extension Product {
         case .year: unit = period.value == 1 ? "year" : "years"
         @unknown default: unit = ""
         }
-        let count: Int
         if period.unit == .week {
-            count = period.value * 7
-            return "\(count)-day free trial"
+            return "\(period.value * 7)-day free trial"
         } else {
             return "\(period.value)-\(unit.dropLast(period.value == 1 ? 0 : 1)) free trial"
+        }
+    }
+}
+
+extension CustomerInfo {
+    var hasVitalsProEntitlement: Bool {
+        entitlements.active.keys.contains(RevenueCatConfig.proEntitlement)
+            || entitlements.active.keys.contains(RevenueCatConfig.fallbackEntitlement)
+    }
+}
+
+extension Offering {
+    var vitalsSortedPackages: [Package] {
+        availablePackages.sorted {
+            let lhsKind = $0.vitalsPackageKind
+            let rhsKind = $1.vitalsPackageKind
+            if lhsKind.rawValue != rhsKind.rawValue {
+                return lhsKind.rawValue < rhsKind.rawValue
+            }
+            return $0.storeProduct.productIdentifier < $1.storeProduct.productIdentifier
+        }
+    }
+}
+
+extension Offerings {
+    var vitalsPaywallOffering: Offering? {
+        offering(identifier: "default") ?? current
+    }
+}
+
+@MainActor
+final class StoreService: NSObject, ObservableObject {
+    static let shared = StoreService()
+
+    @Published private(set) var products: [Package] = []
+    @Published private(set) var currentOffering: Offering?
+    @Published private(set) var customerInfo: CustomerInfo?
+    @Published private(set) var isPro: Bool = false
+    @Published private(set) var purchaseInFlight: Bool = false
+    @Published private(set) var isLoadingProducts: Bool = false
+    @Published private(set) var lastError: String?
+
+    private let logger = Logger(subsystem: "com.jackwallner.vitals", category: "Store")
+    private var isConfigured = false
+
+    private override init() {}
+
+    /// Call once on app launch to configure RevenueCat and hydrate `isPro`.
+    /// The initial customer info fetch uses `.fetchCurrent` to bypass any stale cache
+    /// from a previous install — critical for sandbox testing where the purchase
+    /// history may have been cleared but the RevenueCat cache on-device has not.
+    func start() {
+        configureIfNeeded()
+        #if DEBUG
+        if ScreenshotConfig.wantsPremiumActive {
+            isPro = true
+        }
+        #endif
+        Task { await updateCustomerProductStatus(fetchPolicy: .fetchCurrent) }
+        Task { await fetchProducts() }
+    }
+
+    func fetchProducts() async {
+        configureIfNeeded()
+        isLoadingProducts = true
+        defer { isLoadingProducts = false }
+        do {
+            let offerings = try await Purchases.shared.offerings()
+            let offering = offerings.vitalsPaywallOffering
+            currentOffering = offering
+            products = offering?.vitalsSortedPackages ?? []
+            lastError = nil
+        } catch {
+            logger.error("Product fetch failed: \(String(describing: error), privacy: .public)")
+            lastError = "Couldn't load subscription options. Check your connection and try again."
+        }
+    }
+
+    /// Performs a RevenueCat package purchase and updates customer info.
+    @discardableResult
+    func purchase(_ product: Package) async throws -> PurchaseState {
+        configureIfNeeded()
+        purchaseInFlight = true
+        defer { purchaseInFlight = false }
+
+        let result = try await Purchases.shared.purchase(package: product)
+        apply(customerInfo: result.customerInfo)
+        if result.userCancelled {
+            return .cancelled
+        } else if result.customerInfo.hasVitalsProEntitlement {
+            return .purchased
+        } else {
+            return .pending
+        }
+    }
+
+    /// Re-checks RevenueCat customer info so cancellations / billing failures flip `isPro` off promptly.
+    /// Uses `.fetchCurrent` to bypass the local cache and get the latest entitlement state from RevenueCat's servers.
+    func updateCustomerProductStatus(fetchPolicy: CacheFetchPolicy = .default) async {
+        configureIfNeeded()
+        #if DEBUG
+        if ScreenshotConfig.wantsPremiumActive {
+            isPro = true
+            return
+        }
+        #endif
+        do {
+            let info = try await Purchases.shared.customerInfo(fetchPolicy: fetchPolicy)
+            apply(customerInfo: info)
+            lastError = nil
+        } catch {
+            logger.error("Customer info refresh failed: \(String(describing: error), privacy: .public)")
+            lastError = "Couldn't refresh your subscription status. Check your connection and try again."
+        }
+    }
+
+    func restorePurchases() async {
+        configureIfNeeded()
+        lastError = nil
+        do {
+            let info = try await Purchases.shared.restorePurchases()
+            apply(customerInfo: info)
+            lastError = isPro ? nil : "No active Total Calories - Daily Tracker Pro purchase was found."
+        } catch {
+            logger.error("Restore failed: \(String(describing: error), privacy: .public)")
+            lastError = "Couldn't restore purchases. Try again."
+        }
+    }
+
+    func apply(customerInfo: CustomerInfo) {
+        self.customerInfo = customerInfo
+        let hasActiveSubscription = customerInfo.hasVitalsProEntitlement
+        if isPro != hasActiveSubscription {
+            isPro = hasActiveSubscription
+            logger.info("isPro updated to \(hasActiveSubscription, privacy: .public)")
+        }
+    }
+
+    // MARK: - Private
+
+    private func configureIfNeeded() {
+        guard !isConfigured else { return }
+        #if DEBUG
+        Purchases.logLevel = .debug
+        #endif
+        Purchases.configure(withAPIKey: RevenueCatConfig.apiKey)
+        Purchases.shared.delegate = self
+        isConfigured = true
+    }
+}
+
+extension StoreService: PurchasesDelegate {
+    nonisolated func purchases(_ purchases: Purchases, receivedUpdated customerInfo: CustomerInfo) {
+        Task { @MainActor in
+            StoreService.shared.apply(customerInfo: customerInfo)
         }
     }
 }

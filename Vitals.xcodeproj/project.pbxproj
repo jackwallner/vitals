@@ -23,9 +23,11 @@
 		432DF5A74580379C50D494D4 /* WatchComplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA172BB16DF599334E29D1F6 /* WatchComplication.swift */; };
 		48F82FDD56F577609761DC28 /* NetDeficitTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */; };
 		4F22514B219ED34BF056FB0B /* Vitals.storekit in Resources */ = {isa = PBXBuildFile; fileRef = BB68B0FAC8D1E8A883919106 /* Vitals.storekit */; };
+		4FBF9EE01E511884BC6AF2E0 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 118A9A273E0B43DBA3FC7360 /* RevenueCat */; };
 		505A5802FE54E602AA80A146 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
 		5196C5E49115471C4A1E267E /* VitalsWatchWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 47E5A948D4ECA79121753114 /* VitalsWatchWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5201256403AA11E4AF00E922 /* SummaryReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFAF11B005DB797877D60FDA /* SummaryReportView.swift */; };
+		57D9788CF5A8A5EF253767CC /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 76716C987A1696CB0AAA0719 /* RevenueCat */; };
 		5A19413C5A9673172FC29C82 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		60592DE2EE57591183C06DD0 /* NetDeficitTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */; };
 		617825BD1AA2773359640926 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76684FF138F58C3A58A97320 /* StoreService.swift */; };
@@ -35,15 +37,18 @@
 		73E57B5289F6A146D19D6011 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
 		75A6835298F7F33CA2EF9884 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
 		7DE03846B38547D81722040A /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
+		7E294F82AB76F1992F92508F /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0C7CA7CDC8820F0419735F4D /* RevenueCatUI */; };
 		7EC89CE57159173F05547146 /* SummaryReportGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B24F616BC26BFF25C64684 /* SummaryReportGenerator.swift */; };
 		7F455AC1D9325C3C9C70D799 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76684FF138F58C3A58A97320 /* StoreService.swift */; };
 		7F8EA31FF10615BC980C2176 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		812F324514C80810810339F9 /* VitalsWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AC24F002AF13CDC4C14F3E96 /* VitalsWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		81C933EB24E9765C818A3B65 /* SummaryReportGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B24F616BC26BFF25C64684 /* SummaryReportGenerator.swift */; };
 		8BA4236445D489D8CCF15852 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
+		9032987B70D7BDD245847674 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = B25E8EC0600130AD108B5EED /* RevenueCat */; };
 		906DF508C80FAF1F80DCF0FC /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A2306ABF7BBFD87A49291EE7 /* PrivacyInfo.xcprivacy */; };
 		919AF5A699922C5CF56DEC03 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C395EAE504DCAD8464C29AC9 /* PaywallView.swift */; };
 		97B3284F672341E171AA3828 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEC52C3FC9793813DF64549 /* DashboardView.swift */; };
+		9D87A125DF44027A99B6F95C /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = B90E4BEF66FC94CCEA5F5D95 /* RevenueCat */; };
 		9F43DA0F666C0671FD71FD2D /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEC9E7DED1B1E70BAA8F0E1 /* TodayView.swift */; };
 		A18836B7544E3EA896EE185D /* StepTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9515296920AC1C61887CCD1C /* StepTrendSummary.swift */; };
 		A1E13E3675001BC71870A7DA /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76684FF138F58C3A58A97320 /* StoreService.swift */; };
@@ -180,6 +185,42 @@
 		FEDFD029845EFE870D5493E8 /* Vitals.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vitals.entitlements; sourceTree = "<group>"; };
 		FFAF11B005DB797877D60FDA /* SummaryReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryReportView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		32785C7FF2EBE9F17A906625 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9032987B70D7BDD245847674 /* RevenueCat in Frameworks */,
+				7E294F82AB76F1992F92508F /* RevenueCatUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7D21FF13D31E6DB54E0F603E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D87A125DF44027A99B6F95C /* RevenueCat in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E06F6D51E7ED47675981DF97 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FBF9EE01E511884BC6AF2E0 /* RevenueCat in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F699B9337B20E4CDBF3D0E3B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				57D9788CF5A8A5EF253767CC /* RevenueCat in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		0AB84DC73288E61173AF16FD /* Components */ = {
@@ -342,6 +383,7 @@
 			buildPhases = (
 				E2B5FAF8C998DA77EEB97062 /* Sources */,
 				617A97A5D0BD0F30C657225F /* Resources */,
+				32785C7FF2EBE9F17A906625 /* Frameworks */,
 				C07BF02E508F8A98BC5024D1 /* Embed Foundation Extensions */,
 				2B0C79FEFF647573ED7A4145 /* Embed Watch Content */,
 			);
@@ -353,6 +395,8 @@
 			);
 			name = Vitals;
 			packageProductDependencies = (
+				B25E8EC0600130AD108B5EED /* RevenueCat */,
+				0C7CA7CDC8820F0419735F4D /* RevenueCatUI */,
 			);
 			productName = Vitals;
 			productReference = 5067457F6627E7ABFE38988A /* Vitals.app */;
@@ -363,6 +407,7 @@
 			buildConfigurationList = 05A94D0CEF68207FDBEDFBEC /* Build configuration list for PBXNativeTarget "VitalsWatchWidget" */;
 			buildPhases = (
 				85FB71D25041E33EE6FAFC51 /* Sources */,
+				F699B9337B20E4CDBF3D0E3B /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -370,6 +415,7 @@
 			);
 			name = VitalsWatchWidget;
 			packageProductDependencies = (
+				76716C987A1696CB0AAA0719 /* RevenueCat */,
 			);
 			productName = VitalsWatchWidget;
 			productReference = 47E5A948D4ECA79121753114 /* VitalsWatchWidget.appex */;
@@ -381,6 +427,7 @@
 			buildPhases = (
 				06D4220970AD3BAEAAA50F64 /* Sources */,
 				26CAF9528CEF6DB42FA67F0B /* Resources */,
+				7D21FF13D31E6DB54E0F603E /* Frameworks */,
 				33F22AC153F0390CAB1CE7AA /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -390,6 +437,7 @@
 			);
 			name = VitalsWatch;
 			packageProductDependencies = (
+				B90E4BEF66FC94CCEA5F5D95 /* RevenueCat */,
 			);
 			productName = VitalsWatch;
 			productReference = DE8F114B3CE1940662993978 /* VitalsWatch.app */;
@@ -417,6 +465,7 @@
 			buildConfigurationList = DC56BB572A4150027D57F9FF /* Build configuration list for PBXNativeTarget "VitalsWidget" */;
 			buildPhases = (
 				8B0D96751E7284E7FDC5B7F1 /* Sources */,
+				E06F6D51E7ED47675981DF97 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -424,6 +473,7 @@
 			);
 			name = VitalsWidget;
 			packageProductDependencies = (
+				118A9A273E0B43DBA3FC7360 /* RevenueCat */,
 			);
 			productName = VitalsWidget;
 			productReference = AC24F002AF13CDC4C14F3E96 /* VitalsWidget.appex */;
@@ -469,6 +519,9 @@
 			);
 			mainGroup = 96ED5573BB0D87645AC7FE54;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				74B952302F181D760C3E4D7A /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 760BA1666CEB8102A35FBB69 /* Products */;
 			projectDirPath = "";
@@ -690,7 +743,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 62;
+				CURRENT_PROJECT_VERSION = 63;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -818,7 +871,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 62;
+				CURRENT_PROJECT_VERSION = 63;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -971,6 +1024,45 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		74B952302F181D760C3E4D7A /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.14.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0C7CA7CDC8820F0419735F4D /* RevenueCatUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 74B952302F181D760C3E4D7A /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCatUI;
+		};
+		118A9A273E0B43DBA3FC7360 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 74B952302F181D760C3E4D7A /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCat;
+		};
+		76716C987A1696CB0AAA0719 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 74B952302F181D760C3E4D7A /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCat;
+		};
+		B25E8EC0600130AD108B5EED /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 74B952302F181D760C3E4D7A /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCat;
+		};
+		B90E4BEF66FC94CCEA5F5D95 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 74B952302F181D760C3E4D7A /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCat;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 513ABABE1DF9156E4D5073DC /* Project object */;
 }

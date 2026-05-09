@@ -104,7 +104,6 @@ struct DashboardView: View {
     @State private var animateRing = false
     @State private var animateContent = false
     @State private var showSettings = false
-    @State private var showBreakdown = false
     @State private var showOnboarding = false
     @State private var pacingCaloriesInsufficient = false
     @State private var pacingStepsInsufficient = false
@@ -350,9 +349,6 @@ struct DashboardView: View {
 
             // Calories section
             if goals.showCalories {
-                // Ring (or bare number if no goal) — tapping toggles the Active/Resting
-                // breakdown. Intentionally a hidden affordance: discoverable via
-                // VoiceOver hint / a11y action, but no always-on chip cluttering the UI.
                 Group {
                     if let progress = calorieProgress {
                         ZStack {
@@ -369,41 +365,20 @@ struct DashboardView: View {
                         calorieLabel(numberSize: calNumberSize)
                     }
                 }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    guard !isMinimalMode else { return }
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        showBreakdown.toggle()
-                    }
-                }
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Calorie progress")
                 .accessibilityValue(calorieProgress != nil
-                    ? "\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories"
-                    : "\(Int(totalCalories)) calories")
-                .accessibilityHint(isMinimalMode ? "" : "Double tap to show active and resting breakdown.")
-                .accessibilityAction(named: showBreakdown ? "Hide breakdown" : "Show breakdown") {
-                    guard !isMinimalMode else { return }
-                    showBreakdown.toggle()
-                }
+                    ? "\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories. Active \(Int(activeCalories)), resting \(Int(restingCalories))."
+                    : "\(Int(totalCalories)) calories. Active \(Int(activeCalories)), resting \(Int(restingCalories)).")
 
-                if !isMinimalMode && !showBreakdown {
-                    Text("Tap for active + resting")
-                        .font(.system(.caption2, design: .rounded))
-                        .foregroundStyle(Theme.textTertiary)
-                        .padding(.top, 8)
-                        .opacity(animateContent ? 1 : 0)
-                }
-
-                // Active/Resting pills revealed when the ring is tapped.
-                if !isMinimalMode && showBreakdown {
+                // Active/Resting breakdown is always visible (was previously hidden behind a tap).
+                if !isMinimalMode {
                     HStack(spacing: 16) {
                         MetricPill(label: "active", value: activeCalories, color: Theme.activePrimary)
                         MetricPill(label: "resting", value: restingCalories, color: Theme.restingPrimary)
                     }
-                    .padding(.top, 16)
+                    .padding(.top, 14)
                     .opacity(animateContent ? 1 : 0)
-                    .transition(.opacity)
                 }
 
                 // Calorie pacing

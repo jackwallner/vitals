@@ -144,6 +144,12 @@ final class GoalSettings: ObservableObject {
         didSet { defaults.set(hasCompletedSetup, forKey: "hasCompletedSetup") }
     }
 
+    /// True after the user has seen (or dismissed) the one-time Vitals+ free-trial offer.
+    /// Prevents the trial nudge from re-appearing on every launch.
+    @Published var hasSeenTrialOffer: Bool {
+        didSet { defaults.set(hasSeenTrialOffer, forKey: "hasSeenTrialOffer") }
+    }
+
     @Published var appearance: AppAppearance {
         didSet { defaults.set(appearance.rawValue, forKey: "appearance") }
     }
@@ -215,6 +221,7 @@ final class GoalSettings: ObservableObject {
         self.defaults = defaults
 
         self.hasCompletedSetup = defaults.bool(forKey: "hasCompletedSetup")
+        self.hasSeenTrialOffer = defaults.bool(forKey: "hasSeenTrialOffer")
         self.appearance = AppAppearance(rawValue: defaults.integer(forKey: "appearance")) ?? .system
         self.showPacing = defaults.object(forKey: "showPacing") as? Bool ?? true
         if let raw = defaults.object(forKey: "pacingComparison") as? Int,

@@ -175,9 +175,12 @@ struct VitalsApp: App {
 
 struct MainTabView: View {
     @EnvironmentObject private var store: StoreService
+    @StateObject private var goals = GoalSettings.shared
     @State private var selectedTab = 0
     @State private var historyHasAppeared = false
     @State private var historyFocus: HistoryFocus?
+    @State private var showTrialOffer = false
+    @State private var showTrialPaywall = false
 
     init() {
         if ScreenshotConfig.wantsHistoryTab {
@@ -185,6 +188,34 @@ struct MainTabView: View {
             _historyHasAppeared = State(initialValue: true)
         } else if ScreenshotConfig.wantsPremiumTab {
             _selectedTab = State(initialValue: 2)
+        }
+    }
+
+    /// True when we have a Vitals+ package with a free-trial intro offer available.
+    private var hasTrialOffer: Bool {
+        store.products.contains { $0.vitalsIntroOfferLabel != nil }
+    }
+
+    private func evaluateTrialOffer() {
+        // One-time offer for existing non-Pro users. We require:
+        // - onboarding finished (so first-launch users aren't double-prompted)
+        // - not already Pro
+        // - haven't seen the trial offer before
+        // - a real trial product loaded from the store
+        // - they're on the Today tab (don't fight with the Vitals+ tab paywall)
+        guard goals.hasCompletedSetup,
+              !store.isPro,
+              !goals.hasSeenTrialOffer,
+              hasTrialOffer,
+              selectedTab == 0
+        else { return }
+        // Defer slightly so it doesn't collide with the dashboard's first-paint animations.
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 1_500_000_000)
+            guard !showTrialOffer, !showTrialPaywall else { return }
+            if !goals.hasSeenTrialOffer && !store.isPro {
+                showTrialOffer = true
+            }
         }
     }
 
@@ -209,7 +240,12 @@ struct MainTabView: View {
                 if store.isPro {
                     PremiumFeaturesView(
                         onOpenNetDeficit: {
+                            // Enable the toggle (DashboardView's onChange will request
+                            // dietary HK auth + refresh). Also request directly here so
+                            // the user gets the system sheet even if the toggle was
+                            // already on but auth was previously denied/revoked.
                             GoalSettings.shared.showNetCalories = true
+                            Task { try? await HealthKitService.shared.requestDietaryAuthorization() }
                             selectedTab = 0
                         },
                         onOpenHistory: { focus in
@@ -256,6 +292,36 @@ struct MainTabView: View {
             .padding(.bottom, 12)
         }
         .ignoresSafeArea(edges: .bottom)
+        .task {
+            // Wait briefly for products to load, then consider the trial nudge.
+            if store.products.isEmpty { await store.fetchProducts() }
+            evaluateTrialOffer()
+        }
+        .onChange(of: store.products.count) { _, _ in evaluateTrialOffer() }
+        .onChange(of: store.isPro) { _, isPro in
+            if isPro { showTrialOffer = false }
+        }
+        .sheet(isPresented: $showTrialOffer, onDismiss: {
+            goals.hasSeenTrialOffer = true
+        }) {
+            TrialOfferSheet(
+                offerLabel: store.products.compactMap(\.vitalsIntroOfferLabel).first,
+                onTry: {
+                    goals.hasSeenTrialOffer = true
+                    showTrialOffer = false
+                    showTrialPaywall = true
+                },
+                onDismiss: {
+                    goals.hasSeenTrialOffer = true
+                    showTrialOffer = false
+                }
+            )
+            .presentationDetents([.height(420), .large])
+            .presentationDragIndicator(.visible)
+        }
+        .sheet(isPresented: $showTrialPaywall) {
+            PaywallView().environmentObject(store)
+        }
     }
 
     private func openHistoryTab() {
@@ -631,6 +697,67 @@ private struct PremiumAccountRow: View {
         }
         .padding(16)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+    }
+}
+
+private struct TrialOfferSheet: View {
+    let offerLabel: String?
+    let onTry: () -> Void
+    let onDismiss: () -> Void
+
+    var body: some View {
+        ZStack {
+            Theme.background.ignoresSafeArea()
+
+            VStack(spacing: 20) {
+                ZStack {
+                    Circle()
+                        .fill(Theme.caloriesGradient)
+                        .frame(width: 72, height: 72)
+                        .shadow(color: Theme.caloriesPrimary.opacity(0.35), radius: 14, x: 0, y: 6)
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 32, weight: .bold))
+                        .foregroundStyle(.white)
+                }
+                .padding(.top, 18)
+
+                VStack(spacing: 8) {
+                    Text(offerLabel.map { "Try Vitals+ free for \($0.replacingOccurrences(of: " free trial", with: ""))" } ?? "Try Vitals+ free")
+                        .font(.system(.title2, design: .rounded, weight: .bold))
+                        .foregroundStyle(Theme.textPrimary)
+                        .multilineTextAlignment(.center)
+                    Text("Unlock PDF summaries, custom-range reports, deep period-over-period trends, and Net Deficit. No charge until your trial ends — cancel anytime in Settings.")
+                        .font(.system(.subheadline, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.horizontal, 8)
+                }
+
+                VStack(spacing: 10) {
+                    Button(action: onTry) {
+                        Text("Start Free Trial")
+                            .font(.system(.headline, design: .rounded, weight: .bold))
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 14)
+                            .background(Theme.caloriesGradient, in: Capsule())
+                    }
+                    .buttonStyle(.plain)
+
+                    Button(action: onDismiss) {
+                        Text("Not now")
+                            .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                            .foregroundStyle(Theme.textSecondary)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 8)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 24)
+        }
     }
 }
 

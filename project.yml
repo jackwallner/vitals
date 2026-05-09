@@ -16,6 +16,11 @@ settings:
     CURRENT_PROJECT_VERSION: "63"
     GENERATE_INFOPLIST_FILE: NO
 
+packages:
+  RevenueCat:
+    url: https://github.com/RevenueCat/purchases-ios-spm.git
+    from: 5.14.0
+
 schemes:
   Vitals:
     build:
@@ -52,6 +57,10 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         TARGETED_DEVICE_FAMILY: "1"
     dependencies:
+      - package: RevenueCat
+        product: RevenueCat
+      - package: RevenueCat
+        product: RevenueCatUI
       - target: VitalsWidget
       - target: VitalsWatch
         embed: true
@@ -70,6 +79,8 @@ targets:
         WATCHOS_DEPLOYMENT_TARGET: "10.0"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     dependencies:
+      - package: RevenueCat
+        product: RevenueCat
       - target: VitalsWatchWidget
 
   VitalsWidget:
@@ -83,6 +94,9 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.jackwallner.vitals.widget
         INFOPLIST_FILE: VitalsWidget/Info.plist
         CODE_SIGN_ENTITLEMENTS: VitalsWidget/VitalsWidget.entitlements
+    dependencies:
+      - package: RevenueCat
+        product: RevenueCat
 
   VitalsWatchWidget:
     type: app-extension
@@ -96,6 +110,9 @@ targets:
         INFOPLIST_FILE: VitalsWatchWidget/Info.plist
         CODE_SIGN_ENTITLEMENTS: VitalsWatchWidget/VitalsWatchWidget.entitlements
         WATCHOS_DEPLOYMENT_TARGET: "10.0"
+    dependencies:
+      - package: RevenueCat
+        product: RevenueCat
 
   VitalsTests:
     type: bundle.unit-test
