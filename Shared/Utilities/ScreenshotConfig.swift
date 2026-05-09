@@ -4,6 +4,8 @@ enum ScreenshotScene: String {
     case dashboard
     case minimal
     case history
+    case premium
+    case premiumActive
     case settings
     case onboarding
     case watchToday
@@ -23,6 +25,8 @@ enum ScreenshotConfig {
 #endif
 
     static var wantsHistoryTab: Bool { scene == .history }
+    static var wantsPremiumTab: Bool { scene == .premium || scene == .premiumActive }
+    static var wantsPremiumActive: Bool { scene == .premiumActive }
     static var wantsSettingsSheet: Bool { scene == .settings }
     static var wantsOnboarding: Bool { scene == .onboarding }
     static var wantsWatchHelp: Bool { scene == .watchHelp }

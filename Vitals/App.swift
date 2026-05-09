@@ -33,7 +33,7 @@ private final class PhoneGoalSyncService: NSObject, WCSessionDelegate {
             GoalSyncKeys.stepGoalEnabled: goals.stepGoal != nil,
             GoalSyncKeys.calorieGoal: goals.calorieGoal ?? 2500,
             GoalSyncKeys.stepGoal: goals.stepGoal ?? 10000,
-            GoalSyncKeys.showNetCalories: goals.showNetCalories,
+            GoalSyncKeys.showNetCalories: goals.showNetCalories && StoreService.shared.isPro,
             GoalSyncKeys.showCalories: goals.showCalories,
             GoalSyncKeys.showSteps: goals.showSteps,
         ]
@@ -119,6 +119,11 @@ struct VitalsApp: App {
                     PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
                     #endif
                 }
+                .onChange(of: store.isPro) { _, _ in
+                    #if canImport(WatchConnectivity)
+                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                    #endif
+                }
                 .onChange(of: goals.showCalories) { _, _ in
                     #if canImport(WatchConnectivity)
                     PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
@@ -169,6 +174,7 @@ struct VitalsApp: App {
 }
 
 struct MainTabView: View {
+    @EnvironmentObject private var store: StoreService
     @State private var selectedTab = 0
     @State private var historyHasAppeared = false
 
@@ -176,6 +182,8 @@ struct MainTabView: View {
         if ScreenshotConfig.wantsHistoryTab {
             _selectedTab = State(initialValue: 1)
             _historyHasAppeared = State(initialValue: true)
+        } else if ScreenshotConfig.wantsPremiumTab {
+            _selectedTab = State(initialValue: 2)
         }
     }
 
@@ -196,6 +204,19 @@ struct MainTabView: View {
                     .allowsHitTesting(selectedTab == 1)
                     .accessibilityHidden(selectedTab != 1)
             }
+            Group {
+                if store.isPro {
+                    PremiumFeaturesView(
+                        onOpenNetDeficit: { selectedTab = 0 }
+                    )
+                } else {
+                    PaywallView()
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .opacity(selectedTab == 2 ? 1 : 0)
+            .allowsHitTesting(selectedTab == 2)
+            .accessibilityHidden(selectedTab != 2)
 
             // Custom tab bar
             HStack(spacing: 0) {
@@ -213,6 +234,12 @@ struct MainTabView: View {
                     if !historyHasAppeared { historyHasAppeared = true }
                     selectedTab = 1
                 }
+
+                TabButton(
+                    icon: store.isPro ? "sparkles" : "lock.fill",
+                    label: "Vitals+",
+                    isSelected: selectedTab == 2
+                ) { selectedTab = 2 }
             }
             .padding(.horizontal, 8)
             .padding(.vertical, 6)
@@ -221,6 +248,216 @@ struct MainTabView: View {
             .padding(.bottom, 12)
         }
         .ignoresSafeArea(edges: .bottom)
+    }
+
+    private func openHistoryTab() {
+        if !historyHasAppeared { historyHasAppeared = true }
+        selectedTab = 1
+    }
+}
+
+private enum PremiumFeatureRoute: Hashable {
+    case summaryReports
+    case customReports
+    case deepTrends
+}
+
+private struct PremiumFeaturesView: View {
+    @EnvironmentObject private var store: StoreService
+    @State private var restoreMessage: String?
+    @State private var path: [PremiumFeatureRoute] = []
+
+    let onOpenNetDeficit: () -> Void
+
+    var body: some View {
+        NavigationStack(path: $path) {
+            ZStack {
+                Theme.background.ignoresSafeArea()
+
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 24) {
+                        premiumHeader
+
+                        VStack(spacing: 12) {
+                            PremiumActionCard(
+                                icon: "doc.richtext.fill",
+                                title: "Monthly Summary PDFs",
+                                detail: "Create and share print-ready health reports with charts, trends, and goal context.",
+                                buttonTitle: "Open Reports",
+                                action: { path = [.summaryReports] }
+                            )
+                            PremiumActionCard(
+                                icon: "calendar.badge.clock",
+                                title: "Custom-Range Reports",
+                                detail: "Build reports for any window you choose — monthly, quarterly, annual, or your own range.",
+                                buttonTitle: "Choose Range",
+                                action: { path = [.customReports] }
+                            )
+                            PremiumActionCard(
+                                icon: "chart.line.uptrend.xyaxis",
+                                title: "Deep Trends",
+                                detail: "Compare calories and steps against the previous period to see what is changing.",
+                                buttonTitle: "View Trends",
+                                action: { path = [.deepTrends] }
+                            )
+                            PremiumActionCard(
+                                icon: "plus.forwardslash.minus",
+                                title: "Net Deficit",
+                                detail: "See calories burned minus food calories from Apple Health when your food tracker syncs dietary energy.",
+                                buttonTitle: "Open Dashboard",
+                                action: onOpenNetDeficit
+                            )
+                        }
+
+                        accountSection
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.top, 16)
+                    .padding(.bottom, 96)
+                }
+            }
+            .navigationTitle("Vitals+")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(for: PremiumFeatureRoute.self) { route in
+                switch route {
+                case .summaryReports:
+                    PremiumHostedHistoryView(title: "Summary Reports")
+                case .customReports:
+                    PremiumHostedHistoryView(title: "Custom Reports")
+                case .deepTrends:
+                    PremiumHostedHistoryView(title: "Deep Trends")
+                }
+            }
+            .alert("Vitals+", isPresented: Binding(get: { restoreMessage != nil }, set: { if !$0 { restoreMessage = nil } })) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(restoreMessage ?? "")
+            }
+        }
+    }
+
+    private var premiumHeader: some View {
+        VStack(spacing: 12) {
+            ZStack {
+                Circle()
+                    .fill(Theme.caloriesGradient)
+                    .frame(width: 84, height: 84)
+                    .shadow(color: Theme.caloriesPrimary.opacity(0.4), radius: 16, x: 0, y: 6)
+                Image(systemName: "sparkles")
+                    .font(.system(size: 38, weight: .bold))
+                    .foregroundStyle(.white)
+            }
+
+            Text("Vitals+ Active")
+                .font(.system(size: 34, weight: .bold, design: .rounded))
+                .foregroundStyle(Theme.textPrimary)
+
+            Text("Your premium tools are ready.")
+                .font(.system(.subheadline, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 16)
+        }
+        .padding(.top, 12)
+    }
+
+    private var accountSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Account")
+                .font(.system(.headline, design: .rounded, weight: .bold))
+                .foregroundStyle(Theme.textPrimary)
+
+            Button {
+                Task {
+                    await store.restorePurchases()
+                    restoreMessage = store.isPro ? "Your Vitals+ access is active." : (store.lastError ?? "No active Vitals+ purchase was found.")
+                }
+            } label: {
+                PremiumAccountRow(icon: "arrow.clockwise", title: "Restore Purchases", detail: "Refresh your access after changing devices or reinstalling.")
+            }
+            .buttonStyle(.plain)
+        }
+    }
+}
+
+private struct PremiumHostedHistoryView: View {
+    let title: String
+
+    var body: some View {
+        HistoryView()
+            .navigationTitle(title)
+            .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+private struct PremiumActionCard: View {
+    let icon: String
+    let title: String
+    let detail: String
+    let buttonTitle: String
+    let action: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .top, spacing: 12) {
+                Image(systemName: icon)
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(Theme.caloriesPrimary)
+                    .frame(width: 28, height: 28)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title)
+                        .font(.system(.headline, design: .rounded, weight: .bold))
+                        .foregroundStyle(Theme.textPrimary)
+                    Text(detail)
+                        .font(.system(.subheadline, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 0)
+            }
+
+            Button(action: action) {
+                Text(buttonTitle)
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(Theme.caloriesGradient, in: Capsule())
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(18)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+    }
+}
+
+private struct PremiumAccountRow: View {
+    let icon: String
+    let title: String
+    let detail: String
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundStyle(Theme.caloriesPrimary)
+                .frame(width: 24, height: 24)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textPrimary)
+                Text(detail)
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer()
+            Image(systemName: "chevron.right")
+                .font(.system(size: 12, weight: .bold))
+                .foregroundStyle(Theme.textTertiary)
+        }
+        .padding(16)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
     }
 }
 

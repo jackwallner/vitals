@@ -82,6 +82,8 @@ capture_iphone() {
 capture_iphone dashboard "iphone-dashboard.png"
 capture_iphone minimal "iphone-minimal.png"
 capture_iphone history "iphone-history.png"
+capture_iphone premium "iphone-premium-paywall.png"
+capture_iphone premiumActive "iphone-premium-active.png"
 capture_iphone settings "iphone-settings.png"
 capture_iphone onboarding "iphone-onboarding.png"
 

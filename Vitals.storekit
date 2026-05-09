@@ -1,7 +1,23 @@
 {
   "identifier" : "VitalsStoreKitConfig",
   "nonRenewingSubscriptions" : [],
-  "products" : [],
+  "products" : [
+    {
+      "displayPrice" : "29.99",
+      "familyShareable" : false,
+      "internalID" : "21555103",
+      "localizations" : [
+        {
+          "description" : "Unlock Vitals+ forever",
+          "displayName" : "Vitals+ Lifetime",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.jackwallner.vitals.plus.lifetime",
+      "referenceName" : "Vitals+ Lifetime",
+      "type" : "NonConsumable"
+    }
+  ],
   "settings" : {
     "_applicationInternalID" : "0",
     "_developerTeamID" : "YXG4MP6W39",
@@ -42,7 +58,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "com.jackwallner.vitals.plus.monthly",
+          "productID" : "com.jackwallner.vitals.monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Vitals+ Monthly",
           "subscriptionGroupID" : "21555001",
@@ -67,7 +83,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "com.jackwallner.vitals.plus.yearly",
+          "productID" : "com.jackwallner.vitals.yearly",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Vitals+ Yearly",
           "subscriptionGroupID" : "21555001",

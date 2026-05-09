@@ -8,7 +8,6 @@ private enum VitalsLinks {
     static let coachServices = URL(string: "https://www.e3fit.me/#services")!
     static let coachContact = URL(string: "https://www.e3fit.me/#contact")!
     static let standardEULA = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
-    static let manageSubscriptions = URL(string: "https://apps.apple.com/account/subscriptions")!
 }
 
 /// Tracks which goals have been celebrated for a given day so we don't buzz
@@ -95,6 +94,7 @@ private enum HealthNotice: Equatable {
 struct DashboardView: View {
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
+    @EnvironmentObject private var store: StoreService
     @State private var activeCalories: Double = 0
     @State private var restingCalories: Double = 0
     @State private var steps: Int = 0
@@ -124,16 +124,20 @@ struct DashboardView: View {
 
     /// Whether we can show a numeric net (not loading, not failed).
     private var netDeficitNumericReady: Bool {
-        goals.showNetCalories && dietaryEnergyReady && !dietaryEnergyFetchFailed
+        isNetDeficitEnabled && dietaryEnergyReady && !dietaryEnergyFetchFailed
+    }
+
+    private var isNetDeficitEnabled: Bool {
+        store.isPro && goals.showNetCalories
     }
 
     private var visibleMetricCount: Int {
-        (goals.showCalories ? 1 : 0) + (goals.showSteps ? 1 : 0) + (goals.showNetCalories ? 1 : 0)
+        (goals.showCalories ? 1 : 0) + (goals.showSteps ? 1 : 0) + (isNetDeficitEnabled ? 1 : 0)
     }
 
     /// Only the net-deficit row is visible (no calorie ring / steps).
     private var onlyNetMetric: Bool {
-        goals.showNetCalories && !goals.showCalories && !goals.showSteps
+        isNetDeficitEnabled && !goals.showCalories && !goals.showSteps
     }
 
     private var calorieProgress: Double? {
@@ -175,7 +179,7 @@ struct DashboardView: View {
             if authorized { Task { await refresh() } }
         }
         .onChange(of: goals.showNetCalories) { _, enabled in
-            guard enabled else { return }
+            guard enabled, store.isPro else { return }
             Task {
                 let statusBefore = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
                 print("[NetDeficit] Toggled ON — auth status before request: \(String(describing: statusBefore?.rawValue)) (0=unknown, 1=shouldRequest, 2=unnecessary)")
@@ -193,6 +197,13 @@ struct DashboardView: View {
                 }
 
                 await refresh()
+            }
+        }
+        .onChange(of: store.isPro) { oldValue, isPro in
+            if oldValue && !isPro && goals.showNetCalories {
+                goals.showNetCalories = false
+            } else if isPro && goals.showNetCalories {
+                Task { await refresh() }
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
@@ -214,9 +225,13 @@ struct DashboardView: View {
             Task { await refresh() }
         }) {
             SettingsSheet(goals: goals)
+                .environmentObject(store)
                 .presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $showOnboarding, onDismiss: {
+            if !goals.hasCompletedSetup {
+                goals.hasCompletedSetup = true
+            }
             Task { await refresh() }
         }) {
             OnboardingSheet(goals: goals)
@@ -265,14 +280,14 @@ struct DashboardView: View {
     private func mainContent(availableHeight: CGFloat) -> some View {
         // Scale fonts based on mode
         let calNumberSize: CGFloat = {
-            if isSingleMetric && goals.showCalories && !goals.showSteps && !goals.showNetCalories {
+            if isSingleMetric && goals.showCalories && !goals.showSteps && !isNetDeficitEnabled {
                 return min(availableHeight * 0.12, 100)
             }
             if isMinimalMode { return min(availableHeight * 0.10, 88) }
             return min(availableHeight * 0.06, 52)
         }()
         let stepsNumberSize: CGFloat = {
-            if isSingleMetric && goals.showSteps && !goals.showCalories && !goals.showNetCalories {
+            if isSingleMetric && goals.showSteps && !goals.showCalories && !isNetDeficitEnabled {
                 return min(availableHeight * 0.12, 100)
             }
             if isMinimalMode { return min(availableHeight * 0.08, 68) }
@@ -517,16 +532,16 @@ struct DashboardView: View {
                 }
             }
 
-            if goals.showNetCalories && (goals.showCalories || goals.showSteps) {
+            if isNetDeficitEnabled && (goals.showCalories || goals.showSteps) {
                 Spacer(minLength: 16)
             }
 
-            if goals.showNetCalories {
+            if isNetDeficitEnabled {
                 netDeficitSection(netNumberSize: netNumberSize)
             }
 
             // Nothing enabled — gentle prompt
-            if !goals.showCalories && !goals.showSteps && !goals.showNetCalories {
+            if !goals.showCalories && !goals.showSteps && !isNetDeficitEnabled {
                 VStack(spacing: 12) {
                     Image(systemName: "heart.text.clipboard")
                         .font(.system(size: 48))
@@ -811,7 +826,7 @@ struct DashboardView: View {
     }
 
     private func loadDietaryEnergy() async {
-        guard goals.showNetCalories else {
+        guard isNetDeficitEnabled else {
             foodCalories = 0
             dietaryEnergyReady = false
             dietaryEnergyFetchFailed = false
@@ -1174,6 +1189,7 @@ private struct SettingsSheet: View {
     @State private var stepEnabled = true
     @State private var stepText = ""
     @State private var showPaywall = false
+    @State private var requestedLockedNetDeficit = false
 
     private var calValid: Bool {
         !calEnabled || (Double(calText) ?? 0) > 0
@@ -1199,8 +1215,21 @@ private struct SettingsSheet: View {
 
     private var showNetCaloriesBinding: Binding<Bool> {
         Binding(
-            get: { goals.showNetCalories },
-            set: { goals.showNetCalories = $0 }
+            get: { store.isPro ? goals.showNetCalories : requestedLockedNetDeficit },
+            set: { enabled in
+                if store.isPro {
+                    goals.showNetCalories = enabled
+                } else if enabled {
+                    requestedLockedNetDeficit = true
+                    goals.showNetCalories = false
+                    showPaywall = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                        requestedLockedNetDeficit = false
+                    }
+                } else {
+                    requestedLockedNetDeficit = false
+                }
+            }
         )
     }
 
@@ -1268,17 +1297,26 @@ private struct SettingsSheet: View {
                 Section {
                     Toggle("Show Calories", isOn: showCaloriesBinding)
                     Toggle("Show Steps", isOn: showStepsBinding)
-                    Toggle("Show Net Deficit", isOn: showNetCaloriesBinding)
-                        .onChange(of: goals.showNetCalories) { _, enabled in
-                            guard enabled else { return }
-                            Task {
-                                try? await HealthKitService.shared.requestDietaryAuthorization()
+                    Toggle(isOn: showNetCaloriesBinding) {
+                        HStack(spacing: 8) {
+                            Text("Show Net Deficit")
+                            if !store.isPro {
+                                Image(systemName: "lock.fill")
+                                    .font(.caption)
+                                    .foregroundStyle(Theme.caloriesPrimary)
                             }
                         }
+                    }
+                    .onChange(of: goals.showNetCalories) { _, enabled in
+                        guard enabled, store.isPro else { return }
+                        Task {
+                            try? await HealthKitService.shared.requestDietaryAuthorization()
+                        }
+                    }
                 } header: {
                     Text("Dashboard")
                 } footer: {
-                    Text("Net deficit is total calories burned (active + resting) minus food calories from Apple Health. Connect a food app like MyFitnessPal to Health to populate dietary energy.")
+                    Text("Net Deficit is a Vitals+ feature: total calories burned (active + resting) minus food calories from Apple Health. Connect a food app like MyFitnessPal to Health to populate dietary energy.")
                 }
 
                 Section {
@@ -1385,6 +1423,8 @@ private struct SettingsSheet: View {
                 calText = goals.calorieGoal.map { String(Int($0)) } ?? "2500"
                 stepEnabled = goals.stepGoal != nil
                 stepText = goals.stepGoal.map { String($0) } ?? "10000"
+                requestedLockedNetDeficit = false
+                Task { await store.updateCustomerProductStatus() }
             }
             .sheet(isPresented: $showPaywall) {
                 PaywallView()
@@ -1409,9 +1449,6 @@ private struct SettingsSheet: View {
                             .font(.system(.caption, design: .rounded))
                             .foregroundStyle(Theme.textSecondary)
                     }
-                }
-                Link(destination: VitalsLinks.manageSubscriptions) {
-                    Label("Manage Subscription", systemImage: "creditcard")
                 }
             } else {
                 Button {

@@ -428,7 +428,7 @@ struct HistoryView: View {
                             }
 
                             // Net Deficit row (if enabled)
-                            if goals.showNetCalories && hasNetData {
+                            if store.isPro && goals.showNetCalories && hasNetData {
                                 HStack(spacing: 12) {
                                     AverageCard(
                                         label: "Avg Deficit",
@@ -454,7 +454,7 @@ struct HistoryView: View {
                             }
 
                             // Net Deficit chart
-                            if goals.showNetCalories && hasNetData {
+                            if store.isPro && goals.showNetCalories && hasNetData {
                                 ChartCard(title: "Net Deficit", selection: selectedNetRecord) {
                                     netDeficitChart
                                 }
@@ -672,26 +672,29 @@ struct HistoryView: View {
     // MARK: - Chart Views
 
     private var selectedCalorieRecord: ChartSelection? {
-        guard let record = recordForDate(selectedCalorieDate) else { return nil }
+        guard let item = selectedChartItem(for: selectedCalorieDate, in: calorieChartData) else { return nil }
         return ChartSelection(
-            date: record.date,
-            primary: ("Calories", record.totalCalories.formatted(.number.precision(.fractionLength(0))))
+            date: item.date,
+            primary: ("Calories", selectedChartValue(item.value.formatted(.number.precision(.fractionLength(0))))),
+            dateLabel: selectedChartDateLabel(for: item.date)
         )
     }
 
     private var selectedStepRecord: ChartSelection? {
-        guard let record = recordForDate(selectedStepDate) else { return nil }
+        guard let item = selectedChartItem(for: selectedStepDate, in: stepsChartData) else { return nil }
         return ChartSelection(
-            date: record.date,
-            primary: ("Steps", record.steps.formatted(.number))
+            date: item.date,
+            primary: ("Steps", selectedChartValue(Int(item.value.rounded()).formatted(.number))),
+            dateLabel: selectedChartDateLabel(for: item.date)
         )
     }
 
     private var selectedNetRecord: ChartSelection? {
-        guard let record = recordForDate(selectedNetDate), food(for: record.date) > 0 else { return nil }
+        guard let item = selectedChartItem(for: selectedNetDate, in: netDeficitChartData) else { return nil }
         return ChartSelection(
-            date: record.date,
-            primary: ("Net", formatSignedNet(netDeficit(for: record)))
+            date: item.date,
+            primary: ("Net", selectedChartValue(formatSignedNet(item.value))),
+            dateLabel: selectedChartDateLabel(for: item.date)
         )
     }
 
@@ -869,6 +872,34 @@ struct HistoryView: View {
         return .day
     }
 
+    private func selectedChartItem(for selectedDate: Date?, in data: [(date: Date, value: Double, id: UUID)]) -> (date: Date, value: Double, id: UUID)? {
+        guard let selectedDate else { return nil }
+        let calendar = Calendar.current
+        if let exactBucket = data.first(where: { calendar.isDate($0.date, equalTo: selectedDate, toGranularity: chartDateGranularity) }) {
+            return exactBucket
+        }
+        return data.min {
+            abs($0.date.timeIntervalSince(selectedDate)) < abs($1.date.timeIntervalSince(selectedDate))
+        }
+    }
+
+    private func selectedChartDateLabel(for date: Date) -> String? {
+        if shouldAggregateByMonth {
+            return DateHelpers.monthYear(date)
+        }
+        if shouldAggregateByWeek {
+            return "Week of \(DateHelpers.mediumDate(date))"
+        }
+        return nil
+    }
+
+    private func selectedChartValue(_ value: String) -> String {
+        if shouldAggregateByMonth || shouldAggregateByWeek {
+            return "Avg \(value)"
+        }
+        return value
+    }
+
     private var chartXAxisStrideBy: Calendar.Component {
         if shouldAggregateByMonth { return .month }
         if shouldAggregateByWeek { return .weekOfYear }
@@ -963,7 +994,7 @@ struct HistoryView: View {
             // Only fetch dietary history when Net Deficit is enabled; failure here is
             // non-fatal — calorie/step charts still render without it.
             var foodMap: [Date: Double] = [:]
-            if goals.showNetCalories {
+            if store.isPro && goals.showNetCalories {
                 do {
                     let dietary: [(date: Date, foodCalories: Double)]
                     if selectedPeriod == .custom {
@@ -1090,6 +1121,13 @@ struct HistoryView: View {
 struct ChartSelection {
     let date: Date
     let primary: (label: String, value: String)
+    private let dateLabelOverride: String?
+
+    init(date: Date, primary: (label: String, value: String), dateLabel: String? = nil) {
+        self.date = date
+        self.primary = primary
+        self.dateLabelOverride = dateLabel
+    }
 
     private static let dateFormatter: DateFormatter = {
         let f = DateFormatter()
@@ -1098,7 +1136,7 @@ struct ChartSelection {
     }()
 
     var dateLabel: String {
-        Self.dateFormatter.string(from: date)
+        dateLabelOverride ?? Self.dateFormatter.string(from: date)
     }
 }
 

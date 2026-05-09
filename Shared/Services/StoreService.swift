@@ -5,9 +5,10 @@ import os
 
 /// Vitals+ subscription product identifiers. Must match App Store Connect and `Vitals.storekit`.
 enum VitalsProduct {
-    static let monthly = "com.jackwallner.vitals.plus.monthly"
-    static let yearly = "com.jackwallner.vitals.plus.yearly"
-    static let all: [String] = [monthly, yearly]
+    static let monthly = "com.jackwallner.vitals.monthly"
+    static let yearly = "com.jackwallner.vitals.yearly"
+    static let lifetime = "com.jackwallner.vitals.plus.lifetime"
+    static let all: [String] = [monthly, yearly, lifetime]
 }
 
 @MainActor
@@ -28,6 +29,11 @@ final class StoreService: ObservableObject {
     /// Call once on app launch — starts the long-running Transaction.updates listener and
     /// hydrates `isPro` from current entitlements.
     func start() {
+        #if DEBUG
+        if ScreenshotConfig.wantsPremiumActive {
+            isPro = true
+        }
+        #endif
         if updatesTask == nil {
             updatesTask = Task(priority: .background) { [weak self] in
                 guard let self else { return }
@@ -92,6 +98,13 @@ final class StoreService: ObservableObject {
     /// Re-checks the device's current entitlements. Call on launch and on
     /// foregrounding so cancellations / billing failures flip `isPro` off promptly.
     func updateCustomerProductStatus() async {
+        isPro = false
+        #if DEBUG
+        if ScreenshotConfig.wantsPremiumActive {
+            isPro = true
+            return
+        }
+        #endif
         var hasActiveSubscription = false
         for await result in Transaction.currentEntitlements {
             guard let transaction = try? checkVerified(result) else { continue }

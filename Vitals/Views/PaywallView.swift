@@ -6,7 +6,6 @@ import StoreKit
 enum PaywallLinks {
     static let privacyPolicy = URL(string: "https://jackwallner.github.io/vitals/privacy-policy.html")!
     static let standardEULA = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
-    static let manageSubscriptions = URL(string: "https://apps.apple.com/account/subscriptions")!
 }
 
 struct PaywallView: View {
@@ -25,9 +24,17 @@ struct PaywallView: View {
         store.products.first { $0.id == VitalsProduct.yearly }
     }
 
+    private var lifetimeProduct: Product? {
+        store.products.first { $0.id == VitalsProduct.lifetime }
+    }
+
     private var resolvedSelection: Product? {
         let id = selectedProductID ?? VitalsProduct.yearly
         return store.products.first { $0.id == id }
+    }
+
+    private var trialPitch: String? {
+        [yearlyProduct, monthlyProduct].compactMap { $0?.introOfferLabel }.first
     }
 
     var body: some View {
@@ -82,7 +89,7 @@ struct PaywallView: View {
             .alert("Welcome to Vitals+", isPresented: $showSuccess) {
                 Button("Done") { dismiss() }
             } message: {
-                Text("Your subscription is active. Generate Monthly Summary PDFs and unlock Deep Trends from the History tab.")
+                Text("Your access is active. Generate Monthly Summary PDFs and unlock Deep Trends from the History tab.")
             }
             .alert("Purchase Failed", isPresented: Binding(get: { purchaseError != nil }, set: { if !$0 { purchaseError = nil } })) {
                 Button("OK", role: .cancel) {}
@@ -110,7 +117,7 @@ struct PaywallView: View {
                 .font(.system(size: 34, weight: .bold, design: .rounded))
                 .foregroundStyle(Theme.textPrimary)
 
-            Text("Deeper insights and shareable PDF reports for power users.")
+            Text(trialPitch.map { "Start with a \($0), then unlock deeper insights and shareable reports." } ?? "Deeper insights and shareable PDF reports for power users.")
                 .font(.system(.subheadline, design: .rounded))
                 .foregroundStyle(Theme.textSecondary)
                 .multilineTextAlignment(.center)
@@ -135,6 +142,11 @@ struct PaywallView: View {
                 icon: "chart.line.uptrend.xyaxis",
                 title: "Deep Trends",
                 detail: "Period-over-period comparison cards on every history view."
+            )
+            FeatureRow(
+                icon: "plus.forwardslash.minus",
+                title: "Net Deficit",
+                detail: "Track calories burned minus food energy from Apple Health."
             )
             FeatureRow(
                 icon: "lock.shield.fill",
@@ -188,6 +200,15 @@ struct PaywallView: View {
                         selectedProductID = monthly.id
                     }
                 }
+                if let lifetime = lifetimeProduct {
+                    ProductCard(
+                        product: lifetime,
+                        isSelected: selectedProductID == lifetime.id,
+                        badge: "One-time"
+                    ) {
+                        selectedProductID = lifetime.id
+                    }
+                }
             }
         }
     }
@@ -222,7 +243,11 @@ struct PaywallView: View {
             .buttonStyle(.plain)
             .disabled(resolvedSelection == nil || store.purchaseInFlight)
 
-            if let intro = resolvedSelection?.introOfferLabel {
+            if resolvedSelection?.id == VitalsProduct.lifetime {
+                Text("One-time purchase. No subscription or renewal.")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+            } else if let intro = resolvedSelection?.introOfferLabel {
                 Text("Includes a \(intro). Cancel anytime.")
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
@@ -238,6 +263,9 @@ struct PaywallView: View {
         guard let product = resolvedSelection else { return "Subscribe" }
         if product.introOfferLabel != nil {
             return "Start Free Trial"
+        }
+        if product.id == VitalsProduct.lifetime {
+            return "Buy Lifetime — \(product.displayPrice)"
         }
         return "Subscribe — \(product.displayPrice)"
     }
@@ -263,7 +291,7 @@ struct PaywallView: View {
     }
 
     private var disclaimerText: String {
-        "Payment will be charged to your Apple ID account at confirmation of purchase. Subscription auto-renews unless cancelled at least 24 hours before the end of the current period. Manage or cancel anytime in Settings → Apple ID → Subscriptions."
+        "Payment will be charged to your Apple ID account at confirmation of purchase. Subscriptions auto-renew unless cancelled at least 24 hours before the end of the current period. Manage or cancel anytime in Settings → Apple ID → Subscriptions. Lifetime access is a one-time purchase."
     }
 
     // MARK: - Helpers
