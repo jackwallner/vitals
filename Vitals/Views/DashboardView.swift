@@ -133,6 +133,12 @@ struct DashboardView: View {
         store.isPro && goals.showNetCalories
     }
 
+    /// Active/resting breakdown is Vitals+ only and gated by the user's setting.
+    /// Hidden in minimal mode (no goals + no pacing) to keep that layout uncluttered.
+    private var showActiveResting: Bool {
+        store.isPro && goals.showActiveRestingBreakdown && !isMinimalMode
+    }
+
     private var visibleMetricCount: Int {
         (goals.showCalories ? 1 : 0) + (goals.showSteps ? 1 : 0) + (isNetDeficitEnabled ? 1 : 0)
     }
@@ -367,12 +373,16 @@ struct DashboardView: View {
                 }
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Calorie progress")
-                .accessibilityValue(calorieProgress != nil
-                    ? "\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories. Active \(Int(activeCalories)), resting \(Int(restingCalories))."
-                    : "\(Int(totalCalories)) calories. Active \(Int(activeCalories)), resting \(Int(restingCalories)).")
+                .accessibilityValue(showActiveResting
+                    ? (calorieProgress != nil
+                        ? "\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories. Active \(Int(activeCalories)), resting \(Int(restingCalories))."
+                        : "\(Int(totalCalories)) calories. Active \(Int(activeCalories)), resting \(Int(restingCalories)).")
+                    : (calorieProgress != nil
+                        ? "\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories"
+                        : "\(Int(totalCalories)) calories"))
 
-                // Active/Resting breakdown is always visible (was previously hidden behind a tap).
-                if !isMinimalMode {
+                // Active/Resting breakdown is a Vitals+ feature. Toggle lives in Settings.
+                if showActiveResting {
                     HStack(spacing: 16) {
                         MetricPill(label: "active", value: activeCalories, color: Theme.activePrimary)
                         MetricPill(label: "resting", value: restingCalories, color: Theme.restingPrimary)
@@ -1224,6 +1234,20 @@ private struct SettingsSheet: View {
         )
     }
 
+    private var showActiveRestingBinding: Binding<Bool> {
+        Binding(
+            get: { store.isPro && goals.showActiveRestingBreakdown },
+            set: { enabled in
+                if store.isPro {
+                    goals.showActiveRestingBreakdown = enabled
+                } else if enabled {
+                    goals.showActiveRestingBreakdown = false
+                    showPaywall = true
+                }
+            }
+        )
+    }
+
     private var showPacingBinding: Binding<Bool> {
         Binding(
             get: { goals.showPacing },
@@ -1290,6 +1314,16 @@ private struct SettingsSheet: View {
                 Section {
                     Toggle("Show Calories", isOn: showCaloriesBinding)
                     Toggle("Show Steps", isOn: showStepsBinding)
+                    Toggle(isOn: showActiveRestingBinding) {
+                        HStack(spacing: 8) {
+                            Text("Active + Resting Breakdown")
+                            if !store.isPro {
+                                Image(systemName: "lock.fill")
+                                    .font(.caption)
+                                    .foregroundStyle(Theme.caloriesPrimary)
+                            }
+                        }
+                    }
                     Toggle(isOn: showNetCaloriesBinding) {
                         HStack(spacing: 8) {
                             Text("Show Net Deficit")
@@ -1309,7 +1343,7 @@ private struct SettingsSheet: View {
                 } header: {
                     Text("Dashboard")
                 } footer: {
-                    Text("Net Deficit is a Vitals+ feature: total calories burned (active + resting) minus food calories from Apple Health. Connect a food app like MyFitnessPal to Health to populate dietary energy.")
+                    Text("Vitals+ unlocks the active vs. resting calorie breakdown and Net Deficit (calories burned minus food energy from Apple Health). Connect a food app like MyFitnessPal to populate dietary energy.")
                 }
 
                 Section {

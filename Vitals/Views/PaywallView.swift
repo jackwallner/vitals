@@ -159,6 +159,11 @@ struct PaywallView: View {
                 detail: "Track calories burned minus food energy from Apple Health."
             )
             FeatureRow(
+                icon: "flame.fill",
+                title: "Active + Resting Split",
+                detail: "See exactly how much of your burn is movement vs. metabolism."
+            )
+            FeatureRow(
                 icon: "lock.shield.fill",
                 title: "Stays Private",
                 detail: "Reports are generated on-device. Nothing leaves your phone."

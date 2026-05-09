@@ -28,31 +28,58 @@ Plain text only — no markdown, no HTML. Copy everything between the lines belo
 
 ---COPY START---
 
-Track your total daily calories burned and steps at a glance. Total Calories reads your data directly from Apple Health and keeps everything on your device. No accounts, no servers, no tracking.
+Total Calories puts your daily calories burned (active + resting) and step count right where you need them — your iPhone Home Screen, Lock Screen, and Apple Watch face — for free. No subscription needed for the basics. No account. No data leaves your phone.
 
-CALORIES & STEPS
-See your total calories burned — active plus resting — and your daily step count on one clean dashboard. Tap the calorie total to reveal the active vs. resting breakdown.
+If you've ever wished your Apple Watch face just showed your total calories burned for the day, this is that app.
 
-GOALS & PROGRESS RINGS
-Set optional daily calorie and step goals. Watch your progress fill up with animated rings and progress bars. Or skip goals entirely and use it as a simple counter.
+ON YOUR APPLE WATCH (FREE)
+- Total calories burned complications for every watch face style: circular, rectangular, inline, and corner.
+- Live step count complication too.
+- Watch app shows today at a glance plus 30-day trends.
+- Goals you set on iPhone sync straight to the watch.
 
-PACING
-A built-in pace indicator compares your current day to your 30-day average at the same time of day. Know whether you're ahead or behind your usual pace.
+ON YOUR HOME SCREEN & LOCK SCREEN (FREE)
+- Home Screen widgets in small and medium sizes.
+- Lock Screen widgets in circular and rectangular layouts.
+- Widgets respect the metrics you've turned on and the goals you've set.
+- Full daily totals visible without opening the app.
 
-HISTORY & TRENDS
-View your full history: 7 days, 30 days, 90 days, 1 year, or any custom date range. See trend arrows, peak days, and export your data as a CSV file.
+THE DASHBOARD (FREE)
+- Total daily calories burned on one clean ring.
+- Daily steps with progress bar and goal.
+- Pacing indicator: are you ahead or behind your usual day at this time?
+- Pull to refresh. Tap the gear for settings.
 
-WIDGETS & COMPLICATIONS
-Home screen and lock screen widgets show your calories and steps without opening the app. Apple Watch face complications keep your data visible all day.
+HISTORY (FREE)
+- 7 / 30 / 90 / 365-day views and any custom date range.
+- Trend arrows, peak days, and clean bar charts.
+- CSV data export.
+
+GOALS THAT WORK FOR YOU
+- Optional daily calorie and step goals.
+- Or skip goals and use it as a clean counter — your call.
+- Pacing comparison: same weekday vs. all days, configurable lookback (14 / 30 / 90 days / 1 year).
+
+VITALS+ (OPTIONAL)
+A small monthly, yearly, or lifetime upgrade unlocks:
+- Active vs. resting calorie breakdown
+- Net Deficit: calories burned minus food energy from Apple Health
+- Monthly Summary PDFs ready to share
+- Custom date-range PDF reports
+- Deep Trends: period-over-period comparison cards
+A free trial is offered to new subscribers.
 
 PRIVATE BY DESIGN
-All data stays on your device. No analytics, no ads, no servers, no account required. Read-only Apple Health access — the app never writes to your health records.
+- Read-only Apple Health access. The app never writes to your health records.
+- All data is stored locally on your device.
+- No analytics. No ads. No servers. No accounts. No tracking.
+- Reports are generated on-device.
 
 Total Calories is not a medical device and is not intended to diagnose, treat, or prevent any medical condition. Always consult a healthcare professional for medical advice.
 
 ---COPY END---
 
-The first sentence (visible "above the fold" before users tap "Read More") leads with the core value proposition and mentions Apple Health for discoverability. Description is ~1,350 characters (well under the 4,000 limit).
+The first paragraph leads with the core differentiator (free Watch / Home Screen / Lock Screen visibility for total calories burned) and front-loads search-relevant phrases (Apple Watch, Home Screen, Lock Screen, calories burned, step count). ~2,250 characters — well under the 4,000 limit.
 
 ---
 
@@ -60,79 +87,112 @@ The first sentence (visible "above the fold" before users tap "Read More") leads
 
 Can be updated anytime without a new app version. Not indexed for search. 170 character max.
 
-```
-See your total calories burned and steps in one place. Private, simple, always up to date from Apple Health.
-```
-
-109/170 characters.
-
-**Alternate (mentions widgets + Watch):**
+**Recommended (leads with the free Watch + widget niche):**
 
 ```
-Home screen widgets, Apple Watch complications, and a clean dashboard — all from Apple Health, all on device.
+Total daily calories burned on your Apple Watch face, Home Screen, and Lock Screen — free. Read straight from Apple Health, stays on your phone.
 ```
 
-155/170 characters.
+148/170 characters.
+
+**Alternate (Vitals+ trial pitch):**
+
+```
+Free Apple Watch complications and Home Screen widgets for your total calories burned. Try Vitals+ free for deeper trends and PDF reports.
+```
+
+138/170 characters.
+
+**Alternate (private + simple):**
+
+```
+The simple Home Screen widget and Apple Watch complication for your total calories burned. Private, on-device, free to use.
+```
+
+123/170 characters.
 
 ---
 
 ## Keywords
 
-100 characters max. Comma-separated, no spaces after commas. Words from the App Name and Subtitle are already indexed — do NOT repeat them here.
+100 characters max. Comma-separated, no spaces after commas. Words from the App Name, Subtitle, and Category are already indexed — do NOT repeat them here. Apple handles singular/plural automatically (one of each is enough).
 
 **Already indexed from name/subtitle:** total, calories, daily, tracker, burned, step, count
+**Already indexed from category (Health & Fitness):** health, fitness
+
+**Recommended (leans into the Apple Watch / widget / Home Screen niche):**
 
 ```
-health,fitness,pedometer,activity,widget,watch,energy,exercise,walking,progress,goal,ring,TDEE,BMR
+complication,widget,pedometer,TDEE,BMR,kcal,deficit,homescreen,lockscreen,walking,watch,fasting
 ```
 
-98/100 characters. All terms are unique and not in the name/subtitle.
+95/100 characters. Twelve unique terms covering: Apple Watch complications, Home Screen and Lock Screen widgets, pedometer / step competitors, calorie-niche searches (TDEE, BMR, kcal, deficit), and fasting/diet adjacency.
+
+**Alternate (broader, less Vitals+ focus):**
+
+```
+complication,widget,pedometer,TDEE,BMR,kcal,homescreen,lockscreen,walking,watch,activity,energy
+```
+
+96/100 characters. Drops fasting and deficit, adds activity and energy.
+
+**Why these keywords:**
+- `complication` — the unique selling point on Apple Watch; few apps target this term explicitly.
+- `homescreen` / `lockscreen` — Apple's tokenizer matches both the joined and spaced forms.
+- `widget` — high-volume but high-relevance.
+- `pedometer` — main competitor category; "steps" is already indexed via subtitle.
+- `TDEE` / `BMR` / `kcal` — niche search intent that's far less competitive than "calories".
+- `deficit` — calorie-deficit dieters; pairs naturally with the indexed "calories".
+- `walking` — pedometer-adjacent; `steps`/`step`/`count` already indexed.
+- `watch` — Apple Watch users searching "watch calories" / "watch step tracker" etc.
+- `fasting` — intermittent-fasting users care about Net Deficit; tiny niche but high intent.
 
 ---
 
-## What's New (Version 1.1.0)
+## What's New (Version 1.2.0 — Vitals+)
 
-Paste into **What’s New in This Version** (plain text, no markdown). This list covers **everything user-facing since 1.0.0** (git history through current `main`, including reliability work after the initial launch).
+Paste into **What's New in This Version** (plain text, no markdown).
 
-**Full notes** (~1,900 characters — under the 4,000 limit):
+**Recommended (leads with Vitals+, ~1,000 characters):**
 
 ---COPY START---
 
-What’s new since 1.0.0
+Introducing Vitals+
 
-Reliability & Apple Health
-• Fixes a rare crash during background refresh.
-• Better handling when connecting to Apple Health — authorization is coordinated with onboarding and refresh, so data loads more predictably.
-• Today’s calories and steps use the same daily totals logic as the History tab, so the dashboard and charts stay consistent.
-• Clearer messages when Health access is still needed, data is still syncing, or a refresh failed (instead of silent empty screens).
+The dashboard, Home Screen widgets, Lock Screen widgets, and Apple Watch complications stay free forever. Vitals+ adds a few power-user tools on top:
 
-Today & History
-• Pull down on Today to refresh; the screen shows when values were last updated.
-• History remembers your last period (7 / 30 / 90 / 365 days or a custom range) across launches.
-• History has improved error handling with retry when a load fails.
+• Active vs. resting calorie breakdown on Today.
+• Net Deficit: total calories burned minus food energy from Apple Health (works with MyFitnessPal, Lose It, and other food trackers via Health).
+• Monthly Summary PDFs — print-ready reports of your trends and highlights.
+• Custom-range PDF reports for any window you pick.
+• Deep Trends: period-over-period comparison cards.
 
-Widgets, Lock Screen & Apple Watch
-• Home screen widgets, lock screen widgets, and watch complications respect which metrics you’ve turned on in Settings.
-• Widgets and complications show goal-style progress when you use goals, and scale better when only one metric is visible.
-• Calorie and step goals set on iPhone sync to Apple Watch for a consistent experience.
+A free trial is available for new subscribers, so you can try it before committing. Monthly, yearly, and lifetime options.
 
-Other
-• Optional coaching discovery (E3 Fitness) appears in Settings and History if you want to explore training services.
-• Privacy policy and support pages updated on the web site linked from the app.
+Polish
+
+• Cleaner Today layout — the active vs. resting split now lives in Settings (Vitals+).
+• A few small reliability and copy fixes throughout History and Settings.
 
 ---COPY END---
 
-**Short notes** (if you prefer a compact App Store blurb):
+**Short version (~400 characters):**
 
 ---COPY SHORT START---
 
-• Fixes background-refresh stability and Health loading edge cases.
-• Today’s totals now match History; pull to refresh on Today.
-• History remembers your chart period; better errors with retry.
-• Widgets & Watch complications respect your toggles and goals; goals sync phone ↔ watch.
-• Clearer Health permission and status messages.
+Introducing Vitals+ (optional). Adds Net Deficit (burned − food calories from Apple Health), Active vs. Resting breakdown, Monthly Summary PDFs, custom-range reports, and Deep Trends. Free trial available. The dashboard, widgets, and Apple Watch complications stay free.
 
 ---COPY SHORT END---
+
+## What's New (Version 1.1.0) — archive
+
+```
+Reliability & Apple Health: fixes rare background-refresh crash; coordinated authorization between onboarding and refresh; consistent daily totals across Today and History; clearer messages when access is denied or syncing.
+
+Today & History: pull-to-refresh with last-updated timestamp; History remembers your last period across launches; retry on load failure.
+
+Widgets, Lock Screen & Apple Watch: respect Settings toggles and goals; better single-metric scaling; iPhone goals sync to Apple Watch.
+```
 
 ## What's New (Version 1.0.0) — archive
 

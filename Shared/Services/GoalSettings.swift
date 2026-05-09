@@ -191,6 +191,11 @@ final class GoalSettings: ObservableObject {
         }
     }
 
+    /// Vitals+ feature: show the active vs. resting calorie split below the ring on the dashboard.
+    @Published var showActiveRestingBreakdown: Bool {
+        didSet { defaults.set(showActiveRestingBreakdown, forKey: "showActiveRestingBreakdown") }
+    }
+
     // nil means "no goal" — just show the counter
     @Published var calorieGoal: Double? {
         didSet {
@@ -239,6 +244,7 @@ final class GoalSettings: ObservableObject {
         self.showCalories = defaults.object(forKey: "showCalories") as? Bool ?? true
         self.showSteps = defaults.object(forKey: "showSteps") as? Bool ?? true
         self.showNetCalories = defaults.object(forKey: "showNetCalories") as? Bool ?? false
+        self.showActiveRestingBreakdown = defaults.object(forKey: "showActiveRestingBreakdown") as? Bool ?? false
 
         let calEnabled = defaults.object(forKey: "calorieGoalEnabled") as? Bool ?? true
         if calEnabled {
