@@ -108,6 +108,9 @@ struct DashboardView: View {
     @State private var showOnboarding = false
     @State private var pacingCaloriesInsufficient = false
     @State private var pacingStepsInsufficient = false
+    @State private var pacingCalorieSamples = 0
+    @State private var pacingStepSamples = 0
+    @State private var pacingMinSamples = 3
     @State private var isRefreshing = false
     @State private var healthNotice: HealthNotice? = nil
     @State private var lastRefreshDate: Date? = nil
@@ -226,7 +229,7 @@ struct DashboardView: View {
         }) {
             SettingsSheet(goals: goals)
                 .environmentObject(store)
-                .presentationDetents([.medium, .large])
+                .presentationDetents([.large])
         }
         .sheet(isPresented: $showOnboarding, onDismiss: {
             if !goals.hasCompletedSetup {
@@ -321,13 +324,7 @@ struct DashboardView: View {
                     .buttonStyle(.plain)
                 }
                 HStack(spacing: 6) {
-                    if isRefreshing {
-                        ProgressView()
-                            .tint(Theme.textTertiary)
-                        Text("Refreshing...")
-                            .font(.system(.caption, design: .rounded))
-                            .foregroundStyle(Theme.textTertiary)
-                    } else if healthNotice == .accessNeeded || healthNotice == .accessBlocked {
+                    if healthNotice == .accessNeeded || healthNotice == .accessBlocked {
                         Text("Waiting for Health access")
                             .font(.system(.caption2, design: .rounded))
                             .foregroundStyle(Theme.textTertiary)
@@ -390,6 +387,14 @@ struct DashboardView: View {
                     showBreakdown.toggle()
                 }
 
+                if !isMinimalMode && !showBreakdown {
+                    Text("Tap for active + resting")
+                        .font(.system(.caption2, design: .rounded))
+                        .foregroundStyle(Theme.textTertiary)
+                        .padding(.top, 8)
+                        .opacity(animateContent ? 1 : 0)
+                }
+
                 // Active/Resting pills revealed when the ring is tapped.
                 if !isMinimalMode && showBreakdown {
                     HStack(spacing: 16) {
@@ -413,7 +418,7 @@ struct DashboardView: View {
                         .padding(.top, 16)
                         .opacity(animateContent ? 1 : 0)
                     } else if pacingCaloriesInsufficient {
-                        Text("Building pace data...")
+                        Text(pacingBuildingText(samples: pacingCalorieSamples))
                             .font(.system(.caption2, design: .rounded))
                             .foregroundStyle(Theme.textTertiary)
                             .padding(.top, 16)
@@ -456,7 +461,7 @@ struct DashboardView: View {
                                 )
                                 .padding(.top, 8)
                             } else if pacingStepsInsufficient {
-                                Text("Building pace data...")
+                                Text(pacingBuildingText(samples: pacingStepSamples))
                                     .font(.system(.caption2, design: .rounded))
                                     .foregroundStyle(Theme.textTertiary)
                                     .padding(.top, 8)
@@ -515,7 +520,7 @@ struct DashboardView: View {
                                     color: Theme.stepsPrimary
                                 )
                             } else if pacingStepsInsufficient {
-                                Text("Building pace data...")
+                                Text(pacingBuildingText(samples: pacingStepSamples))
                                     .font(.system(.caption2, design: .rounded))
                                     .foregroundStyle(Theme.textTertiary)
                             }
@@ -663,12 +668,19 @@ struct DashboardView: View {
     private func netDeficitFootnote(centered: Bool) -> some View {
         let align: TextAlignment = centered ? .center : .leading
         if dietaryEnergyFetchFailed {
-            Text("Couldn't read food calories. Check Health permissions.")
-                .font(.system(.caption2, design: .rounded))
-                .foregroundStyle(Theme.textTertiary)
-                .multilineTextAlignment(align)
-                .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
-                .padding(.horizontal, centered ? 12 : 0)
+            VStack(spacing: 6) {
+                Text("Couldn't read food calories. Check Health permissions.")
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .multilineTextAlignment(align)
+                Button("Retry food calories") {
+                    Task { await loadDietaryEnergy() }
+                }
+                .font(.system(.caption2, design: .rounded, weight: .semibold))
+                .foregroundStyle(Theme.caloriesPrimary)
+            }
+            .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
+            .padding(.horizontal, centered ? 12 : 0)
         } else if !dietaryEnergyReady {
             Text("Loading food calories…")
                 .font(.system(.caption2, design: .rounded))
@@ -677,7 +689,7 @@ struct DashboardView: View {
                 .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
                 .padding(.horizontal, centered ? 12 : 0)
         } else if foodCalories <= 0 {
-            Text("No food logged today — sync a food-tracking app to Apple Health.")
+            Text("0 food calories logged today. If you’re fasting, this is a valid net deficit day.")
                 .font(.system(.caption2, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
                 .multilineTextAlignment(align)
@@ -823,6 +835,8 @@ struct DashboardView: View {
         pacingSteps = nil
         pacingCaloriesInsufficient = false
         pacingStepsInsufficient = false
+        pacingCalorieSamples = 0
+        pacingStepSamples = 0
     }
 
     private func loadDietaryEnergy() async {
@@ -866,11 +880,19 @@ struct DashboardView: View {
             for: goals.pacingComparison,
             lookback: goals.pacingLookback
         )
+        pacingMinSamples = minSamples
+        pacingCalorieSamples = pacing.calorieSampleDays
+        pacingStepSamples = pacing.stepSampleDays
         let v = pacing.dashboardValues(minSamples: minSamples, showCalories: goals.showCalories, showSteps: goals.showSteps)
         pacingCalories = v.calories
         pacingCaloriesInsufficient = v.caloriesBuilding
         pacingSteps = v.steps
         pacingStepsInsufficient = v.stepsBuilding
+    }
+
+    private func pacingBuildingText(samples: Int) -> String {
+        let dayWord = pacingMinSamples == 1 ? "day" : "days"
+        return "Building pace data: \(samples)/\(pacingMinSamples) \(dayWord)"
     }
 
     private func isAllZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
@@ -1056,11 +1078,11 @@ private struct OnboardingSheet: View {
     @State private var stepText = "10000"
 
     private var calValid: Bool {
-        !wantCalGoal || (Double(calText) ?? 0) > 0
+        !wantCalGoal || (Double(calText).map { (500...50000).contains($0) } ?? false)
     }
 
     private var stepValid: Bool {
-        !wantStepGoal || (Int(stepText) ?? 0) > 0
+        !wantStepGoal || (Int(stepText).map { (100...500000).contains($0) } ?? false)
     }
 
     var body: some View {
@@ -1072,7 +1094,7 @@ private struct OnboardingSheet: View {
                         .foregroundStyle(Theme.caloriesPrimary)
                     Text("Welcome to Total Calories")
                         .font(.system(.largeTitle, design: .rounded, weight: .bold))
-                    Text("Set up your daily goals, or skip to use as a simple counter.")
+                    Text("Set up daily goals, or turn both off to use Total Calories as a simple counter.")
                         .font(.system(.subheadline, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
                         .multilineTextAlignment(.center)
@@ -1102,13 +1124,13 @@ private struct OnboardingSheet: View {
                 Spacer()
 
                 Button {
-                    if wantCalGoal, let cal = Double(calText), cal > 0 {
-                        goals.calorieGoal = min(max(cal, 500), 50000)
+                    if wantCalGoal, let cal = Double(calText), (500...50000).contains(cal) {
+                        goals.calorieGoal = cal
                     } else {
                         goals.calorieGoal = nil
                     }
-                    if wantStepGoal, let step = Int(stepText), step > 0 {
-                        goals.stepGoal = min(max(step, 100), 500000)
+                    if wantStepGoal, let step = Int(stepText), (100...500000).contains(step) {
+                        goals.stepGoal = step
                     } else {
                         goals.stepGoal = nil
                     }
@@ -1168,7 +1190,7 @@ private struct GoalRow: View {
                     .padding(12)
                     .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 10))
                 if !isValid {
-                    Text("Enter a valid number.")
+                    Text(title == "Calorie Goal" ? "Enter 500–50,000 calories." : "Enter 100–500,000 steps.")
                         .font(.caption)
                         .foregroundStyle(.red)
                 }
@@ -1189,14 +1211,14 @@ private struct SettingsSheet: View {
     @State private var stepEnabled = true
     @State private var stepText = ""
     @State private var showPaywall = false
-    @State private var requestedLockedNetDeficit = false
+    @State private var appliedGoalDrafts = false
 
     private var calValid: Bool {
-        !calEnabled || (Double(calText) ?? 0) > 0
+        !calEnabled || (Double(calText).map { (500...50000).contains($0) } ?? false)
     }
 
     private var stepValid: Bool {
-        !stepEnabled || (Int(stepText) ?? 0) > 0
+        !stepEnabled || (Int(stepText).map { (100...500000).contains($0) } ?? false)
     }
 
     private var showCaloriesBinding: Binding<Bool> {
@@ -1215,19 +1237,13 @@ private struct SettingsSheet: View {
 
     private var showNetCaloriesBinding: Binding<Bool> {
         Binding(
-            get: { store.isPro ? goals.showNetCalories : requestedLockedNetDeficit },
+            get: { store.isPro && goals.showNetCalories },
             set: { enabled in
                 if store.isPro {
                     goals.showNetCalories = enabled
                 } else if enabled {
-                    requestedLockedNetDeficit = true
                     goals.showNetCalories = false
                     showPaywall = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                        requestedLockedNetDeficit = false
-                    }
-                } else {
-                    requestedLockedNetDeficit = false
                 }
             }
         )
@@ -1272,17 +1288,19 @@ private struct SettingsSheet: View {
     }
 
     private func applyGoalDrafts() {
+        guard !appliedGoalDrafts else { return }
+        appliedGoalDrafts = true
         if calEnabled {
-            if let cal = Double(calText), cal > 0 {
-                goals.calorieGoal = min(max(cal, 500), 50000)
+            if let cal = Double(calText), (500...50000).contains(cal) {
+                goals.calorieGoal = cal
             }
         } else {
             goals.calorieGoal = nil
         }
 
         if stepEnabled {
-            if let step = Int(stepText), step > 0 {
-                goals.stepGoal = min(max(step, 100), 500000)
+            if let step = Int(stepText), (100...500000).contains(step) {
+                goals.stepGoal = step
             }
         } else {
             goals.stepGoal = nil
@@ -1325,7 +1343,7 @@ private struct SettingsSheet: View {
                         TextField("Daily calories", text: $calText)
                             .keyboardType(.numberPad)
                         if !calValid {
-                            Text("Enter a valid number.")
+                            Text("Enter 500–50,000 calories.")
                                 .font(.caption)
                                 .foregroundStyle(.red)
                         }
@@ -1335,7 +1353,7 @@ private struct SettingsSheet: View {
                         TextField("Daily steps", text: $stepText)
                             .keyboardType(.numberPad)
                         if !stepValid {
-                            Text("Enter a valid number.")
+                            Text("Enter 100–500,000 steps.")
                                 .font(.caption)
                                 .foregroundStyle(.red)
                         }
@@ -1418,12 +1436,13 @@ private struct SettingsSheet: View {
             .onDisappear {
                 applyGoalDrafts()
             }
+            .preferredColorScheme(goals.appearance.colorScheme)
             .onAppear {
+                appliedGoalDrafts = false
                 calEnabled = goals.calorieGoal != nil
                 calText = goals.calorieGoal.map { String(Int($0)) } ?? "2500"
                 stepEnabled = goals.stepGoal != nil
                 stepText = goals.stepGoal.map { String($0) } ?? "10000"
-                requestedLockedNetDeficit = false
                 Task { await store.updateCustomerProductStatus() }
             }
             .sheet(isPresented: $showPaywall) {

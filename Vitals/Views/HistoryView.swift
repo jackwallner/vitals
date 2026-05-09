@@ -58,7 +58,15 @@ private enum HistoryPrefs {
     }
 }
 
+enum HistoryFocus: Equatable {
+    case reports
+    case customReports
+    case deepTrends
+}
+
 struct HistoryView: View {
+    let focus: HistoryFocus?
+
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
     @EnvironmentObject private var store: StoreService
@@ -85,6 +93,11 @@ struct HistoryView: View {
     @State private var selectedStepDate: Date?
     @State private var selectedNetDate: Date?
     @State private var loadErrorMessage: String? = nil
+    @State private var generateReportAfterCustomApply = false
+
+    init(focus: HistoryFocus? = nil) {
+        self.focus = focus
+    }
 
     enum Period: String, CaseIterable {
         case week = "7D"
@@ -108,14 +121,26 @@ struct HistoryView: View {
         records.isEmpty || records.allSatisfy { $0.totalCalories == 0 && $0.steps == 0 }
     }
 
+    private var focusNotice: String? {
+        switch focus {
+        case .reports:
+            return "Vitals+ reports are available in the tools section below."
+        case .customReports:
+            return "Custom reports are a Vitals+ feature. Choose a range from the tools section below."
+        case .deepTrends:
+            return "Deep Trends are highlighted below the charts for this history range."
+        case nil:
+            return nil
+        }
+    }
+
     private var totalCalories: Double {
         records.map(\.totalCalories).reduce(0, +)
     }
 
     private var avgCalories: Double {
-        let nonZero = records.filter { $0.totalCalories > 0 }
-        guard !nonZero.isEmpty else { return 0 }
-        return nonZero.map(\.totalCalories).reduce(0, +) / Double(nonZero.count)
+        guard !records.isEmpty else { return 0 }
+        return totalCalories / Double(records.count)
     }
 
     private var totalSteps: Int {
@@ -123,9 +148,8 @@ struct HistoryView: View {
     }
 
     private var avgSteps: Int {
-        let nonZero = records.filter { $0.steps > 0 }
-        guard !nonZero.isEmpty else { return 0 }
-        return nonZero.map(\.steps).reduce(0, +) / nonZero.count
+        guard !records.isEmpty else { return 0 }
+        return Int((Double(totalSteps) / Double(records.count)).rounded())
     }
 
     // MARK: - Chart Data (aggregated for longer periods)
@@ -226,9 +250,8 @@ struct HistoryView: View {
         record.totalCalories - food(for: record.date)
     }
 
-    /// Days that have any food logged — the only days where Net Deficit is meaningful.
     private var netRecords: [DayRecord] {
-        records.filter { food(for: $0.date) > 0 }
+        records.filter { $0.totalCalories > 0 }
     }
 
     private var hasNetData: Bool {
@@ -279,22 +302,12 @@ struct HistoryView: View {
                         Button {
                             handleSummaryReportTap()
                         } label: {
-                            ZStack {
-                                Image(systemName: "doc.richtext")
-                                    .font(.body.weight(.medium))
-                                    .foregroundStyle(Theme.caloriesPrimary)
-                                if !store.isPro {
-                                    Image(systemName: "lock.fill")
-                                        .font(.system(size: 9, weight: .bold))
-                                        .foregroundStyle(.white)
-                                        .padding(3)
-                                        .background(Theme.caloriesPrimary, in: Circle())
-                                        .offset(x: 10, y: -10)
-                                }
-                            }
-                            .frame(width: 22, height: 22)
-                            .padding(10)
-                            .background(Theme.cardSurface, in: Circle())
+                            Image(systemName: store.isPro ? "doc.richtext" : "lock.doc.fill")
+                                .font(.body.weight(.medium))
+                                .foregroundStyle(Theme.caloriesPrimary)
+                                .frame(width: 22, height: 22)
+                                .padding(10)
+                                .background(Theme.cardSurface, in: Circle())
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel(store.isPro ? "Generate summary report" : "Vitals Plus summary report (locked)")
@@ -320,7 +333,11 @@ struct HistoryView: View {
                     ForEach(Period.allCases, id: \.self) { period in
                         SegmentButton(title: period.rawValue, isSelected: selectedPeriod == period) {
                             if period == .custom {
-                                showCustomRange = true
+                                if store.isPro {
+                                    showCustomRange = true
+                                } else {
+                                    showPaywall = true
+                                }
                             } else {
                                 selectedPeriod = period
                             }
@@ -397,6 +414,12 @@ struct HistoryView: View {
                             if let loadErrorMessage {
                                 historyNoticeBanner(loadErrorMessage)
                             }
+
+                            if let focusNotice {
+                                historyNoticeBanner(focusNotice, systemImage: "sparkles")
+                            }
+
+                            historyVitalsPlusSection
 
                             // Summary cards grouped by metric: Calories, Steps, Net Deficit
                             // Calories row
@@ -512,7 +535,14 @@ struct HistoryView: View {
                 selectedPeriod = .custom
                 showCustomRange = false
                 HistoryPrefs.save(period: .custom, customStart: customStart, customEnd: customEnd)
-                Task { await loadHistory() }
+                let shouldGenerate = generateReportAfterCustomApply
+                generateReportAfterCustomApply = false
+                Task {
+                    await loadHistory()
+                    if shouldGenerate {
+                        await generateSummaryPDF()
+                    }
+                }
             }
             .presentationDetents([.medium])
         }
@@ -550,7 +580,7 @@ struct HistoryView: View {
             }
         }) {
             if let pdfFile {
-                ShareSheet(items: [pdfFile.url])
+                PDFPreviewSheet(title: reportTitle, url: pdfFile.url)
             }
         }
         .alert("Report Failed", isPresented: Binding(get: { pdfErrorMessage != nil }, set: { if !$0 { pdfErrorMessage = nil } })) {
@@ -574,6 +604,65 @@ struct HistoryView: View {
         }
     }
 
+    private var historyVitalsPlusSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(spacing: 8) {
+                Image(systemName: "sparkles")
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundStyle(Theme.caloriesPrimary)
+                Text("Vitals+ Tools")
+                    .font(.system(.headline, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.textPrimary)
+                Spacer()
+                Text(store.isPro ? "Active" : "Premium")
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(Theme.caloriesPrimary.opacity(0.15), in: Capsule())
+                    .foregroundStyle(Theme.caloriesPrimary)
+            }
+
+            VitalsPlusHistoryRow(
+                icon: "doc.richtext.fill",
+                title: "Monthly Summary PDF",
+                detail: "Generate a 30-day report and preview it before sharing.",
+                buttonTitle: store.isPro ? "Generate Report" : "Unlock Reports",
+                locked: !store.isPro
+            ) {
+                handleSummaryReportTap()
+            }
+
+            VitalsPlusHistoryRow(
+                icon: "calendar.badge.clock",
+                title: "Custom Reports",
+                detail: "The standard date selector is free. Custom paid ranges unlock with Vitals+.",
+                buttonTitle: store.isPro ? "Choose & Generate" : "Unlock Custom",
+                locked: !store.isPro
+            ) {
+                if store.isPro {
+                    generateReportAfterCustomApply = true
+                    showCustomRange = true
+                } else {
+                    showPaywall = true
+                }
+            }
+
+            VitalsPlusHistoryRow(
+                icon: "chart.line.uptrend.xyaxis",
+                title: "Deep Trends",
+                detail: "Compare this range against the previous period below.",
+                buttonTitle: store.isPro ? "Visible Below" : "Unlock Trends",
+                locked: !store.isPro
+            ) {
+                if !store.isPro {
+                    showPaywall = true
+                }
+            }
+        }
+        .padding(Theme.cardPadding)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+    }
+
     // MARK: - Vitals+ Summary Report
 
     private func handleSummaryReportTap() {
@@ -588,6 +677,7 @@ struct HistoryView: View {
         guard !isGeneratingPDF else { return }
         isGeneratingPDF = true
         defer { isGeneratingPDF = false }
+        try? await Task.sleep(nanoseconds: 100_000_000)
 
         let reportDays: [ReportDay] = records.map { rec in
             ReportDay(
@@ -656,7 +746,7 @@ struct HistoryView: View {
         let prevNonZero = previousRecords.filter { $0.totalCalories > 0 }
         guard !prevNonZero.isEmpty else { return nil }
         let prev = prevNonZero.map(\.totalCalories).reduce(0, +) / Double(prevNonZero.count)
-        guard prev > 0, curr > 0 else { return nil }
+        guard prev > 0 else { return nil }
         return ((curr - prev) / prev) * 100
     }
 
@@ -665,7 +755,7 @@ struct HistoryView: View {
         let prevNonZero = previousRecords.filter { $0.steps > 0 }
         guard !prevNonZero.isEmpty else { return nil }
         let prev = Double(prevNonZero.map(\.steps).reduce(0, +)) / Double(prevNonZero.count)
-        guard prev > 0, curr > 0 else { return nil }
+        guard prev > 0 else { return nil }
         return ((curr - prev) / prev) * 100
     }
 
@@ -930,9 +1020,9 @@ struct HistoryView: View {
         return DateHelpers.shortDate(date)
     }
 
-    private func historyNoticeBanner(_ message: String) -> some View {
+    private func historyNoticeBanner(_ message: String, systemImage: String = "exclamationmark.triangle.fill") -> some View {
         HStack(alignment: .top, spacing: 10) {
-            Image(systemName: "exclamationmark.triangle.fill")
+            Image(systemName: systemImage)
                 .foregroundStyle(Theme.caloriesPrimary)
                 .padding(.top, 2)
             Text(message)
@@ -1041,23 +1131,22 @@ struct HistoryView: View {
     /// Load the window of equal length preceding the current selection, used for
     /// period-over-period trend calculations on the Deep Trends card and PDF report.
     private func loadPreviousWindow(history: [(date: Date, active: Double, resting: Double, steps: Int)]) async {
-        guard let earliest = history.map(\.date).min() else {
-            previousRecords = []
-            return
-        }
         let cal = Calendar.current
-        let priorEnd = cal.date(byAdding: .day, value: -1, to: earliest) ?? earliest
+        let currentStart: Date
         let lengthDays: Int
         switch selectedPeriod {
         case .week, .month, .threeMonths, .year:
             lengthDays = selectedPeriod.days ?? 0
+            currentStart = DateHelpers.daysAgo(max(lengthDays - 1, 0))
         case .custom:
-            lengthDays = max(1, cal.dateComponents([.day], from: customStart, to: customEnd).day ?? 0)
+            lengthDays = max(1, cal.dateComponents([.day], from: customStart, to: customEnd).day ?? 0) + 1
+            currentStart = cal.startOfDay(for: customStart)
         }
         guard lengthDays > 0 else {
             previousRecords = []
             return
         }
+        let priorEnd = cal.date(byAdding: .day, value: -1, to: currentStart) ?? currentStart
         let priorStart = cal.date(byAdding: .day, value: -(lengthDays - 1), to: priorEnd) ?? priorEnd
         do {
             let prev = try await healthKit.fetchHistory(from: priorStart, to: priorEnd)
@@ -1077,17 +1166,25 @@ struct HistoryView: View {
         formatter.timeZone = .current
         formatter.dateFormat = "yyyy-MM-dd"
 
-        let columns = ["Date", "Active Calories", "Resting Calories", "Total Calories", "Steps"]
+        let includeNet = store.isPro && goals.showNetCalories
+        let columns = includeNet
+            ? ["Date", "Active Calories", "Resting Calories", "Total Calories", "Steps", "Food Calories", "Net Deficit"]
+            : ["Date", "Active Calories", "Resting Calories", "Total Calories", "Steps"]
         let header = columns.map(Self.csvEscape).joined(separator: ",") + "\n"
 
         let rows = records.map { r -> String in
-            let fields = [
+            var fields = [
                 formatter.string(from: r.date),
                 String(format: "%.0f", r.activeCalories),
                 String(format: "%.0f", r.restingCalories),
                 String(format: "%.0f", r.totalCalories),
                 String(r.steps),
             ]
+            if includeNet {
+                let foodCalories = food(for: r.date)
+                fields.append(String(format: "%.0f", foodCalories))
+                fields.append(String(format: "%.0f", r.totalCalories - foodCalories))
+            }
             return fields.map(Self.csvEscape).joined(separator: ",")
         }.joined(separator: "\n")
 
@@ -1153,6 +1250,47 @@ struct PDFFile {
 
 // MARK: - Deep Trends Card (Vitals+)
 
+private struct VitalsPlusHistoryRow: View {
+    let icon: String
+    let title: String
+    let detail: String
+    let buttonTitle: String
+    let locked: Bool
+    let action: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .top, spacing: 10) {
+                Image(systemName: locked ? "lock.fill" : icon)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(Theme.caloriesPrimary)
+                    .frame(width: 20)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(title)
+                        .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                        .foregroundStyle(Theme.textPrimary)
+                    Text(detail)
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 0)
+            }
+            Button(action: action) {
+                Text(buttonTitle)
+                    .font(.system(.caption, design: .rounded, weight: .bold))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                    .background(Theme.caloriesGradient, in: Capsule())
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(14)
+        .background(Theme.cardSurfaceLight, in: RoundedRectangle(cornerRadius: 16))
+    }
+}
+
 private struct DeepTrendsCard: View {
     let isPro: Bool
     let calorieTrend: Double?
@@ -1170,14 +1308,12 @@ private struct DeepTrendsCard: View {
                     .font(.headline)
                     .foregroundStyle(Theme.textPrimary)
                 Spacer()
-                if !isPro {
-                    Text("Vitals+")
-                        .font(.system(size: 10, weight: .bold, design: .rounded))
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 3)
-                        .background(Theme.caloriesPrimary.opacity(0.15), in: Capsule())
-                        .foregroundStyle(Theme.caloriesPrimary)
-                }
+                Text(isPro ? "Active" : "Vitals+")
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(Theme.caloriesPrimary.opacity(0.15), in: Capsule())
+                    .foregroundStyle(Theme.caloriesPrimary)
             }
 
             Text(periodLabel)

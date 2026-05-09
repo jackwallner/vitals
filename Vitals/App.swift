@@ -177,6 +177,7 @@ struct MainTabView: View {
     @EnvironmentObject private var store: StoreService
     @State private var selectedTab = 0
     @State private var historyHasAppeared = false
+    @State private var historyFocus: HistoryFocus?
 
     init() {
         if ScreenshotConfig.wantsHistoryTab {
@@ -198,7 +199,7 @@ struct MainTabView: View {
                 .allowsHitTesting(selectedTab == 0)
                 .accessibilityHidden(selectedTab != 0)
             if historyHasAppeared {
-                HistoryView()
+                HistoryView(focus: historyFocus)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .opacity(selectedTab == 1 ? 1 : 0)
                     .allowsHitTesting(selectedTab == 1)
@@ -207,7 +208,14 @@ struct MainTabView: View {
             Group {
                 if store.isPro {
                     PremiumFeaturesView(
-                        onOpenNetDeficit: { selectedTab = 0 }
+                        onOpenNetDeficit: {
+                            GoalSettings.shared.showNetCalories = true
+                            selectedTab = 0
+                        },
+                        onOpenHistory: { focus in
+                            historyFocus = focus
+                            openHistoryTab()
+                        }
                     )
                 } else {
                     PaywallView()
@@ -237,7 +245,7 @@ struct MainTabView: View {
 
                 TabButton(
                     icon: store.isPro ? "sparkles" : "lock.fill",
-                    label: "Vitals+",
+                    label: store.isPro ? "Vitals+" : "Upgrade",
                     isSelected: selectedTab == 2
                 ) { selectedTab = 2 }
             }
@@ -256,76 +264,86 @@ struct MainTabView: View {
     }
 }
 
-private enum PremiumFeatureRoute: Hashable {
-    case summaryReports
-    case customReports
-    case deepTrends
-}
-
 private struct PremiumFeaturesView: View {
     @EnvironmentObject private var store: StoreService
+    @StateObject private var healthKit = HealthKitService.shared
+    @StateObject private var goals = GoalSettings.shared
     @State private var restoreMessage: String?
-    @State private var path: [PremiumFeatureRoute] = []
+    @State private var pdfFile: PDFFile?
+    @State private var pdfTitle = "Vitals+ Report"
+    @State private var showPDFPreviewSheet = false
+    @State private var isGeneratingReport = false
+    @State private var reportErrorMessage: String?
+    @State private var showCustomReportSheet = false
+    @State private var customStart = DateHelpers.daysAgo(29)
+    @State private var customEnd = Date.now
 
     let onOpenNetDeficit: () -> Void
+    let onOpenHistory: (HistoryFocus) -> Void
 
     var body: some View {
-        NavigationStack(path: $path) {
+        NavigationStack {
             ZStack {
                 Theme.background.ignoresSafeArea()
 
                 ScrollView(showsIndicators: false) {
-                    VStack(spacing: 24) {
+                    VStack(spacing: 18) {
                         premiumHeader
 
                         VStack(spacing: 12) {
                             PremiumActionCard(
+                                icon: "plus.forwardslash.minus",
+                                title: "Net Deficit",
+                                detail: "Show calories burned minus food calories from Apple Health on Today and History.",
+                                buttonTitle: "Enable on Today",
+                                action: onOpenNetDeficit
+                            )
+                            PremiumActionCard(
                                 icon: "doc.richtext.fill",
                                 title: "Monthly Summary PDFs",
-                                detail: "Create and share print-ready health reports with charts, trends, and goal context.",
-                                buttonTitle: "Open Reports",
-                                action: { path = [.summaryReports] }
+                                detail: "Generate a 30-day report here and preview it before sharing.",
+                                buttonTitle: "Generate 30-Day Report",
+                                action: { Task { await generateReport(days: 30, title: "30-Day Summary") } }
                             )
                             PremiumActionCard(
                                 icon: "calendar.badge.clock",
                                 title: "Custom-Range Reports",
-                                detail: "Build reports for any window you choose — monthly, quarterly, annual, or your own range.",
-                                buttonTitle: "Choose Range",
-                                action: { path = [.customReports] }
+                                detail: "Pick an exact range, generate the report, and review the PDF in-app.",
+                                buttonTitle: "Choose Dates",
+                                action: { showCustomReportSheet = true }
                             )
                             PremiumActionCard(
                                 icon: "chart.line.uptrend.xyaxis",
                                 title: "Deep Trends",
-                                detail: "Compare calories and steps against the previous period to see what is changing.",
-                                buttonTitle: "View Trends",
-                                action: { path = [.deepTrends] }
-                            )
-                            PremiumActionCard(
-                                icon: "plus.forwardslash.minus",
-                                title: "Net Deficit",
-                                detail: "See calories burned minus food calories from Apple Health when your food tracker syncs dietary energy.",
-                                buttonTitle: "Open Dashboard",
-                                action: onOpenNetDeficit
+                                detail: "Jump to the History tab to review period-over-period trend cards in context.",
+                                buttonTitle: "Open History Trends",
+                                action: { onOpenHistory(.deepTrends) }
                             )
                         }
 
                         accountSection
                     }
                     .padding(.horizontal, 24)
-                    .padding(.top, 16)
+                    .padding(.top, 12)
                     .padding(.bottom, 96)
                 }
             }
             .navigationTitle("Vitals+")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationDestination(for: PremiumFeatureRoute.self) { route in
-                switch route {
-                case .summaryReports:
-                    PremiumHostedHistoryView(title: "Summary Reports")
-                case .customReports:
-                    PremiumHostedHistoryView(title: "Custom Reports")
-                case .deepTrends:
-                    PremiumHostedHistoryView(title: "Deep Trends")
+            .sheet(isPresented: $showCustomReportSheet) {
+                PremiumCustomReportSheet(start: $customStart, end: $customEnd, isGenerating: isGeneratingReport) {
+                    Task { await generateReport(start: customStart, end: customEnd, title: "Custom Summary") }
+                }
+                .presentationDetents([.medium])
+            }
+            .sheet(isPresented: $showPDFPreviewSheet, onDismiss: {
+                if let pdfFile {
+                    try? FileManager.default.removeItem(at: pdfFile.url)
+                    self.pdfFile = nil
+                }
+            }) {
+                if let pdfFile {
+                    PDFPreviewSheet(title: pdfTitle, url: pdfFile.url)
                 }
             }
             .alert("Vitals+", isPresented: Binding(get: { restoreMessage != nil }, set: { if !$0 { restoreMessage = nil } })) {
@@ -333,32 +351,50 @@ private struct PremiumFeaturesView: View {
             } message: {
                 Text(restoreMessage ?? "")
             }
+            .alert("Report Failed", isPresented: Binding(get: { reportErrorMessage != nil }, set: { if !$0 { reportErrorMessage = nil } })) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(reportErrorMessage ?? "")
+            }
+            .overlay(alignment: .center) {
+                if isGeneratingReport {
+                    VStack(spacing: 12) {
+                        ProgressView()
+                            .tint(Theme.caloriesPrimary)
+                        Text("Generating report…")
+                            .font(.system(.footnote, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                    }
+                    .padding(20)
+                    .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 16))
+                    .shadow(radius: 12)
+                }
+            }
         }
     }
 
     private var premiumHeader: some View {
-        VStack(spacing: 12) {
+        HStack(spacing: 12) {
             ZStack {
                 Circle()
                     .fill(Theme.caloriesGradient)
-                    .frame(width: 84, height: 84)
-                    .shadow(color: Theme.caloriesPrimary.opacity(0.4), radius: 16, x: 0, y: 6)
+                    .frame(width: 48, height: 48)
                 Image(systemName: "sparkles")
-                    .font(.system(size: 38, weight: .bold))
+                    .font(.system(size: 22, weight: .bold))
                     .foregroundStyle(.white)
             }
-
-            Text("Vitals+ Active")
-                .font(.system(size: 34, weight: .bold, design: .rounded))
-                .foregroundStyle(Theme.textPrimary)
-
-            Text("Your premium tools are ready.")
-                .font(.system(.subheadline, design: .rounded))
-                .foregroundStyle(Theme.textSecondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 16)
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Vitals+ Active")
+                    .font(.system(.title2, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.textPrimary)
+                Text("Premium tools are ready to use.")
+                    .font(.system(.subheadline, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+            }
+            Spacer()
         }
-        .padding(.top, 12)
+        .padding(16)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
     }
 
     private var accountSection: some View {
@@ -378,15 +414,150 @@ private struct PremiumFeaturesView: View {
             .buttonStyle(.plain)
         }
     }
+
+    private func generateReport(days: Int, title: String) async {
+        await generateReport(start: nil, end: nil, days: days, title: title)
+    }
+
+    private func generateReport(start: Date, end: Date, title: String) async {
+        await generateReport(start: start, end: end, days: nil, title: title)
+    }
+
+    private func generateReport(start: Date? = nil, end: Date? = nil, days: Int? = nil, title: String) async {
+        guard !isGeneratingReport else { return }
+        isGeneratingReport = true
+        defer { isGeneratingReport = false }
+        try? await Task.sleep(nanoseconds: 100_000_000)
+
+        do {
+            let history: [(date: Date, active: Double, resting: Double, steps: Int)]
+            if let days {
+                history = try await healthKit.fetchHistory(days: days)
+            } else if let start, let end {
+                history = try await healthKit.fetchHistory(from: start, to: end)
+            } else {
+                history = try await healthKit.fetchHistory(days: 30)
+            }
+
+            guard !history.isEmpty else {
+                reportErrorMessage = "There is no history data for that report range yet."
+                return
+            }
+
+            let periodStart = history.map(\.date).min() ?? start ?? Date.now
+            let periodEnd = history.map(\.date).max() ?? end ?? Date.now
+            let previous = await previousWindow(start: periodStart, end: periodEnd, days: days)
+            let foodMap = await dietaryMap(start: start, end: end, days: days)
+            let calendar = Calendar.current
+
+            let reportDays = history.map { rec in
+                ReportDay(
+                    date: rec.date,
+                    activeCalories: rec.active,
+                    restingCalories: rec.resting,
+                    steps: rec.steps,
+                    foodCalories: foodMap[calendar.startOfDay(for: rec.date)]
+                )
+            }
+            let previousDays = previous.map { rec in
+                ReportDay(
+                    date: rec.date,
+                    activeCalories: rec.active,
+                    restingCalories: rec.resting,
+                    steps: rec.steps,
+                    foodCalories: nil
+                )
+            }
+            let report = SummaryReportGenerator.make(
+                title: title,
+                periodStart: periodStart,
+                periodEnd: periodEnd,
+                days: reportDays,
+                previousDays: previousDays,
+                calorieGoal: goals.calorieGoal,
+                stepGoal: goals.stepGoal
+            )
+            let url = try SummaryReportPDF.render(report)
+            pdfTitle = title
+            pdfFile = PDFFile(url: url)
+            showPDFPreviewSheet = true
+        } catch {
+            reportErrorMessage = "Could not generate the PDF report. Please try again."
+        }
+    }
+
+    private func previousWindow(start: Date, end: Date, days: Int?) async -> [(date: Date, active: Double, resting: Double, steps: Int)] {
+        let calendar = Calendar.current
+        let lengthDays = days ?? max(1, calendar.dateComponents([.day], from: start, to: end).day ?? 1)
+        let priorEnd = calendar.date(byAdding: .day, value: -1, to: start) ?? start
+        let priorStart = calendar.date(byAdding: .day, value: -(lengthDays - 1), to: priorEnd) ?? priorEnd
+        return (try? await healthKit.fetchHistory(from: priorStart, to: priorEnd)) ?? []
+    }
+
+    private func dietaryMap(start: Date?, end: Date?, days: Int?) async -> [Date: Double] {
+        guard goals.showNetCalories else { return [:] }
+        let dietary: [(date: Date, foodCalories: Double)]
+        do {
+            if let days {
+                dietary = try await healthKit.fetchDietaryHistory(days: days)
+            } else if let start, let end {
+                dietary = try await healthKit.fetchDietaryHistory(from: start, to: end)
+            } else {
+                dietary = try await healthKit.fetchDietaryHistory(days: 30)
+            }
+        } catch {
+            return [:]
+        }
+        var map: [Date: Double] = [:]
+        let calendar = Calendar.current
+        for day in dietary {
+            map[calendar.startOfDay(for: day.date)] = day.foodCalories
+        }
+        return map
+    }
 }
 
-private struct PremiumHostedHistoryView: View {
-    let title: String
+private struct PremiumCustomReportSheet: View {
+    @Binding var start: Date
+    @Binding var end: Date
+    let isGenerating: Bool
+    let onGenerate: () -> Void
+
+    @Environment(\.dismiss) private var dismiss
+
+    private var isValid: Bool {
+        start < end && (Calendar.current.dateComponents([.day], from: start, to: end).day ?? 0) <= 730
+    }
 
     var body: some View {
-        HistoryView()
-            .navigationTitle(title)
+        NavigationStack {
+            Form {
+                DatePicker("Start", selection: $start, in: ...Date.now, displayedComponents: .date)
+                DatePicker("End", selection: $end, in: ...Date.now, displayedComponents: .date)
+                if !isValid {
+                    Section {
+                        Text(start >= end ? "Start date must be before end date." : "Maximum range is 2 years.")
+                            .foregroundStyle(.red)
+                            .font(.caption)
+                    }
+                }
+            }
+            .navigationTitle("Custom Report")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Generate") {
+                        dismiss()
+                        onGenerate()
+                    }
+                    .bold()
+                    .disabled(!isValid || isGenerating)
+                }
+            }
+        }
     }
 }
 

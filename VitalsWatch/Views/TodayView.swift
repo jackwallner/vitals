@@ -234,6 +234,15 @@ struct TodayView: View {
                             }
                         }
 
+                        Button {
+                            showHelp = true
+                        } label: {
+                            Label("Help", systemImage: "questionmark.circle")
+                                .font(.system(size: 10, weight: .semibold, design: .rounded))
+                        }
+                        .buttonStyle(.bordered)
+                        .tint(Theme.caloriesPrimary)
+
                         Spacer(minLength: 4)
                     }
                     .padding(.horizontal, 4)
@@ -387,8 +396,7 @@ struct TodayView: View {
                     print("Failed to fetch dietary energy: \(error)")
                 }
             } else {
-                // Reset so toggling Net back on later will re-check status.
-                dietaryAuthResolved = false
+                foodCalories = 0
             }
             await loadCalorieTrendsIfNeeded()
             await loadStepTrendsIfNeeded()
@@ -458,13 +466,8 @@ struct TodayView: View {
             let summary = NetDeficitTrendSummary.make(history: history, foodByDate: foodMap)
             // Only surface the section once at least one day in the window has food
             // logged — otherwise it would just be a flat 0 chart.
-            if let summary, summary.weekly.sampleDays > 0 {
-                netDeficitTrends = summary
-                netDeficitTrendLoadFailed = false
-            } else {
-                netDeficitTrends = nil
-                netDeficitTrendLoadFailed = false
-            }
+            netDeficitTrends = summary
+            netDeficitTrendLoadFailed = summary == nil
         } catch {
             print("Failed to fetch watch net deficit trends: \(error)")
             netDeficitTrends = nil
@@ -701,7 +704,7 @@ private struct WatchNetDeficitBars: View {
             HStack(alignment: .center, spacing: 1.5) {
                 ForEach(points) { point in
                     let isToday = Calendar.current.isDateInToday(point.date)
-                    let hasFood = point.food > 0
+                    let hasFood = point.burned > 0
                     let isPositive = point.netDeficit >= 0
                     let magnitude = max(3, halfHeight * abs(point.netDeficit) / maxAbs)
                     VStack(spacing: 0) {

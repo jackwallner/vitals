@@ -14,6 +14,7 @@ struct PaywallView: View {
 
     @State private var selectedProductID: String? = nil
     @State private var purchaseError: String? = nil
+    @State private var restoreMessage: String? = nil
     @State private var showSuccess = false
 
     private var monthlyProduct: Product? {
@@ -29,8 +30,10 @@ struct PaywallView: View {
     }
 
     private var resolvedSelection: Product? {
-        let id = selectedProductID ?? VitalsProduct.yearly
-        return store.products.first { $0.id == id }
+        if let selectedProductID, let selected = store.products.first(where: { $0.id == selectedProductID }) {
+            return selected
+        }
+        return yearlyProduct ?? monthlyProduct ?? lifetimeProduct
     }
 
     private var trialPitch: String? {
@@ -65,8 +68,11 @@ struct PaywallView: View {
                     Button("Restore") {
                         Task {
                             await store.restorePurchases()
+                            await store.updateCustomerProductStatus()
                             if store.isPro {
                                 showSuccess = true
+                            } else {
+                                restoreMessage = store.lastError ?? "No active Vitals+ purchase was found for this Apple ID."
                             }
                         }
                     }
@@ -78,7 +84,7 @@ struct PaywallView: View {
                     await store.fetchProducts()
                 }
                 if selectedProductID == nil {
-                    selectedProductID = VitalsProduct.yearly
+                    selectedProductID = resolvedSelection?.id
                 }
             }
             .onChange(of: store.isPro) { _, isPro in
@@ -95,6 +101,11 @@ struct PaywallView: View {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text(purchaseError ?? "")
+            }
+            .alert("Restore Purchases", isPresented: Binding(get: { restoreMessage != nil }, set: { if !$0 { restoreMessage = nil } })) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(restoreMessage ?? "")
             }
         }
     }
@@ -117,7 +128,7 @@ struct PaywallView: View {
                 .font(.system(size: 34, weight: .bold, design: .rounded))
                 .foregroundStyle(Theme.textPrimary)
 
-            Text(trialPitch.map { "Start with a \($0), then unlock deeper insights and shareable reports." } ?? "Deeper insights and shareable PDF reports for power users.")
+            Text(trialPitch.map { "Start with a \($0). Then unlock deeper insights and shareable reports." } ?? "Deeper insights and shareable PDF reports for power users.")
                 .font(.system(.subheadline, design: .rounded))
                 .foregroundStyle(Theme.textSecondary)
                 .multilineTextAlignment(.center)
@@ -243,7 +254,11 @@ struct PaywallView: View {
             .buttonStyle(.plain)
             .disabled(resolvedSelection == nil || store.purchaseInFlight)
 
-            if resolvedSelection?.id == VitalsProduct.lifetime {
+            if store.purchaseInFlight {
+                Text("Waiting for the App Store purchase sheet…")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+            } else if resolvedSelection?.id == VitalsProduct.lifetime {
                 Text("One-time purchase. No subscription or renewal.")
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
@@ -260,7 +275,7 @@ struct PaywallView: View {
     }
 
     private var ctaLabel: String {
-        guard let product = resolvedSelection else { return "Subscribe" }
+        guard let product = resolvedSelection else { return store.isLoadingProducts ? "Loading…" : "Subscriptions Unavailable" }
         if product.introOfferLabel != nil {
             return "Start Free Trial"
         }

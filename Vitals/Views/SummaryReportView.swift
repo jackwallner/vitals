@@ -1,6 +1,7 @@
 import SwiftUI
 import Charts
 import CoreGraphics
+import PDFKit
 
 /// Print-friendly SwiftUI page rendered to PDF via `ImageRenderer`.
 /// Designed at US Letter size (612×792 points). Uses light-mode colors only —
@@ -376,5 +377,51 @@ enum SummaryReportPDF {
         context.closePDF()
 
         return url
+    }
+}
+
+struct PDFPreviewSheet: View {
+    let title: String
+    let url: URL
+
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            PDFKitPreview(url: url)
+                .ignoresSafeArea(edges: .bottom)
+                .navigationTitle(title)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Done") { dismiss() }
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        ShareLink(item: url) {
+                            Image(systemName: "square.and.arrow.up")
+                        }
+                    }
+                }
+        }
+    }
+}
+
+private struct PDFKitPreview: UIViewRepresentable {
+    let url: URL
+
+    func makeUIView(context: Context) -> PDFView {
+        let view = PDFView()
+        view.autoScales = true
+        view.displayMode = .singlePageContinuous
+        view.displayDirection = .vertical
+        view.backgroundColor = .systemBackground
+        view.document = PDFDocument(url: url)
+        return view
+    }
+
+    func updateUIView(_ uiView: PDFView, context: Context) {
+        if uiView.document?.documentURL != url {
+            uiView.document = PDFDocument(url: url)
+        }
     }
 }

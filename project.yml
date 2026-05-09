@@ -28,7 +28,6 @@ schemes:
         - VitalsTests
     run:
       config: Debug
-      storeKitConfiguration: Vitals.storekit
   VitalsWatch:
     build:
       targets:

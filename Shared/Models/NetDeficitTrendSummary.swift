@@ -69,7 +69,7 @@ struct NetDeficitTrendMetric {
         calendar: Calendar
     ) -> NetDeficitTrendMetric {
         // Net deficit only meaningful when the user logged food that day.
-        let completedPoints = points.filter { !calendar.isDateInToday($0.date) && $0.food > 0 }
+        let completedPoints = points.filter { !calendar.isDateInToday($0.date) && $0.burned > 0 }
         guard let referenceDate = completedPoints.last?.date else {
             return NetDeficitTrendMetric(title: title, average: nil, sampleDays: 0, expectedDays: periodDays)
         }
@@ -78,7 +78,7 @@ struct NetDeficitTrendMetric {
         }
 
         let currentPoints = points.filter {
-            $0.date >= currentStart && $0.date <= referenceDate && $0.food > 0
+            $0.date >= currentStart && $0.date <= referenceDate && $0.burned > 0
         }
         let avg: Double? = currentPoints.isEmpty
             ? nil

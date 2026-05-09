@@ -171,9 +171,9 @@ final class HealthKitService: ObservableObject {
         let (active, resting, steps) = try await (activeMap, restingMap, stepsMap)
 
         return (
-            active: active[dayStart] ?? 0,
-            resting: resting[dayStart] ?? 0,
-            steps: Int(steps[dayStart] ?? 0)
+            active: statisticValue(active, for: dayStart),
+            resting: statisticValue(resting, for: dayStart),
+            steps: Int(statisticValue(steps, for: dayStart))
         )
     }
 
@@ -224,7 +224,7 @@ final class HealthKitService: ObservableObject {
         }
         let interval = DateComponents(day: 1)
         let map = try await queryStatisticsCollection(.dietaryEnergyConsumed, unit: .kilocalorie(), start: dayStart, end: dayEnd, interval: interval)
-        let kcal = map[dayStart] ?? 0
+        let kcal = statisticValue(map, for: dayStart)
         healthKitLogger.debug("fetchDietaryEnergyToday: \(kcal, privacy: .public) kcal")
         // First non-zero read is our positive signal that dietary reads are authorized.
         // Persist so future launches can keep the dietary observer installed even when
@@ -256,7 +256,7 @@ final class HealthKitService: ObservableObject {
         var results: [(date: Date, foodCalories: Double)] = []
         var current = normalizedStart
         while current < queryEnd {
-            results.append((date: current, foodCalories: map[current] ?? 0))
+            results.append((date: current, foodCalories: statisticValue(map, for: current)))
             guard let next = Calendar.current.date(byAdding: .day, value: 1, to: current) else { break }
             current = next
         }
@@ -299,9 +299,9 @@ final class HealthKitService: ObservableObject {
         while current < queryEnd {
             results.append((
                 date: current,
-                active: active[current] ?? 0,
-                resting: resting[current] ?? 0,
-                steps: Int(steps[current] ?? 0)
+                active: statisticValue(active, for: current),
+                resting: statisticValue(resting, for: current),
+                steps: Int(statisticValue(steps, for: current))
             ))
             guard let next = Calendar.current.date(byAdding: .day, value: 1, to: current) else { break }
             current = next
@@ -381,8 +381,8 @@ final class HealthKitService: ObservableObject {
                 continue
             }
 
-            let dayCal = (active[dayStart] ?? 0) + (resting[dayStart] ?? 0)
-            let daySteps = steps[dayStart] ?? 0
+            let dayCal = statisticValue(active, for: dayStart) + statisticValue(resting, for: dayStart)
+            let daySteps = statisticValue(steps, for: dayStart)
             if dayCal > 0 {
                 calorieSampleDays += 1
                 calorieWeighted += dayCal * dayFraction
@@ -691,6 +691,12 @@ final class HealthKitService: ObservableObject {
 
     private func areAllStatsZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
         Self.isAllZero(stats)
+    }
+
+    private func statisticValue(_ map: [Date: Double], for dayStart: Date) -> Double {
+        if let exact = map[dayStart] { return exact }
+        let calendar = Calendar.current
+        return map.first { calendar.isDate($0.key, inSameDayAs: dayStart) }?.value ?? 0
     }
 
     private func queryStatisticsCollection(

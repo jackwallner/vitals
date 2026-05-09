@@ -80,7 +80,7 @@ func effectiveMinPacingSamples(for comparison: PacingComparison, lookback: Pacin
     switch comparison {
     case .dayOfWeek:
         let raw = max(lookback.rawValue / 7, 1)
-        return min(raw, 4)
+        return min(raw, 3)
     case .allDays:
         return 3
     }
@@ -236,7 +236,7 @@ final class GoalSettings: ObservableObject {
         let calEnabled = defaults.object(forKey: "calorieGoalEnabled") as? Bool ?? true
         if calEnabled {
             let saved = defaults.double(forKey: "calorieGoal")
-            self.calorieGoal = saved > 0 ? saved : 2500
+            self.calorieGoal = saved.isFinite && (500...50000).contains(saved) ? saved : 2500
         } else {
             self.calorieGoal = nil
         }
@@ -244,7 +244,7 @@ final class GoalSettings: ObservableObject {
         let stepEnabled = defaults.object(forKey: "stepGoalEnabled") as? Bool ?? true
         if stepEnabled {
             let saved = defaults.integer(forKey: "stepGoal")
-            self.stepGoal = saved > 0 ? saved : 10000
+            self.stepGoal = (100...500000).contains(saved) ? saved : 10000
         } else {
             self.stepGoal = nil
         }

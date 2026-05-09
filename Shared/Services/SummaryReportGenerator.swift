@@ -11,7 +11,7 @@ struct ReportDay: Sendable, Identifiable {
 
     var totalCalories: Double { activeCalories + restingCalories }
     var netDeficit: Double? {
-        guard let food = foodCalories, food > 0 else { return nil }
+        guard let food = foodCalories else { return nil }
         return totalCalories - food
     }
 }
@@ -70,13 +70,14 @@ enum SummaryReportGenerator {
         let nonZeroStepDays = days.filter { $0.steps > 0 }
 
         let totalCalories = days.map(\.totalCalories).reduce(0, +)
-        let avgCalories = nonZeroCalDays.isEmpty ? 0 : totalCalories / Double(nonZeroCalDays.count)
+        let dayCount = max(days.count, 1)
+        let avgCalories = totalCalories / Double(dayCount)
         let totalActive = days.map(\.activeCalories).reduce(0, +)
-        let avgActive = nonZeroCalDays.isEmpty ? 0 : totalActive / Double(nonZeroCalDays.count)
+        let avgActive = totalActive / Double(dayCount)
         let totalResting = days.map(\.restingCalories).reduce(0, +)
-        let avgResting = nonZeroCalDays.isEmpty ? 0 : totalResting / Double(nonZeroCalDays.count)
+        let avgResting = totalResting / Double(dayCount)
         let totalSteps = days.map(\.steps).reduce(0, +)
-        let avgSteps = nonZeroStepDays.isEmpty ? 0 : totalSteps / nonZeroStepDays.count
+        let avgSteps = Int((Double(totalSteps) / Double(dayCount)).rounded())
 
         let peakCal = days.max(by: { $0.totalCalories < $1.totalCalories })
         let peakStep = days.max(by: { $0.steps < $1.steps })
@@ -131,7 +132,7 @@ enum SummaryReportGenerator {
     }
 
     private static func trendPct(current: Double, previous: Double) -> Double? {
-        guard previous > 0, current > 0 else { return nil }
+        guard previous > 0 else { return nil }
         return ((current - previous) / previous) * 100
     }
 }

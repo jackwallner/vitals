@@ -121,6 +121,7 @@ final class StoreService: ObservableObject {
     }
 
     func restorePurchases() async {
+        lastError = nil
         do {
             try await AppStore.sync()
             await updateCustomerProductStatus()

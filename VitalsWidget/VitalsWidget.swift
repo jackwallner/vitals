@@ -4,7 +4,7 @@ import SwiftData
 
 // MARK: - Goal Helper
 
-private func loadGoals() -> (calories: Double, steps: Int, calEnabled: Bool, stepEnabled: Bool, showCalories: Bool, showSteps: Bool) {
+private func loadGoals() -> (calories: Double, steps: Int, calEnabled: Bool, stepEnabled: Bool, showCalories: Bool, showSteps: Bool, showNetCalories: Bool) {
     let defaults = UserDefaults(suiteName: vitalsAppGroupID) ?? .standard
     let cal = defaults.double(forKey: "calorieGoal")
     let step = defaults.integer(forKey: "stepGoal")
@@ -12,7 +12,8 @@ private func loadGoals() -> (calories: Double, steps: Int, calEnabled: Bool, ste
     let stepOn = defaults.object(forKey: "stepGoalEnabled") as? Bool ?? true
     let showCal = defaults.object(forKey: "showCalories") as? Bool ?? true
     let showStep = defaults.object(forKey: "showSteps") as? Bool ?? true
-    return (cal > 0 ? cal : 2500, step > 0 ? step : 10000, calOn, stepOn, showCal, showStep)
+    let showNet = defaults.object(forKey: "showNetCalories") as? Bool ?? false
+    return (cal > 0 ? cal : 2500, step > 0 ? step : 10000, calOn, stepOn, showCal, showStep, showNet)
 }
 
 // MARK: - Timeline Provider
@@ -60,7 +61,9 @@ struct VitalsTimelineProvider: TimelineProvider {
                 calGoalEnabled: goals.calEnabled,
                 stepGoalEnabled: goals.stepEnabled,
                 showCalories: goals.showCalories,
-                showSteps: goals.showSteps
+                showSteps: goals.showSteps,
+                showNetCalories: goals.showNetCalories,
+                foodCalories: record.foodCalories
             )
         }
 
@@ -85,12 +88,14 @@ struct VitalsTimelineProvider: TimelineProvider {
                 stepGoalEnabled: goals.stepEnabled,
                 showCalories: goals.showCalories,
                 showSteps: goals.showSteps,
+                showNetCalories: goals.showNetCalories,
+                foodCalories: prior.foodCalories,
                 staleDate: prior.date
             )
         }
 
         // No record at all — first launch or HealthKit unavailable
-        return VitalsEntry(date: .now, totalCalories: 0, activeCalories: 0, restingCalories: 0, steps: 0, calorieGoal: goals.calories, stepGoal: goals.steps, calGoalEnabled: goals.calEnabled, stepGoalEnabled: goals.stepEnabled, showCalories: goals.showCalories, showSteps: goals.showSteps, dataAvailable: false)
+        return VitalsEntry(date: .now, totalCalories: 0, activeCalories: 0, restingCalories: 0, steps: 0, calorieGoal: goals.calories, stepGoal: goals.steps, calGoalEnabled: goals.calEnabled, stepGoalEnabled: goals.stepEnabled, showCalories: goals.showCalories, showSteps: goals.showSteps, showNetCalories: goals.showNetCalories, dataAvailable: false)
     }
 }
 
@@ -108,6 +113,9 @@ struct VitalsEntry: TimelineEntry {
     let stepGoalEnabled: Bool
     var showCalories: Bool = true
     var showSteps: Bool = true
+    var showNetCalories: Bool = false
+    var foodCalories: Double = 0
+    var netDeficit: Double { totalCalories - foodCalories }
     var dataAvailable: Bool = true
     /// When set, the values are from a prior day (today's cache hasn't been written yet).
     var staleDate: Date? = nil
@@ -118,8 +126,9 @@ struct VitalsEntry: TimelineEntry {
 private func staleLabel(for date: Date) -> String {
     let cal = Calendar.current
     if cal.isDateInYesterday(date) { return "Yesterday" }
+    let daysOld = cal.dateComponents([.day], from: cal.startOfDay(for: date), to: cal.startOfDay(for: .now)).day ?? 0
     let formatter = DateFormatter()
-    formatter.dateFormat = "EEE"
+    formatter.dateFormat = daysOld >= 7 ? "MMM d" : "EEE d"
     return formatter.string(from: date)
 }
 
@@ -142,7 +151,7 @@ struct SmallWidgetView: View {
                             .font(.caption2)
                             .foregroundStyle(Theme.textSecondary)
                         Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
-                            .font(Theme.bigNumber(entry.showSteps ? 28 : 36))
+                            .font(Theme.bigNumber((entry.showSteps || entry.showNetCalories) ? 28 : 36))
                             .foregroundStyle(Theme.caloriesPrimary)
                         if entry.calGoalEnabled {
                             Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
@@ -157,7 +166,7 @@ struct SmallWidgetView: View {
                             .font(.caption2)
                             .foregroundStyle(Theme.textSecondary)
                         Text(entry.steps, format: .number)
-                            .font(Theme.bigNumber(entry.showCalories ? 28 : 36))
+                            .font(Theme.bigNumber((entry.showCalories || entry.showNetCalories) ? 28 : 36))
                             .foregroundStyle(Theme.stepsPrimary)
                         if entry.stepGoalEnabled {
                             Text("/ \(entry.stepGoal.formatted(.number))")
@@ -166,7 +175,17 @@ struct SmallWidgetView: View {
                         }
                     }
                 }
-                if !entry.showCalories && !entry.showSteps {
+                if entry.showNetCalories {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Label("Net Deficit", systemImage: "fork.knife")
+                            .font(.caption2)
+                            .foregroundStyle(Theme.textSecondary)
+                        Text(entry.netDeficit, format: .number.precision(.fractionLength(0)).sign(strategy: .always()))
+                            .font(Theme.bigNumber((entry.showCalories || entry.showSteps) ? 28 : 36))
+                            .foregroundStyle(entry.netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
+                    }
+                }
+                if !entry.showCalories && !entry.showSteps && !entry.showNetCalories {
                     Text("No metrics enabled")
                         .font(.caption2)
                         .foregroundStyle(Theme.textTertiary)
@@ -210,7 +229,7 @@ struct MediumWidgetView: View {
                                 .foregroundStyle(Theme.textSecondary)
                             HStack(alignment: .firstTextBaseline, spacing: 4) {
                                 Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
-                                    .font(Theme.bigNumber(entry.showSteps ? 28 : 36))
+                                    .font(Theme.bigNumber((entry.showSteps || entry.showNetCalories) ? 28 : 36))
                                     .foregroundStyle(Theme.caloriesPrimary)
                                 if entry.calGoalEnabled {
                                     Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
@@ -227,7 +246,7 @@ struct MediumWidgetView: View {
                                 .foregroundStyle(Theme.textSecondary)
                             HStack(alignment: .firstTextBaseline, spacing: 4) {
                                 Text(entry.steps, format: .number)
-                                    .font(Theme.bigNumber(entry.showCalories ? 28 : 36))
+                                    .font(Theme.bigNumber((entry.showCalories || entry.showNetCalories) ? 28 : 36))
                                     .foregroundStyle(Theme.stepsPrimary)
                                 if entry.stepGoalEnabled {
                                     Text("/ \(entry.stepGoal.formatted(.number))")
@@ -237,7 +256,17 @@ struct MediumWidgetView: View {
                             }
                         }
                     }
-                    if !entry.showCalories && !entry.showSteps {
+                    if entry.showNetCalories {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Label("Net Deficit", systemImage: "fork.knife")
+                                .font(.caption2)
+                                .foregroundStyle(Theme.textSecondary)
+                            Text(entry.netDeficit, format: .number.precision(.fractionLength(0)).sign(strategy: .always()))
+                                .font(Theme.bigNumber((entry.showCalories || entry.showSteps) ? 28 : 36))
+                                .foregroundStyle(entry.netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
+                        }
+                    }
+                    if !entry.showCalories && !entry.showSteps && !entry.showNetCalories {
                         Text("No metrics enabled")
                             .font(.caption2)
                             .foregroundStyle(Theme.textTertiary)
@@ -312,7 +341,7 @@ struct CircularAccessoryView: View {
                     .foregroundStyle(Theme.caloriesPrimary)
                 Text(entry.totalCalories / 1000, format: .number.precision(.fractionLength(1)))
                     .font(.system(.body, design: .rounded, weight: .bold))
-                Text("k cal")
+                Text("kcal")
                     .font(.system(size: 8, design: .rounded))
                     .foregroundStyle(.secondary)
             }
@@ -361,6 +390,15 @@ struct RectangularAccessoryView: View {
                             .foregroundStyle(.secondary)
                     }
                 }
+            }
+
+            if entry.showNetCalories {
+                HStack(spacing: 4) {
+                    Image(systemName: "fork.knife")
+                    Text(entry.netDeficit, format: .number.precision(.fractionLength(0)).sign(strategy: .always()))
+                        .font(.system(.caption, design: .rounded, weight: .semibold))
+                }
+                .foregroundStyle(entry.netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
             }
         }
         .containerBackground(.fill.tertiary, for: .widget)
