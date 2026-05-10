@@ -323,13 +323,13 @@ Outputs **1284×2778** letterboxed PNGs App Store Connect accepts. Use **high-re
 
 Device: iPhone 15 Pro Max or 17 Pro Max
 
-Screenshots are generated as 1284×2778 marketing panels in `_screenshots_project/app-store-pngs/`:
+Screenshots are generated as 1320×2868 marketing panels in `_screenshots_project/app-store-pngs/`:
 
-1. **01.png** — "Total calories. Every day." Dashboard with calorie ring and step count
-2. **02.png** — "On your wrist." Apple Watch complications and full watch app
-3. **03.png** — "See your patterns." History view with 30-day chart and trends
-4. **04.png** — "Net deficit." Burned minus eaten from Apple Health
-5. **05.png** — "Go further." Vitals+ PDF reports and deep trends
+1. **01.png** — "Net deficit." Burned minus eaten from Apple Health *(lead with your strongest value prop)*
+2. **02.png** — "See your patterns." History view with 30-day chart and trends
+3. **03.png** — "On your wrist." Apple Watch complications and full watch app
+4. **04.png** — "Go further." Vitals+ PDF reports and deep trends
+5. **05.png** — "Total calories. Every day." Vitals+ subscription closer
 
 ### iPhone 6.1" (optional but recommended)
 
