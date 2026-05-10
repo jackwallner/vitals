@@ -6,19 +6,19 @@
     <link rel="icon" type="image/png" sizes="256x256" href="icon_256.png">
     <link rel="apple-touch-icon" href="icon_256.png">
     <title>Total Calories - Daily Calorie & Step Tracker for iPhone & Apple Watch</title>
-    <meta name="description" content="Free calorie tracker for iPhone & Apple Watch. See total calories burned (active + resting), daily steps, trends, and goals — all from Apple Health. No ads, no subscriptions, 100% private.">
+    <meta name="description" content="Free calorie tracker for iPhone & Apple Watch. See total calories burned, daily steps, net deficit, and trends — all from Apple Health. Optional Vitals+ unlocks PDF reports, deep trends, and more. 100% private, no account required.">
     <link rel="canonical" href="https://jackwallner.github.io/vitals/">
     <meta name="apple-itunes-app" content="app-id=6761743504">
     <meta name="keywords" content="calorie tracker, step counter, Apple Health, calorie counter, TDEE tracker, calories burned, fitness tracker, iPhone, Apple Watch, free, no ads, private">
     <meta property="og:title" content="Total Calories - Free Calorie & Step Tracker for iPhone">
-    <meta property="og:description" content="See your total calories burned and steps at a glance. Private, simple, always up to date from Apple Health. Free with no ads or subscriptions.">
+    <meta property="og:description" content="See your total calories burned, net deficit, and daily steps at a glance. Private, simple, always up to date from Apple Health. Free with optional Vitals+ upgrade.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://jackwallner.github.io/vitals/">
     <meta property="og:image" content="https://jackwallner.github.io/vitals/appstore-screenshot-01.png">
     <meta property="og:site_name" content="Total Calories">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Total Calories - Free Calorie & Step Tracker">
-    <meta name="twitter:description" content="Track total calories burned and daily steps. Private, free, powered by Apple Health.">
+    <meta name="twitter:description" content="Track total calories burned, net deficit, and daily steps. Private, free, powered by Apple Health. Optional Vitals+ upgrade.">
     <meta name="twitter:image" content="https://jackwallner.github.io/vitals/appstore-screenshot-01.png">
     <script type="application/ld+json">
     {
@@ -27,17 +27,32 @@
         "name": "Total Calories - Daily Tracker",
         "operatingSystem": "iOS",
         "applicationCategory": "HealthApplication",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
+        "offers": [
+            {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD",
+                "description": "Free tier with calorie tracking, steps, goals, Apple Watch complications, and widgets"
+            },
+            {
+                "@type": "Offer",
+                "price": "1.99",
+                "priceCurrency": "USD",
+                "description": "Vitals+ Monthly — Net Deficit, PDF reports, deep trends, active/resting breakdown"
+            },
+            {
+                "@type": "Offer",
+                "price": "14.99",
+                "priceCurrency": "USD",
+                "description": "Vitals+ Yearly — same features, billed annually"
+            }
+        ],
         "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": "5",
             "ratingCount": "1"
         },
-        "description": "Track your total calories burned (active + resting) and daily steps. Private, simple, powered by Apple Health. Free for iPhone and Apple Watch.",
+        "description": "Track your total calories burned (active + resting), net deficit, and daily steps. Private, simple, powered by Apple Health. Free with optional Vitals+ upgrade for iPhone and Apple Watch.",
         "url": "https://jackwallner.github.io/vitals/",
         "downloadUrl": "https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504",
         "screenshot": "https://jackwallner.github.io/vitals/appstore-screenshot-01.png",
@@ -244,6 +259,10 @@
             letter-spacing: 0.8px;
             color: #86868b;
             margin-bottom: 10px;
+        }
+
+        .feature-card .label.vitals-plus {
+            color: #f25c3a;
         }
 
         .feature-card h3 {
@@ -462,7 +481,7 @@
 
     <section class="hero">
         <h1>Know your <span>total burn</span></h1>
-        <p class="tagline">Active and resting calories, steps, trends, and goals &mdash; all from Apple Health, all on your device.</p>
+        <p class="tagline">Total calories, net deficit, steps, trends, and goals &mdash; all from Apple Health, all on your device. Free to start, with optional Vitals+.</p>
         <p class="platforms">iPhone &middot; Apple Watch &middot; Widgets</p>
         <a class="download-btn" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504">Download for free</a>
     </section>
@@ -491,14 +510,14 @@
         <div class="container">
             <div class="features-header">
                 <h2>Built to do one thing well</h2>
-                <p>No bloat, no subscriptions, no sign-up.</p>
+                <p>No bloat, no sign-up. Free to start &mdash; upgrade for deeper insights.</p>
             </div>
         </div>
         <div class="features-grid">
             <div class="feature-card">
                 <span class="label">Dashboard</span>
-                <h3>Active + resting calories</h3>
-                <p>See your total daily burn in one number. Tap to reveal the active vs. resting breakdown.</p>
+                <h3>Total daily calories</h3>
+                <p>See your active and resting calories in one clean ring. Tap for the breakdown.</p>
             </div>
             <div class="feature-card">
                 <span class="label">History</span>
@@ -511,14 +530,14 @@
                 <p>Set daily calorie and step targets with animated rings. Or turn goals off and use it as a counter.</p>
             </div>
             <div class="feature-card">
-                <span class="label">Net Deficit</span>
+                <span class="label vitals-plus">Net Deficit · Vitals+</span>
                 <h3>Burned minus eaten</h3>
                 <p>Connect a food app like MyFitnessPal to Apple Health and see your net calorie balance in real time.</p>
             </div>
             <div class="feature-card">
-                <span class="label">Pacing</span>
-                <h3>Ahead or behind</h3>
-                <p>A pace indicator compares your current day to your 30-day average at the same time of day.</p>
+                <span class="label vitals-plus">PDF Reports · Vitals+</span>
+                <h3>Monthly summaries</h3>
+                <p>Print-ready PDF reports for any date range. Monthly auto-generate or custom snapshots to share with your doctor.</p>
             </div>
             <div class="feature-card">
                 <span class="label">Widgets</span>
@@ -526,14 +545,14 @@
                 <p>Calories and steps on your home screen or lock screen without opening the app.</p>
             </div>
             <div class="feature-card">
-                <span class="label">Appearance</span>
-                <h3>Light &amp; dark mode</h3>
-                <p>Follows your system setting automatically, or lock it to light or dark in the app settings.</p>
+                <span class="label vitals-plus">Deep Trends · Vitals+</span>
+                <h3>Period over period</h3>
+                <p>Compare this week to last, this month to the month before. See what's changing and by how much.</p>
             </div>
             <div class="feature-card">
                 <span class="label">Apple Watch</span>
                 <h3>Complications</h3>
-                <p>Your data on your watch face all day &mdash; circular, rectangular, inline, and corner styles.</p>
+                <p>Your data on your watch face all day &mdash; circular, rectangular, inline, and corner styles. Full watch app included.</p>
             </div>
         </div>
     </section>
@@ -559,7 +578,16 @@
                 <div class="more-info-section">
                     <h3>The Pitch</h3>
                     <p>Most calorie trackers make you log every meal manually and create an account. I wanted something that just shows what Apple Health already knows — passive tracking, zero friction.</p>
-                    <p>Total Calories reads your active energy and steps from HealthKit, calculates a simple total, and displays it on your wrist. No signup, no cloud, no tracking.</p>
+                    <p>Total Calories reads your active energy and steps from HealthKit, calculates a simple total, and displays it on your wrist. No signup, no cloud, no tracking. The core app is free — forever.</p>
+                </div>
+
+                <div class="more-info-section">
+                    <h3>Vitals+</h3>
+                    <p>An optional upgrade for people who want to go deeper. $1.99/month or $14.99/year, with a 7-day free trial.</p>
+                    <p><strong>Net Deficit.</strong> Calories burned minus food energy from Apple Health. Works with MyFitnessPal, Lose It, and any food tracker that writes to Health. Shows up on your dashboard, history charts, widgets, and Apple Watch.</p>
+                    <p><strong>PDF Reports.</strong> Print-ready monthly summaries and custom-range reports. Calorie trends, step trends, goal achievement, peak days, period-over-period changes. Generated on-device — nothing uploads anywhere.</p>
+                    <p><strong>Deep Trends.</strong> Compare any period to the one before it. See exactly how your activity is changing week-over-week or month-over-month, in calories and steps.</p>
+                    <p><strong>Active vs. Resting Breakdown.</strong> See how much of your burn comes from movement vs. metabolism, right on the dashboard.</p>
                 </div>
 
                 <div class="more-info-section">
@@ -587,7 +615,7 @@
 
     <section class="cta">
         <h2>Start tracking today</h2>
-        <p>Free on the App Store. No account required.</p>
+        <p>Free on the App Store. No account required. Upgrade to Vitals+ anytime.</p>
         <a class="download-btn" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504">Download for free</a>
     </section>
 
