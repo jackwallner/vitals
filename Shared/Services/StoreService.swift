@@ -12,8 +12,8 @@ enum VitalsProduct {
 }
 
 enum RevenueCatConfig {
-    static let apiKey = "test_vTWUOqDAlDjyOpIAeDZiFCsmqFQ"
-    static let proEntitlement = "Total Calories - Daily Tracker Pro"
+    static let apiKey = "appl_uiELZiyBHXCKzJyjqwaCbVkZRXB"
+    static let proEntitlement = "Vitals+"
     static let fallbackEntitlement = "pro"
 }
 
@@ -228,7 +228,7 @@ final class StoreService: NSObject, ObservableObject {
         do {
             let info = try await Purchases.shared.restorePurchases()
             apply(customerInfo: info)
-            lastError = isPro ? nil : "No active Total Calories - Daily Tracker Pro purchase was found."
+            lastError = isPro ? nil : "No active Vitals+ purchase was found for this Apple ID."
         } catch {
             logger.error("Restore failed: \(String(describing: error), privacy: .public)")
             lastError = "Couldn't restore purchases. Try again."
