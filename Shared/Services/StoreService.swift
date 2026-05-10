@@ -111,9 +111,11 @@ extension Package {
 }
 
 extension CustomerInfo {
+    /// Vitals only ships a single premium tier, so any active entitlement unlocks
+    /// Vitals+. This is intentionally permissive: it survives renames or casing
+    /// drift in the RevenueCat dashboard (e.g. `Vitals+` vs `vitals+` vs `pro`).
     var hasVitalsProEntitlement: Bool {
-        entitlements.active.keys.contains(RevenueCatConfig.proEntitlement)
-            || entitlements.active.keys.contains(RevenueCatConfig.fallbackEntitlement)
+        !entitlements.active.isEmpty
     }
 }
 
@@ -237,6 +239,9 @@ final class StoreService: NSObject, ObservableObject {
 
     func apply(customerInfo: CustomerInfo) {
         self.customerInfo = customerInfo
+        let activeKeys = customerInfo.entitlements.active.keys.sorted().joined(separator: ", ")
+        let allKeys = customerInfo.entitlements.all.keys.sorted().joined(separator: ", ")
+        logger.info("Applied customerInfo — active: [\(activeKeys, privacy: .public)] all: [\(allKeys, privacy: .public)]")
         let hasActiveSubscription = customerInfo.hasVitalsProEntitlement
         if isPro != hasActiveSubscription {
             isPro = hasActiveSubscription
