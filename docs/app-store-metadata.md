@@ -323,13 +323,13 @@ Outputs **1284×2778** letterboxed PNGs App Store Connect accepts. Use **high-re
 
 Device: iPhone 15 Pro Max or 17 Pro Max
 
-1. Dashboard with calorie ring and steps card (goals enabled)
-2. History view with 30-day chart and trend cards
-3. Dashboard in minimal / counter-only mode
-4. Settings sheet showing goal toggles and appearance
-5. Onboarding / welcome screen
+Screenshots are generated as 1284×2778 marketing panels in `_screenshots_project/app-store-pngs/`:
 
-Lead with the dashboard screenshot — it shows the most functionality at a glance.
+1. **01.png** — "Total calories. Every day." Dashboard with calorie ring and step count
+2. **02.png** — "On your wrist." Apple Watch complications and full watch app
+3. **03.png** — "See your patterns." History view with 30-day chart and trends
+4. **04.png** — "Net deficit." Burned minus eaten from Apple Health
+5. **05.png** — "Go further." Vitals+ PDF reports and deep trends
 
 ### iPhone 6.1" (optional but recommended)
 

@@ -14,12 +14,12 @@
     <meta property="og:description" content="See your total calories burned and steps at a glance. Private, simple, always up to date from Apple Health. Free with no ads or subscriptions.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://jackwallner.github.io/vitals/">
-    <meta property="og:image" content="https://jackwallner.github.io/vitals/iphone-dashboard.png">
+    <meta property="og:image" content="https://jackwallner.github.io/vitals/appstore-screenshot-01.png">
     <meta property="og:site_name" content="Total Calories">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Total Calories - Free Calorie & Step Tracker">
     <meta name="twitter:description" content="Track total calories burned and daily steps. Private, free, powered by Apple Health.">
-    <meta name="twitter:image" content="https://jackwallner.github.io/vitals/iphone-dashboard.png">
+    <meta name="twitter:image" content="https://jackwallner.github.io/vitals/appstore-screenshot-01.png">
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -40,7 +40,7 @@
         "description": "Track your total calories burned (active + resting) and daily steps. Private, simple, powered by Apple Health. Free for iPhone and Apple Watch.",
         "url": "https://jackwallner.github.io/vitals/",
         "downloadUrl": "https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504",
-        "screenshot": "https://jackwallner.github.io/vitals/iphone-dashboard.png",
+        "screenshot": "https://jackwallner.github.io/vitals/appstore-screenshot-01.png",
         "softwareVersion": "1.2.0",
         "author": {
             "@type": "Person",
@@ -165,30 +165,36 @@
 
         .download-btn:hover { opacity: 0.85; }
 
-        /* Phone showcase */
+        /* Screenshot showcase */
         .showcase {
-            padding: 0 24px 80px;
+            padding: 0 0 80px;
         }
 
-        .showcase-inner {
+        .showcase-scroll {
             display: flex;
             gap: 24px;
-            justify-content: center;
-            align-items: flex-start;
-            max-width: 860px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 0 24px;
+            max-width: 1200px;
             margin: 0 auto;
+            scrollbar-width: none;
         }
 
-        .phone-frame {
+        .showcase-scroll::-webkit-scrollbar { display: none; }
+
+        .showcase-card {
             flex-shrink: 0;
-            position: relative;
+            scroll-snap-align: center;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 16px 48px rgba(0,0,0,0.08);
         }
 
-        .phone-frame img {
-            height: 500px;
-            border-radius: 32px;
-            border: 1px solid rgba(0,0,0,0.08);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.06);
+        .showcase-card img {
+            height: 540px;
+            display: block;
         }
 
         /* Features */
@@ -429,8 +435,7 @@
             .hero h1 { font-size: 36px; letter-spacing: -1px; }
             .hero .tagline { font-size: 17px; }
 
-            .showcase-inner { gap: 12px; }
-            .phone-frame img { height: 400px; border-radius: 24px; }
+            .showcase-card img { height: 400px; }
 
             .features-grid { grid-template-columns: 1fr; }
 
@@ -439,8 +444,7 @@
         }
 
         @media (max-width: 480px) {
-            .phone-frame:not(:first-child) { display: none; }
-            .phone-frame img { height: 440px; }
+            .showcase-card img { height: 360px; }
         }
     </style>
 </head>
@@ -464,18 +468,21 @@
     </section>
 
     <section class="showcase">
-        <div class="showcase-inner">
-            <div class="phone-frame">
-                <img src="iphone-dashboard.png" alt="Total Calories dashboard with calorie ring and step count">
+        <div class="showcase-scroll">
+            <div class="showcase-card">
+                <img src="appstore-screenshot-01.png" alt="Total calories. Every day. — Total Calories dashboard with calorie ring and step count">
             </div>
-            <div class="phone-frame">
-                <img src="iphone-history.png" alt="30-day calorie and step history with trends">
+            <div class="showcase-card">
+                <img src="appstore-screenshot-02.png" alt="On your wrist. — Apple Watch complications and watch app">
             </div>
-            <div class="phone-frame">
-                <img src="iphone-net-deficit.png" alt="Net calorie deficit tracking with food intake breakdown">
+            <div class="showcase-card">
+                <img src="appstore-screenshot-03.png" alt="See your patterns. — 30-day calorie and step history with trends">
             </div>
-            <div class="phone-frame">
-                <img src="iphone-dark-mode.png" alt="Dark mode dashboard with net deficit">
+            <div class="showcase-card">
+                <img src="appstore-screenshot-04.png" alt="Net deficit. — Burned minus eaten from Apple Health">
+            </div>
+            <div class="showcase-card">
+                <img src="appstore-screenshot-05.png" alt="Go further. — Vitals+ PDF reports and deep trends">
             </div>
         </div>
     </section>
