@@ -1,0 +1,38 @@
+Vitals+ subscription details and EULA link are included in the App Description. The in-app paywall displays subscription title, length, price, Privacy Policy, and Terms of Use prior to purchase, per Guideline 3.1.2.
+
+Total Calories reads calorie and step data from Apple Health (HealthKit) in read-only mode. It does not write to HealthKit. All data is stored locally — no server, no accounts, no data collection.
+
+HEALTHKIT SETUP — PLEASE GRANT ACCESS WHEN PROMPTED
+
+On first launch, the app asks you to set optional goals (you may skip this). iOS then prompts for HealthKit read access. Please allow all three types:
+
+- Active Energy Burned
+- Basal Energy Burned
+- Step Count
+
+If access is denied or not yet granted, the app shows a banner explaining that Health access is needed (no fake or placeholder health numbers). Users can open Settings or the Health app from that banner.
+
+iPHONE FEATURES
+
+- Dashboard with animated calorie ring and step progress bar
+- Tap to reveal active vs. resting calorie breakdown
+- Pacing indicator: current day vs. configurable rolling average (default: 30 days, same weekday) at the same time of day
+- History tab: bar charts for 7D / 30D / 90D / 1Y / custom range
+- Trend arrows and peak day highlights
+- CSV data export
+- Home screen widgets (small, medium) and lock screen widgets (circular, rectangular)
+- Settings: goals, display toggles, appearance (system / light / dark)
+
+APPLE WATCH
+
+The watch experience is delivered primarily through watch face complications (circular, rectangular, inline, corner). These show live calorie and step data. The companion watch app provides a today view and serves as the complication container.
+
+PRIVACY
+
+- Read-only HealthKit (never writes)
+- No data leaves the device
+- No analytics, ads, tracking, or third-party SDKs
+- No network requests of any kind
+- Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+
+Privacy Policy and Support links are accessible in the iPhone Settings sheet and Apple Watch Help sheet.

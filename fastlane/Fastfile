@@ -1,0 +1,30 @@
+opt_out_usage
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Upload screenshots and metadata to App Store Connect"
+  lane :upload_metadata do
+    api_key = app_store_connect_api_key(
+      key_id: ENV["ASC_API_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_filepath: ENV["ASC_KEY_PATH"]
+    )
+
+    deliver(
+      api_key: api_key,
+      force: true,
+      precheck_include_in_app_purchases: false,
+      version_check_wait_retry_limit: 0,
+      skip_binary_upload: true,
+      skip_screenshots: false,
+      overwrite_screenshots: true,
+      submit_for_review: false,
+      automatic_release: false,
+      run_precheck_before_submit: false,
+      submission_information: {
+        add_id_info_uses_idfa: false
+      }
+    )
+  end
+end

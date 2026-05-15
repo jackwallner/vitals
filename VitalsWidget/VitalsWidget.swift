@@ -135,9 +135,25 @@ private func staleLabel(for date: Date) -> String {
 struct SmallWidgetView: View {
     let entry: VitalsEntry
 
+    private var metricCount: Int {
+        (entry.showCalories ? 1 : 0) + (entry.showSteps ? 1 : 0) + (entry.showNetCalories ? 1 : 0)
+    }
+
+    private var bigNumberSize: CGFloat {
+        switch metricCount {
+        case 3: return 20
+        case 2: return 28
+        default: return 36
+        }
+    }
+
+    private var blockSpacing: CGFloat { metricCount == 3 ? 4 : 8 }
+    private var innerSpacing: CGFloat { metricCount == 3 ? 0 : 2 }
+    private var showGoalSubtext: Bool { metricCount < 3 }
+
     var body: some View {
         if entry.dataAvailable {
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: blockSpacing) {
                 if let stale = entry.staleDate {
                     Text(staleLabel(for: stale))
                         .font(.system(size: 9, weight: .semibold, design: .rounded))
@@ -146,14 +162,16 @@ struct SmallWidgetView: View {
                         .tracking(0.6)
                 }
                 if entry.showCalories {
-                    VStack(alignment: .leading, spacing: 2) {
+                    VStack(alignment: .leading, spacing: innerSpacing) {
                         Label("Calories", systemImage: "flame.fill")
                             .font(.caption2)
                             .foregroundStyle(Theme.textSecondary)
                         Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
-                            .font(Theme.bigNumber((entry.showSteps || entry.showNetCalories) ? 28 : 36))
+                            .font(Theme.bigNumber(bigNumberSize))
                             .foregroundStyle(Theme.caloriesPrimary)
-                        if entry.calGoalEnabled {
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.6)
+                        if entry.calGoalEnabled && showGoalSubtext {
                             Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
                                 .font(.caption2)
                                 .foregroundStyle(Theme.textTertiary)
@@ -161,14 +179,16 @@ struct SmallWidgetView: View {
                     }
                 }
                 if entry.showSteps {
-                    VStack(alignment: .leading, spacing: 2) {
+                    VStack(alignment: .leading, spacing: innerSpacing) {
                         Label("Steps", systemImage: "figure.walk")
                             .font(.caption2)
                             .foregroundStyle(Theme.textSecondary)
                         Text(entry.steps, format: .number)
-                            .font(Theme.bigNumber((entry.showCalories || entry.showNetCalories) ? 28 : 36))
+                            .font(Theme.bigNumber(bigNumberSize))
                             .foregroundStyle(Theme.stepsPrimary)
-                        if entry.stepGoalEnabled {
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.6)
+                        if entry.stepGoalEnabled && showGoalSubtext {
                             Text("/ \(entry.stepGoal.formatted(.number))")
                                 .font(.caption2)
                                 .foregroundStyle(Theme.textTertiary)
@@ -176,16 +196,18 @@ struct SmallWidgetView: View {
                     }
                 }
                 if entry.showNetCalories {
-                    VStack(alignment: .leading, spacing: 2) {
+                    VStack(alignment: .leading, spacing: innerSpacing) {
                         Label("Net Deficit", systemImage: "fork.knife")
                             .font(.caption2)
                             .foregroundStyle(Theme.textSecondary)
                         Text(entry.netDeficit, format: .number.precision(.fractionLength(0)).sign(strategy: .always()))
-                            .font(Theme.bigNumber((entry.showCalories || entry.showSteps) ? 28 : 36))
+                            .font(Theme.bigNumber(bigNumberSize))
                             .foregroundStyle(entry.netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.6)
                     }
                 }
-                if !entry.showCalories && !entry.showSteps && !entry.showNetCalories {
+                if metricCount == 0 {
                     Text("No metrics enabled")
                         .font(.caption2)
                         .foregroundStyle(Theme.textTertiary)
@@ -210,6 +232,22 @@ struct SmallWidgetView: View {
 struct MediumWidgetView: View {
     let entry: VitalsEntry
 
+    private var metricCount: Int {
+        (entry.showCalories ? 1 : 0) + (entry.showSteps ? 1 : 0) + (entry.showNetCalories ? 1 : 0)
+    }
+
+    private var bigNumberSize: CGFloat {
+        switch metricCount {
+        case 3: return 22
+        case 2: return 28
+        default: return 36
+        }
+    }
+
+    private var columnSpacing: CGFloat { metricCount == 3 ? 6 : 12 }
+    private var innerSpacing: CGFloat { metricCount == 3 ? 0 : 2 }
+    private var showGoalSubtext: Bool { metricCount < 3 }
+
     var body: some View {
         if entry.dataAvailable {
             VStack(alignment: .leading, spacing: 6) {
@@ -221,17 +259,19 @@ struct MediumWidgetView: View {
                         .tracking(0.6)
                 }
                 HStack(spacing: 16) {
-                VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: columnSpacing) {
                     if entry.showCalories {
-                        VStack(alignment: .leading, spacing: 2) {
+                        VStack(alignment: .leading, spacing: innerSpacing) {
                             Label("Calories", systemImage: "flame.fill")
                                 .font(.caption2)
                                 .foregroundStyle(Theme.textSecondary)
                             HStack(alignment: .firstTextBaseline, spacing: 4) {
                                 Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
-                                    .font(Theme.bigNumber((entry.showSteps || entry.showNetCalories) ? 28 : 36))
+                                    .font(Theme.bigNumber(bigNumberSize))
                                     .foregroundStyle(Theme.caloriesPrimary)
-                                if entry.calGoalEnabled {
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.6)
+                                if entry.calGoalEnabled && showGoalSubtext {
                                     Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
                                         .font(.caption2)
                                         .foregroundStyle(Theme.textTertiary)
@@ -240,15 +280,17 @@ struct MediumWidgetView: View {
                         }
                     }
                     if entry.showSteps {
-                        VStack(alignment: .leading, spacing: 2) {
+                        VStack(alignment: .leading, spacing: innerSpacing) {
                             Label("Steps", systemImage: "figure.walk")
                                 .font(.caption2)
                                 .foregroundStyle(Theme.textSecondary)
                             HStack(alignment: .firstTextBaseline, spacing: 4) {
                                 Text(entry.steps, format: .number)
-                                    .font(Theme.bigNumber((entry.showCalories || entry.showNetCalories) ? 28 : 36))
+                                    .font(Theme.bigNumber(bigNumberSize))
                                     .foregroundStyle(Theme.stepsPrimary)
-                                if entry.stepGoalEnabled {
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.6)
+                                if entry.stepGoalEnabled && showGoalSubtext {
                                     Text("/ \(entry.stepGoal.formatted(.number))")
                                         .font(.caption2)
                                         .foregroundStyle(Theme.textTertiary)
@@ -257,16 +299,18 @@ struct MediumWidgetView: View {
                         }
                     }
                     if entry.showNetCalories {
-                        VStack(alignment: .leading, spacing: 2) {
+                        VStack(alignment: .leading, spacing: innerSpacing) {
                             Label("Net Deficit", systemImage: "fork.knife")
                                 .font(.caption2)
                                 .foregroundStyle(Theme.textSecondary)
                             Text(entry.netDeficit, format: .number.precision(.fractionLength(0)).sign(strategy: .always()))
-                                .font(Theme.bigNumber((entry.showCalories || entry.showSteps) ? 28 : 36))
+                                .font(Theme.bigNumber(bigNumberSize))
                                 .foregroundStyle(entry.netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.6)
                         }
                     }
-                    if !entry.showCalories && !entry.showSteps && !entry.showNetCalories {
+                    if metricCount == 0 {
                         Text("No metrics enabled")
                             .font(.caption2)
                             .foregroundStyle(Theme.textTertiary)
@@ -354,53 +398,81 @@ struct CircularAccessoryView: View {
 struct RectangularAccessoryView: View {
     let entry: VitalsEntry
 
+    private var metricCount: Int {
+        (entry.showCalories ? 1 : 0) + (entry.showSteps ? 1 : 0) + (entry.showNetCalories ? 1 : 0)
+    }
+
+    /// The rectangular accessory only fits ~3 lines. When all 3 metrics are
+    /// enabled, drop the header so every metric stays visible. Stale-date
+    /// indicator falls back to dimming the rows (matches CircularAccessoryView).
+    private var showHeader: Bool { metricCount < 3 }
+    private var rowSpacing: CGFloat { metricCount == 3 ? 1 : 2 }
+    private var rowFont: Font {
+        metricCount == 3
+            ? .system(.caption2, design: .rounded, weight: .semibold)
+            : .system(.caption, design: .rounded, weight: .semibold)
+    }
+    private var showGoalSubtext: Bool { metricCount < 3 }
+    private var staleOpacity: Double {
+        (entry.staleDate != nil && !showHeader) ? 0.6 : 1.0
+    }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            HStack(spacing: 6) {
-                Text("Total Calories")
-                    .font(.system(.headline, design: .rounded))
-                    .widgetAccentable()
-                if let stale = entry.staleDate {
-                    Text(staleLabel(for: stale))
-                        .font(.system(size: 9, weight: .semibold, design: .rounded))
-                        .foregroundStyle(.secondary)
-                        .textCase(.uppercase)
+        VStack(alignment: .leading, spacing: rowSpacing) {
+            if showHeader {
+                HStack(spacing: 6) {
+                    Text("Total Calories")
+                        .font(.system(.headline, design: .rounded))
+                        .widgetAccentable()
+                    if let stale = entry.staleDate {
+                        Text(staleLabel(for: stale))
+                            .font(.system(size: 9, weight: .semibold, design: .rounded))
+                            .foregroundStyle(.secondary)
+                            .textCase(.uppercase)
+                    }
                 }
             }
             if entry.showCalories {
                 HStack(spacing: 4) {
                     Image(systemName: "flame.fill")
                     Text(entry.totalCalories, format: .number.precision(.fractionLength(0)))
-                        .font(.system(.caption, design: .rounded, weight: .semibold))
-                    if entry.calGoalEnabled {
+                        .font(rowFont)
+                    if entry.calGoalEnabled && showGoalSubtext {
                         Text("/ \(entry.calorieGoal.formatted(.number.precision(.fractionLength(0))))")
                             .font(.system(size: 8, design: .rounded))
                             .foregroundStyle(.secondary)
                     }
                 }
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
             }
             if entry.showSteps {
                 HStack(spacing: 4) {
                     Image(systemName: "figure.walk")
                     Text(entry.steps, format: .number)
-                        .font(.system(.caption, design: .rounded, weight: .semibold))
-                    if entry.stepGoalEnabled {
+                        .font(rowFont)
+                    if entry.stepGoalEnabled && showGoalSubtext {
                         Text("/ \(entry.stepGoal.formatted(.number))")
                             .font(.system(size: 8, design: .rounded))
                             .foregroundStyle(.secondary)
                     }
                 }
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
             }
 
             if entry.showNetCalories {
                 HStack(spacing: 4) {
                     Image(systemName: "fork.knife")
                     Text(entry.netDeficit, format: .number.precision(.fractionLength(0)).sign(strategy: .always()))
-                        .font(.system(.caption, design: .rounded, weight: .semibold))
+                        .font(rowFont)
                 }
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
                 .foregroundStyle(entry.netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
             }
         }
+        .opacity(staleOpacity)
         .containerBackground(.fill.tertiary, for: .widget)
     }
 }
