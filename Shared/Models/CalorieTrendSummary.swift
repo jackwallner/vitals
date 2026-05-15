@@ -74,8 +74,11 @@ struct CalorieTrendMetric {
         endDate: Date,
         calendar: Calendar
     ) -> CalorieTrendMetric {
-        // Use the most recent completed day (not today) as the reference for averages.
-        let completedPoints = points.filter { !calendar.isDateInToday($0.date) && $0.totalCalories > 0 }
+        // Use the most recent completed day (not the dataset's last day) as the reference
+        // for averages. We compare against `endDate` rather than the wall-clock "today" so
+        // tests with synthetic dates and back-dated history both behave correctly.
+        let cutoff = calendar.startOfDay(for: endDate)
+        let completedPoints = points.filter { $0.date < cutoff && $0.totalCalories > 0 }
         guard let referenceDate = completedPoints.last?.date else {
             return CalorieTrendMetric(title: title, average: nil, sampleDays: 0, expectedDays: periodDays, percentChange: nil)
         }

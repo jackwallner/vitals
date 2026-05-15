@@ -178,7 +178,6 @@ struct MainTabView: View {
     @StateObject private var goals = GoalSettings.shared
     @State private var selectedTab = 0
     @State private var historyHasAppeared = false
-    @State private var historyFocus: HistoryFocus?
     @State private var showTrialOffer = false
     @State private var showTrialPaywall = false
 
@@ -230,7 +229,7 @@ struct MainTabView: View {
                 .allowsHitTesting(selectedTab == 0)
                 .accessibilityHidden(selectedTab != 0)
             if historyHasAppeared {
-                HistoryView(focus: historyFocus)
+                HistoryView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .opacity(selectedTab == 1 ? 1 : 0)
                     .allowsHitTesting(selectedTab == 1)
@@ -247,14 +246,10 @@ struct MainTabView: View {
                             GoalSettings.shared.showNetCalories = true
                             Task { try? await HealthKitService.shared.requestDietaryAuthorization() }
                             selectedTab = 0
-                        },
-                        onOpenHistory: { focus in
-                            historyFocus = focus
-                            openHistoryTab()
                         }
                     )
                 } else {
-                    PaywallView()
+                    PaywallView(displayCloseButton: false)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -262,35 +257,40 @@ struct MainTabView: View {
             .allowsHitTesting(selectedTab == 2)
             .accessibilityHidden(selectedTab != 2)
 
-            // Custom tab bar
-            HStack(spacing: 0) {
-                TabButton(
-                    icon: "heart.fill",
-                    label: "Today",
-                    isSelected: selectedTab == 0
-                ) { selectedTab = 0 }
+            // Custom tab bar — hidden on the free-user paywall so the auto-renewal
+            // disclosure isn't obscured (Apple Guideline 3.1.2(a)).
+            if !(selectedTab == 2 && !store.isPro) {
+                HStack(spacing: 0) {
+                    TabButton(
+                        icon: "heart.fill",
+                        label: "Today",
+                        isSelected: selectedTab == 0
+                    ) { selectedTab = 0 }
 
-                TabButton(
-                    icon: "chart.bar.fill",
-                    label: "History",
-                    isSelected: selectedTab == 1
-                ) {
-                    if !historyHasAppeared { historyHasAppeared = true }
-                    selectedTab = 1
+                    TabButton(
+                        icon: "chart.bar.fill",
+                        label: "History",
+                        isSelected: selectedTab == 1
+                    ) {
+                        if !historyHasAppeared { historyHasAppeared = true }
+                        selectedTab = 1
+                    }
+
+                    TabButton(
+                        icon: store.isPro ? "sparkles" : "lock.fill",
+                        label: store.isPro ? "Vitals+" : "Upgrade",
+                        isSelected: selectedTab == 2
+                    ) { selectedTab = 2 }
                 }
-
-                TabButton(
-                    icon: store.isPro ? "sparkles" : "lock.fill",
-                    label: store.isPro ? "Vitals+" : "Upgrade",
-                    isSelected: selectedTab == 2
-                ) { selectedTab = 2 }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 6)
+                .background(.ultraThinMaterial.opacity(0.8), in: Capsule())
+                .overlay(Capsule().stroke(Color(.separator).opacity(0.3), lineWidth: 0.5))
+                .padding(.bottom, 12)
+                .transition(.opacity)
             }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 6)
-            .background(.ultraThinMaterial.opacity(0.8), in: Capsule())
-            .overlay(Capsule().stroke(Color(.separator).opacity(0.3), lineWidth: 0.5))
-            .padding(.bottom, 12)
         }
+        .animation(.easeInOut(duration: 0.2), value: selectedTab == 2 && !store.isPro)
         .ignoresSafeArea(edges: .bottom)
         .task {
             // Wait briefly for products to load, then consider the trial nudge.
@@ -324,13 +324,10 @@ struct MainTabView: View {
         }
     }
 
-    private func openHistoryTab() {
-        if !historyHasAppeared { historyHasAppeared = true }
-        selectedTab = 1
-    }
 }
 
 private struct PremiumFeaturesView: View {
+    @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject private var store: StoreService
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
@@ -346,7 +343,10 @@ private struct PremiumFeaturesView: View {
     @State private var customEnd = Date.now
 
     let onOpenNetDeficit: () -> Void
-    let onOpenHistory: (HistoryFocus) -> Void
+
+    @State private var deepTrendInsights: [DeepTrendInsight] = []
+    @State private var deepTrendHighlights: [String] = []
+    @State private var deepTrendsLoaded = false
 
     var body: some View {
         NavigationStack {
@@ -354,39 +354,34 @@ private struct PremiumFeaturesView: View {
                 Theme.background.ignoresSafeArea()
 
                 ScrollView(showsIndicators: false) {
-                    VStack(spacing: 20) {
+                    VStack(spacing: 16) {
                         premiumHeader
 
-                        VStack(spacing: 12) {
-                            PremiumActionCard(
+                        VStack(spacing: 8) {
+                            PremiumActionRow(
                                 icon: "plus.forwardslash.minus",
                                 title: "Net Deficit",
-                                detail: "Show calories burned minus food calories from Apple Health on Today and History.",
-                                buttonTitle: "Enable on Today",
+                                detail: "Burn minus Apple Health food on Today + History.",
+                                buttonTitle: "Enable",
                                 action: onOpenNetDeficit
                             )
-                            PremiumActionCard(
+                            PremiumActionRow(
                                 icon: "doc.richtext.fill",
-                                title: "Monthly Summary PDFs",
-                                detail: "Generate a 30-day report here and preview it before sharing.",
-                                buttonTitle: "Generate 30-Day Report",
+                                title: "Monthly Summary PDF",
+                                detail: "Generate a 30-day report and preview before sharing.",
+                                buttonTitle: "Generate",
                                 action: { Task { await generateReport(days: 30, title: "30-Day Summary") } }
                             )
-                            PremiumActionCard(
+                            PremiumActionRow(
                                 icon: "calendar.badge.clock",
                                 title: "Custom-Range Reports",
-                                detail: "Pick an exact range, generate the report, and review the PDF in-app.",
+                                detail: "Pick an exact range and review the PDF in-app.",
                                 buttonTitle: "Choose Dates",
                                 action: { showCustomReportSheet = true }
                             )
-                            PremiumActionCard(
-                                icon: "chart.line.uptrend.xyaxis",
-                                title: "Deep Trends",
-                                detail: "Jump to the History tab to review period-over-period trend cards in context.",
-                                buttonTitle: "Open History Trends",
-                                action: { onOpenHistory(.deepTrends) }
-                            )
                         }
+
+                        deepTrendsSection
 
                         accountSection
                     }
@@ -397,6 +392,17 @@ private struct PremiumFeaturesView: View {
             }
             .navigationTitle("Vitals+")
             .navigationBarTitleDisplayMode(.inline)
+            .task {
+                if !deepTrendsLoaded { await loadDeepTrends() }
+            }
+            .onChange(of: scenePhase) { _, newPhase in
+                if newPhase == .active {
+                    Task { await loadDeepTrends() }
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                Task { await loadDeepTrends() }
+            }
             .sheet(isPresented: $showCustomReportSheet) {
                 PremiumCustomReportSheet(start: $customStart, end: $customEnd, isGenerating: isGeneratingReport) {
                     Task { await generateReport(start: customStart, end: customEnd, title: "Custom Summary") }
@@ -437,6 +443,36 @@ private struct PremiumFeaturesView: View {
                     .shadow(radius: 12)
                 }
             }
+        }
+    }
+
+    private var deepTrendsSection: some View {
+        DeepTrendsCard(
+            isPro: true,
+            isCalculating: !deepTrendsLoaded,
+            insights: deepTrendInsights,
+            highlights: deepTrendHighlights,
+            periodLabel: "vs. previous 30 days",
+            onUpgrade: {}
+        )
+    }
+
+    private func loadDeepTrends() async {
+        do {
+            let history = try await healthKit.fetchHistory(days: 30)
+            let calendar = Calendar.current
+            let priorEnd = calendar.date(byAdding: .day, value: -1, to: history.first?.date ?? DateHelpers.daysAgo(29)) ?? Date.now
+            let priorStart = calendar.date(byAdding: .day, value: -29, to: priorEnd) ?? priorEnd
+            let previous = (try? await healthKit.fetchHistory(from: priorStart, to: priorEnd)) ?? []
+
+            let currentRecords = history.map { DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps) }
+            let previousRecords = previous.map { DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps) }
+
+            deepTrendInsights = DeepTrendsBuilder.insights(currentRecords: currentRecords, previousRecords: previousRecords)
+            deepTrendHighlights = DeepTrendsBuilder.highlights(records: currentRecords)
+            deepTrendsLoaded = true
+        } catch {
+            deepTrendsLoaded = true
         }
     }
 
@@ -629,7 +665,7 @@ private struct PremiumCustomReportSheet: View {
     }
 }
 
-private struct PremiumActionCard: View {
+private struct PremiumActionRow: View {
     let icon: String
     let title: String
     let detail: String
@@ -637,35 +673,34 @@ private struct PremiumActionCard: View {
     let action: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack(alignment: .top, spacing: 12) {
-                Image(systemName: icon)
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(Theme.caloriesPrimary)
-                    .frame(width: 28, height: 28)
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(title)
-                        .font(.system(.headline, design: .rounded, weight: .bold))
-                        .foregroundStyle(Theme.textPrimary)
-                    Text(detail)
-                        .font(.system(.subheadline, design: .rounded))
-                        .foregroundStyle(Theme.textSecondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                Spacer(minLength: 0)
+        HStack(alignment: .center, spacing: 12) {
+            Image(systemName: icon)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(Theme.caloriesPrimary)
+                .frame(width: 28, height: 28)
+                .background(Theme.caloriesPrimary.opacity(0.12), in: Circle())
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textPrimary)
+                Text(detail)
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .lineLimit(2)
             }
-
+            Spacer(minLength: 8)
             Button(action: action) {
                 Text(buttonTitle)
-                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .font(.system(.caption, design: .rounded, weight: .bold))
                     .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
                     .background(Theme.caloriesGradient, in: Capsule())
             }
             .buttonStyle(.plain)
         }
-        .padding(18)
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
     }
 }

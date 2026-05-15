@@ -92,6 +92,7 @@ private enum HealthNotice: Equatable {
 }
 
 struct DashboardView: View {
+    @Environment(\.scenePhase) var scenePhase
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
     @EnvironmentObject private var store: StoreService
@@ -211,6 +212,11 @@ struct DashboardView: View {
             if oldValue && !isPro && goals.showNetCalories {
                 goals.showNetCalories = false
             } else if isPro && goals.showNetCalories {
+                Task { await refresh() }
+            }
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
                 Task { await refresh() }
             }
         }
@@ -1405,6 +1411,10 @@ private struct SettingsSheet: View {
                 Section {
                     Link(destination: VitalsLinks.privacyPolicy) {
                         Label("Privacy Policy", systemImage: "hand.raised")
+                    }
+
+                    Link(destination: VitalsLinks.standardEULA) {
+                        Label("Terms of Use", systemImage: "doc.text")
                     }
 
                     Link(destination: VitalsLinks.support) {
