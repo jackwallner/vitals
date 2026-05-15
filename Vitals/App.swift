@@ -257,40 +257,37 @@ struct MainTabView: View {
             .allowsHitTesting(selectedTab == 2)
             .accessibilityHidden(selectedTab != 2)
 
-            // Custom tab bar — hidden on the free-user paywall so the auto-renewal
-            // disclosure isn't obscured (Apple Guideline 3.1.2(a)).
-            if !(selectedTab == 2 && !store.isPro) {
-                HStack(spacing: 0) {
-                    TabButton(
-                        icon: "heart.fill",
-                        label: "Today",
-                        isSelected: selectedTab == 0
-                    ) { selectedTab = 0 }
+            // Custom tab bar — always visible so the user can navigate away from
+            // the paywall. The RevenueCat-hosted paywall has its own scrollable
+            // auto-renew disclosure, so the tab bar overlay doesn't break 3.1.2(a).
+            HStack(spacing: 0) {
+                TabButton(
+                    icon: "heart.fill",
+                    label: "Today",
+                    isSelected: selectedTab == 0
+                ) { selectedTab = 0 }
 
-                    TabButton(
-                        icon: "chart.bar.fill",
-                        label: "History",
-                        isSelected: selectedTab == 1
-                    ) {
-                        if !historyHasAppeared { historyHasAppeared = true }
-                        selectedTab = 1
-                    }
-
-                    TabButton(
-                        icon: store.isPro ? "sparkles" : "lock.fill",
-                        label: store.isPro ? "Vitals+" : "Upgrade",
-                        isSelected: selectedTab == 2
-                    ) { selectedTab = 2 }
+                TabButton(
+                    icon: "chart.bar.fill",
+                    label: "History",
+                    isSelected: selectedTab == 1
+                ) {
+                    if !historyHasAppeared { historyHasAppeared = true }
+                    selectedTab = 1
                 }
-                .padding(.horizontal, 8)
-                .padding(.vertical, 6)
-                .background(.ultraThinMaterial.opacity(0.8), in: Capsule())
-                .overlay(Capsule().stroke(Color(.separator).opacity(0.3), lineWidth: 0.5))
-                .padding(.bottom, 12)
-                .transition(.opacity)
+
+                TabButton(
+                    icon: store.isPro ? "sparkles" : "lock.fill",
+                    label: store.isPro ? "Vitals+" : "Upgrade",
+                    isSelected: selectedTab == 2
+                ) { selectedTab = 2 }
             }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
+            .background(.ultraThinMaterial.opacity(0.8), in: Capsule())
+            .overlay(Capsule().stroke(Color(.separator).opacity(0.3), lineWidth: 0.5))
+            .padding(.bottom, 12)
         }
-        .animation(.easeInOut(duration: 0.2), value: selectedTab == 2 && !store.isPro)
         .ignoresSafeArea(edges: .bottom)
         .task {
             // Wait briefly for products to load, then consider the trial nudge.
