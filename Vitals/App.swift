@@ -253,6 +253,11 @@ struct MainTabView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                // Reserve space so the RevenueCat paywall's CTA + footer aren't
+                // hidden by the floating tab-bar capsule below.
+                Color.clear.frame(height: 68)
+            }
             .opacity(selectedTab == 2 ? 1 : 0)
             .allowsHitTesting(selectedTab == 2)
             .accessibilityHidden(selectedTab != 2)
