@@ -334,9 +334,15 @@ struct DashboardView: View {
                     }
                     .buttonStyle(.plain)
                 }
-                HStack(spacing: 6) {
+                HStack(spacing: 8) {
                     if healthNotice == .accessNeeded || healthNotice == .accessBlocked {
                         Text("Waiting for Health access")
+                            .font(.system(.caption2, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                    } else if isRefreshing {
+                        LoadingBar(color: Theme.caloriesPrimary)
+                            .frame(width: 80)
+                        Text("Refreshing…")
                             .font(.system(.caption2, design: .rounded))
                             .foregroundStyle(Theme.textTertiary)
                     } else if let date = lastRefreshDate {
@@ -345,6 +351,7 @@ struct DashboardView: View {
                             .foregroundStyle(Theme.textTertiary)
                     }
                 }
+                .animation(.easeInOut(duration: 0.2), value: isRefreshing)
             }
             .padding(.horizontal, 24)
             .padding(.top, 16)
@@ -923,7 +930,8 @@ struct DashboardView: View {
 
         if isLoading, let cachedStats, cachedHasData {
             applyStats(cachedStats)
-            healthNotice = .cachedData
+            // Don't surface a "stale data" banner during the initial paint — the
+            // header LoadingBar already communicates that a refresh is in flight.
             showLoadedStateIfNeeded()
         }
 

@@ -85,7 +85,8 @@ struct HistoryView: View {
     @State private var foodByDay: [Date: Double] = [:]
     @State private var previousRecords: [DayRecord] = []
     @State private var isLoading = true
-    @State private var isRefreshing = false
+    @State private var loadToken: Int = 0
+    @State private var inflightLoads: Int = 0
     @State private var isCalculatingTrends = false
     @State private var animateContent = false
     @State private var showExportSheet = false
@@ -299,11 +300,10 @@ struct HistoryView: View {
                     Text("History")
                         .font(.title.bold())
                         .foregroundStyle(Theme.textPrimary)
-                    if isRefreshing && !isLoading {
-                        ProgressView()
-                            .controlSize(.small)
-                            .tint(Theme.textTertiary)
-                            .padding(.leading, 4)
+                    if inflightLoads > 0 && !isLoading {
+                        LoadingBar(color: Theme.caloriesPrimary)
+                            .frame(width: 80)
+                            .padding(.leading, 8)
                             .transition(.opacity)
                     }
                     Spacer()
@@ -1111,12 +1111,16 @@ struct HistoryView: View {
     }
 
     private func loadHistory() async {
-        // Single-flight guard: the History view can be triggered by .task, pull-to-refresh,
-        // foreground notifications, and period changes at the same time. Without a guard
-        // these race into `records` and cause flicker / double HealthKit quota usage.
-        guard !isRefreshing else { return }
-        isRefreshing = true
-        defer { isRefreshing = false }
+        // Each call bumps the token; in-flight loads compare against it before
+        // writing back, so a stale fetch (e.g. the previous period's request) can't
+        // overwrite `records` after the user has switched to a new range.
+        loadToken &+= 1
+        let token = loadToken
+        let period = selectedPeriod
+        let rangeStart = customStart
+        let rangeEnd = customEnd
+        inflightLoads += 1
+        defer { inflightLoads = max(0, inflightLoads - 1) }
         selectedCalorieDate = nil
         selectedStepDate = nil
         selectedNetDate = nil
@@ -1127,7 +1131,7 @@ struct HistoryView: View {
         // values when they arrive, so the user never stares at a blank spinner
         // on returning visits. Only applies to fixed periods — custom ranges
         // skip the cache (uncommon path, not worth a from/to overload).
-        if records.isEmpty, let days = selectedPeriod.days,
+        if records.isEmpty, let days = period.days,
            let cached = try? healthKit.fetchCachedHistory(days: days),
            cached.contains(where: { $0.active > 0 || $0.resting > 0 || $0.steps > 0 }) {
             records = cached.map {
@@ -1150,11 +1154,12 @@ struct HistoryView: View {
 
         do {
             let history: [(date: Date, active: Double, resting: Double, steps: Int)]
-            if selectedPeriod == .custom {
-                history = try await healthKit.fetchHistory(from: customStart, to: customEnd)
+            if period == .custom {
+                history = try await healthKit.fetchHistory(from: rangeStart, to: rangeEnd)
             } else {
-                history = try await healthKit.fetchHistory(days: selectedPeriod.days ?? 7)
+                history = try await healthKit.fetchHistory(days: period.days ?? 7)
             }
+            guard token == loadToken else { return }
 
             // Only fetch dietary history when Net Deficit is enabled; failure here is
             // non-fatal — calorie/step charts still render without it.
@@ -1162,11 +1167,12 @@ struct HistoryView: View {
             if store.isPro && goals.showNetCalories {
                 do {
                     let dietary: [(date: Date, foodCalories: Double)]
-                    if selectedPeriod == .custom {
-                        dietary = try await healthKit.fetchDietaryHistory(from: customStart, to: customEnd)
+                    if period == .custom {
+                        dietary = try await healthKit.fetchDietaryHistory(from: rangeStart, to: rangeEnd)
                     } else {
-                        dietary = try await healthKit.fetchDietaryHistory(days: selectedPeriod.days ?? 7)
+                        dietary = try await healthKit.fetchDietaryHistory(days: period.days ?? 7)
                     }
+                    guard token == loadToken else { return }
                     let cal = Calendar.current
                     for day in dietary {
                         foodMap[cal.startOfDay(for: day.date)] = day.foodCalories
@@ -1189,7 +1195,9 @@ struct HistoryView: View {
             // calculations. Failure here is silent — the deep trends card just
             // shows an empty state and the report skips trend pills.
             await loadPreviousWindow(history: history)
+            guard token == loadToken else { return }
         } catch {
+            guard token == loadToken else { return }
             print("Failed to fetch history: \(error)")
             loadErrorMessage = records.isEmpty
                 ? "Try again in a moment or check Apple Health access."

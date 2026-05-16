@@ -425,7 +425,6 @@ struct PDFPreviewSheet: View {
     var body: some View {
         NavigationStack {
             PDFKitPreview(url: url)
-                .ignoresSafeArea(edges: .bottom)
                 .navigationTitle(title)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
