@@ -139,6 +139,16 @@ GoalSettings  →  UserDefaults (App Group)  →  Widgets read goals directly
 | `showSteps` | Bool | true | Display steps section |
 | `appearance` | Int | 0 | 0=system, 1=light, 2=dark |
 
+## Scripts
+
+- `scripts/testflight.sh` — push to TestFlight / ship a build
+- `scripts/upload-testflight.sh [build/Vitals.xcarchive]` — upload existing archive (.ipa) only
+- `scripts/upload-testflight-api.sh` — API-key based upload (see script header)
+- `scripts/pull-appstore-metadata.sh` — snapshots `fastlane/metadata/` to `metadata.bak.<timestamp>/`, then runs `fastlane deliver download_metadata`. ALWAYS run before editing `fastlane/metadata/*.txt`; diff against the snapshot to confirm what changed remotely.
+- `scripts/upload-appstore-metadata.sh` — `fastlane upload_metadata` (screenshots + listing copy, no binary, no submit-for-review).
+
+ASC API key (shared across apps): `~/.baseball_credentials` (`ASC_API_KEY_ID`, `ASC_ISSUER_ID`, `ASC_KEY_PATH`).
+
 ## App Store Submission
 
 - **Privacy policy**: `docs/privacy-policy.html` — host via GitHub Pages at `https://jackwallner.github.io/vitals/privacy-policy.html`
