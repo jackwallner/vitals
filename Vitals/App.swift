@@ -190,6 +190,11 @@ struct MainTabView: View {
     @State private var launchOfferShownThisSession = false
     @State private var trialPurchaseInFlight = false
     @State private var trialPurchaseError: String?
+    /// Set when the user opts into the hosted paywall from inside the trial-offer
+    /// sheet. The `.sheet(onDismiss:)` reads this and presents the paywall *after*
+    /// the trial sheet has fully dismissed — presenting both sheets in the same
+    /// runloop tick is racy in SwiftUI and frequently drops the second sheet.
+    @State private var pendingPaywallAfterTrialDismiss = false
 
     private enum TrialOfferSource {
         case launch
@@ -226,9 +231,8 @@ struct MainTabView: View {
     private func startDirectTrialPurchase() {
         guard let package = directTrialPackage else {
             // No trial product loaded — fall back to the hosted paywall.
-            markTrialOfferSeen()
+            pendingPaywallAfterTrialDismiss = true
             showTrialOffer = false
-            showTrialPaywall = true
             return
         }
         trialPurchaseError = nil
@@ -241,7 +245,9 @@ struct MainTabView: View {
                     markTrialOfferSeen()
                     showTrialOffer = false
                 case .cancelled:
-                    break // keep the sheet open so they can retry or dismiss
+                    // Surface a hint so the sheet doesn't sit silent — the StoreKit
+                    // sheet dismissed but the user might think the app froze.
+                    trialPurchaseError = "Trial wasn't started — tap again, or pick a different plan."
                 }
             } catch {
                 trialPurchaseError = "Couldn't start your trial. Please try again."
@@ -268,6 +274,10 @@ struct MainTabView: View {
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 5_000_000_000)
             guard !showTrialOffer, !showTrialPaywall else { return }
+            // Re-check the user is still on Today — they may have navigated to
+            // History or Vitals+ during the wait, in which case this pitch would
+            // pop over the wrong tab.
+            guard selectedTab == 0 else { return }
             if !goals.hasSeenTrialOffer && !store.isPro {
                 trialOfferSource = .launch
                 launchOfferShownThisSession = true
@@ -276,15 +286,15 @@ struct MainTabView: View {
         }
     }
 
-    /// Second-touch trial nudge: fires the first time the History tab finishes
-    /// loading. Deliberately requires the launch offer to have already been
-    /// shown in a *prior* session (`hasSeenTrialOffer`) and not in *this*
-    /// session (`launchOfferShownThisSession`) so the user is never pitched
-    /// twice in one run.
+    /// Second-touch trial nudge: fires when History finishes loading. Originally
+    /// gated on the launch offer having already been shown in a prior session,
+    /// but that meant users whose products failed to load on session 1 never saw
+    /// either pitch. Now it fires whenever the launch offer hasn't run *this*
+    /// session — that still prevents back-to-back pitches, while letting History
+    /// act as the primary path when the launch path didn't fire.
     private func evaluateHistoryTrialOffer() {
         guard goals.hasCompletedSetup,
               !store.isPro,
-              goals.hasSeenTrialOffer,
               !goals.hasSeenHistoryTrialOffer,
               !launchOfferShownThisSession,
               hasTrialOffer,
@@ -404,6 +414,13 @@ struct MainTabView: View {
             markTrialOfferSeen()
             trialPurchaseInFlight = false
             trialPurchaseError = nil
+            // Chain the hosted paywall here rather than setting both bindings in
+            // the same tick — SwiftUI can only show one sheet per ancestor at a
+            // time and frequently drops the second when they fire together.
+            if pendingPaywallAfterTrialDismiss {
+                pendingPaywallAfterTrialDismiss = false
+                showTrialPaywall = true
+            }
         }) {
             TrialOfferSheet(
                 offerLabel: store.products.compactMap(\.vitalsIntroOfferLabel).first,
@@ -415,22 +432,19 @@ struct MainTabView: View {
                     if trialOfferIsDirect {
                         startDirectTrialPurchase()
                     } else {
-                        markTrialOfferSeen()
+                        pendingPaywallAfterTrialDismiss = true
                         showTrialOffer = false
-                        showTrialPaywall = true
                     }
                 },
                 onSeeAllPlans: {
-                    markTrialOfferSeen()
+                    pendingPaywallAfterTrialDismiss = true
                     showTrialOffer = false
-                    showTrialPaywall = true
                 },
                 onDismiss: {
-                    markTrialOfferSeen()
                     showTrialOffer = false
                 }
             )
-            .presentationDetents([.height(480), .large])
+            .presentationDetents(trialOfferIsDirect ? [.fraction(0.85), .large] : [.height(480), .large])
             .presentationDragIndicator(.visible)
             .interactiveDismissDisabled(trialPurchaseInFlight)
         }
@@ -624,7 +638,12 @@ private struct PremiumFeaturesView: View {
             Button {
                 Task {
                     await store.restorePurchases()
-                    restoreMessage = store.isPro ? "Your Vitals+ access is active." : (store.lastError ?? "No active Vitals+ purchase was found.")
+                    // `StoreService.restorePurchases()` clears `lastError` on entry
+                    // and writes either the success or the failure message, so the
+                    // view doesn't need to invent its own fallback string.
+                    restoreMessage = store.isPro
+                        ? "Your Vitals+ access is active."
+                        : (store.lastError ?? "Couldn't refresh your subscription. Try again.")
                 }
             } label: {
                 PremiumAccountRow(icon: "arrow.clockwise", title: "Restore Purchases", detail: "Refresh your access after changing devices or reinstalling.")
