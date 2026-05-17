@@ -258,7 +258,7 @@ struct MainTabView: View {
                 case .cancelled:
                     // Surface a hint so the sheet doesn't sit silent — the StoreKit
                     // sheet dismissed but the user might think the app froze.
-                    trialPurchaseError = "Trial wasn't started — tap again, or pick a different plan."
+                    trialPurchaseError = "Trial wasn't started. Tap again, or pick a different plan."
                 }
             } catch {
                 trialPurchaseError = "Couldn't start your trial. Please try again."
@@ -937,6 +937,19 @@ private struct TrialOfferSheet: View {
         ]
     }
 
+    /// Repeat-forever animation timing for the ambient glow. Scoped to the
+    /// specific views that read `animateGlow` via `.animation(_:value:)` so the
+    /// animation context can't leak into unrelated layout changes (e.g. the
+    /// error message appearing, which previously caused the bullet rows to
+    /// ghost during reflow).
+    private var glowAnimation: Animation {
+        .easeInOut(duration: 2.2).repeatForever(autoreverses: true)
+    }
+
+    private var shimmerAnimation: Animation {
+        .linear(duration: 2.6).repeatForever(autoreverses: false).delay(0.4)
+    }
+
     var body: some View {
         ZStack {
             Theme.background.ignoresSafeArea()
@@ -945,17 +958,20 @@ private struct TrialOfferSheet: View {
                 .frame(width: 220, height: 220)
                 .blur(radius: 36)
                 .offset(x: animateGlow ? 96 : -96, y: animateGlow ? -220 : -180)
+                .animation(glowAnimation, value: animateGlow)
             Circle()
                 .fill(Theme.stepsSecondary.opacity(0.18))
                 .frame(width: 180, height: 180)
                 .blur(radius: 34)
                 .offset(x: animateGlow ? -110 : 110, y: animateGlow ? 250 : 210)
+                .animation(glowAnimation, value: animateGlow)
             // Light "shine" particles drifting behind the hero. Suppressed when
             // Reduce Motion is on so we stay accessibility-compliant.
             if !reduceMotion {
                 SparkleField(phase: animateGlow ? 1 : 0)
                     .allowsHitTesting(false)
                     .opacity(0.55)
+                    .animation(glowAnimation, value: animateGlow)
             }
 
             VStack(spacing: 18) {
@@ -976,6 +992,7 @@ private struct TrialOfferSheet: View {
                         .rotationEffect(.degrees(animateGlow ? 6 : -6))
                 }
                 .padding(.top, 18)
+                .animation(glowAnimation, value: animateGlow)
 
                 VStack(spacing: 6) {
                     Text(headline)
@@ -1012,12 +1029,21 @@ private struct TrialOfferSheet: View {
                         .padding(.horizontal, 4)
                 }
 
-                if let errorMessage {
-                    Text(errorMessage)
-                        .font(.system(.footnote, design: .rounded))
-                        .foregroundStyle(.red)
-                        .multilineTextAlignment(.center)
+                // Conditional error text: explicit opacity transition + suppressed
+                // implicit animation, so when the error appears the surrounding
+                // bullet rows / billing disclosure don't ghost while reflowing
+                // (the parent's continuous shimmer + sparkle animations otherwise
+                // cause SwiftUI to render duplicate positions mid-layout).
+                Group {
+                    if let errorMessage {
+                        Text(errorMessage)
+                            .font(.system(.footnote, design: .rounded))
+                            .foregroundStyle(.red)
+                            .multilineTextAlignment(.center)
+                            .transition(.opacity)
+                    }
                 }
+                .animation(.easeInOut(duration: 0.18), value: errorMessage)
 
                 VStack(spacing: 10) {
                     Button(action: onStartTrial) {
@@ -1079,14 +1105,14 @@ private struct TrialOfferSheet: View {
         }
         .onAppear {
             guard !reduceMotion else { return }
-            withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) {
-                animateGlow = true
-            }
-            // Independent timing from the hero glow so the two motions don't
-            // sync up into a single pulse — keeps the surface feeling alive.
-            withAnimation(.linear(duration: 2.6).repeatForever(autoreverses: false).delay(0.4)) {
-                shimmerPhase = 1.4
-            }
+            // Plain state set — each animated view applies the repeating
+            // animation locally via `.animation(_:value:)`, so the animation
+            // context cannot leak into unrelated layout changes (e.g. error
+            // message appearing, button spinner toggle). withAnimation here
+            // would propagate the repeating animation onto every state change
+            // made anywhere in this view tree for the lifetime of the sheet.
+            animateGlow = true
+            shimmerPhase = 1.4
         }
     }
 
@@ -1109,6 +1135,7 @@ private struct TrialOfferSheet: View {
             .offset(x: shimmerPhase * width)
             .blendMode(.plusLighter)
             .allowsHitTesting(false)
+            .animation(shimmerAnimation, value: shimmerPhase)
         }
     }
 }
