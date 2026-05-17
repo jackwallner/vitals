@@ -46,6 +46,13 @@ struct SummaryReport: Sendable {
     let calorieGoalHitDays: Int
     let stepGoalHitDays: Int
 
+    /// Net deficit aggregates — only populated when the user has Net Deficit enabled
+    /// and dietary calories were available for at least one day in the window.
+    let avgNetDeficit: Double?
+    let totalNetDeficit: Double?
+    let bestNetDay: ReportDay?
+    let netDeficitDayCount: Int
+
     var calendarLabel: String {
         let f = DateFormatter()
         f.dateFormat = "MMMM d, yyyy"
@@ -94,6 +101,14 @@ enum SummaryReportGenerator {
         let calHit = calorieGoal.map { goal in days.filter { $0.totalCalories >= goal }.count } ?? 0
         let stepHit = stepGoal.map { goal in days.filter { $0.steps >= goal }.count } ?? 0
 
+        let netDays = days.compactMap { day -> (day: ReportDay, value: Double)? in
+            guard let net = day.netDeficit else { return nil }
+            return (day, net)
+        }
+        let avgNet: Double? = netDays.isEmpty ? nil : netDays.map(\.value).reduce(0, +) / Double(netDays.count)
+        let totalNet: Double? = netDays.isEmpty ? nil : netDays.map(\.value).reduce(0, +)
+        let bestNet: ReportDay? = netDays.max(by: { $0.value < $1.value })?.day
+
         return SummaryReport(
             title: title,
             periodStart: periodStart,
@@ -115,7 +130,11 @@ enum SummaryReportGenerator {
             calorieGoal: calorieGoal,
             stepGoal: stepGoal,
             calorieGoalHitDays: calHit,
-            stepGoalHitDays: stepHit
+            stepGoalHitDays: stepHit,
+            avgNetDeficit: avgNet,
+            totalNetDeficit: totalNet,
+            bestNetDay: bestNet,
+            netDeficitDayCount: netDays.count
         )
     }
 

@@ -490,16 +490,14 @@ struct HistoryView: View {
                                 }
                             }
 
-                            if store.isPro {
-                                DeepTrendsCard(
-                                    isPro: true,
-                                    isCalculating: isCalculatingTrends && previousRecords.isEmpty,
-                                    insights: deepTrendInsights,
-                                    highlights: deepTrendHighlights,
-                                    periodLabel: deepTrendsPeriodLabel,
-                                    onUpgrade: { showPaywall = true }
-                                )
-                            }
+                            DeepTrendsCard(
+                                isPro: store.isPro,
+                                isCalculating: isCalculatingTrends && previousRecords.isEmpty,
+                                insights: store.isPro ? deepTrendInsights : DeepTrendsBuilder.teaserInsights(currentRecords: records),
+                                highlights: store.isPro ? deepTrendHighlights : DeepTrendsBuilder.teaserHighlights(records: records),
+                                periodLabel: deepTrendsPeriodLabel,
+                                onUpgrade: { showPaywall = true }
+                            )
 
                             CoachPromoCard()
 
@@ -1233,13 +1231,28 @@ struct HistoryView: View {
         }
         let priorEnd = cal.date(byAdding: .day, value: -1, to: currentStart) ?? currentStart
         let priorStart = cal.date(byAdding: .day, value: -(lengthDays - 1), to: priorEnd) ?? priorEnd
+
+        // Paint instantly from the SwiftData cache when we have prior data on disk
+        // — the HealthKit fetch below overwrites with fresh values when they arrive.
+        // Without this, Deep Trends sits on a "Calculating…" spinner on every revisit
+        // even when the only thing changing is bytes we already have locally.
+        if let cached = try? healthKit.fetchCachedHistory(from: priorStart, to: priorEnd),
+           cached.contains(where: { $0.active > 0 || $0.resting > 0 || $0.steps > 0 }) {
+            previousRecords = cached.map {
+                DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
+            }
+        }
+
         do {
             let prev = try await healthKit.fetchHistory(from: priorStart, to: priorEnd)
             previousRecords = prev.map {
                 DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
             }
+            try? healthKit.saveHistoryToCache(history: prev)
         } catch {
-            previousRecords = []
+            if previousRecords.isEmpty {
+                previousRecords = []
+            }
         }
     }
 
@@ -1431,6 +1444,52 @@ enum DeepTrendsBuilder {
         let rounded = Int(value.rounded())
         return rounded >= 0 ? "+\(rounded)%" : "\(rounded)%"
     }
+
+    /// Locked-state insights for the paywall tease. Uses the user's own current-window
+    /// averages with a fixed "+" delta so the blurred preview looks like the real card
+    /// without leaking the actual trend math behind Vitals+.
+    static func teaserInsights(currentRecords: [DayRecord]) -> [DeepTrendInsight] {
+        var insights: [DeepTrendInsight] = []
+        if let cal = average(of: currentRecords.map(\.totalCalories)) {
+            insights.append(
+                DeepTrendInsight(
+                    title: "Calories",
+                    icon: "flame.fill",
+                    current: cal.formatted(.number.precision(.fractionLength(0))),
+                    previous: (cal * 0.92).formatted(.number.precision(.fractionLength(0))),
+                    change: "+\(Int((cal * 0.08).rounded()).formatted(.number))",
+                    percent: "+8%",
+                    narrative: "Compare your current pace against the prior matching window.",
+                    color: Theme.caloriesPrimary,
+                    isUp: true
+                )
+            )
+        }
+        if let steps = average(of: currentRecords.map { Double($0.steps) }) {
+            insights.append(
+                DeepTrendInsight(
+                    title: "Steps",
+                    icon: "figure.walk",
+                    current: Int(steps.rounded()).formatted(.number),
+                    previous: Int((steps * 0.94).rounded()).formatted(.number),
+                    change: "+\(Int((steps * 0.06).rounded()).formatted(.number))",
+                    percent: "+6%",
+                    narrative: "See momentum on steps across periods.",
+                    color: Theme.stepsPrimary,
+                    isUp: true
+                )
+            )
+        }
+        return insights
+    }
+
+    static func teaserHighlights(records: [DayRecord]) -> [String] {
+        [
+            "Period-over-period averages, deltas, and percent movement.",
+            "Peak-day highlights with dates for every metric.",
+            "Refresh trends instantly when you switch windows."
+        ]
+    }
 }
 
 struct DeepTrendsCard: View {
@@ -1480,48 +1539,143 @@ struct DeepTrendsCard: View {
                         .foregroundStyle(Theme.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
                 } else {
+                    insightsContent
+                }
+            } else {
+                lockedTeaser
+            }
+        }
+        .padding(Theme.cardPadding)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+    }
+
+    private var insightsContent: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            VStack(spacing: 12) {
+                ForEach(insights) { insight in
+                    DeepTrendInsightRow(insight: insight)
+                }
+            }
+            if !highlights.isEmpty {
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(highlights, id: \.self) { highlight in
+                        HStack(alignment: .top, spacing: 8) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundStyle(Theme.caloriesPrimary)
+                                .padding(.top, 2)
+                            Text(highlight)
+                                .font(.system(.caption, design: .rounded))
+                                .foregroundStyle(Theme.textSecondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /// Non-pro view: render the actual insight rows so the user sees the shape of what
+    /// they'd get, then crush them with a heavy blur and stamp an Unlock CTA on top.
+    /// The blurred content stays interactive-free (`allowsHitTesting(false)`) so taps
+    /// only ever land on the upgrade button.
+    private var lockedTeaser: some View {
+        ZStack {
+            VStack(alignment: .leading, spacing: 12) {
+                if insights.isEmpty {
+                    placeholderTeaserRows
+                } else {
                     VStack(spacing: 12) {
                         ForEach(insights) { insight in
                             DeepTrendInsightRow(insight: insight)
                         }
                     }
-                    if !highlights.isEmpty {
-                        VStack(alignment: .leading, spacing: 8) {
-                            ForEach(highlights, id: \.self) { highlight in
-                                HStack(alignment: .top, spacing: 8) {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .font(.system(size: 12, weight: .semibold))
-                                        .foregroundStyle(Theme.caloriesPrimary)
-                                        .padding(.top, 2)
-                                    Text(highlight)
-                                        .font(.system(.caption, design: .rounded))
-                                        .foregroundStyle(Theme.textSecondary)
-                                        .fixedSize(horizontal: false, vertical: true)
-                                }
-                            }
+                }
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(highlights, id: \.self) { highlight in
+                        HStack(alignment: .top, spacing: 8) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundStyle(Theme.caloriesPrimary)
+                                .padding(.top, 2)
+                            Text(highlight)
+                                .font(.system(.caption, design: .rounded))
+                                .foregroundStyle(Theme.textSecondary)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                     }
                 }
-            } else {
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("Compare this period against the matching previous range with current averages, prior averages, absolute deltas, percent movement, and peak-day highlights.")
-                        .font(.system(.subheadline, design: .rounded))
-                        .foregroundStyle(Theme.textSecondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                    Button(action: onUpgrade) {
-                        Text("Unlock with Vitals+")
-                            .font(.system(.subheadline, design: .rounded, weight: .semibold))
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background(Theme.caloriesGradient, in: Capsule())
-                    }
-                    .buttonStyle(.plain)
-                }
             }
+            .blur(radius: 14)
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+            .overlay(
+                LinearGradient(
+                    colors: [
+                        Theme.cardSurface.opacity(0.35),
+                        Theme.cardSurface.opacity(0.55),
+                        Theme.cardSurface.opacity(0.8)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
+
+            VStack(spacing: 10) {
+                Image(systemName: "lock.fill")
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundStyle(Theme.caloriesPrimary)
+                Text("Unlock Deep Trends")
+                    .font(.system(.headline, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.textPrimary)
+                Text("Compare this period against the matching previous range — averages, deltas, percent movement, and peak days.")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 8)
+                    .fixedSize(horizontal: false, vertical: true)
+                Button(action: onUpgrade) {
+                    Text("Try Vitals+ Free")
+                        .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(Theme.caloriesGradient, in: Capsule())
+                }
+                .buttonStyle(.plain)
+                .padding(.top, 4)
+            }
+            .padding(14)
         }
-        .padding(Theme.cardPadding)
-        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+    }
+
+    /// Synthetic rows used only when the user has no records yet — keeps the locked card
+    /// looking like the unlocked card instead of collapsing to a tiny block above the CTA.
+    private var placeholderTeaserRows: some View {
+        VStack(spacing: 12) {
+            DeepTrendInsightRow(insight: DeepTrendInsight(
+                title: "Calories",
+                icon: "flame.fill",
+                current: "2,480",
+                previous: "2,310",
+                change: "+170",
+                percent: "+7%",
+                narrative: "Compare current vs prior averages.",
+                color: Theme.caloriesPrimary,
+                isUp: true
+            ))
+            DeepTrendInsightRow(insight: DeepTrendInsight(
+                title: "Steps",
+                icon: "figure.walk",
+                current: "9,420",
+                previous: "8,860",
+                change: "+560",
+                percent: "+6%",
+                narrative: "Track momentum across periods.",
+                color: Theme.stepsPrimary,
+                isUp: true
+            ))
+        }
     }
 }
 
@@ -1693,6 +1847,7 @@ struct LoadingBar: View {
                     .frame(width: segmentWidth)
                     .offset(x: animating ? width : -segmentWidth)
             }
+            .clipShape(Capsule())
         }
         .frame(height: 4)
         .onAppear {

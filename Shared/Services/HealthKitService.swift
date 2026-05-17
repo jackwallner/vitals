@@ -617,12 +617,20 @@ final class HealthKitService: ObservableObject {
     }
 
     func fetchCachedHistory(days: Int) throws -> [(date: Date, active: Double, resting: Double, steps: Int)] {
-        let context = ModelContext(DataService.sharedModelContainer)
-        let calendar = Calendar.current
         let start = DateHelpers.daysAgo(max(days - 1, 0))
         let end = DateHelpers.startOfDay()
-        let startKey = DailyHealthRecord.key(for: start)
-        let endKey = DailyHealthRecord.key(for: end)
+        return try fetchCachedHistory(from: start, to: end)
+    }
+
+    /// Cached daily totals between `start` and `end` (inclusive of both day boundaries).
+    /// Returned array fills in missing days with zeroes so callers can rely on a contiguous window.
+    func fetchCachedHistory(from start: Date, to end: Date) throws -> [(date: Date, active: Double, resting: Double, steps: Int)] {
+        let context = ModelContext(DataService.sharedModelContainer)
+        let calendar = Calendar.current
+        let normalizedStart = DateHelpers.startOfDay(start)
+        let normalizedEnd = DateHelpers.startOfDay(end)
+        let startKey = DailyHealthRecord.key(for: normalizedStart)
+        let endKey = DailyHealthRecord.key(for: normalizedEnd)
 
         let descriptor = FetchDescriptor<DailyHealthRecord>(
             predicate: #Predicate { $0.dateString >= startKey && $0.dateString <= endKey },
@@ -632,8 +640,8 @@ final class HealthKitService: ObservableObject {
         let recordDict = Dictionary(uniqueKeysWithValues: records.map { (DailyHealthRecord.key(for: $0.date), $0) })
 
         var results: [(date: Date, active: Double, resting: Double, steps: Int)] = []
-        var current = start
-        while current <= end {
+        var current = normalizedStart
+        while current <= normalizedEnd {
             let key = DailyHealthRecord.key(for: current)
             if let record = recordDict[key] {
                 results.append((date: record.date, active: record.activeCalories, resting: record.restingCalories, steps: record.steps))
