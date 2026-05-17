@@ -19,13 +19,24 @@ struct SummaryReportView: View {
         return f
     }()
 
+    /// True when we have an extra row of goal tiles to render. Drives compact mode below.
+    private var hasGoalsRow: Bool { report.calorieGoal != nil || report.stepGoal != nil }
+    /// True when net deficit data is available — adds a fourth metric row + a highlight tile.
+    private var hasNetData: Bool { report.avgNetDeficit != nil }
+    /// "Compact" when we need to pack in goals and/or net data — shrinks chart heights and
+    /// VStack spacing so the highlights row at the bottom never gets clipped off the page.
+    private var isCompact: Bool { hasGoalsRow && hasNetData }
+    private var chartHeight: CGFloat { isCompact ? 86 : (hasGoalsRow || hasNetData ? 108 : 130) }
+    private var sectionSpacing: CGFloat { isCompact ? 10 : (hasGoalsRow || hasNetData ? 14 : 18) }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
+        VStack(alignment: .leading, spacing: sectionSpacing) {
             header
             keyMetricsGrid
             caloriesChart
             stepsChart
             highlightsRow
+            Spacer(minLength: 0)
             footer
         }
         .padding(margin)
@@ -63,19 +74,21 @@ struct SummaryReportView: View {
     }
 
     private var keyMetricsGrid: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: isCompact ? 8 : 10) {
             HStack(spacing: 10) {
                 MetricTile(
                     label: "AVG CALORIES / DAY",
                     value: formatNumber(report.avgCalories),
                     accent: reportCalorieColor,
-                    trendPct: report.calorieTrendPct
+                    trendPct: report.calorieTrendPct,
+                    compact: isCompact
                 )
                 MetricTile(
                     label: "TOTAL CALORIES",
                     value: formatNumber(report.totalCalories),
                     accent: reportCalorieColor,
-                    trendPct: nil
+                    trendPct: nil,
+                    compact: isCompact
                 )
             }
             HStack(spacing: 10) {
@@ -83,16 +96,36 @@ struct SummaryReportView: View {
                     label: "AVG STEPS / DAY",
                     value: formatNumber(Double(report.avgSteps)),
                     accent: reportStepsColor,
-                    trendPct: report.stepTrendPct
+                    trendPct: report.stepTrendPct,
+                    compact: isCompact
                 )
                 MetricTile(
                     label: "TOTAL STEPS",
                     value: formatNumber(Double(report.totalSteps)),
                     accent: reportStepsColor,
-                    trendPct: nil
+                    trendPct: nil,
+                    compact: isCompact
                 )
             }
-            if report.calorieGoal != nil || report.stepGoal != nil {
+            if hasNetData, let avgNet = report.avgNetDeficit, let totalNet = report.totalNetDeficit {
+                HStack(spacing: 10) {
+                    MetricTile(
+                        label: "AVG NET DEFICIT",
+                        value: formatSignedNumber(avgNet),
+                        accent: netColor(for: avgNet),
+                        trendPct: nil,
+                        compact: isCompact
+                    )
+                    MetricTile(
+                        label: "TOTAL NET DEFICIT",
+                        value: formatSignedNumber(totalNet),
+                        accent: netColor(for: totalNet),
+                        trendPct: nil,
+                        compact: isCompact
+                    )
+                }
+            }
+            if hasGoalsRow {
                 HStack(spacing: 10) {
                     if let goal = report.calorieGoal {
                         MetricTile(
@@ -100,7 +133,8 @@ struct SummaryReportView: View {
                             value: "\(report.calorieGoalHitDays) days",
                             sub: "Goal: \(formatNumber(goal))",
                             accent: reportCalorieColor,
-                            trendPct: nil
+                            trendPct: nil,
+                            compact: isCompact
                         )
                     }
                     if let goal = report.stepGoal {
@@ -109,7 +143,8 @@ struct SummaryReportView: View {
                             value: "\(report.stepGoalHitDays) days",
                             sub: "Goal: \(formatNumber(Double(goal)))",
                             accent: reportStepsColor,
-                            trendPct: nil
+                            trendPct: nil,
+                            compact: isCompact
                         )
                     }
                 }
@@ -118,7 +153,7 @@ struct SummaryReportView: View {
     }
 
     private var caloriesChart: some View {
-        ReportChartCard(title: "Total Calories", color: reportCalorieColor) {
+        ReportChartCard(title: "Total Calories", color: reportCalorieColor, compact: isCompact) {
             Chart(report.days) { day in
                 BarMark(
                     x: .value("Date", day.date, unit: .day),
@@ -129,12 +164,12 @@ struct SummaryReportView: View {
             }
             .chartXAxis { axisMarks }
             .chartYAxis { yAxisMarks }
-            .frame(height: 130)
+            .frame(height: chartHeight)
         }
     }
 
     private var stepsChart: some View {
-        ReportChartCard(title: "Steps", color: reportStepsColor) {
+        ReportChartCard(title: "Steps", color: reportStepsColor, compact: isCompact) {
             Chart(report.days) { day in
                 BarMark(
                     x: .value("Date", day.date, unit: .day),
@@ -145,7 +180,7 @@ struct SummaryReportView: View {
             }
             .chartXAxis { axisMarks }
             .chartYAxis { yAxisMarks }
-            .frame(height: 130)
+            .frame(height: chartHeight)
         }
     }
 
@@ -176,13 +211,14 @@ struct SummaryReportView: View {
     }
 
     private var highlightsRow: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 8) {
             if let peak = report.peakCalorieDay {
                 HighlightTile(
                     label: "BIGGEST BURN",
                     value: formatNumber(peak.totalCalories) + " cal",
                     date: peak.date,
-                    accent: reportCalorieColor
+                    accent: reportCalorieColor,
+                    compact: isCompact
                 )
             }
             if let peak = report.peakStepDay {
@@ -190,7 +226,17 @@ struct SummaryReportView: View {
                     label: "MOST STEPS",
                     value: formatNumber(Double(peak.steps)),
                     date: peak.date,
-                    accent: reportStepsColor
+                    accent: reportStepsColor,
+                    compact: isCompact
+                )
+            }
+            if let best = report.bestNetDay, let net = best.netDeficit {
+                HighlightTile(
+                    label: "BEST DEFICIT",
+                    value: formatSignedNumber(net),
+                    date: best.date,
+                    accent: netColor(for: net),
+                    compact: isCompact
                 )
             }
             HighlightTile(
@@ -198,7 +244,8 @@ struct SummaryReportView: View {
                 value: "\(report.activeDayCount)",
                 date: nil,
                 sub: "of \(report.days.count) tracked",
-                accent: .black
+                accent: .black,
+                compact: isCompact
             )
         }
     }
@@ -231,6 +278,15 @@ struct SummaryReportView: View {
         value.formatted(.number.precision(.fractionLength(0)))
     }
 
+    private func formatSignedNumber(_ value: Double) -> String {
+        let r = Int(value.rounded())
+        return r > 0 ? "+\(r.formatted(.number))" : r.formatted(.number)
+    }
+
+    private func netColor(for value: Double) -> Color {
+        value >= 0 ? Color(red: 0.20, green: 0.68, blue: 0.45) : Color(red: 0.85, green: 0.42, blue: 0.40)
+    }
+
     private var reportCalorieColor: Color { Color(red: 1.0, green: 0.42, blue: 0.42) }
     private var reportStepsColor: Color { Color(red: 0.0, green: 0.69, blue: 0.55) }
 }
@@ -243,12 +299,13 @@ private struct MetricTile: View {
     var sub: String? = nil
     let accent: Color
     let trendPct: Double?
+    var compact: Bool = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: compact ? 2 : 4) {
             HStack {
                 Text(label)
-                    .font(.system(size: 9, weight: .semibold, design: .rounded))
+                    .font(.system(size: compact ? 8 : 9, weight: .semibold, design: .rounded))
                     .foregroundStyle(.gray)
                     .tracking(0.6)
                 Spacer()
@@ -257,16 +314,18 @@ private struct MetricTile: View {
                 }
             }
             Text(value)
-                .font(.system(size: 22, weight: .bold, design: .rounded).monospacedDigit())
+                .font(.system(size: compact ? 18 : 22, weight: .bold, design: .rounded).monospacedDigit())
                 .foregroundStyle(accent)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
             if let sub {
                 Text(sub)
-                    .font(.system(size: 9, design: .rounded))
+                    .font(.system(size: compact ? 8 : 9, design: .rounded))
                     .foregroundStyle(.gray)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(12)
+        .padding(compact ? 9 : 12)
         .background(Color(white: 0.97), in: RoundedRectangle(cornerRadius: 10))
     }
 }
@@ -293,19 +352,20 @@ private struct TrendBadge: View {
 private struct ReportChartCard<Content: View>: View {
     let title: String
     let color: Color
+    var compact: Bool = false
     @ViewBuilder let content: Content
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: compact ? 6 : 8) {
             HStack(spacing: 6) {
                 Circle().fill(color).frame(width: 8, height: 8)
                 Text(title)
-                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                    .font(.system(size: compact ? 11 : 12, weight: .semibold, design: .rounded))
                     .foregroundStyle(.black)
             }
             content
         }
-        .padding(12)
+        .padding(compact ? 9 : 12)
         .background(Color(white: 0.97), in: RoundedRectangle(cornerRadius: 10))
     }
 }
@@ -316,6 +376,7 @@ private struct HighlightTile: View {
     let date: Date?
     var sub: String? = nil
     let accent: Color
+    var compact: Bool = false
 
     private static let dateFmt: DateFormatter = {
         let f = DateFormatter()
@@ -324,26 +385,30 @@ private struct HighlightTile: View {
     }()
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: compact ? 2 : 4) {
             Text(label)
-                .font(.system(size: 9, weight: .semibold, design: .rounded))
+                .font(.system(size: compact ? 8 : 9, weight: .semibold, design: .rounded))
                 .foregroundStyle(.gray)
                 .tracking(0.6)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
             Text(value)
-                .font(.system(size: 16, weight: .bold, design: .rounded))
+                .font(.system(size: compact ? 13 : 16, weight: .bold, design: .rounded))
                 .foregroundStyle(accent)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
             if let date {
                 Text(Self.dateFmt.string(from: date))
-                    .font(.system(size: 9, design: .rounded))
+                    .font(.system(size: compact ? 8 : 9, design: .rounded))
                     .foregroundStyle(.gray)
             } else if let sub {
                 Text(sub)
-                    .font(.system(size: 9, design: .rounded))
+                    .font(.system(size: compact ? 8 : 9, design: .rounded))
                     .foregroundStyle(.gray)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(10)
+        .padding(compact ? 8 : 10)
         .background(Color(white: 0.97), in: RoundedRectangle(cornerRadius: 10))
     }
 }
