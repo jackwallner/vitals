@@ -2,6 +2,12 @@ import SwiftUI
 import Charts
 import UniformTypeIdentifiers
 
+extension Notification.Name {
+    /// Posted when the History tab finishes a successful data load. Drives the
+    /// second-touch Vitals+ trial nudge in MainTabView.
+    static let vitalsHistoryDidFinishLoading = Notification.Name("vitalsHistoryDidFinishLoading")
+}
+
 @MainActor
 private enum HistoryPrefs {
     private static let defaults = UserDefaults(suiteName: vitalsAppGroupID) ?? .standard
@@ -1194,6 +1200,12 @@ struct HistoryView: View {
             // shows an empty state and the report skips trend pills.
             await loadPreviousWindow(history: history)
             guard token == loadToken else { return }
+
+            // History has fully loaded. This drives the second-touch Vitals+
+            // trial nudge in MainTabView — posting on every successful load is
+            // fine because the one-shot / not-Pro / second-touch gating all
+            // lives in the observer.
+            NotificationCenter.default.post(name: .vitalsHistoryDidFinishLoading, object: nil)
         } catch {
             guard token == loadToken else { return }
             print("Failed to fetch history: \(error)")

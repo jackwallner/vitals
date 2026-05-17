@@ -180,6 +180,18 @@ struct MainTabView: View {
     @State private var historyHasAppeared = false
     @State private var showTrialOffer = false
     @State private var showTrialPaywall = false
+    /// Which trigger opened the current trial offer, so dismissal records the
+    /// right one-shot flag.
+    @State private var trialOfferSource: TrialOfferSource = .launch
+    /// True once the launch (1.5s) offer has been shown in *this* app session.
+    /// Gates the history-load offer so the two never fire back-to-back — the
+    /// history offer is strictly a later-session second touch.
+    @State private var launchOfferShownThisSession = false
+
+    private enum TrialOfferSource {
+        case launch
+        case historyLoad
+    }
 
     init() {
         if ScreenshotConfig.wantsHistoryTab {
@@ -213,8 +225,38 @@ struct MainTabView: View {
             try? await Task.sleep(nanoseconds: 1_500_000_000)
             guard !showTrialOffer, !showTrialPaywall else { return }
             if !goals.hasSeenTrialOffer && !store.isPro {
+                trialOfferSource = .launch
+                launchOfferShownThisSession = true
                 showTrialOffer = true
             }
+        }
+    }
+
+    /// Second-touch trial nudge: fires the first time the History tab finishes
+    /// loading. Deliberately requires the launch offer to have already been
+    /// shown in a *prior* session (`hasSeenTrialOffer`) and not in *this*
+    /// session (`launchOfferShownThisSession`) so the user is never pitched
+    /// twice in one run.
+    private func evaluateHistoryTrialOffer() {
+        guard goals.hasCompletedSetup,
+              !store.isPro,
+              goals.hasSeenTrialOffer,
+              !goals.hasSeenHistoryTrialOffer,
+              !launchOfferShownThisSession,
+              hasTrialOffer,
+              selectedTab == 1,
+              !showTrialOffer,
+              !showTrialPaywall
+        else { return }
+        trialOfferSource = .historyLoad
+        showTrialOffer = true
+    }
+
+    /// Records the one-shot flag for whichever trigger opened the offer.
+    private func markTrialOfferSeen() {
+        goals.hasSeenTrialOffer = true
+        if trialOfferSource == .historyLoad {
+            goals.hasSeenHistoryTrialOffer = true
         }
     }
 
@@ -303,18 +345,21 @@ struct MainTabView: View {
         .onChange(of: store.isPro) { _, isPro in
             if isPro { showTrialOffer = false }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .vitalsHistoryDidFinishLoading)) { _ in
+            evaluateHistoryTrialOffer()
+        }
         .sheet(isPresented: $showTrialOffer, onDismiss: {
-            goals.hasSeenTrialOffer = true
+            markTrialOfferSeen()
         }) {
             TrialOfferSheet(
                 offerLabel: store.products.compactMap(\.vitalsIntroOfferLabel).first,
                 onTry: {
-                    goals.hasSeenTrialOffer = true
+                    markTrialOfferSeen()
                     showTrialOffer = false
                     showTrialPaywall = true
                 },
                 onDismiss: {
-                    goals.hasSeenTrialOffer = true
+                    markTrialOfferSeen()
                     showTrialOffer = false
                 }
             )
