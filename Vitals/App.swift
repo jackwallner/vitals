@@ -386,6 +386,14 @@ struct MainTabView: View {
             evaluateTrialOffer()
         }
         .onChange(of: store.products.count) { _, _ in evaluateTrialOffer() }
+        // First-launch users complete onboarding *after* the .task /
+        // products-loaded evaluations have already bailed on
+        // `hasCompletedSetup == false`. Without this, the launch offer (and
+        // therefore the history second-touch it gates) never fires until the
+        // 2nd app launch. Re-evaluate the moment onboarding finishes.
+        .onChange(of: goals.hasCompletedSetup) { _, done in
+            if done { evaluateTrialOffer() }
+        }
         .onChange(of: store.isPro) { _, isPro in
             if isPro { showTrialOffer = false }
         }
