@@ -1074,6 +1074,7 @@ private struct OnboardingSheet: View {
     @ObservedObject var goals: GoalSettings
     @Environment(\.dismiss) private var dismiss
 
+    @State private var step = 0
     @State private var wantCalGoal = true
     @State private var calText = "2500"
     @State private var wantStepGoal = true
@@ -1089,42 +1090,128 @@ private struct OnboardingSheet: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 32) {
-                VStack(spacing: 8) {
-                    Image(systemName: "heart.fill")
-                        .font(.system(size: 48))
-                        .foregroundStyle(Theme.caloriesPrimary)
-                    Text("Welcome to Total Calories")
-                        .font(.system(.largeTitle, design: .rounded, weight: .bold))
-                    Text("Set up daily goals, or turn both off to use Total Calories as a simple counter.")
-                        .font(.system(.subheadline, design: .rounded))
-                        .foregroundStyle(Theme.textSecondary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 24)
+            VStack(spacing: 0) {
+                ScrollView {
+                    Group {
+                        if step == 0 {
+                            introPage
+                                .transition(.asymmetric(
+                                    insertion: .move(edge: .leading),
+                                    removal: .move(edge: .leading)
+                                ))
+                        } else {
+                            goalsPage
+                                .transition(.move(edge: .trailing))
+                        }
+                    }
+                    .padding(.top, 48)
+                    .padding(.bottom, 24)
                 }
 
-                VStack(spacing: 16) {
-                    GoalRow(
-                        icon: "flame.fill",
-                        color: Theme.caloriesPrimary,
-                        title: "Calorie Goal",
-                        enabled: $wantCalGoal,
-                        text: $calText,
-                        isValid: calValid
-                    )
-                    GoalRow(
-                        icon: "figure.walk",
-                        color: Theme.stepsPrimary,
-                        title: "Step Goal",
-                        enabled: $wantStepGoal,
-                        text: $stepText,
-                        isValid: stepValid
-                    )
+                bottomBar
+            }
+            .animation(.easeInOut(duration: 0.25), value: step)
+        }
+    }
+
+    // MARK: Page 1 — welcome + feature preview
+
+    private var introPage: some View {
+        VStack(spacing: 28) {
+            VStack(spacing: 8) {
+                Image(systemName: "heart.fill")
+                    .font(.system(size: 48))
+                    .foregroundStyle(Theme.caloriesPrimary)
+                Text("Welcome to Total Calories")
+                    .font(.system(.largeTitle, design: .rounded, weight: .bold))
+                    .multilineTextAlignment(.center)
+                Text("Total calories and steps, tracked automatically from Apple Health.")
+                    .font(.system(.subheadline, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
+            }
+
+            VStack(spacing: 16) {
+                FeatureTier(
+                    title: "Included with Health access",
+                    tint: Theme.stepsPrimary,
+                    symbol: "checkmark.circle.fill",
+                    features: [
+                        "Total calories & steps, tracked live",
+                        "Apple Watch app + watch face complications",
+                        "Full history & trends"
+                    ]
+                )
+                FeatureTier(
+                    title: "Free trial of Vitals+",
+                    tint: Theme.netDeficitBrand,
+                    symbol: "sparkles",
+                    features: [
+                        "Net calories — import Apple Health food intake for a true deficit",
+                        "Deep trends in History",
+                        "Custom data filtering in History",
+                        "Auto-generated summaries"
+                    ]
+                )
+            }
+            .padding(.horizontal, 24)
+        }
+    }
+
+    // MARK: Page 2 — goal setup
+
+    private var goalsPage: some View {
+        VStack(spacing: 28) {
+            VStack(spacing: 8) {
+                Image(systemName: "target")
+                    .font(.system(size: 48))
+                    .foregroundStyle(Theme.caloriesPrimary)
+                Text("Set your daily goals")
+                    .font(.system(.largeTitle, design: .rounded, weight: .bold))
+                    .multilineTextAlignment(.center)
+                Text("Or turn both off to use Total Calories as a simple counter.")
+                    .font(.system(.subheadline, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
+            }
+
+            VStack(spacing: 16) {
+                GoalRow(
+                    icon: "flame.fill",
+                    color: Theme.caloriesPrimary,
+                    title: "Calorie Goal",
+                    enabled: $wantCalGoal,
+                    text: $calText,
+                    isValid: calValid
+                )
+                GoalRow(
+                    icon: "figure.walk",
+                    color: Theme.stepsPrimary,
+                    title: "Step Goal",
+                    enabled: $wantStepGoal,
+                    text: $stepText,
+                    isValid: stepValid
+                )
+            }
+            .padding(.horizontal, 24)
+        }
+    }
+
+    // MARK: Bottom bar
+
+    @ViewBuilder
+    private var bottomBar: some View {
+        VStack(spacing: 12) {
+            if step == 0 {
+                Button {
+                    step = 1
+                } label: {
+                    primaryLabel("Continue")
                 }
                 .padding(.horizontal, 24)
-
-                Spacer()
-
+            } else {
                 Button {
                     if wantCalGoal, let cal = Double(calText), (500...50000).contains(cal) {
                         goals.calorieGoal = cal
@@ -1149,20 +1236,64 @@ private struct OnboardingSheet: View {
                         dismiss()
                     }
                 } label: {
-                    Text("Get Started")
-                        .font(.system(.headline, design: .rounded))
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(Theme.caloriesPrimary, in: RoundedRectangle(cornerRadius: 14))
-                        .foregroundStyle(.white)
+                    primaryLabel("Get Started")
                 }
                 .disabled(!calValid || !stepValid)
                 .opacity(calValid && stepValid ? 1 : 0.5)
                 .padding(.horizontal, 24)
-                .padding(.bottom, 24)
+
+                Button("Back") {
+                    step = 0
+                }
+                .font(.system(.subheadline, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
             }
-            .padding(.top, 48)
         }
+        .padding(.top, 12)
+        .padding(.bottom, 24)
+        .background(Theme.background)
+    }
+
+    private func primaryLabel(_ title: String) -> some View {
+        Text(title)
+            .font(.system(.headline, design: .rounded))
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+            .background(Theme.caloriesPrimary, in: RoundedRectangle(cornerRadius: 14))
+            .foregroundStyle(.white)
+    }
+}
+
+private struct FeatureTier: View {
+    let title: String
+    let tint: Color
+    let symbol: String
+    let features: [String]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(title)
+                .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                .foregroundStyle(tint)
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach(features, id: \.self) { feature in
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: symbol)
+                            .font(.system(size: 15))
+                            .foregroundStyle(tint)
+                            .frame(width: 20)
+                        Text(feature)
+                            .font(.system(.subheadline, design: .rounded))
+                            .foregroundStyle(Theme.textPrimary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Spacer(minLength: 0)
+                    }
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .background(Theme.cardSurface.opacity(0.5), in: RoundedRectangle(cornerRadius: 14))
     }
 }
 
