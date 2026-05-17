@@ -150,6 +150,14 @@ final class GoalSettings: ObservableObject {
         didSet { defaults.set(hasSeenTrialOffer, forKey: "hasSeenTrialOffer") }
     }
 
+    /// True after the user has seen the second-touch Vitals+ trial offer that
+    /// fires the first time history finishes loading. This is a deliberate
+    /// later-session re-engagement nudge — it only fires after the launch offer
+    /// has already been shown in a prior session, never back-to-back with it.
+    @Published var hasSeenHistoryTrialOffer: Bool {
+        didSet { defaults.set(hasSeenHistoryTrialOffer, forKey: "hasSeenHistoryTrialOffer") }
+    }
+
     @Published var appearance: AppAppearance {
         didSet { defaults.set(appearance.rawValue, forKey: "appearance") }
     }
@@ -227,6 +235,7 @@ final class GoalSettings: ObservableObject {
 
         self.hasCompletedSetup = defaults.bool(forKey: "hasCompletedSetup")
         self.hasSeenTrialOffer = defaults.bool(forKey: "hasSeenTrialOffer")
+        self.hasSeenHistoryTrialOffer = defaults.bool(forKey: "hasSeenHistoryTrialOffer")
         self.appearance = AppAppearance(rawValue: defaults.integer(forKey: "appearance")) ?? .system
         self.showPacing = defaults.object(forKey: "showPacing") as? Bool ?? true
         if let raw = defaults.object(forKey: "pacingComparison") as? Int,
