@@ -31,3 +31,9 @@ headaches/
 *.swp
 *~
 xcuserdata/
+
+# Local scratch / audit notes (not for the repo)
+fix*.md
+gfix*.md
+_screenshots_project/
+paywall_screenshot.png
