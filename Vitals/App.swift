@@ -220,9 +220,11 @@ struct MainTabView: View {
               hasTrialOffer,
               selectedTab == 0
         else { return }
-        // Defer slightly so it doesn't collide with the dashboard's first-paint animations.
+        // Defer ~5s so the user sees their dashboard (ring, counters) populate
+        // before the pitch — a cold pitch at first paint converts worse and
+        // collides with the dashboard's first-paint animations.
         Task { @MainActor in
-            try? await Task.sleep(nanoseconds: 1_500_000_000)
+            try? await Task.sleep(nanoseconds: 5_000_000_000)
             guard !showTrialOffer, !showTrialPaywall else { return }
             if !goals.hasSeenTrialOffer && !store.isPro {
                 trialOfferSource = .launch
