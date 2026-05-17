@@ -896,9 +896,45 @@ private struct TrialOfferSheet: View {
     let onDismiss: () -> Void
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var animateGlow = false
+    @State private var shimmerPhase: CGFloat = -1
 
-    private var trialLengthText: String {
-        offerLabel.map { "Start your \($0)" } ?? "Try Vitals+ free if eligible"
+    /// Headline copy. Falls back to a generic title when StoreKit hasn't loaded a
+    /// trial-bearing product yet, but in practice `directTrialPackage` gates the
+    /// pitch so `offerLabel` is almost always present.
+    private var headline: String {
+        if let offerLabel {
+            return "\(offerLabel.capitalized), on us."
+        }
+        return "Try Vitals+ free."
+    }
+
+    private var subheadline: String {
+        offerLabel != nil
+            ? "Unlock the full Vitals+ toolkit free. No charge until your trial ends."
+            : "Unlock the full Vitals+ toolkit free for eligible new subscribers."
+    }
+
+    private var trialBullets: [TrialBullet] {
+        [
+            TrialBullet(
+                icon: "plus.forwardslash.minus",
+                tint: Theme.netDeficitBrand,
+                title: "Net Deficit, live",
+                detail: "Calories burned minus food logged in Apple Health, updated all day."
+            ),
+            TrialBullet(
+                icon: "chart.line.uptrend.xyaxis",
+                tint: Theme.stepsPrimary,
+                title: "Deep Trends",
+                detail: "Every period compared head-to-head with the one before it."
+            ),
+            TrialBullet(
+                icon: "calendar.badge.clock",
+                tint: Theme.stepsSecondary,
+                title: "Custom date ranges + PDF reports",
+                detail: "Pick any window in History, export a clean summary for your coach."
+            )
+        ]
     }
 
     var body: some View {
@@ -914,46 +950,66 @@ private struct TrialOfferSheet: View {
                 .frame(width: 180, height: 180)
                 .blur(radius: 34)
                 .offset(x: animateGlow ? -110 : 110, y: animateGlow ? 250 : 210)
+            // Light "shine" particles drifting behind the hero. Suppressed when
+            // Reduce Motion is on so we stay accessibility-compliant.
+            if !reduceMotion {
+                SparkleField(phase: animateGlow ? 1 : 0)
+                    .allowsHitTesting(false)
+                    .opacity(0.55)
+            }
 
             VStack(spacing: 18) {
                 ZStack {
                     Circle()
                         .fill(Theme.stepsGradient)
-                        .frame(width: 72, height: 72)
-                        .shadow(color: Theme.stepsPrimary.opacity(0.35), radius: 14, x: 0, y: 6)
+                        .frame(width: 76, height: 76)
+                        .shadow(color: Theme.stepsPrimary.opacity(0.4), radius: 16, x: 0, y: 6)
                         .scaleEffect(animateGlow ? 1.07 : 0.96)
+                    // Subtle inner shine ring.
+                    Circle()
+                        .stroke(.white.opacity(0.35), lineWidth: 1)
+                        .frame(width: 64, height: 64)
+                        .scaleEffect(animateGlow ? 1.04 : 0.98)
                     Image(systemName: "sparkles")
-                        .font(.system(size: 32, weight: .bold))
+                        .font(.system(size: 30, weight: .bold))
                         .foregroundStyle(.white)
-                        .rotationEffect(.degrees(animateGlow ? 8 : -8))
+                        .rotationEffect(.degrees(animateGlow ? 6 : -6))
                 }
                 .padding(.top, 18)
 
-                VStack(spacing: 8) {
-                    Text(trialLengthText)
-                        .font(.system(.title2, design: .rounded, weight: .bold))
+                VStack(spacing: 6) {
+                    Text(headline)
+                        .font(.system(.title, design: .rounded, weight: .bold))
                         .foregroundStyle(Theme.textPrimary)
                         .multilineTextAlignment(.center)
-                    Text("Unlock Net Deficit — calories burned minus Apple Health food calories — plus custom History ranges, Deep Trends, and PDF summaries. Free trial available for eligible new subscribers; cancel anytime in Settings.")
+                        .overlay(shimmerOverlay)
+                        .mask(
+                            Text(headline)
+                                .font(.system(.title, design: .rounded, weight: .bold))
+                                .multilineTextAlignment(.center)
+                        )
+                    Text(subheadline)
                         .font(.system(.subheadline, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
-                        .padding(.horizontal, 8)
+                        .padding(.horizontal, 12)
                 }
 
-                HStack(spacing: 8) {
-                    TrialFeatureChip(title: "History", icon: "calendar", tint: Theme.stepsPrimary)
-                    TrialFeatureChip(title: "Trends", icon: "chart.line.uptrend.xyaxis", tint: Theme.stepsSecondary)
-                    TrialFeatureChip(title: "PDF", icon: "doc.richtext", tint: Theme.stepsPrimary)
-                    TrialFeatureChip(title: "Net", icon: "plus.forwardslash.minus", tint: Theme.stepsSecondary)
+                VStack(spacing: 10) {
+                    ForEach(trialBullets) { bullet in
+                        TrialBulletRow(bullet: bullet)
+                    }
                 }
+                .padding(.horizontal, 4)
 
                 if directPurchase, let priceLabel {
-                    Text("Then \(priceLabel). Auto-renews unless cancelled.")
+                    Text("Free during your trial, then \(priceLabel). Auto-renews unless cancelled at least 24 hours before the trial ends.")
                         .font(.system(.footnote, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
                         .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.horizontal, 4)
                 }
 
                 if let errorMessage {
@@ -1026,34 +1082,134 @@ private struct TrialOfferSheet: View {
             withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) {
                 animateGlow = true
             }
+            // Independent timing from the hero glow so the two motions don't
+            // sync up into a single pulse — keeps the surface feeling alive.
+            withAnimation(.linear(duration: 2.6).repeatForever(autoreverses: false).delay(0.4)) {
+                shimmerPhase = 1.4
+            }
+        }
+    }
+
+    /// A diagonal moving highlight masked to the headline. Kept extremely subtle
+    /// (white at 0.55 alpha at the peak) so it reads as "premium" rather than
+    /// "loading skeleton".
+    private var shimmerOverlay: some View {
+        GeometryReader { proxy in
+            let width = proxy.size.width
+            LinearGradient(
+                stops: [
+                    .init(color: .clear, location: 0.0),
+                    .init(color: .white.opacity(0.55), location: 0.5),
+                    .init(color: .clear, location: 1.0)
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(width: width * 0.5)
+            .offset(x: shimmerPhase * width)
+            .blendMode(.plusLighter)
+            .allowsHitTesting(false)
         }
     }
 }
 
-private struct TrialFeatureChip: View {
-    let title: String
+private struct TrialBullet: Identifiable {
+    let id = UUID()
     let icon: String
     let tint: Color
+    let title: String
+    let detail: String
+}
+
+private struct TrialBulletRow: View {
+    let bullet: TrialBullet
 
     var body: some View {
-        HStack(spacing: 5) {
-            Image(systemName: icon)
-                .font(.system(size: 10, weight: .semibold))
-            Text(title)
-                .font(.system(size: 11, weight: .bold, design: .rounded))
+        HStack(alignment: .top, spacing: 12) {
+            ZStack {
+                Circle()
+                    .fill(bullet.tint.opacity(0.18))
+                    .frame(width: 34, height: 34)
+                Image(systemName: bullet.icon)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(bullet.tint)
+            }
+            VStack(alignment: .leading, spacing: 2) {
+                Text(bullet.title)
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textPrimary)
+                Text(bullet.detail)
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
         }
-        .foregroundStyle(tint)
-        .padding(.horizontal, 9)
-        .padding(.vertical, 7)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
         .background {
-            Capsule()
-                .fill(tint.opacity(0.14))
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Theme.cardSurface.opacity(0.55))
         }
         .overlay {
-            Capsule()
-                .stroke(tint.opacity(0.28), lineWidth: 1)
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(bullet.tint.opacity(0.18), lineWidth: 1)
         }
-        .shadow(color: tint.opacity(0.14), radius: 8, x: 0, y: 4)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(bullet.title). \(bullet.detail)")
+    }
+}
+
+/// Lightweight ambient "shine" — a handful of tiny dots that drift + pulse
+/// behind the hero icon. Driven by `phase` (0…1) so the parent owns the
+/// animation lifecycle.
+private struct SparkleField: View {
+    let phase: CGFloat
+
+    private struct Sparkle: Identifiable {
+        let id: Int
+        let x: CGFloat
+        let y: CGFloat
+        let size: CGFloat
+        let driftX: CGFloat
+        let driftY: CGFloat
+        let opacity: Double
+        let phaseOffset: CGFloat
+    }
+
+    private static let sparkles: [Sparkle] = (0..<14).map { i in
+        // Deterministic pseudo-random so layout doesn't jitter on re-render.
+        let seed = Double(i) * 12.9898
+        let r1 = (sin(seed) * 43758.5453).truncatingRemainder(dividingBy: 1)
+        let r2 = (sin(seed + 1) * 43758.5453).truncatingRemainder(dividingBy: 1)
+        let r3 = (sin(seed + 2) * 43758.5453).truncatingRemainder(dividingBy: 1)
+        let r4 = (sin(seed + 3) * 43758.5453).truncatingRemainder(dividingBy: 1)
+        return Sparkle(
+            id: i,
+            x: CGFloat(abs(r1)) * 320 - 160,
+            y: CGFloat(abs(r2)) * 460 - 230,
+            size: 2 + CGFloat(abs(r3)) * 3,
+            driftX: CGFloat(r4) * 12,
+            driftY: CGFloat(r3 - 0.5) * 18,
+            opacity: 0.35 + abs(r2) * 0.5,
+            phaseOffset: CGFloat(abs(r1))
+        )
+    }
+
+    var body: some View {
+        ZStack {
+            ForEach(Self.sparkles) { sparkle in
+                Circle()
+                    .fill(.white)
+                    .frame(width: sparkle.size, height: sparkle.size)
+                    .opacity(sparkle.opacity * (0.4 + 0.6 * Double(abs(sin(.pi * (phase + sparkle.phaseOffset))))))
+                    .offset(x: sparkle.x + sparkle.driftX * phase,
+                            y: sparkle.y + sparkle.driftY * phase)
+                    .blur(radius: 0.4)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
