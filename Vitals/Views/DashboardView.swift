@@ -1081,6 +1081,7 @@ private struct OnboardingSheet: View {
     @State private var wantStepGoal = true
     @State private var stepText = "10000"
     @State private var animateIntroGlow = false
+    @State private var hasRequestedHealthAccess = false
 
     private var calValid: Bool {
         !wantCalGoal || (Double(calText).map { (500...50000).contains($0) } ?? false)
@@ -1144,7 +1145,7 @@ private struct OnboardingSheet: View {
                     ]
                 )
                 FeatureTier(
-                    title: "Free trial of Vitals+",
+                    title: "Try Vitals+ free if eligible",
                     tint: Theme.netDeficitBrand,
                     symbol: "sparkles",
                     features: [
@@ -1235,6 +1236,15 @@ private struct OnboardingSheet: View {
             if step == 0 {
                 Button {
                     step = 1
+                    guard !hasRequestedHealthAccess else { return }
+                    hasRequestedHealthAccess = true
+                    Task {
+                        do {
+                            try await HealthKitService.shared.requestAuthorization()
+                        } catch {
+                            dashboardLogger.error("Onboarding HealthKit auth failed: \(String(describing: error), privacy: .public)")
+                        }
+                    }
                 } label: {
                     primaryLabel("Continue")
                 }
@@ -1252,17 +1262,7 @@ private struct OnboardingSheet: View {
                         goals.stepGoal = nil
                     }
                     goals.hasCompletedSetup = true
-                    // Request HealthKit access now so the system sheet appears
-                    // while the user is still in the onboarding flow, instead of
-                    // surprising them after the dashboard has already rendered.
-                    Task {
-                        do {
-                            try await HealthKitService.shared.requestAuthorization()
-                        } catch {
-                            dashboardLogger.error("Onboarding HealthKit auth failed: \(String(describing: error), privacy: .public)")
-                        }
-                        dismiss()
-                    }
+                    dismiss()
                 } label: {
                     primaryLabel("Get Started")
                 }

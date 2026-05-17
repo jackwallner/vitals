@@ -225,16 +225,16 @@ struct MainTabView: View {
         return trialPackages.first { $0.vitalsPackageKind == .yearly } ?? trialPackages.first
     }
 
-    /// Hybrid one-tap purchase applies only to the launch offer and only when a
-    /// trial product is actually loaded; otherwise fall back to the hosted paywall.
+    /// Hybrid one-tap purchase applies when a trial product is actually loaded;
+    /// otherwise fall back to the hosted paywall.
     private var trialOfferIsDirect: Bool {
         trialOfferUsesDirectPurchase
     }
 
     private func presentTrialOffer(source: TrialOfferSource) {
         trialOfferSource = source
-        trialOfferPackage = source == .launch ? directTrialPackage : nil
-        trialOfferUsesDirectPurchase = source == .launch && trialOfferPackage != nil
+        trialOfferPackage = directTrialPackage
+        trialOfferUsesDirectPurchase = trialOfferPackage != nil
         trialOfferDetent = .fraction(0.85)
         showTrialOffer = true
     }
@@ -887,7 +887,7 @@ private struct TrialOfferSheet: View {
     let priceLabel: String?
     /// When true the primary button buys the trial product directly via StoreKit
     /// and the sheet shows compliant billing disclosure + a "See all plans" link.
-    /// When false it opens the RevenueCat-hosted paywall (the second-touch path).
+    /// When false it opens the RevenueCat-hosted paywall fallback.
     let directPurchase: Bool
     let isPurchasing: Bool
     let errorMessage: String?
@@ -898,19 +898,19 @@ private struct TrialOfferSheet: View {
     @State private var animateGlow = false
 
     private var trialLengthText: String {
-        offerLabel.map { "Try Vitals+ free for \($0.replacingOccurrences(of: " free trial", with: ""))" } ?? "Try Vitals+ free"
+        offerLabel.map { "Start your \($0)" } ?? "Try Vitals+ free if eligible"
     }
 
     var body: some View {
         ZStack {
             Theme.background.ignoresSafeArea()
             Circle()
-                .fill(Theme.caloriesPrimary.opacity(0.18))
+                .fill(Theme.stepsPrimary.opacity(0.2))
                 .frame(width: 220, height: 220)
                 .blur(radius: 36)
                 .offset(x: animateGlow ? 96 : -96, y: animateGlow ? -220 : -180)
             Circle()
-                .fill(Theme.netDeficitBrand.opacity(0.16))
+                .fill(Theme.stepsSecondary.opacity(0.18))
                 .frame(width: 180, height: 180)
                 .blur(radius: 34)
                 .offset(x: animateGlow ? -110 : 110, y: animateGlow ? 250 : 210)
@@ -918,9 +918,9 @@ private struct TrialOfferSheet: View {
             VStack(spacing: 18) {
                 ZStack {
                     Circle()
-                        .fill(Theme.caloriesGradient)
+                        .fill(Theme.stepsGradient)
                         .frame(width: 72, height: 72)
-                        .shadow(color: Theme.caloriesPrimary.opacity(0.35), radius: 14, x: 0, y: 6)
+                        .shadow(color: Theme.stepsPrimary.opacity(0.35), radius: 14, x: 0, y: 6)
                         .scaleEffect(animateGlow ? 1.07 : 0.96)
                     Image(systemName: "sparkles")
                         .font(.system(size: 32, weight: .bold))
@@ -934,7 +934,7 @@ private struct TrialOfferSheet: View {
                         .font(.system(.title2, design: .rounded, weight: .bold))
                         .foregroundStyle(Theme.textPrimary)
                         .multilineTextAlignment(.center)
-                    Text("Unlock custom History ranges, PDF summary reports, Deep Trends, Net Deficit, and active/resting calorie breakdown. No charge until your trial ends — cancel anytime in Settings.")
+                    Text("Unlock Net Deficit — calories burned minus Apple Health food calories — plus custom History ranges, Deep Trends, and PDF summaries. Free trial available for eligible new subscribers; cancel anytime in Settings.")
                         .font(.system(.subheadline, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
                         .multilineTextAlignment(.center)
@@ -943,10 +943,10 @@ private struct TrialOfferSheet: View {
                 }
 
                 HStack(spacing: 8) {
-                    TrialFeatureChip(title: "History", icon: "calendar")
-                    TrialFeatureChip(title: "Trends", icon: "chart.line.uptrend.xyaxis")
-                    TrialFeatureChip(title: "PDF", icon: "doc.richtext")
-                    TrialFeatureChip(title: "Net", icon: "plus.forwardslash.minus")
+                    TrialFeatureChip(title: "History", icon: "calendar", tint: Theme.stepsPrimary)
+                    TrialFeatureChip(title: "Trends", icon: "chart.line.uptrend.xyaxis", tint: Theme.stepsSecondary)
+                    TrialFeatureChip(title: "PDF", icon: "doc.richtext", tint: Theme.stepsPrimary)
+                    TrialFeatureChip(title: "Net", icon: "plus.forwardslash.minus", tint: Theme.stepsSecondary)
                 }
 
                 if directPurchase, let priceLabel {
@@ -966,7 +966,7 @@ private struct TrialOfferSheet: View {
                 VStack(spacing: 10) {
                     Button(action: onStartTrial) {
                         ZStack {
-                            Text("Start Free Trial")
+                            Text("Start My Free Trial")
                                 .font(.system(.headline, design: .rounded, weight: .bold))
                                 .foregroundStyle(.white)
                                 .opacity(isPurchasing ? 0 : 1)
@@ -981,6 +981,11 @@ private struct TrialOfferSheet: View {
                     }
                     .buttonStyle(.plain)
                     .disabled(isPurchasing)
+
+                    Text("Apple-managed subscription. Cancel anytime.")
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(Theme.textTertiary)
+                        .multilineTextAlignment(.center)
 
                     if directPurchase {
                         Button(action: onSeeAllPlans) {
@@ -1028,6 +1033,7 @@ private struct TrialOfferSheet: View {
 private struct TrialFeatureChip: View {
     let title: String
     let icon: String
+    let tint: Color
 
     var body: some View {
         HStack(spacing: 5) {
@@ -1036,10 +1042,18 @@ private struct TrialFeatureChip: View {
             Text(title)
                 .font(.system(size: 11, weight: .bold, design: .rounded))
         }
-        .foregroundStyle(Theme.caloriesPrimary)
+        .foregroundStyle(tint)
         .padding(.horizontal, 9)
         .padding(.vertical, 7)
-        .background(Theme.caloriesPrimary.opacity(0.1), in: Capsule())
+        .background {
+            Capsule()
+                .fill(tint.opacity(0.14))
+        }
+        .overlay {
+            Capsule()
+                .stroke(tint.opacity(0.28), lineWidth: 1)
+        }
+        .shadow(color: tint.opacity(0.14), radius: 8, x: 0, y: 4)
     }
 }
 
