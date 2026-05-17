@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 import BackgroundTasks
 import os
+@preconcurrency import RevenueCat
 #if canImport(WatchConnectivity)
 @preconcurrency import WatchConnectivity
 #endif
@@ -187,6 +188,8 @@ struct MainTabView: View {
     /// Gates the history-load offer so the two never fire back-to-back — the
     /// history offer is strictly a later-session second touch.
     @State private var launchOfferShownThisSession = false
+    @State private var trialPurchaseInFlight = false
+    @State private var trialPurchaseError: String?
 
     private enum TrialOfferSource {
         case launch
@@ -205,6 +208,45 @@ struct MainTabView: View {
     /// True when we have a Vitals+ package with a free-trial intro offer available.
     private var hasTrialOffer: Bool {
         store.products.contains { $0.vitalsIntroOfferLabel != nil }
+    }
+
+    /// The package the direct trial purchase buys: prefer the yearly plan that
+    /// carries a free-trial intro offer, else any trial-bearing package.
+    private var directTrialPackage: Package? {
+        let trialPackages = store.products.filter { $0.vitalsIntroOfferLabel != nil }
+        return trialPackages.first { $0.vitalsPackageKind == .yearly } ?? trialPackages.first
+    }
+
+    /// Hybrid one-tap purchase applies only to the launch offer and only when a
+    /// trial product is actually loaded; otherwise fall back to the hosted paywall.
+    private var trialOfferIsDirect: Bool {
+        trialOfferSource == .launch && directTrialPackage != nil
+    }
+
+    private func startDirectTrialPurchase() {
+        guard let package = directTrialPackage else {
+            // No trial product loaded — fall back to the hosted paywall.
+            markTrialOfferSeen()
+            showTrialOffer = false
+            showTrialPaywall = true
+            return
+        }
+        trialPurchaseError = nil
+        trialPurchaseInFlight = true
+        Task { @MainActor in
+            defer { trialPurchaseInFlight = false }
+            do {
+                switch try await store.purchase(package) {
+                case .purchased, .pending:
+                    markTrialOfferSeen()
+                    showTrialOffer = false
+                case .cancelled:
+                    break // keep the sheet open so they can retry or dismiss
+                }
+            } catch {
+                trialPurchaseError = "Couldn't start your trial. Please try again."
+            }
+        }
     }
 
     private func evaluateTrialOffer() {
@@ -352,10 +394,25 @@ struct MainTabView: View {
         }
         .sheet(isPresented: $showTrialOffer, onDismiss: {
             markTrialOfferSeen()
+            trialPurchaseInFlight = false
+            trialPurchaseError = nil
         }) {
             TrialOfferSheet(
                 offerLabel: store.products.compactMap(\.vitalsIntroOfferLabel).first,
-                onTry: {
+                priceLabel: directTrialPackage?.vitalsPriceLabel,
+                directPurchase: trialOfferIsDirect,
+                isPurchasing: trialPurchaseInFlight,
+                errorMessage: trialPurchaseError,
+                onStartTrial: {
+                    if trialOfferIsDirect {
+                        startDirectTrialPurchase()
+                    } else {
+                        markTrialOfferSeen()
+                        showTrialOffer = false
+                        showTrialPaywall = true
+                    }
+                },
+                onSeeAllPlans: {
                     markTrialOfferSeen()
                     showTrialOffer = false
                     showTrialPaywall = true
@@ -365,8 +422,9 @@ struct MainTabView: View {
                     showTrialOffer = false
                 }
             )
-            .presentationDetents([.height(420), .large])
+            .presentationDetents([.height(480), .large])
             .presentationDragIndicator(.visible)
+            .interactiveDismissDisabled(trialPurchaseInFlight)
         }
         .sheet(isPresented: $showTrialPaywall) {
             PaywallView().environmentObject(store)
@@ -786,14 +844,28 @@ private struct PremiumAccountRow: View {
 
 private struct TrialOfferSheet: View {
     let offerLabel: String?
-    let onTry: () -> Void
+    /// Recurring price after the trial, e.g. "$29.99 / year". Only required in
+    /// `directPurchase` mode (Apple 3.1.2 needs price + terms before purchase).
+    let priceLabel: String?
+    /// When true the primary button buys the trial product directly via StoreKit
+    /// and the sheet shows compliant billing disclosure + a "See all plans" link.
+    /// When false it opens the RevenueCat-hosted paywall (the second-touch path).
+    let directPurchase: Bool
+    let isPurchasing: Bool
+    let errorMessage: String?
+    let onStartTrial: () -> Void
+    let onSeeAllPlans: () -> Void
     let onDismiss: () -> Void
+
+    private var trialLengthText: String {
+        offerLabel.map { "Try Vitals+ free for \($0.replacingOccurrences(of: " free trial", with: ""))" } ?? "Try Vitals+ free"
+    }
 
     var body: some View {
         ZStack {
             Theme.background.ignoresSafeArea()
 
-            VStack(spacing: 20) {
+            VStack(spacing: 18) {
                 ZStack {
                     Circle()
                         .fill(Theme.caloriesGradient)
@@ -806,7 +878,7 @@ private struct TrialOfferSheet: View {
                 .padding(.top, 18)
 
                 VStack(spacing: 8) {
-                    Text(offerLabel.map { "Try Vitals+ free for \($0.replacingOccurrences(of: " free trial", with: ""))" } ?? "Try Vitals+ free")
+                    Text(trialLengthText)
                         .font(.system(.title2, design: .rounded, weight: .bold))
                         .foregroundStyle(Theme.textPrimary)
                         .multilineTextAlignment(.center)
@@ -818,16 +890,50 @@ private struct TrialOfferSheet: View {
                         .padding(.horizontal, 8)
                 }
 
+                if directPurchase, let priceLabel {
+                    Text("Then \(priceLabel). Auto-renews unless cancelled.")
+                        .font(.system(.footnote, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .multilineTextAlignment(.center)
+                }
+
+                if let errorMessage {
+                    Text(errorMessage)
+                        .font(.system(.footnote, design: .rounded))
+                        .foregroundStyle(.red)
+                        .multilineTextAlignment(.center)
+                }
+
                 VStack(spacing: 10) {
-                    Button(action: onTry) {
-                        Text("Start Free Trial")
-                            .font(.system(.headline, design: .rounded, weight: .bold))
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(Theme.caloriesGradient, in: Capsule())
+                    Button(action: onStartTrial) {
+                        ZStack {
+                            Text("Start Free Trial")
+                                .font(.system(.headline, design: .rounded, weight: .bold))
+                                .foregroundStyle(.white)
+                                .opacity(isPurchasing ? 0 : 1)
+                            if isPurchasing {
+                                ProgressView()
+                                    .tint(.white)
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(Theme.caloriesGradient, in: Capsule())
                     }
                     .buttonStyle(.plain)
+                    .disabled(isPurchasing)
+
+                    if directPurchase {
+                        Button(action: onSeeAllPlans) {
+                            Text("See all plans")
+                                .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                                .foregroundStyle(Theme.caloriesPrimary)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 6)
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(isPurchasing)
+                    }
 
                     Button(action: onDismiss) {
                         Text("Not now")
@@ -837,6 +943,17 @@ private struct TrialOfferSheet: View {
                             .padding(.vertical, 8)
                     }
                     .buttonStyle(.plain)
+                    .disabled(isPurchasing)
+                }
+
+                if directPurchase {
+                    HStack(spacing: 4) {
+                        Link("Terms", destination: PaywallLinks.standardEULA)
+                        Text("·")
+                        Link("Privacy Policy", destination: PaywallLinks.privacyPolicy)
+                    }
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
                 }
             }
             .padding(.horizontal, 24)
