@@ -1643,7 +1643,7 @@ struct DeepTrendsCard: View {
                 Text("Unlock Deep Trends")
                     .font(.system(.headline, design: .rounded, weight: .bold))
                     .foregroundStyle(Theme.textPrimary)
-                Text("Compare this period against the matching previous range — averages, deltas, percent movement, and peak days.")
+                Text("Compare this period against the matching previous range: averages, deltas, percent movement, and peak days.")
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textSecondary)
                     .multilineTextAlignment(.center)

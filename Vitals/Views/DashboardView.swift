@@ -219,11 +219,17 @@ struct DashboardView: View {
             }
         }
         .onChange(of: scenePhase) { _, newPhase in
+            // Skip during first-launch onboarding — refresh() calls
+            // synchronizeAuthorizationStateForFetching(), which would trigger
+            // the HealthKit permission sheet before the user has even tapped
+            // Continue on the welcome screen.
+            guard goals.hasCompletedSetup else { return }
             if newPhase == .active {
                 Task { await refresh() }
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            guard goals.hasCompletedSetup else { return }
             Task { await refresh() }
         }
         .task {
@@ -1234,6 +1240,19 @@ private struct OnboardingSheet: View {
     private var bottomBar: some View {
         VStack(spacing: 12) {
             if step == 0 {
+                HStack(spacing: 6) {
+                    Image(systemName: "heart.text.square.fill")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(Theme.caloriesPrimary)
+                    Text("Next: Apple Health will ask permission to read your calories & steps.")
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(.horizontal, 24)
+                .accessibilityElement(children: .combine)
+
                 Button {
                     step = 1
                     guard !hasRequestedHealthAccess else { return }
