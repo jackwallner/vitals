@@ -1,5 +1,8 @@
 import SwiftUI
 import HealthKit
+import os
+
+private let dashboardLogger = Logger(subsystem: "com.jackwallner.vitals", category: "Dashboard")
 
 private enum VitalsLinks {
     static let privacyPolicy = URL(string: "https://jackwallner.github.io/vitals/privacy-policy.html")!
@@ -191,7 +194,7 @@ struct DashboardView: View {
             guard enabled, store.isPro else { return }
             Task {
                 let statusBefore = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
-                print("[NetDeficit] Toggled ON — auth status before request: \(String(describing: statusBefore?.rawValue)) (0=unknown, 1=shouldRequest, 2=unnecessary)")
+                dashboardLogger.debug("NetDeficit toggled on — auth status before: \(String(describing: statusBefore?.rawValue), privacy: .public)")
 
                 // Always request dietary auth separately — requesting only the new
                 // type avoids HealthKit silently suppressing the sheet when it's
@@ -199,10 +202,10 @@ struct DashboardView: View {
                 do {
                     try await healthKit.requestDietaryAuthorization()
                     let statusAfter = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
-                    print("[NetDeficit] requestDietaryAuthorization completed — auth status after: \(String(describing: statusAfter?.rawValue))")
+                    dashboardLogger.debug("NetDeficit dietary auth requested — auth status after: \(String(describing: statusAfter?.rawValue), privacy: .public)")
                 } catch {
                     dietaryEnergyFetchFailed = true
-                    print("[NetDeficit] requestDietaryAuthorization failed: \(error)")
+                    dashboardLogger.error("NetDeficit dietary auth request failed: \(String(describing: error), privacy: .public)")
                 }
 
                 await refresh()
@@ -761,7 +764,7 @@ struct DashboardView: View {
                     try await healthKit.requestAuthorization()
                     await refresh()
                 } catch {
-                    print("Failed to request HealthKit authorization: \(error)")
+                    dashboardLogger.error("HealthKit authorization request failed: \(String(describing: error), privacy: .public)")
                     healthNotice = .loadError
                 }
             }
@@ -856,7 +859,7 @@ struct DashboardView: View {
         } catch {
             dietaryEnergyFetchFailed = true
             dietaryEnergyReady = false
-            print("Failed to fetch dietary energy: \(error)")
+            dashboardLogger.error("Dietary energy fetch failed: \(String(describing: error), privacy: .public)")
         }
     }
 
@@ -973,7 +976,7 @@ struct DashboardView: View {
                 do {
                     try await healthKit.refreshCache(stats: stats)
                 } catch {
-                    print("Failed to refresh today cache: \(error)")
+                    dashboardLogger.error("Today cache refresh failed: \(String(describing: error), privacy: .public)")
                 }
             }
 
@@ -983,7 +986,7 @@ struct DashboardView: View {
                     let history = try await healthKit.fetchHistory(days: 90)
                     try healthKit.saveHistoryToCache(history: history)
                 } catch {
-                    print("Background history cache sync failed: \(error)")
+                    dashboardLogger.error("Background history cache sync failed: \(String(describing: error), privacy: .public)")
                 }
             }
 
@@ -994,7 +997,7 @@ struct DashboardView: View {
             _ = await (dietary, pacing)
         } catch {
             let ns = error as NSError
-            print("Failed to fetch today stats: \(error) domain=\(ns.domain) code=\(ns.code) userInfo=\(ns.userInfo)")
+            dashboardLogger.error("Today stats fetch failed — domain=\(ns.domain, privacy: .public) code=\(ns.code, privacy: .public): \(String(describing: error), privacy: .public)")
             if let cachedStats = try? healthKit.fetchCachedTodayStats() {
                 applyStats(cachedStats)
                 healthNotice = .cachedData
@@ -1141,7 +1144,7 @@ private struct OnboardingSheet: View {
                         do {
                             try await HealthKitService.shared.requestAuthorization()
                         } catch {
-                            print("Onboarding HealthKit auth failed: \(error)")
+                            dashboardLogger.error("Onboarding HealthKit auth failed: \(String(describing: error), privacy: .public)")
                         }
                         dismiss()
                     }

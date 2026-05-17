@@ -1,6 +1,9 @@
 import SwiftUI
 import Charts
 import UniformTypeIdentifiers
+import os
+
+private let historyLogger = Logger(subsystem: "com.jackwallner.vitals", category: "History")
 
 extension Notification.Name {
     /// Posted when the History tab finishes a successful data load. Drives the
@@ -1182,7 +1185,7 @@ struct HistoryView: View {
                         foodMap[cal.startOfDay(for: day.date)] = day.foodCalories
                     }
                 } catch {
-                    print("Failed to fetch dietary history: \(error)")
+                    historyLogger.error("Dietary history fetch failed: \(String(describing: error), privacy: .public)")
                 }
             }
 
@@ -1208,7 +1211,7 @@ struct HistoryView: View {
             NotificationCenter.default.post(name: .vitalsHistoryDidFinishLoading, object: nil)
         } catch {
             guard token == loadToken else { return }
-            print("Failed to fetch history: \(error)")
+            historyLogger.error("History fetch failed: \(String(describing: error), privacy: .public)")
             loadErrorMessage = records.isEmpty
                 ? "Try again in a moment or check Apple Health access."
                 : "Showing the last available data because refresh failed."
@@ -1310,7 +1313,7 @@ struct HistoryView: View {
             csvFile = CSVFile(url: tempURL)
             showExportSheet = true
         } catch {
-            print("CSV export failed: \(error)")
+            historyLogger.error("CSV export failed: \(String(describing: error), privacy: .public)")
             showExportError = true
         }
     }
