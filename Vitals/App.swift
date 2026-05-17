@@ -195,6 +195,9 @@ struct MainTabView: View {
     /// the trial sheet has fully dismissed — presenting both sheets in the same
     /// runloop tick is racy in SwiftUI and frequently drops the second sheet.
     @State private var pendingPaywallAfterTrialDismiss = false
+    @State private var trialOfferPackage: Package?
+    @State private var trialOfferUsesDirectPurchase = false
+    @State private var trialOfferDetent: PresentationDetent = .fraction(0.85)
 
     private enum TrialOfferSource {
         case launch
@@ -225,11 +228,19 @@ struct MainTabView: View {
     /// Hybrid one-tap purchase applies only to the launch offer and only when a
     /// trial product is actually loaded; otherwise fall back to the hosted paywall.
     private var trialOfferIsDirect: Bool {
-        trialOfferSource == .launch && directTrialPackage != nil
+        trialOfferUsesDirectPurchase
+    }
+
+    private func presentTrialOffer(source: TrialOfferSource) {
+        trialOfferSource = source
+        trialOfferPackage = source == .launch ? directTrialPackage : nil
+        trialOfferUsesDirectPurchase = source == .launch && trialOfferPackage != nil
+        trialOfferDetent = .fraction(0.85)
+        showTrialOffer = true
     }
 
     private func startDirectTrialPurchase() {
-        guard let package = directTrialPackage else {
+        guard let package = trialOfferPackage ?? directTrialPackage else {
             // No trial product loaded — fall back to the hosted paywall.
             pendingPaywallAfterTrialDismiss = true
             showTrialOffer = false
@@ -279,9 +290,8 @@ struct MainTabView: View {
             // pop over the wrong tab.
             guard selectedTab == 0 else { return }
             if !goals.hasSeenTrialOffer && !store.isPro {
-                trialOfferSource = .launch
                 launchOfferShownThisSession = true
-                showTrialOffer = true
+                presentTrialOffer(source: .launch)
             }
         }
     }
@@ -302,8 +312,7 @@ struct MainTabView: View {
               !showTrialOffer,
               !showTrialPaywall
         else { return }
-        trialOfferSource = .historyLoad
-        showTrialOffer = true
+        presentTrialOffer(source: .historyLoad)
     }
 
     /// Records the one-shot flag for whichever trigger opened the offer.
@@ -414,6 +423,8 @@ struct MainTabView: View {
             markTrialOfferSeen()
             trialPurchaseInFlight = false
             trialPurchaseError = nil
+            trialOfferPackage = nil
+            trialOfferUsesDirectPurchase = false
             // Chain the hosted paywall here rather than setting both bindings in
             // the same tick — SwiftUI can only show one sheet per ancestor at a
             // time and frequently drops the second when they fire together.
@@ -423,8 +434,8 @@ struct MainTabView: View {
             }
         }) {
             TrialOfferSheet(
-                offerLabel: store.products.compactMap(\.vitalsIntroOfferLabel).first,
-                priceLabel: directTrialPackage?.vitalsPriceLabel,
+                offerLabel: trialOfferPackage?.vitalsIntroOfferLabel ?? store.products.compactMap(\.vitalsIntroOfferLabel).first,
+                priceLabel: trialOfferPackage?.vitalsPriceLabel,
                 directPurchase: trialOfferIsDirect,
                 isPurchasing: trialPurchaseInFlight,
                 errorMessage: trialPurchaseError,
@@ -444,7 +455,7 @@ struct MainTabView: View {
                     showTrialOffer = false
                 }
             )
-            .presentationDetents(trialOfferIsDirect ? [.fraction(0.85), .large] : [.height(480), .large])
+            .presentationDetents([.fraction(0.85), .large], selection: $trialOfferDetent)
             .presentationDragIndicator(.visible)
             .interactiveDismissDisabled(trialPurchaseInFlight)
         }
@@ -883,6 +894,8 @@ private struct TrialOfferSheet: View {
     let onStartTrial: () -> Void
     let onSeeAllPlans: () -> Void
     let onDismiss: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var animateGlow = false
 
     private var trialLengthText: String {
         offerLabel.map { "Try Vitals+ free for \($0.replacingOccurrences(of: " free trial", with: ""))" } ?? "Try Vitals+ free"
@@ -891,6 +904,16 @@ private struct TrialOfferSheet: View {
     var body: some View {
         ZStack {
             Theme.background.ignoresSafeArea()
+            Circle()
+                .fill(Theme.caloriesPrimary.opacity(0.18))
+                .frame(width: 220, height: 220)
+                .blur(radius: 36)
+                .offset(x: animateGlow ? 96 : -96, y: animateGlow ? -220 : -180)
+            Circle()
+                .fill(Theme.netDeficitBrand.opacity(0.16))
+                .frame(width: 180, height: 180)
+                .blur(radius: 34)
+                .offset(x: animateGlow ? -110 : 110, y: animateGlow ? 250 : 210)
 
             VStack(spacing: 18) {
                 ZStack {
@@ -898,9 +921,11 @@ private struct TrialOfferSheet: View {
                         .fill(Theme.caloriesGradient)
                         .frame(width: 72, height: 72)
                         .shadow(color: Theme.caloriesPrimary.opacity(0.35), radius: 14, x: 0, y: 6)
+                        .scaleEffect(animateGlow ? 1.07 : 0.96)
                     Image(systemName: "sparkles")
                         .font(.system(size: 32, weight: .bold))
                         .foregroundStyle(.white)
+                        .rotationEffect(.degrees(animateGlow ? 8 : -8))
                 }
                 .padding(.top, 18)
 
@@ -909,12 +934,19 @@ private struct TrialOfferSheet: View {
                         .font(.system(.title2, design: .rounded, weight: .bold))
                         .foregroundStyle(Theme.textPrimary)
                         .multilineTextAlignment(.center)
-                    Text("Unlock PDF summaries, custom-range reports, deep period-over-period trends, and Net Deficit. No charge until your trial ends — cancel anytime in Settings.")
+                    Text("Unlock custom History ranges, PDF summary reports, Deep Trends, Net Deficit, and active/resting calorie breakdown. No charge until your trial ends — cancel anytime in Settings.")
                         .font(.system(.subheadline, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.horizontal, 8)
+                }
+
+                HStack(spacing: 8) {
+                    TrialFeatureChip(title: "History", icon: "calendar")
+                    TrialFeatureChip(title: "Trends", icon: "chart.line.uptrend.xyaxis")
+                    TrialFeatureChip(title: "PDF", icon: "doc.richtext")
+                    TrialFeatureChip(title: "Net", icon: "plus.forwardslash.minus")
                 }
 
                 if directPurchase, let priceLabel {
@@ -973,19 +1005,41 @@ private struct TrialOfferSheet: View {
                     .disabled(isPurchasing)
                 }
 
-                if directPurchase {
-                    HStack(spacing: 4) {
-                        Link("Terms", destination: PaywallLinks.standardEULA)
-                        Text("·")
-                        Link("Privacy Policy", destination: PaywallLinks.privacyPolicy)
-                    }
-                    .font(.system(.caption2, design: .rounded))
-                    .foregroundStyle(Theme.textTertiary)
+                HStack(spacing: 4) {
+                    Link("Terms", destination: PaywallLinks.standardEULA)
+                    Text("·")
+                    Link("Privacy Policy", destination: PaywallLinks.privacyPolicy)
                 }
+                .font(.system(.caption2, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 24)
         }
+        .onAppear {
+            guard !reduceMotion else { return }
+            withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) {
+                animateGlow = true
+            }
+        }
+    }
+}
+
+private struct TrialFeatureChip: View {
+    let title: String
+    let icon: String
+
+    var body: some View {
+        HStack(spacing: 5) {
+            Image(systemName: icon)
+                .font(.system(size: 10, weight: .semibold))
+            Text(title)
+                .font(.system(size: 11, weight: .bold, design: .rounded))
+        }
+        .foregroundStyle(Theme.caloriesPrimary)
+        .padding(.horizontal, 9)
+        .padding(.vertical, 7)
+        .background(Theme.caloriesPrimary.opacity(0.1), in: Capsule())
     }
 }
 
