@@ -1072,6 +1072,7 @@ private struct MetricPill: View {
 
 private struct OnboardingSheet: View {
     @ObservedObject var goals: GoalSettings
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dismiss) private var dismiss
 
     @State private var step = 0
@@ -1079,6 +1080,7 @@ private struct OnboardingSheet: View {
     @State private var calText = "2500"
     @State private var wantStepGoal = true
     @State private var stepText = "10000"
+    @State private var animateIntroGlow = false
 
     private var calValid: Bool {
         !wantCalGoal || (Double(calText).map { (500...50000).contains($0) } ?? false)
@@ -1119,9 +1121,7 @@ private struct OnboardingSheet: View {
     private var introPage: some View {
         VStack(spacing: 28) {
             VStack(spacing: 8) {
-                Image(systemName: "heart.fill")
-                    .font(.system(size: 48))
-                    .foregroundStyle(Theme.caloriesPrimary)
+                onboardingHeroIcon
                 Text("Welcome to Total Calories")
                     .font(.system(.largeTitle, design: .rounded, weight: .bold))
                     .multilineTextAlignment(.center)
@@ -1140,7 +1140,7 @@ private struct OnboardingSheet: View {
                     features: [
                         "Total calories & steps, tracked live",
                         "Apple Watch app + watch face complications",
-                        "Full history & trends"
+                        "History charts for 7D, 30D, 90D, and 1Y"
                     ]
                 )
                 FeatureTier(
@@ -1148,14 +1148,42 @@ private struct OnboardingSheet: View {
                     tint: Theme.netDeficitBrand,
                     symbol: "sparkles",
                     features: [
-                        "Net calories — import Apple Health food intake for a true deficit",
-                        "Deep trends in History",
-                        "Custom data filtering in History",
-                        "Auto-generated summaries"
-                    ]
+                        "Custom date ranges in History",
+                        "Deep Trends compare each period to the previous range",
+                        "PDF summary reports and monthly summaries",
+                        "Net Deficit plus active/resting calorie breakdown"
+                    ],
+                    prominent: true
                 )
             }
             .padding(.horizontal, 24)
+        }
+    }
+
+    private var onboardingHeroIcon: some View {
+        ZStack {
+            Circle()
+                .fill(Theme.caloriesGradient.opacity(0.22))
+                .frame(width: 98, height: 98)
+                .scaleEffect(animateIntroGlow ? 1.08 : 0.9)
+                .opacity(animateIntroGlow ? 0.35 : 0.75)
+            Circle()
+                .stroke(Theme.caloriesPrimary.opacity(0.24), lineWidth: 1)
+                .frame(width: 82, height: 82)
+                .rotationEffect(.degrees(animateIntroGlow ? 10 : -10))
+            Circle()
+                .fill(Theme.cardSurface.opacity(0.88))
+                .frame(width: 70, height: 70)
+                .shadow(color: Theme.caloriesPrimary.opacity(0.18), radius: 18, x: 0, y: 8)
+            Image(systemName: "heart.fill")
+                .font(.system(size: 42, weight: .semibold))
+                .foregroundStyle(Theme.caloriesGradient)
+        }
+        .onAppear {
+            guard !reduceMotion else { return }
+            withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) {
+                animateIntroGlow = true
+            }
         }
     }
 
@@ -1269,6 +1297,7 @@ private struct FeatureTier: View {
     let tint: Color
     let symbol: String
     let features: [String]
+    var prominent = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -1293,7 +1322,25 @@ private struct FeatureTier: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(16)
-        .background(Theme.cardSurface.opacity(0.5), in: RoundedRectangle(cornerRadius: 14))
+        .background {
+            RoundedRectangle(cornerRadius: 14)
+                .fill(Theme.cardSurface.opacity(prominent ? 0.78 : 0.5))
+            if prominent {
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(
+                        LinearGradient(
+                            colors: [tint.opacity(0.18), Theme.cardSurface.opacity(0.2), Theme.caloriesPrimary.opacity(0.08)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+            }
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: 14)
+                .stroke(prominent ? tint.opacity(0.28) : Color.clear, lineWidth: 1)
+        }
+        .shadow(color: prominent ? tint.opacity(0.16) : .clear, radius: 16, x: 0, y: 8)
     }
 }
 
