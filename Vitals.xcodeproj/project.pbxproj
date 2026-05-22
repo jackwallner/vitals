@@ -72,6 +72,7 @@
 		DC70232ABC8F8424A8F1C444 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C7498718A96BB0C7A0B880 /* App.swift */; };
 		E48D5DCE8E5EA92DBEA311A3 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		E6E4E983389A2641C8483300 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E24C6F7550EC4501A69FE /* DateHelpers.swift */; };
+		E9C8DB2B60225CFE96DDC07A /* MetricNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4333D6087FE92C563858EF31 /* MetricNavigation.swift */; };
 		EBBF589BFA97F19A0C09DF22 /* StepTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9515296920AC1C61887CCD1C /* StepTrendSummary.swift */; };
 		EC12F9254ED351B2169E84CD /* SummaryReportGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B24F616BC26BFF25C64684 /* SummaryReportGenerator.swift */; };
 		EE8FA1155826C0A2643AC014 /* VitalsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86EC13F0E2855F9288631D7 /* VitalsWidget.swift */; };
@@ -149,6 +150,7 @@
 		2E891A2F146A996DD48C13CD /* VitalsWatchWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VitalsWatchWidget.entitlements; sourceTree = "<group>"; };
 		37181B9FB18AF45A44299F0F /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
 		3AA5743BEFB90AAF6BA7EB81 /* CalorieTrendSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieTrendSummaryTests.swift; sourceTree = "<group>"; };
+		4333D6087FE92C563858EF31 /* MetricNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricNavigation.swift; sourceTree = "<group>"; };
 		47E5A948D4ECA79121753114 /* VitalsWatchWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VitalsWatchWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetDeficitTrendSummary.swift; sourceTree = "<group>"; };
 		5067457F6627E7ABFE38988A /* Vitals.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Vitals.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -226,6 +228,7 @@
 		0AB84DC73288E61173AF16FD /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				4333D6087FE92C563858EF31 /* MetricNavigation.swift */,
 				971064F5F952A25427D7F46B /* ProgressRing.swift */,
 			);
 			path = Components;
@@ -642,6 +645,7 @@
 				BAAF27492ADCF82BF62686CA /* HealthKitService.swift in Sources */,
 				AE79C4EF14DDEFF19FE3342E /* HealthRecord.swift in Sources */,
 				FDD2B3AC4FDAD33746E92A0A /* HistoryView.swift in Sources */,
+				E9C8DB2B60225CFE96DDC07A /* MetricNavigation.swift in Sources */,
 				60592DE2EE57591183C06DD0 /* NetDeficitTrendSummary.swift in Sources */,
 				919AF5A699922C5CF56DEC03 /* PaywallView.swift in Sources */,
 				FDC255EDF9FC897146209356 /* ProgressRing.swift in Sources */,
@@ -743,7 +747,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 86;
+				CURRENT_PROJECT_VERSION = 87;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -871,7 +875,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 86;
+				CURRENT_PROJECT_VERSION = 87;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

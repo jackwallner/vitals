@@ -82,6 +82,10 @@ private enum HistoryPrefs {
 }
 
 struct HistoryView: View {
+    /// When set, the view renders a single-metric detail screen (pushed from a
+    /// Dashboard row or a History chart card) instead of the full History tab.
+    var focusMetric: HistoryMetric? = nil
+
     @Environment(\.scenePhase) var scenePhase
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
@@ -299,7 +303,23 @@ struct HistoryView: View {
         value >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative
     }
 
+    @ViewBuilder
     var body: some View {
+        if let focusMetric {
+            focusedBody(focusMetric)
+        } else {
+            NavigationStack {
+                fullBody
+                    .toolbar(.hidden, for: .navigationBar)
+                    .navigationDestination(for: HistoryMetric.self) { metric in
+                        HistoryView(focusMetric: metric)
+                            .environmentObject(store)
+                    }
+            }
+        }
+    }
+
+    private var fullBody: some View {
         ZStack {
             Theme.background.ignoresSafeArea()
 
@@ -349,7 +369,11 @@ struct HistoryView: View {
                 // Period selector
                 HStack(spacing: 0) {
                     ForEach(Period.allCases, id: \.self) { period in
-                        SegmentButton(title: period.rawValue, isSelected: selectedPeriod == period) {
+                        SegmentButton(
+                            title: period.rawValue,
+                            isSelected: selectedPeriod == period,
+                            locked: period == .custom && !store.isPro
+                        ) {
                             if period == .custom {
                                 if store.isPro {
                                     showCustomRange = true
@@ -483,19 +507,21 @@ struct HistoryView: View {
                             }
 
                             // Calories chart
-                            ChartCard(title: "Calories", selection: selectedCalorieRecord) {
+                            ChartCard(title: "Calories", selection: selectedCalorieRecord, metricLink: .calories) {
                                 caloriesChart
                             }
 
                             // Steps chart
-                            ChartCard(title: "Steps", selection: selectedStepRecord) {
+                            ChartCard(title: "Steps", selection: selectedStepRecord, metricLink: .steps) {
                                 stepsChart
                             }
 
-                            // Net Deficit chart
-                            if store.isPro && goals.showNetCalories && hasNetData {
-                                ChartCard(title: "Net Deficit", selection: selectedNetRecord) {
-                                    netDeficitChart
+                            // Net Deficit chart — when enabled, always present so the
+                            // section is discoverable: skeleton while food data loads,
+                            // empty state when no days have food logged, else the chart.
+                            if store.isPro && goals.showNetCalories {
+                                ChartCard(title: "Net Deficit", selection: hasNetData ? selectedNetRecord : nil, metricLink: .net) {
+                                    netDeficitCardContent
                                 }
                             }
 
@@ -1016,6 +1042,211 @@ struct HistoryView: View {
         .frame(minHeight: 180, maxHeight: 240)
     }
 
+    @ViewBuilder
+    private var netDeficitCardContent: some View {
+        if hasNetData {
+            netDeficitChart
+        } else if inflightLoads > 0 {
+            SkeletonBlock()
+                .frame(minHeight: 180, maxHeight: 240)
+                .frame(maxWidth: .infinity)
+        } else {
+            VStack(spacing: 8) {
+                Image(systemName: "fork.knife")
+                    .font(.system(size: 28))
+                    .foregroundStyle(Theme.textTertiary)
+                Text("No food logged this period")
+                    .font(.system(.subheadline, design: .rounded, weight: .medium))
+                    .foregroundStyle(Theme.textSecondary)
+                Text("Log meals in Apple Health to see your net deficit (calories burned minus eaten).")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .multilineTextAlignment(.center)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(minHeight: 180)
+            .padding(.horizontal, 8)
+        }
+    }
+
+    // MARK: - Focused single-metric detail
+
+    private var periodSelectorBar: some View {
+        HStack(spacing: 0) {
+            ForEach(Period.allCases, id: \.self) { period in
+                SegmentButton(
+                    title: period.rawValue,
+                    isSelected: selectedPeriod == period,
+                    locked: period == .custom && !store.isPro
+                ) {
+                    if period == .custom {
+                        if store.isPro {
+                            showCustomRange = true
+                        } else {
+                            showPaywall = true
+                        }
+                    } else {
+                        selectedPeriod = period
+                    }
+                }
+            }
+        }
+        .padding(3)
+        .background(Theme.cardSurface, in: Capsule())
+        .padding(.horizontal, 24)
+    }
+
+    private func focusedBody(_ metric: HistoryMetric) -> some View {
+        ZStack {
+            Theme.background.ignoresSafeArea()
+
+            VStack(spacing: 0) {
+                periodSelectorBar
+                    .padding(.top, 12)
+
+                if selectedPeriod == .custom {
+                    Text("\(customStart, format: .dateTime.month(.abbreviated).day()) – \(customEnd, format: .dateTime.month(.abbreviated).day().year())")
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(Theme.textTertiary)
+                        .padding(.top, 4)
+                }
+
+                if isLoading {
+                    Spacer()
+                    VStack(spacing: 14) {
+                        LoadingBar(color: metric.tint)
+                            .frame(width: 180)
+                        Text("Loading…")
+                            .font(.system(.footnote, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                    }
+                    Spacer()
+                } else {
+                    ScrollView(showsIndicators: false) {
+                        VStack(spacing: 20) {
+                            focusedSummaryCards(metric)
+                            focusedChartCard(metric)
+                            RecentDaysList(metric: metric, rows: recentDayRows(metric))
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.top, 20)
+                        .padding(.bottom, 90)
+                        .opacity(animateContent ? 1 : 0)
+                        .offset(y: animateContent ? 0 : 15)
+                    }
+                    .refreshable { await loadHistory() }
+                }
+            }
+        }
+        .navigationTitle(metric.title)
+        .navigationBarTitleDisplayMode(.inline)
+        .task { await loadHistory() }
+        .onChange(of: selectedPeriod) { _, _ in
+            if selectedPeriod != .custom {
+                HistoryPrefs.save(period: selectedPeriod, customStart: customStart, customEnd: customEnd)
+                resetForReload()
+                Task { await loadHistory() }
+            }
+        }
+        .onChange(of: goals.showNetCalories) { _, _ in
+            Task { await loadHistory() }
+        }
+        .onChange(of: healthKit.isAuthorized) { _, newValue in
+            if newValue { Task { await loadHistory() } }
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active { Task { await loadHistory() } }
+        }
+        .sheet(isPresented: $showCustomRange) {
+            CustomRangeSheet(start: $customStart, end: $customEnd) {
+                selectedPeriod = .custom
+                showCustomRange = false
+                HistoryPrefs.save(period: .custom, customStart: customStart, customEnd: customEnd)
+                resetForReload()
+                Task { await loadHistory() }
+            }
+            .presentationDetents([.medium])
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
+                .environmentObject(store)
+        }
+    }
+
+    @ViewBuilder
+    private func focusedSummaryCards(_ metric: HistoryMetric) -> some View {
+        switch metric {
+        case .calories:
+            HStack(spacing: 12) {
+                AverageCard(label: "Avg Calories", value: avgCalories.formatted(.number.precision(.fractionLength(0))), color: Theme.caloriesPrimary)
+                if let peak = peakCalorieDay {
+                    PeakCard(label: "Best Day", value: peak.totalCalories.formatted(.number.precision(.fractionLength(0))), date: peak.date, color: Theme.caloriesPrimary)
+                }
+            }
+        case .steps:
+            HStack(spacing: 12) {
+                AverageCard(label: "Avg Steps", value: avgSteps.formatted(.number), color: Theme.stepsPrimary)
+                if let peak = peakStepDay {
+                    PeakCard(label: "Best Day", value: peak.steps.formatted(.number), date: peak.date, color: Theme.stepsPrimary)
+                }
+            }
+        case .net:
+            if hasNetData {
+                HStack(spacing: 12) {
+                    AverageCard(label: "Avg Deficit", value: formatSignedNet(avgNetDeficit), color: netColor(for: avgNetDeficit))
+                    if let best = bestNetDay {
+                        PeakCard(label: "Best Day", value: formatSignedNet(netDeficit(for: best)), date: best.date, color: netColor(for: netDeficit(for: best)))
+                    }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func focusedChartCard(_ metric: HistoryMetric) -> some View {
+        switch metric {
+        case .calories:
+            ChartCard(title: "Calories", selection: selectedCalorieRecord) { caloriesChart }
+        case .steps:
+            ChartCard(title: "Steps", selection: selectedStepRecord) { stepsChart }
+        case .net:
+            ChartCard(title: "Net Deficit", selection: hasNetData ? selectedNetRecord : nil) { netDeficitCardContent }
+        }
+    }
+
+    /// Most-recent-first rows for the detail view's recent-days list. Net uses
+    /// only days with food logged; calories/steps use every non-zero day.
+    private func recentDayRows(_ metric: HistoryMetric, limit: Int = 14) -> [RecentDayRow] {
+        let source: [DayRecord]
+        switch metric {
+        case .calories, .steps:
+            source = records.filter { $0.totalCalories > 0 || $0.steps > 0 }
+        case .net:
+            source = netRecords
+        }
+        let sorted = source.sorted { $0.date > $1.date }
+        let value: (DayRecord) -> Double = { rec in
+            switch metric {
+            case .calories: return rec.totalCalories
+            case .steps: return Double(rec.steps)
+            case .net: return netDeficit(for: rec)
+            }
+        }
+        return sorted.prefix(limit).enumerated().map { index, rec in
+            let v = value(rec)
+            // Delta compares against the next-older day in the list.
+            let olderIndex = index + 1
+            let delta: Double? = olderIndex < sorted.count ? v - value(sorted[olderIndex]) : nil
+            let valueText: String
+            switch metric {
+            case .calories: valueText = v.formatted(.number.precision(.fractionLength(0)))
+            case .steps: valueText = Int(v.rounded()).formatted(.number)
+            case .net: valueText = formatSignedNet(v)
+            }
+            return RecentDayRow(date: rec.date, valueText: valueText, delta: delta, tint: metric.tint)
+        }
+    }
+
     // MARK: - Helpers
 
     private var chartDateUnit: Calendar.Component {
@@ -1460,9 +1691,10 @@ enum DeepTrendsBuilder {
         return rounded >= 0 ? "+\(rounded)%" : "\(rounded)%"
     }
 
-    /// Locked-state insights for the paywall tease. Uses the user's own current-window
-    /// averages with a fixed "+" delta so the blurred preview looks like the real card
-    /// without leaking the actual trend math behind Vitals+.
+    /// Locked-state insights for the paywall tease. Shows the user's own current-window
+    /// average as the only real number; the comparison columns use neutral placeholders
+    /// ("—") instead of fabricated deltas so the preview never implies a false trend the
+    /// user would then see "change" once they actually subscribe.
     static func teaserInsights(currentRecords: [DayRecord]) -> [DeepTrendInsight] {
         var insights: [DeepTrendInsight] = []
         if let cal = average(of: currentRecords.map(\.totalCalories)) {
@@ -1471,9 +1703,9 @@ enum DeepTrendsBuilder {
                     title: "Calories",
                     icon: "flame.fill",
                     current: cal.formatted(.number.precision(.fractionLength(0))),
-                    previous: (cal * 0.92).formatted(.number.precision(.fractionLength(0))),
-                    change: "+\(Int((cal * 0.08).rounded()).formatted(.number))",
-                    percent: "+8%",
+                    previous: "—",
+                    change: "—",
+                    percent: "vs last",
                     narrative: "Compare your current pace against the prior matching window.",
                     color: Theme.caloriesPrimary,
                     isUp: true
@@ -1486,9 +1718,9 @@ enum DeepTrendsBuilder {
                     title: "Steps",
                     icon: "figure.walk",
                     current: Int(steps.rounded()).formatted(.number),
-                    previous: Int((steps * 0.94).rounded()).formatted(.number),
-                    change: "+\(Int((steps * 0.06).rounded()).formatted(.number))",
-                    percent: "+6%",
+                    previous: "—",
+                    change: "—",
+                    percent: "vs last",
                     narrative: "See momentum on steps across periods.",
                     color: Theme.stepsPrimary,
                     isUp: true
@@ -1820,22 +2052,30 @@ private struct CustomRangeSheet: View {
 private struct SegmentButton: View {
     let title: String
     let isSelected: Bool
+    var locked: Bool = false
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            Text(title)
-                .font(.caption.bold())
-                .foregroundStyle(isSelected ? Theme.textPrimary : Theme.textSecondary)
-                .padding(.vertical, 8)
-                .frame(maxWidth: .infinity)
-                .background(
-                    isSelected ? Theme.cardSurfaceLight : .clear,
-                    in: Capsule()
-                )
+            HStack(spacing: 3) {
+                if locked {
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 9, weight: .bold))
+                }
+                Text(title)
+                    .font(.caption.bold())
+            }
+            .foregroundStyle(locked ? Theme.textTertiary : (isSelected ? Theme.textPrimary : Theme.textSecondary))
+            .padding(.vertical, 8)
+            .frame(maxWidth: .infinity)
+            .background(
+                isSelected ? Theme.cardSurfaceLight : .clear,
+                in: Capsule()
+            )
         }
         .buttonStyle(.plain)
         .animation(.easeInOut(duration: 0.2), value: isSelected)
+        .accessibilityHint(locked ? "Vitals+ — pick any date range" : "")
     }
 }
 
@@ -1939,6 +2179,9 @@ private struct PeakCard: View {
 private struct ChartCard<Content: View>: View {
     let title: String
     var selection: ChartSelection? = nil
+    /// When set (and no point is selected), the header becomes a NavigationLink
+    /// into the single-metric detail screen, with a chevron affordance.
+    var metricLink: HistoryMetric? = nil
     @ViewBuilder let content: Content
 
     var body: some View {
@@ -1953,6 +2196,21 @@ private struct ChartCard<Content: View>: View {
                         .foregroundStyle(Theme.textPrimary)
                 }
                 .transition(.opacity)
+            } else if let metricLink {
+                NavigationLink(value: metricLink) {
+                    HStack(spacing: 6) {
+                        Text(title)
+                            .font(.headline)
+                            .foregroundStyle(Theme.textPrimary)
+                        Image(systemName: "chevron.right")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(Theme.textTertiary)
+                        Spacer(minLength: 0)
+                    }
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint("Opens \(title) history")
             } else {
                 Text(title)
                     .font(.headline)
@@ -1963,6 +2221,73 @@ private struct ChartCard<Content: View>: View {
         .padding(Theme.cardPadding)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
         .animation(.easeInOut(duration: 0.15), value: selection?.dateLabel)
+    }
+}
+
+struct RecentDayRow: Identifiable {
+    let id = UUID()
+    let date: Date
+    let valueText: String
+    /// Change vs the next-older day in the list; nil when there's no prior day.
+    let delta: Double?
+    let tint: Color
+}
+
+/// Recent-days list shown on the single-metric detail screen so "what was
+/// yesterday" is a glance rather than a chart scrub.
+private struct RecentDaysList: View {
+    let metric: HistoryMetric
+    let rows: [RecentDayRow]
+
+    private static let dateFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "EEE, MMM d"
+        return f
+    }()
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Recent Days")
+                .font(.headline)
+                .foregroundStyle(Theme.textPrimary)
+
+            if rows.isEmpty {
+                Text(metric == .net ? "No days with food logged yet." : "No recent activity to show.")
+                    .font(.system(.subheadline, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 8)
+            } else {
+                ForEach(Array(rows.enumerated()), id: \.element.id) { index, row in
+                    HStack {
+                        Text(Self.dateFormatter.string(from: row.date))
+                            .font(.system(.subheadline, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                        Spacer()
+                        if let delta = row.delta, abs(delta.rounded()) >= 1 {
+                            HStack(spacing: 2) {
+                                Image(systemName: delta > 0 ? "arrow.up" : "arrow.down")
+                                Text(abs(delta).formatted(.number.precision(.fractionLength(0))))
+                            }
+                            .font(.system(.caption2, design: .rounded, weight: .semibold))
+                            .foregroundStyle(Theme.textTertiary)
+                        }
+                        Text(row.valueText)
+                            .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
+                            .foregroundStyle(row.tint)
+                            .frame(minWidth: 64, alignment: .trailing)
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("\(Self.dateFormatter.string(from: row.date)): \(row.valueText)")
+                    if index < rows.count - 1 {
+                        Divider().overlay(Theme.textTertiary.opacity(0.15))
+                    }
+                }
+            }
+        }
+        .padding(Theme.cardPadding)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
     }
 }
 

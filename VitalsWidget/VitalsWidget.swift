@@ -252,11 +252,16 @@ struct MediumWidgetView: View {
         if entry.dataAvailable {
             VStack(alignment: .leading, spacing: 6) {
                 if let stale = entry.staleDate {
-                    Text(staleLabel(for: stale))
-                        .font(.system(size: 10, weight: .semibold, design: .rounded))
-                        .foregroundStyle(Theme.textTertiary)
-                        .textCase(.uppercase)
-                        .tracking(0.6)
+                    HStack(spacing: 5) {
+                        Text(staleLabel(for: stale))
+                            .font(.system(size: 10, weight: .semibold, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                            .textCase(.uppercase)
+                            .tracking(0.6)
+                        Text("· Open app to sync")
+                            .font(.system(size: 10, weight: .medium, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                    }
                 }
                 HStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: columnSpacing) {
