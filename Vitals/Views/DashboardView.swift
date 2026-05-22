@@ -96,6 +96,7 @@ private enum HealthNotice: Equatable {
 
 struct DashboardView: View {
     @Environment(\.scenePhase) var scenePhase
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
     @EnvironmentObject private var store: StoreService
@@ -122,6 +123,8 @@ struct DashboardView: View {
     @State private var dietaryEnergyReady = false
     /// True when the last dietary fetch failed (don’t treat as “0 kcal logged”).
     @State private var dietaryEnergyFetchFailed = false
+    /// Transient celebration banner shown once per goal per day (paired with the haptic).
+    @State private var celebrationMessage: String? = nil
 
     private var totalCalories: Double { activeCalories + restingCalories }
 
@@ -172,21 +175,37 @@ struct DashboardView: View {
     }
 
     var body: some View {
-        ZStack {
-            Theme.background.ignoresSafeArea()
+        NavigationStack {
+            ZStack {
+                Theme.background.ignoresSafeArea()
 
-            if isLoading {
-                loadingView
-            } else {
-                GeometryReader { geo in
-                    ScrollView(showsIndicators: false) {
-                        mainContent(availableHeight: geo.size.height)
-                            .frame(minHeight: geo.size.height)
+                if isLoading {
+                    loadingView
+                } else {
+                    GeometryReader { geo in
+                        ScrollView(showsIndicators: false) {
+                            mainContent(availableHeight: geo.size.height)
+                                .frame(minHeight: geo.size.height)
+                        }
+                        .refreshable { await refresh() }
                     }
-                    .refreshable { await refresh() }
                 }
             }
-        }
+            .overlay(alignment: .top) {
+                if let message = celebrationMessage {
+                    celebrationBanner(message)
+                        .padding(.horizontal, 24)
+                        .transition(reduceMotion
+                            ? .opacity
+                            : .move(edge: .top).combined(with: .opacity))
+                        .zIndex(1)
+                }
+            }
+            .toolbar(.hidden, for: .navigationBar)
+            .navigationDestination(for: HistoryMetric.self) { metric in
+                HistoryView(focusMetric: metric)
+                    .environmentObject(store)
+            }
         .onChange(of: healthKit.isAuthorized) { _, authorized in
             if authorized { Task { await refresh() } }
         }
@@ -260,6 +279,26 @@ struct DashboardView: View {
             OnboardingSheet(goals: goals)
                 .interactiveDismissDisabled()
         }
+        }
+    }
+
+    private func celebrationBanner(_ message: String) -> some View {
+        HStack(spacing: 10) {
+            Image(systemName: "trophy.fill")
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(.white)
+            Text(message)
+                .font(.system(.subheadline, design: .rounded, weight: .bold))
+                .foregroundStyle(.white)
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 12)
+        .background(Theme.caloriesGradient, in: Capsule())
+        .shadow(color: Theme.caloriesPrimary.opacity(0.35), radius: 12, x: 0, y: 6)
+        .padding(.top, 8)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(message)
+        .accessibilityAddTraits(.isStaticText)
     }
 
     private func healthNoticeBanner(_ notice: HealthNotice) -> some View {
@@ -377,24 +416,29 @@ struct DashboardView: View {
 
             // Calories section
             if goals.showCalories {
-                Group {
-                    if let progress = calorieProgress {
-                        ZStack {
-                            ProgressRing(
-                                progress: animateRing ? progress : 0,
-                                gradient: Theme.caloriesGradient,
-                                glowColor: Theme.caloriesGlow,
-                                lineWidth: ringLineWidth,
-                                size: ringSize
-                            )
+                NavigationLink(value: HistoryMetric.calories) {
+                    Group {
+                        if let progress = calorieProgress {
+                            ZStack {
+                                ProgressRing(
+                                    progress: animateRing ? progress : 0,
+                                    gradient: Theme.caloriesGradient,
+                                    glowColor: Theme.caloriesGlow,
+                                    lineWidth: ringLineWidth,
+                                    size: ringSize
+                                )
+                                calorieLabel(numberSize: calNumberSize)
+                            }
+                        } else {
                             calorieLabel(numberSize: calNumberSize)
                         }
-                    } else {
-                        calorieLabel(numberSize: calNumberSize)
                     }
+                    .contentShape(Rectangle())
                 }
+                .buttonStyle(.plain)
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Calorie progress")
+                .accessibilityHint("Opens calorie history")
                 .accessibilityValue(showActiveResting
                     ? (calorieProgress != nil
                         ? "\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories. Active \(Int(activeCalories)), resting \(Int(restingCalories))."
@@ -420,7 +464,9 @@ struct DashboardView: View {
                             current: totalCalories,
                             typical: pacingCal,
                             label: "cal",
-                            color: Theme.caloriesPrimary
+                            color: Theme.caloriesPrimary,
+                            comparison: goals.pacingComparison,
+                            lookback: goals.pacingLookback
                         )
                         .padding(.top, 16)
                         .opacity(animateContent ? 1 : 0)
@@ -440,6 +486,8 @@ struct DashboardView: View {
 
             // Steps section
             if goals.showSteps {
+                NavigationLink(value: HistoryMetric.steps) {
+                Group {
                 if isMinimalMode || (isSingleMetric && goals.showSteps && !goals.showCalories) {
                     // Clean centered layout
                     VStack(spacing: 6) {
@@ -452,11 +500,16 @@ struct DashboardView: View {
                                 .foregroundStyle(Theme.textPrimary)
                                 .contentTransition(.numericText())
                         }
-                        Text("steps")
-                            .font(.system(isSingleMetric ? .title3 : .subheadline, design: .rounded))
-                            .foregroundStyle(Theme.textSecondary)
-                            .textCase(.uppercase)
-                            .tracking(1.5)
+                        HStack(spacing: 4) {
+                            Text("steps")
+                                .font(.system(isSingleMetric ? .title3 : .subheadline, design: .rounded))
+                                .foregroundStyle(Theme.textSecondary)
+                                .textCase(.uppercase)
+                                .tracking(1.5)
+                            Image(systemName: "chevron.right")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(Theme.textTertiary)
+                        }
 
                         if goals.showPacing {
                             if let pacingStep = pacingSteps {
@@ -464,7 +517,9 @@ struct DashboardView: View {
                                     current: Double(steps),
                                     typical: Double(pacingStep),
                                     label: "steps",
-                                    color: Theme.stepsPrimary
+                                    color: Theme.stepsPrimary,
+                                    comparison: goals.pacingComparison,
+                                    lookback: goals.pacingLookback
                                 )
                                 .padding(.top, 8)
                             } else if pacingStepsInsufficient {
@@ -508,6 +563,9 @@ struct DashboardView: View {
                                     .font(.system(.body, design: .rounded, weight: .bold))
                                     .foregroundStyle(Theme.stepsPrimary)
                             }
+                            Image(systemName: "chevron.right")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(Theme.textTertiary)
                         }
 
                         if let progress = stepProgress {
@@ -524,7 +582,9 @@ struct DashboardView: View {
                                     current: Double(steps),
                                     typical: Double(pacingStep),
                                     label: "steps",
-                                    color: Theme.stepsPrimary
+                                    color: Theme.stepsPrimary,
+                                    comparison: goals.pacingComparison,
+                                    lookback: goals.pacingLookback
                                 )
                             } else if pacingStepsInsufficient {
                                 Text(pacingBuildingText(samples: pacingStepSamples))
@@ -542,6 +602,11 @@ struct DashboardView: View {
                     .opacity(animateContent ? 1 : 0)
                     .offset(y: animateContent ? 0 : 20)
                 }
+                }
+                .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint("Opens step history")
             }
 
             if isNetDeficitEnabled && (goals.showCalories || goals.showSteps) {
@@ -549,7 +614,12 @@ struct DashboardView: View {
             }
 
             if isNetDeficitEnabled {
-                netDeficitSection(netNumberSize: netNumberSize)
+                NavigationLink(value: HistoryMetric.net) {
+                    netDeficitSection(netNumberSize: netNumberSize)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint("Opens net deficit history")
             }
 
             // Nothing enabled — gentle prompt
@@ -585,6 +655,12 @@ struct DashboardView: View {
         netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative
     }
 
+    /// Everyday word for the current net value: people think "deficit" / "surplus",
+    /// not "+500" / "-500".
+    private var netDeficitWord: String {
+        netDeficit >= 0 ? "deficit" : "surplus"
+    }
+
 
     @ViewBuilder
     private func netDeficitBreakdownRow(centered: Bool) -> some View {
@@ -605,6 +681,11 @@ struct DashboardView: View {
             .background(pillColor.opacity(0.1), in: Capsule())
             .lineLimit(1)
             .minimumScaleFactor(0.7)
+        } else if !dietaryEnergyFetchFailed {
+            // Reserve the pill's footprint with a skeleton so the row doesn't pop
+            // into existence and shift the surrounding layout when food data lands.
+            SkeletonBlock(cornerRadius: 12)
+                .frame(width: 150, height: 25)
         }
     }
 
@@ -619,17 +700,27 @@ struct DashboardView: View {
                             .font(Theme.bigNumber(netNumberSize))
                             .foregroundStyle(netDeficitColor)
                             .contentTransition(.numericText())
+                        Text(netDeficitWord)
+                            .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                            .foregroundStyle(netDeficitColor)
+                            .textCase(.uppercase)
+                            .tracking(1.5)
                     } else {
                         Text("—")
                             .font(Theme.bigNumber(netNumberSize))
                             .foregroundStyle(Theme.textTertiary)
                     }
                     netDeficitBreakdownRow(centered: true)
-                    Text("net calories")
-                        .font(.system(isSingleMetric ? .title3 : .subheadline, design: .rounded))
-                        .foregroundStyle(Theme.textSecondary)
-                        .textCase(.uppercase)
-                        .tracking(1.5)
+                    HStack(spacing: 4) {
+                        Text("net calories")
+                            .font(.system(isSingleMetric ? .title3 : .subheadline, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                            .textCase(.uppercase)
+                            .tracking(1.5)
+                        Image(systemName: "chevron.right")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(Theme.textTertiary)
+                    }
                     netDeficitFootnote(centered: true)
                 }
                 .accessibilityElement(children: .combine)
@@ -650,10 +741,13 @@ struct DashboardView: View {
                                 .font(Theme.bigNumber(netNumberSize))
                                 .foregroundStyle(Theme.textTertiary)
                         }
-                        Text("net")
+                        Text(netDeficitNumericReady ? netDeficitWord : "net")
                             .font(.system(.callout, design: .rounded, weight: .medium))
-                            .foregroundStyle(Theme.textTertiary)
+                            .foregroundStyle(netDeficitNumericReady ? netDeficitColor : Theme.textTertiary)
                         Spacer(minLength: 8)
+                        Image(systemName: "chevron.right")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(Theme.textTertiary)
                     }
                     netDeficitBreakdownRow(centered: true)
                     netDeficitFootnote(centered: true)
@@ -689,12 +783,8 @@ struct DashboardView: View {
             .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
             .padding(.horizontal, centered ? 12 : 0)
         } else if !dietaryEnergyReady {
-            Text("Loading food calories…")
-                .font(.system(.caption2, design: .rounded))
-                .foregroundStyle(Theme.textTertiary)
-                .multilineTextAlignment(align)
-                .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
-                .padding(.horizontal, centered ? 12 : 0)
+            // Loading state is conveyed by the skeleton pill in the breakdown row.
+            EmptyView()
         } else if foodCalories <= 0 {
             Text("0 food calories logged today. If you’re fasting, this is a valid net deficit day.")
                 .font(.system(.caption2, design: .rounded))
@@ -723,15 +813,25 @@ struct DashboardView: View {
                 .foregroundStyle(Theme.textPrimary)
                 .contentTransition(.numericText())
             if let goal = goals.calorieGoal {
-                Text("/ \(goal, format: .number.precision(.fractionLength(0))) cal")
-                    .font(.system(.caption, design: .rounded))
-                    .foregroundStyle(Theme.textSecondary)
+                HStack(spacing: 3) {
+                    Text("/ \(goal, format: .number.precision(.fractionLength(0))) cal")
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                    Image(systemName: "chevron.right")
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(Theme.textTertiary)
+                }
             } else {
-                Text("calories")
-                    .font(.system(isSingleMetric ? .title3 : .subheadline, design: .rounded))
-                    .foregroundStyle(Theme.textSecondary)
-                    .textCase(.uppercase)
-                    .tracking(1.5)
+                HStack(spacing: 4) {
+                    Text("calories")
+                        .font(.system(isSingleMetric ? .title3 : .subheadline, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .textCase(.uppercase)
+                        .tracking(1.5)
+                    Image(systemName: "chevron.right")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(Theme.textTertiary)
+                }
             }
         }
         .accessibilityElement(children: .combine)
@@ -801,14 +901,15 @@ struct DashboardView: View {
         let todayKey = DailyHealthRecord.key(for: Date())
         let newTotal = activeCalories + restingCalories
 
-        var shouldBuzz = false
+        var crossedCalories = false
+        var crossedSteps = false
 
         if let calGoal = goals.calorieGoal,
            calGoal > 0,
            newTotal >= calGoal,
            GoalCelebration.shouldCelebrateCalories(for: todayKey) {
             GoalCelebration.markCaloriesCelebrated(for: todayKey)
-            shouldBuzz = true
+            crossedCalories = true
         }
 
         if let stepGoal = goals.stepGoal,
@@ -816,12 +917,34 @@ struct DashboardView: View {
            steps >= stepGoal,
            GoalCelebration.shouldCelebrateSteps(for: todayKey) {
             GoalCelebration.markStepsCelebrated(for: todayKey)
-            shouldBuzz = true
+            crossedSteps = true
         }
 
-        if shouldBuzz {
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.success)
+        guard crossedCalories || crossedSteps else { return }
+
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+
+        let message: String
+        if crossedCalories && crossedSteps {
+            message = "Both goals reached!"
+        } else if crossedCalories {
+            message = "Calorie goal reached!"
+        } else {
+            message = "Step goal reached!"
+        }
+        showCelebration(message)
+    }
+
+    private func showCelebration(_ message: String) {
+        withAnimation(reduceMotion ? .none : .spring(duration: 0.4, bounce: 0.3)) {
+            celebrationMessage = message
+        }
+        Task {
+            try? await Task.sleep(for: .seconds(2.5))
+            withAnimation(.easeOut(duration: 0.4)) {
+                celebrationMessage = nil
+            }
         }
     }
 
@@ -1027,25 +1150,110 @@ private struct PacingPill: View {
     let typical: Double
     let label: String
     let color: Color
+    let comparison: PacingComparison
+    let lookback: PacingLookback
+
+    @State private var showExplainer = false
 
     private var diff: Double { current - typical }
     private var isAhead: Bool { diff >= 0 }
 
     var body: some View {
-        HStack(spacing: 5) {
-            Image(systemName: isAhead ? "arrow.up.right" : "arrow.down.right")
-                .font(.system(.caption2, design: .rounded, weight: .bold))
-            Text("\(abs(Int(diff)).formatted(.number)) \(label) \(isAhead ? "ahead" : "behind") usual pace")
-                .font(.system(.caption2, design: .rounded))
+        Button {
+            showExplainer = true
+        } label: {
+            HStack(spacing: 5) {
+                Image(systemName: isAhead ? "arrow.up.right" : "arrow.down.right")
+                    .font(.system(.caption2, design: .rounded, weight: .bold))
+                Text("\(abs(Int(diff)).formatted(.number)) \(label) \(isAhead ? "ahead" : "behind") usual pace")
+                    .font(.system(.caption2, design: .rounded))
+                Image(systemName: "info.circle")
+                    .font(.system(size: 10, weight: .semibold))
+                    .opacity(0.7)
+            }
+            .foregroundStyle(isAhead ? .green : Color(red: 1.0, green: 0.42, blue: 0.42))
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(
+                (isAhead ? Color.green : Color(red: 1.0, green: 0.42, blue: 0.42)).opacity(0.1),
+                in: Capsule()
+            )
         }
-        .foregroundStyle(isAhead ? .green : Color(red: 1.0, green: 0.42, blue: 0.42))
-        .padding(.horizontal, 12)
-        .padding(.vertical, 6)
-        .background(
-            (isAhead ? Color.green : Color(red: 1.0, green: 0.42, blue: 0.42)).opacity(0.1),
-            in: Capsule()
-        )
+        .buttonStyle(.plain)
         .accessibilityLabel("\(abs(Int(diff))) \(label) \(isAhead ? "ahead of" : "behind") usual pace")
+        .accessibilityHint("Explains how pace is calculated")
+        .sheet(isPresented: $showExplainer) {
+            PacingExplainerSheet(typical: typical, label: label, comparison: comparison, lookback: lookback)
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
+        }
+    }
+}
+
+/// Lightweight sheet explaining what "usual pace" is compared against, so users can
+/// trust the pacing number without reading the Settings footer.
+private struct PacingExplainerSheet: View {
+    let typical: Double
+    let label: String
+    let comparison: PacingComparison
+    let lookback: PacingLookback
+    @Environment(\.dismiss) private var dismiss
+
+    private var basisText: String {
+        let window = lookback.label.lowercased()
+        switch comparison {
+        case .dayOfWeek:
+            let weekday = Date().formatted(.dateTime.weekday(.wide))
+            return "your average on past \(weekday)s over the last \(window)"
+        case .allDays:
+            return "your average on every day over the last \(window)"
+        }
+    }
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 20) {
+                Image(systemName: "speedometer")
+                    .font(.system(size: 44))
+                    .foregroundStyle(Theme.caloriesPrimary)
+                    .padding(.top, 12)
+
+                Text("How pace works")
+                    .font(.system(.title2, design: .rounded, weight: .bold))
+
+                Text("“Usual pace” compares your \(label) so far today to \(basisText), measured at this same time of day.")
+                    .font(.system(.body, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                HStack(spacing: 8) {
+                    Image(systemName: "clock.arrow.circlepath")
+                        .foregroundStyle(Theme.textTertiary)
+                    Text("Usual by now: \(Int(typical.rounded()).formatted(.number)) \(label)")
+                        .font(.system(.subheadline, design: .rounded, weight: .medium))
+                        .foregroundStyle(Theme.textPrimary)
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+                .background(Theme.cardSurface, in: Capsule())
+
+                Text("Empty days don’t count. You can change the comparison window in Settings.")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .multilineTextAlignment(.center)
+
+                Spacer()
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 28)
+            .background(Theme.background.ignoresSafeArea())
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { dismiss() }
+                }
+            }
+        }
     }
 }
 
@@ -1229,8 +1437,25 @@ private struct OnboardingSheet: View {
                     text: $stepText,
                     isValid: stepValid
                 )
+
+                if !wantCalGoal && !wantStepGoal {
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: "info.circle.fill")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(Theme.stepsPrimary)
+                        Text("Today will show live calorie and step totals without target rings. You can add goals later in Settings.")
+                            .font(.system(.caption, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(14)
+                    .background(Theme.cardSurface.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
+                    .transition(.opacity)
+                }
             }
             .padding(.horizontal, 24)
+            .animation(.easeInOut(duration: 0.2), value: wantCalGoal || wantStepGoal)
         }
     }
 
@@ -1240,15 +1465,27 @@ private struct OnboardingSheet: View {
     private var bottomBar: some View {
         VStack(spacing: 12) {
             if step == 0 {
-                HStack(spacing: 6) {
-                    Image(systemName: "heart.text.square.fill")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(Theme.caloriesPrimary)
-                    Text("Next: Apple Health will ask permission to read your calories & steps.")
-                        .font(.system(.caption, design: .rounded))
-                        .foregroundStyle(Theme.textSecondary)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
+                VStack(spacing: 6) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "heart.text.square.fill")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundStyle(Theme.caloriesPrimary)
+                        Text("Next: Apple Health will ask permission to read your calories & steps.")
+                            .font(.system(.caption, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    HStack(spacing: 5) {
+                        Image(systemName: "lock.fill")
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundStyle(Theme.stepsPrimary)
+                        Text("Read-only. Stays on your device. No account.")
+                            .font(.system(.caption2, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
                 .padding(.horizontal, 24)
                 .accessibilityElement(children: .combine)
@@ -1557,7 +1794,7 @@ private struct SettingsSheet: View {
                 } header: {
                     Text("Dashboard")
                 } footer: {
-                    Text("Vitals+ unlocks the active vs. resting calorie breakdown and Net Deficit (calories burned minus food energy from Apple Health). Connect a food app like MyFitnessPal to populate dietary energy.")
+                    Text("Vitals+ unlocks the active vs. resting calorie breakdown and Net Deficit (calories burned minus food energy from Apple Health). A positive number means you burned more than you logged eating (a deficit). Connect a food app like MyFitnessPal to populate dietary energy.")
                 }
 
                 Section {
