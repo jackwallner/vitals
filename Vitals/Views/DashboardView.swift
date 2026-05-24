@@ -1286,15 +1286,12 @@ private struct MetricPill: View {
 
 private struct OnboardingSheet: View {
     @ObservedObject var goals: GoalSettings
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dismiss) private var dismiss
 
-    @State private var step = 0
     @State private var wantCalGoal = true
     @State private var calText = "2500"
     @State private var wantStepGoal = true
     @State private var stepText = "10000"
-    @State private var animateIntroGlow = false
     @State private var hasRequestedHealthAccess = false
 
     private var calValid: Bool {
@@ -1309,100 +1306,24 @@ private struct OnboardingSheet: View {
         NavigationStack {
             VStack(spacing: 0) {
                 ScrollView {
-                    Group {
-                        if step == 0 {
-                            introPage
-                                .transition(.asymmetric(
-                                    insertion: .move(edge: .leading),
-                                    removal: .move(edge: .leading)
-                                ))
-                        } else {
-                            goalsPage
-                                .transition(.move(edge: .trailing))
-                        }
-                    }
-                    .padding(.top, 48)
-                    .padding(.bottom, 24)
+                    goalsPage
+                        .padding(.top, 48)
+                        .padding(.bottom, 24)
                 }
 
                 bottomBar
             }
-            .animation(.easeInOut(duration: 0.25), value: step)
         }
-    }
-
-    // MARK: Page 1 — welcome + feature preview
-
-    private var introPage: some View {
-        VStack(spacing: 28) {
-            VStack(spacing: 8) {
-                onboardingHeroIcon
-                Text("Welcome to Total Calories")
-                    .font(.system(.largeTitle, design: .rounded, weight: .bold))
-                    .multilineTextAlignment(.center)
-                Text("Total calories and steps, tracked automatically from Apple Health.")
-                    .font(.system(.subheadline, design: .rounded))
-                    .foregroundStyle(Theme.textSecondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 24)
-            }
-
-            VStack(spacing: 16) {
-                FeatureTier(
-                    title: "Included with Health access",
-                    tint: Theme.stepsPrimary,
-                    symbol: "checkmark.circle.fill",
-                    features: [
-                        "Total calories & steps, tracked live",
-                        "Apple Watch app + watch face complications",
-                        "History charts for 7D, 30D, 90D, and 1Y"
-                    ]
-                )
-                FeatureTier(
-                    title: "Try Vitals+ free if eligible",
-                    tint: Theme.netDeficitBrand,
-                    symbol: "sparkles",
-                    features: [
-                        "Custom date ranges in History",
-                        "Deep Trends compare each period to the previous range",
-                        "PDF summary reports and monthly summaries",
-                        "Net Deficit plus active/resting calorie breakdown"
-                    ],
-                    prominent: true
-                )
-            }
-            .padding(.horizontal, 24)
-        }
-    }
-
-    private var onboardingHeroIcon: some View {
-        ZStack {
-            Circle()
-                .fill(Theme.caloriesGradient.opacity(0.22))
-                .frame(width: 98, height: 98)
-                .scaleEffect(animateIntroGlow ? 1.08 : 0.9)
-                .opacity(animateIntroGlow ? 0.35 : 0.75)
-            Circle()
-                .stroke(Theme.caloriesPrimary.opacity(0.24), lineWidth: 1)
-                .frame(width: 82, height: 82)
-                .rotationEffect(.degrees(animateIntroGlow ? 10 : -10))
-            Circle()
-                .fill(Theme.cardSurface.opacity(0.88))
-                .frame(width: 70, height: 70)
-                .shadow(color: Theme.caloriesPrimary.opacity(0.18), radius: 18, x: 0, y: 8)
-            Image(systemName: "heart.fill")
-                .font(.system(size: 42, weight: .semibold))
-                .foregroundStyle(Theme.caloriesGradient)
-        }
-        .onAppear {
-            guard !reduceMotion else { return }
-            withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) {
-                animateIntroGlow = true
+        .task {
+            guard !hasRequestedHealthAccess else { return }
+            hasRequestedHealthAccess = true
+            do {
+                try await HealthKitService.shared.requestAuthorization()
+            } catch {
+                dashboardLogger.error("Onboarding HealthKit auth failed: \(String(describing: error), privacy: .public)")
             }
         }
     }
-
-    // MARK: Page 2 — goal setup
 
     private var goalsPage: some View {
         VStack(spacing: 28) {
@@ -1464,74 +1385,38 @@ private struct OnboardingSheet: View {
     @ViewBuilder
     private var bottomBar: some View {
         VStack(spacing: 12) {
-            if step == 0 {
-                VStack(spacing: 6) {
-                    HStack(spacing: 6) {
-                        Image(systemName: "heart.text.square.fill")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundStyle(Theme.caloriesPrimary)
-                        Text("Next: Apple Health will ask permission to read your calories & steps.")
-                            .font(.system(.caption, design: .rounded))
-                            .foregroundStyle(Theme.textSecondary)
-                            .multilineTextAlignment(.center)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                    HStack(spacing: 5) {
-                        Image(systemName: "lock.fill")
-                            .font(.system(size: 10, weight: .semibold))
-                            .foregroundStyle(Theme.stepsPrimary)
-                        Text("Read-only. Stays on your device. No account.")
-                            .font(.system(.caption2, design: .rounded))
-                            .foregroundStyle(Theme.textTertiary)
-                            .multilineTextAlignment(.center)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
-                .padding(.horizontal, 24)
-                .accessibilityElement(children: .combine)
-
-                Button {
-                    step = 1
-                    guard !hasRequestedHealthAccess else { return }
-                    hasRequestedHealthAccess = true
-                    Task {
-                        do {
-                            try await HealthKitService.shared.requestAuthorization()
-                        } catch {
-                            dashboardLogger.error("Onboarding HealthKit auth failed: \(String(describing: error), privacy: .public)")
-                        }
-                    }
-                } label: {
-                    primaryLabel("Continue")
-                }
-                .padding(.horizontal, 24)
-            } else {
-                Button {
-                    if wantCalGoal, let cal = Double(calText), (500...50000).contains(cal) {
-                        goals.calorieGoal = cal
-                    } else {
-                        goals.calorieGoal = nil
-                    }
-                    if wantStepGoal, let step = Int(stepText), (100...500000).contains(step) {
-                        goals.stepGoal = step
-                    } else {
-                        goals.stepGoal = nil
-                    }
-                    goals.hasCompletedSetup = true
-                    dismiss()
-                } label: {
-                    primaryLabel("Get Started")
-                }
-                .disabled(!calValid || !stepValid)
-                .opacity(calValid && stepValid ? 1 : 0.5)
-                .padding(.horizontal, 24)
-
-                Button("Back") {
-                    step = 0
-                }
-                .font(.system(.subheadline, design: .rounded))
-                .foregroundStyle(Theme.textSecondary)
+            HStack(spacing: 5) {
+                Image(systemName: "lock.fill")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(Theme.stepsPrimary)
+                Text("Read-only. Stays on your device. No account.")
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
             }
+            .padding(.horizontal, 24)
+            .accessibilityElement(children: .combine)
+
+            Button {
+                if wantCalGoal, let cal = Double(calText), (500...50000).contains(cal) {
+                    goals.calorieGoal = cal
+                } else {
+                    goals.calorieGoal = nil
+                }
+                if wantStepGoal, let step = Int(stepText), (100...500000).contains(step) {
+                    goals.stepGoal = step
+                } else {
+                    goals.stepGoal = nil
+                }
+                goals.hasCompletedSetup = true
+                dismiss()
+            } label: {
+                primaryLabel("Get Started")
+            }
+            .disabled(!calValid || !stepValid)
+            .opacity(calValid && stepValid ? 1 : 0.5)
+            .padding(.horizontal, 24)
         }
         .padding(.top, 12)
         .padding(.bottom, 24)
@@ -1545,58 +1430,6 @@ private struct OnboardingSheet: View {
             .padding(.vertical, 14)
             .background(Theme.caloriesPrimary, in: RoundedRectangle(cornerRadius: 14))
             .foregroundStyle(.white)
-    }
-}
-
-private struct FeatureTier: View {
-    let title: String
-    let tint: Color
-    let symbol: String
-    let features: [String]
-    var prominent = false
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text(title)
-                .font(.system(.subheadline, design: .rounded, weight: .semibold))
-                .foregroundStyle(tint)
-            VStack(alignment: .leading, spacing: 10) {
-                ForEach(features, id: \.self) { feature in
-                    HStack(alignment: .top, spacing: 10) {
-                        Image(systemName: symbol)
-                            .font(.system(size: 15))
-                            .foregroundStyle(tint)
-                            .frame(width: 20)
-                        Text(feature)
-                            .font(.system(.subheadline, design: .rounded))
-                            .foregroundStyle(Theme.textPrimary)
-                            .fixedSize(horizontal: false, vertical: true)
-                        Spacer(minLength: 0)
-                    }
-                }
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(16)
-        .background {
-            RoundedRectangle(cornerRadius: 14)
-                .fill(Theme.cardSurface.opacity(prominent ? 0.78 : 0.5))
-            if prominent {
-                RoundedRectangle(cornerRadius: 14)
-                    .fill(
-                        LinearGradient(
-                            colors: [tint.opacity(0.18), Theme.cardSurface.opacity(0.2), Theme.caloriesPrimary.opacity(0.08)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-            }
-        }
-        .overlay {
-            RoundedRectangle(cornerRadius: 14)
-                .stroke(prominent ? tint.opacity(0.28) : Color.clear, lineWidth: 1)
-        }
-        .shadow(color: prominent ? tint.opacity(0.16) : .clear, radius: 16, x: 0, y: 8)
     }
 }
 
