@@ -174,15 +174,42 @@ struct VitalsApp: App {
     }
 }
 
+/// App-wide coordinator for routing intent-driven taps (locked Custom range,
+/// Net Deficit toggle, etc.) to the Vitals+ trial sheet. Child views set
+/// `pendingIntent` and `MainTabView` observes it to present the sheet, so the
+/// trial pitch is the high-converting first response to feature-tap intent
+/// rather than the bare hosted paywall.
+@MainActor
+final class TrialOfferCoordinator: ObservableObject {
+    static let shared = TrialOfferCoordinator()
+
+    enum Intent: String {
+        case lockedCustomRange
+        case lockedSummaryReport
+        case deepTrendsUpgrade
+        case netDeficitToggle
+        case activeRestingToggle
+        case settingsUpgradeRow
+    }
+
+    @Published var pendingIntent: Intent?
+
+    private init() {}
+
+    func request(_ intent: Intent) { pendingIntent = intent }
+    func clear() { pendingIntent = nil }
+}
+
 struct MainTabView: View {
     @EnvironmentObject private var store: StoreService
     @StateObject private var goals = GoalSettings.shared
+    @StateObject private var trialCoordinator = TrialOfferCoordinator.shared
     @State private var selectedTab = 0
     @State private var historyHasAppeared = false
     @State private var showTrialOffer = false
     @State private var showTrialPaywall = false
-    /// Which trigger opened the current trial offer, so dismissal records the
-    /// right one-shot flag.
+    /// Which trigger opened the current trial offer. Passive sources update the
+    /// cooldown timestamp on dismiss; intent taps bypass the cooldown entirely.
     @State private var trialOfferSource: TrialOfferSource = .launch
     /// True once the launch (1.5s) offer has been shown in *this* app session.
     /// Gates the history-load offer so the two never fire back-to-back — the
@@ -202,6 +229,7 @@ struct MainTabView: View {
     private enum TrialOfferSource {
         case launch
         case historyLoad
+        case intent
     }
 
     init() {
@@ -322,6 +350,21 @@ struct MainTabView: View {
         }
     }
 
+    /// Intent-driven entrypoint. Bypasses the passive cooldown so feature-tap
+    /// moments (locked Custom range, Net Deficit toggle, PDF icon) always get
+    /// the high-converting trial pitch when a trial product is available. Falls
+    /// back to the hosted paywall when no trial product is loaded.
+    private func handleIntentTap(_ intent: TrialOfferCoordinator.Intent) {
+        defer { trialCoordinator.clear() }
+        guard !store.isPro else { return }
+        guard !showTrialOffer, !showTrialPaywall else { return }
+        if hasTrialOffer {
+            presentTrialOffer(source: .intent)
+        } else {
+            showTrialPaywall = true
+        }
+    }
+
     var body: some View {
         ZStack(alignment: .bottom) {
             // Keep both views alive, toggle visibility. `.accessibilityHidden` on the
@@ -417,6 +460,10 @@ struct MainTabView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .vitalsHistoryDidFinishLoading)) { _ in
             evaluateHistoryTrialOffer()
+        }
+        .onChange(of: trialCoordinator.pendingIntent) { _, intent in
+            guard let intent else { return }
+            handleIntentTap(intent)
         }
         .sheet(isPresented: $showTrialOffer, onDismiss: {
             markTrialOfferSeen()

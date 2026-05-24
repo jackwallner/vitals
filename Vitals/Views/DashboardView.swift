@@ -1479,7 +1479,6 @@ private struct SettingsSheet: View {
     @State private var calText = ""
     @State private var stepEnabled = true
     @State private var stepText = ""
-    @State private var showPaywall = false
     @State private var appliedGoalDrafts = false
 
     private var calValid: Bool {
@@ -1512,7 +1511,7 @@ private struct SettingsSheet: View {
                     goals.showNetCalories = enabled
                 } else if enabled {
                     goals.showNetCalories = false
-                    showPaywall = true
+                    requestTrialOffer(.netDeficitToggle)
                 }
             }
         )
@@ -1526,10 +1525,21 @@ private struct SettingsSheet: View {
                     goals.showActiveRestingBreakdown = enabled
                 } else if enabled {
                     goals.showActiveRestingBreakdown = false
-                    showPaywall = true
+                    requestTrialOffer(.activeRestingToggle)
                 }
             }
         )
+    }
+
+    /// Dismiss the settings sheet first so the MainTabView-owned trial sheet
+    /// presents cleanly — stacking two sheets from sibling-ish hierarchies is
+    /// flaky in SwiftUI and the second sometimes drops silently.
+    private func requestTrialOffer(_ intent: TrialOfferCoordinator.Intent) {
+        dismiss()
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 350_000_000)
+            TrialOfferCoordinator.shared.request(intent)
+        }
     }
 
     private var showPacingBinding: Binding<Bool> {
@@ -1742,10 +1752,6 @@ private struct SettingsSheet: View {
                 stepText = goals.stepGoal.map { String($0) } ?? "10000"
                 Task { await store.updateCustomerProductStatus() }
             }
-            .sheet(isPresented: $showPaywall) {
-                PaywallView()
-                    .environmentObject(store)
-            }
         }
     }
 
@@ -1768,7 +1774,7 @@ private struct SettingsSheet: View {
                 }
             } else {
                 Button {
-                    showPaywall = true
+                    requestTrialOffer(.settingsUpgradeRow)
                 } label: {
                     HStack(spacing: 12) {
                         ZStack {
