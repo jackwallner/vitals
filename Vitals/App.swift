@@ -503,7 +503,8 @@ private struct PremiumFeaturesView: View {
                                 title: "Net Deficit",
                                 detail: "Burn minus Apple Health food on Today + History.",
                                 buttonTitle: "Enable",
-                                action: onOpenNetDeficit
+                                action: onOpenNetDeficit,
+                                isEnabled: goals.showNetCalories
                             )
                             PremiumActionRow(
                                 icon: "doc.richtext.fill",
@@ -569,20 +570,24 @@ private struct PremiumFeaturesView: View {
             } message: {
                 Text(reportErrorMessage ?? "")
             }
-            .overlay(alignment: .center) {
+            .safeAreaInset(edge: .top, spacing: 0) {
                 if isGeneratingReport {
-                    VStack(spacing: 12) {
+                    HStack(spacing: 10) {
                         LoadingBar(color: Theme.caloriesPrimary)
-                            .frame(width: 180)
+                            .frame(width: 60)
                         Text("Generating report…")
-                            .font(.system(.footnote, design: .rounded))
+                            .font(.system(.footnote, design: .rounded, weight: .medium))
                             .foregroundStyle(Theme.textSecondary)
                     }
-                    .padding(20)
-                    .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 16))
-                    .shadow(radius: 12)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(Theme.cardSurface, in: Capsule())
+                    .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
+                    .padding(.top, 4)
+                    .transition(.move(edge: .top).combined(with: .opacity))
                 }
             }
+            .animation(.easeInOut(duration: 0.2), value: isGeneratingReport)
         }
     }
 
@@ -816,6 +821,7 @@ private struct PremiumActionRow: View {
     let detail: String
     let buttonTitle: String
     let action: () -> Void
+    var isEnabled: Bool = false
 
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
@@ -834,15 +840,28 @@ private struct PremiumActionRow: View {
                     .lineLimit(2)
             }
             Spacer(minLength: 8)
-            Button(action: action) {
-                Text(buttonTitle)
-                    .font(.system(.caption, design: .rounded, weight: .bold))
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(Theme.caloriesGradient, in: Capsule())
+            if isEnabled {
+                HStack(spacing: 4) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 12, weight: .bold))
+                    Text("Enabled")
+                        .font(.system(.caption, design: .rounded, weight: .bold))
+                }
+                .foregroundStyle(Theme.stepsPrimary)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(Theme.stepsPrimary.opacity(0.15), in: Capsule())
+            } else {
+                Button(action: action) {
+                    Text(buttonTitle)
+                        .font(.system(.caption, design: .rounded, weight: .bold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(Theme.caloriesGradient, in: Capsule())
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 12)

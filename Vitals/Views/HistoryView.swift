@@ -1111,6 +1111,13 @@ struct HistoryView: View {
                         .padding(.top, 4)
                 }
 
+                if inflightLoads > 0 && !isLoading {
+                    LoadingBar(color: metric.tint)
+                        .frame(width: 120)
+                        .padding(.top, 8)
+                        .transition(.opacity)
+                }
+
                 if isLoading {
                     Spacer()
                     VStack(spacing: 14) {
@@ -2132,7 +2139,7 @@ private struct AverageCard: View {
                 .font(.system(.title3, design: .rounded, weight: .bold).monospacedDigit())
                 .foregroundStyle(color)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(Theme.cardPadding)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
         .accessibilityElement(children: .combine)
@@ -2167,7 +2174,7 @@ private struct PeakCard: View {
                 .font(.caption2)
                 .foregroundStyle(Theme.textTertiary)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(Theme.cardPadding)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
         .accessibilityElement(children: .combine)
@@ -2264,14 +2271,6 @@ private struct RecentDaysList: View {
                             .font(.system(.subheadline, design: .rounded))
                             .foregroundStyle(Theme.textSecondary)
                         Spacer()
-                        if let delta = row.delta, abs(delta.rounded()) >= 1 {
-                            HStack(spacing: 2) {
-                                Image(systemName: delta > 0 ? "arrow.up" : "arrow.down")
-                                Text(abs(delta).formatted(.number.precision(.fractionLength(0))))
-                            }
-                            .font(.system(.caption2, design: .rounded, weight: .semibold))
-                            .foregroundStyle(Theme.textTertiary)
-                        }
                         Text(row.valueText)
                             .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
                             .foregroundStyle(row.tint)
