@@ -109,7 +109,6 @@ struct HistoryView: View {
     @State private var pdfFile: PDFFile?
     @State private var pdfShareText = SummaryReportShareText.appStoreURL
     @State private var showPDFShareSheet = false
-    @State private var showPaywall = false
     @State private var isGeneratingPDF = false
     @State private var pdfErrorMessage: String?
     @State private var selectedCalorieDate: Date?
@@ -378,7 +377,7 @@ struct HistoryView: View {
                                 if store.isPro {
                                     showCustomRange = true
                                 } else {
-                                    showPaywall = true
+                                    TrialOfferCoordinator.shared.request(.lockedCustomRange)
                                 }
                             } else {
                                 selectedPeriod = period
@@ -531,7 +530,7 @@ struct HistoryView: View {
                                 insights: store.isPro ? deepTrendInsights : DeepTrendsBuilder.teaserInsights(currentRecords: records),
                                 highlights: store.isPro ? deepTrendHighlights : DeepTrendsBuilder.teaserHighlights(records: records),
                                 periodLabel: deepTrendsPeriodLabel,
-                                onUpgrade: { showPaywall = true }
+                                onUpgrade: { TrialOfferCoordinator.shared.request(.deepTrendsUpgrade) }
                             )
 
                             CoachPromoCard()
@@ -619,10 +618,6 @@ struct HistoryView: View {
         } message: {
             Text("Could not save the export file. Please try again.")
         }
-        .sheet(isPresented: $showPaywall) {
-            PaywallView()
-                .environmentObject(store)
-        }
         .sheet(isPresented: $showPDFShareSheet, onDismiss: {
             if let pdfFile {
                 try? FileManager.default.removeItem(at: pdfFile.url)
@@ -693,7 +688,7 @@ struct HistoryView: View {
 
     private func handleSummaryReportTap() {
         if !store.isPro {
-            showPaywall = true
+            TrialOfferCoordinator.shared.request(.lockedSummaryReport)
             return
         }
         Task { await generateSummaryPDF() }
@@ -1083,7 +1078,7 @@ struct HistoryView: View {
                         if store.isPro {
                             showCustomRange = true
                         } else {
-                            showPaywall = true
+                            TrialOfferCoordinator.shared.request(.lockedCustomRange)
                         }
                     } else {
                         selectedPeriod = period
@@ -1173,10 +1168,6 @@ struct HistoryView: View {
                 Task { await loadHistory() }
             }
             .presentationDetents([.medium])
-        }
-        .sheet(isPresented: $showPaywall) {
-            PaywallView()
-                .environmentObject(store)
         }
     }
 
