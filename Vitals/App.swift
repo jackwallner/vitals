@@ -191,6 +191,19 @@ final class TrialOfferCoordinator: ObservableObject {
         case activeRestingToggle
         case settingsUpgradeRow
         case milestoneCelebration
+
+        /// The Vitals+ feature this tap reached for, so the pitch can lead with
+        /// it. `nil` for entrypoints with no single feature (the generic
+        /// Settings upgrade row, milestone celebrations).
+        var focusFeature: PlusFeature? {
+            switch self {
+            case .netDeficitToggle: .netDeficit
+            case .activeRestingToggle: .activeResting
+            case .deepTrendsUpgrade: .deepTrends
+            case .lockedCustomRange, .lockedSummaryReport: .customRangesPDF
+            case .settingsUpgradeRow, .milestoneCelebration: nil
+            }
+        }
     }
 
     @Published var pendingIntent: Intent?
@@ -250,6 +263,9 @@ struct MainTabView: View {
     @State private var trialOfferPackage: Package?
     @State private var trialOfferUsesDirectPurchase = false
     @State private var trialOfferDetent: PresentationDetent = .fraction(0.85)
+    /// The feature an intent tap reached for, so the trial sheet (and the plan
+    /// picker it can chain into) lead with it. `nil` for passive offers.
+    @State private var trialOfferFocus: PlusFeature?
 
     private enum TrialOfferSource {
         case launch
@@ -284,8 +300,9 @@ struct MainTabView: View {
         trialOfferUsesDirectPurchase
     }
 
-    private func presentTrialOffer(source: TrialOfferSource) {
+    private func presentTrialOffer(source: TrialOfferSource, focus: PlusFeature? = nil) {
         trialOfferSource = source
+        trialOfferFocus = focus
         trialOfferPackage = directTrialPackage
         trialOfferUsesDirectPurchase = trialOfferPackage != nil
         trialOfferDetent = .fraction(0.85)
@@ -383,8 +400,10 @@ struct MainTabView: View {
         defer { trialCoordinator.clear() }
         guard !store.isPro else { return }
         guard !showTrialOffer, !showTrialPaywall else { return }
+        let focus = intent.focusFeature
+        trialOfferFocus = focus
         if hasTrialOffer {
-            presentTrialOffer(source: .intent)
+            presentTrialOffer(source: .intent, focus: focus)
         } else {
             showTrialPaywall = true
         }
@@ -537,6 +556,7 @@ struct MainTabView: View {
             }
         }) {
             TrialOfferSheet(
+                focus: trialOfferFocus,
                 offerLabel: trialOfferPackage?.vitalsIntroOfferLabel ?? store.products.compactMap(\.vitalsIntroOfferLabel).first,
                 priceLabel: trialOfferPackage?.vitalsPriceLabel,
                 directPurchase: trialOfferIsDirect,
@@ -562,8 +582,8 @@ struct MainTabView: View {
             .presentationDragIndicator(.visible)
             .interactiveDismissDisabled(trialPurchaseInFlight)
         }
-        .sheet(isPresented: $showTrialPaywall) {
-            PaywallView()
+        .sheet(isPresented: $showTrialPaywall, onDismiss: { trialOfferFocus = nil }) {
+            PaywallView(focus: trialOfferFocus)
                 .environmentObject(store)
                 // `.task` runs once per sheet presentation — the correct hook
                 // for a one-shot impression (unlike onAppear, which re-fires).
@@ -1030,6 +1050,9 @@ private struct PremiumAccountRow: View {
 }
 
 private struct TrialOfferSheet: View {
+    /// When set, the sheet leads with and highlights this feature instead of the
+    /// generic toolkit pitch. `nil` for passive launch/history nudges.
+    let focus: PlusFeature?
     let offerLabel: String?
     /// Recurring price after the trial, e.g. "$29.99 / year". Only required in
     /// `directPurchase` mode (Apple 3.1.2 needs price + terms before purchase).
@@ -1051,6 +1074,7 @@ private struct TrialOfferSheet: View {
     /// trial-bearing product yet, but in practice `directTrialPackage` gates the
     /// pitch so `offerLabel` is almost always present.
     private var headline: String {
+        if let focus { return focus.pitchHeadline }
         if let offerLabel {
             return "\(offerLabel.capitalized), on us."
         }
@@ -1058,32 +1082,22 @@ private struct TrialOfferSheet: View {
     }
 
     private var subheadline: String {
-        offerLabel != nil
+        if let focus {
+            return offerLabel != nil
+                ? focus.pitchSubheadline + " Free during your trial."
+                : focus.pitchSubheadline
+        }
+        return offerLabel != nil
             ? "Unlock the full Vitals+ toolkit free. No charge until your trial ends."
             : "Unlock the full Vitals+ toolkit free for eligible new subscribers."
     }
 
-    private var trialBullets: [TrialBullet] {
-        [
-            TrialBullet(
-                icon: "plus.forwardslash.minus",
-                tint: Theme.netDeficitBrand,
-                title: "Net Deficit, live",
-                detail: "Calories burned minus food logged in Apple Health, updated all day."
-            ),
-            TrialBullet(
-                icon: "chart.line.uptrend.xyaxis",
-                tint: Theme.stepsPrimary,
-                title: "Deep Trends",
-                detail: "Every period compared head-to-head with the one before it."
-            ),
-            TrialBullet(
-                icon: "calendar.badge.clock",
-                tint: Theme.stepsSecondary,
-                title: "Custom date ranges + PDF reports",
-                detail: "Pick any window in History, export a clean summary for your coach."
-            )
-        ]
+    /// Three bullets, with the focused feature pulled to the front so the user
+    /// sees what they tapped for first. Generic order when there's no focus.
+    private var bulletFeatures: [PlusFeature] {
+        let base: [PlusFeature] = [.netDeficit, .deepTrends, .customRangesPDF]
+        guard let focus else { return base }
+        return Array(([focus] + base.filter { $0 != focus }).prefix(3))
     }
 
     /// Repeat-forever animation timing for the ambient glow. Scoped to the
@@ -1163,8 +1177,16 @@ private struct TrialOfferSheet: View {
                 }
 
                 VStack(spacing: 10) {
-                    ForEach(trialBullets) { bullet in
-                        TrialBulletRow(bullet: bullet)
+                    ForEach(bulletFeatures, id: \.self) { feature in
+                        TrialBulletRow(
+                            bullet: TrialBullet(
+                                icon: feature.icon,
+                                tint: feature.tint,
+                                title: feature.title,
+                                detail: feature.detail
+                            ),
+                            highlighted: feature == focus
+                        )
                     }
                 }
                 .padding(.horizontal, 4)
@@ -1430,6 +1452,9 @@ private struct TrialBullet: Identifiable {
 
 private struct TrialBulletRow: View {
     let bullet: TrialBullet
+    /// The feature the user tapped for: render it with a stronger tinted fill and
+    /// border so it reads as the headline benefit of this pitch.
+    var highlighted: Bool = false
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
@@ -1457,11 +1482,11 @@ private struct TrialBulletRow: View {
         .padding(.vertical, 10)
         .background {
             RoundedRectangle(cornerRadius: 12)
-                .fill(Theme.cardSurface.opacity(0.55))
+                .fill(highlighted ? bullet.tint.opacity(0.12) : Theme.cardSurface.opacity(0.55))
         }
         .overlay {
             RoundedRectangle(cornerRadius: 12)
-                .stroke(bullet.tint.opacity(0.18), lineWidth: 1)
+                .stroke(bullet.tint.opacity(highlighted ? 0.45 : 0.18), lineWidth: highlighted ? 1.5 : 1)
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(bullet.title). \(bullet.detail)")

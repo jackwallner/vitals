@@ -9,6 +9,86 @@ enum PaywallLinks {
     static let standardEULA = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
 }
 
+/// A single Vitals+ capability. The one source of truth for paywall copy, so the
+/// trial sheet and the full plan picker stay in sync. When a pitch is triggered
+/// by tapping a specific locked feature, that feature becomes the `focus` — the
+/// pitch then leads with and highlights it instead of a generic "unlock
+/// everything" message.
+enum PlusFeature: CaseIterable {
+    case netDeficit
+    case activeResting
+    case deepTrends
+    case customRangesPDF
+
+    var icon: String {
+        switch self {
+        case .netDeficit: "plus.forwardslash.minus"
+        case .activeResting: "flame.fill"
+        case .deepTrends: "chart.line.uptrend.xyaxis"
+        case .customRangesPDF: "calendar.badge.clock"
+        }
+    }
+
+    var tint: Color {
+        switch self {
+        case .netDeficit: Theme.netDeficitBrand
+        case .activeResting: Theme.caloriesPrimary
+        case .deepTrends: Theme.stepsPrimary
+        case .customRangesPDF: Theme.stepsSecondary
+        }
+    }
+
+    /// Short title for compact bullet rows (trial sheet).
+    var title: String {
+        switch self {
+        case .netDeficit: "Net Deficit, live"
+        case .activeResting: "Active vs. resting calories"
+        case .deepTrends: "Deep Trends"
+        case .customRangesPDF: "Custom ranges + PDF reports"
+        }
+    }
+
+    /// One-line supporting detail for bullet rows.
+    var detail: String {
+        switch self {
+        case .netDeficit: "Calories burned minus food logged in Apple Health, updated all day."
+        case .activeResting: "Split your burn into active and resting to see what moved the number."
+        case .deepTrends: "Every period compared head-to-head with the one before it."
+        case .customRangesPDF: "Pick any window in History and export a clean summary for your coach."
+        }
+    }
+
+    /// Single-line label used in the plan picker's flat feature list.
+    var featureListTitle: String {
+        switch self {
+        case .netDeficit: "Net Deficit, live: burned minus food logged"
+        case .activeResting: "Active vs. resting calorie breakdown"
+        case .deepTrends: "Deep Trends: every period vs. the one before"
+        case .customRangesPDF: "Custom date ranges + PDF reports"
+        }
+    }
+
+    /// Hero headline when this feature is the focus of the pitch.
+    var pitchHeadline: String {
+        switch self {
+        case .netDeficit: "Net Deficit, live."
+        case .activeResting: "Break down every calorie."
+        case .deepTrends: "See your trends, deeper."
+        case .customRangesPDF: "Any range. Clean PDF reports."
+        }
+    }
+
+    /// Supporting line when this feature is the focus of the pitch.
+    var pitchSubheadline: String {
+        switch self {
+        case .netDeficit: "See calories burned minus the food you log, updated all day — plus the rest of Vitals+."
+        case .activeResting: "Split active vs. resting burn to see what's really moving your number — plus the rest of Vitals+."
+        case .deepTrends: "Compare every period head-to-head with the one before — plus the rest of Vitals+."
+        case .customRangesPDF: "Pick any date window and export a polished report for your coach — plus the rest of Vitals+."
+        }
+    }
+}
+
 /// Native, self-hosted Vitals+ paywall. Purchases still flow through
 /// `StoreService.purchase` → `Purchases.shared.purchase`, so RevenueCat records
 /// every transaction, trial start, and renewal exactly as it did with the
@@ -24,19 +104,22 @@ struct PaywallView: View {
     /// tab bar handles navigation, so a built-in close button looks off.
     var displayCloseButton: Bool = true
 
+    /// When set (an intent-driven presentation), the list leads with and
+    /// highlights this feature. `nil` for the generic Upgrade tab.
+    var focus: PlusFeature? = nil
+
     @State private var selectedPackage: Package?
     @State private var isPurchasing = false
     @State private var errorMessage: String?
     @State private var restoreMessage: String?
     @State private var isRestoring = false
 
-    private var features: [(icon: String, tint: Color, title: String)] {
-        [
-            ("plus.forwardslash.minus", Theme.netDeficitBrand, "Net Deficit, live: burned minus food logged"),
-            ("chart.line.uptrend.xyaxis", Theme.stepsPrimary, "Deep Trends: every period vs. the one before"),
-            ("calendar.badge.clock", Theme.stepsSecondary, "Custom date ranges + PDF reports"),
-            ("flame.fill", Theme.caloriesPrimary, "Active vs. resting calorie breakdown")
-        ]
+    /// All features, with the focused one pulled to the front so the user sees
+    /// what they tapped for first.
+    private var orderedFeatures: [PlusFeature] {
+        let base: [PlusFeature] = [.netDeficit, .deepTrends, .customRangesPDF, .activeResting]
+        guard let focus else { return base }
+        return [focus] + base.filter { $0 != focus }
     }
 
     var body: some View {
@@ -125,26 +208,36 @@ struct PaywallView: View {
             Text("Vitals+")
                 .font(.system(.title, design: .rounded, weight: .bold))
                 .foregroundStyle(Theme.textPrimary)
-            Text("Everything in Vitals, fully unlocked.")
+            Text(focus?.pitchSubheadline ?? "Everything in Vitals, fully unlocked.")
                 .font(.system(.subheadline, design: .rounded))
                 .foregroundStyle(Theme.textSecondary)
                 .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
     private var featureList: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            ForEach(features, id: \.title) { feature in
+        VStack(alignment: .leading, spacing: 10) {
+            ForEach(orderedFeatures, id: \.self) { feature in
+                let highlighted = feature == focus
                 HStack(spacing: 12) {
                     Image(systemName: feature.icon)
                         .font(.system(size: 15, weight: .semibold))
                         .foregroundStyle(feature.tint)
                         .frame(width: 24)
-                    Text(feature.title)
-                        .font(.system(.subheadline, design: .rounded))
+                    Text(feature.featureListTitle)
+                        .font(.system(.subheadline, design: .rounded, weight: highlighted ? .semibold : .regular))
                         .foregroundStyle(Theme.textPrimary)
                         .fixedSize(horizontal: false, vertical: true)
                     Spacer(minLength: 0)
+                }
+                .padding(.horizontal, highlighted ? 12 : 0)
+                .padding(.vertical, highlighted ? 10 : 0)
+                .background {
+                    if highlighted {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(feature.tint.opacity(0.1))
+                    }
                 }
             }
         }
