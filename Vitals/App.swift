@@ -513,6 +513,15 @@ struct MainTabView: View {
             guard let event else { return }
             handleMilestone(event)
         }
+        // Vitals+ tab content stays in the hierarchy (opacity-toggled), so the
+        // paywall's own lifecycle hooks can't tell when it's actually on screen.
+        // Fire the impression on the real visibility transition instead, and
+        // only when the paywall (not the Pro features view) is what renders.
+        .onChange(of: selectedTab) { _, tab in
+            if tab == 2, !store.isPro {
+                store.trackPaywallImpression(id: "vitals_upgrade_tab")
+            }
+        }
         .sheet(isPresented: $showTrialOffer, onDismiss: {
             markTrialOfferSeen()
             trialPurchaseInFlight = false
@@ -554,7 +563,11 @@ struct MainTabView: View {
             .interactiveDismissDisabled(trialPurchaseInFlight)
         }
         .sheet(isPresented: $showTrialPaywall) {
-            PaywallView().environmentObject(store)
+            PaywallView()
+                .environmentObject(store)
+                // `.task` runs once per sheet presentation — the correct hook
+                // for a one-shot impression (unlike onAppear, which re-fires).
+                .task { store.trackPaywallImpression(id: "vitals_trial_sheet") }
         }
         .sheet(isPresented: $showMilestone, onDismiss: {
             let chainTrial = pendingTrialAfterMilestoneDismiss

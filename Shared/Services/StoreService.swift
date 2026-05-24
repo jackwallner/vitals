@@ -218,6 +218,22 @@ final class StoreService: NSObject, ObservableObject {
         return introEligibility[package.storeProduct.productIdentifier] ?? true
     }
 
+    /// Reports a custom-paywall impression to RevenueCat so the native paywall
+    /// still feeds RC's impression count, conversion %, and experiment
+    /// enrollment (the hosted paywall did this automatically; there is no
+    /// custom-paywall *close* event in the SDK, so conversion is derived from
+    /// impression-vs-purchase). `id` distinguishes entry points. Must be called
+    /// exactly once per real presentation — never from a re-firing `onAppear`.
+    func trackPaywallImpression(id: String) {
+        configureIfNeeded()
+        #if DEBUG
+        if ScreenshotConfig.isEnabled { return }
+        #endif
+        Purchases.shared.trackCustomPaywallImpression(
+            CustomPaywallImpressionParams(paywallId: id)
+        )
+    }
+
     /// Performs a RevenueCat package purchase and updates customer info.
     @discardableResult
     func purchase(_ product: Package) async throws -> PurchaseState {
