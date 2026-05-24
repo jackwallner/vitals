@@ -1309,9 +1309,15 @@ private struct MetricPill: View {
 // MARK: - Onboarding Sheet (first launch only)
 
 private struct OnboardingSheet: View {
+    private enum Step {
+        case welcome
+        case goals
+    }
+
     @ObservedObject var goals: GoalSettings
     @Environment(\.dismiss) private var dismiss
 
+    @State private var step: Step = .welcome
     @State private var wantCalGoal = true
     @State private var calText = "2500"
     @State private var wantStepGoal = true
@@ -1330,22 +1336,66 @@ private struct OnboardingSheet: View {
         NavigationStack {
             VStack(spacing: 0) {
                 ScrollView {
-                    goalsPage
-                        .padding(.top, 48)
-                        .padding(.bottom, 24)
+                    Group {
+                        switch step {
+                        case .welcome: welcomePage
+                        case .goals: goalsPage
+                        }
+                    }
+                    .padding(.top, 48)
+                    .padding(.bottom, 24)
                 }
 
                 bottomBar
             }
         }
-        .task {
-            guard !hasRequestedHealthAccess else { return }
-            hasRequestedHealthAccess = true
-            do {
-                try await HealthKitService.shared.requestAuthorization()
-            } catch {
-                dashboardLogger.error("Onboarding HealthKit auth failed: \(String(describing: error), privacy: .public)")
+    }
+
+    /// Fire the HealthKit prompt once, when the user leaves the welcome screen —
+    /// never on appear, so the first thing they see is our heads-up rather than
+    /// the system permission sheet.
+    private func requestHealthAccessIfNeeded() async {
+        guard !hasRequestedHealthAccess else { return }
+        hasRequestedHealthAccess = true
+        do {
+            try await HealthKitService.shared.requestAuthorization()
+        } catch {
+            dashboardLogger.error("Onboarding HealthKit auth failed: \(String(describing: error), privacy: .public)")
+        }
+    }
+
+    private var welcomePage: some View {
+        VStack(spacing: 28) {
+            VStack(spacing: 12) {
+                Image(systemName: "heart.text.square.fill")
+                    .font(.system(size: 56))
+                    .foregroundStyle(Theme.caloriesGradient)
+                Text("Welcome to Total Calories")
+                    .font(.system(.largeTitle, design: .rounded, weight: .bold))
+                    .multilineTextAlignment(.center)
+                Text("Track your calories and steps from Apple Health in one simple view.")
+                    .font(.system(.subheadline, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 24)
             }
+
+            VStack(spacing: 16) {
+                WelcomePoint(
+                    icon: "heart.fill",
+                    color: Theme.caloriesPrimary,
+                    title: "Reads from Apple Health",
+                    detail: "Next we’ll ask permission to read your active and resting calories and steps. The app only reads — it never writes anything back."
+                )
+                WelcomePoint(
+                    icon: "lock.fill",
+                    color: Theme.stepsPrimary,
+                    title: "Stays on your device",
+                    detail: "Your health data never leaves your iPhone. No account, no cloud sync."
+                )
+            }
+            .padding(.horizontal, 24)
         }
     }
 
@@ -1408,6 +1458,13 @@ private struct OnboardingSheet: View {
 
     @ViewBuilder
     private var bottomBar: some View {
+        switch step {
+        case .welcome: welcomeBottomBar
+        case .goals: goalsBottomBar
+        }
+    }
+
+    private var welcomeBottomBar: some View {
         VStack(spacing: 12) {
             HStack(spacing: 5) {
                 Image(systemName: "lock.fill")
@@ -1422,6 +1479,21 @@ private struct OnboardingSheet: View {
             .padding(.horizontal, 24)
             .accessibilityElement(children: .combine)
 
+            Button {
+                Task { await requestHealthAccessIfNeeded() }
+                withAnimation(.easeInOut(duration: 0.25)) { step = .goals }
+            } label: {
+                primaryLabel("Continue")
+            }
+            .padding(.horizontal, 24)
+        }
+        .padding(.top, 12)
+        .padding(.bottom, 24)
+        .background(Theme.background)
+    }
+
+    private var goalsBottomBar: some View {
+        VStack(spacing: 12) {
             Button {
                 if wantCalGoal, let cal = Double(calText), (500...50000).contains(cal) {
                     goals.calorieGoal = cal
@@ -1454,6 +1526,36 @@ private struct OnboardingSheet: View {
             .padding(.vertical, 14)
             .background(Theme.caloriesPrimary, in: RoundedRectangle(cornerRadius: 14))
             .foregroundStyle(.white)
+    }
+}
+
+private struct WelcomePoint: View {
+    let icon: String
+    let color: Color
+    let title: String
+    let detail: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 14) {
+            Image(systemName: icon)
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(color)
+                .frame(width: 28)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
+                    .font(.system(.headline, design: .rounded))
+                    .foregroundStyle(Theme.textPrimary)
+                Text(detail)
+                    .font(.system(.subheadline, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.cardSurface.opacity(0.5), in: RoundedRectangle(cornerRadius: 14))
+        .accessibilityElement(children: .combine)
     }
 }
 
