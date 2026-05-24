@@ -267,15 +267,13 @@ struct MainTabView: View {
     }
 
     private func evaluateTrialOffer() {
-        // One-time offer for existing non-Pro users. We require:
-        // - onboarding finished (so first-launch users aren't double-prompted)
-        // - not already Pro
-        // - haven't seen the trial offer before
-        // - a real trial product loaded from the store
-        // - they're on the Today tab (don't fight with the Vitals+ tab paywall)
+        // Passive launch nudge: gated by [[GoalSettings.passiveTrialOfferAllowed]]
+        // so the user re-encounters it after a 14-day cooldown rather than
+        // being killed forever by a single "Not now". Intent-driven taps
+        // bypass this cooldown.
         guard goals.hasCompletedSetup,
               !store.isPro,
-              !goals.hasSeenTrialOffer,
+              goals.passiveTrialOfferAllowed(),
               hasTrialOffer,
               selectedTab == 0
         else { return }
@@ -289,23 +287,20 @@ struct MainTabView: View {
             // History or Vitals+ during the wait, in which case this pitch would
             // pop over the wrong tab.
             guard selectedTab == 0 else { return }
-            if !goals.hasSeenTrialOffer && !store.isPro {
+            if goals.passiveTrialOfferAllowed() && !store.isPro {
                 launchOfferShownThisSession = true
                 presentTrialOffer(source: .launch)
             }
         }
     }
 
-    /// Second-touch trial nudge: fires when History finishes loading. Originally
-    /// gated on the launch offer having already been shown in a prior session,
-    /// but that meant users whose products failed to load on session 1 never saw
-    /// either pitch. Now it fires whenever the launch offer hasn't run *this*
-    /// session — that still prevents back-to-back pitches, while letting History
-    /// act as the primary path when the launch path didn't fire.
+    /// Second-touch trial nudge: fires when History finishes loading. Subject to
+    /// the same 14-day passive cooldown, and additionally gated so it never
+    /// fires back-to-back with the launch offer in the same session.
     private func evaluateHistoryTrialOffer() {
         guard goals.hasCompletedSetup,
               !store.isPro,
-              !goals.hasSeenHistoryTrialOffer,
+              goals.passiveHistoryTrialOfferAllowed(),
               !launchOfferShownThisSession,
               hasTrialOffer,
               selectedTab == 1,
@@ -315,11 +310,15 @@ struct MainTabView: View {
         presentTrialOffer(source: .historyLoad)
     }
 
-    /// Records the one-shot flag for whichever trigger opened the offer.
+    /// Records the last-shown timestamp for whichever trigger opened the offer.
+    /// Both intent and passive presentations update the timestamp — the
+    /// cooldown then naturally suppresses passive surfaces while still letting
+    /// intent taps fire on demand.
     private func markTrialOfferSeen() {
-        goals.hasSeenTrialOffer = true
+        let now = Date()
+        goals.lastTrialOfferShownDate = now
         if trialOfferSource == .historyLoad {
-            goals.hasSeenHistoryTrialOffer = true
+            goals.lastHistoryTrialOfferShownDate = now
         }
     }
 
