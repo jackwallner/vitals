@@ -190,6 +190,7 @@ final class TrialOfferCoordinator: ObservableObject {
         case netDeficitToggle
         case activeRestingToggle
         case settingsUpgradeRow
+        case milestoneCelebration
     }
 
     @Published var pendingIntent: Intent?
@@ -200,14 +201,38 @@ final class TrialOfferCoordinator: ObservableObject {
     func clear() { pendingIntent = nil }
 }
 
+/// App-wide coordinator for celebratory milestone sheets (goal streaks, month
+/// recaps). Feature views compute the milestone and post via `request`;
+/// `MainTabView` owns the actual sheet presentation.
+@MainActor
+final class MilestoneCoordinator: ObservableObject {
+    static let shared = MilestoneCoordinator()
+
+    @Published var pendingEvent: MilestoneEvent?
+
+    private init() {}
+
+    func request(_ event: MilestoneEvent) { pendingEvent = event }
+    func clear() { pendingEvent = nil }
+}
+
 struct MainTabView: View {
     @EnvironmentObject private var store: StoreService
     @StateObject private var goals = GoalSettings.shared
     @StateObject private var trialCoordinator = TrialOfferCoordinator.shared
+    @StateObject private var milestoneCoordinator = MilestoneCoordinator.shared
     @State private var selectedTab = 0
     @State private var historyHasAppeared = false
     @State private var showTrialOffer = false
     @State private var showTrialPaywall = false
+    @State private var showMilestone = false
+    @State private var pendingMilestone: MilestoneEvent?
+    /// Set when the user taps the CTA inside a milestone sheet. Read in the
+    /// milestone sheet's onDismiss to chain the trial offer once it's gone —
+    /// same one-sheet-at-a-time constraint as the trial→paywall chain.
+    @State private var pendingTrialAfterMilestoneDismiss = false
+    /// Guards against more than one milestone celebration per app session.
+    @State private var milestoneShownThisSession = false
     /// Which trigger opened the current trial offer. Passive sources update the
     /// cooldown timestamp on dismiss; intent taps bypass the cooldown entirely.
     @State private var trialOfferSource: TrialOfferSource = .launch
@@ -365,6 +390,22 @@ struct MainTabView: View {
         }
     }
 
+    /// Presents a celebratory milestone sheet at most once per session, for
+    /// non-Pro users only (Pro users have nothing to upsell). Records the
+    /// milestone id immediately so the same achievement never re-fires.
+    private func handleMilestone(_ event: MilestoneEvent) {
+        defer { milestoneCoordinator.clear() }
+        guard !store.isPro,
+              !milestoneShownThisSession,
+              !goals.firedMilestoneIds.contains(event.id),
+              !showTrialOffer, !showTrialPaywall, !showMilestone
+        else { return }
+        goals.firedMilestoneIds.insert(event.id)
+        milestoneShownThisSession = true
+        pendingMilestone = event
+        showMilestone = true
+    }
+
     var body: some View {
         ZStack(alignment: .bottom) {
             // Keep both views alive, toggle visibility. `.accessibilityHidden` on the
@@ -456,7 +497,10 @@ struct MainTabView: View {
             if done { evaluateTrialOffer() }
         }
         .onChange(of: store.isPro) { _, isPro in
-            if isPro { showTrialOffer = false }
+            if isPro {
+                showTrialOffer = false
+                showMilestone = false
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .vitalsHistoryDidFinishLoading)) { _ in
             evaluateHistoryTrialOffer()
@@ -464,6 +508,10 @@ struct MainTabView: View {
         .onChange(of: trialCoordinator.pendingIntent) { _, intent in
             guard let intent else { return }
             handleIntentTap(intent)
+        }
+        .onChange(of: milestoneCoordinator.pendingEvent) { _, event in
+            guard let event else { return }
+            handleMilestone(event)
         }
         .sheet(isPresented: $showTrialOffer, onDismiss: {
             markTrialOfferSeen()
@@ -507,6 +555,29 @@ struct MainTabView: View {
         }
         .sheet(isPresented: $showTrialPaywall) {
             PaywallView().environmentObject(store)
+        }
+        .sheet(isPresented: $showMilestone, onDismiss: {
+            let chainTrial = pendingTrialAfterMilestoneDismiss
+            pendingTrialAfterMilestoneDismiss = false
+            pendingMilestone = nil
+            // Chain the trial offer after the celebration sheet has fully
+            // dismissed (one-sheet-at-a-time constraint again).
+            if chainTrial {
+                handleIntentTap(.milestoneCelebration)
+            }
+        }) {
+            if let pendingMilestone {
+                MilestoneCelebrationSheet(
+                    event: pendingMilestone,
+                    onContinue: {
+                        pendingTrialAfterMilestoneDismiss = true
+                        showMilestone = false
+                    },
+                    onDismiss: { showMilestone = false }
+                )
+                .presentationDetents([.fraction(0.7), .large])
+                .presentationDragIndicator(.visible)
+            }
         }
     }
 
@@ -1202,6 +1273,137 @@ private struct TrialOfferSheet: View {
             .allowsHitTesting(false)
             .animation(shimmerAnimation, value: shimmerPhase)
         }
+    }
+}
+
+/// Celebratory sheet shown when the user hits a goal streak or completes a
+/// reviewable month. Frames Vitals+ as the natural "go deeper" next step —
+/// "you've earned this" rather than "buy this". The CTA chains into the trial
+/// offer; dismissing just closes.
+private struct MilestoneCelebrationSheet: View {
+    let event: MilestoneEvent
+    let onContinue: () -> Void
+    let onDismiss: () -> Void
+
+    private var heroIcon: String {
+        switch event {
+        case .goalStreak: return "flame.fill"
+        case .monthReview: return "calendar"
+        }
+    }
+
+    private var headline: String {
+        switch event {
+        case .goalStreak(let n): return "\(n)-day streak!"
+        case .monthReview(let month, _): return "\(Self.monthName(month)) recap"
+        }
+    }
+
+    private var subheadline: String {
+        switch event {
+        case .goalStreak(let n):
+            return "You hit your goal \(n) days in a row. That consistency is the whole game."
+        case .monthReview(_, let days):
+            return "You logged \(days) days last month. There's a story in that data worth seeing."
+        }
+    }
+
+    private var bullets: [TrialBullet] {
+        [
+            TrialBullet(
+                icon: "chart.line.uptrend.xyaxis",
+                tint: Theme.stepsPrimary,
+                title: "Deep Trends",
+                detail: "See how this run stacks up against your past — period over period."
+            ),
+            TrialBullet(
+                icon: "doc.richtext.fill",
+                tint: Theme.caloriesPrimary,
+                title: "PDF report",
+                detail: "Export a clean summary of this milestone to keep or share with a coach."
+            )
+        ]
+    }
+
+    var body: some View {
+        ZStack {
+            Theme.background.ignoresSafeArea()
+            VStack(spacing: 18) {
+                ZStack {
+                    Circle()
+                        .fill(Theme.caloriesGradient)
+                        .frame(width: 76, height: 76)
+                        .shadow(color: Theme.caloriesPrimary.opacity(0.4), radius: 16, x: 0, y: 6)
+                    Image(systemName: heroIcon)
+                        .font(.system(size: 30, weight: .bold))
+                        .foregroundStyle(.white)
+                }
+                .padding(.top, 24)
+
+                VStack(spacing: 6) {
+                    Text(headline)
+                        .font(.system(.title, design: .rounded, weight: .bold))
+                        .foregroundStyle(Theme.textPrimary)
+                        .multilineTextAlignment(.center)
+                    Text(subheadline)
+                        .font(.system(.subheadline, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.horizontal, 12)
+                }
+
+                VStack(spacing: 10) {
+                    ForEach(bullets) { bullet in
+                        TrialBulletRow(bullet: bullet)
+                    }
+                }
+                .padding(.horizontal, 4)
+
+                Spacer(minLength: 0)
+
+                VStack(spacing: 10) {
+                    Button(action: onContinue) {
+                        Text("Explore with Vitals+")
+                            .font(.system(.headline, design: .rounded, weight: .bold))
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 14)
+                            .background(Theme.caloriesGradient, in: Capsule())
+                    }
+                    .buttonStyle(.plain)
+
+                    Button(action: onDismiss) {
+                        Text("Maybe later")
+                            .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                            .foregroundStyle(Theme.textSecondary)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 8)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 24)
+        }
+    }
+
+    /// "2025-04" → "April". Falls back to the raw key if parsing fails.
+    private static func monthName(_ key: String) -> String {
+        let parts = key.split(separator: "-")
+        guard parts.count == 2, let month = Int(parts[1]), (1...12).contains(month) else {
+            return key
+        }
+        var comps = DateComponents()
+        comps.month = month
+        comps.day = 1
+        comps.year = Int(parts[0])
+        let formatter = DateFormatter()
+        formatter.dateFormat = "LLLL"
+        if let date = Calendar.current.date(from: comps) {
+            return formatter.string(from: date)
+        }
+        return key
     }
 }
 

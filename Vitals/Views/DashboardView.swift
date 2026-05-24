@@ -1114,6 +1114,7 @@ struct DashboardView: View {
                 do {
                     let history = try await healthKit.fetchHistory(days: 90)
                     try healthKit.saveHistoryToCache(history: history)
+                    await checkGoalStreakMilestone(history: history)
                 } catch {
                     dashboardLogger.error("Background history cache sync failed: \(String(describing: error), privacy: .public)")
                 }
@@ -1140,6 +1141,29 @@ struct DashboardView: View {
             dietaryEnergyFetchFailed = false
             showLoadedStateIfNeeded()
         }
+    }
+
+    /// Detects whether the user has reached an uncelebrated goal-streak tier and,
+    /// if so, asks the milestone coordinator to surface a celebration. Non-Pro
+    /// gating and one-per-session limits live in the coordinator's handler.
+    @MainActor
+    private func checkGoalStreakMilestone(
+        history: [(date: Date, active: Double, resting: Double, steps: Int)]
+    ) {
+        guard !store.isPro else { return }
+        let days = history.map {
+            MilestoneDay(date: $0.date, calories: $0.active + $0.resting, steps: $0.steps)
+        }
+        let streak = MilestoneCalculator.currentGoalStreak(
+            records: days,
+            calorieGoal: goals.calorieGoal,
+            stepGoal: goals.stepGoal
+        )
+        guard let milestone = MilestoneCalculator.unfiredStreakMilestone(
+            currentStreak: streak,
+            firedIds: goals.firedMilestoneIds
+        ) else { return }
+        MilestoneCoordinator.shared.request(milestone)
     }
 }
 

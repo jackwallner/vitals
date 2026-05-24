@@ -577,6 +577,7 @@ struct HistoryView: View {
                 selectedPeriod = .month
             }
             await loadHistory()
+            await checkMonthReviewMilestone()
         }
         .sheet(isPresented: $showCustomRange) {
             CustomRangeSheet(start: $customStart, end: $customEnd) {
@@ -1451,6 +1452,22 @@ struct HistoryView: View {
                 animateContent = true
             }
         }
+    }
+
+    /// On the first 1-3 days of a month, checks whether last month is worth a
+    /// recap and, if so, asks the milestone coordinator to celebrate it (which
+    /// chains into a Vitals+ pitch). Cheap early-exit on non-Pro + day-of-month
+    /// before doing any fetch, so the common case costs nothing.
+    private func checkMonthReviewMilestone() async {
+        guard !store.isPro,
+              Calendar.current.component(.day, from: Date.now) <= 3
+        else { return }
+        guard let history = try? await healthKit.fetchHistory(days: 62) else { return }
+        let days = history.map {
+            MilestoneDay(date: $0.date, calories: $0.active + $0.resting, steps: $0.steps)
+        }
+        guard let milestone = MilestoneCalculator.reviewableLastMonth(records: days) else { return }
+        MilestoneCoordinator.shared.request(milestone)
     }
 
     /// Load the window of equal length preceding the current selection, used for

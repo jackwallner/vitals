@@ -172,6 +172,15 @@ final class GoalSettings: ObservableObject {
     /// window; intent-driven taps ignore the cooldown.
     static let trialOfferCooldownDays = 14
 
+    /// Set of milestone ids ("streak_7", "month_2025-04") that have already
+    /// fired a celebration sheet. Each id is one-shot per user — once fired
+    /// it stays fired so we don't celebrate the same achievement twice.
+    @Published var firedMilestoneIds: Set<String> {
+        didSet {
+            defaults.set(Array(firedMilestoneIds), forKey: "firedMilestoneIds")
+        }
+    }
+
     /// True when a passive trial surface (launch, history-load) is allowed to
     /// fire — i.e. it has never shown, or the last show is older than the cooldown.
     func passiveTrialOfferAllowed(now: Date = .now) -> Bool {
@@ -288,6 +297,12 @@ final class GoalSettings: ObservableObject {
             defaults.removeObject(forKey: "hasSeenHistoryTrialOffer")
         } else {
             self.lastHistoryTrialOfferShownDate = nil
+        }
+
+        if let stored = defaults.array(forKey: "firedMilestoneIds") as? [String] {
+            self.firedMilestoneIds = Set(stored)
+        } else {
+            self.firedMilestoneIds = []
         }
         self.appearance = AppAppearance(rawValue: defaults.integer(forKey: "appearance")) ?? .system
         self.showPacing = defaults.object(forKey: "showPacing") as? Bool ?? true
