@@ -38,7 +38,6 @@
 		73E57B5289F6A146D19D6011 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
 		75A6835298F7F33CA2EF9884 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
 		7DE03846B38547D81722040A /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
-		7E294F82AB76F1992F92508F /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0C7CA7CDC8820F0419735F4D /* RevenueCatUI */; };
 		7EC89CE57159173F05547146 /* SummaryReportGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B24F616BC26BFF25C64684 /* SummaryReportGenerator.swift */; };
 		7F30022BC0C97A951FCD46AD /* MilestoneCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604A7C1098FB8101FE9A3365 /* MilestoneCalculator.swift */; };
 		7F455AC1D9325C3C9C70D799 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76684FF138F58C3A58A97320 /* StoreService.swift */; };
@@ -199,7 +198,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9032987B70D7BDD245847674 /* RevenueCat in Frameworks */,
-				7E294F82AB76F1992F92508F /* RevenueCatUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,7 +403,6 @@
 			name = Vitals;
 			packageProductDependencies = (
 				B25E8EC0600130AD108B5EED /* RevenueCat */,
-				0C7CA7CDC8820F0419735F4D /* RevenueCatUI */,
 			);
 			productName = Vitals;
 			productReference = 5067457F6627E7ABFE38988A /* Vitals.app */;
@@ -1051,11 +1048,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0C7CA7CDC8820F0419735F4D /* RevenueCatUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 74B952302F181D760C3E4D7A /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
-			productName = RevenueCatUI;
-		};
 		118A9A273E0B43DBA3FC7360 /* RevenueCat */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 74B952302F181D760C3E4D7A /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;

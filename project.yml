@@ -59,8 +59,6 @@ targets:
     dependencies:
       - package: RevenueCat
         product: RevenueCat
-      - package: RevenueCat
-        product: RevenueCatUI
       - target: VitalsWidget
       - target: VitalsWatch
         embed: true

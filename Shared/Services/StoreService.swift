@@ -150,6 +150,13 @@ final class StoreService: NSObject, ObservableObject {
     @Published private(set) var isLoadingProducts: Bool = false
     @Published private(set) var lastError: String?
 
+    /// Per-product-identifier free-trial / intro-offer eligibility. Populated
+    /// alongside `fetchProducts`. The native paywall reads this so it only
+    /// advertises a free trial to users who will actually receive one — the
+    /// RevenueCat-hosted paywall did this implicitly, and Apple 3.1.2 requires
+    /// the offer shown to match what StoreKit will grant.
+    @Published private(set) var introEligibility: [String: Bool] = [:]
+
     private let logger = Logger(subsystem: "com.jackwallner.vitals", category: "Store")
     private var isConfigured = false
 
@@ -180,10 +187,35 @@ final class StoreService: NSObject, ObservableObject {
             currentOffering = offering
             products = offering?.vitalsSortedPackages ?? []
             lastError = nil
+            await refreshIntroEligibility()
         } catch {
             logger.error("Product fetch failed: \(String(describing: error), privacy: .public)")
             lastError = "Couldn't load subscription options. Check your connection and try again."
         }
+    }
+
+    /// Resolves StoreKit intro-offer eligibility for the loaded products. Only
+    /// products carrying an intro offer are queried; on any failure we leave the
+    /// map empty so the paywall conservatively hides trial framing rather than
+    /// over-promising.
+    private func refreshIntroEligibility() async {
+        let identifiers = products
+            .filter { $0.storeProduct.introductoryDiscount != nil }
+            .map { $0.storeProduct.productIdentifier }
+        guard !identifiers.isEmpty else {
+            introEligibility = [:]
+            return
+        }
+        let result = await Purchases.shared.checkTrialOrIntroDiscountEligibility(productIdentifiers: identifiers)
+        introEligibility = result.mapValues { $0.status == .eligible }
+    }
+
+    /// True when this package advertises a free trial AND the user is eligible
+    /// for it. Eligibility-unknown resolves to true so a transient lookup
+    /// failure doesn't suppress a trial the user likely qualifies for.
+    func isEligibleForIntroOffer(_ package: Package) -> Bool {
+        guard package.vitalsIntroOfferLabel != nil else { return false }
+        return introEligibility[package.storeProduct.productIdentifier] ?? true
     }
 
     /// Performs a RevenueCat package purchase and updates customer info.
