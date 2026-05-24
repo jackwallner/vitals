@@ -178,7 +178,7 @@ struct VitalsApp: App {
 /// Net Deficit toggle, etc.) to the Vitals+ trial sheet. Child views set
 /// `pendingIntent` and `MainTabView` observes it to present the sheet, so the
 /// trial pitch is the high-converting first response to feature-tap intent
-/// rather than the bare hosted paywall.
+/// rather than the full plan picker paywall.
 @MainActor
 final class TrialOfferCoordinator: ObservableObject {
     static let shared = TrialOfferCoordinator()
@@ -242,7 +242,7 @@ struct MainTabView: View {
     @State private var launchOfferShownThisSession = false
     @State private var trialPurchaseInFlight = false
     @State private var trialPurchaseError: String?
-    /// Set when the user opts into the hosted paywall from inside the trial-offer
+    /// Set when the user opts into the full plan picker from inside the trial-offer
     /// sheet. The `.sheet(onDismiss:)` reads this and presents the paywall *after*
     /// the trial sheet has fully dismissed — presenting both sheets in the same
     /// runloop tick is racy in SwiftUI and frequently drops the second sheet.
@@ -279,7 +279,7 @@ struct MainTabView: View {
     }
 
     /// Hybrid one-tap purchase applies when a trial product is actually loaded;
-    /// otherwise fall back to the hosted paywall.
+    /// otherwise fall back to the full plan picker paywall.
     private var trialOfferIsDirect: Bool {
         trialOfferUsesDirectPurchase
     }
@@ -294,7 +294,7 @@ struct MainTabView: View {
 
     private func startDirectTrialPurchase() {
         guard let package = trialOfferPackage ?? directTrialPackage else {
-            // No trial product loaded — fall back to the hosted paywall.
+            // No trial product loaded — fall back to the full plan picker paywall.
             pendingPaywallAfterTrialDismiss = true
             showTrialOffer = false
             return
@@ -378,7 +378,7 @@ struct MainTabView: View {
     /// Intent-driven entrypoint. Bypasses the passive cooldown so feature-tap
     /// moments (locked Custom range, Net Deficit toggle, PDF icon) always get
     /// the high-converting trial pitch when a trial product is available. Falls
-    /// back to the hosted paywall when no trial product is loaded.
+    /// back to the full plan picker paywall when no trial product is loaded.
     private func handleIntentTap(_ intent: TrialOfferCoordinator.Intent) {
         defer { trialCoordinator.clear() }
         guard !store.isPro else { return }
@@ -442,7 +442,7 @@ struct MainTabView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                // Reserve space so the RevenueCat paywall's CTA + footer aren't
+                // Reserve space so the native paywall's CTA + footer aren't
                 // hidden by the floating tab-bar capsule below.
                 Color.clear.frame(height: 68)
             }
@@ -451,8 +451,8 @@ struct MainTabView: View {
             .accessibilityHidden(selectedTab != 2)
 
             // Custom tab bar — always visible so the user can navigate away from
-            // the paywall. The RevenueCat-hosted paywall has its own scrollable
-            // auto-renew disclosure, so the tab bar overlay doesn't break 3.1.2(a).
+            // the paywall. The native paywall scrolls its own auto-renew disclosure,
+            // so the tab bar overlay doesn't break 3.1.2(a).
             HStack(spacing: 0) {
                 TabButton(
                     icon: "heart.fill",
@@ -519,7 +519,7 @@ struct MainTabView: View {
         // only when the paywall (not the Pro features view) is what renders.
         .onChange(of: selectedTab) { _, tab in
             if tab == 2, !store.isPro {
-                store.trackPaywallImpression(id: "vitals_upgrade_tab")
+                store.trackPaywallImpression(id: "vitals_upgrade_tab", oncePerSession: true)
             }
         }
         .sheet(isPresented: $showTrialOffer, onDismiss: {
@@ -528,7 +528,7 @@ struct MainTabView: View {
             trialPurchaseError = nil
             trialOfferPackage = nil
             trialOfferUsesDirectPurchase = false
-            // Chain the hosted paywall here rather than setting both bindings in
+            // Chain the plan picker paywall here rather than setting both bindings in
             // the same tick — SwiftUI can only show one sheet per ancestor at a
             // time and frequently drops the second when they fire together.
             if pendingPaywallAfterTrialDismiss {
@@ -1036,7 +1036,7 @@ private struct TrialOfferSheet: View {
     let priceLabel: String?
     /// When true the primary button buys the trial product directly via StoreKit
     /// and the sheet shows compliant billing disclosure + a "See all plans" link.
-    /// When false it opens the RevenueCat-hosted paywall fallback.
+    /// When false it opens the full native plan picker paywall.
     let directPurchase: Bool
     let isPurchasing: Bool
     let errorMessage: String?

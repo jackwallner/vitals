@@ -159,6 +159,9 @@ final class StoreService: NSObject, ObservableObject {
 
     private let logger = Logger(subsystem: "com.jackwallner.vitals", category: "Store")
     private var isConfigured = false
+    /// Dedupes session-scoped paywall impressions (e.g. the Vitals+ tab, which
+    /// the user can re-select many times per launch).
+    private var paywallImpressionsThisSession: Set<String> = []
 
     private override init() {}
 
@@ -220,15 +223,23 @@ final class StoreService: NSObject, ObservableObject {
 
     /// Reports a custom-paywall impression to RevenueCat so the native paywall
     /// still feeds RC's impression count, conversion %, and experiment
-    /// enrollment (the hosted paywall did this automatically; there is no
+    /// enrollment (the RevenueCat-hosted UI did this automatically; there is no
     /// custom-paywall *close* event in the SDK, so conversion is derived from
-    /// impression-vs-purchase). `id` distinguishes entry points. Must be called
-    /// exactly once per real presentation — never from a re-firing `onAppear`.
-    func trackPaywallImpression(id: String) {
+    /// impression-vs-purchase). `id` distinguishes entry points.
+    ///
+    /// - Parameter oncePerSession: When `true`, the same `id` is only sent once
+    ///   per app launch. Use for the Vitals+ tab, where `onChange(of: selectedTab)`
+    ///   would otherwise fire on every revisit. Sheet presentations should pass
+    ///   `false` so each open counts as its own impression.
+    func trackPaywallImpression(id: String, oncePerSession: Bool = false) {
         configureIfNeeded()
         #if DEBUG
         if ScreenshotConfig.isEnabled { return }
         #endif
+        if oncePerSession {
+            guard !paywallImpressionsThisSession.contains(id) else { return }
+            paywallImpressionsThisSession.insert(id)
+        }
         Purchases.shared.trackCustomPaywallImpression(
             CustomPaywallImpressionParams(paywallId: id)
         )

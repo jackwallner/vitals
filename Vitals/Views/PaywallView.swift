@@ -12,7 +12,7 @@ enum PaywallLinks {
 /// Native, self-hosted Vitals+ paywall. Purchases still flow through
 /// `StoreService.purchase` → `Purchases.shared.purchase`, so RevenueCat records
 /// every transaction, trial start, and renewal exactly as it did with the
-/// hosted paywall — only the UI is ours now.
+/// RevenueCat-hosted UI — only the presentation is ours now.
 ///
 /// Dismisses itself when the user becomes Pro so callers can present this in a
 /// sheet without wiring any custom completion handler.
@@ -32,8 +32,8 @@ struct PaywallView: View {
 
     private var features: [(icon: String, tint: Color, title: String)] {
         [
-            ("plus.forwardslash.minus", Theme.netDeficitBrand, "Net Deficit, live — burned minus food logged"),
-            ("chart.line.uptrend.xyaxis", Theme.stepsPrimary, "Deep Trends — every period vs. the one before"),
+            ("plus.forwardslash.minus", Theme.netDeficitBrand, "Net Deficit, live: burned minus food logged"),
+            ("chart.line.uptrend.xyaxis", Theme.stepsPrimary, "Deep Trends: every period vs. the one before"),
             ("calendar.badge.clock", Theme.stepsSecondary, "Custom date ranges + PDF reports"),
             ("flame.fill", Theme.caloriesPrimary, "Active vs. resting calorie breakdown")
         ]
@@ -257,7 +257,7 @@ struct PaywallView: View {
         guard let package = selectedPackage else { return nil }
         let price = package.vitalsPriceLabel
         if package.vitalsPackageKind == .lifetime {
-            return "\(price). One-time purchase — lifetime access, no subscription."
+            return "\(price). One-time purchase. Lifetime access, no subscription."
         }
         let renew = "Auto-renews unless cancelled at least 24 hours before the end of the current period. Manage or cancel in Settings."
         if store.isEligibleForIntroOffer(package), let trial = package.vitalsIntroOfferLabel {
