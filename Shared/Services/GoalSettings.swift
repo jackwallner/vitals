@@ -144,18 +144,46 @@ final class GoalSettings: ObservableObject {
         didSet { defaults.set(hasCompletedSetup, forKey: "hasCompletedSetup") }
     }
 
-    /// True after the user has seen (or dismissed) the one-time Vitals+ free-trial offer.
-    /// Prevents the trial nudge from re-appearing on every launch.
-    @Published var hasSeenTrialOffer: Bool {
-        didSet { defaults.set(hasSeenTrialOffer, forKey: "hasSeenTrialOffer") }
+    /// Last time the launch-surface Vitals+ trial offer was shown. nil = never.
+    /// Passive triggers respect [[trialOfferCooldownDays]]; intent-driven taps
+    /// (locked feature, Vitals+ tab) bypass the cooldown.
+    @Published var lastTrialOfferShownDate: Date? {
+        didSet {
+            if let date = lastTrialOfferShownDate {
+                defaults.set(date, forKey: "lastTrialOfferShownDate")
+            } else {
+                defaults.removeObject(forKey: "lastTrialOfferShownDate")
+            }
+        }
     }
 
-    /// True after the user has seen the second-touch Vitals+ trial offer that
-    /// fires the first time history finishes loading. This is a deliberate
-    /// later-session re-engagement nudge — it only fires after the launch offer
-    /// has already been shown in a prior session, never back-to-back with it.
-    @Published var hasSeenHistoryTrialOffer: Bool {
-        didSet { defaults.set(hasSeenHistoryTrialOffer, forKey: "hasSeenHistoryTrialOffer") }
+    /// Last time the History-load second-touch trial offer was shown. nil = never.
+    @Published var lastHistoryTrialOfferShownDate: Date? {
+        didSet {
+            if let date = lastHistoryTrialOfferShownDate {
+                defaults.set(date, forKey: "lastHistoryTrialOfferShownDate")
+            } else {
+                defaults.removeObject(forKey: "lastHistoryTrialOfferShownDate")
+            }
+        }
+    }
+
+    /// Cooldown for passive trial surfaces. Re-encounter the pitch after this
+    /// window; intent-driven taps ignore the cooldown.
+    static let trialOfferCooldownDays = 14
+
+    /// True when a passive trial surface (launch, history-load) is allowed to
+    /// fire — i.e. it has never shown, or the last show is older than the cooldown.
+    func passiveTrialOfferAllowed(now: Date = .now) -> Bool {
+        guard let last = lastTrialOfferShownDate else { return true }
+        let cooldown = TimeInterval(Self.trialOfferCooldownDays) * 86_400
+        return now.timeIntervalSince(last) >= cooldown
+    }
+
+    func passiveHistoryTrialOfferAllowed(now: Date = .now) -> Bool {
+        guard let last = lastHistoryTrialOfferShownDate else { return true }
+        let cooldown = TimeInterval(Self.trialOfferCooldownDays) * 86_400
+        return now.timeIntervalSince(last) >= cooldown
     }
 
     @Published var appearance: AppAppearance {
@@ -234,8 +262,33 @@ final class GoalSettings: ObservableObject {
         self.defaults = defaults
 
         self.hasCompletedSetup = defaults.bool(forKey: "hasCompletedSetup")
-        self.hasSeenTrialOffer = defaults.bool(forKey: "hasSeenTrialOffer")
-        self.hasSeenHistoryTrialOffer = defaults.bool(forKey: "hasSeenHistoryTrialOffer")
+
+        // Migration: prior versions used Bool flags (hasSeenTrialOffer /
+        // hasSeenHistoryTrialOffer). Treat legacy `true` as "shown a long time
+        // ago" so the cooldown allows the user to re-encounter the pitch on
+        // their next session. New users (no key set) stay nil.
+        let cooldownInterval = TimeInterval(Self.trialOfferCooldownDays) * 86_400
+        let legacyShownDate = Date(timeIntervalSinceNow: -cooldownInterval)
+        // Property observers don't fire during the first assignment in init,
+        // so persist migrated values explicitly. Then clear the legacy bool.
+        if let stored = defaults.object(forKey: "lastTrialOfferShownDate") as? Date {
+            self.lastTrialOfferShownDate = stored
+        } else if defaults.bool(forKey: "hasSeenTrialOffer") {
+            self.lastTrialOfferShownDate = legacyShownDate
+            defaults.set(legacyShownDate, forKey: "lastTrialOfferShownDate")
+            defaults.removeObject(forKey: "hasSeenTrialOffer")
+        } else {
+            self.lastTrialOfferShownDate = nil
+        }
+        if let stored = defaults.object(forKey: "lastHistoryTrialOfferShownDate") as? Date {
+            self.lastHistoryTrialOfferShownDate = stored
+        } else if defaults.bool(forKey: "hasSeenHistoryTrialOffer") {
+            self.lastHistoryTrialOfferShownDate = legacyShownDate
+            defaults.set(legacyShownDate, forKey: "lastHistoryTrialOfferShownDate")
+            defaults.removeObject(forKey: "hasSeenHistoryTrialOffer")
+        } else {
+            self.lastHistoryTrialOfferShownDate = nil
+        }
         self.appearance = AppAppearance(rawValue: defaults.integer(forKey: "appearance")) ?? .system
         self.showPacing = defaults.object(forKey: "showPacing") as? Bool ?? true
         if let raw = defaults.object(forKey: "pacingComparison") as? Int,
