@@ -256,6 +256,10 @@ struct MainTabView: View {
     /// Gates the history-load offer so the two never fire back-to-back — the
     /// history offer is strictly a later-session second touch.
     @State private var launchOfferShownThisSession = false
+    /// Set when the Today dashboard posts that its data is on screen. The passive
+    /// launch nudge waits for this so the 5s countdown starts from real data
+    /// appearing, not from app launch (which can race a slow first HealthKit read).
+    @State private var dashboardDataLoaded = false
     @State private var trialPurchaseInFlight = false
     @State private var trialPurchaseError: String?
     /// Set when the user opts into the full plan picker from inside the trial-offer
@@ -359,7 +363,11 @@ struct MainTabView: View {
               !store.isPro,
               goals.passiveTrialOfferAllowed(),
               hasTrialOffer,
-              selectedTab == 0
+              selectedTab == 0,
+              // Don't start the countdown until the dashboard's data is actually
+              // on screen — otherwise a slow first HealthKit read can push the
+              // numbers in *after* the pitch, or the pitch fires over a spinner.
+              dashboardDataLoaded
         else { return }
         // Defer ~5s so the user sees their dashboard (ring, counters) populate
         // before the pitch — a cold pitch at first paint converts worse and
@@ -600,6 +608,10 @@ struct MainTabView: View {
                 showTrialOffer = false
                 showMilestone = false
             }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .vitalsDashboardDidLoadData)) { _ in
+            dashboardDataLoaded = true
+            evaluateTrialOffer()
         }
         .onReceive(NotificationCenter.default.publisher(for: .vitalsHistoryDidFinishLoading)) { _ in
             evaluateHistoryTrialOffer()
@@ -1262,6 +1274,7 @@ private struct TrialOfferSheet: View {
                     .animation(glowAnimation, value: animateGlow)
             }
 
+            ScrollView(showsIndicators: false) {
             VStack(spacing: 18) {
                 ZStack {
                     Circle()
@@ -1279,7 +1292,7 @@ private struct TrialOfferSheet: View {
                         .foregroundStyle(.white)
                         .rotationEffect(.degrees(animateGlow ? 6 : -6))
                 }
-                .padding(.top, 18)
+                .padding(.top, 8)
                 .animation(glowAnimation, value: animateGlow)
 
                 VStack(spacing: 6) {
@@ -1397,7 +1410,9 @@ private struct TrialOfferSheet: View {
                 .foregroundStyle(Theme.textTertiary)
             }
             .padding(.horizontal, 24)
+            .padding(.top, 8)
             .padding(.bottom, 24)
+            }
         }
         .onAppear {
             guard !reduceMotion else { return }
@@ -1474,7 +1489,7 @@ private struct MilestoneCelebrationSheet: View {
                 icon: "chart.line.uptrend.xyaxis",
                 tint: Theme.stepsPrimary,
                 title: "Deep Trends",
-                detail: "See how this run stacks up against your past — period over period."
+                detail: "See how this run stacks up against your past, period over period."
             ),
             TrialBullet(
                 icon: "doc.richtext.fill",
