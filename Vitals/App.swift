@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 import BackgroundTasks
+import StoreKit
 import os
 @preconcurrency import RevenueCat
 #if canImport(WatchConnectivity)
@@ -87,6 +88,7 @@ struct VitalsApp: App {
         HealthKitService.shared.enableBackgroundDelivery()
         Self.scheduleAppRefresh()
         StoreService.shared.start()
+        ReviewPromptTracker.recordAppLaunch()
         #if canImport(WatchConnectivity)
         PhoneGoalSyncService.shared.activate()
         #endif
@@ -234,6 +236,7 @@ struct MainTabView: View {
     @StateObject private var goals = GoalSettings.shared
     @StateObject private var trialCoordinator = TrialOfferCoordinator.shared
     @StateObject private var milestoneCoordinator = MilestoneCoordinator.shared
+    @StateObject private var reviewPromptCoordinator = ReviewPromptCoordinator.shared
     @State private var selectedTab = 0
     @State private var historyHasAppeared = false
     @State private var showTrialOffer = false
@@ -263,6 +266,11 @@ struct MainTabView: View {
     @State private var trialOfferPackage: Package?
     @State private var trialOfferUsesDirectPurchase = false
     @State private var trialOfferDetent: PresentationDetent = .fraction(0.85)
+    @State private var showReviewPrompt = false
+    @State private var reviewPromptInitialStep: ReviewPromptSheet.Step = .enjoyment
+    @State private var reviewPromptShownThisSession = false
+    @State private var pendingNativeReviewAfterDismiss = false
+    @Environment(\.requestReview) private var requestReview
     /// The feature an intent tap reached for, so the trial sheet (and the plan
     /// picker it can chain into) lead with it. `nil` for passive offers.
     @State private var trialOfferFocus: PlusFeature?
@@ -373,6 +381,48 @@ struct MainTabView: View {
     /// Second-touch trial nudge: fires when History finishes loading. Subject to
     /// the same 14-day passive cooldown, and additionally gated so it never
     /// fires back-to-back with the launch offer in the same session.
+    /// Passive review ask after a positive moment (e.g. daily goal). Waits for the
+    /// on-dashboard celebration toast to clear; never fires on cold launch.
+    private func scheduleReviewPromptAfterPositiveMoment() {
+        guard ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup),
+              !reviewPromptShownThisSession,
+              selectedTab == 0,
+              !showTrialOffer,
+              !showTrialPaywall,
+              !showMilestone,
+              !showReviewPrompt
+        else { return }
+
+        Task { @MainActor in
+            // Let the goal celebration toast finish (~2.5s) before asking.
+            try? await Task.sleep(nanoseconds: 3_500_000_000)
+            guard selectedTab == 0,
+                  !showTrialOffer,
+                  !showTrialPaywall,
+                  !showMilestone,
+                  !showReviewPrompt,
+                  ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup)
+            else { return }
+            ReviewPromptTracker.consumePendingPositiveMoment()
+            reviewPromptInitialStep = .enjoyment
+            reviewPromptShownThisSession = true
+            showReviewPrompt = true
+        }
+    }
+
+    private func handleReviewPromptFinish(_ outcome: ReviewPromptDismissOutcome) {
+        showReviewPrompt = false
+        if outcome == .enjoyedMaybeLater {
+            pendingNativeReviewAfterDismiss = true
+        }
+    }
+
+    private func presentReviewPrompt(step: ReviewPromptSheet.Step) {
+        reviewPromptInitialStep = step
+        reviewPromptShownThisSession = true
+        showReviewPrompt = true
+    }
+
     private func evaluateHistoryTrialOffer() {
         guard goals.hasCompletedSetup,
               !store.isPro,
@@ -554,6 +604,9 @@ struct MainTabView: View {
         .onReceive(NotificationCenter.default.publisher(for: .vitalsHistoryDidFinishLoading)) { _ in
             evaluateHistoryTrialOffer()
         }
+        .onReceive(NotificationCenter.default.publisher(for: .vitalsPositiveMomentForReview)) { _ in
+            scheduleReviewPromptAfterPositiveMoment()
+        }
         .onChange(of: trialCoordinator.pendingIntent) { _, intent in
             guard let intent else { return }
             handleIntentTap(intent)
@@ -561,6 +614,17 @@ struct MainTabView: View {
         .onChange(of: milestoneCoordinator.pendingEvent) { _, event in
             guard let event else { return }
             handleMilestone(event)
+        }
+        .onChange(of: reviewPromptCoordinator.pendingPresentation) { _, presentation in
+            guard let presentation else { return }
+            defer { reviewPromptCoordinator.clear() }
+            guard !showTrialOffer, !showTrialPaywall, !showMilestone else { return }
+            switch presentation {
+            case .enjoymentPrompt:
+                presentReviewPrompt(step: .enjoyment)
+            case .feedbackOnly:
+                presentReviewPrompt(step: .feedback)
+            }
         }
         // Vitals+ tab content stays in the hierarchy (opacity-toggled), so the
         // paywall's own lifecycle hooks can't tell when it's actually on screen.
@@ -649,6 +713,14 @@ struct MainTabView: View {
                 .presentationDetents([.fraction(0.7), .large])
                 .presentationDragIndicator(.visible)
             }
+        }
+        .sheet(isPresented: $showReviewPrompt, onDismiss: {
+            if pendingNativeReviewAfterDismiss {
+                pendingNativeReviewAfterDismiss = false
+                requestReview()
+            }
+        }) {
+            ReviewPromptSheet(initialStep: reviewPromptInitialStep, onFinish: handleReviewPromptFinish)
         }
     }
 
