@@ -169,6 +169,12 @@ struct DashboardView: View {
         goals.calorieGoal == nil && goals.stepGoal == nil && !goals.showPacing
     }
 
+    /// When goals are off and pacing is hidden, show a calorie icon so the Today
+    /// layout matches the steps row (which always shows `figure.walk`).
+    private var showCalorieMetricIcon: Bool {
+        goals.calorieGoal == nil && !goals.showPacing
+    }
+
     /// Exactly one of calories / steps / net is enabled.
     private var isSingleMetric: Bool {
         visibleMetricCount == 1
@@ -803,10 +809,17 @@ struct DashboardView: View {
 
     private func calorieLabel(numberSize: CGFloat) -> some View {
         VStack(spacing: 2) {
-            Text(totalCalories, format: .number.precision(.fractionLength(0)))
-                .font(Theme.bigNumber(numberSize))
-                .foregroundStyle(Theme.textPrimary)
-                .contentTransition(.numericText())
+            HStack(alignment: .firstTextBaseline, spacing: showCalorieMetricIcon ? 10 : 0) {
+                if showCalorieMetricIcon {
+                    Image(systemName: "flame.fill")
+                        .font(isSingleMetric ? .largeTitle : .title2)
+                        .foregroundStyle(Theme.caloriesPrimary)
+                }
+                Text(totalCalories, format: .number.precision(.fractionLength(0)))
+                    .font(Theme.bigNumber(numberSize))
+                    .foregroundStyle(Theme.textPrimary)
+                    .contentTransition(.numericText())
+            }
             if let goal = goals.calorieGoal {
                 HStack(spacing: 3) {
                     Text("/ \(goal, format: .number.precision(.fractionLength(0))) cal")

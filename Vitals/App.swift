@@ -269,7 +269,7 @@ struct MainTabView: View {
     @State private var pendingPaywallAfterTrialDismiss = false
     @State private var trialOfferPackage: Package?
     @State private var trialOfferUsesDirectPurchase = false
-    @State private var trialOfferDetent: PresentationDetent = .fraction(0.85)
+    @State private var trialOfferDetent: PresentationDetent = .fraction(0.68)
     @State private var showReviewPrompt = false
     @State private var reviewPromptInitialStep: ReviewPromptSheet.Step = .enjoyment
     @State private var reviewPromptShownThisSession = false
@@ -323,7 +323,7 @@ struct MainTabView: View {
         trialOfferFocus = focus
         trialOfferPackage = directTrialPackage
         trialOfferUsesDirectPurchase = trialOfferPackage != nil
-        trialOfferDetent = .fraction(0.85)
+        trialOfferDetent = .fraction(0.68)
         showTrialOffer = true
     }
 
@@ -689,7 +689,7 @@ struct MainTabView: View {
                     showTrialOffer = false
                 }
             )
-            .presentationDetents([.fraction(0.85), .large], selection: $trialOfferDetent)
+            .presentationDetents([.fraction(0.68), .large], selection: $trialOfferDetent)
             .presentationDragIndicator(.visible)
             .interactiveDismissDisabled(trialPurchaseInFlight)
         }
@@ -803,6 +803,7 @@ private struct PremiumFeaturesView: View {
                     .padding(.top, 20)
                     .padding(.bottom, 96)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }
             .navigationTitle("Vitals+")
             .navigationBarTitleDisplayMode(.inline)
@@ -1274,47 +1275,49 @@ private struct TrialOfferSheet: View {
                     .animation(glowAnimation, value: animateGlow)
             }
 
-            ScrollView(showsIndicators: false) {
-            VStack(spacing: 18) {
+            VStack(spacing: 12) {
                 ZStack {
                     Circle()
                         .fill(Theme.stepsGradient)
-                        .frame(width: 76, height: 76)
-                        .shadow(color: Theme.stepsPrimary.opacity(0.4), radius: 16, x: 0, y: 6)
-                        .scaleEffect(animateGlow ? 1.07 : 0.96)
-                    // Subtle inner shine ring.
+                        .frame(width: 60, height: 60)
+                        .shadow(color: Theme.stepsPrimary.opacity(0.4), radius: 12, x: 0, y: 4)
+                        .scaleEffect(animateGlow ? 1.06 : 0.96)
                     Circle()
                         .stroke(.white.opacity(0.35), lineWidth: 1)
-                        .frame(width: 64, height: 64)
-                        .scaleEffect(animateGlow ? 1.04 : 0.98)
+                        .frame(width: 50, height: 50)
+                        .scaleEffect(animateGlow ? 1.03 : 0.98)
                     Image(systemName: "sparkles")
-                        .font(.system(size: 30, weight: .bold))
+                        .font(.system(size: 24, weight: .bold))
                         .foregroundStyle(.white)
                         .rotationEffect(.degrees(animateGlow ? 6 : -6))
                 }
-                .padding(.top, 8)
+                .padding(.top, 4)
                 .animation(glowAnimation, value: animateGlow)
 
-                VStack(spacing: 6) {
+                VStack(spacing: 4) {
                     Text(headline)
-                        .font(.system(.title, design: .rounded, weight: .bold))
+                        .font(.system(.title2, design: .rounded, weight: .bold))
                         .foregroundStyle(Theme.textPrimary)
                         .multilineTextAlignment(.center)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.85)
                         .overlay(shimmerOverlay)
                         .mask(
                             Text(headline)
-                                .font(.system(.title, design: .rounded, weight: .bold))
+                                .font(.system(.title2, design: .rounded, weight: .bold))
                                 .multilineTextAlignment(.center)
+                                .lineLimit(2)
                         )
                     Text(subheadline)
-                        .font(.system(.subheadline, design: .rounded))
+                        .font(.system(.footnote, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
                         .multilineTextAlignment(.center)
+                        .lineLimit(3)
                         .fixedSize(horizontal: false, vertical: true)
-                        .padding(.horizontal, 12)
+                        .padding(.horizontal, 8)
                 }
 
-                VStack(spacing: 10) {
+                VStack(spacing: 6) {
                     ForEach(bulletFeatures, id: \.self) { feature in
                         TrialBulletRow(
                             bullet: TrialBullet(
@@ -1323,26 +1326,12 @@ private struct TrialOfferSheet: View {
                                 title: feature.title,
                                 detail: feature.detail
                             ),
-                            highlighted: feature == focus
+                            highlighted: feature == focus,
+                            compact: true
                         )
                     }
                 }
-                .padding(.horizontal, 4)
 
-                if directPurchase, let priceLabel {
-                    Text("Free during your trial, then \(priceLabel). Auto-renews unless cancelled at least 24 hours before the trial ends.")
-                        .font(.system(.footnote, design: .rounded))
-                        .foregroundStyle(Theme.textSecondary)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.horizontal, 4)
-                }
-
-                // Conditional error text: explicit opacity transition + suppressed
-                // implicit animation, so when the error appears the surrounding
-                // bullet rows / billing disclosure don't ghost while reflowing
-                // (the parent's continuous shimmer + sparkle animations otherwise
-                // cause SwiftUI to render duplicate positions mid-layout).
                 Group {
                     if let errorMessage {
                         Text(errorMessage)
@@ -1354,7 +1343,21 @@ private struct TrialOfferSheet: View {
                 }
                 .animation(.easeInOut(duration: 0.18), value: errorMessage)
 
-                VStack(spacing: 10) {
+                Spacer(minLength: 0)
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 6)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                VStack(spacing: 8) {
+                    if directPurchase, let priceLabel {
+                        Text("Free during trial, then \(priceLabel). Auto-renews unless cancelled 24h before trial ends.")
+                            .font(.system(.caption2, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                            .multilineTextAlignment(.center)
+                            .lineLimit(3)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+
                     Button(action: onStartTrial) {
                         ZStack {
                             Text("Start My Free Trial")
@@ -1367,24 +1370,17 @@ private struct TrialOfferSheet: View {
                             }
                         }
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
+                        .padding(.vertical, 13)
                         .background(Theme.caloriesGradient, in: Capsule())
                     }
                     .buttonStyle(.plain)
                     .disabled(isPurchasing)
-
-                    Text("Apple-managed subscription. Cancel anytime.")
-                        .font(.system(.caption, design: .rounded))
-                        .foregroundStyle(Theme.textTertiary)
-                        .multilineTextAlignment(.center)
 
                     if directPurchase {
                         Button(action: onSeeAllPlans) {
                             Text("See all plans")
                                 .font(.system(.subheadline, design: .rounded, weight: .semibold))
                                 .foregroundStyle(Theme.caloriesPrimary)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 6)
                         }
                         .buttonStyle(.plain)
                         .disabled(isPurchasing)
@@ -1394,24 +1390,22 @@ private struct TrialOfferSheet: View {
                         Text("Not now")
                             .font(.system(.subheadline, design: .rounded, weight: .semibold))
                             .foregroundStyle(Theme.textSecondary)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 8)
                     }
                     .buttonStyle(.plain)
                     .disabled(isPurchasing)
-                }
 
-                HStack(spacing: 4) {
-                    Link("Terms", destination: PaywallLinks.standardEULA)
-                    Text("·")
-                    Link("Privacy Policy", destination: PaywallLinks.privacyPolicy)
+                    HStack(spacing: 4) {
+                        Link("Terms", destination: PaywallLinks.standardEULA)
+                        Text("·")
+                        Link("Privacy Policy", destination: PaywallLinks.privacyPolicy)
+                    }
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
                 }
-                .font(.system(.caption2, design: .rounded))
-                .foregroundStyle(Theme.textTertiary)
-            }
-            .padding(.horizontal, 24)
-            .padding(.top, 8)
-            .padding(.bottom, 24)
+                .padding(.horizontal, 24)
+                .padding(.top, 10)
+                .padding(.bottom, 12)
+                .background(.ultraThinMaterial)
             }
         }
         .onAppear {
@@ -1595,31 +1589,35 @@ private struct TrialBulletRow: View {
     /// The feature the user tapped for: render it with a stronger tinted fill and
     /// border so it reads as the headline benefit of this pitch.
     var highlighted: Bool = false
+    /// Title-only rows for the one-screen trial sheet.
+    var compact: Bool = false
 
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
+        HStack(alignment: .center, spacing: compact ? 10 : 12) {
             ZStack {
                 Circle()
                     .fill(bullet.tint.opacity(0.18))
-                    .frame(width: 34, height: 34)
+                    .frame(width: compact ? 28 : 34, height: compact ? 28 : 34)
                 Image(systemName: bullet.icon)
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(.system(size: compact ? 13 : 15, weight: .semibold))
                     .foregroundStyle(bullet.tint)
             }
             VStack(alignment: .leading, spacing: 2) {
                 Text(bullet.title)
-                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .font(.system(compact ? .footnote : .subheadline, design: .rounded, weight: .semibold))
                     .foregroundStyle(Theme.textPrimary)
-                Text(bullet.detail)
-                    .font(.system(.caption, design: .rounded))
-                    .foregroundStyle(Theme.textSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                if !compact {
+                    Text(bullet.detail)
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
             Spacer(minLength: 0)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 12)
-        .padding(.vertical, 10)
+        .padding(.horizontal, compact ? 10 : 12)
+        .padding(.vertical, compact ? 7 : 10)
         .background {
             RoundedRectangle(cornerRadius: 12)
                 .fill(highlighted ? bullet.tint.opacity(0.12) : Theme.cardSurface.opacity(0.55))
