@@ -204,8 +204,9 @@ struct PaywallView: View {
     @ViewBuilder
     private var content: some View {
         if displayCloseButton {
-            // Sheet mode: the whole pitch scrolls as one column.
-            scrollingContent(includePurchase: true)
+            // Sheet mode: fit on one screen — pitch is fixed, CTA pinned (no scroll).
+            pitchColumn(compact: true)
+                .safeAreaInset(edge: .bottom, spacing: 0) { pinnedPurchaseBar }
         } else {
             // Tab mode: pin the purchase CTA + disclosure to the bottom so it's
             // always on screen above the floating tab bar (never hidden behind
@@ -217,21 +218,25 @@ struct PaywallView: View {
 
     private func scrollingContent(includePurchase: Bool) -> some View {
         ScrollView(showsIndicators: false) {
-            VStack(spacing: 22) {
-                header
-                featureList
-                planCards
-                if selectedHasTrial, let days = selectedPackage?.vitalsTrialDayCount {
-                    TrialTimeline(trialDays: days, priceLabel: selectedPackage?.vitalsPriceLabel)
-                }
-                if includePurchase {
-                    purchaseSection
-                }
+            pitchColumn(compact: false)
+            if includePurchase {
+                purchaseSection
             }
-            .padding(.horizontal, 24)
-            .padding(.top, displayCloseButton ? 56 : 32)
-            .padding(.bottom, includePurchase ? 32 : 16)
         }
+    }
+
+    private func pitchColumn(compact: Bool) -> some View {
+        VStack(spacing: compact ? 14 : 22) {
+            header(compact: compact)
+            featureList(compact: compact)
+            planCards
+            if !compact, selectedHasTrial, let days = selectedPackage?.vitalsTrialDayCount {
+                TrialTimeline(trialDays: days, priceLabel: selectedPackage?.vitalsPriceLabel)
+            }
+        }
+        .padding(.horizontal, 24)
+        .padding(.top, displayCloseButton ? 48 : 32)
+        .padding(.bottom, compact ? 8 : 16)
     }
 
     private var pinnedPurchaseBar: some View {
@@ -242,31 +247,33 @@ struct PaywallView: View {
             .background(.ultraThinMaterial)
     }
 
-    private var header: some View {
-        VStack(spacing: 10) {
+    private func header(compact: Bool) -> some View {
+        VStack(spacing: compact ? 6 : 10) {
             ZStack {
                 Circle()
                     .fill(Theme.caloriesGradient)
-                    .frame(width: 64, height: 64)
+                    .frame(width: compact ? 52 : 64, height: compact ? 52 : 64)
                     .shadow(color: Theme.caloriesPrimary.opacity(0.35), radius: 12, x: 0, y: 4)
                 Image(systemName: "sparkles")
-                    .font(.system(size: 26, weight: .bold))
+                    .font(.system(size: compact ? 22 : 26, weight: .bold))
                     .foregroundStyle(.white)
             }
             Text("Vitals+")
-                .font(.system(.title, design: .rounded, weight: .bold))
+                .font(.system(compact ? .title2 : .title, design: .rounded, weight: .bold))
                 .foregroundStyle(Theme.textPrimary)
             Text(focus?.pitchSubheadline ?? "Unlock every Vitals+ feature.")
-                .font(.system(.subheadline, design: .rounded))
+                .font(.system(compact ? .footnote : .subheadline, design: .rounded))
                 .foregroundStyle(Theme.textSecondary)
                 .multilineTextAlignment(.center)
+                .lineLimit(compact ? 3 : nil)
                 .fixedSize(horizontal: false, vertical: true)
         }
     }
 
-    private var featureList: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            ForEach(orderedFeatures, id: \.self) { feature in
+    private func featureList(compact: Bool) -> some View {
+        let features = compact ? Array(orderedFeatures.prefix(3)) : orderedFeatures
+        return VStack(alignment: .leading, spacing: compact ? 6 : 10) {
+            ForEach(features, id: \.self) { feature in
                 let highlighted = feature == focus
                 HStack(spacing: 12) {
                     Image(systemName: feature.icon)
@@ -311,7 +318,7 @@ struct PaywallView: View {
     }
 
     private var purchaseSection: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: displayCloseButton ? 8 : 12) {
             Button(action: startPurchase) {
                 ZStack {
                     Text(ctaTitle)
@@ -329,7 +336,7 @@ struct PaywallView: View {
             .buttonStyle(.plain)
             .disabled(isPurchasing || selectedPackage == nil)
 
-            if selectedHasTrial {
+            if selectedHasTrial, !displayCloseButton {
                 HStack(spacing: 14) {
                     reassurancePill(icon: "checkmark.shield.fill", text: "No payment now")
                     reassurancePill(icon: "bell.badge.fill", text: "Reminder before billing")
