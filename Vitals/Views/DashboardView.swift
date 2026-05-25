@@ -558,11 +558,6 @@ struct DashboardView: View {
                                     .tracking(1.5)
                             }
                             Spacer()
-                            if let progress = stepProgress {
-                                Text("\(Int(progress * 100))%")
-                                    .font(.system(.body, design: .rounded, weight: .bold))
-                                    .foregroundStyle(Theme.stepsPrimary)
-                            }
                             Image(systemName: "chevron.right")
                                 .font(.caption.weight(.semibold))
                                 .foregroundStyle(Theme.textTertiary)
@@ -786,7 +781,7 @@ struct DashboardView: View {
             // Loading state is conveyed by the skeleton pill in the breakdown row.
             EmptyView()
         } else if foodCalories <= 0 {
-            Text("0 food calories logged today. If you’re fasting, this is a valid net deficit day.")
+            Text("No food calories logged in Apple Health today.")
                 .font(.system(.caption2, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
                 .multilineTextAlignment(align)

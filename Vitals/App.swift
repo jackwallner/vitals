@@ -266,6 +266,12 @@ struct MainTabView: View {
     /// The feature an intent tap reached for, so the trial sheet (and the plan
     /// picker it can chain into) lead with it. `nil` for passive offers.
     @State private var trialOfferFocus: PlusFeature?
+    /// A toggle-gated feature (Net Deficit, Active/Resting) the user explicitly
+    /// tried to turn *on* but got paywalled. When set, we flip the matching
+    /// setting on automatically once they upgrade — but only because they
+    /// reached for it. Buying from the generic Upgrade tab leaves it `nil`, so
+    /// those features stay off until the user chooses them.
+    @State private var pendingFeatureEnable: PlusFeature?
 
     private enum TrialOfferSource {
         case launch
@@ -402,10 +408,33 @@ struct MainTabView: View {
         guard !showTrialOffer, !showTrialPaywall else { return }
         let focus = intent.focusFeature
         trialOfferFocus = focus
+        // Only toggle-gated features get auto-enabled on upgrade; Deep Trends /
+        // PDF unlock implicitly with Pro and need no stored setting.
+        switch intent {
+        case .netDeficitToggle: pendingFeatureEnable = .netDeficit
+        case .activeRestingToggle: pendingFeatureEnable = .activeResting
+        default: pendingFeatureEnable = nil
+        }
         if hasTrialOffer {
             presentTrialOffer(source: .intent, focus: focus)
         } else {
             showTrialPaywall = true
+        }
+    }
+
+    /// Flips on whichever toggle-gated feature the user reached for before they
+    /// were paywalled, now that they're Pro. No-op for passive upgrades.
+    private func applyPendingFeatureEnable() {
+        guard let feature = pendingFeatureEnable else { return }
+        pendingFeatureEnable = nil
+        switch feature {
+        case .netDeficit:
+            goals.showNetCalories = true
+            Task { try? await HealthKitService.shared.requestDietaryAuthorization() }
+        case .activeResting:
+            goals.showActiveRestingBreakdown = true
+        default:
+            break
         }
     }
 
@@ -517,6 +546,7 @@ struct MainTabView: View {
         }
         .onChange(of: store.isPro) { _, isPro in
             if isPro {
+                applyPendingFeatureEnable()
                 showTrialOffer = false
                 showMilestone = false
             }
@@ -553,6 +583,11 @@ struct MainTabView: View {
             if pendingPaywallAfterTrialDismiss {
                 pendingPaywallAfterTrialDismiss = false
                 showTrialPaywall = true
+            } else if !store.isPro {
+                // Dismissed without upgrading and not chaining to the plan
+                // picker — drop the intent so a later unrelated purchase doesn't
+                // silently flip the feature on.
+                pendingFeatureEnable = nil
             }
         }) {
             TrialOfferSheet(
@@ -582,7 +617,10 @@ struct MainTabView: View {
             .presentationDragIndicator(.visible)
             .interactiveDismissDisabled(trialPurchaseInFlight)
         }
-        .sheet(isPresented: $showTrialPaywall, onDismiss: { trialOfferFocus = nil }) {
+        .sheet(isPresented: $showTrialPaywall, onDismiss: {
+            trialOfferFocus = nil
+            if !store.isPro { pendingFeatureEnable = nil }
+        }) {
             PaywallView(focus: trialOfferFocus)
                 .environmentObject(store)
                 // `.task` runs once per sheet presentation — the correct hook
@@ -622,6 +660,7 @@ private struct PremiumFeaturesView: View {
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
     @State private var restoreMessage: String?
+    @State private var isRestoring = false
     @State private var pdfFile: PDFFile?
     @State private var pdfTitle = "Vitals+ Report"
     @State private var pdfShareText = SummaryReportShareText.appStoreURL
@@ -802,7 +841,10 @@ private struct PremiumFeaturesView: View {
                 .foregroundStyle(Theme.textPrimary)
 
             Button {
+                guard !isRestoring else { return }
+                isRestoring = true
                 Task {
+                    defer { isRestoring = false }
                     await store.restorePurchases()
                     // `StoreService.restorePurchases()` clears `lastError` on entry
                     // and writes either the success or the failure message, so the
@@ -812,9 +854,15 @@ private struct PremiumFeaturesView: View {
                         : (store.lastError ?? "Couldn't refresh your subscription. Try again.")
                 }
             } label: {
-                PremiumAccountRow(icon: "arrow.clockwise", title: "Restore Purchases", detail: "Refresh your access after changing devices or reinstalling.")
+                PremiumAccountRow(
+                    icon: "arrow.clockwise",
+                    title: isRestoring ? "Restoring…" : "Restore Purchases",
+                    detail: "Refresh your access after changing devices or reinstalling.",
+                    showsActivity: isRestoring
+                )
             }
             .buttonStyle(.plain)
+            .disabled(isRestoring)
         }
     }
 
@@ -1023,6 +1071,7 @@ private struct PremiumAccountRow: View {
     let icon: String
     let title: String
     let detail: String
+    var showsActivity: Bool = false
 
     var body: some View {
         HStack(spacing: 12) {
@@ -1040,9 +1089,13 @@ private struct PremiumAccountRow: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
             Spacer()
-            Image(systemName: "chevron.right")
-                .font(.system(size: 12, weight: .bold))
-                .foregroundStyle(Theme.textTertiary)
+            if showsActivity {
+                ProgressView().tint(Theme.textTertiary)
+            } else {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundStyle(Theme.textTertiary)
+            }
         }
         .padding(16)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))

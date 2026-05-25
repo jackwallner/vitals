@@ -542,19 +542,34 @@ final class HealthKitService: ObservableObject {
             healthKitLogger.notice("Persisting all-zero today stats because there is no better same-day cache to preserve")
         }
 
-        if let record = existing {
-            record.activeCalories = resolvedStats.active
-            record.restingCalories = resolvedStats.resting
-            record.steps = resolvedStats.steps
-            record.lastUpdated = .now
+        let record: DailyHealthRecord
+        if let existing {
+            existing.activeCalories = resolvedStats.active
+            existing.restingCalories = resolvedStats.resting
+            existing.steps = resolvedStats.steps
+            existing.lastUpdated = .now
+            record = existing
         } else {
-            let record = DailyHealthRecord(
+            let newRecord = DailyHealthRecord(
                 date: today,
                 activeCalories: resolvedStats.active,
                 restingCalories: resolvedStats.resting,
                 steps: resolvedStats.steps
             )
-            context.insert(record)
+            context.insert(newRecord)
+            record = newRecord
+        }
+
+        // Keep today's food calories fresh on the same pass as the burn/step
+        // stats, so Net Deficit caches and survives backgrounding exactly like
+        // the other metrics. Without this, foodCalories was only ever written
+        // from the foreground dashboard, so observer-driven refreshes (and the
+        // widgets reading this record) saw a stale net deficit. Only read when
+        // the user is actually using Net Deficit, to avoid auth noise otherwise.
+        if GoalSettings.shared.showNetCalories || dietaryBackgroundDeliveryEnabled {
+            if let food = try? await fetchDietaryEnergyToday() {
+                record.foodCalories = food
+            }
         }
 
         try context.save()
