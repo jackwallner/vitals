@@ -89,6 +89,30 @@ extension Package {
         }
     }
 
+    /// Per-week equivalent of the recurring price, e.g. "$0.29". Drives the
+    /// "just 33¢/day" style anchoring that lifts annual-plan adoption — we show
+    /// it on the annual card so the headline yearly figure feels small.
+    var vitalsPricePerWeekLabel: String? {
+        guard storeProduct.subscriptionPeriod != nil else { return nil }
+        return storeProduct.localizedPricePerWeek
+    }
+
+    /// Number of free-trial days this package grants (P1W → 7), or nil if it
+    /// carries no free trial. Used to label the trial timeline steps.
+    var vitalsTrialDayCount: Int? {
+        guard let intro = storeProduct.introductoryDiscount, intro.paymentMode == .freeTrial else {
+            return nil
+        }
+        let period = intro.subscriptionPeriod
+        switch period.unit {
+        case .day: return period.value
+        case .week: return period.value * 7
+        case .month: return period.value * 30
+        case .year: return period.value * 365
+        @unknown default: return nil
+        }
+    }
+
     var vitalsIntroOfferLabel: String? {
         guard let intro = storeProduct.introductoryDiscount, intro.paymentMode == .freeTrial else {
             return nil
