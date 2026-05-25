@@ -31,15 +31,37 @@ enum HistoryMetric: String, Identifiable, Hashable {
 struct SkeletonBlock: View {
     var cornerRadius: CGFloat = 8
     @State private var pulse = false
+    @State private var shimmer = false
 
     var body: some View {
-        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-            .fill(Theme.textTertiary.opacity(pulse ? 0.18 : 0.08))
-            .onAppear {
-                withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) {
-                    pulse = true
+        let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        GeometryReader { geo in
+            let width = geo.size.width
+            let band = max(width * 0.4, 48)
+            shape
+                .fill(Theme.textTertiary.opacity(pulse ? 0.18 : 0.08))
+                // A LoadingBar-style highlight that sweeps across the skeleton, so
+                // the placeholder reads as "loading" rather than a static block.
+                .overlay {
+                    shape
+                        .fill(LinearGradient(
+                            colors: [.clear, Theme.textTertiary.opacity(0.28), .clear],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        ))
+                        .frame(width: band)
+                        .offset(x: shimmer ? width : -band)
                 }
+                .clipShape(shape)
+        }
+        .onAppear {
+            withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) {
+                pulse = true
             }
-            .accessibilityHidden(true)
+            withAnimation(.linear(duration: 1.1).repeatForever(autoreverses: false)) {
+                shimmer = true
+            }
+        }
+        .accessibilityHidden(true)
     }
 }
