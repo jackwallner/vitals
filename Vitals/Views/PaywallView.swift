@@ -122,6 +122,27 @@ struct PaywallView: View {
         return [focus] + base.filter { $0 != focus }
     }
 
+    /// Annual savings vs. paying monthly for a year, as a whole percent. Drives
+    /// the "SAVE X%" badge — loss-aversion anchoring against the monthly price.
+    /// Nil unless both plans are loaded and annual is actually cheaper.
+    private var annualSavingsPercent: Int? {
+        guard let yearly = store.products.first(where: { $0.vitalsPackageKind == .yearly }),
+              let monthly = store.products.first(where: { $0.vitalsPackageKind == .monthly })
+        else { return nil }
+        let annualized = (monthly.storeProduct.price as NSDecimalNumber).doubleValue * 12
+        let yearlyPrice = (yearly.storeProduct.price as NSDecimalNumber).doubleValue
+        guard annualized > 0, yearlyPrice > 0 else { return nil }
+        let pct = Int(((annualized - yearlyPrice) / annualized * 100).rounded())
+        return pct > 0 ? pct : nil
+    }
+
+    /// True when the currently selected plan will start a free trial — gates the
+    /// trial-timeline section so it only shows when there's a trial to explain.
+    private var selectedHasTrial: Bool {
+        guard let package = selectedPackage else { return false }
+        return store.isEligibleForIntroOffer(package)
+    }
+
     var body: some View {
         ZStack {
             Theme.background.ignoresSafeArea()
@@ -186,6 +207,9 @@ struct PaywallView: View {
                 header
                 featureList
                 planCards
+                if selectedHasTrial, let days = selectedPackage?.vitalsTrialDayCount {
+                    TrialTimeline(trialDays: days, priceLabel: selectedPackage?.vitalsPriceLabel)
+                }
                 purchaseSection
             }
             .padding(.horizontal, 24)
@@ -208,7 +232,7 @@ struct PaywallView: View {
             Text("Vitals+")
                 .font(.system(.title, design: .rounded, weight: .bold))
                 .foregroundStyle(Theme.textPrimary)
-            Text(focus?.pitchSubheadline ?? "Everything in Vitals, fully unlocked.")
+            Text(focus?.pitchSubheadline ?? "Unlock every Vitals+ feature.")
                 .font(.system(.subheadline, design: .rounded))
                 .foregroundStyle(Theme.textSecondary)
                 .multilineTextAlignment(.center)
@@ -247,11 +271,14 @@ struct PaywallView: View {
     private var planCards: some View {
         VStack(spacing: 10) {
             ForEach(store.products, id: \.identifier) { package in
+                let isYearly = package.vitalsPackageKind == .yearly
                 PlanCard(
                     package: package,
                     isSelected: selectedPackage?.identifier == package.identifier,
                     showsTrialBadge: store.isEligibleForIntroOffer(package),
-                    isBestValue: package.vitalsPackageKind == .yearly
+                    isBestValue: isYearly,
+                    savingsPercent: isYearly ? annualSavingsPercent : nil,
+                    perWeekLabel: isYearly ? package.vitalsPricePerWeekLabel : nil
                 ) {
                     selectedPackage = package
                 }
@@ -277,6 +304,15 @@ struct PaywallView: View {
             }
             .buttonStyle(.plain)
             .disabled(isPurchasing || selectedPackage == nil)
+
+            if selectedHasTrial {
+                HStack(spacing: 14) {
+                    reassurancePill(icon: "checkmark.shield.fill", text: "No payment now")
+                    reassurancePill(icon: "bell.badge.fill", text: "Reminder before billing")
+                    reassurancePill(icon: "xmark.circle.fill", text: "Cancel anytime")
+                }
+                .frame(maxWidth: .infinity)
+            }
 
             if let disclosure = disclosureText {
                 Text(disclosure)
@@ -333,6 +369,21 @@ struct PaywallView: View {
             }
             Spacer()
         }
+    }
+
+    private func reassurancePill(icon: String, text: String) -> some View {
+        VStack(spacing: 4) {
+            Image(systemName: icon)
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(Theme.stepsPrimary)
+            Text(text)
+                .font(.system(size: 10, weight: .semibold, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .combine)
     }
 
     // MARK: - Copy
@@ -410,6 +461,8 @@ private struct PlanCard: View {
     let isSelected: Bool
     let showsTrialBadge: Bool
     let isBestValue: Bool
+    var savingsPercent: Int? = nil
+    var perWeekLabel: String? = nil
     let onTap: () -> Void
 
     var body: some View {
@@ -426,12 +479,19 @@ private struct PlanCard: View {
                     }
                 }
 
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 6) {
                         Text(package.vitalsDisplayName)
                             .font(.system(.subheadline, design: .rounded, weight: .bold))
                             .foregroundStyle(Theme.textPrimary)
-                        if isBestValue {
+                        if let savingsPercent {
+                            Text("SAVE \(savingsPercent)%")
+                                .font(.system(size: 9, weight: .bold, design: .rounded))
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Theme.caloriesPrimary, in: Capsule())
+                        } else if isBestValue {
                             Text("BEST VALUE")
                                 .font(.system(size: 9, weight: .bold, design: .rounded))
                                 .foregroundStyle(.white)
@@ -441,7 +501,11 @@ private struct PlanCard: View {
                         }
                     }
                     if showsTrialBadge, let trial = package.vitalsIntroOfferLabel {
-                        Text(trial.capitalized)
+                        Text("\(trial.capitalized), then billed")
+                            .font(.system(.caption2, design: .rounded, weight: .semibold))
+                            .foregroundStyle(Theme.stepsPrimary)
+                    } else if let perWeekLabel {
+                        Text("Just \(perWeekLabel)/week")
                             .font(.system(.caption2, design: .rounded, weight: .semibold))
                             .foregroundStyle(Theme.stepsPrimary)
                     }
@@ -449,9 +513,18 @@ private struct PlanCard: View {
 
                 Spacer(minLength: 8)
 
-                Text(package.vitalsPriceLabel)
-                    .font(.system(.subheadline, design: .rounded, weight: .semibold).monospacedDigit())
-                    .foregroundStyle(Theme.textSecondary)
+                VStack(alignment: .trailing, spacing: 1) {
+                    Text(package.vitalsPriceLabel)
+                        .font(.system(.subheadline, design: .rounded, weight: .semibold).monospacedDigit())
+                        .foregroundStyle(Theme.textSecondary)
+                    if showsTrialBadge, let perWeekLabel {
+                        // When the trial badge takes the subtitle slot, still
+                        // surface the per-week anchor next to the headline price.
+                        Text("\(perWeekLabel)/wk")
+                            .font(.system(.caption2, design: .rounded).monospacedDigit())
+                            .foregroundStyle(Theme.textTertiary)
+                    }
+                }
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 14)
@@ -464,5 +537,86 @@ private struct PlanCard: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(isSelected ? [.isSelected, .isButton] : .isButton)
+    }
+}
+
+/// "How your free trial works" — a three-step timeline that removes the #1
+/// reason people decline a trial: not knowing when (or whether) they'll be
+/// charged. Modeled on the Blinkist trial-timeline pattern; every claim here is
+/// truthful (instant access now, an App Store reminder before billing, and the
+/// exact price on the final day, cancellable anytime).
+private struct TrialTimeline: View {
+    let trialDays: Int
+    let priceLabel: String?
+
+    private var reminderDay: Int { max(trialDays - 1, 1) }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("How your free trial works")
+                .font(.system(.subheadline, design: .rounded, weight: .bold))
+                .foregroundStyle(Theme.textPrimary)
+                .padding(.bottom, 12)
+
+            step(
+                icon: "lock.open.fill",
+                tint: Theme.stepsPrimary,
+                title: "Today — full access",
+                detail: "Every Vitals+ feature unlocks right away.",
+                isLast: false
+            )
+            step(
+                icon: "bell.fill",
+                tint: Theme.caloriesPrimary,
+                title: "Day \(reminderDay) — heads-up",
+                detail: "The App Store reminds you before your trial ends.",
+                isLast: false
+            )
+            step(
+                icon: "checkmark.seal.fill",
+                tint: Theme.netDeficitBrand,
+                title: "Day \(trialDays) — trial ends",
+                detail: priceLabel.map { "Billed \($0) unless you cancel. Cancel anytime." }
+                    ?? "You're only billed if you keep it. Cancel anytime.",
+                isLast: true
+            )
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("How your free trial works. Today, full access unlocks. Day \(reminderDay), the App Store reminds you. Day \(trialDays), the trial ends and you're billed unless you cancel.")
+    }
+
+    private func step(icon: String, tint: Color, title: String, detail: String, isLast: Bool) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            VStack(spacing: 0) {
+                ZStack {
+                    Circle().fill(tint.opacity(0.15)).frame(width: 28, height: 28)
+                    Image(systemName: icon)
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundStyle(tint)
+                }
+                if !isLast {
+                    Rectangle()
+                        .fill(Theme.textTertiary.opacity(0.25))
+                        .frame(width: 2)
+                        .frame(maxHeight: .infinity)
+                }
+            }
+            .frame(minHeight: isLast ? 28 : 44)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textPrimary)
+                Text(detail)
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(.bottom, isLast ? 0 : 10)
+            Spacer(minLength: 0)
+        }
     }
 }
