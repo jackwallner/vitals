@@ -955,6 +955,9 @@ struct DashboardView: View {
             withAnimation(.spring(duration: 1.0, bounce: 0.15).delay(0.3)) {
                 animateRing = true
             }
+            // Signal that the dashboard has its data on screen so the passive
+            // trial nudge can start its delay from here rather than app launch.
+            NotificationCenter.default.post(name: .vitalsDashboardDidLoadData, object: nil)
         }
     }
 
@@ -1342,6 +1345,7 @@ private struct OnboardingSheet: View {
                     }
                     .padding(.top, 48)
                     .padding(.bottom, 24)
+                    .padding(.horizontal, 24)
                 }
 
                 bottomBar
@@ -1357,6 +1361,10 @@ private struct OnboardingSheet: View {
         hasRequestedHealthAccess = true
         do {
             try await HealthKitService.shared.requestAuthorization()
+            // Warm the SwiftData cache in the background while the user finishes
+            // picking goals, so the dashboard can paint from cache the instant
+            // onboarding dismisses instead of waiting on a cold HealthKit read.
+            Task { try? await HealthKitService.shared.refreshCache() }
         } catch {
             dashboardLogger.error("Onboarding HealthKit auth failed: \(String(describing: error), privacy: .public)")
         }
@@ -1376,7 +1384,6 @@ private struct OnboardingSheet: View {
                     .foregroundStyle(Theme.textSecondary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 24)
             }
 
             VStack(spacing: 16) {
@@ -1384,7 +1391,7 @@ private struct OnboardingSheet: View {
                     icon: "heart.fill",
                     color: Theme.caloriesPrimary,
                     title: "Reads from Apple Health",
-                    detail: "Next we’ll ask permission to read your active and resting calories and steps. The app only reads — it never writes anything back."
+                    detail: "Next we’ll ask permission to read your active and resting calories and steps. The app only reads; it never writes anything back."
                 )
                 WelcomePoint(
                     icon: "lock.fill",
@@ -1393,7 +1400,6 @@ private struct OnboardingSheet: View {
                     detail: "Your health data never leaves your iPhone. No account, no cloud sync."
                 )
             }
-            .padding(.horizontal, 24)
         }
     }
 
@@ -1410,7 +1416,6 @@ private struct OnboardingSheet: View {
                     .font(.system(.subheadline, design: .rounded))
                     .foregroundStyle(Theme.textSecondary)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, 24)
             }
 
             VStack(spacing: 16) {
@@ -1447,7 +1452,6 @@ private struct OnboardingSheet: View {
                     .transition(.opacity)
                 }
             }
-            .padding(.horizontal, 24)
             .animation(.easeInOut(duration: 0.2), value: wantCalGoal || wantStepGoal)
         }
     }

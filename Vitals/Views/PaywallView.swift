@@ -81,10 +81,10 @@ enum PlusFeature: CaseIterable {
     /// Supporting line when this feature is the focus of the pitch.
     var pitchSubheadline: String {
         switch self {
-        case .netDeficit: "See calories burned minus the food you log, updated all day — plus the rest of Vitals+."
-        case .activeResting: "Split active vs. resting burn to see what's really moving your number — plus the rest of Vitals+."
-        case .deepTrends: "Compare every period head-to-head with the one before — plus the rest of Vitals+."
-        case .customRangesPDF: "Pick any date window and export a polished report for your coach — plus the rest of Vitals+."
+        case .netDeficit: "See calories burned minus the food you log, updated all day, plus the rest of Vitals+."
+        case .activeResting: "Split active vs. resting burn to see what's really moving your number, plus the rest of Vitals+."
+        case .deepTrends: "Compare every period head-to-head with the one before, plus the rest of Vitals+."
+        case .customRangesPDF: "Pick any date window and export a polished report for your coach, plus the rest of Vitals+."
         }
     }
 }
@@ -201,7 +201,21 @@ struct PaywallView: View {
         }
     }
 
+    @ViewBuilder
     private var content: some View {
+        if displayCloseButton {
+            // Sheet mode: the whole pitch scrolls as one column.
+            scrollingContent(includePurchase: true)
+        } else {
+            // Tab mode: pin the purchase CTA + disclosure to the bottom so it's
+            // always on screen above the floating tab bar (never hidden behind
+            // it) on every device size. The pitch above it scrolls.
+            scrollingContent(includePurchase: false)
+                .safeAreaInset(edge: .bottom, spacing: 0) { pinnedPurchaseBar }
+        }
+    }
+
+    private func scrollingContent(includePurchase: Bool) -> some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 22) {
                 header
@@ -210,12 +224,22 @@ struct PaywallView: View {
                 if selectedHasTrial, let days = selectedPackage?.vitalsTrialDayCount {
                     TrialTimeline(trialDays: days, priceLabel: selectedPackage?.vitalsPriceLabel)
                 }
-                purchaseSection
+                if includePurchase {
+                    purchaseSection
+                }
             }
             .padding(.horizontal, 24)
             .padding(.top, displayCloseButton ? 56 : 32)
-            .padding(.bottom, 32)
+            .padding(.bottom, includePurchase ? 32 : 16)
         }
+    }
+
+    private var pinnedPurchaseBar: some View {
+        purchaseSection
+            .padding(.horizontal, 24)
+            .padding(.top, 14)
+            .padding(.bottom, 14)
+            .background(.ultraThinMaterial)
     }
 
     private var header: some View {
@@ -561,21 +585,21 @@ private struct TrialTimeline: View {
             step(
                 icon: "lock.open.fill",
                 tint: Theme.stepsPrimary,
-                title: "Today — full access",
+                title: "Today: full access",
                 detail: "Every Vitals+ feature unlocks right away.",
                 isLast: false
             )
             step(
                 icon: "bell.fill",
                 tint: Theme.caloriesPrimary,
-                title: "Day \(reminderDay) — heads-up",
+                title: "Day \(reminderDay): heads-up",
                 detail: "The App Store reminds you before your trial ends.",
                 isLast: false
             )
             step(
                 icon: "checkmark.seal.fill",
                 tint: Theme.netDeficitBrand,
-                title: "Day \(trialDays) — trial ends",
+                title: "Day \(trialDays): trial ends",
                 detail: priceLabel.map { "Billed \($0) unless you cancel. Cancel anytime." }
                     ?? "You're only billed if you keep it. Cancel anytime.",
                 isLast: true

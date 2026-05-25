@@ -9,6 +9,11 @@ extension Notification.Name {
     /// Posted when the History tab finishes a successful data load. Drives the
     /// second-touch Vitals+ trial nudge in MainTabView.
     static let vitalsHistoryDidFinishLoading = Notification.Name("vitalsHistoryDidFinishLoading")
+
+    /// Posted when the Today dashboard finishes painting its first real data
+    /// (numbers + ring on screen). The passive launch trial nudge waits ~5s from
+    /// this so the pitch lands after the user sees their dashboard, not before.
+    static let vitalsDashboardDidLoadData = Notification.Name("vitalsDashboardDidLoadData")
 }
 
 @MainActor
@@ -2090,7 +2095,7 @@ private struct SegmentButton: View {
         }
         .buttonStyle(.plain)
         .animation(.easeInOut(duration: 0.2), value: isSelected)
-        .accessibilityHint(locked ? "Vitals+ — pick any date range" : "")
+        .accessibilityHint(locked ? "Vitals+: pick any date range" : "")
     }
 }
 
