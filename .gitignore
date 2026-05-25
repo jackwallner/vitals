@@ -37,3 +37,7 @@ fix*.md
 gfix*.md
 _screenshots_project/
 paywall_screenshot.png
+
+# SourceKit-LSP build server config (local, machine-specific paths)
+buildServer.json
+.compile
