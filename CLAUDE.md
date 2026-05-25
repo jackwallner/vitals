@@ -139,6 +139,20 @@ GoalSettings  →  UserDefaults (App Group)  →  Widgets read goals directly
 | `showSteps` | Bool | true | Display steps section |
 | `appearance` | Int | 0 | 0=system, 1=light, 2=dark |
 
+## App Store reviews (5★ strategy)
+
+- Cross-app playbook: `~/Desktop/app-store-5-star-review-strategy.md` — say **"go"** with that file to apply the same funnel in another app.
+- Vitals: enjoyment funnel after **daily goal hit**; explicit Rate → `AppStoreReviewLinks.writeReviewURL`; `requestReview()` only after Yes + "Maybe later" dismiss.
+
+## Astro ASO
+
+- **Full setup (any app):** say **"go"** with `docs/astro-setup-process.md` — ASC pull + Astro keywords
+- One-command: `./scripts/astro-setup.sh` (add `--extra "phrase"` for app-specific terms)
+- Local MCP: `http://127.0.0.1:8089/mcp` (Astro app must be running)
+- App snapshot: `docs/astro-aso-setup.md` | Process playbook: `docs/astro-setup-process.md`
+- Pull ASC metadata: `./scripts/pull-appstore-metadata.sh`
+- Re-sync keywords only: `./scripts/sync-astro-keywords.sh`
+
 ## Scripts
 
 - `scripts/testflight.sh` — push to TestFlight / ship a build

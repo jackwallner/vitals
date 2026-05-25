@@ -1,16 +1,8 @@
-Introducing Vitals+
+New
 
-The dashboard, Home Screen widgets, Lock Screen widgets, and Apple Watch complications stay free forever. Vitals+ adds a few power-user tools on top:
-
-• Active vs. resting calorie breakdown on Today.
-• Net Deficit: total calories burned minus food energy from Apple Health (works with MyFitnessPal, Lose It, and other food trackers via Health).
-• Monthly Summary PDFs — print-ready reports of your trends and highlights.
-• Custom-range PDF reports for any window you pick.
-• Deep Trends: period-over-period comparison cards.
-
-A free trial is available for new subscribers, so you can try it before committing. Monthly, yearly, and lifetime options.
+• In-app review prompt after you hit a daily calorie or step goal — rate on the App Store or send private feedback if something’s off.
+• Settings → Rate or Send Feedback any time.
 
 Polish
 
-• Cleaner Today layout — the active vs. resting split now lives in Settings (Vitals+).
-• A few small reliability and copy fixes throughout History and Settings.
+• App Store listing copy updates (subtitle, keywords, description).

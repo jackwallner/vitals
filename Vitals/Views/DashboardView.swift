@@ -917,6 +917,9 @@ struct DashboardView: View {
 
         guard crossedCalories || crossedSteps else { return }
 
+        ReviewPromptTracker.recordPositiveMoment()
+        NotificationCenter.default.post(name: .vitalsPositiveMomentForReview, object: nil)
+
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
 
@@ -1818,6 +1821,16 @@ private struct SettingsSheet: View {
                 }
 
                 Section {
+                    Button {
+                        dismiss()
+                        Task { @MainActor in
+                            try? await Task.sleep(nanoseconds: 350_000_000)
+                            ReviewPromptCoordinator.shared.requestEnjoymentPrompt()
+                        }
+                    } label: {
+                        Label("Rate or Send Feedback", systemImage: "star.bubble")
+                    }
+
                     Link(destination: VitalsLinks.privacyPolicy) {
                         Label("Privacy Policy", systemImage: "hand.raised")
                     }

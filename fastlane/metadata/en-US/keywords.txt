@@ -1,1 +1,1 @@
-pedometer,activity,widget,watch,step,ring,TDEE,BMR,walking,burn,complication,kcal,fast,watch,fasting
+pedometer,widget,ring,TDEE,BMR,burn,complication,deficit,resting,active,pace,fasting,walking,move
