@@ -357,7 +357,7 @@ struct TodayView: View {
 
         await healthKit.synchronizeAuthorizationStateForFetching()
         do {
-            let stats = try await healthKit.fetchTodayStatsWithRetry()
+            let stats = try await healthKit.fetchTodayStats()
             if isAllZero(stats), let cachedStats, cachedHasData {
                 applyStats(cachedStats)
                 healthNotice = .cachedData

@@ -212,9 +212,6 @@ struct DashboardView: View {
                 HistoryView(focusMetric: metric)
                     .environmentObject(store)
             }
-        .onChange(of: healthKit.isAuthorized) { _, authorized in
-            if authorized { Task { await refresh() } }
-        }
         .onChange(of: goals.showNetCalories) { _, enabled in
             guard enabled, store.isPro else { return }
             Task {
@@ -252,10 +249,6 @@ struct DashboardView: View {
             if newPhase == .active {
                 Task { await refresh() }
             }
-        }
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            guard goals.hasCompletedSetup else { return }
-            Task { await refresh() }
         }
         .task {
             if ScreenshotConfig.wantsOnboarding {
@@ -1074,11 +1067,23 @@ struct DashboardView: View {
         let cachedStats = try? healthKit.fetchCachedTodayStats()
         let cachedHasData = cachedStats.map { healthKit.hasRecordedData($0) } ?? false
 
-        if isLoading, let cachedStats, cachedHasData {
+        // Paint cached values immediately — even zero rows beat the gray spinner
+        // and reassure the user the app remembers them. The header pill still
+        // shows that a fresh read is in flight.
+        if isLoading, let cachedStats {
             applyStats(cachedStats)
-            // Don't surface a "stale data" banner during the initial paint — the
-            // header LoadingBar already communicates that a refresh is in flight.
             showLoadedStateIfNeeded()
+        }
+
+        // Fail-safe: if HealthKit is slow on a cold launch with no cache, drop
+        // the blocking spinner after ~1s so the user sees zeros + the refresh
+        // pill instead of staring at a gray spinner indefinitely.
+        Task { @MainActor in
+            try? await Task.sleep(for: .seconds(1))
+            if isLoading {
+                applyStats((active: 0, resting: 0, steps: 0))
+                showLoadedStateIfNeeded()
+            }
         }
 
         defer { isRefreshing = false }
@@ -1090,7 +1095,7 @@ struct DashboardView: View {
             await healthKit.synchronizeAuthorizationStateForFetching()
         }
         do {
-            let stats = try await healthKit.fetchTodayStatsWithRetry()
+            let stats = try await healthKit.fetchTodayStats()
             if isAllZero(stats), let cachedStats, cachedHasData {
                 applyStats(cachedStats)
                 healthNotice = .cachedData

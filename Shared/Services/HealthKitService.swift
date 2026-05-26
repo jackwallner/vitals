@@ -177,34 +177,6 @@ final class HealthKitService: ObservableObject {
         )
     }
 
-    func fetchTodayStatsWithRetry(
-        maxAttempts: Int = 2,
-        retryDelay: Duration = .milliseconds(500)
-    ) async throws -> (active: Double, resting: Double, steps: Int) {
-        var lastStats = (active: 0.0, resting: 0.0, steps: 0)
-
-        for attempt in 1...maxAttempts {
-            let stats = try await fetchTodayStats()
-            lastStats = stats
-
-            if !areAllStatsZero(stats) || attempt == maxAttempts {
-                if areAllStatsZero(stats) {
-                    healthKitLogger.notice("HealthKit returned all-zero stats after \(attempt, privacy: .public) attempts")
-                }
-                return stats
-            }
-
-            healthKitLogger.notice("HealthKit returned all-zero stats on attempt \(attempt, privacy: .public); retrying")
-            try? await Task.sleep(for: retryDelay)
-            // Propagate cancellation so upstream callers land in their catch
-            // block (cache fallback / loadError) instead of silently treating
-            // the interrupted retry as "HealthKit returned zero".
-            if Task.isCancelled { throw CancellationError() }
-        }
-
-        return lastStats
-    }
-
     /// Dietary energy (food) logged for today in Health, in kilocalories (e.g. from MyFitnessPal).
     func fetchDietaryEnergyToday() async throws -> Double {
         #if DEBUG
@@ -503,7 +475,7 @@ final class HealthKitService: ObservableObject {
         if let stats {
             resolvedStats = stats
         } else {
-            resolvedStats = try await fetchTodayStatsWithRetry()
+            resolvedStats = try await fetchTodayStats()
         }
 
         healthKitLogger.info(
