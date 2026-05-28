@@ -7,7 +7,7 @@ private let dashboardLogger = Logger(subsystem: "com.jackwallner.vitals", catego
 private enum VitalsLinks {
     static let privacyPolicy = URL(string: "https://jackwallner.github.io/vitals/privacy-policy.html")!
     static let support = URL(string: "https://jackwallner.github.io/vitals/support.html")!
-    static let supportEmail = URL(string: "mailto:jackwallner@gmail.com")!
+    static let supportEmail = URL(string: "mailto:jackwallner+tc@gmail.com")!
     static let coachServices = URL(string: "https://www.e3fit.me/#services")!
     static let coachContact = URL(string: "https://www.e3fit.me/#contact")!
     static let standardEULA = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
@@ -999,8 +999,12 @@ struct DashboardView: View {
         }
     }
 
-    private func loadPacing(stats: (active: Double, resting: Double, steps: Int)) async {
-        guard goals.showPacing, !isAllZero(stats) else {
+    private func loadPacing(stats: (active: Double, resting: Double, steps: Int)?) async {
+        guard goals.showPacing else {
+            clearPacing()
+            return
+        }
+        if let stats, isAllZero(stats) {
             clearPacing()
             return
         }
@@ -1094,6 +1098,14 @@ struct DashboardView: View {
         if !healthKit.isAuthorized {
             await healthKit.synchronizeAuthorizationStateForFetching()
         }
+
+        // Kick off the independent HK reads concurrently with today's stats so
+        // wall-clock latency is `max(...)` rather than the sum. Dietary and the
+        // pacing window don't depend on today's totals; the previous code only
+        // started them after `fetchTodayStats` returned.
+        async let dietaryEarly: Void = loadDietaryEnergy()
+        async let pacingEarly: Void = loadPacing(stats: nil)
+
         do {
             let stats = try await healthKit.fetchTodayStats()
             if isAllZero(stats), let cachedStats, cachedHasData {
@@ -1139,14 +1151,22 @@ struct DashboardView: View {
                 }
             }
 
-            // Dietary and pacing are independent HK reads — run them concurrently
-            // so the slower of the two dominates instead of summing.
-            async let dietary: Void = loadDietaryEnergy()
-            async let pacing: Void = loadPacing(stats: stats)
-            _ = await (dietary, pacing)
+            // Wait for the in-flight dietary + pacing reads we kicked off above.
+            await dietaryEarly
+            await pacingEarly
+            // If today came back all-zero, the pacing pill comparing against a
+            // running zero is misleading; clear it after pacing has finished
+            // (so we don't race a late completion that re-populates it).
+            if isAllZero(stats) {
+                clearPacing()
+            }
         } catch {
             let ns = error as NSError
             dashboardLogger.error("Today stats fetch failed — domain=\(ns.domain, privacy: .public) code=\(ns.code, privacy: .public): \(String(describing: error), privacy: .public)")
+            // Drain the in-flight reads first so their state writes can't land
+            // after we reset below.
+            await dietaryEarly
+            await pacingEarly
             if let cachedStats = try? healthKit.fetchCachedTodayStats() {
                 applyStats(cachedStats)
                 healthNotice = .cachedData
