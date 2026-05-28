@@ -1150,9 +1150,14 @@ struct DashboardView: View {
 
             // Fire-and-forget: stats are already applied; the SwiftData write
             // and widget reload don't need to gate dietary/pacing fetches.
+            // Write the merged values, not the live ones — otherwise we'd
+            // overwrite a higher cache reading (set by the Watch) with the
+            // iPhone's behind-by-sync live value, and the next refresh would
+            // lose the merge benefit entirely.
+            let cacheStats = displayStats
             Task {
                 do {
-                    try await healthKit.refreshCache(stats: stats)
+                    try await healthKit.refreshCache(stats: cacheStats)
                 } catch {
                     dashboardLogger.error("Today cache refresh failed: \(String(describing: error), privacy: .public)")
                 }
@@ -1172,10 +1177,11 @@ struct DashboardView: View {
             // Wait for the in-flight dietary + pacing reads we kicked off above.
             await dietaryEarly
             await pacingEarly
-            // If today came back all-zero, the pacing pill comparing against a
-            // running zero is misleading; clear it after pacing has finished
-            // (so we don't race a late completion that re-populates it).
-            if isAllZero(stats) {
+            // Pacing compares "what we've done so far today" against a typical
+            // baseline; if we have no totals at all (live empty and cache empty),
+            // that comparison is meaningless. Use the merged display so cached
+            // non-zero values still keep pacing live.
+            if isAllZero(displayStats) {
                 clearPacing()
             }
         } catch {
