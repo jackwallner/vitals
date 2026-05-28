@@ -1069,7 +1069,6 @@ struct DashboardView: View {
         guard !isRefreshing else { return }
         isRefreshing = true
         let cachedStats = try? healthKit.fetchCachedTodayStats()
-        let cachedHasData = cachedStats.map { healthKit.hasRecordedData($0) } ?? false
 
         // Paint cached values immediately — even zero rows beat the gray spinner
         // and reassure the user the app remembers them. The header pill still
@@ -1133,12 +1132,12 @@ struct DashboardView: View {
                 // notice so the user can route to Health/Settings.
                 let status = await healthKit.authorizationRequestStatus()
                 healthNotice = classifyEmptyFetchNotice(requestStatus: status)
-            } else if isAllZero(stats), cachedHasData {
-                // Live read came back empty but the cache carried us; let the
-                // user know they're looking at the last good snapshot rather
-                // than current numbers.
-                healthNotice = .cachedData
             } else {
+                // We have data to show — either fresh from iPhone HK, or merged
+                // up to the Watch's higher cached value. The cache is part of
+                // the normal data path (Watch writes to it via background
+                // refresh), so a momentarily-empty live read with a populated
+                // cache is not an error condition. Don't surface a banner.
                 healthNotice = nil
             }
             // Only advance the "Updated HH:mm" header after a successful read
