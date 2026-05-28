@@ -33,22 +33,29 @@ from asc_lib import (
 )
 
 
-def patch_version_loc(client: ASCClient, loc: dict, locale: str) -> None:
+def patch_version_loc(client: ASCClient, loc: dict, locale: str, fields: set[str] | None = None) -> None:
     attrs: dict = {}
-    desc = read_meta(locale, "description")
-    kw = read_meta(locale, "keywords")
-    rn = read_meta(locale, "release_notes")
-    if desc:
-        attrs["description"] = desc[:4000]
-    if kw:
-        attrs["keywords"] = kw[:100]
-    if rn:
-        attrs["whatsNew"] = rn[:4000]
+    def want(name: str) -> bool:
+        return fields is None or name in fields
+    if want("description"):
+        desc = read_meta(locale, "description")
+        if desc:
+            attrs["description"] = desc[:4000]
+    if want("keywords"):
+        kw = read_meta(locale, "keywords")
+        if kw:
+            attrs["keywords"] = kw[:100]
+    if want("release_notes"):
+        rn = read_meta(locale, "release_notes")
+        if rn:
+            attrs["whatsNew"] = rn[:4000]
     for src, dst in (
         ("support_url", "supportUrl"),
         ("marketing_url", "marketingUrl"),
         ("promotional_text", "promotionalText"),
     ):
+        if not want(src):
+            continue
         v = read_meta(locale, src)
         if v:
             attrs[dst] = v[:4000] if dst != "promotionalText" else v[:170]
@@ -91,7 +98,16 @@ def main() -> None:
     parser.add_argument("--create-missing", action="store_true", help="POST version localizations missing on draft")
     parser.add_argument("--source-locale", default="en-US")
     parser.add_argument("--locales", help="Comma-separated subset of locales to upload (default: all fastlane locale dirs)")
+    parser.add_argument(
+        "--fields",
+        help=(
+            "Comma-separated fields to patch. Recognized: name, subtitle, description, "
+            "keywords, release_notes, support_url, marketing_url, promotional_text. "
+            "Default: all fields present in fastlane metadata."
+        ),
+    )
     args = parser.parse_args()
+    fields = {f.strip() for f in args.fields.split(",") if f.strip()} if args.fields else None
 
     version_string = os.environ.get("ASC_APP_VERSION")
     state = load_state()
@@ -159,12 +175,14 @@ def main() -> None:
         info_ok = False
         if locale in info_locs:
             attrs: dict = {}
-            name = read_meta(locale, "name")
-            sub = read_meta(locale, "subtitle")
-            if name:
-                attrs["name"] = name[:30]
-            if sub:
-                attrs["subtitle"] = sub[:30]
+            if fields is None or "name" in fields:
+                name = read_meta(locale, "name")
+                if name:
+                    attrs["name"] = name[:30]
+            if fields is None or "subtitle" in fields:
+                sub = read_meta(locale, "subtitle")
+                if sub:
+                    attrs["subtitle"] = sub[:30]
             if attrs:
                 try:
                     lid = info_locs[locale]["id"]
@@ -175,12 +193,20 @@ def main() -> None:
                     info_ok = True
                 except RuntimeError as e:
                     print(f"info-fail ({e})", end=" ")
-        try:
-            patch_version_loc(client, ver_locs[locale], locale)
-            print("ok" + (" +info" if info_ok else ""))
-            updated += 1
-        except RuntimeError as e:
-            print(f"fail: {e}")
+        # Version-loc patch only runs when at least one of its fields was requested
+        # (or no --fields flag was passed). Avoids a no-op API call when --fields=name.
+        version_field_set = {"description", "keywords", "release_notes", "support_url", "marketing_url", "promotional_text"}
+        if fields is None or fields & version_field_set:
+            try:
+                patch_version_loc(client, ver_locs[locale], locale, fields)
+                print("ok" + (" +info" if info_ok else ""))
+                updated += 1
+            except RuntimeError as e:
+                print(f"fail: {e}")
+        else:
+            print("info-only" if info_ok else "skipped")
+            if info_ok:
+                updated += 1
         time.sleep(0.12)
 
     print(f"\nPatched {updated} locale(s); created {created} new version localization(s).")
