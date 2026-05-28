@@ -143,11 +143,14 @@ final class HealthKitService: ObservableObject {
             return ScreenshotFixtures.todayStats()
         }
         #endif
-        // For a single day, `HKStatisticsQuery` (singular) is the documented pattern —
-        // it returns one cumulativeSum scoped by predicate, with none of the bucketing
-        // / anchor-date / enumerateStatistics overhead of HKStatisticsCollectionQuery.
-        // The earlier collection-query path with `quantitySamplePredicate: nil` made HK
-        // consider every sample of the type, which got slower as a user's HK history grew.
+        // Use `HKStatisticsCollectionQuery` (single bucket) rather than the
+        // singular `HKStatisticsQuery`. Collection queries proportionally split
+        // sample quantities across bucket boundaries based on duration; the
+        // singular query just sums matching samples whole. With a workout that
+        // crosses midnight, the singular path mis-attributes those calories,
+        // so Today disagreed with History (which has always bucketed). Same
+        // shape and unit as `fetchHistory`'s per-day bucketing so the two
+        // paths produce the same number for "today".
         let calendar = Calendar.current
         let dayStart = DateHelpers.startOfDay()
         guard let dayEnd = calendar.date(byAdding: .day, value: 1, to: dayStart) else {
@@ -158,13 +161,19 @@ final class HealthKitService: ObservableObject {
                 userInfo: [NSLocalizedDescriptionKey: "Calendar could not compute end of day."]
             )
         }
+        let interval = DateComponents(day: 1)
 
-        async let active = queryDaySum(.activeEnergyBurned, unit: .kilocalorie(), start: dayStart, end: dayEnd)
-        async let resting = queryDaySum(.basalEnergyBurned, unit: .kilocalorie(), start: dayStart, end: dayEnd)
-        async let steps = queryDaySum(.stepCount, unit: .count(), start: dayStart, end: dayEnd)
+        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: dayStart, end: dayEnd, interval: interval)
+        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: dayStart, end: dayEnd, interval: interval)
+        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: dayStart, end: dayEnd, interval: interval)
 
-        let (a, r, s) = try await (active, resting, steps)
-        return (active: a, resting: r, steps: Int(s))
+        let (active, resting, steps) = try await (activeMap, restingMap, stepsMap)
+
+        return (
+            active: statisticValue(active, for: dayStart),
+            resting: statisticValue(resting, for: dayStart),
+            steps: Int(statisticValue(steps, for: dayStart))
+        )
     }
 
     /// Dietary energy (food) logged for today in Health, in kilocalories (e.g. from MyFitnessPal).
@@ -184,7 +193,9 @@ final class HealthKitService: ObservableObject {
                 userInfo: [NSLocalizedDescriptionKey: "Calendar could not compute end of day."]
             )
         }
-        let kcal = try await queryDaySum(.dietaryEnergyConsumed, unit: .kilocalorie(), start: dayStart, end: dayEnd)
+        let interval = DateComponents(day: 1)
+        let map = try await queryStatisticsCollection(.dietaryEnergyConsumed, unit: .kilocalorie(), start: dayStart, end: dayEnd, interval: interval)
+        let kcal = statisticValue(map, for: dayStart)
         healthKitLogger.debug("fetchDietaryEnergyToday: \(kcal, privacy: .public) kcal")
         // First non-zero read is our positive signal that dietary reads are authorized.
         // Persist so future launches can keep the dietary observer installed even when
@@ -690,10 +701,14 @@ final class HealthKitService: ObservableObject {
         interval: DateComponents
     ) async throws -> [Date: Double] {
         let store = self.store
-        // Scope the underlying sample scan to [start, end). Without this predicate
-        // HK considers every sample of the type ever recorded, which becomes a real
-        // drag for users with years of HealthKit history.
-        let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
+        // Scope the underlying sample scan to [start, end) so HK doesn't have
+        // to consider every sample of the type ever recorded. Use the default
+        // overlap behavior (no `.strictStartDate`) so samples that cross the
+        // boundary are still included — `HKStatisticsCollectionQuery` will
+        // proportionally split their quantities across the day buckets based
+        // on duration, which is exactly what we want for cross-midnight
+        // workouts to land in the right day.
+        let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: [])
         return try await withCheckedThrowingContinuation { continuation in
             let query = HKStatisticsCollectionQuery(
                 quantityType: HKQuantityType(identifier),
@@ -718,30 +733,4 @@ final class HealthKitService: ObservableObject {
         }
     }
 
-    /// Single-bucket cumulative sum for `[start, end)`. Lighter than the collection
-    /// query for "today only" reads — no bucketing, no enumeration, one predicate scan.
-    private func queryDaySum(
-        _ identifier: HKQuantityTypeIdentifier,
-        unit: HKUnit,
-        start: Date,
-        end: Date
-    ) async throws -> Double {
-        let store = self.store
-        let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
-        return try await withCheckedThrowingContinuation { continuation in
-            let query = HKStatisticsQuery(
-                quantityType: HKQuantityType(identifier),
-                quantitySamplePredicate: predicate,
-                options: .cumulativeSum
-            ) { _, statistics, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                    return
-                }
-                let value = statistics?.sumQuantity()?.doubleValue(for: unit) ?? 0
-                continuation.resume(returning: value)
-            }
-            store.execute(query)
-        }
-    }
 }

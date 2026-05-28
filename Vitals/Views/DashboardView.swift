@@ -1108,20 +1108,38 @@ struct DashboardView: View {
 
         do {
             let stats = try await healthKit.fetchTodayStats()
-            if isAllZero(stats), let cachedStats, cachedHasData {
-                applyStats(cachedStats)
+            // Per-field max of live iPhone HK and the shared SwiftData cache.
+            // The Watch reads its local HealthKit store directly and writes the
+            // result to the shared cache during background refresh, which can
+            // lead the iPhone's HK view by minutes (Watch → iPhone HK sync is
+            // not instantaneous). Calories and steps within a single day only
+            // ever increase, so taking the per-field max can never invent a
+            // value — it just keeps Today from regressing behind whichever
+            // device most recently observed a higher total.
+            let displayStats: (active: Double, resting: Double, steps: Int)
+            if let cachedStats {
+                displayStats = (
+                    active: max(stats.active, cachedStats.active),
+                    resting: max(stats.resting, cachedStats.resting),
+                    steps: max(stats.steps, cachedStats.steps)
+                )
+            } else {
+                displayStats = stats
+            }
+            applyStats(displayStats)
+
+            if isAllZero(displayStats) {
+                // Neither live HK nor cache had any data — surface a recoverable
+                // notice so the user can route to Health/Settings.
+                let status = await healthKit.authorizationRequestStatus()
+                healthNotice = classifyEmptyFetchNotice(requestStatus: status)
+            } else if isAllZero(stats), cachedHasData {
+                // Live read came back empty but the cache carried us; let the
+                // user know they're looking at the last good snapshot rather
+                // than current numbers.
                 healthNotice = .cachedData
             } else {
-                applyStats(stats)
-                if isAllZero(stats) {
-                    // All-zero fetch with no cached backup: ask HealthKit whether the user
-                    // was already prompted so we can route them to Settings (blocked) instead
-                    // of a generic "no data yet" banner they can't recover from.
-                    let status = await healthKit.authorizationRequestStatus()
-                    healthNotice = classifyEmptyFetchNotice(requestStatus: status)
-                } else {
-                    healthNotice = nil
-                }
+                healthNotice = nil
             }
             // Only advance the "Updated HH:mm" header after a successful read
             // so users aren't misled into thinking cached-after-failure data is fresh.
