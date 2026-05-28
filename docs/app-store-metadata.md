@@ -242,7 +242,7 @@ If Apple requires you to declare HealthKit under "Health & Fitness" data:
 |-------|-------|
 | First Name | Jack |
 | Last Name | Wallner |
-| Email | jackwallner@gmail.com |
+| Email | jackwallner+tc@gmail.com |
 | Phone | _(enter your phone number)_ |
 
 ### Sign-In Required

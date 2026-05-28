@@ -4,7 +4,7 @@ import HealthKit
 private enum VitalsWatchLinks {
     static let privacyPolicy = URL(string: "https://jackwallner.github.io/vitals/privacy-policy.html")!
     static let support = URL(string: "https://jackwallner.github.io/vitals/support.html")!
-    static let supportEmail = URL(string: "mailto:jackwallner@gmail.com")!
+    static let supportEmail = URL(string: "mailto:jackwallner+tc@gmail.com")!
 }
 
 private enum WatchHealthNotice: Equatable {
