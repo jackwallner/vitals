@@ -42,7 +42,6 @@ private enum HealthNotice: Equatable {
     case accessNeeded
     case accessBlocked
     case noData
-    case cachedData
     case loadError
 
     var iconName: String {
@@ -50,7 +49,6 @@ private enum HealthNotice: Equatable {
         case .accessNeeded: "heart.text.square.fill"
         case .accessBlocked: "lock.shield"
         case .noData: "heart.text.clipboard"
-        case .cachedData: "clock.arrow.circlepath"
         case .loadError: "exclamationmark.triangle.fill"
         }
     }
@@ -60,7 +58,6 @@ private enum HealthNotice: Equatable {
         case .accessNeeded: "Health access needed"
         case .accessBlocked: "Health access is off"
         case .noData: "No Health data yet"
-        case .cachedData: "Showing last saved data"
         case .loadError: "Couldn't refresh Health data"
         }
     }
@@ -73,8 +70,6 @@ private enum HealthNotice: Equatable {
             "Open Settings → Privacy → Health → Total Calories and turn on each category to load your data."
         case .noData:
             "If you just granted access, Apple Health may still be catching up. If this seems wrong, check Health access."
-        case .cachedData:
-            "Showing the last good values because the latest Health read looked incomplete."
         case .loadError:
             "Try reopening the app in a moment, or check Apple Health access."
         }
@@ -88,8 +83,6 @@ private enum HealthNotice: Equatable {
             "Open Settings"
         case .noData, .loadError:
             "Open Health"
-        case .cachedData:
-            nil
         }
     }
 }
@@ -879,8 +872,6 @@ struct DashboardView: View {
             openAppSettings()
         case .noData, .loadError:
             openHealthApp()
-        case .cachedData:
-            break
         }
     }
 
@@ -1041,9 +1032,8 @@ struct DashboardView: View {
     }
 
     /// Classify the dashboard's recovery notice based on the most recent fetch result and
-    /// HealthKit authorization request status. Runs only when the fetch returned all-zero
-    /// and no same-day cache is present — otherwise the happy path / `.cachedData` paths
-    /// already handled it upstream.
+    /// HealthKit authorization request status. Runs only when both live HK and the cache
+    /// were empty — otherwise the merged display values speak for themselves.
     ///
     /// - `shouldRequest`: system has not yet presented the sheet (or it was interrupted) →
     ///   surface `.accessNeeded` so users can retry the prompt.
@@ -1191,8 +1181,12 @@ struct DashboardView: View {
             await dietaryEarly
             await pacingEarly
             if let cachedStats = try? healthKit.fetchCachedTodayStats() {
+                // Fall back to whatever the cache last captured. The header's
+                // "Updated HH:mm" timestamp won't advance (lastRefreshDate is
+                // only bumped on success), so the user gets a passive signal
+                // that the data is stale without an explicit error banner.
                 applyStats(cachedStats)
-                healthNotice = .cachedData
+                healthNotice = nil
             } else {
                 applyStats((active: 0, resting: 0, steps: 0))
                 healthNotice = .loadError
