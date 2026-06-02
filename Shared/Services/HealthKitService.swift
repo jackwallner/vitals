@@ -342,6 +342,8 @@ final class HealthKitService: ObservableObject {
 
         var calorieWeighted = 0.0
         var stepWeighted = 0.0
+        var calorieFullDay = 0.0
+        var stepFullDay = 0.0
         var calorieSampleDays = 0
         var stepSampleDays = 0
 
@@ -357,15 +359,19 @@ final class HealthKitService: ObservableObject {
             if dayCal > 0 {
                 calorieSampleDays += 1
                 calorieWeighted += dayCal * dayFraction
+                calorieFullDay += dayCal
             }
             if daySteps > 0 {
                 stepSampleDays += 1
                 stepWeighted += Double(daySteps) * dayFraction
+                stepFullDay += Double(daySteps)
             }
         }
 
         let avgCalories: Double? = calorieSampleDays > 0 ? calorieWeighted / Double(calorieSampleDays) : nil
         let avgSteps: Int? = stepSampleDays > 0 ? Int(stepWeighted / Double(stepSampleDays)) : nil
+        let avgCaloriesFullDay: Double? = calorieSampleDays > 0 ? calorieFullDay / Double(calorieSampleDays) : nil
+        let avgStepsFullDay: Int? = stepSampleDays > 0 ? Int(stepFullDay / Double(stepSampleDays)) : nil
 
         healthKitLogger.debug(
             "fetchPacing: comparison=\(String(describing: comparison), privacy: .public) lookbackDays=\(lookbackDays, privacy: .public) calSamples=\(calorieSampleDays, privacy: .public) stepSamples=\(stepSampleDays, privacy: .public)"
@@ -375,7 +381,9 @@ final class HealthKitService: ObservableObject {
             avgCalories: avgCalories,
             avgSteps: avgSteps,
             calorieSampleDays: calorieSampleDays,
-            stepSampleDays: stepSampleDays
+            stepSampleDays: stepSampleDays,
+            avgCaloriesFullDay: avgCaloriesFullDay,
+            avgStepsFullDay: avgStepsFullDay
         )
     }
 

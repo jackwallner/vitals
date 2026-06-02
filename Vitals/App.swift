@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 import BackgroundTasks
 import StoreKit
+import UserNotifications
 import os
 @preconcurrency import RevenueCat
 #if canImport(WatchConnectivity)
@@ -87,6 +88,8 @@ struct VitalsApp: App {
         // Must run on every launch (including background) so observer queries are active
         HealthKitService.shared.enableBackgroundDelivery()
         Self.scheduleAppRefresh()
+        // Route weekly-recap notification taps to the recap sheet.
+        UNUserNotificationCenter.current().delegate = VitalsNotificationDelegate.shared
         StoreService.shared.start()
         ReviewPromptTracker.recordAppLaunch()
         #if canImport(WatchConnectivity)
@@ -191,6 +194,9 @@ final class TrialOfferCoordinator: ObservableObject {
         case deepTrendsUpgrade
         case netDeficitToggle
         case activeRestingToggle
+        case projectionsToggle
+        case streaksToggle
+        case weeklyRecapToggle
         case settingsUpgradeRow
         case milestoneCelebration
 
@@ -203,6 +209,9 @@ final class TrialOfferCoordinator: ObservableObject {
             case .activeRestingToggle: .activeResting
             case .deepTrendsUpgrade: .deepTrends
             case .lockedCustomRange, .lockedSummaryReport: .customRangesPDF
+            case .projectionsToggle: .projections
+            case .streaksToggle: .streaks
+            case .weeklyRecapToggle: .weeklyRecap
             case .settingsUpgradeRow, .milestoneCelebration: nil
             }
         }
@@ -231,17 +240,56 @@ final class MilestoneCoordinator: ObservableObject {
     func clear() { pendingEvent = nil }
 }
 
+/// Routes a tapped weekly-recap notification to the recap sheet. The
+/// `UNUserNotificationCenterDelegate` posts here; `MainTabView` presents.
+@MainActor
+final class WeeklyRecapCoordinator: ObservableObject {
+    static let shared = WeeklyRecapCoordinator()
+
+    @Published var pendingPresent = false
+
+    private init() {}
+
+    func request() { pendingPresent = true }
+    func clear() { pendingPresent = false }
+}
+
+/// Handles weekly-recap notification taps (and foreground presentation) and
+/// forwards to `WeeklyRecapCoordinator`. Installed as the notification-center
+/// delegate in `VitalsApp.init`.
+final class VitalsNotificationDelegate: NSObject, UNUserNotificationCenterDelegate, @unchecked Sendable {
+    static let shared = VitalsNotificationDelegate()
+
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification
+    ) async -> UNNotificationPresentationOptions {
+        [.banner, .sound]
+    }
+
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse
+    ) async {
+        let info = response.notification.request.content.userInfo
+        guard info[NotificationService.recapRouteKey] as? String == NotificationService.recapRouteValue else { return }
+        await MainActor.run { WeeklyRecapCoordinator.shared.request() }
+    }
+}
+
 struct MainTabView: View {
     @EnvironmentObject private var store: StoreService
     @StateObject private var goals = GoalSettings.shared
     @StateObject private var trialCoordinator = TrialOfferCoordinator.shared
     @StateObject private var milestoneCoordinator = MilestoneCoordinator.shared
+    @StateObject private var recapCoordinator = WeeklyRecapCoordinator.shared
     @StateObject private var reviewPromptCoordinator = ReviewPromptCoordinator.shared
     @State private var selectedTab = 0
     @State private var historyHasAppeared = false
     @State private var showTrialOffer = false
     @State private var showTrialPaywall = false
     @State private var showMilestone = false
+    @State private var showWeeklyRecap = false
     @State private var pendingMilestone: MilestoneEvent?
     /// Set when the user taps the CTA inside a milestone sheet. Read in the
     /// milestone sheet's onDismiss to chain the trial offer once it's gone —
@@ -471,6 +519,9 @@ struct MainTabView: View {
         switch intent {
         case .netDeficitToggle: pendingFeatureEnable = .netDeficit
         case .activeRestingToggle: pendingFeatureEnable = .activeResting
+        case .projectionsToggle: pendingFeatureEnable = .projections
+        case .streaksToggle: pendingFeatureEnable = .streaks
+        case .weeklyRecapToggle: pendingFeatureEnable = .weeklyRecap
         default: pendingFeatureEnable = nil
         }
         if hasTrialOffer {
@@ -491,6 +542,13 @@ struct MainTabView: View {
             Task { try? await HealthKitService.shared.requestDietaryAuthorization() }
         case .activeResting:
             goals.showActiveRestingBreakdown = true
+        case .projections:
+            goals.showProjections = true
+        case .streaks:
+            goals.showStreaks = true
+        case .weeklyRecap:
+            goals.weeklyRecapEnabled = true
+            Task { await NotificationService.scheduleWeeklyRecap() }
         default:
             break
         }
@@ -627,6 +685,14 @@ struct MainTabView: View {
             guard let event else { return }
             handleMilestone(event)
         }
+        .onChange(of: recapCoordinator.pendingPresent) { _, present in
+            guard present else { return }
+            recapCoordinator.clear()
+            // Land on Today, then present the recap once no other sheet is up.
+            guard !showTrialOffer, !showTrialPaywall, !showMilestone, !showReviewPrompt else { return }
+            selectedTab = 0
+            showWeeklyRecap = true
+        }
         .onChange(of: reviewPromptCoordinator.pendingPresentation) { _, presentation in
             guard let presentation else { return }
             defer { reviewPromptCoordinator.clear() }
@@ -733,6 +799,9 @@ struct MainTabView: View {
             }
         }) {
             ReviewPromptSheet(initialStep: reviewPromptInitialStep, onFinish: handleReviewPromptFinish)
+        }
+        .sheet(isPresented: $showWeeklyRecap) {
+            WeeklyRecapView(goals: goals)
         }
     }
 
