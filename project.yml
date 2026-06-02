@@ -118,6 +118,9 @@ targets:
     sources:
       - path: VitalsTests
       - path: Shared/Models/CalorieTrendSummary.swift
+      - path: Shared/Utilities/ProjectionCalculator.swift
+      - path: Shared/Utilities/WeeklyRecap.swift
+      - path: Shared/Utilities/MilestoneCalculator.swift
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES

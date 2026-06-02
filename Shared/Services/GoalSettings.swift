@@ -92,6 +92,27 @@ struct PacingResult: Sendable {
     let avgSteps: Int?
     let calorieSampleDays: Int
     let stepSampleDays: Int
+    /// Usual *full-day* totals over the same sample set (no time-of-day weighting).
+    /// Drives the Vitals+ end-of-day projection: expected remaining = full − now.
+    /// nil when there aren't enough samples, exactly like the time-weighted averages.
+    let avgCaloriesFullDay: Double?
+    let avgStepsFullDay: Int?
+
+    init(
+        avgCalories: Double?,
+        avgSteps: Int?,
+        calorieSampleDays: Int,
+        stepSampleDays: Int,
+        avgCaloriesFullDay: Double? = nil,
+        avgStepsFullDay: Int? = nil
+    ) {
+        self.avgCalories = avgCalories
+        self.avgSteps = avgSteps
+        self.calorieSampleDays = calorieSampleDays
+        self.stepSampleDays = stepSampleDays
+        self.avgCaloriesFullDay = avgCaloriesFullDay
+        self.avgStepsFullDay = avgStepsFullDay
+    }
 
     /// Resolves optional dashboard values: needs enough non-empty sample days per visible metric.
     func dashboardValues(minSamples: Int = 3, showCalories: Bool, showSteps: Bool) -> (
@@ -241,6 +262,24 @@ final class GoalSettings: ObservableObject {
         didSet { defaults.set(showActiveRestingBreakdown, forKey: "showActiveRestingBreakdown") }
     }
 
+    /// Vitals+ feature: show the "on pace for…" end-of-day projection under the ring.
+    /// Default off — opt-in so the core Today view is unchanged for everyone else.
+    @Published var showProjections: Bool {
+        didSet { defaults.set(showProjections, forKey: "showProjections") }
+    }
+
+    /// Vitals+ feature: show the current goal streak ("12-day streak") under the ring.
+    @Published var showStreaks: Bool {
+        didSet { defaults.set(showStreaks, forKey: "showStreaks") }
+    }
+
+    /// Vitals+ feature: schedule a weekly local notification nudging the user to
+    /// open their recap. Default off; flipping it on requests notification
+    /// permission and schedules the weekly trigger (see [[NotificationService]]).
+    @Published var weeklyRecapEnabled: Bool {
+        didSet { defaults.set(weeklyRecapEnabled, forKey: "weeklyRecapEnabled") }
+    }
+
     // nil means "no goal" — just show the counter
     @Published var calorieGoal: Double? {
         didSet {
@@ -322,6 +361,9 @@ final class GoalSettings: ObservableObject {
         self.showSteps = defaults.object(forKey: "showSteps") as? Bool ?? true
         self.showNetCalories = defaults.object(forKey: "showNetCalories") as? Bool ?? false
         self.showActiveRestingBreakdown = defaults.object(forKey: "showActiveRestingBreakdown") as? Bool ?? false
+        self.showProjections = defaults.object(forKey: "showProjections") as? Bool ?? false
+        self.showStreaks = defaults.object(forKey: "showStreaks") as? Bool ?? false
+        self.weeklyRecapEnabled = defaults.object(forKey: "weeklyRecapEnabled") as? Bool ?? false
 
         let calEnabled = defaults.object(forKey: "calorieGoalEnabled") as? Bool ?? true
         if calEnabled {

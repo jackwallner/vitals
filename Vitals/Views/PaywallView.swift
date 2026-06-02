@@ -19,6 +19,9 @@ enum PlusFeature: CaseIterable {
     case activeResting
     case deepTrends
     case customRangesPDF
+    case projections
+    case streaks
+    case weeklyRecap
 
     var icon: String {
         switch self {
@@ -26,6 +29,9 @@ enum PlusFeature: CaseIterable {
         case .activeResting: "flame.fill"
         case .deepTrends: "chart.line.uptrend.xyaxis"
         case .customRangesPDF: "calendar.badge.clock"
+        case .projections: "scope"
+        case .streaks: "flame"
+        case .weeklyRecap: "calendar.badge.checkmark"
         }
     }
 
@@ -35,6 +41,9 @@ enum PlusFeature: CaseIterable {
         case .activeResting: Theme.caloriesPrimary
         case .deepTrends: Theme.stepsPrimary
         case .customRangesPDF: Theme.stepsSecondary
+        case .projections: Theme.stepsPrimary
+        case .streaks: Theme.caloriesSecondary
+        case .weeklyRecap: Theme.caloriesPrimary
         }
     }
 
@@ -45,6 +54,9 @@ enum PlusFeature: CaseIterable {
         case .activeResting: "Active vs. resting calories"
         case .deepTrends: "Deep Trends"
         case .customRangesPDF: "Custom ranges + PDF reports"
+        case .projections: "End-of-day projections"
+        case .streaks: "Goal streaks"
+        case .weeklyRecap: "Weekly recap"
         }
     }
 
@@ -55,6 +67,9 @@ enum PlusFeature: CaseIterable {
         case .activeResting: "Split your burn into active and resting to see what moved the number."
         case .deepTrends: "Every period compared head-to-head with the one before it."
         case .customRangesPDF: "Pick any window in History and export a clean summary for your coach."
+        case .projections: "See where today's calories and steps will land, based on your own pace."
+        case .streaks: "Track consecutive days you've hit a goal — and don't break the chain."
+        case .weeklyRecap: "A Sunday-night summary of your week vs. the one before, delivered to you."
         }
     }
 
@@ -65,6 +80,9 @@ enum PlusFeature: CaseIterable {
         case .activeResting: "Active vs. resting calorie breakdown"
         case .deepTrends: "Deep Trends: every period vs. the one before"
         case .customRangesPDF: "Custom date ranges + PDF reports"
+        case .projections: "End-of-day projections from your own pace"
+        case .streaks: "Goal streaks — keep the chain alive"
+        case .weeklyRecap: "Weekly recap notification + summary"
         }
     }
 
@@ -75,6 +93,9 @@ enum PlusFeature: CaseIterable {
         case .activeResting: "Break down every calorie."
         case .deepTrends: "See your trends, deeper."
         case .customRangesPDF: "Any range. Clean PDF reports."
+        case .projections: "Know where today lands."
+        case .streaks: "Keep the chain alive."
+        case .weeklyRecap: "Your week, in review."
         }
     }
 
@@ -85,6 +106,9 @@ enum PlusFeature: CaseIterable {
         case .activeResting: "Split active vs. resting burn to see what's really moving your number, plus the rest of Vitals+."
         case .deepTrends: "Compare every period head-to-head with the one before, plus the rest of Vitals+."
         case .customRangesPDF: "Pick any date window and export a polished report for your coach, plus the rest of Vitals+."
+        case .projections: "See where today's calories and steps will land based on your own pace, plus the rest of Vitals+."
+        case .streaks: "Track every consecutive day you hit a goal and protect your streak, plus the rest of Vitals+."
+        case .weeklyRecap: "Get a Sunday-night recap of your week vs. the last one, plus the rest of Vitals+."
         }
     }
 }
@@ -117,7 +141,7 @@ struct PaywallView: View {
     /// All features, with the focused one pulled to the front so the user sees
     /// what they tapped for first.
     private var orderedFeatures: [PlusFeature] {
-        let base: [PlusFeature] = [.netDeficit, .deepTrends, .customRangesPDF, .activeResting]
+        let base: [PlusFeature] = [.netDeficit, .projections, .streaks, .weeklyRecap, .deepTrends, .customRangesPDF, .activeResting]
         guard let focus else { return base }
         return [focus] + base.filter { $0 != focus }
     }

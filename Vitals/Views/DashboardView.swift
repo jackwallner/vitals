@@ -108,6 +108,15 @@ struct DashboardView: View {
     @State private var pacingCalorieSamples = 0
     @State private var pacingStepSamples = 0
     @State private var pacingMinSamples = 3
+    // Vitals+ projection inputs: raw "usual by now" + "usual full day" over the
+    // same sample set, ungated by showCalories/showSteps so the projection works
+    // even when the pacing pills themselves are hidden.
+    @State private var usualCaloriesByNow: Double? = nil
+    @State private var usualCaloriesFullDay: Double? = nil
+    @State private var usualStepsByNow: Double? = nil
+    @State private var usualStepsFullDay: Double? = nil
+    // Vitals+ streak: consecutive completed days (ending yesterday) that hit a goal.
+    @State private var currentStreak: Int = 0
     @State private var isRefreshing = false
     @State private var healthNotice: HealthNotice? = nil
     @State private var lastRefreshDate: Date? = nil
@@ -137,6 +146,40 @@ struct DashboardView: View {
     /// Hidden in minimal mode (no goals + no pacing) to keep that layout uncluttered.
     private var showActiveResting: Bool {
         store.isPro && goals.showActiveRestingBreakdown && !isMinimalMode
+    }
+
+    /// Vitals+ end-of-day projection, gated by subscription + setting.
+    private var isProjectionEnabled: Bool {
+        store.isPro && goals.showProjections
+    }
+
+    /// Vitals+ goal streak chip, gated by subscription + setting. Needs at least
+    /// one goal — a streak is meaningless without something to hit.
+    private var isStreakEnabled: Bool {
+        store.isPro && goals.showStreaks && (goals.calorieGoal != nil || goals.stepGoal != nil)
+    }
+
+    private var projectedCalories: Double? {
+        guard isProjectionEnabled, goals.showCalories else { return nil }
+        return ProjectionCalculator.projectedEndOfDay(
+            current: totalCalories,
+            usualByNow: usualCaloriesByNow,
+            usualFullDay: usualCaloriesFullDay
+        )
+    }
+
+    private var projectedSteps: Double? {
+        guard isProjectionEnabled, goals.showSteps else { return nil }
+        return ProjectionCalculator.projectedEndOfDay(
+            current: Double(steps),
+            usualByNow: usualStepsByNow,
+            usualFullDay: usualStepsFullDay
+        )
+    }
+
+    /// True when there's anything in the inline Vitals+ insights strip to render.
+    private var hasInsights: Bool {
+        (isStreakEnabled && currentStreak > 0) || projectedCalories != nil || projectedSteps != nil
     }
 
     private var visibleMetricCount: Int {
@@ -231,6 +274,14 @@ struct DashboardView: View {
                 goals.showNetCalories = false
             } else if isPro && goals.showNetCalories {
                 Task { await refresh() }
+            }
+            // Weekly recap notifications are scheduled in the system, so they'd
+            // outlive a lapsed subscription. Cancel on lapse; restore on regain
+            // if the user still has the toggle on.
+            if oldValue && !isPro {
+                NotificationService.cancelWeeklyRecap()
+            } else if !oldValue && isPro && goals.weeklyRecapEnabled {
+                Task { await NotificationService.scheduleWeeklyRecap() }
             }
         }
         .onChange(of: scenePhase) { _, newPhase in
@@ -609,6 +660,8 @@ struct DashboardView: View {
                 .accessibilityHint("Opens net deficit history")
             }
 
+            insightsSection
+
             // Nothing enabled — gentle prompt
             if !goals.showCalories && !goals.showSteps && !isNetDeficitEnabled {
                 VStack(spacing: 12) {
@@ -628,6 +681,95 @@ struct DashboardView: View {
             Spacer(minLength: 16)
         }
         .padding(.bottom, 90)
+    }
+
+    /// Inline Vitals+ insights strip (streak chip + end-of-day projections),
+    /// rendered under the ring. Entirely absent unless the user is Pro and has
+    /// opted in — the core Today layout is unchanged for everyone else.
+    @ViewBuilder
+    private var insightsSection: some View {
+        if hasInsights {
+            VStack(spacing: 8) {
+                if isStreakEnabled && currentStreak > 0 {
+                    streakChip
+                }
+                if let projected = projectedCalories {
+                    projectionPill(
+                        projected: projected,
+                        unit: "cal",
+                        goal: goals.calorieGoal,
+                        tint: Theme.caloriesPrimary
+                    )
+                }
+                if let projected = projectedSteps {
+                    projectionPill(
+                        projected: projected,
+                        unit: "steps",
+                        goal: goals.stepGoal.map(Double.init),
+                        tint: Theme.stepsPrimary
+                    )
+                }
+            }
+            .padding(.top, 18)
+            .opacity(animateContent ? 1 : 0)
+        }
+    }
+
+    private var streakChip: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "flame.fill")
+                .font(.system(.caption, design: .rounded, weight: .bold))
+            Text("\(currentStreak)-day streak")
+                .font(.system(.caption, design: .rounded, weight: .semibold))
+        }
+        .foregroundStyle(Theme.caloriesSecondary)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
+        .background(Theme.caloriesSecondary.opacity(0.12), in: Capsule())
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Current goal streak: \(currentStreak) days")
+    }
+
+    private func projectionPill(projected: Double, unit: String, goal: Double?, tint: Color) -> some View {
+        let outlook = ProjectionCalculator.goalOutlook(projected: projected, goal: goal)
+        let projectedText = "\(Int(projected.rounded()).formatted(.number)) \(unit)"
+        let icon: String
+        let color: Color
+        let trailing: String?
+        switch outlook {
+        case .onTrack:
+            icon = "checkmark.circle.fill"
+            color = Theme.netDeficitPositive
+            trailing = goal != nil ? "on track" : nil
+        case .behind(let shortfall):
+            icon = "arrow.down.right.circle.fill"
+            color = Theme.netDeficitNegative
+            trailing = "≈\(Int(shortfall.rounded()).formatted(.number)) short"
+        case nil:
+            icon = "scope"
+            color = tint
+            trailing = nil
+        }
+        return HStack(spacing: 6) {
+            Image(systemName: icon)
+                .font(.system(.caption2, design: .rounded, weight: .bold))
+                .foregroundStyle(color)
+            Text("On pace for \(projectedText)")
+                .font(.system(.caption, design: .rounded, weight: .medium))
+                .foregroundStyle(Theme.textSecondary)
+            if let trailing {
+                Text("· \(trailing)")
+                    .font(.system(.caption, design: .rounded, weight: .semibold))
+                    .foregroundStyle(color)
+            }
+        }
+        .lineLimit(1)
+        .minimumScaleFactor(0.8)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
+        .background(Theme.cardSurface, in: Capsule())
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Projected end of day: \(projectedText)\(trailing.map { ", \($0)" } ?? "")")
     }
 
     private func netDeficitDisplayText(_ value: Double) -> String {
@@ -965,6 +1107,10 @@ struct DashboardView: View {
         pacingStepsInsufficient = false
         pacingCalorieSamples = 0
         pacingStepSamples = 0
+        usualCaloriesByNow = nil
+        usualCaloriesFullDay = nil
+        usualStepsByNow = nil
+        usualStepsFullDay = nil
     }
 
     private func loadDietaryEnergy() async {
@@ -991,7 +1137,9 @@ struct DashboardView: View {
     }
 
     private func loadPacing(stats: (active: Double, resting: Double, steps: Int)?) async {
-        guard goals.showPacing else {
+        // The pacing query also feeds the Vitals+ projection, so fetch it whenever
+        // either the pacing pills or projections are enabled.
+        guard goals.showPacing || isProjectionEnabled else {
             clearPacing()
             return
         }
@@ -1015,6 +1163,25 @@ struct DashboardView: View {
         pacingMinSamples = minSamples
         pacingCalorieSamples = pacing.calorieSampleDays
         pacingStepSamples = pacing.stepSampleDays
+
+        // Projection inputs: raw usuals (ungated by show toggles), only when the
+        // sample set clears the same minimum the pacing pills use.
+        let calReady = pacing.calorieSampleDays >= minSamples
+        let stepReady = pacing.stepSampleDays >= minSamples
+        usualCaloriesByNow = calReady ? pacing.avgCalories : nil
+        usualCaloriesFullDay = calReady ? pacing.avgCaloriesFullDay : nil
+        usualStepsByNow = stepReady ? pacing.avgSteps.map(Double.init) : nil
+        usualStepsFullDay = stepReady ? pacing.avgStepsFullDay.map(Double.init) : nil
+
+        // Pacing pills respect showPacing; when pacing is off but projections are
+        // on, leave the pill state cleared so nothing pacing-specific renders.
+        guard goals.showPacing else {
+            pacingCalories = nil
+            pacingSteps = nil
+            pacingCaloriesInsufficient = false
+            pacingStepsInsufficient = false
+            return
+        }
         let v = pacing.dashboardValues(minSamples: minSamples, showCalories: goals.showCalories, showSteps: goals.showSteps)
         pacingCalories = v.calories
         pacingCaloriesInsufficient = v.caloriesBuilding
@@ -1206,7 +1373,6 @@ struct DashboardView: View {
     private func checkGoalStreakMilestone(
         history: [(date: Date, active: Double, resting: Double, steps: Int)]
     ) {
-        guard !store.isPro else { return }
         let days = history.map {
             MilestoneDay(date: $0.date, calories: $0.active + $0.resting, steps: $0.steps)
         }
@@ -1215,6 +1381,11 @@ struct DashboardView: View {
             calorieGoal: goals.calorieGoal,
             stepGoal: goals.stepGoal
         )
+        // Drive the Vitals+ inline streak display for everyone (gated at render).
+        currentStreak = streak
+
+        // Milestone celebration sheets are a non-Pro upsell only.
+        guard !store.isPro else { return }
         guard let milestone = MilestoneCalculator.unfiredStreakMilestone(
             currentStreak: streak,
             firedIds: goals.firedMilestoneIds
@@ -1714,6 +1885,69 @@ private struct SettingsSheet: View {
         )
     }
 
+    private var showProjectionsBinding: Binding<Bool> {
+        Binding(
+            get: { store.isPro && goals.showProjections },
+            set: { enabled in
+                if store.isPro {
+                    goals.showProjections = enabled
+                } else if enabled {
+                    goals.showProjections = false
+                    requestTrialOffer(.projectionsToggle)
+                }
+            }
+        )
+    }
+
+    private var showStreaksBinding: Binding<Bool> {
+        Binding(
+            get: { store.isPro && goals.showStreaks },
+            set: { enabled in
+                if store.isPro {
+                    goals.showStreaks = enabled
+                } else if enabled {
+                    goals.showStreaks = false
+                    requestTrialOffer(.streaksToggle)
+                }
+            }
+        )
+    }
+
+    /// Toggle label that appends a lock glyph for non-subscribers, matching the
+    /// existing Net Deficit / Active+Resting rows.
+    @ViewBuilder
+    private func plusToggleLabel(_ title: String) -> some View {
+        HStack(spacing: 8) {
+            Text(title)
+            if !store.isPro {
+                Image(systemName: "lock.fill")
+                    .font(.caption)
+                    .foregroundStyle(Theme.caloriesPrimary)
+            }
+        }
+    }
+
+    private var weeklyRecapBinding: Binding<Bool> {
+        Binding(
+            get: { store.isPro && goals.weeklyRecapEnabled },
+            set: { enabled in
+                if store.isPro {
+                    goals.weeklyRecapEnabled = enabled
+                    Task {
+                        if enabled {
+                            await NotificationService.scheduleWeeklyRecap()
+                        } else {
+                            NotificationService.cancelWeeklyRecap()
+                        }
+                    }
+                } else if enabled {
+                    goals.weeklyRecapEnabled = false
+                    requestTrialOffer(.weeklyRecapToggle)
+                }
+            }
+        )
+    }
+
     /// Dismiss the settings sheet first so the MainTabView-owned trial sheet
     /// presents cleanly — stacking two sheets from sibling-ish hierarchies is
     /// flaky in SwiftUI and the second sometimes drops silently.
@@ -1821,6 +2055,22 @@ private struct SettingsSheet: View {
                     Text("Dashboard")
                 } footer: {
                     Text("Vitals+ unlocks the active vs. resting calorie breakdown and Net Deficit (calories burned minus food energy from Apple Health). A positive number means you burned more than you logged eating (a deficit). Connect a food app like MyFitnessPal to populate dietary energy.")
+                }
+
+                Section {
+                    Toggle(isOn: showProjectionsBinding) {
+                        plusToggleLabel("End-of-Day Projection")
+                    }
+                    Toggle(isOn: showStreaksBinding) {
+                        plusToggleLabel("Goal Streak")
+                    }
+                    Toggle(isOn: weeklyRecapBinding) {
+                        plusToggleLabel("Weekly Recap")
+                    }
+                } header: {
+                    Text("Vitals+ Extras")
+                } footer: {
+                    Text("Opt-in Vitals+ insights, off by default. Projection shows where today's calories and steps will land based on your own pace. Goal Streak counts consecutive days you've hit a goal. Weekly Recap sends a Sunday-evening notification summarizing your week — it'll ask permission to notify you.")
                 }
 
                 Section {
