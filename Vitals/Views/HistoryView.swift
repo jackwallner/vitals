@@ -14,6 +14,10 @@ extension Notification.Name {
     /// (numbers + ring on screen). The passive launch trial nudge waits ~5s from
     /// this so the pitch lands after the user sees their dashboard, not before.
     static let vitalsDashboardDidLoadData = Notification.Name("vitalsDashboardDidLoadData")
+
+    /// Posted by the "What's New" sheet's Open Settings CTA (Pro users) so the
+    /// dashboard can present its Settings sheet for the user to opt into extras.
+    static let vitalsOpenSettings = Notification.Name("vitalsOpenSettings")
 }
 
 @MainActor

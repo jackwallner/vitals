@@ -294,6 +294,9 @@ struct DashboardView: View {
                 Task { await refresh() }
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .vitalsOpenSettings)) { _ in
+            showSettings = true
+        }
         .task {
             if ScreenshotConfig.wantsOnboarding {
                 showOnboarding = true
@@ -2022,58 +2025,11 @@ private struct SettingsSheet: View {
             Form {
                 vitalsPlusSection
 
+                // Calories — the ring plus everything that shapes that number,
+                // including its goal and the Vitals+ calorie extras, all in one
+                // place instead of scattered across the sheet.
                 Section {
                     Toggle("Show Calories", isOn: showCaloriesBinding)
-                    Toggle("Show Steps", isOn: showStepsBinding)
-                    Toggle(isOn: showActiveRestingBinding) {
-                        HStack(spacing: 8) {
-                            Text("Active + Resting Breakdown")
-                            if !store.isPro {
-                                Image(systemName: "lock.fill")
-                                    .font(.caption)
-                                    .foregroundStyle(Theme.caloriesPrimary)
-                            }
-                        }
-                    }
-                    Toggle(isOn: showNetCaloriesBinding) {
-                        HStack(spacing: 8) {
-                            Text("Show Net Deficit")
-                            if !store.isPro {
-                                Image(systemName: "lock.fill")
-                                    .font(.caption)
-                                    .foregroundStyle(Theme.caloriesPrimary)
-                            }
-                        }
-                    }
-                    .onChange(of: goals.showNetCalories) { _, enabled in
-                        guard enabled, store.isPro else { return }
-                        Task {
-                            try? await HealthKitService.shared.requestDietaryAuthorization()
-                        }
-                    }
-                } header: {
-                    Text("Dashboard")
-                } footer: {
-                    Text("Vitals+ unlocks the active vs. resting calorie breakdown and Net Deficit (calories burned minus food energy from Apple Health). A positive number means you burned more than you logged eating (a deficit). Connect a food app like MyFitnessPal to populate dietary energy.")
-                }
-
-                Section {
-                    Toggle(isOn: showProjectionsBinding) {
-                        plusToggleLabel("End-of-Day Projection")
-                    }
-                    Toggle(isOn: showStreaksBinding) {
-                        plusToggleLabel("Goal Streak")
-                    }
-                    Toggle(isOn: weeklyRecapBinding) {
-                        plusToggleLabel("Weekly Recap")
-                    }
-                } header: {
-                    Text("Vitals+ Extras")
-                } footer: {
-                    Text("Opt-in Vitals+ insights, off by default. Projection shows where today's calories and steps will land based on your own pace. Goal Streak counts consecutive days you've hit a goal. Weekly Recap sends a Sunday-evening notification summarizing your week — it'll ask permission to notify you.")
-                }
-
-                Section {
                     Toggle("Calorie Goal", isOn: $calEnabled)
                     if calEnabled {
                         TextField("Daily calories", text: $calText)
@@ -2084,6 +2040,27 @@ private struct SettingsSheet: View {
                                 .foregroundStyle(.red)
                         }
                     }
+                    Toggle(isOn: showActiveRestingBinding) {
+                        plusToggleLabel("Active + Resting Breakdown")
+                    }
+                    Toggle(isOn: showNetCaloriesBinding) {
+                        plusToggleLabel("Net Deficit")
+                    }
+                    .onChange(of: goals.showNetCalories) { _, enabled in
+                        guard enabled, store.isPro else { return }
+                        Task {
+                            try? await HealthKitService.shared.requestDietaryAuthorization()
+                        }
+                    }
+                } header: {
+                    Text("Calories")
+                } footer: {
+                    Text("Active + Resting and Net Deficit are Vitals+ extras, off until you turn them on. Net Deficit shows calories burned minus food energy from Apple Health — a positive number means a deficit. Connect a food app like MyFitnessPal to populate it. Goal changes save when you tap Done.")
+                }
+
+                // Steps — the step counter and its goal together.
+                Section {
+                    Toggle("Show Steps", isOn: showStepsBinding)
                     Toggle("Step Goal", isOn: $stepEnabled)
                     if stepEnabled {
                         TextField("Daily steps", text: $stepText)
@@ -2095,11 +2072,14 @@ private struct SettingsSheet: View {
                         }
                     }
                 } header: {
-                    Text("Goals")
+                    Text("Steps")
                 } footer: {
-                    Text("Goal changes are saved when you tap Done. Everything else applies instantly.")
+                    Text("Goal changes save when you tap Done; other settings apply instantly.")
                 }
 
+                // Pacing & Projections — the "how am I tracking today" family.
+                // Projection is pace-derived and Goal Streak rides on the goals
+                // above, so they live next to pacing rather than in a separate lump.
                 Section {
                     Toggle("Show Pacing", isOn: showPacingBinding)
                     if goals.showPacing {
@@ -2114,10 +2094,28 @@ private struct SettingsSheet: View {
                             }
                         }
                     }
+                    Toggle(isOn: showProjectionsBinding) {
+                        plusToggleLabel("End-of-Day Projection")
+                    }
+                    Toggle(isOn: showStreaksBinding) {
+                        plusToggleLabel("Goal Streak")
+                    }
                 } header: {
-                    Text("Pacing")
+                    Text("Pacing & Projections")
                 } footer: {
-                    Text(pacingFooter)
+                    Text("\(pacingFooter)\n\nEnd-of-Day Projection and Goal Streak are Vitals+ extras, off by default. Projection shows where today's calories and steps will land from your own pace. Goal Streak counts consecutive days you've hit a goal.")
+                }
+
+                // Notifications — Weekly Recap is the only push the app sends, so
+                // it gets its own native section.
+                Section {
+                    Toggle(isOn: weeklyRecapBinding) {
+                        plusToggleLabel("Weekly Recap")
+                    }
+                } header: {
+                    Text("Notifications")
+                } footer: {
+                    Text("Weekly Recap is a Vitals+ extra, off by default. It sends a Sunday-evening notification summarizing your week — turning it on asks permission to notify you.")
                 }
 
                 Section("Appearance") {

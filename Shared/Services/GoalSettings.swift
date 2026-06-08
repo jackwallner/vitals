@@ -216,6 +216,20 @@ final class GoalSettings: ObservableObject {
         return now.timeIntervalSince(last) >= cooldown
     }
 
+    /// Content version of the last "What's New" announcement the user has seen.
+    /// nil = never shown. Compared against [[WhatsNew]].currentVersion so the
+    /// upgrade announcement fires once per content release. Fresh installs are
+    /// seeded to the current version in `init` so they get onboarding instead.
+    @Published var lastWhatsNewVersionShown: String? {
+        didSet {
+            if let version = lastWhatsNewVersionShown {
+                defaults.set(version, forKey: "lastWhatsNewVersionShown")
+            } else {
+                defaults.removeObject(forKey: "lastWhatsNewVersionShown")
+            }
+        }
+    }
+
     @Published var appearance: AppAppearance {
         didSet { defaults.set(appearance.rawValue, forKey: "appearance") }
     }
@@ -343,6 +357,7 @@ final class GoalSettings: ObservableObject {
         } else {
             self.firedMilestoneIds = []
         }
+        self.lastWhatsNewVersionShown = defaults.string(forKey: "lastWhatsNewVersionShown")
         self.appearance = AppAppearance(rawValue: defaults.integer(forKey: "appearance")) ?? .system
         self.showPacing = defaults.object(forKey: "showPacing") as? Bool ?? true
         if let raw = defaults.object(forKey: "pacingComparison") as? Int,
@@ -379,6 +394,15 @@ final class GoalSettings: ObservableObject {
             self.stepGoal = (100...500000).contains(saved) ? saved : 10000
         } else {
             self.stepGoal = nil
+        }
+
+        // Fresh installs (no record yet, onboarding not completed) shouldn't see
+        // the "What's New" upgrade announcement — they get onboarding instead.
+        // Seed the current version so the sheet only ever fires for users coming
+        // from an older build. didSet doesn't run during init, so persist by hand.
+        if self.lastWhatsNewVersionShown == nil && !self.hasCompletedSetup {
+            self.lastWhatsNewVersionShown = WhatsNew.currentVersion
+            defaults.set(WhatsNew.currentVersion, forKey: "lastWhatsNewVersionShown")
         }
 
         applyScreenshotOverridesIfNeeded()
