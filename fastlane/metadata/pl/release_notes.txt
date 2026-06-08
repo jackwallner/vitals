@@ -1,0 +1,9 @@
+Nowości w Vitals+
+
+• Prognoza na koniec dnia – zobacz, do jakiej dziennej sumy kalorii zmierzasz, na podstawie Twojego ostatniego tempa.
+• Serie celów – plakietka na ekranie Dziś, która liczy kolejne dni z rzędu, w których udało Ci się osiągnąć cel.
+• Podsumowanie tygodnia – opcjonalne podsumowanie w niedzielny wieczór ostatnich 7 dni w porównaniu z poprzednim tygodniem.
+
+Wszystkie trzy włączasz w Ustawieniach i są domyślnie wyłączone, więc bezpłatny ekran Dziś pozostaje dokładnie taki jak wcześniej.
+
+Do tego standardowe poprawki pod maską, które utrzymują dokładność kalorii i kroków w aplikacji, widżetach i na Apple Watch.
