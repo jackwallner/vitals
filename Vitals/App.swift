@@ -199,10 +199,11 @@ final class TrialOfferCoordinator: ObservableObject {
         case weeklyRecapToggle
         case settingsUpgradeRow
         case milestoneCelebration
+        case whatsNewAnnouncement
 
         /// The Vitals+ feature this tap reached for, so the pitch can lead with
         /// it. `nil` for entrypoints with no single feature (the generic
-        /// Settings upgrade row, milestone celebrations).
+        /// Settings upgrade row, milestone celebrations, the What's New sheet).
         var focusFeature: PlusFeature? {
             switch self {
             case .netDeficitToggle: .netDeficit
@@ -212,7 +213,7 @@ final class TrialOfferCoordinator: ObservableObject {
             case .projectionsToggle: .projections
             case .streaksToggle: .streaks
             case .weeklyRecapToggle: .weeklyRecap
-            case .settingsUpgradeRow, .milestoneCelebration: nil
+            case .settingsUpgradeRow, .milestoneCelebration, .whatsNewAnnouncement: nil
             }
         }
     }
@@ -286,6 +287,15 @@ struct MainTabView: View {
     @StateObject private var reviewPromptCoordinator = ReviewPromptCoordinator.shared
     @State private var selectedTab = 0
     @State private var historyHasAppeared = false
+    @State private var showWhatsNew = false
+    /// Guards the What's New announcement to one evaluation per app session.
+    @State private var whatsNewEvaluated = false
+    /// Set when the What's New CTA routes a non-subscriber to the trial offer;
+    /// read in the sheet's onDismiss to chain it once the sheet is fully gone.
+    @State private var pendingTrialAfterWhatsNewDismiss = false
+    /// Set when a subscriber taps "Choose in Settings"; opens the dashboard's
+    /// Settings sheet after the announcement dismisses.
+    @State private var pendingSettingsAfterWhatsNewDismiss = false
     @State private var showTrialOffer = false
     @State private var showTrialPaywall = false
     @State private var showMilestone = false
@@ -402,7 +412,37 @@ struct MainTabView: View {
         }
     }
 
+    /// Presents the one-time "What's New" announcement for existing users who
+    /// just updated. Returns true when it took over the launch moment so the
+    /// caller skips the passive trial nudge this session. Gated so fresh installs
+    /// (seeded past it in GoalSettings) and screenshot runs never see it, and so
+    /// it never stacks on top of another sheet.
+    @discardableResult
+    private func maybeShowWhatsNew() -> Bool {
+        guard !whatsNewEvaluated,
+              goals.hasCompletedSetup,
+              !ScreenshotConfig.isEnabled,
+              WhatsNew.shouldShow(lastShown: goals.lastWhatsNewVersionShown),
+              selectedTab == 0,
+              // Wait for the dashboard's first real paint so the announcement
+              // lands over the user's data, not a launch spinner.
+              dashboardDataLoaded,
+              !showTrialOffer, !showTrialPaywall, !showMilestone,
+              !showReviewPrompt, !showWeeklyRecap
+        else { return false }
+        whatsNewEvaluated = true
+        // Mark seen on present so a force-quit can't make it reappear, and so the
+        // passive trial nudge stays suppressed for the rest of this session.
+        goals.lastWhatsNewVersionShown = WhatsNew.currentVersion
+        launchOfferShownThisSession = true
+        showWhatsNew = true
+        return true
+    }
+
     private func evaluateTrialOffer() {
+        // The What's New announcement owns the launch moment for users who just
+        // updated; don't stack the passive trial pitch on top of it.
+        guard !showWhatsNew else { return }
         // Passive launch nudge: gated by [[GoalSettings.passiveTrialOfferAllowed]]
         // so the user re-encounters it after a 14-day cooldown rather than
         // being killed forever by a single "Not now". Intent-driven taps
@@ -422,7 +462,7 @@ struct MainTabView: View {
         // collides with the dashboard's first-paint animations.
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 5_000_000_000)
-            guard !showTrialOffer, !showTrialPaywall else { return }
+            guard !showTrialOffer, !showTrialPaywall, !showWhatsNew else { return }
             // Re-check the user is still on Today — they may have navigated to
             // History or Vitals+ during the wait, in which case this pitch would
             // pop over the wrong tab.
@@ -647,9 +687,11 @@ struct MainTabView: View {
         }
         .ignoresSafeArea(edges: .bottom)
         .task {
-            // Wait briefly for products to load, then consider the trial nudge.
+            // Wait briefly for products to load, then consider the launch
+            // surfaces. What's New (for users who just updated) takes priority
+            // over the passive trial nudge.
             if store.products.isEmpty { await store.fetchProducts() }
-            evaluateTrialOffer()
+            if !maybeShowWhatsNew() { evaluateTrialOffer() }
         }
         .onChange(of: store.products.count) { _, _ in evaluateTrialOffer() }
         // First-launch users complete onboarding *after* the .task /
@@ -669,7 +711,7 @@ struct MainTabView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .vitalsDashboardDidLoadData)) { _ in
             dashboardDataLoaded = true
-            evaluateTrialOffer()
+            if !maybeShowWhatsNew() { evaluateTrialOffer() }
         }
         .onReceive(NotificationCenter.default.publisher(for: .vitalsHistoryDidFinishLoading)) { _ in
             evaluateHistoryTrialOffer()
@@ -712,6 +754,32 @@ struct MainTabView: View {
             if tab == 2, !store.isPro {
                 store.trackPaywallImpression(id: "vitals_upgrade_tab", oncePerSession: true)
             }
+        }
+        .sheet(isPresented: $showWhatsNew, onDismiss: {
+            // Chain the follow-on action only after the announcement has fully
+            // dismissed — SwiftUI drops a second sheet presented in the same tick.
+            if pendingTrialAfterWhatsNewDismiss {
+                pendingTrialAfterWhatsNewDismiss = false
+                handleIntentTap(.whatsNewAnnouncement)
+            } else if pendingSettingsAfterWhatsNewDismiss {
+                pendingSettingsAfterWhatsNewDismiss = false
+                NotificationCenter.default.post(name: .vitalsOpenSettings, object: nil)
+            }
+        }) {
+            WhatsNewSheet(
+                isPro: store.isPro,
+                onTryFree: {
+                    pendingTrialAfterWhatsNewDismiss = true
+                    showWhatsNew = false
+                },
+                onOpenSettings: {
+                    pendingSettingsAfterWhatsNewDismiss = true
+                    showWhatsNew = false
+                },
+                onDismiss: { showWhatsNew = false }
+            )
+            .presentationDetents([.large])
+            .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $showTrialOffer, onDismiss: {
             markTrialOfferSeen()
