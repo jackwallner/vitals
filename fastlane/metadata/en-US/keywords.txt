@@ -1,1 +1,1 @@
-pedometer,ring,tdee,bmr,steps,kcal,complication,deficit,resting,fasting,lockscreen,move,health,pace
+tdee,bmr,complication,resting,pace,pacing,active,move,calculator,deficit,net,metabolic,energy
