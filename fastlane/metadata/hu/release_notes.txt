@@ -1,0 +1,9 @@
+Újdonságok a Vitals+-ban
+
+• Napi előrejelzés – nézd meg, milyen napi összkalória felé tartasz a saját mostani tempód alapján.
+• Célsorozatok – jelvény a Ma képernyőn, amely számolja az egymást követő napokat, amikor elérted a célodat.
+• Heti összegzés – választható vasárnap esti összefoglaló az elmúlt 7 napodról az előző héthez képest.
+
+Mindhárom a Beállításokban kapcsolható be, és alapból ki van kapcsolva, így az ingyenes Ma nézet pontosan ugyanaz marad.
+
+Ráadásul a szokásos motorháztető alatti javítások, hogy a kalóriáid és lépéseid pontosak maradjanak az appban, a widgetekben és az Apple Watchon.
