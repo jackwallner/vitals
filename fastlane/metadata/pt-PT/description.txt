@@ -1,0 +1,54 @@
+Total Calories mostra as calorias diárias queimadas (ativas + em repouso) e o número de passos exatamente onde precisa delas — no ecrã principal do iPhone, ecrã bloqueado e mostrador do Apple Watch — gratuitamente. Sem subscrição para o básico. Sem conta. Nenhum dado sai do seu telefone.
+
+Se alguma vez desejou que o mostrador do Apple Watch mostrasse apenas as calorias totais queimadas do dia, esta é a app.
+
+NO SEU APPLE WATCH (GRÁTIS)
+- Complicações de calorias totais queimadas para todos os estilos de mostrador: circular, retangular, em linha e de canto.
+- Complicação de contagem de passos em tempo real.
+- A app do relógio mostra o dia de hoje num relance e tendências de 30 dias.
+- Os objetivos definidos no iPhone sincronizam automaticamente com o relógio.
+
+NO ECRÃ PRINCIPAL E ECRÃ BLOQUEADO (GRÁTIS)
+- Widgets para o ecrã principal em tamanhos pequeno e médio.
+- Widgets para o ecrã bloqueado em layouts circulares e retangulares.
+- Os widgets respeitam as métricas ativadas e os objetivos definidos.
+- Totais diários completos visíveis sem abrir a app.
+
+O PAINEL (GRÁTIS)
+- Calorias totais diárias queimadas num único anel simples.
+- Passos diários com barra de progresso e objetivo.
+- Indicador de ritmo: está adiantado ou atrasado em relação ao seu dia habitual a esta hora?
+- Puxe para atualizar. Toque na roda dentada para definições.
+
+HISTÓRICO (GRÁTIS)
+- Vistas de 7 / 30 / 90 / 365 dias e qualquer intervalo de datas personalizado.
+- Setas de tendência, dias de pico e gráficos de barras limpos.
+- Exportação de dados em CSV.
+
+OBJETIVOS QUE FUNCIONAM CONSIGO
+- Objetivos diários opcionais de calorias e passos.
+- Ou ignore objetivos e use apenas como contador limpo — decide você.
+- Comparação de ritmo: mesmo dia da semana vs. todos os dias, retrospetiva configurável (14 / 30 / 90 dias / 1 ano).
+
+Vitals+ (OPCIONAL)
+Um pequeno upgrade mensal, anual ou vitalício desbloqueia:
+- Separação entre calorias ativas e em repouso
+- Défice líquido: calorias queimadas menos energia dos alimentos do Apple Health
+- PDFs de resumo mensal prontos a partilhar
+- Relatórios PDF para intervalos de datas personalizados
+- Tendências profundas: cartões de comparação período a período
+É oferecido um período de teste gratuito a novos subscritores.
+
+PRIVACIDADE EM PRIMEIRO LUGAR
+- Acesso de leitura ao Apple Health. A app nunca escreve nos seus registos de saúde.
+- Todos os dados são armazenados localmente no seu dispositivo.
+- Sem análises. Sem anúncios. Sem servidores. Sem contas. Sem rastreio.
+- Os relatórios são gerados no próprio dispositivo.
+
+Total Calories não é um dispositivo médico e não se destina a diagnosticar, tratar ou prevenir qualquer condição médica. Consulte sempre um profissional de saúde para aconselhamento médico.
+
+Detalhes da subscrição
+Vitals+ está disponível como subscrição auto-renovável (Mensal 1,99 $ / Anual 14,99 $ com um período experimental de 7 dias) ou compra única Vitalícia (29,99 $). O pagamento é cobrado ao seu ID Apple na confirmação. As subscrições são renovadas automaticamente, exceto se forem canceladas pelo menos 24 horas antes do fim do período. Pode geri-las ou cancelá-las em Definições → ID Apple → Subscrições.
+
+Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

@@ -1,0 +1,54 @@
+Total Calories ଆପଣଙ୍କ ଦୈନିକ ଜଳିଥିବା କ୍ୟାଲୋରି (ସକ୍ରିୟ + ବିଶ୍ରାମ) ଏବଂ ପାଦକ୍ଷେପ ଗଣନା ଯେଉଁଠାରେ ଦରକାର ସେଠାରେ ଦେଖାଏ — iPhone Home Screen, Lock Screen ଏବଂ Apple Watch face — ସମ୍ପୂର୍ଣ୍ଣ ମାଗଣା। ମୂଳ features ପାଇଁ subscription ଲାଗେ ନାହିଁ। account ନାହିଁ। data phone ବାହାରକୁ ଯାଏ ନାହିଁ।
+
+Apple Watch face ଆଜିର ମୋଟ ଜଳିଥିବା କ୍ୟାଲୋରି ସ୍ପଷ୍ଟ ଦେଖାଇବାକୁ ଚାହିଁଥିଲେ, ଏହା ସେହି app।
+
+APPLE WATCH (ମାଗଣା)
+- ପ୍ରତ୍ୟେକ watch face style ପାଇଁ ମୋଟ ଜଳିଥିବା କ୍ୟାଲୋରି complications: circular, rectangular, inline, corner।
+- Live step count complication।
+- Watch app ଆଜିର summary ଏବଂ 30‑ଦିନ trends।
+- iPhone ରେ set goals ସିଧା watch କୁ sync।
+
+HOME SCREEN & LOCK SCREEN (ମାଗଣା)
+- Home Screen widgets ଛୋଟ ଏବଂ medium sizes।
+- Lock Screen widgets circular, rectangular layouts।
+- Widgets ଆପଣ on କରିଥିବା metrics, goals ଦେଖାଏ।
+- App ଖୋଲିବା ବିନା full daily total।
+
+DASHBOARD (ମାଗଣା)
+- ଗୋଟିଏ clean ring ରେ daily total calories burned।
+- Daily steps, progress bar, goal।
+- Pacing indicator: ଏହି ସମୟରେ usual day ଠାରୁ ahead କି behind?
+- Pull to refresh. Gear icon tap for settings.
+
+HISTORY (ମାଗଣା)
+- 7 / 30 / 90 / 365‑day views, custom date range।
+- Trend arrows, peak days, bar charts।
+- CSV export।
+
+ଆପଣଙ୍କ ପାଇଁ ଉପଯୁକ୍ତ goals
+- Optional daily calorie, step goals।
+- Goals skip କରି clean counter ଭାବେ use।
+- Pacing: same weekday vs all days, lookback (14 / 30 / 90 days / 1 year)।
+
+Vitals+ (optional)
+ଛୋଟ monthly, yearly, lifetime upgrade unlock:
+- Active vs resting calorie breakdown
+- Net Deficit: Apple Health food energy ବସାଇ burned calories
+- Share-ready Monthly Summary PDF
+- Custom date-range PDF reports
+- Deep Trends: period-over-period cards
+ନୂଆ subscribers ପାଇଁ free trial।
+
+Privacy-first design
+- Read-only Apple Health. App health records ରେ write କରେ ନାହିଁ।
+- Data locally device ରେ store।
+- Analytics, ads, servers, accounts, tracking ନାହିଁ।
+- Reports on-device generate।
+
+Total Calories medical device ନୁହେଁ; diagnose, treat, prevent ପାଇଁ intended ନୁହେଁ। Medical advice ପାଇଁ healthcare professional consult।
+
+Subscription Details
+Vitals+ auto-renewing (Monthly $1.99 / Yearly $14.99, 7-day free trial) କିମ୍ବା Lifetime ($29.99)। Payment Apple ID ରେ charge। 24 hours ପୂର୍ବେ cancel ନ କଲେ auto-renew। Settings → Apple ID → Subscriptions।
+
+Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

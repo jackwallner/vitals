@@ -1,0 +1,1 @@
+podómetro,anillo,tdee,bmr,complicación,déficit,reposo,activo,ritmo,ayuno,caminar,mover,healthkit

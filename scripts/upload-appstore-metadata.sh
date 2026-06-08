@@ -1,7 +1,5 @@
 #!/bin/bash
-# Push screenshots + metadata to App Store Connect via fastlane (no binary upload).
-# Reads ASC API key from env or ~/.baseball_credentials.
-# Project's bundle ID, metadata, and screenshots live in ./fastlane/
+# Push screenshots + metadata to App Store Connect via fastlane 2.234+ (Deliverfile languages).
 set -e
 cd "$(dirname "$0")/.."
 
@@ -12,21 +10,14 @@ fi
 
 if [[ -z "${ASC_API_KEY_ID:-}" || -z "${ASC_ISSUER_ID:-}" || -z "${ASC_KEY_PATH:-}" ]]; then
   echo "error: ASC_API_KEY_ID, ASC_ISSUER_ID, ASC_KEY_PATH must be set" >&2
-  echo "       see ~/.baseball_credentials" >&2
   exit 1
 fi
 
-if [[ ! -d fastlane ]]; then
-  echo "error: fastlane/ not configured in $(pwd)" >&2
-  echo "       reference: ~/baseball/fastlane (Appfile, Fastfile, metadata/, screenshots/)" >&2
-  exit 1
+if [[ -z "${ASC_APP_VERSION:-}" ]]; then
+  echo "==> Resolving draft ASC version"
+  eval "$(python3 scripts/asc-ensure-draft-version.py | grep '^export ')"
 fi
 
-if [[ -f Gemfile ]]; then
-  exec bundle exec fastlane upload_metadata "$@"
-elif command -v fastlane >/dev/null; then
-  exec fastlane upload_metadata "$@"
-else
-  echo "error: fastlane not installed (brew install fastlane)" >&2
-  exit 1
-fi
+FL="$(dirname "$0")/fastlane-bin.sh"
+chmod +x "$FL"
+exec "$FL" upload_metadata "$@"

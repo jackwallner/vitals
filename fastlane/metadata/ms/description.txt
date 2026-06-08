@@ -1,0 +1,54 @@
+Total Calories meletakkan jumlah kalori harian yang anda bakar (aktif + rehat) dan kiraan langkah tepat di tempat yang anda perlukan — pada Skrin Utama iPhone, Skrin Kunci, dan muka jam Apple Watch anda — secara percuma. Tiada langganan diperlukan untuk ciri asas. Tiada akaun. Tiada data meninggalkan telefon anda.
+
+Jika anda pernah berharap muka jam Apple Watch anda hanya memaparkan jumlah kalori dibakar untuk hari ini, inilah aplikasinya.
+
+PADA APPLE WATCH ANDA (PERCUMA)
+- Komplikasi jumlah kalori dibakar untuk setiap gaya muka jam: bulat, segi empat tepat, sebaris, dan bucu.
+- Komplikasi kiraan langkah masa nyata juga disediakan.
+- Apl jam menunjukkan hari ini secara sepintas lalu serta trend 30 hari.
+- Matlamat yang anda tetapkan pada iPhone diselaraskan terus ke jam.
+
+PADA SKRIN UTAMA & SKRIN KUNCI (PERCUMA)
+- Widget Skrin Utama dalam saiz kecil dan sederhana.
+- Widget Skrin Kunci dalam susun atur bulat dan segi empat tepat.
+- Widget mengikut metrik yang anda hidupkan dan matlamat yang anda tetapkan.
+- Jumlah harian penuh dapat dilihat tanpa membuka apl.
+
+PAPAN PEMUKA (PERCUMA)
+- Jumlah kalori harian dibakar pada satu gelung yang ringkas.
+- Langkah harian dengan bar kemajuan dan matlamat.
+- Penunjuk rentak: adakah anda mendahului atau ketinggalan berbanding hari biasa anda pada masa ini?
+- Tarik untuk segar semula. Ketik ikon gear untuk tetapan.
+
+SEJARAH (PERCUMA)
+- Paparan 7 / 30 / 90 / 365 hari dan sebarang julat tarikh tersuai.
+- Anak panah trend, hari puncak, dan carta bar yang kemas.
+- Eksport data CSV.
+
+MATLAMAT YANG SESUAI DENGAN ANDA
+- Matlamat harian kalori dan langkah yang pilihan.
+- Atau abaikan matlamat dan guna sebagai kaunter yang ringkas — terpulang kepada anda.
+- Perbandingan rentak: hari minggu sama berbanding semua hari, sejarah rujukan boleh ditetapkan (14 / 30 / 90 hari / 1 tahun).
+
+Vitals+ (PILIHAN)
+Naik taraf kecil bulanan, tahunan, atau seumur hidup membuka akses kepada:
+- Pecahan kalori aktif berbanding rehat
+- Defisit Bersih: kalori dibakar tolak tenaga makanan daripada Apple Health
+- PDF Ringkasan Bulanan sedia untuk dikongsi
+- Laporan PDF julat tarikh tersuai
+- Deep Trends: kad perbandingan tempoh demi tempoh
+Percubaan percuma ditawarkan kepada pelanggan baharu.
+
+PRIVASI DIUTAMAKAN
+- Akses Apple Health hanya baca. Apl tidak pernah menulis ke rekod kesihatan anda.
+- Semua data disimpan secara setempat pada peranti anda.
+- Tiada analitis. Tiada iklan. Tiada pelayan. Tiada akaun. Tiada penjejakan.
+- Laporan dijana pada peranti.
+
+Total Calories bukan peranti perubatan dan tidak bertujuan untuk mendiagnos, merawat, atau mencegah sebarang keadaan perubatan. Sentiasa dapatkan nasihat profesional penjagaan kesihatan untuk nasihat perubatan.
+
+Butiran Langganan
+Vitals+ tersedia sebagai langganan pembaharuan automatik (Bulanan US$1.99 / Tahunan US$14.99 dengan percubaan percuma 7 hari) atau pembelian Seumur Hidup sekali (US$29.99). Bayaran dicaj kepada Apple ID anda semasa pengesahan. Langganan diperbaharui secara automatik melainkan dibatalkan sekurang-kurangnya 24 jam sebelum akhir tempoh. Urus atau batalkan pada bila-bila masa di Tetapan → Apple ID → Subscriptions.
+
+Dasar Privasi: https://jackwallner.github.io/vitals/privacy-policy.html
+Terma Penggunaan (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

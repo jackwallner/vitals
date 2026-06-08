@@ -1,0 +1,1 @@
+stappenteller,ring,tdee,bmr,complicatie,tekort,rust,actief,tempo,vasten,lopen,bewegen,healthkit,kcal
