@@ -41,11 +41,20 @@ key_id, issuer_id, p8, out = sys.argv[1:5]
 json.dump({"key_id": key_id, "issuer_id": issuer_id, "key": p8, "in_house": False}, open(out, "w"))
 PY
 
-if command -v fastlane >/dev/null; then
-  exec fastlane deliver download_metadata \
+DELIVER_EXTRA=()
+if [[ -n "${ASC_APP_VERSION:-}" ]]; then
+  DELIVER_EXTRA+=(--app_version "$ASC_APP_VERSION")
+fi
+
+FL="$(dirname "$0")/fastlane-bin.sh"
+chmod +x "$FL"
+if [[ -x "$FL" ]] || command -v fastlane >/dev/null; then
+  exec "$FL" deliver download_metadata \
     --api_key_path "$TMPKEY" \
     --metadata_path ./fastlane/metadata \
     --force true \
+    --skip_screenshots true \
+    "${DELIVER_EXTRA[@]}" \
     "$@"
 else
   echo "error: fastlane not installed (brew install fastlane)" >&2

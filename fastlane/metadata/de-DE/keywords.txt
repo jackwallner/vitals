@@ -1,0 +1,1 @@
+schrittzähler,ring,tdee,bmr,komplikation,defizit,ruhe,aktiv,fasten,gehen,bewegung,healthkit,schritte

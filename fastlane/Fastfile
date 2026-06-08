@@ -3,7 +3,7 @@ opt_out_usage
 default_platform(:ios)
 
 platform :ios do
-  desc "Upload screenshots and metadata to App Store Connect"
+  desc "Upload screenshots and metadata to App Store Connect (fastlane 2.234+)"
   lane :upload_metadata do
     api_key = app_store_connect_api_key(
       key_id: ENV["ASC_API_KEY_ID"],
@@ -11,14 +11,22 @@ platform :ios do
       key_filepath: ENV["ASC_KEY_PATH"]
     )
 
+    version = ENV["ASC_APP_VERSION"]
+    UI.user_error!("Set ASC_APP_VERSION (run: eval \"$(python3 scripts/asc-ensure-draft-version.py | grep '^export ')\")") unless version && !version.empty?
+
+    skip_shots = ENV.fetch("SKIP_SCREENSHOTS", "false") == "true"
+
     deliver(
       api_key: api_key,
+      app_version: version,
+      skip_app_version_update: true,
       force: true,
+      ignore_language_directory_validation: true,
       precheck_include_in_app_purchases: false,
-      version_check_wait_retry_limit: 0,
+      version_check_wait_retry_limit: 7,
       skip_binary_upload: true,
-      skip_screenshots: false,
-      overwrite_screenshots: true,
+      skip_screenshots: skip_shots,
+      overwrite_screenshots: !skip_shots,
       submit_for_review: false,
       automatic_release: false,
       run_precheck_before_submit: false,

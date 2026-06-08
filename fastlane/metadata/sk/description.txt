@@ -1,0 +1,54 @@
+Total Calories zobrazuje vaše denne spálené kalórie (aktívne + pokojové) a počet krokov presne tam, kde ich potrebujete – na ploche iPhonu, zamknutej obrazovke a ciferníku Apple Watch – zadarmo. Základné funkcie bez predplatného. Bez účtu. Žiadne dáta neopúšťajú váš telefón.
+
+Ak ste si niekedy želali, aby ciferník Apple Watch ukazoval len celkové kalórie spálené za deň, toto je tá aplikácia.
+
+NA APPLE WATCH (ZDARMA)
+- Komplikácie s celkovými spálenými kalóriami pre každý štýl ciferníka: kruhová, obdĺžniková, riadková aj rohová.
+- Komplikácia s aktuálnym počtom krokov.
+- Aplikácia na hodinkách ukazuje dnešok na prvý pohľad a trendy za 30 dní.
+- Ciele nastavené na iPhone sa automaticky synchronizujú do hodiniek.
+
+NA PLOCHE A ZAMKNUTEJ OBRAZOVKE (ZDARMA)
+- Widgety na ploche v malom a strednom formáte.
+- Widgety na zamknutej obrazovke v kruhovom a obdĺžnikovom rozložení.
+- Widgety rešpektujú zvolené metriky a nastavené ciele.
+- Denné súčty vidíte aj bez otvárania aplikácie.
+
+DASHBOARD (ZDARMA)
+- Celkové denné spálené kalórie v jednom prehľadnom krúžku.
+- Denné kroky s ukazovateľom postupu a cieľom.
+- Ukazovateľ tempa: ste v tomto čase dňa pred alebo za svojím zvykom?
+- Potiahnite pre obnovenie. Nastavenia otvoríte klepnutím na ozubené koliesko.
+
+HISTÓRIA (ZDARMA)
+- Prehľady za 7 / 30 / 90 / 365 dní a ľubovoľný vlastný rozsah.
+- Trendové šípky, najaktívnejšie dni a prehľadné stĺpcové grafy.
+- Export údajov do CSV.
+
+CIELE, KTORÉ VÁM SEDIA
+- Voliteľné denné ciele kalórií a krokov.
+- Alebo ciele vynechajte a používajte aplikáciu ako čistý počítadlový prehľad – je to na vás.
+- Porovnanie tempa: ten istý deň v týždni vs. všetky dni, nastaviteľné obdobie spätne (14 / 30 / 90 dní / 1 rok).
+
+Vitals+ (VOLITEĽNÉ)
+Malý mesačný, ročný alebo jednorazový doživotný upgrade odomkne:
+- Rozpis aktívnych vs. pokojových kalórií
+- Čistý deficit: spálené kalórie mínus prijatá energia z Apple Health
+- Mesačné súhrnné PDF pripravené na zdieľanie
+- PDF prehľady pre vlastné dátumové rozsahy
+- Deep Trends: porovnávacie karty obdobie vs. obdobie
+Noví predplatitelia majú k dispozícii bezplatné skúšobné obdobie.
+
+SÚKROMIE V PRVOM RADE
+- Prístup k Apple Health len na čítanie. Aplikácia nikdy nezapisuje do vašich zdravotných záznamov.
+- Všetky údaje sú uložené lokálne vo vašom zariadení.
+- Žiadna analytika. Žiadne reklamy. Žiadne servery. Žiadne účty. Žiadne sledovanie.
+- Prehľady sa generujú priamo v zariadení.
+
+Total Calories nie je zdravotnícka pomôcka a nie je určená na diagnostiku, liečbu ani prevenciu žiadneho zdravotného stavu. Na lekárske rady sa vždy obráťte na kvalifikovaného zdravotníckeho pracovníka.
+
+Podrobnosti o predplatnom
+Vitals+ je dostupné ako automaticky obnovované predplatné (mesačne 1,99 $ / ročne 14,99 $ so 7‑dňovou bezplatnou skúšobnou dobou) alebo ako jednorazový Lifetime nákup (29,99 $). Platba bude zaúčtovaná na váš účet Apple ID po potvrdení. Predplatné sa automaticky obnovuje, pokiaľ ho nezrušíte aspoň 24 hodín pred koncom obdobia. Spravovať alebo zrušiť ho môžete kedykoľvek v Nastavenia → Apple ID → Predplatné.
+
+Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
