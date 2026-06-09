@@ -1,1 +1,1 @@
-pedometro,anello,tdee,bmr,complicazione,deficit,riposo,attivo,ritmo,digiuno,camminare,mossa,attività
+tdee,bmr,complicazione,riposo,deficit,attivo,ritmo,metabolismo,basale,fabbisogno,dispendio,calorico

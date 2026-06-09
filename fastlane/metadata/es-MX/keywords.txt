@@ -1,1 +1,1 @@
-podómetro,anillo,tdee,bmr,complicación,déficit,reposo,activo,ritmo,ayuno,caminar,mover,healthkit
+tdee,bmr,metabolismo basal,tasa metabólica,gasto calórico,déficit,complicación,reposo,activas,netas
