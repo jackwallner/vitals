@@ -1,1 +1,1 @@
-grundumsatz,ruheumsatz,stoffwechsel,kalorienrechner,komplikation,defizit,tdee,bmr,aktiv,energie
+grundumsatz,stoffwechsel,kalorienrechner,komplikation,defizit,tdee,bmr,aktiv,kalorienbedarf,kalorien
