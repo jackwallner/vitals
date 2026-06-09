@@ -35,6 +35,9 @@ enum Theme {
     static let activePrimary = Color(red: 1.0, green: 0.54, blue: 0.36)     // warm orange
     static let restingPrimary = Color(red: 0.55, green: 0.35, blue: 0.75)   // muted purple
 
+    // Goal streaks — always green: a live streak is a win regardless of metric
+    static let streakPrimary = Color(red: 0.30, green: 0.78, blue: 0.45)  // #4DC773 green
+
     // Net deficit (burned − food)
     static let netDeficitBrand = Color(red: 0.62, green: 0.40, blue: 0.82)   // purple
     static let netDeficitPositive = Color(red: 0.20, green: 0.68, blue: 0.45)
