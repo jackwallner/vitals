@@ -1,1 +1,1 @@
-podomètre,anneau,tdee,bmr,complication,déficit,repos,actif,jeûne,marche,mouvement,healthkit,activité
+tdee,bmr,complication,actif,actives,besoin,calorique,nettes,métabolisme,base,repos
