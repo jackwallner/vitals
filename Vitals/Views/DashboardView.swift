@@ -177,9 +177,15 @@ struct DashboardView: View {
         )
     }
 
-    /// True when there's anything in the inline Vitals+ insights strip to render.
-    private var hasInsights: Bool {
-        (isStreakEnabled && currentStreak > 0) || projectedCalories != nil || projectedSteps != nil
+    /// The goal streak is a single, independent chip. It rides on the calorie
+    /// area when calories are visible (the hero metric), otherwise on steps —
+    /// so it's always coupled to a metric the user can see rather than floating.
+    private var streakAttachesToCalories: Bool {
+        isStreakEnabled && currentStreak > 0 && goals.showCalories
+    }
+
+    private var streakAttachesToSteps: Bool {
+        isStreakEnabled && currentStreak > 0 && !goals.showCalories && goals.showSteps
     }
 
     private var visibleMetricCount: Int {
@@ -503,27 +509,9 @@ struct DashboardView: View {
                     .opacity(animateContent ? 1 : 0)
                 }
 
-                // Calorie pacing
-                if goals.showPacing {
-                    if let pacingCal = pacingCalories {
-                        PacingPill(
-                            current: totalCalories,
-                            typical: pacingCal,
-                            label: "cal",
-                            color: Theme.caloriesPrimary,
-                            comparison: goals.pacingComparison,
-                            lookback: goals.pacingLookback
-                        )
-                        .padding(.top, 16)
-                        .opacity(animateContent ? 1 : 0)
-                    } else if pacingCaloriesInsufficient {
-                        Text(pacingBuildingText(samples: pacingCalorieSamples))
-                            .font(.system(.caption2, design: .rounded))
-                            .foregroundStyle(Theme.textTertiary)
-                            .padding(.top, 16)
-                            .opacity(animateContent ? 1 : 0)
-                    }
-                }
+                // Pacing, end-of-day projection, and streak — all the "how's
+                // today going" signals coupled directly under the ring.
+                calorieInsights
             }
 
             if goals.showCalories && goals.showSteps {
@@ -574,6 +562,19 @@ struct DashboardView: View {
                                     .foregroundStyle(Theme.textTertiary)
                                     .padding(.top, 8)
                             }
+                        }
+                        if let projected = projectedSteps {
+                            projectionPill(
+                                projected: projected,
+                                unit: "steps",
+                                goal: goals.stepGoal.map(Double.init),
+                                tint: Theme.stepsPrimary
+                            )
+                            .padding(.top, 8)
+                        }
+                        if streakAttachesToSteps {
+                            streakChip
+                                .padding(.top, 8)
                         }
                     }
                     .accessibilityElement(children: .combine)
@@ -633,6 +634,17 @@ struct DashboardView: View {
                                     .foregroundStyle(Theme.textTertiary)
                             }
                         }
+                        if let projected = projectedSteps {
+                            projectionPill(
+                                projected: projected,
+                                unit: "steps",
+                                goal: goals.stepGoal.map(Double.init),
+                                tint: Theme.stepsPrimary
+                            )
+                        }
+                        if streakAttachesToSteps {
+                            streakChip
+                        }
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel("Steps")
@@ -663,8 +675,6 @@ struct DashboardView: View {
                 .accessibilityHint("Opens net deficit history")
             }
 
-            insightsSection
-
             // Nothing enabled — gentle prompt
             if !goals.showCalories && !goals.showSteps && !isNetDeficitEnabled {
                 VStack(spacing: 12) {
@@ -686,15 +696,29 @@ struct DashboardView: View {
         .padding(.bottom, 90)
     }
 
-    /// Inline Vitals+ insights strip (streak chip + end-of-day projections),
-    /// rendered under the ring. Entirely absent unless the user is Pro and has
-    /// opted in — the core Today layout is unchanged for everyone else.
+    /// Calorie pacing + end-of-day projection + streak, grouped directly under
+    /// the ring so every "how's today going" signal lives with the number it's
+    /// about. Vitals+ rows are absent unless the user is Pro and opted in.
     @ViewBuilder
-    private var insightsSection: some View {
-        if hasInsights {
+    private var calorieInsights: some View {
+        let pacingRow = goals.showPacing && (pacingCalories != nil || pacingCaloriesInsufficient)
+        if pacingRow || projectedCalories != nil || streakAttachesToCalories {
             VStack(spacing: 8) {
-                if isStreakEnabled && currentStreak > 0 {
-                    streakChip
+                if goals.showPacing {
+                    if let pacingCal = pacingCalories {
+                        PacingPill(
+                            current: totalCalories,
+                            typical: pacingCal,
+                            label: "cal",
+                            color: Theme.caloriesPrimary,
+                            comparison: goals.pacingComparison,
+                            lookback: goals.pacingLookback
+                        )
+                    } else if pacingCaloriesInsufficient {
+                        Text(pacingBuildingText(samples: pacingCalorieSamples))
+                            .font(.system(.caption2, design: .rounded))
+                            .foregroundStyle(Theme.textTertiary)
+                    }
                 }
                 if let projected = projectedCalories {
                     projectionPill(
@@ -704,16 +728,11 @@ struct DashboardView: View {
                         tint: Theme.caloriesPrimary
                     )
                 }
-                if let projected = projectedSteps {
-                    projectionPill(
-                        projected: projected,
-                        unit: "steps",
-                        goal: goals.stepGoal.map(Double.init),
-                        tint: Theme.stepsPrimary
-                    )
+                if streakAttachesToCalories {
+                    streakChip
                 }
             }
-            .padding(.top, 18)
+            .padding(.top, 16)
             .opacity(animateContent ? 1 : 0)
         }
     }
@@ -1837,6 +1856,9 @@ private struct SettingsSheet: View {
     @State private var stepEnabled = true
     @State private var stepText = ""
     @State private var appliedGoalDrafts = false
+    @FocusState private var focusedGoalField: GoalField?
+
+    private enum GoalField { case calories, steps }
 
     private var calValid: Bool {
         !calEnabled || (Double(calText).map { (500...50000).contains($0) } ?? false)
@@ -2032,8 +2054,17 @@ private struct SettingsSheet: View {
                     Toggle("Show Calories", isOn: showCaloriesBinding)
                     Toggle("Calorie Goal", isOn: $calEnabled)
                     if calEnabled {
-                        TextField("Daily calories", text: $calText)
-                            .keyboardType(.numberPad)
+                        HStack {
+                            Text("Daily target")
+                                .foregroundStyle(Theme.textSecondary)
+                            Spacer()
+                            TextField("2500", text: $calText)
+                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.trailing)
+                                .focused($focusedGoalField, equals: .calories)
+                            Text("cal")
+                                .foregroundStyle(Theme.textTertiary)
+                        }
                         if !calValid {
                             Text("Enter 500–50,000 calories.")
                                 .font(.caption)
@@ -2063,8 +2094,17 @@ private struct SettingsSheet: View {
                     Toggle("Show Steps", isOn: showStepsBinding)
                     Toggle("Step Goal", isOn: $stepEnabled)
                     if stepEnabled {
-                        TextField("Daily steps", text: $stepText)
-                            .keyboardType(.numberPad)
+                        HStack {
+                            Text("Daily target")
+                                .foregroundStyle(Theme.textSecondary)
+                            Spacer()
+                            TextField("10000", text: $stepText)
+                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.trailing)
+                                .focused($focusedGoalField, equals: .steps)
+                            Text("steps")
+                                .foregroundStyle(Theme.textTertiary)
+                        }
                         if !stepValid {
                             Text("Enter 100–500,000 steps.")
                                 .font(.caption)
@@ -2179,6 +2219,11 @@ private struct SettingsSheet: View {
                     }
                     .bold()
                     .disabled(!calValid || !stepValid)
+                }
+                // The number pad has no return key, so give it an explicit way out.
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") { focusedGoalField = nil }
                 }
             }
             .onDisappear {
