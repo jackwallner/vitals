@@ -43,10 +43,35 @@ enum MilestoneCalculator {
     /// is wide enough that consecutive celebrations don't feel piled-on.
     static let celebratedStreaks: [Int] = [7, 14, 30, 60, 100]
 
-    /// Counts consecutive days ending at "yesterday" where the user hit either
-    /// their calorie or step goal. Today is excluded — it may still be in
-    /// progress, so awarding a streak based on partial data would be premature.
-    /// Days with no record (HK gap) break the streak.
+    /// Counts consecutive days ending at "yesterday" satisfying `hit`. Today is
+    /// excluded — it may still be in progress, so awarding a streak based on
+    /// partial data would be premature. Days with no record (HK gap) break the
+    /// streak. The building block for both the combined goal streak (below) and
+    /// the per-metric streaks the Today view shows.
+    static func currentStreak(
+        records: [MilestoneDay],
+        today: Date = .now,
+        calendar: Calendar = .current,
+        hit: (MilestoneDay) -> Bool
+    ) -> Int {
+        let byDay: [Date: MilestoneDay] = Dictionary(
+            uniqueKeysWithValues: records.map { (calendar.startOfDay(for: $0.date), $0) }
+        )
+        guard var cursor = calendar.date(byAdding: .day, value: -1, to: calendar.startOfDay(for: today)) else {
+            return 0
+        }
+        var streak = 0
+        while let day = byDay[cursor], hit(day) {
+            streak += 1
+            guard let next = calendar.date(byAdding: .day, value: -1, to: cursor) else { break }
+            cursor = next
+        }
+        return streak
+    }
+
+    /// Combined streak: consecutive days where the user hit *either* goal. Drives
+    /// the (non-Pro) celebration upsell — deliberately the broadest "on a roll"
+    /// signal. Per-metric streaks for inline display use `currentStreak` directly.
     static func currentGoalStreak(
         records: [MilestoneDay],
         calorieGoal: Double?,
@@ -55,22 +80,11 @@ enum MilestoneCalculator {
         calendar: Calendar = .current
     ) -> Int {
         guard calorieGoal != nil || stepGoal != nil else { return 0 }
-        let byDay: [Date: MilestoneDay] = Dictionary(
-            uniqueKeysWithValues: records.map { (calendar.startOfDay(for: $0.date), $0) }
-        )
-        guard var cursor = calendar.date(byAdding: .day, value: -1, to: calendar.startOfDay(for: today)) else {
-            return 0
-        }
-        var streak = 0
-        while let day = byDay[cursor] {
+        return currentStreak(records: records, today: today, calendar: calendar) { day in
             let hitCal = calorieGoal.map { day.calories >= $0 } ?? false
             let hitStep = stepGoal.map { day.steps >= $0 } ?? false
-            guard hitCal || hitStep else { break }
-            streak += 1
-            guard let next = calendar.date(byAdding: .day, value: -1, to: cursor) else { break }
-            cursor = next
+            return hitCal || hitStep
         }
-        return streak
     }
 
     /// Returns the largest celebrated streak tier the user has reached or

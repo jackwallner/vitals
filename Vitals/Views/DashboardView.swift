@@ -115,8 +115,10 @@ struct DashboardView: View {
     @State private var usualCaloriesFullDay: Double? = nil
     @State private var usualStepsByNow: Double? = nil
     @State private var usualStepsFullDay: Double? = nil
-    // Vitals+ streak: consecutive completed days (ending yesterday) that hit a goal.
-    @State private var currentStreak: Int = 0
+    // Vitals+ per-metric streaks: consecutive completed days (ending yesterday)
+    // that hit each goal independently. 0 = no streak (badge hidden).
+    @State private var calorieStreak: Int = 0
+    @State private var stepStreak: Int = 0
     @State private var isRefreshing = false
     @State private var healthNotice: HealthNotice? = nil
     @State private var lastRefreshDate: Date? = nil
@@ -153,11 +155,25 @@ struct DashboardView: View {
         store.isPro && goals.showProjections
     }
 
-    /// Vitals+ goal streak chip, gated by subscription + setting. Needs at least
-    /// one goal — a streak is meaningless without something to hit.
-    private var isStreakEnabled: Bool {
-        store.isPro && goals.showStreaks && (goals.calorieGoal != nil || goals.stepGoal != nil)
+    /// Streaks are a Vitals+ feature, gated by subscription + setting. Each metric
+    /// then tracks its own streak and shows a badge only when it has a goal and a
+    /// live streak (0 = hidden) — so calories and steps can run independently.
+    private var streaksUnlocked: Bool {
+        store.isPro && goals.showStreaks
     }
+
+    private var showCalorieStreak: Bool {
+        streaksUnlocked && goals.showCalories && goals.calorieGoal != nil && calorieStreak > 0
+    }
+
+    private var showStepStreak: Bool {
+        streaksUnlocked && goals.showSteps && goals.stepGoal != nil && stepStreak > 0
+    }
+
+    /// "Usual by now" feeding the pace clause of the pill, nil when pacing is off
+    /// so the pill can still render a projection-only line.
+    private var calorieTypical: Double? { goals.showPacing ? pacingCalories : nil }
+    private var stepTypical: Double? { goals.showPacing ? pacingSteps.map(Double.init) : nil }
 
     private var projectedCalories: Double? {
         guard isProjectionEnabled, goals.showCalories else { return nil }
@@ -175,17 +191,6 @@ struct DashboardView: View {
             usualByNow: usualStepsByNow,
             usualFullDay: usualStepsFullDay
         )
-    }
-
-    /// The goal streak is a single, independent chip. It rides on the calorie
-    /// area when calories are visible (the hero metric), otherwise on steps —
-    /// so it's always coupled to a metric the user can see rather than floating.
-    private var streakAttachesToCalories: Bool {
-        isStreakEnabled && currentStreak > 0 && goals.showCalories
-    }
-
-    private var streakAttachesToSteps: Bool {
-        isStreakEnabled && currentStreak > 0 && !goals.showCalories && goals.showSteps
     }
 
     private var visibleMetricCount: Int {
@@ -545,35 +550,25 @@ struct DashboardView: View {
                                 .foregroundStyle(Theme.textTertiary)
                         }
 
-                        if goals.showPacing {
-                            if let pacingStep = pacingSteps {
-                                PacingPill(
-                                    current: Double(steps),
-                                    typical: Double(pacingStep),
-                                    label: "steps",
-                                    color: Theme.stepsPrimary,
-                                    comparison: goals.pacingComparison,
-                                    lookback: goals.pacingLookback
-                                )
-                                .padding(.top, 8)
-                            } else if pacingStepsInsufficient {
-                                Text(pacingBuildingText(samples: pacingStepSamples))
-                                    .font(.system(.caption2, design: .rounded))
-                                    .foregroundStyle(Theme.textTertiary)
-                                    .padding(.top, 8)
-                            }
-                        }
-                        if let projected = projectedSteps {
-                            projectionPill(
-                                projected: projected,
-                                unit: "steps",
-                                goal: goals.stepGoal.map(Double.init),
-                                tint: Theme.stepsPrimary
+                        if stepTypical != nil || projectedSteps != nil {
+                            PacingPill(
+                                current: Double(steps),
+                                typical: stepTypical,
+                                projected: projectedSteps,
+                                label: "steps",
+                                color: Theme.stepsPrimary,
+                                comparison: goals.pacingComparison,
+                                lookback: goals.pacingLookback
                             )
                             .padding(.top, 8)
+                        } else if goals.showPacing && pacingStepsInsufficient {
+                            Text(pacingBuildingText(samples: pacingStepSamples))
+                                .font(.system(.caption2, design: .rounded))
+                                .foregroundStyle(Theme.textTertiary)
+                                .padding(.top, 8)
                         }
-                        if streakAttachesToSteps {
-                            streakChip
+                        if showStepStreak {
+                            streakBadge(count: stepStreak, tint: Theme.stepsPrimary, metric: "step")
                                 .padding(.top, 8)
                         }
                     }
@@ -618,32 +613,23 @@ struct DashboardView: View {
                             )
                         }
 
-                        if goals.showPacing {
-                            if let pacingStep = pacingSteps {
-                                PacingPill(
-                                    current: Double(steps),
-                                    typical: Double(pacingStep),
-                                    label: "steps",
-                                    color: Theme.stepsPrimary,
-                                    comparison: goals.pacingComparison,
-                                    lookback: goals.pacingLookback
-                                )
-                            } else if pacingStepsInsufficient {
-                                Text(pacingBuildingText(samples: pacingStepSamples))
-                                    .font(.system(.caption2, design: .rounded))
-                                    .foregroundStyle(Theme.textTertiary)
-                            }
-                        }
-                        if let projected = projectedSteps {
-                            projectionPill(
-                                projected: projected,
-                                unit: "steps",
-                                goal: goals.stepGoal.map(Double.init),
-                                tint: Theme.stepsPrimary
+                        if stepTypical != nil || projectedSteps != nil {
+                            PacingPill(
+                                current: Double(steps),
+                                typical: stepTypical,
+                                projected: projectedSteps,
+                                label: "steps",
+                                color: Theme.stepsPrimary,
+                                comparison: goals.pacingComparison,
+                                lookback: goals.pacingLookback
                             )
+                        } else if goals.showPacing && pacingStepsInsufficient {
+                            Text(pacingBuildingText(samples: pacingStepSamples))
+                                .font(.system(.caption2, design: .rounded))
+                                .foregroundStyle(Theme.textTertiary)
                         }
-                        if streakAttachesToSteps {
-                            streakChip
+                        if showStepStreak {
+                            streakBadge(count: stepStreak, tint: Theme.stepsPrimary, metric: "step")
                         }
                     }
                     .accessibilityElement(children: .combine)
@@ -696,40 +682,32 @@ struct DashboardView: View {
         .padding(.bottom, 90)
     }
 
-    /// Calorie pacing + end-of-day projection + streak, grouped directly under
+    /// Calorie pace + projection (one pill) + streak badge, grouped directly under
     /// the ring so every "how's today going" signal lives with the number it's
     /// about. Vitals+ rows are absent unless the user is Pro and opted in.
     @ViewBuilder
     private var calorieInsights: some View {
-        let pacingRow = goals.showPacing && (pacingCalories != nil || pacingCaloriesInsufficient)
-        if pacingRow || projectedCalories != nil || streakAttachesToCalories {
+        let hasPill = calorieTypical != nil || projectedCalories != nil
+        let building = goals.showPacing && pacingCaloriesInsufficient && calorieTypical == nil
+        if hasPill || building || showCalorieStreak {
             VStack(spacing: 8) {
-                if goals.showPacing {
-                    if let pacingCal = pacingCalories {
-                        PacingPill(
-                            current: totalCalories,
-                            typical: pacingCal,
-                            label: "cal",
-                            color: Theme.caloriesPrimary,
-                            comparison: goals.pacingComparison,
-                            lookback: goals.pacingLookback
-                        )
-                    } else if pacingCaloriesInsufficient {
-                        Text(pacingBuildingText(samples: pacingCalorieSamples))
-                            .font(.system(.caption2, design: .rounded))
-                            .foregroundStyle(Theme.textTertiary)
-                    }
-                }
-                if let projected = projectedCalories {
-                    projectionPill(
-                        projected: projected,
-                        unit: "cal",
-                        goal: goals.calorieGoal,
-                        tint: Theme.caloriesPrimary
+                if hasPill {
+                    PacingPill(
+                        current: totalCalories,
+                        typical: calorieTypical,
+                        projected: projectedCalories,
+                        label: "cal",
+                        color: Theme.caloriesPrimary,
+                        comparison: goals.pacingComparison,
+                        lookback: goals.pacingLookback
                     )
+                } else if building {
+                    Text(pacingBuildingText(samples: pacingCalorieSamples))
+                        .font(.system(.caption2, design: .rounded))
+                        .foregroundStyle(Theme.textTertiary)
                 }
-                if streakAttachesToCalories {
-                    streakChip
+                if showCalorieStreak {
+                    streakBadge(count: calorieStreak, tint: Theme.caloriesPrimary, metric: "calorie")
                 }
             }
             .padding(.top, 16)
@@ -737,61 +715,21 @@ struct DashboardView: View {
         }
     }
 
-    private var streakChip: some View {
-        HStack(spacing: 6) {
+    /// Small flame badge for a per-metric goal streak, tinted to its metric so it
+    /// reads as "this metric is on a roll" rather than a floating global stat.
+    private func streakBadge(count: Int, tint: Color, metric: String) -> some View {
+        HStack(spacing: 4) {
             Image(systemName: "flame.fill")
-                .font(.system(.caption, design: .rounded, weight: .bold))
-            Text("\(currentStreak)-day streak")
-                .font(.system(.caption, design: .rounded, weight: .semibold))
+                .font(.system(size: 10, weight: .bold))
+            Text("\(count)-day streak")
+                .font(.system(.caption2, design: .rounded, weight: .semibold))
         }
-        .foregroundStyle(Theme.caloriesSecondary)
-        .padding(.horizontal, 12)
-        .padding(.vertical, 6)
-        .background(Theme.caloriesSecondary.opacity(0.12), in: Capsule())
+        .foregroundStyle(tint)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 4)
+        .background(tint.opacity(0.12), in: Capsule())
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Current goal streak: \(currentStreak) days")
-    }
-
-    private func projectionPill(projected: Double, unit: String, goal: Double?, tint: Color) -> some View {
-        let outlook = ProjectionCalculator.goalOutlook(projected: projected, goal: goal)
-        let projectedText = "\(Int(projected.rounded()).formatted(.number)) \(unit)"
-        let icon: String
-        let color: Color
-        let trailing: String?
-        switch outlook {
-        case .onTrack:
-            icon = "checkmark.circle.fill"
-            color = Theme.netDeficitPositive
-            trailing = goal != nil ? "on track" : nil
-        case .behind(let shortfall):
-            icon = "arrow.down.right.circle.fill"
-            color = Theme.netDeficitNegative
-            trailing = "≈\(Int(shortfall.rounded()).formatted(.number)) short"
-        case nil:
-            icon = "scope"
-            color = tint
-            trailing = nil
-        }
-        return HStack(spacing: 6) {
-            Image(systemName: icon)
-                .font(.system(.caption2, design: .rounded, weight: .bold))
-                .foregroundStyle(color)
-            Text("On pace for \(projectedText)")
-                .font(.system(.caption, design: .rounded, weight: .medium))
-                .foregroundStyle(Theme.textSecondary)
-            if let trailing {
-                Text("· \(trailing)")
-                    .font(.system(.caption, design: .rounded, weight: .semibold))
-                    .foregroundStyle(color)
-            }
-        }
-        .lineLimit(1)
-        .minimumScaleFactor(0.8)
-        .padding(.horizontal, 12)
-        .padding(.vertical, 6)
-        .background(Theme.cardSurface, in: Capsule())
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Projected end of day: \(projectedText)\(trailing.map { ", \($0)" } ?? "")")
+        .accessibilityLabel("\(count) day \(metric) streak")
     }
 
     private func netDeficitDisplayText(_ value: Double) -> String {
@@ -1398,14 +1336,21 @@ struct DashboardView: View {
         let days = history.map {
             MilestoneDay(date: $0.date, calories: $0.active + $0.resting, steps: $0.steps)
         }
+        // Per-metric streaks drive the Vitals+ inline badges (gated at render).
+        calorieStreak = goals.calorieGoal.map { goal in
+            MilestoneCalculator.currentStreak(records: days) { $0.calories >= goal }
+        } ?? 0
+        stepStreak = goals.stepGoal.map { goal in
+            MilestoneCalculator.currentStreak(records: days) { $0.steps >= goal }
+        } ?? 0
+
+        // Celebration sheets are a non-Pro upsell, fired off the *combined* streak
+        // (hit either goal) — the broadest "on a roll" signal, best for conversion.
         let streak = MilestoneCalculator.currentGoalStreak(
             records: days,
             calorieGoal: goals.calorieGoal,
             stepGoal: goals.stepGoal
         )
-        // Drive the Vitals+ inline streak display for everyone (gated at render).
-        currentStreak = streak
-
         // Milestone celebration sheets are a non-Pro upsell only.
         guard !store.isPro else { return }
         guard let milestone = MilestoneCalculator.unfiredStreakMilestone(
@@ -1420,7 +1365,11 @@ struct DashboardView: View {
 
 private struct PacingPill: View {
     let current: Double
-    let typical: Double
+    /// "Usual by now" — drives the ahead/behind clause and the green/red tint.
+    /// nil when pacing is off, leaving a projection-only pill.
+    let typical: Double?
+    /// End-of-day projection — drives the "on pace for X" clause. nil when off.
+    let projected: Double?
     let label: String
     let color: Color
     let comparison: PacingComparison
@@ -1428,37 +1377,71 @@ private struct PacingPill: View {
 
     @State private var showExplainer = false
 
-    private var diff: Double { current - typical }
-    private var isAhead: Bool { diff >= 0 }
+    private var diff: Double? { typical.map { current - $0 } }
 
-    var body: some View {
-        Button {
-            showExplainer = true
-        } label: {
-            HStack(spacing: 5) {
-                Image(systemName: isAhead ? "arrow.up.right" : "arrow.down.right")
-                    .font(.system(.caption2, design: .rounded, weight: .bold))
-                Text("\(abs(Int(diff)).formatted(.number)) \(label) \(isAhead ? "ahead" : "behind") usual pace")
-                    .font(.system(.caption2, design: .rounded))
+    /// Whole-pill tint: green/red by pace when there's a comparison, otherwise the
+    /// metric color for a projection-only pill.
+    private var tint: Color {
+        guard let diff else { return color }
+        return diff >= 0 ? .green : Color(red: 1.0, green: 0.42, blue: 0.42)
+    }
+
+    private var icon: String {
+        guard let diff else { return "chart.line.uptrend.xyaxis" }
+        return diff >= 0 ? "arrow.up.right" : "arrow.down.right"
+    }
+
+    /// Both signals in one condensed line, e.g.
+    /// "1,069 cal ahead of usual pace, on pace for 3,663 cal".
+    private var message: String {
+        var parts: [String] = []
+        if let diff {
+            let dir = diff >= 0 ? "ahead of" : "behind"
+            parts.append("\(abs(Int(diff)).formatted(.number)) \(label) \(dir) usual pace")
+        }
+        if let projected {
+            parts.append("on pace for \(Int(projected.rounded()).formatted(.number)) \(label)")
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    private var pill: some View {
+        HStack(spacing: 5) {
+            Image(systemName: icon)
+                .font(.system(.caption2, design: .rounded, weight: .bold))
+            Text(message)
+                .font(.system(.caption2, design: .rounded))
+            if typical != nil {
                 Image(systemName: "info.circle")
                     .font(.system(size: 10, weight: .semibold))
                     .opacity(0.7)
             }
-            .foregroundStyle(isAhead ? .green : Color(red: 1.0, green: 0.42, blue: 0.42))
-            .padding(.horizontal, 12)
-            .padding(.vertical, 6)
-            .background(
-                (isAhead ? Color.green : Color(red: 1.0, green: 0.42, blue: 0.42)).opacity(0.1),
-                in: Capsule()
-            )
         }
-        .buttonStyle(.plain)
-        .accessibilityLabel("\(abs(Int(diff))) \(label) \(isAhead ? "ahead of" : "behind") usual pace")
-        .accessibilityHint("Explains how pace is calculated")
-        .sheet(isPresented: $showExplainer) {
-            PacingExplainerSheet(typical: typical, label: label, comparison: comparison, lookback: lookback)
-                .presentationDetents([.medium])
-                .presentationDragIndicator(.visible)
+        .foregroundStyle(tint)
+        .lineLimit(1)
+        .minimumScaleFactor(0.75)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
+        .background(tint.opacity(0.1), in: Capsule())
+    }
+
+    var body: some View {
+        // The explainer is about pace, so it's only reachable when a pace
+        // comparison is present; a projection-only pill is a plain capsule.
+        if let typical {
+            Button { showExplainer = true } label: { pill }
+                .buttonStyle(.plain)
+                .accessibilityLabel(message)
+                .accessibilityHint("Explains how pace is calculated")
+                .sheet(isPresented: $showExplainer) {
+                    PacingExplainerSheet(typical: typical, label: label, comparison: comparison, lookback: lookback)
+                        .presentationDetents([.medium])
+                        .presentationDragIndicator(.visible)
+                }
+        } else {
+            pill
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(message)
         }
     }
 }
