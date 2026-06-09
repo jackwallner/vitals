@@ -496,13 +496,14 @@ struct DashboardView: View {
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Calorie progress")
                 .accessibilityHint("Opens calorie history")
-                .accessibilityValue(showActiveResting
+                .accessibilityValue((showActiveResting
                     ? (calorieProgress != nil
                         ? "\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories. Active \(Int(activeCalories)), resting \(Int(restingCalories))."
                         : "\(Int(totalCalories)) calories. Active \(Int(activeCalories)), resting \(Int(restingCalories)).")
                     : (calorieProgress != nil
                         ? "\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories"
                         : "\(Int(totalCalories)) calories"))
+                    + (showCalorieStreak ? " \(calorieStreak) day goal streak." : ""))
 
                 // Active/Resting breakdown is a Vitals+ feature. Toggle lives in Settings.
                 if showActiveResting {
@@ -514,8 +515,8 @@ struct DashboardView: View {
                     .opacity(animateContent ? 1 : 0)
                 }
 
-                // Pacing, end-of-day projection, and streak — all the "how's
-                // today going" signals coupled directly under the ring.
+                // Pacing and end-of-day projection — the "how's today going"
+                // signals coupled directly under the ring.
                 calorieInsights
             }
 
@@ -549,6 +550,11 @@ struct DashboardView: View {
                                 .font(.caption.weight(.semibold))
                                 .foregroundStyle(Theme.textTertiary)
                         }
+                        // Streak rides with the metric label, not the pacing row.
+                        if showStepStreak {
+                            streakBadge(count: stepStreak, metric: "step")
+                                .padding(.top, 4)
+                        }
 
                         if stepTypical != nil || projectedSteps != nil {
                             PacingPill(
@@ -567,14 +573,11 @@ struct DashboardView: View {
                                 .foregroundStyle(Theme.textTertiary)
                                 .padding(.top, 8)
                         }
-                        if showStepStreak {
-                            streakBadge(count: stepStreak, tint: Theme.stepsPrimary, metric: "step")
-                                .padding(.top, 8)
-                        }
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel("Steps")
-                    .accessibilityValue("\(steps) steps")
+                    .accessibilityValue("\(steps) steps"
+                        + (showStepStreak ? ". \(stepStreak) day goal streak." : ""))
                     .opacity(animateContent ? 1 : 0)
                     .scaleEffect(animateContent ? 1 : 0.9)
                 } else {
@@ -600,6 +603,10 @@ struct DashboardView: View {
                                     .tracking(1.5)
                             }
                             Spacer()
+                            // Compact streak chip in the badge corner of the card.
+                            if showStepStreak {
+                                streakBadge(count: stepStreak, metric: "step", compact: true)
+                            }
                             Image(systemName: "chevron.right")
                                 .font(.caption.weight(.semibold))
                                 .foregroundStyle(Theme.textTertiary)
@@ -628,13 +635,11 @@ struct DashboardView: View {
                                 .font(.system(.caption2, design: .rounded))
                                 .foregroundStyle(Theme.textTertiary)
                         }
-                        if showStepStreak {
-                            streakBadge(count: stepStreak, tint: Theme.stepsPrimary, metric: "step")
-                        }
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel("Steps")
-                    .accessibilityValue("\(steps) steps")
+                    .accessibilityValue("\(steps) steps"
+                        + (showStepStreak ? ". \(stepStreak) day goal streak." : ""))
                     .padding(Theme.cardPadding)
                     .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
                     .padding(.horizontal, 24)
@@ -682,14 +687,15 @@ struct DashboardView: View {
         .padding(.bottom, 90)
     }
 
-    /// Calorie pace + projection (one pill) + streak badge, grouped directly under
-    /// the ring so every "how's today going" signal lives with the number it's
-    /// about. Vitals+ rows are absent unless the user is Pro and opted in.
+    /// Calorie pace + projection (one pill) grouped directly under the ring so the
+    /// "how's today going" signal lives with the number it's about. The streak
+    /// badge lives inside `calorieLabel` with the metric itself. Vitals+ rows are
+    /// absent unless the user is Pro and opted in.
     @ViewBuilder
     private var calorieInsights: some View {
         let hasPill = calorieTypical != nil || projectedCalories != nil
         let building = goals.showPacing && pacingCaloriesInsufficient && calorieTypical == nil
-        if hasPill || building || showCalorieStreak {
+        if hasPill || building {
             VStack(spacing: 8) {
                 if hasPill {
                     PacingPill(
@@ -706,30 +712,28 @@ struct DashboardView: View {
                         .font(.system(.caption2, design: .rounded))
                         .foregroundStyle(Theme.textTertiary)
                 }
-                if showCalorieStreak {
-                    streakBadge(count: calorieStreak, tint: Theme.caloriesPrimary, metric: "calorie")
-                }
             }
             .padding(.top, 16)
             .opacity(animateContent ? 1 : 0)
         }
     }
 
-    /// Small flame badge for a per-metric goal streak, tinted to its metric so it
-    /// reads as "this metric is on a roll" rather than a floating global stat.
-    private func streakBadge(count: Int, tint: Color, metric: String) -> some View {
+    /// Small green flame chip for a goal streak. Green for every metric — a live
+    /// streak is a win, so it shouldn't borrow the calorie coral and read as a
+    /// warning. `compact` drops the wordy label for tight header rows.
+    private func streakBadge(count: Int, metric: String, compact: Bool = false) -> some View {
         HStack(spacing: 4) {
             Image(systemName: "flame.fill")
                 .font(.system(size: 10, weight: .bold))
-            Text("\(count)-day streak")
+            Text(compact ? "\(count)d" : "\(count)-day streak")
                 .font(.system(.caption2, design: .rounded, weight: .semibold))
         }
-        .foregroundStyle(tint)
-        .padding(.horizontal, 10)
+        .foregroundStyle(Theme.streakPrimary)
+        .padding(.horizontal, compact ? 8 : 10)
         .padding(.vertical, 4)
-        .background(tint.opacity(0.12), in: Capsule())
+        .background(Theme.streakPrimary.opacity(0.12), in: Capsule())
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(count) day \(metric) streak")
+        .accessibilityLabel("\(count) day \(metric) goal streak")
     }
 
     private func netDeficitDisplayText(_ value: Double) -> String {
@@ -928,6 +932,12 @@ struct DashboardView: View {
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(Theme.textTertiary)
                 }
+            }
+            // Streak rides with the metric itself (inside the ring when one is
+            // shown) rather than floating in the insights row below.
+            if showCalorieStreak {
+                streakBadge(count: calorieStreak, metric: "calorie")
+                    .padding(.top, 6)
             }
         }
         .accessibilityElement(children: .combine)

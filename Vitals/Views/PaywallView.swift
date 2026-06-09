@@ -42,7 +42,7 @@ enum PlusFeature: CaseIterable {
         case .deepTrends: Theme.stepsPrimary
         case .customRangesPDF: Theme.stepsSecondary
         case .projections: Theme.stepsPrimary
-        case .streaks: Theme.caloriesSecondary
+        case .streaks: Theme.streakPrimary
         case .weeklyRecap: Theme.caloriesPrimary
         }
     }
