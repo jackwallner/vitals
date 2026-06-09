@@ -1,1 +1,1 @@
-schrittzähler,ring,tdee,bmr,komplikation,defizit,ruhe,aktiv,fasten,gehen,bewegung,healthkit,schritte
+grundumsatz,ruheumsatz,stoffwechsel,kalorienrechner,komplikation,defizit,tdee,bmr,aktiv,energie
