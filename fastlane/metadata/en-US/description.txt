@@ -52,4 +52,3 @@ Vitals+ is available as an auto-renewing subscription (Monthly $1.99 / Yearly $1
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
-
