@@ -276,6 +276,13 @@ final class GoalSettings: ObservableObject {
         didSet { defaults.set(showActiveRestingBreakdown, forKey: "showActiveRestingBreakdown") }
     }
 
+    /// Vitals+ feature: show maintenance (TDEE) and resting (BMR) averages below the
+    /// ring — a stable 30-day reference figure derived from Apple Health, distinct
+    /// from today's live total. Default off so the core Today view is unchanged.
+    @Published var showEnergyAverages: Bool {
+        didSet { defaults.set(showEnergyAverages, forKey: "showEnergyAverages") }
+    }
+
     /// Vitals+ feature: show the "on pace for…" end-of-day projection under the ring.
     /// Default off — opt-in so the core Today view is unchanged for everyone else.
     @Published var showProjections: Bool {
@@ -376,6 +383,7 @@ final class GoalSettings: ObservableObject {
         self.showSteps = defaults.object(forKey: "showSteps") as? Bool ?? true
         self.showNetCalories = defaults.object(forKey: "showNetCalories") as? Bool ?? false
         self.showActiveRestingBreakdown = defaults.object(forKey: "showActiveRestingBreakdown") as? Bool ?? false
+        self.showEnergyAverages = defaults.object(forKey: "showEnergyAverages") as? Bool ?? false
         self.showProjections = defaults.object(forKey: "showProjections") as? Bool ?? false
         self.showStreaks = defaults.object(forKey: "showStreaks") as? Bool ?? false
         self.weeklyRecapEnabled = defaults.object(forKey: "weeklyRecapEnabled") as? Bool ?? false
@@ -427,6 +435,9 @@ final class GoalSettings: ObservableObject {
         calorieGoal = 2500
         stepGoal = 10000
         showPacing = true
+        // Surface the TDEE/BMR readout in the premium-active marketing scene so
+        // the store screenshot shows the feature; off elsewhere.
+        showEnergyAverages = ScreenshotConfig.wantsPremiumActive
         hasCompletedSetup = !ScreenshotConfig.wantsOnboarding
     }
 }
