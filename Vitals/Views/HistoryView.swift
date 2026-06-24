@@ -272,17 +272,21 @@ struct HistoryView: View {
     }
 
     private func hasFoodLogged(_ record: DayRecord) -> Bool {
-        food(for: record.date) != nil
+        // `fetchDietaryHistory` zero-fills every day, so `food(for:)` is 0 (not nil)
+        // on unlogged days — a positive value is the only reliable "food was logged"
+        // signal. Testing nil-vs-0 silently let unlogged days through.
+        (food(for: record.date) ?? 0) > 0
     }
 
     private func netDeficit(for record: DayRecord) -> Double {
         record.totalCalories - (food(for: record.date) ?? 0)
     }
 
-    /// Net Deficit only counts days with actual food logged in HealthKit; otherwise the
-    /// "deficit" would equal the full burn and skew the chart and averages.
+    /// Net Deficit excludes days with no food logged (an unlogged day would read as a
+    /// full-burn "deficit" and skew the chart and averages) — unless the user turns on
+    /// Net Deficit Fasting Mode, which counts those unlogged days as real deficits.
     private var netRecords: [DayRecord] {
-        records.filter { $0.totalCalories > 0 && hasFoodLogged($0) }
+        records.filter { $0.totalCalories > 0 && (goals.netDeficitFastingMode || hasFoodLogged($0)) }
     }
 
     private var hasNetData: Bool {
@@ -738,7 +742,8 @@ struct HistoryView: View {
             days: reportDays,
             previousDays: prevDays,
             calorieGoal: goals.calorieGoal,
-            stepGoal: goals.stepGoal
+            stepGoal: goals.stepGoal,
+            netDeficitFastingMode: goals.netDeficitFastingMode
         )
 
         do {
@@ -803,7 +808,8 @@ struct HistoryView: View {
                 days: reportDays,
                 previousDays: previousDays,
                 calorieGoal: goals.calorieGoal,
-                stepGoal: goals.stepGoal
+                stepGoal: goals.stepGoal,
+                netDeficitFastingMode: goals.netDeficitFastingMode
             )
             let url = try SummaryReportPDF.render(report)
             pdfFile = PDFFile(url: url)

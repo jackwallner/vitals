@@ -59,6 +59,12 @@ private final class WatchGoalSyncService: NSObject, WCSessionDelegate {
                 GoalSettings.shared.showNetCalories = showNetCalories
             }
         }
+        if let fastingMode = applicationContext[GoalSyncKeys.netDeficitFastingMode] as? Bool {
+            defaults.set(fastingMode, forKey: "netDeficitFastingMode")
+            Task { @MainActor in
+                GoalSettings.shared.netDeficitFastingMode = fastingMode
+            }
+        }
         if let showCalories = applicationContext[GoalSyncKeys.showCalories] as? Bool {
             defaults.set(showCalories, forKey: "showCalories")
             Task { @MainActor in

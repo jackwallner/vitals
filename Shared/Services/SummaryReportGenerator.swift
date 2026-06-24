@@ -71,7 +71,8 @@ enum SummaryReportGenerator {
         days: [ReportDay],
         previousDays: [ReportDay] = [],
         calorieGoal: Double?,
-        stepGoal: Int?
+        stepGoal: Int?,
+        netDeficitFastingMode: Bool = false
     ) -> SummaryReport {
         let nonZeroCalDays = days.filter { $0.totalCalories > 0 }
         let nonZeroStepDays = days.filter { $0.steps > 0 }
@@ -101,9 +102,12 @@ enum SummaryReportGenerator {
         let calHit = calorieGoal.map { goal in days.filter { $0.totalCalories >= goal }.count } ?? 0
         let stepHit = stepGoal.map { goal in days.filter { $0.steps >= goal }.count } ?? 0
 
+        // Exclude days with no food logged (food is zero-filled, so test > 0, not
+        // non-nil) — they'd read as a full-burn "deficit". Fasting Mode counts them.
         let netDays = days.compactMap { day -> (day: ReportDay, value: Double)? in
-            guard let net = day.netDeficit else { return nil }
-            return (day, net)
+            let food = day.foodCalories ?? 0
+            guard day.totalCalories > 0, netDeficitFastingMode || food > 0 else { return nil }
+            return (day, day.totalCalories - food)
         }
         let avgNet: Double? = netDays.isEmpty ? nil : netDays.map(\.value).reduce(0, +) / Double(netDays.count)
         let totalNet: Double? = netDays.isEmpty ? nil : netDays.map(\.value).reduce(0, +)

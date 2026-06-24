@@ -31,6 +31,7 @@ enum GoalSyncKeys {
     static let calorieGoalEnabled = "goalSync.calorieGoalEnabled"
     static let stepGoalEnabled = "goalSync.stepGoalEnabled"
     static let showNetCalories = "goalSync.showNetCalories"
+    static let netDeficitFastingMode = "goalSync.netDeficitFastingMode"
     static let showCalories = "goalSync.showCalories"
     static let showSteps = "goalSync.showSteps"
 }
@@ -271,6 +272,16 @@ final class GoalSettings: ObservableObject {
         }
     }
 
+    /// Sub-option of Net Deficit: when OFF (default), days with no food logged in
+    /// Apple Health are excluded from net-deficit history, averages, and charts —
+    /// a no-food day would otherwise read as a full-burn "deficit" and skew the
+    /// numbers. When ON ("Fasting Mode"), those unlogged days count as usual, for
+    /// users who genuinely eat nothing and want the deficit to reflect it. Only
+    /// meaningful while `showNetCalories` is on (a Vitals+ feature).
+    @Published var netDeficitFastingMode: Bool {
+        didSet { defaults.set(netDeficitFastingMode, forKey: "netDeficitFastingMode") }
+    }
+
     /// Vitals+ feature: show the active vs. resting calorie split below the ring on the dashboard.
     @Published var showActiveRestingBreakdown: Bool {
         didSet { defaults.set(showActiveRestingBreakdown, forKey: "showActiveRestingBreakdown") }
@@ -382,6 +393,7 @@ final class GoalSettings: ObservableObject {
         self.showCalories = defaults.object(forKey: "showCalories") as? Bool ?? true
         self.showSteps = defaults.object(forKey: "showSteps") as? Bool ?? true
         self.showNetCalories = defaults.object(forKey: "showNetCalories") as? Bool ?? false
+        self.netDeficitFastingMode = defaults.object(forKey: "netDeficitFastingMode") as? Bool ?? false
         self.showActiveRestingBreakdown = defaults.object(forKey: "showActiveRestingBreakdown") as? Bool ?? false
         self.showEnergyAverages = defaults.object(forKey: "showEnergyAverages") as? Bool ?? false
         self.showProjections = defaults.object(forKey: "showProjections") as? Bool ?? false

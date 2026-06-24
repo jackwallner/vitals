@@ -7,6 +7,7 @@ struct NetDeficitTrendSummary {
     static func make(
         history: [(date: Date, active: Double, resting: Double, steps: Int)],
         foodByDate: [Date: Double],
+        fastingMode: Bool = false,
         calendar: Calendar = .current
     ) -> NetDeficitTrendSummary? {
         let sorted = history
@@ -14,11 +15,16 @@ struct NetDeficitTrendSummary {
                 let key = calendar.startOfDay(for: day.date)
                 let food = max(foodByDate[key] ?? 0, 0)
                 let burned = max(day.active + day.resting, 0)
+                // A day counts toward net-deficit history only when it has burn
+                // data and (unless Fasting Mode is on) food was actually logged —
+                // an unlogged day would otherwise read as a full-burn "deficit".
+                let counts = burned > 0 && (fastingMode || food > 0)
                 return NetDeficitTrendPoint(
                     date: key,
                     netDeficit: burned - food,
                     burned: burned,
-                    food: food
+                    food: food,
+                    counts: counts
                 )
             }
             .sorted { $0.date < $1.date }
@@ -42,6 +48,9 @@ struct NetDeficitTrendPoint: Identifiable {
     let netDeficit: Double
     let burned: Double
     let food: Double
+    /// Whether this day is included in net-deficit aggregates and drawn as a real
+    /// bar (vs. a faint "unlogged" placeholder). See `NetDeficitTrendSummary.make`.
+    let counts: Bool
 }
 
 struct NetDeficitTrendMetric {
@@ -68,8 +77,9 @@ struct NetDeficitTrendMetric {
         endDate: Date,
         calendar: Calendar
     ) -> NetDeficitTrendMetric {
-        // Net deficit only meaningful when the user logged food that day.
-        let completedPoints = points.filter { !calendar.isDateInToday($0.date) && $0.burned > 0 }
+        // Only days that "count" (food logged, or any burn in Fasting Mode) and
+        // aren't today contribute to the average.
+        let completedPoints = points.filter { !calendar.isDateInToday($0.date) && $0.counts }
         guard let referenceDate = completedPoints.last?.date else {
             return NetDeficitTrendMetric(title: title, average: nil, sampleDays: 0, expectedDays: periodDays)
         }
@@ -78,7 +88,7 @@ struct NetDeficitTrendMetric {
         }
 
         let currentPoints = points.filter {
-            $0.date >= currentStart && $0.date <= referenceDate && $0.burned > 0
+            $0.date >= currentStart && $0.date <= referenceDate && $0.counts
         }
         let avg: Double? = currentPoints.isEmpty
             ? nil

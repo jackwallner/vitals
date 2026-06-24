@@ -37,6 +37,7 @@ private final class PhoneGoalSyncService: NSObject, WCSessionDelegate {
             GoalSyncKeys.calorieGoal: goals.calorieGoal ?? 2500,
             GoalSyncKeys.stepGoal: goals.stepGoal ?? 10000,
             GoalSyncKeys.showNetCalories: goals.showNetCalories && StoreService.shared.isPro,
+            GoalSyncKeys.netDeficitFastingMode: goals.netDeficitFastingMode,
             GoalSyncKeys.showCalories: goals.showCalories,
             GoalSyncKeys.showSteps: goals.showSteps,
         ]
@@ -121,6 +122,11 @@ struct VitalsApp: App {
                     #endif
                 }
                 .onChange(of: goals.showNetCalories) { _, _ in
+                    #if canImport(WatchConnectivity)
+                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                    #endif
+                }
+                .onChange(of: goals.netDeficitFastingMode) { _, _ in
                     #if canImport(WatchConnectivity)
                     PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
                     #endif
@@ -561,6 +567,7 @@ struct MainTabView: View {
         switch intent {
         case .netDeficitToggle: pendingFeatureEnable = .netDeficit
         case .activeRestingToggle: pendingFeatureEnable = .activeResting
+        case .energyAveragesToggle: pendingFeatureEnable = .energyAverages
         case .projectionsToggle: pendingFeatureEnable = .projections
         case .streaksToggle: pendingFeatureEnable = .streaks
         case .weeklyRecapToggle: pendingFeatureEnable = .weeklyRecap
@@ -584,6 +591,8 @@ struct MainTabView: View {
             Task { try? await HealthKitService.shared.requestDietaryAuthorization() }
         case .activeResting:
             goals.showActiveRestingBreakdown = true
+        case .energyAverages:
+            goals.showEnergyAverages = true
         case .projections:
             goals.showProjections = true
         case .streaks:
