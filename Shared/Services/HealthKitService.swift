@@ -317,9 +317,10 @@ final class HealthKitService: ObservableObject {
         guard let cachedHistory, !cachedHistory.isEmpty else { return healthKitHistory }
 
         var merged = healthKitHistory
-        let cachedDict = Dictionary(uniqueKeysWithValues: cachedHistory.map {
-            (DailyHealthRecord.key(for: $0.date), $0)
-        })
+        let cachedDict = Dictionary(
+            cachedHistory.map { (DailyHealthRecord.key(for: $0.date), $0) },
+            uniquingKeysWith: { _, rhs in rhs }
+        )
         for (index, day) in merged.enumerated() {
             let key = DailyHealthRecord.key(for: day.date)
             if let cached = cachedDict[key], cached.active > 0 || cached.resting > 0 {
@@ -659,7 +660,16 @@ final class HealthKitService: ObservableObject {
             sortBy: [SortDescriptor(\.date, order: .forward)]
         )
         let records = try context.fetch(descriptor)
-        let recordDict = Dictionary(uniqueKeysWithValues: records.map { (DailyHealthRecord.key(for: $0.date), $0) })
+        // Key by the stored `dateString` (the @Attribute(.unique) key) rather than
+        // recomputing `key(for: date)` at read time: a timezone/DST shift can re-bucket
+        // two distinct stored rows onto the same recomputed day, and cross-process writes
+        // (widget + app) can occasionally slip a true duplicate past the unique constraint.
+        // Either case made `Dictionary(uniqueKeysWithValues:)` trap. Collapse collisions to
+        // the freshest row instead of crashing.
+        let recordDict = Dictionary(
+            records.map { ($0.dateString, $0) },
+            uniquingKeysWith: { lhs, rhs in lhs.lastUpdated >= rhs.lastUpdated ? lhs : rhs }
+        )
 
         var results: [(date: Date, active: Double, resting: Double, steps: Int)] = []
         var current = normalizedStart

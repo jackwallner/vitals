@@ -460,9 +460,10 @@ struct TodayView: View {
             let history = try await healthKit.fetchMergedHistory(days: 30)
             let dietary = try await healthKit.fetchDietaryHistory(days: 30)
             let calendar = Calendar.current
-            let foodMap = Dictionary(uniqueKeysWithValues: dietary.map {
-                (calendar.startOfDay(for: $0.date), $0.foodCalories)
-            })
+            let foodMap = Dictionary(
+                dietary.map { (calendar.startOfDay(for: $0.date), $0.foodCalories) },
+                uniquingKeysWith: { _, rhs in rhs }
+            )
             let summary = NetDeficitTrendSummary.make(history: history, foodByDate: foodMap)
             // Only surface the section once at least one day in the window has food
             // logged — otherwise it would just be a flat 0 chart.
