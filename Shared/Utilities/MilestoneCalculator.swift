@@ -54,8 +54,11 @@ enum MilestoneCalculator {
         calendar: Calendar = .current,
         hit: (MilestoneDay) -> Bool
     ) -> Int {
+        // Collapse rather than trap if two records land on the same day (timezone/DST
+        // re-bucketing or a cross-process duplicate cache row); last write wins.
         let byDay: [Date: MilestoneDay] = Dictionary(
-            uniqueKeysWithValues: records.map { (calendar.startOfDay(for: $0.date), $0) }
+            records.map { (calendar.startOfDay(for: $0.date), $0) },
+            uniquingKeysWith: { _, rhs in rhs }
         )
         guard var cursor = calendar.date(byAdding: .day, value: -1, to: calendar.startOfDay(for: today)) else {
             return 0

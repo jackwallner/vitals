@@ -67,7 +67,7 @@ private enum HealthNotice: Equatable {
         case .accessNeeded:
             "Grant Apple Health access so Total Calories can load your active calories, resting calories, and steps."
         case .accessBlocked:
-            "Open Settings → Privacy → Health → Total Calories and turn on each category to load your data."
+            "In Apple Health: Profile → Privacy → Apps → Total Calories, then turn on each category to load your data."
         case .noData:
             "If you just granted access, Apple Health may still be catching up. If this seems wrong, check Health access."
         case .loadError:
@@ -80,7 +80,7 @@ private enum HealthNotice: Equatable {
         case .accessNeeded:
             "Enable Health"
         case .accessBlocked:
-            "Open Settings"
+            "Open Health"
         case .noData, .loadError:
             "Open Health"
         }
@@ -477,7 +477,6 @@ struct DashboardView: View {
 
             if let healthNotice {
                 healthNoticeBanner(healthNotice)
-                    .padding(.horizontal, 24)
                     .opacity(animateContent ? 1 : 0)
             }
 
@@ -1026,7 +1025,7 @@ struct DashboardView: View {
                 }
             }
         case .accessBlocked:
-            openAppSettings()
+            openHealthApp()
         case .noData, .loadError:
             openHealthApp()
         }
@@ -1321,10 +1320,19 @@ struct DashboardView: View {
             applyStats(displayStats)
 
             if isAllZero(displayStats) {
-                // Neither live HK nor cache had any data — surface a recoverable
-                // notice so the user can route to Health/Settings.
-                let status = await healthKit.authorizationRequestStatus()
-                healthNotice = classifyEmptyFetchNotice(requestStatus: status)
+                // An all-zero today read is normal early in the day (e.g. just
+                // after midnight, before any active/step/basal samples land). If
+                // we have ANY historical data, access clearly works — showing
+                // "Health access is off" then is a false alarm. Only surface the
+                // recovery banner when there's no evidence we've ever read data.
+                let hasHistory = (try? healthKit.fetchCachedHistory(days: 30))?
+                    .contains { $0.active > 0 || $0.resting > 0 || $0.steps > 0 } ?? false
+                if hasHistory {
+                    healthNotice = nil
+                } else {
+                    let status = await healthKit.authorizationRequestStatus()
+                    healthNotice = classifyEmptyFetchNotice(requestStatus: status)
+                }
             } else {
                 // We have data to show — either fresh from iPhone HK, or merged
                 // up to the Watch's higher cached value. The cache is part of
