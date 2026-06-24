@@ -194,6 +194,7 @@ final class TrialOfferCoordinator: ObservableObject {
         case deepTrendsUpgrade
         case netDeficitToggle
         case activeRestingToggle
+        case energyAveragesToggle
         case projectionsToggle
         case streaksToggle
         case weeklyRecapToggle
@@ -208,6 +209,7 @@ final class TrialOfferCoordinator: ObservableObject {
             switch self {
             case .netDeficitToggle: .netDeficit
             case .activeRestingToggle: .activeResting
+            case .energyAveragesToggle: .energyAverages
             case .deepTrendsUpgrade: .deepTrends
             case .lockedCustomRange, .lockedSummaryReport: .customRangesPDF
             case .projectionsToggle: .projections

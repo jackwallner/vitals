@@ -129,6 +129,11 @@ struct DashboardView: View {
     @State private var dietaryEnergyFetchFailed = false
     /// Transient celebration banner shown once per goal per day (paired with the haptic).
     @State private var celebrationMessage: String? = nil
+    // Vitals+ energy averages: stable 30-day maintenance (TDEE) and resting (BMR)
+    // figures from Apple Health. nil until enough sample days exist (see loadEnergyAverages).
+    @State private var energyTDEE: Double? = nil
+    @State private var energyBMR: Double? = nil
+    @State private var energySampleDays: Int = 0
 
     private var totalCalories: Double { activeCalories + restingCalories }
 
@@ -148,6 +153,13 @@ struct DashboardView: View {
     /// Hidden in minimal mode (no goals + no pacing) to keep that layout uncluttered.
     private var showActiveResting: Bool {
         store.isPro && goals.showActiveRestingBreakdown && !isMinimalMode
+    }
+
+    /// TDEE/BMR averages are Vitals+ only, gated by the user's setting, and only
+    /// meaningful alongside the calorie ring — hidden in minimal mode and when
+    /// calories are turned off.
+    private var showEnergyAverages: Bool {
+        store.isPro && goals.showEnergyAverages && goals.showCalories && !isMinimalMode
     }
 
     /// Vitals+ end-of-day projection, gated by subscription + setting.
@@ -518,6 +530,9 @@ struct DashboardView: View {
                 // Pacing and end-of-day projection — the "how's today going"
                 // signals coupled directly under the ring.
                 calorieInsights
+
+                // TDEE/BMR reference figures (Vitals+). Toggle lives in Settings.
+                energyAveragesView
             }
 
             if goals.showCalories && goals.showSteps {
@@ -685,6 +700,36 @@ struct DashboardView: View {
             Spacer(minLength: 16)
         }
         .padding(.bottom, 90)
+    }
+
+    /// TDEE/BMR averages row (Vitals+). A steady 30-day reference figure, visually
+    /// distinct from the live "today" number above it. Shows a building state until
+    /// enough sample days exist, mirroring how pacing reports its warm-up.
+    @ViewBuilder
+    private var energyAveragesView: some View {
+        if showEnergyAverages {
+            VStack(spacing: 6) {
+                if let tdee = energyTDEE, let bmr = energyBMR {
+                    HStack(spacing: 16) {
+                        MetricPill(label: "TDEE", value: tdee, color: Theme.activePrimary)
+                        MetricPill(label: "BMR", value: bmr, color: Theme.restingPrimary)
+                    }
+                    Text("Maintenance · 30-day avg from Apple Health")
+                        .font(.system(.caption2, design: .rounded))
+                        .foregroundStyle(Theme.textTertiary)
+                } else {
+                    Text("TDEE & BMR estimate building: \(energySampleDays)/7 days")
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                }
+            }
+            .padding(.top, 14)
+            .opacity(animateContent ? 1 : 0)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(energyTDEE != nil
+                ? "Maintenance calories \(Int(energyTDEE ?? 0)) TDEE, resting \(Int(energyBMR ?? 0)) BMR, 30-day average."
+                : "TDEE and BMR estimate building, \(energySampleDays) of 7 days.")
+        }
     }
 
     /// Calorie pace + projection (one pill) grouped directly under the ring so the
@@ -1159,6 +1204,26 @@ struct DashboardView: View {
         pacingStepsInsufficient = v.stepsBuilding
     }
 
+    /// Load the Vitals+ TDEE/BMR averages. No-op (and clears) when the feature is
+    /// off so a disabled toggle never leaves a stale figure on screen.
+    private func loadEnergyAverages() async {
+        guard showEnergyAverages else {
+            energyTDEE = nil
+            energyBMR = nil
+            energySampleDays = 0
+            return
+        }
+        guard let avg = try? await healthKit.fetchEnergyAverages() else {
+            energyTDEE = nil
+            energyBMR = nil
+            energySampleDays = 0
+            return
+        }
+        energyTDEE = avg.tdee
+        energyBMR = avg.bmr
+        energySampleDays = avg.sampleDays
+    }
+
     private func pacingBuildingText(samples: Int) -> String {
         let dayWord = pacingMinSamples == 1 ? "day" : "days"
         return "Building pace data: \(samples)/\(pacingMinSamples) \(dayWord)"
@@ -1231,6 +1296,7 @@ struct DashboardView: View {
         // started them after `fetchTodayStats` returned.
         async let dietaryEarly: Void = loadDietaryEnergy()
         async let pacingEarly: Void = loadPacing(stats: nil)
+        async let energyEarly: Void = loadEnergyAverages()
 
         do {
             let stats = try await healthKit.fetchTodayStats()
@@ -1303,6 +1369,7 @@ struct DashboardView: View {
             // Wait for the in-flight dietary + pacing reads we kicked off above.
             await dietaryEarly
             await pacingEarly
+            await energyEarly
             // Pacing compares "what we've done so far today" against a typical
             // baseline; if we have no totals at all (live empty and cache empty),
             // that comparison is meaningless. Use the merged display so cached
@@ -1317,6 +1384,7 @@ struct DashboardView: View {
             // after we reset below.
             await dietaryEarly
             await pacingEarly
+            await energyEarly
             if let cachedStats = try? healthKit.fetchCachedTodayStats() {
                 // Fall back to whatever the cache last captured. The header's
                 // "Updated HH:mm" timestamp won't advance (lastRefreshDate is
@@ -1903,6 +1971,20 @@ private struct SettingsSheet: View {
         )
     }
 
+    private var showEnergyAveragesBinding: Binding<Bool> {
+        Binding(
+            get: { store.isPro && goals.showEnergyAverages },
+            set: { enabled in
+                if store.isPro {
+                    goals.showEnergyAverages = enabled
+                } else if enabled {
+                    goals.showEnergyAverages = false
+                    requestTrialOffer(.energyAveragesToggle)
+                }
+            }
+        )
+    }
+
     private var showProjectionsBinding: Binding<Bool> {
         Binding(
             get: { store.isPro && goals.showProjections },
@@ -2067,6 +2149,9 @@ private struct SettingsSheet: View {
                     Toggle(isOn: showActiveRestingBinding) {
                         plusToggleLabel("Active + Resting Breakdown")
                     }
+                    Toggle(isOn: showEnergyAveragesBinding) {
+                        plusToggleLabel("TDEE & BMR")
+                    }
                     Toggle(isOn: showNetCaloriesBinding) {
                         plusToggleLabel("Net Deficit")
                     }
@@ -2079,7 +2164,7 @@ private struct SettingsSheet: View {
                 } header: {
                     Text("Calories")
                 } footer: {
-                    Text("Active + Resting and Net Deficit are Vitals+ extras, off until you turn them on. Net Deficit shows calories burned minus food energy from Apple Health — a positive number means a deficit. Connect a food app like MyFitnessPal to populate it. Goal changes save when you tap Done.")
+                    Text("Active + Resting, TDEE & BMR, and Net Deficit are Vitals+ extras, off until you turn them on. TDEE & BMR show your maintenance calories and resting burn as a 30-day average from Apple Health. Net Deficit shows calories burned minus food energy from Apple Health — a positive number means a deficit. Connect a food app like MyFitnessPal to populate it. Goal changes save when you tap Done.")
                 }
 
                 // Steps — the step counter and its goal together.

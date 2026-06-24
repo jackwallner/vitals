@@ -280,6 +280,34 @@ final class HealthKitService: ObservableObject {
         return results
     }
 
+    /// Stable energy reference figures averaged over recent completed days.
+    /// `tdee` = average full-day total burn (active + resting) ≈ maintenance calories.
+    /// `bmr`  = average full-day resting burn ≈ basal metabolic rate.
+    /// Both nil until `sampleDays` clears the minimum.
+    struct EnergyAverages: Sendable {
+        let tdee: Double?
+        let bmr: Double?
+        let sampleDays: Int
+    }
+
+    /// Average maintenance (TDEE) and resting (BMR) energy over the last `days`
+    /// completed days. Today is excluded (partial), and days where resting energy
+    /// is 0 are dropped as non-wear so a few watch-off days can't drag the figure
+    /// down. Returns nil values until at least `minSamples` valid days exist.
+    func fetchEnergyAverages(days: Int = 30, minSamples: Int = 7) async throws -> EnergyAverages {
+        // Pull one extra day so excluding today still leaves a full window.
+        let history = try await fetchHistory(days: days + 1)
+        let today = DateHelpers.startOfDay(.now)
+        let valid = history.filter { DateHelpers.startOfDay($0.date) < today && $0.resting > 0 }
+        guard valid.count >= minSamples else {
+            return EnergyAverages(tdee: nil, bmr: nil, sampleDays: valid.count)
+        }
+        let count = Double(valid.count)
+        let bmr = valid.reduce(0.0) { $0 + $1.resting } / count
+        let tdee = valid.reduce(0.0) { $0 + $1.active + $1.resting } / count
+        return EnergyAverages(tdee: tdee, bmr: bmr, sampleDays: valid.count)
+    }
+
     /// WatchOS-only helper: merge HealthKit history with the shared SwiftData cache.
     /// The paired iPhone populates this cache with full historical data; the watch's
     /// local HealthKit store may only contain a subset, so cached entries take priority.

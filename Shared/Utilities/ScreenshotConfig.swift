@@ -6,6 +6,7 @@ enum ScreenshotScene: String {
     case history
     case premium
     case premiumActive
+    case premiumDashboard
     case settings
     case onboarding
     case watchToday
@@ -26,7 +27,9 @@ enum ScreenshotConfig {
 
     static var wantsHistoryTab: Bool { scene == .history }
     static var wantsPremiumTab: Bool { scene == .premium || scene == .premiumActive }
-    static var wantsPremiumActive: Bool { scene == .premiumActive }
+    // "Premium unlocked" (isPro true + Vitals+ readouts on). Covers the paywall-
+    // while-subscribed scene and the premium Today-tab hero showing TDEE/BMR.
+    static var wantsPremiumActive: Bool { scene == .premiumActive || scene == .premiumDashboard }
     static var wantsSettingsSheet: Bool { scene == .settings }
     static var wantsOnboarding: Bool { scene == .onboarding }
     static var wantsWatchHelp: Bool { scene == .watchHelp }

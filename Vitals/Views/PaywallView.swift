@@ -17,6 +17,7 @@ enum PaywallLinks {
 enum PlusFeature: CaseIterable {
     case netDeficit
     case activeResting
+    case energyAverages
     case deepTrends
     case customRangesPDF
     case projections
@@ -27,6 +28,7 @@ enum PlusFeature: CaseIterable {
         switch self {
         case .netDeficit: "plus.forwardslash.minus"
         case .activeResting: "flame.fill"
+        case .energyAverages: "speedometer"
         case .deepTrends: "chart.line.uptrend.xyaxis"
         case .customRangesPDF: "calendar.badge.clock"
         case .projections: "scope"
@@ -39,6 +41,7 @@ enum PlusFeature: CaseIterable {
         switch self {
         case .netDeficit: Theme.netDeficitBrand
         case .activeResting: Theme.caloriesPrimary
+        case .energyAverages: Theme.caloriesPrimary
         case .deepTrends: Theme.stepsPrimary
         case .customRangesPDF: Theme.stepsSecondary
         case .projections: Theme.stepsPrimary
@@ -52,6 +55,7 @@ enum PlusFeature: CaseIterable {
         switch self {
         case .netDeficit: "Net Deficit, live"
         case .activeResting: "Active vs. resting calories"
+        case .energyAverages: "TDEE & BMR"
         case .deepTrends: "Deep Trends"
         case .customRangesPDF: "Custom ranges + PDF reports"
         case .projections: "End-of-day projections"
@@ -65,6 +69,7 @@ enum PlusFeature: CaseIterable {
         switch self {
         case .netDeficit: "Calories burned minus food logged in Apple Health, updated all day."
         case .activeResting: "Split your burn into active and resting to see what moved the number."
+        case .energyAverages: "Your maintenance calories (TDEE) and resting burn (BMR), averaged from Apple Health."
         case .deepTrends: "Every period compared head-to-head with the one before it."
         case .customRangesPDF: "Pick any window in History and export a clean summary for your coach."
         case .projections: "See where today's calories and steps will land, based on your own pace."
@@ -78,6 +83,7 @@ enum PlusFeature: CaseIterable {
         switch self {
         case .netDeficit: "Net Deficit, live: burned minus food logged"
         case .activeResting: "Active vs. resting calorie breakdown"
+        case .energyAverages: "TDEE & BMR from your own Apple Health data"
         case .deepTrends: "Deep Trends: every period vs. the one before"
         case .customRangesPDF: "Custom date ranges + PDF reports"
         case .projections: "End-of-day projections from your own pace"
@@ -91,6 +97,7 @@ enum PlusFeature: CaseIterable {
         switch self {
         case .netDeficit: "Net Deficit, live."
         case .activeResting: "Break down every calorie."
+        case .energyAverages: "Know your TDEE & BMR."
         case .deepTrends: "See your trends, deeper."
         case .customRangesPDF: "Any range. Clean PDF reports."
         case .projections: "Know where today lands."
@@ -104,6 +111,7 @@ enum PlusFeature: CaseIterable {
         switch self {
         case .netDeficit: "See calories burned minus the food you log, updated all day, plus the rest of Vitals+."
         case .activeResting: "Split active vs. resting burn to see what's really moving your number, plus the rest of Vitals+."
+        case .energyAverages: "See your maintenance calories (TDEE) and resting burn (BMR) averaged from Apple Health, plus the rest of Vitals+."
         case .deepTrends: "Compare every period head-to-head with the one before, plus the rest of Vitals+."
         case .customRangesPDF: "Pick any date window and export a polished report for your coach, plus the rest of Vitals+."
         case .projections: "See where today's calories and steps will land based on your own pace, plus the rest of Vitals+."
@@ -141,7 +149,7 @@ struct PaywallView: View {
     /// All features, with the focused one pulled to the front so the user sees
     /// what they tapped for first.
     private var orderedFeatures: [PlusFeature] {
-        let base: [PlusFeature] = [.netDeficit, .projections, .streaks, .weeklyRecap, .deepTrends, .customRangesPDF, .activeResting]
+        let base: [PlusFeature] = [.netDeficit, .projections, .streaks, .weeklyRecap, .energyAverages, .deepTrends, .customRangesPDF, .activeResting]
         guard let focus else { return base }
         return [focus] + base.filter { $0 != focus }
     }
