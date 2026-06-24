@@ -464,7 +464,11 @@ struct TodayView: View {
                 dietary.map { (calendar.startOfDay(for: $0.date), $0.foodCalories) },
                 uniquingKeysWith: { _, rhs in rhs }
             )
-            let summary = NetDeficitTrendSummary.make(history: history, foodByDate: foodMap)
+            let summary = NetDeficitTrendSummary.make(
+                history: history,
+                foodByDate: foodMap,
+                fastingMode: goals.netDeficitFastingMode
+            )
             // Only surface the section once at least one day in the window has food
             // logged — otherwise it would just be a flat 0 chart.
             netDeficitTrends = summary
@@ -705,12 +709,14 @@ private struct WatchNetDeficitBars: View {
             HStack(alignment: .center, spacing: 1.5) {
                 ForEach(points) { point in
                     let isToday = Calendar.current.isDateInToday(point.date)
-                    let hasFood = point.burned > 0
+                    // Days that don't count (no food logged, outside Fasting Mode)
+                    // render as a faint placeholder instead of a misleading full-burn bar.
+                    let counts = point.counts
                     let isPositive = point.netDeficit >= 0
                     let magnitude = max(3, halfHeight * abs(point.netDeficit) / maxAbs)
                     VStack(spacing: 0) {
                         // Top half (positive deficits)
-                        if hasFood && isPositive {
+                        if counts && isPositive {
                             Spacer(minLength: 0)
                             RoundedRectangle(cornerRadius: 2)
                                 .fill(Theme.netDeficitPositive)
@@ -720,13 +726,13 @@ private struct WatchNetDeficitBars: View {
                             Spacer(minLength: 0)
                         }
                         // Bottom half (negative deficits / no food placeholder)
-                        if hasFood && !isPositive {
+                        if counts && !isPositive {
                             RoundedRectangle(cornerRadius: 2)
                                 .fill(Theme.netDeficitNegative)
                                 .frame(height: magnitude)
                                 .opacity(isToday ? 1.0 : 0.86)
                             Spacer(minLength: 0)
-                        } else if !hasFood {
+                        } else if !counts {
                             RoundedRectangle(cornerRadius: 2)
                                 .fill(Theme.ringTrack)
                                 .frame(height: 3)

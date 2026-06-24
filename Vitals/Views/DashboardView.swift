@@ -1965,6 +1965,18 @@ private struct SettingsSheet: View {
         )
     }
 
+    /// Sub-option of Net Deficit (only reachable when Net Deficit is on, which
+    /// requires Pro). Off = exclude unlogged-food days from history; on = count them.
+    private var netDeficitFastingBinding: Binding<Bool> {
+        Binding(
+            get: { store.isPro && goals.netDeficitFastingMode },
+            set: { enabled in
+                guard store.isPro else { return }
+                goals.netDeficitFastingMode = enabled
+            }
+        )
+    }
+
     private var showActiveRestingBinding: Binding<Bool> {
         Binding(
             get: { store.isPro && goals.showActiveRestingBreakdown },
@@ -2169,10 +2181,14 @@ private struct SettingsSheet: View {
                             try? await HealthKitService.shared.requestDietaryAuthorization()
                         }
                     }
+                    if store.isPro && goals.showNetCalories {
+                        Toggle("Fasting Mode", isOn: netDeficitFastingBinding)
+                            .padding(.leading, 16)
+                    }
                 } header: {
                     Text("Calories")
                 } footer: {
-                    Text("Active + Resting, TDEE & BMR, and Net Deficit are Vitals+ extras, off until you turn them on. TDEE & BMR show your maintenance calories and resting burn as a 30-day average from Apple Health. Net Deficit shows calories burned minus food energy from Apple Health — a positive number means a deficit. Connect a food app like MyFitnessPal to populate it. Goal changes save when you tap Done.")
+                    Text("Active + Resting, TDEE & BMR, and Net Deficit are Vitals+ extras, off until you turn them on. TDEE & BMR show your maintenance calories and resting burn as a 30-day average from Apple Health. Net Deficit shows calories burned minus food energy from Apple Health — a positive number means a deficit. Connect a food app like MyFitnessPal to populate it. Fasting Mode counts days with no food logged toward your Net Deficit history; off by default, those unlogged days are skipped so they don't read as a full-burn deficit. Goal changes save when you tap Done.")
                 }
 
                 // Steps — the step counter and its goal together.
