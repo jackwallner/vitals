@@ -14,6 +14,23 @@
 
 ---
 
+## STEP 0 — Re-pull current state first (data drifts; trust the tools, not this doc)
+
+Every number, keyword field, ranking, and competitor named in this doc is a **dated snapshot (2026-06-25) and WILL be stale.** Rankings shift daily, you may have edited metadata since, and competitors move. A fresh agent must re-pull live state before acting, then apply the durable rules (positioning, guardrails, transform logic, safeguards) to *that* data — not to anything pasted here.
+
+| What you need | How to pull it fresh |
+|---|---|
+| Live name/subtitle/keywords, **all locales** | `scripts/pull-appstore-metadata.sh` → writes live values into `fastlane/metadata/<locale>/{name,subtitle,keywords}.txt`; then read those files. (Authoritative source for the edits.) |
+| Same, via API | `scripts/asc_lib.py` helpers: name/subtitle = `appInfoLocalizations`, keywords = `appStoreVersionLocalizations`. |
+| The locale list (~50) | `scripts/asc-supported-locales.json` |
+| Current rankings / popularity / difficulty / tags / notes | Astro MCP `get_app_keywords(appId="6761743504", store="us")` (repeat per store). Cached snapshots: `scripts/astro-keywords-us.json`, `scripts/astro-keywords-by-store`; refresh with `scripts/astro-sync-all-stores.py`. **The deployed/target/wall tags + notes already encode the strategy — read them.** |
+| Who ranks for a term + your own position | Astro MCP `search_app_store(keyword, store, appId="6761743504")`, or `scripts/astro-competitor-scan.py`. Re-derive competitor tiers from co-ranking (`~/Desktop/aso.md` §2) — they change. |
+| ASC version / write state (before any push) | Check the live version is READY_FOR_SALE and whether a draft already exists (see §5). |
+
+**Do this first, then proceed.** The rest of this doc is the durable decision-making; the data behind each example must be refreshed.
+
+---
+
 ## 1. What this app is (positioning — load-bearing)
 
 Total Calories is a **calories-BURNED / energy-expenditure** app: TDEE, active + resting energy, Apple Watch complications, lock-screen / home widgets, pacing. **It is NOT a food-logging calorie counter.** This distinction drives every keyword decision:
@@ -59,9 +76,9 @@ We sequenced US as: this round = the swap above (`tdee`→subtitle, `kcal`/`ring
 
 The repo's metadata source of truth is `fastlane/metadata/<locale>/{keywords.txt,subtitle.txt,name.txt}`. Locale list = `scripts/asc-supported-locales.json` (~50: ar-SA, bn-BD, ca, cs, da, de-DE, el, en-AU, en-CA, en-GB, en-US, es-ES, es-MX, fi, fr-CA, fr-FR, gu-IN, he, hi, hr, hu, id, it, ja, kn-IN, ko, ml-IN, mr-IN, ms, nl-NL, no, or-IN, pa-IN, pl, pt-BR, pt-PT, ro, ru, sk, sl-SI, sv, ta-IN, te-IN, th, tr, uk, ur-PK, vi, zh-Hans, zh-Hant).
 
-The fields are **native-language** (e.g. de-DE keywords are `grundumsatz,stoffwechsel,kalorienrechner,…`). The US edits do **not** copy over mechanically. Apply these rules per locale:
+**First pull every locale's *current* field** (Step 0) — do not assume parity. The fields are **native-language** (e.g. de-DE keywords ≈ `grundumsatz,stoffwechsel,kalorienrechner,…`) and they are NOT uniform: as of 2026-06-25, en-GB/en-AU/en-CA carried `…,pace,pacing,…,move` (not `ring,kcal` like en-US), and the de/es/fr/it/nl fields are already custom-localized with no `pedometer,ring` prefix. So re-pull, then apply these rules per locale:
 
-1. **English-shared locales (en-GB, en-AU, en-CA):** identical to en-US — same subtitle + keyword field. Safe to copy.
+1. **English-listing locales (en-GB, en-AU, en-CA):** they share the English *language* but currently have their **own** keyword fields (verify via pull — they differ from en-US). After pulling, align them to the en-US *final* field + subtitle, and SERP-check any divergent words (e.g. `pace`/`move`) against the GB/AU/CA stores — they're likely the same false friends as US, but confirm.
 2. **`tdee` → subtitle, everywhere it appears.** `tdee` and `bmr` are universal acronyms present in most localized fields. Promote `tdee` into that locale's subtitle (kept grammatical in-language) and remove it from the keyword field.
 3. **Add `bmi`** — universal acronym, add to every locale's keyword field (subject to the product-gate caveat; harmless to include).
 4. **Add the local word for "burned"** (calories-burned sense), only if it's a genuine gap vs the local pool. Best-effort table (MUST be SERP-validated, see safeguard §8.4):
