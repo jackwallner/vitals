@@ -1,0 +1,520 @@
+import SwiftUI
+
+/// Settings → Body Profile. Free BMI from Apple Health or manual height/weight,
+/// with a Vitals+ upsell for body-fat and calorie context. The BMI number is
+/// never paywalled — it's the product/ASO promise (see 625plan.md §6).
+struct BodyProfileView: View {
+    @EnvironmentObject private var store: StoreService
+    @StateObject private var bodyProfile = BodyProfileStore.shared
+
+    @State private var health: HealthBodyProfile = .empty
+    @State private var healthStatusMessage: String?
+    @State private var isSyncing = false
+
+    // Manual entry text drafts (seeded from store, committed on change).
+    @State private var feetText = ""
+    @State private var inchesText = ""
+    @State private var poundsText = ""
+    @State private var cmText = ""
+    @State private var kgText = ""
+    @State private var bodyFatText = ""
+
+    @State private var heightError = false
+    @State private var weightError = false
+    @State private var bodyFatError = false
+
+    private var unitSystem: BodyProfileUnitSystem { bodyProfile.effectiveUnitSystem }
+
+    private var resolved: ResolvedBodyProfile {
+        bodyProfile.resolved(health: health)
+    }
+
+    var body: some View {
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 16) {
+                header
+                sourceCard
+                bmiCard
+                manualEntryCard
+                educationCard
+                vitalsPlusCard
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
+            .padding(.bottom, 40)
+        }
+        .background(Theme.background.ignoresSafeArea())
+        .navigationTitle("Body Profile")
+        .navigationBarTitleDisplayMode(.inline)
+        .task {
+            seedManualDrafts()
+            // Settled-auth silent read: populates from Health when already
+            // authorized, without prompting. The user explicitly syncs otherwise.
+            health = (try? await HealthKitService.shared.fetchBodyProfileFromHealth()) ?? .empty
+        }
+    }
+
+    // MARK: - Header
+
+    private var header: some View {
+        HStack(spacing: 12) {
+            ZStack {
+                Circle()
+                    .fill(Theme.netDeficitBrand.opacity(0.15))
+                    .frame(width: 44, height: 44)
+                Image(systemName: "figure.stand")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(Theme.netDeficitBrand)
+            }
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Body Profile")
+                    .font(.system(.title3, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.textPrimary)
+                Text("Calculate BMI from Apple Health or manual height and weight.")
+                    .font(.system(.footnote, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+    }
+
+    // MARK: - Source
+
+    private var sourceCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Data Source")
+                .font(.system(.subheadline, design: .rounded, weight: .bold))
+                .foregroundStyle(Theme.textPrimary)
+
+            Picker("Source", selection: Binding(
+                get: { bodyProfile.preferredSource },
+                set: { bodyProfile.preferredSource = $0 }
+            )) {
+                ForEach(BodyProfileSource.allCases, id: \.self) { source in
+                    Text(source.label).tag(source)
+                }
+            }
+            .pickerStyle(.segmented)
+
+            Button {
+                Task { await syncFromHealth() }
+            } label: {
+                HStack(spacing: 8) {
+                    if isSyncing {
+                        ProgressView().tint(.white)
+                    } else {
+                        Image(systemName: "heart.text.square.fill")
+                    }
+                    Text(isSyncing ? "Syncing…" : "Sync from Apple Health")
+                        .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                }
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 11)
+                .background(Theme.caloriesGradient, in: Capsule())
+            }
+            .buttonStyle(.plain)
+            .disabled(isSyncing)
+
+            if let healthStatusMessage {
+                Text(healthStatusMessage)
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+    }
+
+    // MARK: - BMI
+
+    private var bmiCard: some View {
+        VStack(spacing: 12) {
+            Text("Body Mass Index")
+                .font(.system(.subheadline, design: .rounded, weight: .bold))
+                .foregroundStyle(Theme.textSecondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Text(BodyProfileCalculator.formattedBMI(resolved.bmi))
+                .font(.system(size: 56, weight: .bold, design: .rounded))
+                .foregroundStyle(Theme.textPrimary)
+                .contentTransition(.numericText())
+
+            if let category = resolved.category {
+                Text(category.label)
+                    .font(.system(.subheadline, design: .rounded, weight: .bold))
+                    .foregroundStyle(categoryColor(category))
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 6)
+                    .background(categoryColor(category).opacity(0.15), in: Capsule())
+            } else {
+                Text("Add height and weight to see your BMI.")
+                    .font(.system(.footnote, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .multilineTextAlignment(.center)
+            }
+
+            if resolved.heightMeters != nil || resolved.weightKilograms != nil {
+                Divider().background(Theme.textTertiary.opacity(0.2))
+                HStack {
+                    metricColumn(label: "Height", value: heightDisplay)
+                    Spacer()
+                    metricColumn(label: "Weight", value: weightDisplay)
+                    Spacer()
+                    metricColumn(label: "Source", value: resolved.source.label)
+                }
+            }
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(bmiAccessibilityLabel)
+    }
+
+    private func metricColumn(label: String, value: String) -> some View {
+        VStack(spacing: 3) {
+            Text(label.uppercased())
+                .font(.system(size: 10, weight: .bold, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
+            Text(value)
+                .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                .foregroundStyle(Theme.textPrimary)
+        }
+    }
+
+    private func categoryColor(_ category: BMICategory) -> Color {
+        switch category {
+        case .underweight: Theme.stepsSecondary
+        case .healthy: Theme.streakPrimary
+        case .overweight: Theme.caloriesSecondary
+        case .obesity: Theme.caloriesPrimary
+        }
+    }
+
+    // MARK: - Manual entry
+
+    private var manualEntryCard: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack {
+                Text("Manual Entry")
+                    .font(.system(.subheadline, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.textPrimary)
+                Spacer()
+                Picker("Units", selection: Binding(
+                    get: { bodyProfile.unitSystem },
+                    set: { bodyProfile.unitSystem = $0; seedManualDrafts() }
+                )) {
+                    ForEach(BodyProfileUnitSystem.allCases, id: \.self) { system in
+                        Text(system.label).tag(system)
+                    }
+                }
+                .pickerStyle(.menu)
+                .tint(Theme.caloriesPrimary)
+            }
+
+            if unitSystem == .us {
+                HStack(spacing: 10) {
+                    entryField(title: "Feet", text: $feetText, unit: "ft")
+                    entryField(title: "Inches", text: $inchesText, unit: "in")
+                }
+                if heightError {
+                    fieldError("Enter a realistic height.")
+                }
+                entryField(title: "Weight", text: $poundsText, unit: "lb")
+                if weightError {
+                    fieldError("Enter a realistic weight.")
+                }
+            } else {
+                entryField(title: "Height", text: $cmText, unit: "cm")
+                if heightError {
+                    fieldError("Enter a realistic height.")
+                }
+                entryField(title: "Weight", text: $kgText, unit: "kg")
+                if weightError {
+                    fieldError("Enter a realistic weight.")
+                }
+            }
+
+            if store.isPro {
+                entryField(title: "Body Fat", text: $bodyFatText, unit: "%")
+                if bodyFatError {
+                    fieldError("Enter a body fat between 2% and 75%.")
+                }
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+    }
+
+    private func entryField(title: String, text: Binding<String>, unit: String) -> some View {
+        HStack {
+            Text(title)
+                .font(.system(.subheadline, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+            Spacer()
+            TextField("0", text: text)
+                .keyboardType(.decimalPad)
+                .multilineTextAlignment(.trailing)
+                .font(.system(.body, design: .rounded, weight: .semibold))
+                .frame(maxWidth: 90)
+                .onChange(of: text.wrappedValue) { _, _ in commitManualEntry() }
+            Text(unit)
+                .font(.system(.subheadline, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
+                .frame(width: 28, alignment: .leading)
+        }
+        .padding(.vertical, 4)
+    }
+
+    private func fieldError(_ message: String) -> some View {
+        Text(message)
+            .font(.system(.caption, design: .rounded))
+            .foregroundStyle(.red)
+    }
+
+    // MARK: - Education
+
+    private var educationCard: some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "info.circle.fill")
+                .font(.system(size: 15))
+                .foregroundStyle(Theme.textTertiary)
+            Text("BMI is a simple height/weight reference and is not a diagnosis. It may not reflect muscle mass, pregnancy, age, or individual health context.")
+                .font(.system(.caption, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.cardSurface.opacity(0.6), in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+    }
+
+    // MARK: - Vitals+
+
+    @ViewBuilder
+    private var vitalsPlusCard: some View {
+        if store.isPro {
+            proBodyContextCard
+        } else {
+            lockedBodyContextRow
+        }
+    }
+
+    private var proBodyContextCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 8) {
+                Image(systemName: "sparkles")
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundStyle(Theme.caloriesPrimary)
+                Text("Your calorie context")
+                    .font(.system(.subheadline, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.textPrimary)
+            }
+
+            HStack {
+                Text("Body Fat")
+                    .font(.system(.subheadline, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                Spacer()
+                Text(BodyProfileCalculator.formattedBodyFat(resolved.bodyFatPercent))
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textPrimary)
+            }
+
+            if resolved.bodyFatPercent == nil {
+                Text("Add body fat in Apple Health or enter it manually to include it here.")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Divider().background(Theme.textTertiary.opacity(0.2))
+
+            Text("TDEE and BMR estimate your burn. BMI and body fat help frame your body profile.")
+                .font(.system(.caption, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+    }
+
+    private var lockedBodyContextRow: some View {
+        Button {
+            TrialOfferCoordinator.shared.request(.bodyProfileDetails)
+        } label: {
+            HStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(Theme.netDeficitBrand.opacity(0.15))
+                        .frame(width: 36, height: 36)
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundStyle(Theme.netDeficitBrand)
+                }
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Body fat and calorie context are in Vitals+.")
+                        .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                        .foregroundStyle(Theme.textPrimary)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text("Your BMI stays free.")
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(Theme.textTertiary)
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Unlock body fat and calorie context with Vitals+. Your BMI stays free.")
+        .accessibilityAddTraits(.isButton)
+    }
+
+    // MARK: - Display helpers
+
+    private var heightDisplay: String {
+        guard let meters = resolved.heightMeters else { return "—" }
+        if unitSystem == .us {
+            let (feet, inches) = BodyProfileCalculator.feetInches(fromMeters: meters)
+            return "\(feet)′\(inches)″"
+        }
+        return String(format: "%.0f cm", BodyProfileCalculator.centimeters(fromMeters: meters))
+    }
+
+    private var weightDisplay: String {
+        guard let kg = resolved.weightKilograms else { return "—" }
+        if unitSystem == .us {
+            return String(format: "%.0f lb", BodyProfileCalculator.pounds(fromKilograms: kg))
+        }
+        return String(format: "%.1f kg", kg)
+    }
+
+    private var bmiAccessibilityLabel: String {
+        var parts = ["Body Mass Index"]
+        if let bmi = resolved.bmi {
+            parts.append(BodyProfileCalculator.formattedBMI(bmi))
+            if let category = resolved.category { parts.append(category.label) }
+            parts.append("Source \(resolved.source.label)")
+            parts.append("Height \(heightDisplay)")
+            parts.append("Weight \(weightDisplay)")
+        } else {
+            parts.append("Not enough data. Add height and weight.")
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    // MARK: - Data flow
+
+    private func syncFromHealth() async {
+        guard !isSyncing else { return }
+        isSyncing = true
+        defer { isSyncing = false }
+        do {
+            try await HealthKitService.shared.requestBodyProfileAuthorization()
+            let fetched = try await HealthKitService.shared.fetchBodyProfileFromHealth()
+            health = fetched
+            if fetched.hasHeightAndWeight {
+                bodyProfile.preferredSource = .appleHealth
+                healthStatusMessage = nil
+            } else {
+                healthStatusMessage = "Couldn’t find height and weight in Apple Health. You can enter them manually here."
+            }
+        } catch {
+            healthStatusMessage = "Couldn’t read from Apple Health. Enter your height and weight manually here."
+        }
+    }
+
+    /// Parse the current text drafts, validate, and write metric values to the
+    /// store. Invalid fields flip an inline error and are not persisted.
+    private func commitManualEntry() {
+        // Height
+        if unitSystem == .us {
+            let feet = Double(feetText) ?? 0
+            let inches = Double(inchesText) ?? 0
+            if feetText.isEmpty && inchesText.isEmpty {
+                bodyProfile.setManualHeight(meters: nil)
+                heightError = false
+            } else {
+                let meters = BodyProfileCalculator.meters(feet: feet, inches: inches)
+                heightError = !bodyProfile.setManualHeight(meters: meters)
+            }
+            if poundsText.isEmpty {
+                bodyProfile.setManualWeight(kilograms: nil)
+                weightError = false
+            } else if let pounds = Double(poundsText) {
+                let kg = BodyProfileCalculator.kilograms(pounds: pounds)
+                weightError = !bodyProfile.setManualWeight(kilograms: kg)
+            } else {
+                weightError = true
+            }
+        } else {
+            if cmText.isEmpty {
+                bodyProfile.setManualHeight(meters: nil)
+                heightError = false
+            } else if let cm = Double(cmText) {
+                let meters = BodyProfileCalculator.meters(centimeters: cm)
+                heightError = !bodyProfile.setManualHeight(meters: meters)
+            } else {
+                heightError = true
+            }
+            if kgText.isEmpty {
+                bodyProfile.setManualWeight(kilograms: nil)
+                weightError = false
+            } else if let kg = Double(kgText) {
+                weightError = !bodyProfile.setManualWeight(kilograms: kg)
+            } else {
+                weightError = true
+            }
+        }
+
+        // Body fat (Pro only)
+        if store.isPro {
+            if bodyFatText.isEmpty {
+                bodyProfile.setManualBodyFat(percent: nil)
+                bodyFatError = false
+            } else if let pct = Double(bodyFatText) {
+                bodyFatError = !bodyProfile.setManualBodyFat(percent: pct)
+            } else {
+                bodyFatError = true
+            }
+        }
+
+        // Editing manual fields implies the user wants manual values to win.
+        if !feetText.isEmpty || !inchesText.isEmpty || !poundsText.isEmpty
+            || !cmText.isEmpty || !kgText.isEmpty {
+            if bodyProfile.preferredSource == .appleHealth && !health.hasHeightAndWeight {
+                bodyProfile.preferredSource = .manual
+            }
+        }
+    }
+
+    private func seedManualDrafts() {
+        if let meters = bodyProfile.manualHeightMeters {
+            let (feet, inches) = BodyProfileCalculator.feetInches(fromMeters: meters)
+            feetText = String(feet)
+            inchesText = String(inches)
+            cmText = String(format: "%.0f", BodyProfileCalculator.centimeters(fromMeters: meters))
+        }
+        if let kg = bodyProfile.manualWeightKilograms {
+            poundsText = String(format: "%.0f", BodyProfileCalculator.pounds(fromKilograms: kg))
+            kgText = String(format: "%.1f", kg)
+        }
+        if let pct = bodyProfile.manualBodyFatPercent {
+            bodyFatText = String(format: "%.1f", pct)
+        }
+    }
+}

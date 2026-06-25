@@ -207,6 +207,7 @@ final class TrialOfferCoordinator: ObservableObject {
         case settingsUpgradeRow
         case milestoneCelebration
         case whatsNewAnnouncement
+        case bodyProfileDetails
 
         /// The Vitals+ feature this tap reached for, so the pitch can lead with
         /// it. `nil` for entrypoints with no single feature (the generic
@@ -221,6 +222,7 @@ final class TrialOfferCoordinator: ObservableObject {
             case .projectionsToggle: .projections
             case .streaksToggle: .streaks
             case .weeklyRecapToggle: .weeklyRecap
+            case .bodyProfileDetails: .bodyProfile
             case .settingsUpgradeRow, .milestoneCelebration, .whatsNewAnnouncement: nil
             }
         }

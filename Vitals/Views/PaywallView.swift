@@ -23,6 +23,7 @@ enum PlusFeature: CaseIterable {
     case projections
     case streaks
     case weeklyRecap
+    case bodyProfile
 
     var icon: String {
         switch self {
@@ -34,6 +35,7 @@ enum PlusFeature: CaseIterable {
         case .projections: "scope"
         case .streaks: "flame"
         case .weeklyRecap: "calendar.badge.checkmark"
+        case .bodyProfile: "figure.stand"
         }
     }
 
@@ -47,6 +49,7 @@ enum PlusFeature: CaseIterable {
         case .projections: Theme.stepsPrimary
         case .streaks: Theme.streakPrimary
         case .weeklyRecap: Theme.caloriesPrimary
+        case .bodyProfile: Theme.netDeficitBrand
         }
     }
 
@@ -61,6 +64,7 @@ enum PlusFeature: CaseIterable {
         case .projections: "End-of-day projections"
         case .streaks: "Goal streaks"
         case .weeklyRecap: "Weekly recap"
+        case .bodyProfile: "Body Profile context"
         }
     }
 
@@ -75,6 +79,7 @@ enum PlusFeature: CaseIterable {
         case .projections: "See where today's calories and steps will land, based on your own pace."
         case .streaks: "Track consecutive days you've hit a goal — and don't break the chain."
         case .weeklyRecap: "A Sunday-night summary of your week vs. the one before, delivered to you."
+        case .bodyProfile: "Body fat and calorie context alongside your BMI. BMI stays free."
         }
     }
 
@@ -89,6 +94,7 @@ enum PlusFeature: CaseIterable {
         case .projections: "End-of-day projections from your own pace"
         case .streaks: "Goal streaks — keep the chain alive"
         case .weeklyRecap: "Weekly recap notification + summary"
+        case .bodyProfile: "Body fat + calorie context with your BMI"
         }
     }
 
@@ -103,6 +109,7 @@ enum PlusFeature: CaseIterable {
         case .projections: "Know where today lands."
         case .streaks: "Keep the chain alive."
         case .weeklyRecap: "Your week, in review."
+        case .bodyProfile: "Understand your body profile."
         }
     }
 
@@ -117,6 +124,7 @@ enum PlusFeature: CaseIterable {
         case .projections: "See where today's calories and steps will land based on your own pace, plus the rest of Vitals+."
         case .streaks: "Track every consecutive day you hit a goal and protect your streak, plus the rest of Vitals+."
         case .weeklyRecap: "Get a Sunday-night recap of your week vs. the last one, plus the rest of Vitals+."
+        case .bodyProfile: "BMI stays free. Vitals+ adds body-fat and calorie context from your own data, plus the rest of Vitals+."
         }
     }
 }
