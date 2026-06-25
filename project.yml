@@ -121,6 +121,8 @@ targets:
       - path: Shared/Utilities/ProjectionCalculator.swift
       - path: Shared/Utilities/WeeklyRecap.swift
       - path: Shared/Utilities/MilestoneCalculator.swift
+      - path: Shared/Utilities/BodyProfileCalculator.swift
+      - path: Shared/Models/BodyProfile.swift
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES

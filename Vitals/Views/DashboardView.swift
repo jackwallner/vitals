@@ -2142,6 +2142,19 @@ private struct SettingsSheet: View {
             Form {
                 vitalsPlusSection
 
+                Section {
+                    NavigationLink {
+                        BodyProfileView()
+                    } label: {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Body Profile")
+                            Text("BMI, height, and weight")
+                                .font(.caption)
+                                .foregroundStyle(Theme.textSecondary)
+                        }
+                    }
+                }
+
                 // Calories — the ring plus everything that shapes that number,
                 // including its goal and the Vitals+ calorie extras, all in one
                 // place instead of scattered across the sheet.

@@ -24,6 +24,17 @@ final class HealthKitService: ObservableObject {
 
     private let dietaryReadType: HKObjectType = HKQuantityType(.dietaryEnergyConsumed)
 
+    /// Body Profile reads are requested separately (and only on explicit user
+    /// action) so the core onboarding sheet keeps asking for just the three
+    /// energy/step types. Mixing new read types into an existing request can
+    /// silently suppress the HealthKit permission sheet — the same quirk the
+    /// dietary energy flow already works around.
+    private let bodyProfileReadTypes: Set<HKObjectType> = [
+        HKQuantityType(.height),
+        HKQuantityType(.bodyMass),
+        HKQuantityType(.bodyFatPercentage),
+    ]
+
     private init() {
         if ScreenshotConfig.isEnabled {
             isAuthorized = true
@@ -85,14 +96,33 @@ final class HealthKitService: ObservableObject {
     }
 
 
-    func authorizationRequestStatus(includeDietaryEnergy: Bool = false) async -> HKAuthorizationRequestStatus? {
+    /// Request authorization for the Body Profile types only (height, body mass,
+    /// body-fat). Requested separately from the core types — see
+    /// `bodyProfileReadTypes`. Does not flip `isAuthorized`, which tracks core
+    /// energy/step access.
+    func requestBodyProfileAuthorization() async throws {
+        if ScreenshotConfig.isEnabled { return }
+        guard HKHealthStore.isHealthDataAvailable() else { return }
+        healthKitLogger.info(
+            "Requesting HealthKit authorization for \(self.bodyProfileReadTypes.count, privacy: .public) body profile read types"
+        )
+        do {
+            try await store.requestAuthorization(toShare: [], read: bodyProfileReadTypes)
+            healthKitLogger.info("Body profile authorization request completed")
+        } catch {
+            healthKitLogger.error("Body profile authorization request failed: \(String(describing: error), privacy: .public)")
+            throw error
+        }
+    }
+
+    func authorizationRequestStatus(includeDietaryEnergy: Bool = false, includeBodyProfile: Bool = false) async -> HKAuthorizationRequestStatus? {
         if ScreenshotConfig.isEnabled {
             return .unnecessary
         }
         guard HKHealthStore.isHealthDataAvailable() else { return nil }
-        let readTypes = includeDietaryEnergy
-            ? baseReadTypes.union([dietaryReadType])
-            : baseReadTypes
+        var readTypes = baseReadTypes
+        if includeDietaryEnergy { readTypes.formUnion([dietaryReadType]) }
+        if includeBodyProfile { readTypes.formUnion(bodyProfileReadTypes) }
 
         return await withCheckedContinuation { continuation in
             store.getRequestStatusForAuthorization(toShare: [], read: readTypes) { status, error in
@@ -414,6 +444,61 @@ final class HealthKitService: ObservableObject {
             avgCaloriesFullDay: avgCaloriesFullDay,
             avgStepsFullDay: avgStepsFullDay
         )
+    }
+
+    // MARK: - Body Profile
+
+    /// Most-recent height, body mass, and body-fat samples from Apple Health,
+    /// normalized to metric storage units (meters, kilograms, percent 0–100).
+    /// Any field is nil when no sample exists or the read is unauthorized — the
+    /// caller can't distinguish "denied" from "absent" (HealthKit doesn't expose
+    /// read auth), so the UI offers manual entry either way.
+    func fetchBodyProfileFromHealth() async throws -> HealthBodyProfile {
+        guard HKHealthStore.isHealthDataAvailable() else { return .empty }
+
+        async let height = mostRecentQuantity(.height, unit: .meter())
+        async let weight = mostRecentQuantity(.bodyMass, unit: .gramUnit(with: .kilo))
+        // HealthKit body fat is stored as a fraction (0.20 == 20%); convert to a
+        // 0–100 percent for storage/display so callers never re-derive the scale.
+        async let bodyFatFraction = mostRecentQuantity(.bodyFatPercentage, unit: .percent())
+
+        let (h, w, bf) = await (height, weight, bodyFatFraction)
+        let bodyFatPercent = bf.map { $0 * 100 }
+
+        healthKitLogger.info(
+            "fetchBodyProfileFromHealth: height=\(h != nil, privacy: .public) weight=\(w != nil, privacy: .public) bodyFat=\(bodyFatPercent != nil, privacy: .public)"
+        )
+
+        return HealthBodyProfile(heightMeters: h, weightKilograms: w, bodyFatPercent: bodyFatPercent)
+    }
+
+    /// Fetches the latest single sample for a quantity type. Returns nil on error
+    /// or when no sample exists (both indistinguishable from "not authorized" for
+    /// reads), so the body-profile UI can fall back to manual entry.
+    private func mostRecentQuantity(_ identifier: HKQuantityTypeIdentifier, unit: HKUnit) async -> Double? {
+        let store = self.store
+        let quantityType = HKQuantityType(identifier)
+        let sort = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+        return await withCheckedContinuation { continuation in
+            let query = HKSampleQuery(
+                sampleType: quantityType,
+                predicate: nil,
+                limit: 1,
+                sortDescriptors: [sort]
+            ) { _, samples, error in
+                if let error {
+                    healthKitLogger.error("mostRecentQuantity \(identifier.rawValue, privacy: .public) failed: \(String(describing: error), privacy: .public)")
+                    continuation.resume(returning: nil)
+                    return
+                }
+                guard let sample = samples?.first as? HKQuantitySample else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+                continuation.resume(returning: sample.quantity.doubleValue(for: unit))
+            }
+            store.execute(query)
+        }
     }
 
     // MARK: - Background Delivery

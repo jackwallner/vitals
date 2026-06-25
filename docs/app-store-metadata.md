@@ -267,6 +267,10 @@ On first launch, the app asks you to set optional goals (you may skip this). iOS
 
 If access is denied or not yet granted, the app shows a banner explaining that Health access is needed (no fake or placeholder health numbers). Users can open Settings or the Health app from that banner.
 
+BODY PROFILE (BMI)
+
+Settings includes a "Body Profile" screen that shows BMI. It works without Apple Health: a user can enter height and weight manually to get a BMI number and category. Optionally, they can tap "Sync from Apple Health" to read height/weight (and, for Vitals+ users, body-fat) — this requests Health authorization only at that moment, separate from onboarding. The BMI number is free for all users; Vitals+ adds body-fat and calorie context. No body-profile data is ever written to Apple Health, and manual values are stored locally only.
+
 iPHONE FEATURES
 
 - Dashboard with animated calorie ring and step progress bar
