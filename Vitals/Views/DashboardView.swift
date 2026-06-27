@@ -1532,6 +1532,83 @@ private struct PacingPill: View {
     }
 }
 
+// MARK: - Settings feature explainers
+
+private enum SettingsInfoTopic: Identifiable {
+    case netDeficit
+    case fastingMode
+    case endOfDayProjection
+    case goalStreak
+
+    var id: Self { self }
+
+    var title: String {
+        switch self {
+        case .netDeficit: "Net Deficit"
+        case .fastingMode: "Fasting Mode"
+        case .endOfDayProjection: "End-of-Day Projection"
+        case .goalStreak: "Goal Streak"
+        }
+    }
+
+    var systemImage: String {
+        switch self {
+        case .netDeficit: "minus.plus.batteryblock"
+        case .fastingMode: "moon.zzz"
+        case .endOfDayProjection: "chart.line.uptrend.xyaxis"
+        case .goalStreak: "flame.fill"
+        }
+    }
+
+    var message: String {
+        switch self {
+        case .netDeficit:
+            "Net Deficit is calories burned minus food energy from Apple Health. A positive number means a deficit. Connect a food app like MyFitnessPal to populate food energy."
+        case .fastingMode:
+            "When Fasting Mode is on, days with no food logged count toward your Net Deficit history. Off by default — unlogged days are skipped so they don't read as a full-burn deficit."
+        case .endOfDayProjection:
+            "Projects where today's calories and steps will land based on your pace so far. Uses the same pacing window you've chosen above."
+        case .goalStreak:
+            "Counts consecutive days you've hit a calorie or step goal. Empty days break the streak."
+        }
+    }
+}
+
+private struct SettingsInfoSheet: View {
+    let topic: SettingsInfoTopic
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 20) {
+                Image(systemName: topic.systemImage)
+                    .font(.system(size: 44))
+                    .foregroundStyle(Theme.caloriesPrimary)
+                    .padding(.top, 12)
+
+                Text(topic.title)
+                    .font(.system(.title2, design: .rounded, weight: .bold))
+
+                Text(topic.message)
+                    .font(.system(.body, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Spacer()
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 28)
+            .background(Theme.background.ignoresSafeArea())
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { dismiss() }
+                }
+            }
+        }
+    }
+}
+
 /// Lightweight sheet explaining what "usual pace" is compared against, so users can
 /// trust the pacing number without reading the Settings footer.
 private struct PacingExplainerSheet: View {
@@ -1925,6 +2002,7 @@ private struct SettingsSheet: View {
     @State private var stepEnabled = true
     @State private var stepText = ""
     @State private var appliedGoalDrafts = false
+    @State private var settingsInfoTopic: SettingsInfoTopic?
     @FocusState private var focusedGoalField: GoalField?
 
     private enum GoalField { case calories, steps }
@@ -1965,8 +2043,8 @@ private struct SettingsSheet: View {
         )
     }
 
-    /// Sub-option of Net Deficit (only reachable when Net Deficit is on, which
-    /// requires Pro). Off = exclude unlogged-food days from history; on = count them.
+    /// Peer toggle to Net Deficit — only meaningful when Net Deficit is on.
+    /// Off = exclude unlogged-food days from history; on = count them.
     private var netDeficitFastingBinding: Binding<Bool> {
         Binding(
             get: { store.isPro && goals.netDeficitFastingMode },
@@ -2045,6 +2123,12 @@ private struct SettingsSheet: View {
                     .foregroundStyle(Theme.caloriesPrimary)
             }
         }
+    }
+
+    @ViewBuilder
+    private func settingsLearnMoreButton(_ title: String, topic: SettingsInfoTopic) -> some View {
+        Button(title) { settingsInfoTopic = topic }
+            .font(.caption)
     }
 
     private var weeklyRecapBinding: Binding<Bool> {
@@ -2142,19 +2226,6 @@ private struct SettingsSheet: View {
             Form {
                 vitalsPlusSection
 
-                Section {
-                    NavigationLink {
-                        BodyProfileView()
-                    } label: {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Body Profile")
-                            Text("BMI, height, and weight")
-                                .font(.caption)
-                                .foregroundStyle(Theme.textSecondary)
-                        }
-                    }
-                }
-
                 // Calories — the ring plus everything that shapes that number,
                 // including its goal and the Vitals+ calorie extras, all in one
                 // place instead of scattered across the sheet.
@@ -2194,14 +2265,18 @@ private struct SettingsSheet: View {
                             try? await HealthKitService.shared.requestDietaryAuthorization()
                         }
                     }
-                    if store.isPro && goals.showNetCalories {
-                        Toggle("Fasting Mode", isOn: netDeficitFastingBinding)
-                            .padding(.leading, 16)
+                    Toggle(isOn: netDeficitFastingBinding) {
+                        plusToggleLabel("Fasting Mode")
                     }
+                    .disabled(!store.isPro || !goals.showNetCalories)
                 } header: {
                     Text("Calories")
                 } footer: {
-                    Text("Active + Resting, TDEE & BMR, and Net Deficit are Vitals+ extras, off until you turn them on. TDEE & BMR show your maintenance calories and resting burn as a 30-day average from Apple Health. Net Deficit shows calories burned minus food energy from Apple Health — a positive number means a deficit. Connect a food app like MyFitnessPal to populate it. Fasting Mode counts days with no food logged toward your Net Deficit history; off by default, those unlogged days are skipped so they don't read as a full-burn deficit. Goal changes save when you tap Done.")
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Active + Resting, TDEE & BMR, Net Deficit, and Fasting Mode are Vitals+ extras, off until you turn them on. Goal changes save when you tap Done.")
+                        settingsLearnMoreButton("Learn more about Net Deficit", topic: .netDeficit)
+                        settingsLearnMoreButton("Learn more about Fasting Mode", topic: .fastingMode)
+                    }
                 }
 
                 // Steps — the step counter and its goal together.
@@ -2258,7 +2333,12 @@ private struct SettingsSheet: View {
                 } header: {
                     Text("Pacing & Projections")
                 } footer: {
-                    Text("\(pacingFooter)\n\nEnd-of-Day Projection and Goal Streak are Vitals+ extras, off by default. Projection shows where today's calories and steps will land from your own pace. Goal Streak counts consecutive days you've hit a goal.")
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(pacingFooter)
+                        Text("End-of-Day Projection and Goal Streak are Vitals+ extras, off by default.")
+                        settingsLearnMoreButton("Learn more about End-of-Day Projection", topic: .endOfDayProjection)
+                        settingsLearnMoreButton("Learn more about Goal Streak", topic: .goalStreak)
+                    }
                 }
 
                 // Notifications — Weekly Recap is the only push the app sends, so
@@ -2280,6 +2360,19 @@ private struct SettingsSheet: View {
                         }
                     }
                     .pickerStyle(.segmented)
+                }
+
+                Section {
+                    NavigationLink {
+                        BodyProfileView()
+                    } label: {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Body Profile")
+                            Text("BMI, height, and weight")
+                                .font(.caption)
+                                .foregroundStyle(Theme.textSecondary)
+                        }
+                    }
                 }
 
                 Section {
@@ -2352,6 +2445,11 @@ private struct SettingsSheet: View {
                 stepEnabled = goals.stepGoal != nil
                 stepText = goals.stepGoal.map { String($0) } ?? "10000"
                 Task { await store.updateCustomerProductStatus() }
+            }
+            .sheet(item: $settingsInfoTopic) { topic in
+                SettingsInfoSheet(topic: topic)
+                    .presentationDetents([.medium])
+                    .presentationDragIndicator(.visible)
             }
         }
     }

@@ -100,6 +100,23 @@ struct VitalsApp: App {
 
     var body: some Scene {
         WindowGroup {
+            #if DEBUG
+            if let mode = PaywallScreenshotMode.current {
+                PaywallScreenshotHarness(mode: mode)
+                    .environmentObject(store)
+                    .preferredColorScheme(goals.appearance.colorScheme)
+            } else {
+                mainContent
+            }
+            #else
+            mainContent
+            #endif
+        }
+        .modelContainer(DataService.sharedModelContainer)
+    }
+
+    @ViewBuilder
+    private var mainContent: some View {
             MainTabView()
                 .environmentObject(store)
                 .preferredColorScheme(goals.appearance.colorScheme)
@@ -146,8 +163,6 @@ struct VitalsApp: App {
                     PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
                     #endif
                 }
-        }
-        .modelContainer(DataService.sharedModelContainer)
     }
 
     static func scheduleAppRefresh() {
@@ -1338,7 +1353,7 @@ private struct PremiumAccountRow: View {
     }
 }
 
-private struct TrialOfferSheet: View {
+struct TrialOfferSheet: View {
     /// When set, the sheet leads with and highlights this feature instead of the
     /// generic toolkit pitch. `nil` for passive launch/history nudges.
     let focus: PlusFeature?
