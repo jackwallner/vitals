@@ -334,7 +334,7 @@ struct BodyProfileView: View {
             }
 
             if bodyProfile.preferredSource == .appleHealth && !health.hasHeightAndWeight {
-                Text("Apple Health doesn't have height and weight yet — enter them here or add them in the Health app.")
+                Text("Apple Health doesn't have height and weight yet. Enter them here or add them in the Health app.")
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
                     .fixedSize(horizontal: false, vertical: true)

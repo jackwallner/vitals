@@ -53,80 +53,136 @@ enum PlusFeature: CaseIterable {
         }
     }
 
-    /// Short title for compact bullet rows (trial sheet).
+    /// Short title for compact bullet rows (trial sheet companions).
     var title: String {
         switch self {
-        case .netDeficit: "Net Deficit, live"
-        case .activeResting: "Active vs. resting calories"
+        case .netDeficit: "Net Deficit"
+        case .activeResting: "Active vs. resting"
         case .energyAverages: "TDEE & BMR"
         case .deepTrends: "Deep Trends"
-        case .customRangesPDF: "Custom ranges + PDF reports"
+        case .customRangesPDF: "Custom ranges + PDF"
         case .projections: "End-of-day projections"
         case .streaks: "Goal streaks"
         case .weeklyRecap: "Weekly recap"
-        case .bodyProfile: "Body Profile context"
+        case .bodyProfile: "Body profile"
         }
     }
 
-    /// One-line supporting detail for bullet rows.
+    /// Supporting line on the focused trial bullet (intent sheet).
     var detail: String {
         switch self {
-        case .netDeficit: "Calories burned minus food logged in Apple Health, updated all day."
-        case .activeResting: "Split your burn into active and resting to see what moved the number."
-        case .energyAverages: "Your maintenance calories (TDEE) and resting burn (BMR), averaged from Apple Health."
-        case .deepTrends: "Every period compared head-to-head with the one before it."
-        case .customRangesPDF: "Pick any window in History and export a clean summary for your coach."
-        case .projections: "See where today's calories and steps will land, based on your own pace."
-        case .streaks: "Track consecutive days you've hit a goal — and don't break the chain."
-        case .weeklyRecap: "A Sunday-night summary of your week vs. the one before, delivered to you."
-        case .bodyProfile: "Body fat and calorie context alongside your BMI. BMI stays free."
+        case .netDeficit: "Burned minus food logged in Apple Health, updated through the day."
+        case .activeResting: "See how much of today's burn came from activity vs. resting."
+        case .energyAverages: "30-day maintenance (TDEE) and resting burn (BMR) from your data."
+        case .deepTrends: "Compare any period to the one before it."
+        case .customRangesPDF: "Pick any dates in History and export a summary PDF."
+        case .projections: "Where today's calories and steps will land at your current pace."
+        case .streaks: "See how many days in a row you've hit your goal."
+        case .weeklyRecap: "Sunday summary of this week vs. last."
+        case .bodyProfile: "Body fat and calorie context next to your BMI."
         }
     }
 
-    /// Single-line label used in the plan picker's flat feature list.
+    /// Outcome bullets on the full paywall (generic, no focus).
     var featureListTitle: String {
         switch self {
-        case .netDeficit: "Net Deficit, live: burned minus food logged"
+        case .netDeficit: "Net Deficit: burned minus food logged, live"
         case .activeResting: "Active vs. resting calorie breakdown"
-        case .energyAverages: "TDEE & BMR from your own Apple Health data"
+        case .energyAverages: "TDEE & BMR from your Apple Health averages"
         case .deepTrends: "Deep Trends: every period vs. the one before"
         case .customRangesPDF: "Custom date ranges + PDF reports"
-        case .projections: "End-of-day projections from your own pace"
-        case .streaks: "Goal streaks — keep the chain alive"
+        case .projections: "End-of-day projections from your pace"
+        case .streaks: "Goal streaks: keep the chain alive"
         case .weeklyRecap: "Weekly recap notification + summary"
         case .bodyProfile: "Body fat + calorie context with your BMI"
         }
     }
 
-    /// Hero headline when this feature is the focus of the pitch.
-    var pitchHeadline: String {
+    /// Headline when the user tapped to enable this specific feature.
+    var intentHeadline: String {
         switch self {
-        case .netDeficit: "Net Deficit, live."
-        case .activeResting: "Break down every calorie."
-        case .energyAverages: "Know your TDEE & BMR."
-        case .deepTrends: "See your trends, deeper."
-        case .customRangesPDF: "Any range. Clean PDF reports."
-        case .projections: "Know where today lands."
-        case .streaks: "Keep the chain alive."
-        case .weeklyRecap: "Your week, in review."
-        case .bodyProfile: "Understand your body profile."
+        case .netDeficit: "Track your live deficit"
+        case .activeResting: "Split active and resting burn"
+        case .energyAverages: "See your maintenance calories"
+        case .deepTrends: "Compare every period"
+        case .customRangesPDF: "Export any date range"
+        case .projections: "Know where today lands"
+        case .streaks: "Keep your streak alive"
+        case .weeklyRecap: "Get your week in review"
+        case .bodyProfile: "Understand your body profile"
         }
     }
 
-    /// Supporting line when this feature is the focus of the pitch.
-    var pitchSubheadline: String {
+    /// One sentence under the headline — what they get from the feature they asked for.
+    var intentSubheadline: String {
         switch self {
-        case .netDeficit: "See calories burned minus the food you log, updated all day, plus the rest of Vitals+."
-        case .activeResting: "Split active vs. resting burn to see what's really moving your number, plus the rest of Vitals+."
-        case .energyAverages: "See your maintenance calories (TDEE) and resting burn (BMR) averaged from Apple Health, plus the rest of Vitals+."
-        case .deepTrends: "Compare every period head-to-head with the one before, plus the rest of Vitals+."
-        case .customRangesPDF: "Pick any date window and export a polished report for your coach, plus the rest of Vitals+."
-        case .projections: "See where today's calories and steps will land based on your own pace, plus the rest of Vitals+."
-        case .streaks: "Track every consecutive day you hit a goal and protect your streak, plus the rest of Vitals+."
-        case .weeklyRecap: "Get a Sunday-night recap of your week vs. the last one, plus the rest of Vitals+."
-        case .bodyProfile: "BMI stays free. Vitals+ adds body-fat and calorie context from your own data, plus the rest of Vitals+."
+        case .netDeficit: "Calories burned minus food logged, updated all day from Apple Health."
+        case .activeResting: "See what actually moved today's calorie number."
+        case .energyAverages: "TDEE and BMR averaged over the last 30 days from your own data."
+        case .deepTrends: "Stack this week against last week, this month against the last."
+        case .customRangesPDF: "Pull any window from History into a clean PDF."
+        case .projections: "Projected calories and steps based on your pace so far today."
+        case .streaks: "Track consecutive days you hit your goal."
+        case .weeklyRecap: "A Sunday night summary of this week vs. last."
+        case .bodyProfile: "Body fat and calorie context alongside BMI. BMI stays free."
         }
     }
+
+    /// Two related features shown under an intent-driven pitch (not random extras).
+    var companionFeatures: [PlusFeature] {
+        switch self {
+        case .netDeficit: [.projections, .deepTrends]
+        case .activeResting: [.netDeficit, .energyAverages]
+        case .energyAverages: [.netDeficit, .projections]
+        case .deepTrends: [.customRangesPDF, .projections]
+        case .customRangesPDF: [.deepTrends, .netDeficit]
+        case .projections: [.netDeficit, .streaks]
+        case .streaks: [.projections, .weeklyRecap]
+        case .weeklyRecap: [.streaks, .deepTrends]
+        case .bodyProfile: [.energyAverages, .netDeficit]
+        }
+    }
+
+    var pitchHeadline: String { intentHeadline }
+    var pitchSubheadline: String { intentSubheadline }
+
+    #if DEBUG
+    /// Suffix for `-PaywallSnapshot trial-<slug>` capture scripts.
+    var snapshotSlug: String {
+        switch self {
+        case .netDeficit: "net-deficit"
+        case .activeResting: "active-resting"
+        case .energyAverages: "tdee"
+        case .deepTrends: "deep-trends"
+        case .customRangesPDF: "custom-range"
+        case .projections: "projections"
+        case .streaks: "streaks"
+        case .weeklyRecap: "weekly-recap"
+        case .bodyProfile: "body-profile"
+        }
+    }
+
+    static func fromSnapshotSlug(_ slug: String) -> PlusFeature? {
+        switch slug {
+        case "net-deficit": .netDeficit
+        case "active-resting": .activeResting
+        case "tdee": .energyAverages
+        case "deep-trends": .deepTrends
+        case "custom-range": .customRangesPDF
+        case "projections": .projections
+        case "streaks": .streaks
+        case "weekly-recap": .weeklyRecap
+        case "body-profile": .bodyProfile
+        default: nil
+        }
+    }
+
+    /// Every feature-gate a free user can hit (settings toggles + History + Body Profile).
+    static let allSnapshotGates: [PlusFeature] = [
+        .netDeficit, .activeResting, .energyAverages, .projections, .streaks, .weeklyRecap,
+        .deepTrends, .customRangesPDF, .bodyProfile
+    ]
+    #endif
 }
 
 /// Native, self-hosted Vitals+ paywall. Purchases still flow through
@@ -154,12 +210,11 @@ struct PaywallView: View {
     @State private var restoreMessage: String?
     @State private var isRestoring = false
 
-    /// All features, with the focused one pulled to the front so the user sees
-    /// what they tapped for first.
-    private var orderedFeatures: [PlusFeature] {
-        let base: [PlusFeature] = [.netDeficit, .projections, .streaks, .weeklyRecap, .energyAverages, .deepTrends, .customRangesPDF, .activeResting]
-        guard let focus else { return base }
-        return [focus] + base.filter { $0 != focus }
+    /// Rich outcome bullets for the one-screen paywall. Intent taps lead with the
+    /// feature they asked for plus two related companions.
+    private var paywallBullets: [PlusFeature] {
+        if let focus { return [focus] + focus.companionFeatures }
+        return [.netDeficit, .energyAverages, .projections, .deepTrends]
     }
 
     /// Annual savings vs. paying monthly for a year, as a whole percent. Drives
@@ -243,122 +298,30 @@ struct PaywallView: View {
 
     @ViewBuilder
     private var content: some View {
-        if displayCloseButton {
-            // Sheet mode: fit on one screen — pitch is fixed, CTA pinned (no scroll).
-            pitchColumn(compact: true)
-                .safeAreaInset(edge: .bottom, spacing: 0) { pinnedPurchaseBar }
-        } else {
-            // Tab mode: pin the purchase CTA + disclosure to the bottom so it's
-            // always on screen above the floating tab bar (never hidden behind
-            // it) on every device size. The pitch above it scrolls.
-            scrollingContent(includePurchase: false)
-                .safeAreaInset(edge: .bottom, spacing: 0) { pinnedPurchaseBar }
-        }
+        paywallContent
     }
 
-    private func scrollingContent(includePurchase: Bool) -> some View {
-        ScrollView(showsIndicators: false) {
-            pitchColumn(compact: false)
-            if includePurchase {
-                purchaseSection
-            }
-        }
-    }
-
-    private func pitchColumn(compact: Bool) -> some View {
-        VStack(spacing: compact ? 14 : 22) {
-            header(compact: compact)
-            featureList(compact: compact)
+    /// Single viewport — hero, outcome bullets, plans; checkout pinned slim below.
+    private var paywallContent: some View {
+        VStack(spacing: 12) {
+            header(compact: true)
+            paywallFeatureList
             planCards
-            if !compact, selectedHasTrial, let days = selectedPackage?.vitalsTrialDayCount {
-                TrialTimeline(trialDays: days, priceLabel: selectedPackage?.vitalsPriceLabel)
-            }
+            Spacer(minLength: 0)
         }
-        .padding(.horizontal, 24)
-        .padding(.top, displayCloseButton ? 48 : 32)
-        .padding(.bottom, compact ? 8 : 16)
-    }
-
-    private var pinnedPurchaseBar: some View {
-        purchaseSection
-            .padding(.horizontal, 24)
-            .padding(.top, 14)
-            .padding(.bottom, 14)
-            .background(.ultraThinMaterial)
-    }
-
-    private func header(compact: Bool) -> some View {
-        VStack(spacing: compact ? 6 : 10) {
-            ZStack {
-                Circle()
-                    .fill(Theme.caloriesGradient)
-                    .frame(width: compact ? 52 : 64, height: compact ? 52 : 64)
-                    .shadow(color: Theme.caloriesPrimary.opacity(0.35), radius: 12, x: 0, y: 4)
-                Image(systemName: "sparkles")
-                    .font(.system(size: compact ? 22 : 26, weight: .bold))
-                    .foregroundStyle(.white)
-            }
-            Text("Vitals+")
-                .font(.system(compact ? .title2 : .title, design: .rounded, weight: .bold))
-                .foregroundStyle(Theme.textPrimary)
-            Text(focus?.pitchSubheadline ?? "Unlock every Vitals+ feature.")
-                .font(.system(compact ? .footnote : .subheadline, design: .rounded))
-                .foregroundStyle(Theme.textSecondary)
-                .multilineTextAlignment(.center)
-                .lineLimit(compact ? 3 : nil)
-                .fixedSize(horizontal: false, vertical: true)
+        .padding(.horizontal, 22)
+        .padding(.top, displayCloseButton ? 44 : 20)
+        .padding(.bottom, 4)
+        .frame(maxHeight: .infinity)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            pinnedCheckoutFooter
         }
     }
 
-    private func featureList(compact: Bool) -> some View {
-        let features = compact ? Array(orderedFeatures.prefix(3)) : orderedFeatures
-        return VStack(alignment: .leading, spacing: compact ? 6 : 10) {
-            ForEach(features, id: \.self) { feature in
-                let highlighted = feature == focus
-                HStack(spacing: 12) {
-                    Image(systemName: feature.icon)
-                        .font(.system(size: 15, weight: .semibold))
-                        .foregroundStyle(feature.tint)
-                        .frame(width: 24)
-                    Text(feature.featureListTitle)
-                        .font(.system(.subheadline, design: .rounded, weight: highlighted ? .semibold : .regular))
-                        .foregroundStyle(Theme.textPrimary)
-                        .fixedSize(horizontal: false, vertical: true)
-                    Spacer(minLength: 0)
-                }
-                .padding(.horizontal, highlighted ? 12 : 0)
-                .padding(.vertical, highlighted ? 10 : 0)
-                .background {
-                    if highlighted {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(feature.tint.opacity(0.1))
-                    }
-                }
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    private var planCards: some View {
-        VStack(spacing: 10) {
-            ForEach(store.products, id: \.identifier) { package in
-                let isYearly = package.vitalsPackageKind == .yearly
-                PlanCard(
-                    package: package,
-                    isSelected: selectedPackage?.identifier == package.identifier,
-                    showsTrialBadge: store.isEligibleForIntroOffer(package),
-                    isBestValue: isYearly,
-                    savingsPercent: isYearly ? annualSavingsPercent : nil,
-                    perWeekLabel: isYearly ? package.vitalsPricePerWeekLabel : nil
-                ) {
-                    selectedPackage = package
-                }
-            }
-        }
-    }
-
-    private var purchaseSection: some View {
-        VStack(spacing: displayCloseButton ? 8 : 12) {
+    /// CTA + required 3.1.2 copy. Disclosure/legal sit in a fixed-height slot so the
+    /// button never jumps when the selected plan changes (lifetime vs trial copy).
+    private var pinnedCheckoutFooter: some View {
+        VStack(spacing: 6) {
             Button(action: startPurchase) {
                 ZStack {
                     Text(ctaTitle)
@@ -378,43 +341,46 @@ struct PaywallView: View {
             .buttonStyle(.plain)
             .disabled(isPurchasing || selectedPackage == nil)
 
-            if !displayCloseButton {
-                HStack(spacing: 14) {
-                    reassurancePill(icon: "checkmark.shield.fill", text: "No payment now")
-                    reassurancePill(icon: "bell.badge.fill", text: "Reminder before billing")
-                    reassurancePill(icon: "xmark.circle.fill", text: "Cancel anytime")
+            VStack(spacing: 4) {
+                ZStack(alignment: .top) {
+                    Text(disclosureText ?? " ")
+                        .font(.system(.caption2, design: .rounded))
+                        .foregroundStyle(Theme.textTertiary)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(3)
+                        .minimumScaleFactor(0.9)
+                        .frame(maxWidth: .infinity)
+                        .opacity(disclosureText == nil ? 0 : 1)
+
+                    if let errorMessage {
+                        Text(errorMessage)
+                            .font(.system(.caption, design: .rounded))
+                            .foregroundStyle(.red)
+                            .multilineTextAlignment(.center)
+                    } else if let restoreMessage {
+                        Text(restoreMessage)
+                            .font(.system(.caption, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                            .multilineTextAlignment(.center)
+                    }
                 }
-                .frame(maxWidth: .infinity, minHeight: 52)
-                .opacity(selectedHasTrial ? 1 : 0)
-                .accessibilityHidden(!selectedHasTrial)
-            }
+                .frame(height: 44, alignment: .top)
 
-            Text(disclosureText ?? " ")
-                .font(.system(.caption, design: .rounded))
-                .foregroundStyle(Theme.textTertiary)
-                .multilineTextAlignment(.center)
-                .lineLimit(4)
-                .minimumScaleFactor(0.9)
-                .frame(minHeight: 64, alignment: .top)
-                .opacity(disclosureText == nil ? 0 : 1)
-                .accessibilityHidden(disclosureText == nil)
-
-            if let errorMessage {
-                Text(errorMessage)
-                    .font(.system(.footnote, design: .rounded))
-                    .foregroundStyle(.red)
-                    .multilineTextAlignment(.center)
+                legalFooter
             }
-            if let restoreMessage {
-                Text(restoreMessage)
-                    .font(.system(.footnote, design: .rounded))
-                    .foregroundStyle(Theme.textSecondary)
-                    .multilineTextAlignment(.center)
-            }
+            .frame(height: 68, alignment: .top)
+        }
+        .padding(.horizontal, 22)
+        .padding(.top, 8)
+        .padding(.bottom, displayCloseButton ? 10 : 22)
+        .background(Theme.background)
+    }
 
+    private var legalFooter: some View {
+        VStack(spacing: 4) {
             Button(action: startRestore) {
                 Text(isRestoring ? "Restoring…" : "Restore Purchases")
-                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .font(.system(.caption, design: .rounded, weight: .semibold))
                     .foregroundStyle(Theme.textSecondary)
             }
             .buttonStyle(.plain)
@@ -427,6 +393,79 @@ struct PaywallView: View {
             }
             .font(.system(.caption2, design: .rounded))
             .foregroundStyle(Theme.textTertiary)
+        }
+    }
+
+    private var paywallFeatureList: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            ForEach(paywallBullets, id: \.self) { feature in
+                let highlighted = feature == focus
+                HStack(alignment: .top, spacing: 12) {
+                    Image(systemName: feature.icon)
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(feature.tint)
+                        .frame(width: 24)
+                    Text(feature.featureListTitle)
+                        .font(.system(.subheadline, design: .rounded, weight: highlighted ? .semibold : .regular))
+                        .foregroundStyle(Theme.textPrimary)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.85)
+                    Spacer(minLength: 0)
+                }
+                .padding(.horizontal, highlighted ? 10 : 0)
+                .padding(.vertical, highlighted ? 8 : 0)
+                .background {
+                    if highlighted {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(feature.tint.opacity(0.1))
+                    }
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func header(compact: Bool) -> some View {
+        VStack(spacing: compact ? 6 : 10) {
+            ZStack {
+                Circle()
+                    .fill(Theme.caloriesGradient)
+                    .frame(width: compact ? 52 : 64, height: compact ? 52 : 64)
+                    .shadow(color: Theme.caloriesPrimary.opacity(0.35), radius: 12, x: 0, y: 4)
+                Image(systemName: "sparkles")
+                    .font(.system(size: compact ? 22 : 26, weight: .bold))
+                    .foregroundStyle(.white)
+            }
+            Text(focus?.intentHeadline ?? "Vitals+")
+                .font(.system(compact ? .title2 : .title, design: .rounded, weight: .bold))
+                .foregroundStyle(Theme.textPrimary)
+                .multilineTextAlignment(.center)
+                .lineLimit(focus == nil ? 1 : 2)
+                .minimumScaleFactor(0.85)
+            Text(focus?.intentSubheadline ?? "Calories, steps, and trends in one dashboard.")
+                .font(.system(compact ? .footnote : .subheadline, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+                .multilineTextAlignment(.center)
+                .lineLimit(compact ? 2 : nil)
+                .minimumScaleFactor(compact ? 0.9 : 1)
+        }
+    }
+
+    private var planCards: some View {
+        VStack(spacing: 8) {
+            ForEach(store.products, id: \.identifier) { package in
+                let isYearly = package.vitalsPackageKind == .yearly
+                PlanCard(
+                    package: package,
+                    isSelected: selectedPackage?.identifier == package.identifier,
+                    showsTrialBadge: store.isEligibleForIntroOffer(package),
+                    isBestValue: isYearly,
+                    savingsPercent: isYearly ? annualSavingsPercent : nil,
+                    perWeekLabel: isYearly ? package.vitalsPricePerWeekLabel : nil
+                ) {
+                    selectedPackage = package
+                }
+            }
         }
     }
 
@@ -446,21 +485,6 @@ struct PaywallView: View {
             }
             Spacer()
         }
-    }
-
-    private func reassurancePill(icon: String, text: String) -> some View {
-        VStack(spacing: 4) {
-            Image(systemName: icon)
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(Theme.stepsPrimary)
-            Text(text)
-                .font(.system(size: 10, weight: .semibold, design: .rounded))
-                .foregroundStyle(Theme.textSecondary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .frame(maxWidth: .infinity)
-        .accessibilityElement(children: .combine)
     }
 
     // MARK: - Copy
@@ -491,8 +515,8 @@ struct PaywallView: View {
 
     private func selectDefaultPackageIfNeeded() {
         #if DEBUG
-        if let mode = PaywallScreenshotMode.current, !store.products.isEmpty {
-            switch mode {
+        if let snap = PaywallSnapshotRequest.current, !store.products.isEmpty {
+            switch snap.plan {
             case .monthly:
                 selectedPackage = store.products.first { $0.vitalsPackageKind == .monthly }
             case .lifetime:
@@ -590,15 +614,19 @@ private struct PlanCard: View {
                                 .background(Theme.caloriesPrimary, in: Capsule())
                         }
                     }
-                    if showsTrialBadge, let trial = package.vitalsIntroOfferLabel {
-                        Text("\(trial.capitalized), then billed")
-                            .font(.system(.caption2, design: .rounded, weight: .semibold))
-                            .foregroundStyle(Theme.stepsPrimary)
-                    } else if let perWeekLabel {
-                        Text("Just \(perWeekLabel)/week")
-                            .font(.system(.caption2, design: .rounded, weight: .semibold))
-                            .foregroundStyle(Theme.stepsPrimary)
+                    Group {
+                        if showsTrialBadge, let trial = package.vitalsIntroOfferLabel {
+                            Text(trial.capitalized)
+                        } else if let perWeekLabel {
+                            Text("Just \(perWeekLabel)/week")
+                        } else {
+                            Text(" ")
+                        }
                     }
+                    .font(.system(.caption2, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.stepsPrimary)
+                    .lineLimit(1)
+                    .frame(height: 14, alignment: .leading)
                 }
 
                 Spacer(minLength: 8)
@@ -607,17 +635,16 @@ private struct PlanCard: View {
                     Text(package.vitalsPriceLabel)
                         .font(.system(.subheadline, design: .rounded, weight: .semibold).monospacedDigit())
                         .foregroundStyle(Theme.textSecondary)
-                    if showsTrialBadge, let perWeekLabel {
-                        // When the trial badge takes the subtitle slot, still
-                        // surface the per-week anchor next to the headline price.
-                        Text("\(perWeekLabel)/wk")
-                            .font(.system(.caption2, design: .rounded).monospacedDigit())
-                            .foregroundStyle(Theme.textTertiary)
-                    }
+                    Text(showsTrialBadge ? (perWeekLabel.map { "\($0)/wk" } ?? " ") : " ")
+                        .font(.system(.caption2, design: .rounded).monospacedDigit())
+                        .foregroundStyle(Theme.textTertiary)
+                        .lineLimit(1)
+                        .frame(height: 14, alignment: .trailing)
                 }
             }
+            .frame(minHeight: 56)
             .padding(.horizontal, 16)
-            .padding(.vertical, 14)
+            .padding(.vertical, 12)
             .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
             .overlay {
                 RoundedRectangle(cornerRadius: Theme.cardRadius)

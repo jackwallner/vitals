@@ -1565,7 +1565,7 @@ private enum SettingsInfoTopic: Identifiable {
         case .netDeficit:
             "Net Deficit is calories burned minus food energy from Apple Health. A positive number means a deficit. Connect a food app like MyFitnessPal to populate food energy."
         case .fastingMode:
-            "When Fasting Mode is on, days with no food logged count toward your Net Deficit history. Off by default — unlogged days are skipped so they don't read as a full-burn deficit."
+            "When Fasting Mode is on, days with no food logged count toward your Net Deficit history. Off by default. Unlogged days are skipped so they don't read as a full-burn deficit."
         case .endOfDayProjection:
             "Projects where today's calories and steps will land based on your pace so far. Uses the same pacing window you've chosen above."
         case .goalStreak:
@@ -2350,7 +2350,7 @@ private struct SettingsSheet: View {
                 } header: {
                     Text("Notifications")
                 } footer: {
-                    Text("Weekly Recap is a Vitals+ extra, off by default. It sends a Sunday-evening notification summarizing your week — turning it on asks permission to notify you.")
+                    Text("Weekly Recap is a Vitals+ extra, off by default. It sends a Sunday evening notification summarizing your week. Turning it on asks permission to notify you.")
                 }
 
                 Section("Appearance") {
