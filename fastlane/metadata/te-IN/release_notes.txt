@@ -1,9 +1,7 @@
-Vitals+ లో కొత్తది
+New in Vitals+
 
-• రోజు చివరి అంచనా — మీ ఇటీవలి వేగం ఆధారంగా, ఈ రోజు మీ మొత్తం కేలరీలు ఎటు వైపు వెళ్తున్నాయో చూడండి.
-• లక్ష్య స్ట్రీక్‌లు — మీరు లక్ష్యాన్ని చేరుకున్న వరుస రోజులను లెక్కించే, టుడే స్క్రీన్‌పై ఒక చిప్.
-• వారపు సమీక్ష — మీ గత 7 రోజులను అంతకుముందు వారంతో పోల్చే, ఆదివారం సాయంత్రపు ఐచ్ఛిక సారాంశం.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-మూడింటినీ సెట్టింగ్‌లలో ఆన్ చేయవచ్చు, డిఫాల్ట్‌గా ఆఫ్‌లో ఉంటాయి, కాబట్టి ఉచిత టుడే వ్యూ సరిగ్గా మునుపటిలాగే ఉంటుంది.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-అదనంగా, యాప్, విడ్జెట్‌లు, Apple Watch లలో మీ కేలరీలు, అడుగులు కచ్చితంగా ఉండేలా ఎప్పటిలాంటి తెర వెనుక మెరుగుదలలు.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

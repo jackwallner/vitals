@@ -1,0 +1,1 @@
+lépésszámláló,gyűrű,tdee,bmr,komplikáció,hiány,pihenő,aktív,tempó,böjt,séta,mozgás,healthkit

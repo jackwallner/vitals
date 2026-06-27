@@ -1,0 +1,54 @@
+Total Calories îți afișează caloriile totale arse pe zi (active + în repaus) și numărul de pași chiar acolo unde ai nevoie de ele — pe ecranul principal și ecranul blocat al iPhone și pe cadranul Apple Watch — gratuit. Fără abonament pentru funcțiile de bază. Fără cont. Nicio dată nu părăsește telefonul tău.
+
+Dacă ți-ai dorit vreodată ca ecranul Apple Watch să arate doar caloriile totale arse în ziua curentă, aceasta este aplicația.
+
+PE APPLE WATCH (GRATUIT)
+- Complicații cu totalul caloriilor arse pentru orice stil de cadran: circular, dreptunghiular, în linie și în colț.
+- Complicație cu numărul de pași în timp real.
+- Aplicația de ceas arată ziua de azi dintr-o privire plus tendințe pe 30 de zile.
+- Obiectivele setate pe iPhone se sincronizează direct pe ceas.
+
+PE ECRANUL PRINCIPAL & DE BLOCARE (GRATUIT)
+- Widgeturi pentru ecranul principal în dimensiuni mici și medii.
+- Widgeturi pentru ecranul de blocare în formate circulare și dreptunghiulare.
+- Widgeturile respectă indicatorii pe care i-ai activat și obiectivele pe care le-ai setat.
+- Totalurile zilnice complete sunt vizibile fără să deschizi aplicația.
+
+TABLOUL DE BORD (GRATUIT)
+- Totalul caloriilor zilnice arse într-un singur inel clar.
+- Pași zilnici cu bară de progres și obiectiv.
+- Indicator de ritm: ești înainte sau în urmă față de o zi obișnuită la aceeași oră?
+- Trage în jos pentru actualizare. Atinge pictograma rotiță pentru setări.
+
+ISTORIC (GRATUIT)
+- Vizualizări pe 7 / 30 / 90 / 365 de zile și orice interval de date personalizat.
+- Săgeți de tendință, zile de vârf și grafice tip bară clare.
+- Export de date în format CSV.
+
+OBIECTIVE CARE ȚI SE POTRIVESC
+- Obiective zilnice opționale pentru calorii și pași.
+- Sau renunți la obiective și îl folosești ca simplu contor — alegerea ta.
+- Comparație de ritm: aceeași zi a săptămânii vs. toate zilele, cu interval de analiză configurabil (14 / 30 / 90 de zile / 1 an).
+
+Vitals+ (OPȚIONAL)
+Un mic upgrade lunar, anual sau pe viață deblochează:
+- Defalcare între calorii active și în repaus
+- Deficit net: calorii arse minus energia din alimente din Apple Health
+- Rapoarte lunare PDF gata de partajat
+- Rapoarte PDF pentru intervale de date personalizate
+- Deep Trends: carduri cu comparații între perioade
+Un trial gratuit este oferit noilor abonați.
+
+PROIECTAT PENTRU CONFIDENȚIALITATE
+- Acces Apple Health doar în citire. Aplicația nu scrie niciodată în dosarele tale medicale.
+- Toate datele sunt stocate local pe dispozitiv.
+- Fără analitice. Fără reclame. Fără servere. Fără conturi. Fără urmărire.
+- Rapoartele sunt generate pe dispozitiv.
+
+Total Calories nu este un dispozitiv medical și nu este destinată diagnosticării, tratării sau prevenirii niciunei afecțiuni medicale. Consultă întotdeauna un specialist medical pentru sfaturi de sănătate.
+
+Detalii abonament
+Vitals+ este disponibil ca abonament cu reînnoire automată (lunar 1,99 $ / anual 14,99 $, cu 7 zile trial gratuit) sau achiziție unică Lifetime (29,99 $). Plata este taxată pe Apple ID la confirmare. Abonamentele se reînnoiesc automat, cu excepția cazului în care sunt anulate cu cel puțin 24 de ore înainte de sfârșitul perioadei. Le poți gestiona sau anula oricând în Setări → Apple ID → Subscriptions.
+
+Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

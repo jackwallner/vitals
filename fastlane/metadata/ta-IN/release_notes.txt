@@ -1,9 +1,7 @@
-Vitals+ இல் புதியது
+New in Vitals+
 
-• நாள் இறுதி கணிப்பு — உங்கள் சமீபத்திய வேகத்தின் அடிப்படையில், இன்று உங்கள் மொத்த கலோரிகள் எங்கு செல்கின்றன என்பதைப் பாருங்கள்.
-• இலக்கு தொடர்ச்சி — இலக்கை அடைந்த தொடர்ச்சியான நாட்களை எண்ணும், இன்று திரையில் ஒரு சின்னம்.
-• வாராந்திர சுருக்கம் — உங்கள் கடந்த 7 நாட்களை அதற்கு முந்தைய வாரத்துடன் ஒப்பிடும், ஞாயிறு மாலை விருப்பத் தேர்வுச் சுருக்கம்.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-மூன்றும் அமைப்புகளில் இயக்கப்படும், இயல்பாக அணைக்கப்பட்டிருக்கும்; எனவே இலவச இன்று காட்சி முன்பு போலவே இருக்கும்.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-மேலும், ஆப், விட்ஜெட்டுகள், Apple Watch ஆகியவற்றில் உங்கள் கலோரிகளும் அடிகளும் துல்லியமாக இருக்க வழக்கமான பின்னணி மேம்பாடுகள்.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

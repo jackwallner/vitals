@@ -1,0 +1,1 @@
+askelmittari,widget,rengas,TDEE,BMR,poltto,komplikaatio,alijäämä,lepo,aktiivinen,tahti,paasto,kävely

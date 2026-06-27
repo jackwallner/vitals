@@ -1,9 +1,7 @@
-Nieuw in Vitals+
+New in Vitals+
 
-• Eind-van-de-dag-prognose – zie waar je totale calorieën vandaag op afstevenen, op basis van je eigen recente tempo.
-• Doelreeksen – een label op het Vandaag-scherm dat telt hoeveel dagen op rij je je doel hebt gehaald.
-• Weekoverzicht – een optionele samenvatting op zondagavond van je afgelopen 7 dagen vergeleken met de week ervoor.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-Alle drie schakel je in via Instellingen en staan standaard uit, dus het gratis Vandaag-scherm blijft precies zoals het was.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-Plus de gebruikelijke verbeteringen onder de motorkap om je calorieën en stappen nauwkeurig te houden in de app, widgets en op de Apple Watch.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

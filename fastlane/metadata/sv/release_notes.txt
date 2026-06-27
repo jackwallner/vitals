@@ -1,9 +1,7 @@
-Nytt i Vitals+
+New in Vitals+
 
-• Prognos för dagen – se vart dagens totala kalorier är på väg, utifrån ditt eget tempo den senaste tiden.
-• Målsviter – en bricka på Idag-skärmen som räknar antalet dagar i rad du nått ditt mål.
-• Veckosammanfattning – en valfri sammanfattning på söndagskvällen av dina senaste 7 dagar jämfört med veckan innan.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-Alla tre slås på i Inställningar och är avstängda som standard, så den kostnadsfria Idag-vyn är precis som förut.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-Dessutom de vanliga förbättringarna under huven som håller dina kalorier och steg korrekta i appen, widgetarna och på Apple Watch.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

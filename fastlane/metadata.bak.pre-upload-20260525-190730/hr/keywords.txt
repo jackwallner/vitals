@@ -1,0 +1,1 @@
+pedometar,prsten,tdee,bmr,komplikacija,deficit,odmor,aktivan,ritam,post,hodanje,pokret,healthkit

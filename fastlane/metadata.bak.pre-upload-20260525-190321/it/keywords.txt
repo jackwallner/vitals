@@ -1,0 +1,1 @@
+pedometro,widget,anello,TDEE,BMR,bruciare,complicazione,deficit,riposo,attivo,ritmo,digiuno

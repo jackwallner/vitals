@@ -1,0 +1,54 @@
+Total Calories toont je totale verbrande calorieën (actief + rust) en je aantal stappen precies waar je ze nodig hebt — op je iPhone-beginscherm, vergrendelscherm en Apple Watch-wijzerplaat — gratis. Geen abonnement nodig voor de basis. Geen account. Geen gegevens verlaten je telefoon.
+
+Als je ooit hebt gewenst dat je Apple Watch-wijzerplaat gewoon je totale verbrande calorieën van de dag toont, dan is dit de app.
+
+OP JE APPLE WATCH (GRATIS)
+- Complicaties voor totaal verbrande calorieën voor elke wijzerplaatstijl: rond, rechthoekig, inline en hoek.
+- Ook een live-stappencomplicatie.
+- Watch-app toont vandaag in één oogopslag plus trends van 30 dagen.
+- Doelen die je op je iPhone instelt, worden direct met de watch gesynchroniseerd.
+
+OP JE BEGINSCHERM & VERGRENDELSCHERM (GRATIS)
+- Beginscherm-widgets in kleine en middelgrote formaten.
+- Vergrendelscherm-widgets in ronde en rechthoekige indelingen.
+- Widgets respecteren de metingen die je hebt aangezet en de doelen die je hebt ingesteld.
+- Volledige dagtotalen zichtbaar zonder de app te openen.
+
+HET DASHBOARD (GRATIS)
+- Totale dagelijkse verbrande calorieën in één duidelijke ring.
+- Dagelijkse stappen met voortgangsbalk en doel.
+- Tempo-indicator: lig je voor of achter op een gebruikelijke dag op dit tijdstip?
+- Trek omlaag om te verversen. Tik op het tandwiel voor instellingen.
+
+GESCHIEDENIS (GRATIS)
+- Weergaven van 7 / 30 / 90 / 365 dagen en elk aangepast datumbereik.
+- Trendpijlen, piekdagen en strakke staafdiagrammen.
+- CSV-gegevensexport.
+
+DOELEN DIE BIJ JOU PASSEN
+- Optionele dagelijkse calorie- en stappendoelen.
+- Of sla doelen over en gebruik het als een strakke teller — jij beslist.
+- Tempovergelijking: zelfde weekdag vs. alle dagen, instelbare terugkijkperiode (14 / 30 / 90 dagen / 1 jaar).
+
+Vitals+ (OPTIONEEL)
+Een kleine maandelijkse, jaarlijkse of levenslange upgrade ontgrendelt:
+- Uitsplitsing actieve vs. rustcalorieën
+- Netto tekort: verbrande calorieën min voedingsenergie uit Apple Health
+- Maandelijkse samenvatting-pdf’s die klaar zijn om te delen
+- Aangepaste datumbereik-pdf-rapporten
+- Deep Trends: periodes-onderling-vergelijkingskaarten
+Een gratis proefperiode is beschikbaar voor nieuwe abonnees.
+
+PRIVACY ALS UITGANGSPUNT
+- Alleen-lezen-toegang tot Apple Health. De app schrijft nooit naar je gezondheidsgegevens.
+- Alle gegevens worden lokaal op je apparaat opgeslagen.
+- Geen analytics. Geen advertenties. Geen servers. Geen accounts. Geen tracking.
+- Rapporten worden op het apparaat zelf gegenereerd.
+
+Total Calories is geen medisch hulpmiddel en is niet bedoeld om een medische aandoening te diagnosticeren, behandelen of voorkomen. Raadpleeg altijd een zorgprofessional voor medisch advies.
+
+Abonnementsgegevens
+Vitals+ is beschikbaar als automatisch verlengend abonnement (maandelijks $1,99 / jaarlijks $14,99 met een gratis proefperiode van 7 dagen) of als eenmalige Lifetime-aankoop ($29,99). Betaling wordt bij bevestiging in rekening gebracht op je Apple ID. Abonnementen worden automatisch verlengd, tenzij ze minstens 24 uur voor het einde van de periode worden opgezegd. Beheer of annuleer op elk moment via Instellingen → Apple ID → Abonnementen.
+
+Privacybeleid: https://jackwallner.github.io/vitals/privacy-policy.html
+Gebruiksvoorwaarden (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

@@ -1,9 +1,7 @@
-Nyt i Vitals+
+New in Vitals+
 
-• Prognose for dagen – se, hvor dagens samlede kalorier er på vej hen, ud fra dit eget tempo for nylig.
-• Målstriber – en brik på I dag-skærmen, der tæller antallet af dage i træk, du har nået dit mål.
-• Ugentligt overblik – et valgfrit resumé søndag aften over dine seneste 7 dage sammenlignet med ugen før.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-Alle tre slås til under Indstillinger og er fra som standard, så den gratis I dag-visning er præcis som før.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-Derudover de sædvanlige forbedringer under motorhjelmen, så dine kalorier og skridt forbliver nøjagtige i appen, widgets og på Apple Watch.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

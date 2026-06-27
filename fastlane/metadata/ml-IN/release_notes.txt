@@ -1,9 +1,7 @@
-Vitals+ ൽ പുതിയത്
+New in Vitals+
 
-• ദിവസാവസാന പ്രവചനം — നിങ്ങളുടെ സമീപകാല വേഗത്തെ അടിസ്ഥാനമാക്കി, ഇന്ന് നിങ്ങളുടെ മൊത്തം കലോറി എങ്ങോട്ടാണ് പോകുന്നതെന്ന് കാണുക.
-• ലക്ഷ്യ സ്ട്രീക്കുകൾ — നിങ്ങൾ ലക്ഷ്യം നേടിയ തുടർച്ചയായ ദിവസങ്ങൾ എണ്ണുന്ന, ഇന്ന് സ്ക്രീനിലെ ഒരു ചിപ്പ്.
-• പ്രതിവാര അവലോകനം — നിങ്ങളുടെ കഴിഞ്ഞ 7 ദിവസങ്ങളെ അതിന് മുമ്പത്തെ ആഴ്ചയുമായി താരതമ്യം ചെയ്യുന്ന, ഞായർ വൈകുന്നേരത്തെ ഓപ്ഷണൽ സംഗ്രഹം.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-മൂന്നും ക്രമീകരണങ്ങളിൽ ഓണാക്കാം, സ്ഥിരസ്ഥിതിയായി ഓഫാണ്, അതിനാൽ സൗജന്യ ഇന്ന് കാഴ്ച പഴയതുപോലെ തന്നെ തുടരും.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-കൂടാതെ, ആപ്പ്, വിജറ്റുകൾ, Apple Watch എന്നിവയിൽ നിങ്ങളുടെ കലോറിയും ചുവടുകളും കൃത്യമായി നിലനിർത്താൻ പതിവുള്ള പിന്നണി മെച്ചപ്പെടുത്തലുകൾ.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

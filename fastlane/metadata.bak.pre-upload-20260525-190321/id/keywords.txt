@@ -1,0 +1,1 @@
+pedometer,widget,cincin,TDEE,BMR,bakar,komplikasi,defisit,istirahat,aktif,ritme,puasa,jalan,gerak

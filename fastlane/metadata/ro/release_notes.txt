@@ -1,9 +1,7 @@
-Noutăți în Vitals+
+New in Vitals+
 
-• Estimare pentru sfârșitul zilei – vezi spre ce total de calorii te îndrepți astăzi, în funcție de ritmul tău recent.
-• Serii de obiective – o insignă pe ecranul Azi care numără zilele consecutive în care ți-ai atins obiectivul.
-• Recapitulare săptămânală – un rezumat opțional, duminică seara, al ultimelor 7 zile comparativ cu săptămâna precedentă.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-Toate trei se activează în Setări și sunt dezactivate implicit, așa că ecranul Azi gratuit rămâne exact cum era.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-În plus, obișnuitele îmbunătățiri din culise care îți păstrează caloriile și pașii preciși în aplicație, widgeturi și pe Apple Watch.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

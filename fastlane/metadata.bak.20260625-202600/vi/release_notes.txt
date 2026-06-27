@@ -1,0 +1,9 @@
+Có gì mới trong Vitals+
+
+• Dự báo cuối ngày — xem hôm nay tổng lượng calo của bạn đang hướng tới đâu, dựa trên nhịp độ gần đây của chính bạn.
+• Chuỗi mục tiêu — một huy hiệu trên màn hình Hôm nay đếm số ngày liên tiếp bạn đạt mục tiêu.
+• Tổng kết tuần — bản tóm tắt tùy chọn vào tối Chủ nhật về 7 ngày gần nhất của bạn so với tuần trước.
+
+Cả ba đều được bật trong Cài đặt và mặc định tắt, nên màn hình Hôm nay miễn phí vẫn y như trước.
+
+Cùng với đó là những cải tiến thường lệ phía sau để giữ cho lượng calo và số bước của bạn chính xác trong ứng dụng, tiện ích và trên Apple Watch.

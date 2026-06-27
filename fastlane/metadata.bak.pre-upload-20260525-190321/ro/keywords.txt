@@ -1,0 +1,1 @@
+pedometru,widget,inel,TDEE,BMR,ardere,complicație,deficit,odihnă,activ,ritm,post,mers,mișcare

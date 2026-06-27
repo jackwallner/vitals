@@ -1,0 +1,1 @@
+pedometer,widget,ring,TDEE,BMR,burn,complication,deficit,resting,active,pace,fasting,walking,move

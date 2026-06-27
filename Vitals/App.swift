@@ -874,6 +874,7 @@ struct MainTabView: View {
             }
         }
         .sheet(isPresented: $showReviewPrompt, onDismiss: {
+            ReviewPromptTracker.markShown()
             if pendingNativeReviewAfterDismiss {
                 pendingNativeReviewAfterDismiss = false
                 requestReview()

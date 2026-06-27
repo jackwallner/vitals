@@ -1,0 +1,1 @@
+pedometro,anello,tdee,bmr,complicazione,deficit,riposo,attivo,ritmo,digiuno,camminare,mossa

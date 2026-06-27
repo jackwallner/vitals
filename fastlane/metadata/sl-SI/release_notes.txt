@@ -1,9 +1,7 @@
-Novosti v Vitals+
+New in Vitals+
 
-• Napoved za konec dneva – poglejte, h kateremu današnjemu seštevku kalorij ste namenjeni, glede na vaš nedavni tempo.
-• Nizi ciljev – značka na zaslonu Danes, ki šteje zaporedne dni, ko ste dosegli svoj cilj.
-• Tedenski pregled – izbirni nedeljski večerni povzetek zadnjih 7 dni v primerjavi s prejšnjim tednom.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-Vse tri vklopite v Nastavitvah in so privzeto izklopljene, zato brezplačni zaslon Danes ostaja popolnoma enak.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-Poleg tega običajne izboljšave pod pokrovom, ki ohranjajo vaše kalorije in korake točne v aplikaciji, gradnikih in na Apple Watchu.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

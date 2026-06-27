@@ -1,0 +1,54 @@
+Total Calories prikazuje vaše dnevno potrošene kalorije (aktivne + mirovanje) i broj koraka točno ondje gdje vam trebaju — na početnom zaslonu iPhone uređaja, zaključanom zaslonu i brojčaniku Apple Watch sata — besplatno. Osnovne funkcije bez pretplate. Nema računa. Nema slanja podataka izvan vašeg telefona.
+
+Ako ste ikada poželjeli da brojčanik Apple Watch sata samo prikazuje vaše ukupno potrošene kalorije za dan, ovo je ta aplikacija.
+
+NA APPLE WATCH SATU (BESPLATNO)
+- Komplikacije za ukupno potrošene kalorije za svaki stil brojčanika: kružne, pravokutne, u liniji i u kutu.
+- Komplikacija i za prikaz broja koraka u stvarnom vremenu.
+- Aplikacija na satu prikazuje današnje podatke na prvi pogled i trendove za zadnjih 30 dana.
+- Ciljevi koje postavite na iPhone uređaju sinkroniziraju se izravno na sat.
+
+NA POČETNOM I ZAKLJUČANOM ZASLONU (BESPLATNO)
+- Widgeti početnog zaslona u maloj i srednjoj veličini.
+- Widgeti zaključanog zaslona u kružnom i pravokutnom rasporedu.
+- Widgeti poštuju metrike koje ste uključili i ciljeve koje ste postavili.
+- Dnevni zbrojevi vidljivi su bez otvaranja aplikacije.
+
+NADZORNA PLOČA (BESPLATNO)
+- Ukupne dnevno potrošene kalorije prikazane u jednom čistom prstenu.
+- Dnevni koraci s trakom napretka i ciljem.
+- Pokazatelj tempa: jeste li ispred ili iza svog uobičajenog dana u ovo vrijeme?
+- Povucite za osvježavanje. Dodirnite zupčanik za postavke.
+
+POVIJEST (BESPLATNO)
+- Prikazi za 7 / 30 / 90 / 365 dana i bilo koji prilagođeni raspon datuma.
+- Strelice trenda, dani vrhunca i jasni stupčasti grafikoni.
+- Izvoz podataka u CSV.
+
+CILJEVI PRILAGOĐENI VAMA
+- Neobvezni dnevni ciljevi za kalorije i korake.
+- Ili preskočite ciljeve i koristite aplikaciju samo kao čist brojač — po vašem izboru.
+- Usporedba tempa: isti dan u tjednu u odnosu na sve dane, s podesivim razdobljem praćenja (14 / 30 / 90 dana / 1 godina).
+
+Vitals+ (NEOBVEZNO)
+Mala mjesečna, godišnja ili trajna nadogradnja otključava:
+- Razdvajanje aktivnih i kalorija u mirovanju
+- Neto manjak: potrošene kalorije minus energija iz hrane iz Apple Health
+- Mjesečni PDF sažeci spremni za dijeljenje
+- PDF izvještaji za prilagođene rasponove datuma
+- Duboki trendovi: kartice s usporedbama razdoblje-prema-razdoblju
+Besplatno probno razdoblje dostupno je novim pretplatnicima.
+
+PRIVATNOST U SREDIŠTU DIZAJNA
+- Pristup Apple Health podacima samo za čitanje. Aplikacija nikad ne upisuje u vaše zdravstvene zapise.
+- Svi se podaci pohranjuju lokalno na vašem uređaju.
+- Bez analitike. Bez oglasa. Bez poslužitelja. Bez računa. Bez praćenja.
+- Izvještaji se generiraju na samom uređaju.
+
+Total Calories nije medicinski uređaj i nije namijenjen dijagnosticiranju, liječenju ili sprječavanju bilo kakvog medicinskog stanja. Za medicinski savjet uvijek se obratite zdravstvenom stručnjaku.
+
+Pojedinosti pretplate
+Vitals+ je dostupan kao pretplata s automatskom obnovom (mjesečno 1,99 USD / godišnje 14,99 USD sa 7-dnevnim besplatnim probnim razdobljem) ili jednokratna Lifetime kupnja (29,99 USD). Plaćanje se naplaćuje na vaš Apple ID pri potvrdi. Pretplate se automatski obnavljaju osim ako se ne otkažu najmanje 24 sata prije isteka razdoblja. Upravljaajte ili otkažite bilo kada u Postavke → Apple ID → Subscriptions.
+
+Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

@@ -1,9 +1,7 @@
-מה חדש ב-Vitals+
+New in Vitals+
 
-• תחזית לסוף היום — ראו לאן סך הקלוריות של היום מתקדם, על סמך הקצב האחרון שלכם.
-• רצפי יעדים — תג במסך היום שסופר את מספר הימים הרצופים שבהם עמדתם ביעד.
-• סיכום שבועי — סיכום אופציונלי בערב יום ראשון של 7 הימים האחרונים שלכם בהשוואה לשבוע הקודם.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-שלושתם מופעלים בהגדרות וכבויים כברירת מחדל, כך שמסך היום החינמי נשאר בדיוק כפי שהיה.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-בנוסף, השיפורים הרגילים שמתחת למכסה המנוע ששומרים על דיוק הקלוריות והצעדים שלכם באפליקציה, בווידג'טים וב-Apple Watch.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.
