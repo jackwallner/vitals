@@ -29,13 +29,31 @@ struct BodyProfileView: View {
         bodyProfile.resolved(health: health)
     }
 
+    /// Apple Health is the active source and has a complete height+weight pair.
+    private var usingAppleHealthData: Bool {
+        bodyProfile.preferredSource == .appleHealth && health.hasHeightAndWeight
+    }
+
+    /// Manual fields only when the user chose manual, or Health is preferred but
+    /// incomplete so we need a fallback entry path.
+    private var showsManualEntry: Bool {
+        bodyProfile.preferredSource == .manual
+            || (bodyProfile.preferredSource == .appleHealth && !health.hasHeightAndWeight)
+    }
+
+    private var manualEntryTitle: String {
+        bodyProfile.preferredSource == .manual ? "Manual Entry" : "Enter Height & Weight"
+    }
+
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 16) {
                 header
-                sourceCard
                 bmiCard
-                manualEntryCard
+                sourceCard
+                if showsManualEntry {
+                    manualEntryCard
+                }
                 educationCard
                 vitalsPlusCard
             }
@@ -70,7 +88,7 @@ struct BodyProfileView: View {
                 Text("Body Profile")
                     .font(.system(.title3, design: .rounded, weight: .bold))
                     .foregroundStyle(Theme.textPrimary)
-                Text("Calculate BMI from Apple Health or manual height and weight.")
+                Text(headerSubtitle)
                     .font(.system(.footnote, design: .rounded))
                     .foregroundStyle(Theme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -82,43 +100,120 @@ struct BodyProfileView: View {
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
     }
 
+    private var headerSubtitle: String {
+        if usingAppleHealthData {
+            return "BMI from height and weight synced from Apple Health."
+        }
+        if bodyProfile.preferredSource == .manual {
+            return "BMI from height and weight you enter."
+        }
+        return "Sync from Apple Health or enter height and weight below."
+    }
+
     // MARK: - Source
 
     private var sourceCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Data Source")
-                .font(.system(.subheadline, design: .rounded, weight: .bold))
-                .foregroundStyle(Theme.textPrimary)
-
-            Picker("Source", selection: Binding(
-                get: { bodyProfile.preferredSource },
-                set: { bodyProfile.preferredSource = $0 }
-            )) {
-                ForEach(BodyProfileSource.allCases, id: \.self) { source in
-                    Text(source.label).tag(source)
-                }
-            }
-            .pickerStyle(.segmented)
-
-            Button {
-                Task { await syncFromHealth() }
-            } label: {
-                HStack(spacing: 8) {
-                    if isSyncing {
-                        ProgressView().tint(.white)
-                    } else {
-                        Image(systemName: "heart.text.square.fill")
+            if usingAppleHealthData {
+                HStack(spacing: 10) {
+                    Image(systemName: "heart.text.square.fill")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Theme.caloriesPrimary)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Apple Health")
+                            .font(.system(.subheadline, design: .rounded, weight: .bold))
+                            .foregroundStyle(Theme.textPrimary)
+                        Text("Height and weight sync automatically.")
+                            .font(.system(.caption, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
                     }
-                    Text(isSyncing ? "Syncing…" : "Sync from Apple Health")
-                        .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    Spacer(minLength: 0)
+                    Button("Sync") {
+                        Task { await syncFromHealth() }
+                    }
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .disabled(isSyncing)
                 }
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 11)
-                .background(Theme.caloriesGradient, in: Capsule())
+
+                if isSyncing {
+                    HStack(spacing: 8) {
+                        ProgressView()
+                        Text("Syncing…")
+                            .font(.system(.caption, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                    }
+                }
+
+                displayUnitsRow
+
+                Button("Enter height and weight manually") {
+                    switchToManual(seedingFromHealth: true)
+                }
+                .font(.system(.caption, design: .rounded, weight: .medium))
+            } else if bodyProfile.preferredSource == .manual {
+                HStack(spacing: 10) {
+                    Image(systemName: "pencil.line")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Theme.textSecondary)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Manual Entry")
+                            .font(.system(.subheadline, design: .rounded, weight: .bold))
+                            .foregroundStyle(Theme.textPrimary)
+                        Text("You're entering height and weight yourself.")
+                            .font(.system(.caption, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                    }
+                }
+
+                Button {
+                    switchToAppleHealth()
+                } label: {
+                    HStack(spacing: 8) {
+                        if isSyncing {
+                            ProgressView().tint(.white)
+                        } else {
+                            Image(systemName: "heart.text.square.fill")
+                        }
+                        Text(isSyncing ? "Syncing…" : "Use Apple Health Instead")
+                            .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    }
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 11)
+                    .background(Theme.caloriesGradient, in: Capsule())
+                }
+                .buttonStyle(.plain)
+                .disabled(isSyncing)
+            } else {
+                Text("Connect Apple Health")
+                    .font(.system(.subheadline, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.textPrimary)
+
+                Text("Vitals can read height and weight you've logged in Apple Health.")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Button {
+                    Task { await syncFromHealth() }
+                } label: {
+                    HStack(spacing: 8) {
+                        if isSyncing {
+                            ProgressView().tint(.white)
+                        } else {
+                            Image(systemName: "heart.text.square.fill")
+                        }
+                        Text(isSyncing ? "Syncing…" : "Sync from Apple Health")
+                            .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    }
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 11)
+                    .background(Theme.caloriesGradient, in: Capsule())
+                }
+                .buttonStyle(.plain)
+                .disabled(isSyncing)
             }
-            .buttonStyle(.plain)
-            .disabled(isSyncing)
 
             if let healthStatusMessage {
                 Text(healthStatusMessage)
@@ -130,6 +225,25 @@ struct BodyProfileView: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+    }
+
+    private var displayUnitsRow: some View {
+        HStack {
+            Text("Display units")
+                .font(.system(.subheadline, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+            Spacer()
+            Picker("Units", selection: Binding(
+                get: { bodyProfile.unitSystem },
+                set: { bodyProfile.unitSystem = $0; seedManualDrafts() }
+            )) {
+                ForEach(BodyProfileUnitSystem.allCases, id: \.self) { system in
+                    Text(system.label).tag(system)
+                }
+            }
+            .pickerStyle(.menu)
+            .tint(Theme.caloriesPrimary)
+        }
     }
 
     // MARK: - BMI
@@ -203,7 +317,7 @@ struct BodyProfileView: View {
     private var manualEntryCard: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {
-                Text("Manual Entry")
+                Text(manualEntryTitle)
                     .font(.system(.subheadline, design: .rounded, weight: .bold))
                     .foregroundStyle(Theme.textPrimary)
                 Spacer()
@@ -217,6 +331,13 @@ struct BodyProfileView: View {
                 }
                 .pickerStyle(.menu)
                 .tint(Theme.caloriesPrimary)
+            }
+
+            if bodyProfile.preferredSource == .appleHealth && !health.hasHeightAndWeight {
+                Text("Apple Health doesn't have height and weight yet — enter them here or add them in the Health app.")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             if unitSystem == .us {
@@ -330,7 +451,7 @@ struct BodyProfileView: View {
             }
 
             if resolved.bodyFatPercent == nil {
-                Text("Add body fat in Apple Health or enter it manually to include it here.")
+                Text("Add body fat in Apple Health or switch to manual entry to include it here.")
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -419,6 +540,23 @@ struct BodyProfileView: View {
 
     // MARK: - Data flow
 
+    private func switchToManual(seedingFromHealth: Bool) {
+        if seedingFromHealth {
+            if let meters = health.heightMeters { bodyProfile.setManualHeight(meters: meters) }
+            if let kg = health.weightKilograms { bodyProfile.setManualWeight(kilograms: kg) }
+            if let pct = health.bodyFatPercent { bodyProfile.setManualBodyFat(percent: pct) }
+        }
+        bodyProfile.preferredSource = .manual
+        healthStatusMessage = nil
+        seedManualDrafts()
+    }
+
+    private func switchToAppleHealth() {
+        bodyProfile.preferredSource = .appleHealth
+        healthStatusMessage = nil
+        Task { await syncFromHealth() }
+    }
+
     private func syncFromHealth() async {
         guard !isSyncing else { return }
         isSyncing = true
@@ -496,9 +634,7 @@ struct BodyProfileView: View {
         // Editing manual fields implies the user wants manual values to win.
         if !feetText.isEmpty || !inchesText.isEmpty || !poundsText.isEmpty
             || !cmText.isEmpty || !kgText.isEmpty {
-            if bodyProfile.preferredSource == .appleHealth && !health.hasHeightAndWeight {
-                bodyProfile.preferredSource = .manual
-            }
+            bodyProfile.preferredSource = .manual
         }
     }
 

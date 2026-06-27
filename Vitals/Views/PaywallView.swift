@@ -364,34 +364,40 @@ struct PaywallView: View {
                     Text(ctaTitle)
                         .font(.system(.headline, design: .rounded, weight: .bold))
                         .foregroundStyle(.white)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.72)
                         .opacity(isPurchasing ? 0 : 1)
                     if isPurchasing {
                         ProgressView().tint(.white)
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 15)
+                .frame(height: 50)
                 .background(Theme.caloriesGradient, in: Capsule())
             }
             .buttonStyle(.plain)
             .disabled(isPurchasing || selectedPackage == nil)
 
-            if selectedHasTrial, !displayCloseButton {
+            if !displayCloseButton {
                 HStack(spacing: 14) {
                     reassurancePill(icon: "checkmark.shield.fill", text: "No payment now")
                     reassurancePill(icon: "bell.badge.fill", text: "Reminder before billing")
                     reassurancePill(icon: "xmark.circle.fill", text: "Cancel anytime")
                 }
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, minHeight: 52)
+                .opacity(selectedHasTrial ? 1 : 0)
+                .accessibilityHidden(!selectedHasTrial)
             }
 
-            if let disclosure = disclosureText {
-                Text(disclosure)
-                    .font(.system(.caption, design: .rounded))
-                    .foregroundStyle(Theme.textTertiary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
+            Text(disclosureText ?? " ")
+                .font(.system(.caption, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
+                .multilineTextAlignment(.center)
+                .lineLimit(4)
+                .minimumScaleFactor(0.9)
+                .frame(minHeight: 64, alignment: .top)
+                .opacity(disclosureText == nil ? 0 : 1)
+                .accessibilityHidden(disclosureText == nil)
 
             if let errorMessage {
                 Text(errorMessage)
@@ -484,6 +490,19 @@ struct PaywallView: View {
     // MARK: - Actions
 
     private func selectDefaultPackageIfNeeded() {
+        #if DEBUG
+        if let mode = PaywallScreenshotMode.current, !store.products.isEmpty {
+            switch mode {
+            case .monthly:
+                selectedPackage = store.products.first { $0.vitalsPackageKind == .monthly }
+            case .lifetime:
+                selectedPackage = store.products.first { $0.vitalsPackageKind == .lifetime }
+            case .yearly, .trial:
+                selectedPackage = store.products.first { $0.vitalsPackageKind == .yearly }
+            }
+            return
+        }
+        #endif
         guard selectedPackage == nil, !store.products.isEmpty else { return }
         // Prefer yearly (best value + usually carries the trial), else first.
         selectedPackage = store.products.first { $0.vitalsPackageKind == .yearly }
