@@ -36,7 +36,7 @@ struct WhatsNewSheet: View {
                                 .font(.system(.title2, design: .rounded, weight: .bold))
                                 .foregroundStyle(Theme.textPrimary)
                                 .multilineTextAlignment(.center)
-                            Text("A few optional Vitals+ extras, now tucked right next to the metrics they belong with. Everything you already use stays exactly the same — these are off until you switch them on.")
+                            Text("A few optional Vitals+ extras, now tucked right next to the metrics they belong with. Everything you already use stays exactly the same. These are off until you switch them on.")
                                 .font(.system(.subheadline, design: .rounded))
                                 .foregroundStyle(Theme.textSecondary)
                                 .multilineTextAlignment(.center)

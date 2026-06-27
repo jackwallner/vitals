@@ -158,7 +158,7 @@ struct WeeklyRecapView: View {
                 Text("Best day")
                     .font(.system(.subheadline, design: .rounded, weight: .semibold))
                     .foregroundStyle(Theme.textPrimary)
-                Text("\(Self.dayFmt.string(from: day)) — \(Int(value.rounded()).formatted(.number)) cal")
+                Text("\(Self.dayFmt.string(from: day)) · \(Int(value.rounded()).formatted(.number)) cal")
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textSecondary)
             }

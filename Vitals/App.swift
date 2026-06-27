@@ -101,8 +101,8 @@ struct VitalsApp: App {
     var body: some Scene {
         WindowGroup {
             #if DEBUG
-            if let mode = PaywallScreenshotMode.current {
-                PaywallScreenshotHarness(mode: mode)
+            if let snap = PaywallSnapshotRequest.current {
+                PaywallScreenshotHarness(request: snap)
                     .environmentObject(store)
                     .preferredColorScheme(goals.appearance.colorScheme)
             } else {
@@ -1378,7 +1378,7 @@ struct TrialOfferSheet: View {
     /// trial-bearing product yet, but in practice `directTrialPackage` gates the
     /// pitch so `offerLabel` is almost always present.
     private var headline: String {
-        if let focus { return focus.pitchHeadline }
+        if let focus { return focus.intentHeadline }
         if let offerLabel {
             return "\(offerLabel.capitalized), on us."
         }
@@ -1387,21 +1387,20 @@ struct TrialOfferSheet: View {
 
     private var subheadline: String {
         if let focus {
-            return offerLabel != nil
-                ? focus.pitchSubheadline + " Free during your trial."
-                : focus.pitchSubheadline
+            if offerLabel != nil {
+                return "\(focus.intentSubheadline) Free for 7 days. Cancel anytime."
+            }
+            return focus.intentSubheadline
         }
         return offerLabel != nil
-            ? "Unlock the full Vitals+ toolkit free. No charge until your trial ends."
-            : "Unlock the full Vitals+ toolkit free for eligible new subscribers."
+            ? "Calories, steps, and trends in one place. No charge until your trial ends."
+            : "Calories, steps, and trends in one place."
     }
 
-    /// Three bullets, with the focused feature pulled to the front so the user
-    /// sees what they tapped for first. Generic order when there's no focus.
+    /// Focused feature first with two related companions; generic trio when passive.
     private var bulletFeatures: [PlusFeature] {
-        let base: [PlusFeature] = [.netDeficit, .deepTrends, .customRangesPDF]
-        guard let focus else { return base }
-        return Array(([focus] + base.filter { $0 != focus }).prefix(3))
+        if let focus { return [focus] + focus.companionFeatures }
+        return [.netDeficit, .deepTrends, .customRangesPDF]
     }
 
     /// Repeat-forever animation timing for the ambient glow. Scoped to the
@@ -1493,7 +1492,7 @@ struct TrialOfferSheet: View {
                                 detail: feature.detail
                             ),
                             highlighted: feature == focus,
-                            compact: true
+                            compact: focus != nil ? feature != focus : true
                         )
                     }
                 }

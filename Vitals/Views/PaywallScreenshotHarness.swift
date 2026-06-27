@@ -3,15 +3,19 @@ import SwiftUI
 @preconcurrency import RevenueCat
 
 struct PaywallScreenshotHarness: View {
-    let mode: PaywallScreenshotMode
+    let request: PaywallSnapshotRequest
     @StateObject private var store = StoreService.shared
+
+    private var focus: PlusFeature? {
+        request.focusSlug.flatMap { PlusFeature.fromSnapshotSlug($0) }
+    }
 
     var body: some View {
         Group {
-            if mode == .trial {
+            if request.plan == .trial {
                 trialBackdrop {
                     TrialOfferSheet(
-                        focus: nil,
+                        focus: focus,
                         offerLabel: trialPackage?.vitalsIntroOfferLabel ?? "7-day free trial",
                         priceLabel: trialPackage?.vitalsPriceLabel ?? "$29.99 / year",
                         directPurchase: true,
@@ -23,7 +27,7 @@ struct PaywallScreenshotHarness: View {
                     )
                 }
             } else {
-                PaywallView(displayCloseButton: false)
+                PaywallView(displayCloseButton: false, focus: focus)
             }
         }
         .environmentObject(store)
