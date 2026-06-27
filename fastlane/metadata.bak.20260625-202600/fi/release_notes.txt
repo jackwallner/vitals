@@ -1,0 +1,9 @@
+Vitals+ – uutta
+
+• Päivän ennuste – näe, mihin päivän kokonaiskalorit ovat menossa oman viimeaikaisen tahtisi perusteella.
+• Tavoiteputket – Tänään-näytön merkki, joka laskee peräkkäiset päivät, joina olet saavuttanut tavoitteesi.
+• Viikkokatsaus – valinnainen sunnuntai-illan yhteenveto viimeisistä 7 päivästä edelliseen viikkoon verrattuna.
+
+Kaikki kolme otetaan käyttöön Asetuksissa ja ovat oletuksena pois päältä, joten maksuton Tänään-näkymä pysyy juuri ennallaan.
+
+Lisäksi tavanomaiset konepellin alla tehdyt korjaukset, jotka pitävät kalorit ja askeleet tarkkoina sovelluksessa, widgeteissä ja Apple Watchissa.

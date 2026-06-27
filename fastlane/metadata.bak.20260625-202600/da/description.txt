@@ -1,0 +1,54 @@
+Total Calories viser dine daglige forbrændte kalorier (aktive + hvilende) og skridttal præcis dér, hvor du har brug for dem – på din iPhone hjemmeskærm, Låseskærm og Apple Watch-urskive – gratis. Intet abonnement kræves til det grundlæggende. Ingen konto. Ingen data forlader din telefon.
+
+Hvis du nogensinde har ønsket, at din Apple Watch-urskive bare viste dine samlede kalorier for dagen, er dette appen til det.
+
+PÅ DIT APPLE WATCH (GRATIS)
+- Komplikationer med samlede daglige kalorier til alle urskivetyper: cirkulær, rektangulær, inline og hjørne.
+- Live-skridttæller som komplikation.
+- Watch-app med overblik over i dag plus 30-dages tendenser.
+- Mål du sætter på iPhone, synkroniseres direkte til uret.
+
+PÅ DIN HJEMMESKÆRM & LÅSESKÆRM (GRATIS)
+- Hjemmeskærm-widgets i små og mellemstore størrelser.
+- Låseskærm-widgets i cirkulære og rektangulære layouts.
+- Widgets følger de målinger, du har slået til, og de mål, du har sat.
+- Hele dagens totaler synlige uden at åbne appen.
+
+DASHBOARDET (GRATIS)
+- Samlede daglige kalorier vist i én ren ring.
+- Daglige skridt med statuslinje og mål.
+- Pacing-indikator: er du foran eller bagefter en typisk dag på dette tidspunkt?
+- Træk for at opdatere. Tryk på tandhjulet for indstillinger.
+
+HISTORIK (GRATIS)
+- Visninger for 7 / 30 / 90 / 365 dage samt valgfri periode.
+- Trendpile, topdage og overskuelige søjlediagrammer.
+- CSV-eksport af data.
+
+MÅL DER PASSER TIL DIG
+- Valgfrie daglige kalorie- og skridtmål.
+- Eller spring mål over og brug den som en ren tæller – dit valg.
+- Pacing-sammenligning: samme ugedag vs. alle dage, med justerbar tilbageblik (14 / 30 / 90 dage / 1 år).
+
+Vitals+ (VALGFRI)
+Et lille månedligt, årligt eller livstids-køb låser op for:
+- Fordeling af aktive vs. hvilende kalorier
+- Nettounderskud: kalorier forbrændt minus madenergi fra Apple Health
+- Månedlige oversigts-PDF’er klar til deling
+- PDF-rapporter for valgfri dato-periode
+- Deep Trends: kort med periode-for-periode-sammenligninger
+En gratis prøveperiode tilbydes nye abonnenter.
+
+PRIVATLIV SOM STANDARD
+- Læseadgang til Apple Health. Appen skriver aldrig til dine helbredsdata.
+- Alle data gemmes lokalt på din enhed.
+- Ingen analyse. Ingen annoncer. Ingen servere. Ingen konti. Ingen sporing.
+- Rapporter genereres på enheden.
+
+Total Calories er ikke et medicinsk udstyr og er ikke beregnet til at diagnosticere, behandle eller forebygge nogen medicinsk tilstand. Søg altid råd hos en sundhedsprofessionel for medicinsk vejledning.
+
+Abonnementsoplysninger
+Vitals+ fås som et automatisk fornyende abonnement (Månedligt 1,99 $ / Årligt 14,99 $ med 7 dages gratis prøve) eller et engangskøb som Lifetime (29,99 $). Betaling trækkes fra dit Apple-id ved bekræftelse. Abonnementer fornyes automatisk, medmindre de opsiges mindst 24 timer før periodens udløb. Administrer eller opsig når som helst under Indstillinger → Apple-id → Abonnementer.
+
+Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

@@ -1,9 +1,7 @@
-Novinky ve Vitals+
+New in Vitals+
 
-• Odhad na konec dne – uvidíte, k jakému dnešnímu součtu kalorií směřujete podle vašeho nedávného tempa.
-• Série cílů – štítek na obrazovce Dnes, který počítá dny v řadě, kdy jste splnili svůj cíl.
-• Týdenní přehled – volitelné nedělní večerní shrnutí posledních 7 dní v porovnání s předchozím týdnem.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-Všechny tři zapnete v Nastavení a jsou ve výchozím stavu vypnuté, takže bezplatná obrazovka Dnes zůstává přesně taková, jaká byla.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-K tomu obvyklá vylepšení pod kapotou, aby vaše kalorie a kroky zůstaly přesné v aplikaci, widgetech i na Apple Watch.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

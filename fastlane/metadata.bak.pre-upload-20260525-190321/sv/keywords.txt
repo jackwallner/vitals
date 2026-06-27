@@ -1,0 +1,1 @@
+stegräknare,widget,ring,TDEE,BMR,förbränning,komplikation,underskott,vila,aktiv,takt,fasta,gång

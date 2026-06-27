@@ -1,0 +1,152 @@
+==> fastlane 2.234.0
+==> Ensure editable ASC draft version
+==> Version localizations via API (fast pre-pass)
+App: 6761743504 (com.jackwallner.vitals)
+Version: 1.5.3 (PREPARE_FOR_SUBMISSION)
+Existing appInfo locales: 42
+Existing version locales: 42
+
+ml-IN:
+  created appInfoLocalization ml-IN
+  skip appStoreVersionLocalization ml-IN (API locked — deliver upload may enable)
+  seeded fastlane/metadata/ml-IN/ from en-US
+
+mr-IN:
+  created appInfoLocalization mr-IN
+  skip appStoreVersionLocalization mr-IN (API locked — deliver upload may enable)
+  seeded fastlane/metadata/mr-IN/ from en-US
+
+or-IN:
+  created appInfoLocalization or-IN
+  skip appStoreVersionLocalization or-IN (API locked — deliver upload may enable)
+  seeded fastlane/metadata/or-IN/ from en-US
+
+pa-IN:
+  created appInfoLocalization pa-IN
+  skip appStoreVersionLocalization pa-IN (API locked — deliver upload may enable)
+  seeded fastlane/metadata/pa-IN/ from en-US
+
+sl-SI:
+  created appInfoLocalization sl-SI
+  skip appStoreVersionLocalization sl-SI (API locked — deliver upload may enable)
+  seeded fastlane/metadata/sl-SI/ from en-US
+
+ta-IN:
+  created appInfoLocalization ta-IN
+  skip appStoreVersionLocalization ta-IN (API locked — deliver upload may enable)
+  seeded fastlane/metadata/ta-IN/ from en-US
+
+te-IN:
+  created appInfoLocalization te-IN
+  skip appStoreVersionLocalization te-IN (API locked — deliver upload may enable)
+  seeded fastlane/metadata/te-IN/ from en-US
+
+ur-PK:
+  created appInfoLocalization ur-PK
+  skip appStoreVersionLocalization ur-PK (API locked — deliver upload may enable)
+  seeded fastlane/metadata/ur-PK/ from en-US
+
+Done. Processed 8 missing locale(s).
+Next: ASC_APP_VERSION=<ver> ./scripts/pull-appstore-metadata.sh
+==> PATCH keywords/descriptions via API
+Uploading to version 1.5.3 (PREPARE_FOR_SUBMISSION)
+ar-SA: ok +info
+bn-BD: ok +info
+ca: ok +info
+cs: ok +info
+da: ok +info
+de-DE: ok +info
+el: ok +info
+en-AU: ok +info
+en-CA: ok +info
+en-GB: ok +info
+en-US: ok +info
+es-ES: ok +info
+es-MX: ok +info
+fi: ok +info
+fr-CA: ok +info
+fr-FR: ok +info
+gu-IN: ok +info
+he: ok +info
+hi: ok +info
+hr: ok +info
+hu: ok +info
+id: ok +info
+it: ok +info
+ja: ok +info
+ko: ok +info
+ml-IN: ok +info
+mr-IN: ok +info
+ms: ok +info
+nl-NL: ok +info
+no: ok +info
+or-IN: ok +info
+pa-IN: ok +info
+pl: ok +info
+pt-BR: ok +info
+pt-PT: ok +info
+ro: ok +info
+ru: ok +info
+sk: ok +info
+sl-SI: ok +info
+sv: ok +info
+ta-IN: ok +info
+te-IN: ok +info
+th: ok +info
+tr: ok +info
+uk: ok +info
+ur-PK: ok +info
+vi: ok +info
+zh-Hans: ok +info
+zh-Hant: ok +info
+
+Patched 49 locale(s); created 0 new version localization(s).
+Draft: 1.5.3 · Live: 1.5.2
+Draft appInfo locales: 50 (name/subtitle on PREPARE_FOR_SUBMISSION appInfo)
+==> deliver: appInfo + all locales (fastlane 2.234 Deliverfile languages)
+[20:35:40]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[20:35:41]: ---------------------------
+[20:35:41]: --- Step: opt_out_usage ---
+[20:35:41]: ---------------------------
+[20:35:41]: Disabled upload of used actions
+[20:35:41]: ------------------------------
+[20:35:41]: --- Step: default_platform ---
+[20:35:41]: ------------------------------
+[20:35:41]: Driving the lane 'ios upload_metadata' 🚀
+[20:35:41]: ---------------------------------------
+[20:35:41]: --- Step: app_store_connect_api_key ---
+[20:35:41]: ---------------------------------------
+[20:35:41]: Error setting value '0' for option 'version_check_wait_retry_limit'
+[20:35:41]: You passed invalid parameters to 'deliver'.
+[20:35:41]: Check out the error below and available options by running `fastlane action deliver`
++----------------------------------------+
+|              Lane Context              |
++------------------+---------------------+
+| DEFAULT_PLATFORM | ios                 |
+| PLATFORM_NAME    | ios                 |
+| LANE_NAME        | ios upload_metadata |
++------------------+---------------------+
+[20:35:41]: Called from Fastfile at line 14
+[20:35:41]: ```
+[20:35:41]:     12:	    )
+[20:35:41]:     13:	
+[20:35:41]:  => 14:	    deliver(
+[20:35:41]:     15:	      api_key: api_key,
+[20:35:41]:     16:	      force: true,
+[20:35:41]: ```
+[20:35:41]: '0' needs to be greater than 0
+
++---------------------------------------------+
+|              fastlane summary               |
++------+------------------------+-------------+
+| Step | Action                 | Time (in s) |
++------+------------------------+-------------+
+| 1    | opt_out_usage          | 0           |
+| 2    | default_platform       | 0           |
+| 3    | app_store_connect_api  | 0           |
+|      | _key                   |             |
++------+------------------------+-------------+
+
+[20:35:41]: fastlane finished with errors
+
+[!] '0' needs to be greater than 0

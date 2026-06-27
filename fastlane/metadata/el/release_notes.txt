@@ -1,9 +1,7 @@
-Τι νέο υπάρχει στο Vitals+
+New in Vitals+
 
-• Πρόβλεψη τέλους ημέρας — δείτε προς ποιο σύνολο θερμίδων οδεύετε σήμερα, με βάση τον δικό σας πρόσφατο ρυθμό.
-• Σερί στόχων — ένα σήμα στην οθόνη Σήμερα που μετρά τις συνεχόμενες ημέρες που πετύχατε τον στόχο σας.
-• Εβδομαδιαία ανασκόπηση — μια προαιρετική σύνοψη το Κυριακάτικο βράδυ των τελευταίων 7 ημερών σας σε σύγκριση με την προηγούμενη εβδομάδα.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-Και τα τρία ενεργοποιούνται στις Ρυθμίσεις και είναι ανενεργά από προεπιλογή, ώστε η δωρεάν προβολή Σήμερα να παραμένει ακριβώς όπως ήταν.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-Επιπλέον, οι συνήθεις βελτιώσεις στο παρασκήνιο που διατηρούν τις θερμίδες και τα βήματά σας ακριβή στην εφαρμογή, στα widget και στο Apple Watch.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

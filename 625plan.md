@@ -105,13 +105,310 @@ The repo's metadata source of truth is `fastlane/metadata/<locale>/{keywords.txt
 
 ---
 
-## 6. The real lever: build a BMI / body-fat readout (product, not keywords)
+## 6. The real lever: build a BMI / Body Profile feature (product, not keywords)
 
-The audit's honest conclusion: **the US keyword field is near-saturated for this niche; keyword gains are marginal.** Real organic growth needs (a) ratings/authority and (b) **a BMI/body-fat feature**:
+The audit's honest conclusion: **the US keyword field is near-saturated for this niche; keyword gains are marginal.** Real organic growth needs (a) ratings/authority and (b) a real **BMI / body profile feature**:
 
-- Every winnable-cluster competitor (TDEE/Apperitif "TDEE, BMR and BMI Calculator", BMI-BMR-BodyFat, Zolt) pairs **bmi + tdee + bmr**. Total Calories can't index `bmi` (pop 55, diff 49, competitors sub-500★ — winnable) because the app has no BMI/body-fat readout. Apple won't index a term the product doesn't support; field placement alone won't fix it (proven — `bmi` previously sat at 1000 in the field).
-- **Action:** add a lightweight BMI + body-fat % readout alongside the existing TDEE/BMR readout (the "Vitals+" metabolic feature). This is a small Swift/HealthKit addition in this repo (height/weight → BMI; body-fat estimate from available inputs).
+- Every winnable-cluster competitor (TDEE/Apperitif "TDEE, BMR and BMI Calculator", BMI-BMR-BodyFat, Zolt) pairs **bmi + tdee + bmr**. Total Calories can't index `bmi` (pop 55, diff 49, competitors sub-500★ — winnable) because the app has no BMI feature. Apple won't reliably index a term the product doesn't support; field placement alone won't fix it (proven — `bmi` previously sat at 1000 in the field).
+- **Important product framing:** BMI should **not** be jammed into the existing TDEE/BMR row as if it is another calorie-burn metric. TDEE/BMR answer "how many calories do I burn?" BMI/weight/body-fat answer "what are my body stats?" Keep those concepts separate so the app stays easy to understand.
+- **Pitch:** Total Calories shows what you burn. **Body Profile** shows the body stats behind your calorie plan: height, weight, BMI, and (for Vitals+) body-fat / deeper context.
+- **ASO reason:** basic BMI must be genuinely visible in the free app. People searching `bmi` usually want a quick calculator/readout, not a paywalled promise. Make the BMI number free; use Vitals+ for interpretation and richer body-composition context.
 - This build is the natural carrier for the §3/§4 metadata changes — ship them together, manual-release after the spike.
+
+### 6.1 Final product decision
+
+Build a **Body Profile** section in **Settings**, not a default Today-dashboard card.
+
+Why:
+- The Today dashboard is already doing a focused job: calories burned, steps, pacing/projection, net deficit.
+- BMI is useful, but it is more "profile/settings context" than "live today metric."
+- Keeping it in Settings makes it discoverable without crowding the core daily-use surface.
+- Free BMI in Settings satisfies real search intent and gives Apple a product surface to index.
+
+V1 placement:
+- `Settings` sheet gets a new top-level `Body Profile` section, preferably after the Vitals+ section and before Calories.
+- Section row title: `Body Profile`
+- Section row subtitle: `BMI, height, and weight`
+- Tapping opens a dedicated `BodyProfileView` / detail screen.
+- Do **not** show BMI on the Today dashboard by default in V1.
+- Do **not** add BMI to iOS widgets, Lock Screen widgets, watch app, or watch complications in V1.
+
+Optional future work:
+- A user-enabled compact Body Profile card on Today.
+- Weight/BMI trend charts if the app later stores historical body measurements.
+- Watch readout only if users ask for it.
+
+### 6.2 Free vs Vitals+ split
+
+Free for everyone:
+- Height
+- Weight
+- BMI number
+- BMI category (e.g. Underweight / Healthy / Overweight / Obesity)
+- Data source indicator: `Apple Health` or `Manual`
+- Simple educational copy: "BMI is a height/weight reference, not a complete measure of health."
+
+Vitals+:
+- Body-fat percentage, if available from Apple Health or manually entered.
+- Deeper "Body Profile context" card that ties the profile to the existing calorie features:
+  - TDEE / BMR remain the calorie-burn readouts.
+  - BMI and body-fat are the body-context readouts.
+  - Copy should be informational, not medical/diagnostic.
+- Potential Vitals+ card copy:
+  - `Your calorie context`
+  - `TDEE and BMR estimate your burn. BMI and body fat help frame your body profile.`
+- Locked non-Pro state should show enough value to explain the upgrade without hiding the free BMI number.
+
+Do **not** paywall the BMI number itself. The BMI number is the ASO/product unlock and the basic user promise.
+
+### 6.3 User flows
+
+First open:
+1. User opens Settings.
+2. User taps `Body Profile`.
+3. App shows an explanation and source options.
+4. If Apple Health already has height/weight and authorization is settled, show values from Health.
+5. If Health values are missing or authorization has not been requested, show manual fields immediately so the feature still works.
+
+Manual-only flow:
+1. User enters height + weight.
+2. App calculates BMI instantly.
+3. Store manual values locally only.
+4. Label source as `Manual`.
+5. Do not write manual values to Apple Health in V1.
+
+Apple Health flow:
+1. User taps `Use Apple Health`.
+2. Request HealthKit authorization for Body Profile types only.
+3. Fetch most recent height and weight samples.
+4. If both exist, calculate BMI and label source as `Apple Health`.
+5. If one or both are missing, keep the manual fields visible and show a friendly message:
+   - `Apple Health is missing height or weight. Enter them here to calculate BMI.`
+
+Both sources exist:
+- Default to Apple Health.
+- Let the user switch source with a simple picker:
+  - `Apple Health`
+  - `Manual`
+- Persist the preferred source.
+
+Body-fat flow:
+- If user is Pro and body-fat % is available from Apple Health or manual entry, show it.
+- If user is Pro and body-fat is missing, show:
+  - `Add body fat in Apple Health or enter it manually to include it here.`
+- If user is not Pro, show a locked preview row:
+  - `Body fat and calorie context are in Vitals+.`
+  - Tap opens the existing trial/paywall flow with the Body Profile feature focused.
+
+### 6.4 Data source and storage design
+
+Keep HealthKit read-only. Do **not** write height, weight, BMI, or body-fat back to Apple Health in V1.
+
+HealthKit reads:
+- `HKQuantityType(.height)`
+- `HKQuantityType(.bodyMass)`
+- `HKQuantityType(.bodyFatPercentage)` for Vitals+ body-fat if available
+
+Manual values:
+- Store in App Group `UserDefaults`, normalized to metric units:
+  - `bodyProfile.manualHeightMeters: Double`
+  - `bodyProfile.manualWeightKilograms: Double`
+  - `bodyProfile.manualBodyFatPercent: Double`
+  - `bodyProfile.preferredSource: Int/String` (`appleHealth`, `manual`, maybe `automatic`)
+  - `bodyProfile.unitSystem: Int/String` (`automatic`, `us`, `metric`)
+- Keep manual storage out of SwiftData unless historical trends are added later.
+- Do not add body profile fields to `DailyHealthRecord` in V1. BMI is a latest/profile value, not a daily cache metric.
+
+Recommended new shared types:
+- `Shared/Utilities/BodyProfileCalculator.swift`
+  - pure BMI math
+  - unit conversions
+  - BMI category thresholds
+  - formatting helpers if useful
+- `Shared/Services/BodyProfileStore.swift`
+  - `@MainActor ObservableObject`
+  - App Group `UserDefaults`
+  - stores manual values and preferred source
+  - separate from `GoalSettings` so goals/settings do not become a catch-all for body measurements
+- `Shared/Models/BodyProfile.swift` or local structs in the service:
+  - `BodyProfile`
+  - `BodyProfileSource`
+  - `BodyProfileUnitSystem`
+  - `BodyProfileInput`
+
+If creating new Swift files, run `xcodegen generate` before building.
+
+### 6.5 BMI calculation and categories
+
+BMI formula:
+- `BMI = weightKg / (heightMeters * heightMeters)`
+
+Input validation:
+- height: allow roughly `0.9...2.5` meters (about 3 ft to 8 ft 2 in)
+- weight: allow roughly `25...350` kg (about 55 lb to 772 lb)
+- body-fat: allow roughly `2...75` percent
+- reject non-finite values.
+
+BMI categories for adult display:
+- `< 18.5` = `Underweight`
+- `18.5..<25` = `Healthy`
+- `25..<30` = `Overweight`
+- `>= 30` = `Obesity`
+
+Copy caveat:
+- `BMI is a simple height/weight reference and is not a diagnosis. It may not reflect muscle mass, pregnancy, age, or individual health context.`
+
+Avoid heavy medical language. This is a utility readout, not clinical advice.
+
+### 6.6 HealthKit implementation notes
+
+Current pattern:
+- Core HealthKit authorization reads active energy, basal energy, and steps during onboarding.
+- Optional Dietary Energy is requested separately when Net Deficit is enabled because mixing old/new read types can suppress the HealthKit sheet.
+
+Follow that optional-type pattern for Body Profile.
+
+In `Shared/Services/HealthKitService.swift`:
+- Add body profile read types separately from `baseReadTypes`.
+- Add something like:
+  - `private let bodyProfileReadTypes: Set<HKObjectType> = [HKQuantityType(.height), HKQuantityType(.bodyMass), HKQuantityType(.bodyFatPercentage)]`
+  - `func requestBodyProfileAuthorization() async throws`
+  - `func authorizationRequestStatus(includeDietaryEnergy: Bool = false, includeBodyProfile: Bool = false) async -> HKAuthorizationRequestStatus?`
+  - `func fetchBodyProfileFromHealth() async throws -> HealthBodyProfile`
+- Use `HKSampleQuery` for most recent quantity samples rather than statistics collection:
+  - sort by `HKSampleSortIdentifierEndDate` descending
+  - `limit = 1`
+  - height unit: `.meter()`
+  - weight unit: `.gramUnit(with: .kilo)`
+  - body-fat unit: `.percent()`; normalize display to percent and verify with a fixture/manual test because HealthKit percent values can be easy to mishandle.
+- Do not register background delivery for height/weight/body-fat in V1. Settings can refresh on open / pull-to-refresh / button tap.
+- Add verbose logs matching existing style:
+  - requested type count
+  - auth status before/after
+  - which profile fields were found/missing
+  - no sensitive values in logs unless needed for debugging; counts/source/missing flags are enough.
+
+Important UX: HealthKit read authorization is opaque. A missing height/weight sample can mean not entered, not authorized, or genuinely absent. Avoid saying "permission denied" unless the API clearly supports it. Prefer:
+- `Couldn’t find height and weight in Apple Health. You can enter them manually here.`
+
+### 6.7 UI implementation notes
+
+Recommended file:
+- `Vitals/Views/BodyProfileView.swift`
+
+Settings integration:
+- In `DashboardView.swift`, `SettingsSheet` currently owns the form sections.
+- Add a `NavigationLink` row in a new `Section("Body Profile")`.
+- Present `BodyProfileView` via the existing `NavigationStack` inside Settings.
+
+BodyProfileView layout:
+- Header:
+  - icon: `person.crop.circle` or `figure.stand`
+  - title: `Body Profile`
+  - subtitle: `Calculate BMI from Apple Health or manual height and weight.`
+- Source card:
+  - Picker/segmented control: `Apple Health` / `Manual`
+  - Button: `Sync from Apple Health`
+  - status text for missing Health values
+- Free BMI card:
+  - Big BMI number, one decimal place
+  - Category chip
+  - Height and weight row
+  - Source label
+- Manual entry card:
+  - Unit picker: `US` / `Metric` / maybe default from locale
+  - US: height feet + inches, weight pounds
+  - Metric: height centimeters, weight kilograms
+  - Values normalize into meters/kg in storage
+  - Inline validation messages
+- Education card:
+  - short BMI caveat
+- Vitals+ card:
+  - Pro: body-fat %, source, and calorie-context copy
+  - Non-Pro: locked preview row that calls `TrialOfferCoordinator.shared.request(.bodyProfileDetails)` or equivalent
+
+Keep the Settings row short. Do not describe all caveats in the row; the detail view can carry that.
+
+Accessibility:
+- BMI card accessibility value should include BMI number, category, source, height, and weight.
+- Manual fields need clear labels (`Feet`, `Inches`, `Pounds`, `Centimeters`, `Kilograms`).
+- Locked Vitals+ row needs a clear button label, not just a lock icon.
+
+### 6.8 Vitals+ / paywall integration
+
+Update `Vitals/Views/PaywallView.swift`:
+- Add or revise a `PlusFeature` for body profile details.
+- Possible title: `Body Profile context`
+- Detail: `Body fat and calorie context alongside your BMI, TDEE, and BMR.`
+- Pitch headline: `Understand your body profile.`
+- Pitch subheadline: `BMI stays free. Vitals+ adds body-fat and calorie context from your own data.`
+
+Update `Vitals/App.swift`:
+- Add a new `TrialOfferCoordinator.Intent`, e.g. `bodyProfileDetails`.
+- Map it to the Body Profile PlusFeature.
+- If there is no persistent Vitals+ toggle, no `pendingFeatureEnable` is required. After purchase, the Pro-only rows in `BodyProfileView` should appear automatically.
+
+Do not rename the existing `showEnergyAverages` setting unless needed. TDEE/BMR can remain a separate Vitals+ toggle under Calories.
+
+### 6.9 App metadata / privacy / review notes
+
+Update HealthKit usage strings:
+- `Vitals/Info.plist`
+- `VitalsWatch/Info.plist` if the shared HealthKit service / watch target can request or mention the expanded types. If watch does not surface Body Profile in V1, keep watch copy accurate and avoid implying watch uses body profile.
+
+Suggested iPhone usage string direction:
+- `Total Calories reads Active Energy, Basal Energy, Step Count, optional Dietary Energy, and optional height/weight/body-fat data from Apple Health to display your daily progress, BMI, and body profile. Total Calories never writes Health data.`
+
+Update docs before release:
+- `docs/app-store-metadata.md`
+- App review notes: mention Body Profile is in Settings, BMI can use manual input if Health lacks height/weight.
+- Privacy language remains local/read-only. Manual values are stored locally only.
+
+### 6.10 Tests and verification
+
+Add unit tests:
+- `VitalsTests/BodyProfileCalculatorTests.swift`
+- Cover:
+  - BMI formula
+  - one-decimal formatting expectations if formatting lives in utility
+  - category boundaries: 18.5, 25, 30
+  - US/metric conversions
+  - invalid height/weight/body-fat rejected
+  - source resolution: Apple Health preferred when complete, manual fallback when Health missing
+
+Build/test:
+1. If new Swift files are added, run `xcodegen generate`.
+2. Build with the dedicated headless simulator:
+   - `UDID=$(agent-sim boot vitals)`
+   - `xcodebuild -project Vitals.xcodeproj -scheme Vitals -destination "id=$UDID" build`
+3. Run tests:
+   - `xcodebuild test -project Vitals.xcodeproj -scheme Vitals -destination "id=$UDID"`
+4. Use accessibility inspection to verify Settings → Body Profile is reachable:
+   - `axe describe-ui --udid "$UDID"`
+
+Manual QA checklist:
+- [ ] Fresh install still only asks for core HealthKit types during onboarding.
+- [ ] Settings shows `Body Profile` for free and paid users.
+- [ ] Manual height/weight calculates BMI without HealthKit.
+- [ ] Apple Health sync requests body profile authorization only after user action.
+- [ ] Missing Apple Health height/weight falls back gracefully to manual entry.
+- [ ] BMI number is visible to non-Pro users.
+- [ ] Non-Pro users see locked Vitals+ body-fat/context row, and tapping it opens the focused trial/paywall flow.
+- [ ] Pro users see body-fat/context when data exists, and a helpful missing-data state when it does not.
+- [ ] Today dashboard layout is unchanged unless a future explicit toggle/card is added.
+- [ ] No body profile values are written to Apple Health.
+- [ ] HealthKit usage description matches the new optional reads.
+
+### 6.11 Acceptance criteria for another agent
+
+The BMI feature is done when:
+- A free user can open Settings → Body Profile, enter height/weight manually, and see a BMI number + category.
+- A user with height/weight in Apple Health can sync those values and see BMI sourced from Health.
+- Vitals+ users get at least one meaningful deeper body-profile row (body-fat if available/manual, plus calorie-context copy).
+- Non-Pro users can see the BMI number but are upsold for body-fat/context, using the existing Vitals+ trial/paywall system.
+- The feature does not add clutter to the Today dashboard.
+- Tests cover BMI math and source fallback.
+- App Store metadata can honestly claim `BMI` support before adding `bmi` to the keyword field.
 
 ---
 

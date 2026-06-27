@@ -1,0 +1,1 @@
+Schrittzähler,Widget,Ring,TDEE,BMR,Verbrennung,Komplikation,Defizit,Ruhe,aktiv,Fasten,Gehen,Bewegung

@@ -1,0 +1,54 @@
+Total Calories உங்கள் தினசரி எரிக்கப்பட்ட கலோரிகள் (சுறுசுறுப்பு + ஓய்வு) மற்றும் அடி எண்ணிக்கையைத் தேவையான இடத்தில் காட்டுகிறது — iPhone Home Screen, Lock Screen மற்றும் Apple Watch face-ல் — முற்றிலும் இலவசம். அடிப்படை அம்சங்களுக்கு சந்தா தேவையில்லை. கணக்கு இல்லை. தரவு உங்கள் போனில் இருந்து வெளியே செல்லாது.
+
+Apple Watch face இன்றைய மொத்த எரிக்கப்பட்ட கலோரியை தெளிவாக காட்ட வேண்டும் என்று நீங்கள் விரும்பினால், இதுவே அந்த app.
+
+APPLE WATCH-ல் (இலவசம்)
+- ஒவ்வொரு watch face style-க்கும் மொத்த எரிக்கப்பட்ட கலோரி complications: circular, rectangular, inline, corner.
+- Live step count complication.
+- Watch app இன்றைய சுருக்கம் மற்றும் 30‑நாள் trends.
+- iPhone-ல் அமைத்த goals நேரடியாக watch-க்கு sync.
+
+HOME SCREEN & LOCK SCREEN (இலவசம்)
+- Home Screen widgets சிறிய, средний sizes.
+- Lock Screen widgets circular, rectangular layouts.
+- Widgets நீங்கள் இயக்கிய metrics, goals காட்டும்.
+- App திறக்காமல் முழு தின total.
+
+DASHBOARD (இலவசம்)
+- ஒரு clean ring-ல் தினசரி மொத்த எரிக்கப்பட்ட கலோரி.
+- தினசரி steps, progress bar, goal.
+- Pacing indicator: இந்த நேரத்தில் உங்கள் வழக்கமான நாளை விட முன்னா அல்லது பின்னா?
+- Refresh: pull down. Settings: gear icon tap.
+
+HISTORY (இலவசம்)
+- 7 / 30 / 90 / 365‑நாள் views, custom date range.
+- Trend arrows, peak days, bar charts.
+- CSV export.
+
+உங்களுக்கு ஏற்ற goals
+- Optional தினசரி calorie, step goals.
+- Goals skip செய்து clean counter ஆக பயன்படுத்தலாம்.
+- Pacing: same weekday vs all days, lookback (14 / 30 / 90 days / 1 year).
+
+Vitals+ (optional)
+சிறிய monthly, yearly, lifetime upgrade unlock:
+- Active vs resting calorie breakdown
+- Net Deficit: Apple Health food energy கழித்து burned calories
+- Share-ready Monthly Summary PDF
+- Custom date-range PDF reports
+- Deep Trends: period-over-period cards
+புதிய subscribers-க்கு free trial.
+
+Privacy-first design
+- Read-only Apple Health. App health records-ல் எழுதாது.
+- Data locally device-ல் store.
+- Analytics, ads, servers, accounts, tracking இல்லை.
+- Reports on-device generate.
+
+Total Calories medical device அல்ல; diagnose, treat, prevent செய்ய intended அல்ல. Medical advice-க்கு healthcare professional ஆலோசனை.
+
+Subscription Details
+Vitals+ auto-renewing (Monthly $1.99 / Yearly $14.99, 7-day free trial) அல்லது Lifetime ($29.99). Payment Apple ID-ல் charge. 24 hours முன் cancel செய்யாவிட்டால் auto-renew. Settings → Apple ID → Subscriptions.
+
+Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

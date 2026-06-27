@@ -1,0 +1,54 @@
+Total Calories prikazuje vaše dnevno porabo kalorij (aktivne + mirovanje) in število korakov tam, kjer jih potrebujete — na iPhone Home Screen, Lock Screen in Apple Watch face — brezplačno. Za osnovne funkcije ni naročnine. Brez računa. Podatki ne zapustijo telefona.
+
+Če ste si kdaj želeli, da bi Apple Watch face jasno prikazal današnje skupno porabo kalorij, je to ta aplikacija.
+
+NA APPLE WATCH (BREZPLAČNO)
+- Skupna poraba kalorij complications za vsak slog watch face: circular, rectangular, inline, corner.
+- Tudi live step count complication.
+- Watch app prikaže današnji povzetek in 30‑dnevne trende.
+- Cilji, nastavljeni na iPhone, se sinhronizirajo neposredno na uro.
+
+HOME SCREEN IN LOCK SCREEN (BREZPLAČNO)
+- Home Screen widgets v majhnih in srednjih velikostih.
+- Lock Screen widgets v circular in rectangular postavitvah.
+- Widgets prikazujejo metrike in cilje, ki ste jih vklopili.
+- Celotni dnevni totali brez odpiranja aplikacije.
+
+DASHBOARD (BREZPLAČNO)
+- Skupna dnevna poraba kalorij na enem čistem ringu.
+- Dnevni koraki s progress bar in ciljem.
+- Pacing indicator: ste ob tem času pred ali za običajnim dnem?
+- Pull to refresh. Tap gear icon za settings.
+
+HISTORY (BREZPLAČNO)
+- Pogledi 7 / 30 / 90 / 365 dni in poljubno obdobje.
+- Trend arrows, peak days, bar charts.
+- CSV export.
+
+CILJI, KI DELUJEJO ZA VAS
+- Izbirni dnevni cilji kalorij in korakov.
+- Ali preskočite cilje in uporabite kot clean counter.
+- Pacing: same weekday vs all days, lookback (14 / 30 / 90 days / 1 year).
+
+Vitals+ (OPTIONAL)
+Majhna mesečna, letna ali lifetime nadgradnja odklene:
+- Active vs resting calorie breakdown
+- Net Deficit: poraba minus food energy iz Apple Health
+- Share-ready Monthly Summary PDF
+- Custom date-range PDF reports
+- Deep Trends: period-over-period cards
+Brezplačen trial za nove naročnike.
+
+ZASEBNOST NA PRVEM MESTU
+- Read-only Apple Health. Aplikacija ne piše v health records.
+- Vsi podatki lokalno na napravi.
+- Brez analytics, ads, servers, accounts, tracking.
+- Reports se generirajo on-device.
+
+Total Calories ni medicinska naprava in ni namenjen diagnosticiranju, zdravljenju ali preprečevanju bolezni. Za medicinski nasvet se posvetujte s strokovnjakom.
+
+Podrobnosti naročnine
+Vitals+ je na voljo kot auto-renewing subscription (Monthly $1.99 / Yearly $14.99, 7-day free trial) ali enkratni Lifetime ($29.99). Plačilo se zaračuna na Apple ID ob potrditvi. Naročnine se auto-renew, razen če prekličete vsaj 24 ur pred koncem obdobja. Upravljajte v Settings → Apple ID → Subscriptions.
+
+Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

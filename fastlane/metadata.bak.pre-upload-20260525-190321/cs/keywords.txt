@@ -1,0 +1,1 @@
+krokoměr,widget,kroužek,TDEE,BMR,spálení,komplikace,deficit,klid,aktivní,tempo,půst,chůze,pohyb

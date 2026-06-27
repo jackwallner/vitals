@@ -1,0 +1,41 @@
+{
+  "store": "au",
+  "country": "Australia",
+  "locales": [
+    "en-AU",
+    "en-US"
+  ],
+  "keywordCount": 30,
+  "keywords": [
+    "pedometer",
+    "ring",
+    "tdee",
+    "bmr",
+    "steps",
+    "kcal",
+    "complication",
+    "deficit",
+    "resting",
+    "fasting",
+    "lockscreen",
+    "move",
+    "health",
+    "pace",
+    "total calories",
+    "daily tracker",
+    "total calories - daily tracker",
+    "calories daily",
+    "daily burn on watch & widget",
+    "daily burn",
+    "watch widget",
+    "calories burned",
+    "daily calorie burn",
+    "apple watch calories",
+    "widget calories",
+    "watch face calories",
+    "calorie widget",
+    "lock screen widget",
+    "move ring",
+    "burned calories"
+  ]
+}

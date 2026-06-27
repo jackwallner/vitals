@@ -1,9 +1,7 @@
-Nowości w Vitals+
+New in Vitals+
 
-• Prognoza na koniec dnia – zobacz, do jakiej dziennej sumy kalorii zmierzasz, na podstawie Twojego ostatniego tempa.
-• Serie celów – plakietka na ekranie Dziś, która liczy kolejne dni z rzędu, w których udało Ci się osiągnąć cel.
-• Podsumowanie tygodnia – opcjonalne podsumowanie w niedzielny wieczór ostatnich 7 dni w porównaniu z poprzednim tygodniem.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-Wszystkie trzy włączasz w Ustawieniach i są domyślnie wyłączone, więc bezpłatny ekran Dziś pozostaje dokładnie taki jak wcześniej.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-Do tego standardowe poprawki pod maską, które utrzymują dokładność kalorii i kroków w aplikacji, widżetach i na Apple Watch.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

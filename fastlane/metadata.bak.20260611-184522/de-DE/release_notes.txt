@@ -1,0 +1,9 @@
+Neu in Vitals+
+
+• Tagesprognose – sieh, worauf deine heutigen Gesamtkalorien hinauslaufen, basierend auf deinem eigenen Tempo der letzten Zeit.
+• Ziel-Serien – ein Chip auf dem Heute-Bildschirm, der die Tage in Folge zählt, an denen du dein Ziel erreicht hast.
+• Wochenrückblick – eine optionale Zusammenfassung am Sonntagabend über deine letzten 7 Tage im Vergleich zur Vorwoche.
+
+Alle drei sind optionale Schalter in den Einstellungen und standardmäßig aus, sodass die kostenlose Heute-Ansicht genau so bleibt, wie sie war.
+
+Dazu die üblichen Verbesserungen unter der Haube, damit deine Kalorien und Schritte in App, Widgets und auf der Apple Watch genau bleiben.

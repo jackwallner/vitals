@@ -1,0 +1,9 @@
+Nouveautés de Vitals+
+
+• Projection de fin de journée — voyez vers quel total de calories vous vous dirigez aujourd'hui, selon votre propre rythme récent.
+• Séries d'objectifs — une pastille sur l'écran Aujourd'hui qui compte les jours consécutifs où vous avez atteint votre objectif.
+• Bilan hebdomadaire — un récapitulatif optionnel, le dimanche soir, de vos 7 derniers jours comparés à la semaine précédente.
+
+Les trois s'activent dans les Réglages et sont désactivées par défaut : l'écran Aujourd'hui gratuit reste exactement le même.
+
+Sans oublier les améliorations habituelles en coulisses pour garder vos calories et vos pas exacts dans l'app, les widgets et sur l'Apple Watch.

@@ -1,9 +1,7 @@
 New in Vitals+
 
-• End-of-day projection — see where today's total calories are headed, based on your own recent pace.
-• Goal streaks — a chip on the Today screen counting the days in a row you've hit your goal.
-• Weekly recap — an optional Sunday-evening summary of your last 7 days versus the week before.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-All three are opt-in toggles in Settings and off by default, so the free Today view stays exactly as it was.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
 Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

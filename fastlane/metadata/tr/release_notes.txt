@@ -1,9 +1,7 @@
-Vitals+ yenilikleri
+New in Vitals+
 
-• Gün sonu tahmini – son zamanlardaki kendi temponuza göre bugün hangi toplam kaloriye doğru gittiğinizi görün.
-• Hedef serileri – Bugün ekranında, hedefinize art arda ulaştığınız günleri sayan bir rozet.
-• Haftalık özet – son 7 gününüzü bir önceki haftayla karşılaştıran, isteğe bağlı pazar akşamı özeti.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-Üçü de Ayarlar'dan açılır ve varsayılan olarak kapalıdır; böylece ücretsiz Bugün görünümü tam olarak eskisi gibi kalır.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-Ayrıca kalorilerinizi ve adımlarınızı uygulamada, widget'larda ve Apple Watch'ta doğru tutan her zamanki arka plan iyileştirmeleri.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

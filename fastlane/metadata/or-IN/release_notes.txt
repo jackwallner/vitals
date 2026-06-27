@@ -1,9 +1,7 @@
-Vitals+ ରେ ନୂଆ
+New in Vitals+
 
-• ଦିନ ଶେଷର ପୂର୍ବାନୁମାନ — ଆପଣଙ୍କ ସାମ୍ପ୍ରତିକ ଗତି ଆଧାରରେ ଦେଖନ୍ତୁ ଯେ ଆଜି ଆପଣଙ୍କ ମୋଟ କ୍ୟାଲୋରୀ କେଉଁ ଆଡ଼କୁ ଯାଉଛି।
-• ଲକ୍ଷ୍ୟ ଷ୍ଟ୍ରିକ୍ — ଆପଣ ଲକ୍ଷ୍ୟ ହାସଲ କରିଥିବା କ୍ରମାଗତ ଦିନ ଗଣୁଥିବା, ଆଜି ସ୍କ୍ରିନ୍‌ରେ ଏକ ଚିପ୍।
-• ସାପ୍ତାହିକ ସାରାଂଶ — ଆପଣଙ୍କ ଗତ 7 ଦିନକୁ ତାହାର ପୂର୍ବ ସପ୍ତାହ ସହ ତୁଳନା କରୁଥିବା, ରବିବାର ସନ୍ଧ୍ୟାର ଏକ ଐଚ୍ଛିକ ସାରାଂଶ।
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-ତିନୋଟି ସେଟିଙ୍ଗରେ ଅନ୍ କରାଯାଇପାରିବ ଏବଂ ଡିଫଲ୍ଟ ଭାବେ ବନ୍ଦ ଥାଏ, ତେଣୁ ମାଗଣା ଆଜି ଭ୍ୟୁ ଠିକ୍ ପୂର୍ବ ପରି ରହେ।
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-ସେଥିସହ, ଆପ୍, ୱିଜେଟ୍ ଓ Apple Watch ରେ ଆପଣଙ୍କ କ୍ୟାଲୋରୀ ଓ ପାଦଗୁଡ଼ିକ ସଠିକ୍ ରଖିବାକୁ ସବୁବେଳ ପରି ପରଦା ପଛର ଉନ୍ନତି।
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

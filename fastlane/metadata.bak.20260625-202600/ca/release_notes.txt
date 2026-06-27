@@ -1,0 +1,9 @@
+Novetats de Vitals+
+
+• Projecció de final del dia: mira cap a quin total de calories vas avui, segons el teu propi ritme recent.
+• Ratxes d'objectius: una etiqueta a la pantalla Avui que compta els dies seguits que has assolit el teu objectiu.
+• Resum setmanal: un resum opcional, el diumenge al vespre, dels teus últims 7 dies en comparació amb la setmana anterior.
+
+Tots tres s'activen a Configuració i estan desactivats per defecte, així que la pantalla Avui gratuïta es manté exactament igual.
+
+A més, les millores internes de sempre per mantenir les teves calories i passos exactes a l'app, els widgets i l'Apple Watch.

@@ -1,0 +1,1 @@
+skritteller,widget,ring,TDEE,BMR,forbrenning,komplikasjon,underskudd,hvile,aktiv,takt,faste,gang

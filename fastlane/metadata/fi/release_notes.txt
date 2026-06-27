@@ -1,9 +1,7 @@
-Vitals+ – uutta
+New in Vitals+
 
-• Päivän ennuste – näe, mihin päivän kokonaiskalorit ovat menossa oman viimeaikaisen tahtisi perusteella.
-• Tavoiteputket – Tänään-näytön merkki, joka laskee peräkkäiset päivät, joina olet saavuttanut tavoitteesi.
-• Viikkokatsaus – valinnainen sunnuntai-illan yhteenveto viimeisistä 7 päivästä edelliseen viikkoon verrattuna.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-Kaikki kolme otetaan käyttöön Asetuksissa ja ovat oletuksena pois päältä, joten maksuton Tänään-näkymä pysyy juuri ennallaan.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-Lisäksi tavanomaiset konepellin alla tehdyt korjaukset, jotka pitävät kalorit ja askeleet tarkkoina sovelluksessa, widgeteissä ja Apple Watchissa.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

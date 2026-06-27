@@ -1,0 +1,1 @@
+podomètre,widget,anneau,TDEE,BMR,brûler,complication,déficit,repos,actif,jeûne,marche,mouvement

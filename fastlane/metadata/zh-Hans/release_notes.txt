@@ -1,9 +1,7 @@
-Vitals+ 新功能
+New in Vitals+
 
-• 全天预测——根据你近期的自身节奏，看看今天的总卡路里将走向何方。
-• 目标连续达成——“今天”界面上的标记，统计你连续达成目标的天数。
-• 每周回顾——可选的周日晚间小结，将你最近 7 天与前一周进行对比。
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-三项都可在“设置”中开启，且默认关闭，因此免费的“今天”界面与以往完全一样。
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-此外还有照例的幕后优化，让你的卡路里和步数在 App、小组件和 Apple Watch 上保持准确。
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

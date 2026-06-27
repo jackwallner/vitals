@@ -1,9 +1,7 @@
-Novidades do Vitals+
+New in Vitals+
 
-• Projeção de fim de dia: veja para qual total de calorias você está indo hoje, com base no seu próprio ritmo recente.
-• Sequências de meta: um selo na tela Hoje que conta os dias seguidos em que você bateu sua meta.
-• Resumo semanal: um resumo opcional, no domingo à noite, dos seus últimos 7 dias em comparação com a semana anterior.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-Os três são ativados nos Ajustes e vêm desligados, então a tela Hoje gratuita continua exatamente como era.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-Além das melhorias internas de sempre para manter suas calorias e passos precisos no app, nos widgets e no Apple Watch.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

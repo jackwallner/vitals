@@ -1,0 +1,9 @@
+Novedades de Vitals+
+
+• Proyección de fin de día: comprueba hacia qué total de calorías vas hoy, según tu propio ritmo reciente.
+• Rachas de objetivos: una etiqueta en la pantalla Hoy que cuenta los días seguidos que has cumplido tu objetivo.
+• Resumen semanal: un resumen opcional, los domingos por la tarde, de tus últimos 7 días frente a la semana anterior.
+
+Las tres se activan en Ajustes y están desactivadas por defecto, así que la pantalla Hoy gratuita sigue igual que siempre.
+
+Además, las mejoras internas de siempre para que tus calorías y pasos sigan siendo exactos en la app, los widgets y el Apple Watch.

@@ -1,0 +1,1 @@
+pedometer,cincin,tdee,bmr,komplikasi,defisit,istirahat,aktif,ritme,puasa,jalan,gerak,healthkit

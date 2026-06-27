@@ -1,0 +1,54 @@
+Total Calories zeigt dir deine täglich verbrannten Kalorien (aktiv + Ruhe) und deine Schritte genau dort, wo du sie brauchst – auf dem iPhone Home-Bildschirm, Sperrbildschirm und dem Apple Watch Zifferblatt – kostenlos. Kein Abo für die Grundlagen. Kein Konto. Keine Daten verlassen dein iPhone.
+
+Wenn du dir je gewünscht hast, dass dein Apple Watch Zifferblatt einfach nur deine gesamten Tageskalorien anzeigt, ist dies die passende App.
+
+AUF DER APPLE WATCH (KOSTENLOS)
+- Komplikationen für insgesamt verbrannte Kalorien für jeden Zifferblatt-Stil: rund, rechteckig, inline und Ecke.
+- Live-Schrittzähler-Komplikation.
+- Watch-App mit heutigem Überblick und 30‑Tage-Trends.
+- Ziele, die du auf dem iPhone setzt, werden direkt mit der Watch synchronisiert.
+
+AUF HOME- & SPERRBILDSCHIRM (KOSTENLOS)
+- Home-Bildschirm-Widgets in klein und mittel.
+- Sperrbildschirm-Widgets in runden und rechteckigen Layouts.
+- Widgets berücksichtigen die von dir aktivierten Messwerte und Ziele.
+- Tägliche Gesamtsummen sichtbar, ohne die App zu öffnen.
+
+DAS DASHBOARD (KOSTENLOS)
+- Täglich insgesamt verbrannte Kalorien in einem übersichtlichen Ring.
+- Tägliche Schritte mit Fortschrittsbalken und Ziel.
+- Tempomesser: Liegst du vor oder hinter einem üblichen Tag zu dieser Zeit?
+- Zum Aktualisieren nach unten ziehen. Zahnradsymbol für Einstellungen tippen.
+
+VERLAUF (KOSTENLOS)
+- Ansichten für 7 / 30 / 90 / 365 Tage und beliebige benutzerdefinierte Zeiträume.
+- Trendpfeile, Spitzentage und klare Balkendiagramme.
+- CSV-Datenexport.
+
+ZIELE, DIE ZU DIR PASSEN
+- Optionale tägliche Kalorien- und Schrittziele.
+- Oder Ziele überspringen und die App nur als klaren Zähler verwenden – du entscheidest.
+- Tempovergleich: gleicher Wochentag vs. alle Tage, konfigurierbarer Rückblick (14 / 30 / 90 Tage / 1 Jahr).
+
+Vitals+ (OPTIONAL)
+Ein kleines monatliches, jährliches oder lebenslanges Upgrade schaltet frei:
+- Aufschlüsselung in aktive vs. Ruhekalorien
+- Nettodefizit: verbrannte Kalorien minus Nahrungsenergie aus Apple Health
+- Monatliche Zusammenfassungen als PDFs, bereit zum Teilen
+- PDF-Berichte für beliebige Zeiträume
+- Tiefe Trends: Vergleichskarten Zeitraum zu Zeitraum
+Ein kostenloses Probeabo ist für neue Abonnenten verfügbar.
+
+DATENSCHUTZ VON ANFANG AN
+- Nur-Lesen-Zugriff auf Apple Health. Die App schreibt niemals in deine Gesundheitsdaten.
+- Alle Daten werden lokal auf deinem Gerät gespeichert.
+- Keine Analysen. Keine Werbung. Keine Server. Keine Konten. Kein Tracking.
+- Berichte werden direkt auf dem Gerät erzeugt.
+
+Total Calories ist kein Medizinprodukt und nicht dazu bestimmt, Krankheiten zu diagnostizieren, zu behandeln oder zu verhindern. Hole dir immer medizinischen Rat bei Fachpersonal.
+
+Abonnementdetails
+Vitals+ ist als automatisch verlängerndes Abonnement verfügbar (Monatlich 1,99 $ / Jährlich 14,99 $ mit 7‑tägigem Gratiszeitraum) oder als einmaliger Lifetime-Kauf (29,99 $). Die Zahlung wird bei Bestätigung deinem Apple‑ID‑Konto belastet. Abos verlängern sich automatisch, sofern sie nicht mindestens 24 Stunden vor Ende des Zeitraums gekündigt werden. Verwalte oder kündige jederzeit unter „Einstellungen → Apple ID → Abonnements“.
+
+Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

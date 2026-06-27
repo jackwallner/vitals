@@ -1,9 +1,7 @@
-Yang baru di Vitals+
+New in Vitals+
 
-• Proyeksi akhir hari — lihat ke mana arah total kalori Anda hari ini, berdasarkan ritme terbaru Anda sendiri.
-• Rentetan target — lencana di layar Hari Ini yang menghitung jumlah hari berturut-turut Anda mencapai target.
-• Rekap mingguan — ringkasan opsional pada Minggu malam tentang 7 hari terakhir Anda dibandingkan minggu sebelumnya.
+• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
 
-Ketiganya diaktifkan di Pengaturan dan nonaktif secara bawaan, jadi tampilan Hari Ini gratis tetap persis seperti sebelumnya.
+It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
 
-Ditambah perbaikan di balik layar seperti biasa agar kalori dan langkah Anda tetap akurat di aplikasi, widget, dan Apple Watch.
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

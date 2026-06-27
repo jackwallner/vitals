@@ -1,0 +1,9 @@
+Vitals+ yenilikleri
+
+• Gün sonu tahmini – son zamanlardaki kendi temponuza göre bugün hangi toplam kaloriye doğru gittiğinizi görün.
+• Hedef serileri – Bugün ekranında, hedefinize art arda ulaştığınız günleri sayan bir rozet.
+• Haftalık özet – son 7 gününüzü bir önceki haftayla karşılaştıran, isteğe bağlı pazar akşamı özeti.
+
+Üçü de Ayarlar'dan açılır ve varsayılan olarak kapalıdır; böylece ücretsiz Bugün görünümü tam olarak eskisi gibi kalır.
+
+Ayrıca kalorilerinizi ve adımlarınızı uygulamada, widget'larda ve Apple Watch'ta doğru tutan her zamanki arka plan iyileştirmeleri.

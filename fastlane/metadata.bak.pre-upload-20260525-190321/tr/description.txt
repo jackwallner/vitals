@@ -1,0 +1,54 @@
+Total Calories, günlük yakılan toplam kalorilerinizi (aktif + dinlenme) ve adım sayınızı tam ihtiyacınız olan yere getirir: iPhone Ana Ekranınız, Kilit Ekranınız ve Apple Watch yüzünüz — üstelik ücretsiz. Temel özellikler için abonelik yok. Hesap yok. Verileriniz telefonunuzdan çıkmaz.
+
+Apple Watch yüzünüzün gün boyunca sadece toplam yaktığınız kaloriyi göstermesini hiç dilediyseniz, aradığınız uygulama bu.
+
+APPLE WATCH’UNUZDA (ÜCRETSİZ)
+- Her kadran stili için toplam yakılan kalori komplikasyonları: dairesel, dikdörtgen, satır içi ve köşe.
+- Canlı adım sayısı komplikasyonu da var.
+- Saat uygulaması, bugünü tek bakışta ve 30 günlük trendlerle gösterir.
+- iPhone’da belirlediğiniz hedefler doğrudan saate senkronlanır.
+
+ANA EKRAN VE KİLİT EKRANINDA (ÜCRETSİZ)
+- Küçük ve orta boyutlu Ana Ekran widget’ları.
+- Dairesel ve dikdörtgen düzenli Kilit Ekranı widget’ları.
+- Widget’lar açtığınız metriklere ve belirlediğiniz hedeflere uyar.
+- Uygulamayı açmadan tüm günlük toplamları görebilirsiniz.
+
+PANONUZ (ÜCRETSİZ)
+- Temiz bir halkada günlük toplam yakılan kalori.
+- Hedef çubuğu ile günlük adımlar.
+- Tempo göstergesi: Günün bu saatinde alışılmış temponuza göre önde misiniz, geride mi?
+- Yenilemek için aşağı çekin. Ayarlar için dişliye dokunun.
+
+GEÇMİŞ (ÜCRETSİZ)
+- 7 / 30 / 90 / 365 günlük görünümler ve istediğiniz özel tarih aralığı.
+- Trend okları, zirve günler ve sade çubuk grafikler.
+- CSV veri dışa aktarma.
+
+SİZE UYAN HEDEFLER
+- İsteğe bağlı günlük kalori ve adım hedefleri.
+- Ya da hedef koymadan sadece temiz bir sayaç olarak kullanın — seçim sizin.
+- Tempo karşılaştırması: aynı haftanın günü vs. tüm günler, ayarlanabilir geri bakma süresi (14 / 30 / 90 gün / 1 yıl).
+
+Vitals+ (OPSİYONEL)
+Küçük bir aylık, yıllık veya ömür boyu yükseltme ile şunların kilidini açın:
+- Aktif ve dinlenme kalorisi ayrımı
+- Net Açık: Apple Health’ten gelen besin enerjisi çıkarıldıktan sonra kalan kaloriler
+- Paylaşmaya hazır Aylık Özet PDF’leri
+- Özel tarih aralığı PDF raporları
+- Derin Trendler: dönemler arası karşılaştırma kartları
+Yeni abonelere ücretsiz deneme sunulur.
+
+GİZLİLİK ODAKLI TASARIM
+- Yalnızca okuma amaçlı Apple Health erişimi. Uygulama sağlık kayıtlarınıza hiçbir şey yazmaz.
+- Tüm veriler yalnızca cihazınızda saklanır.
+- Analitik yok. Reklam yok. Sunucu yok. Hesap yok. Takip yok.
+- Raporlar cihaz üzerinde oluşturulur.
+
+Total Calories bir tıbbi cihaz değildir ve hiçbir tıbbi durumu teşhis etme, tedavi etme veya önleme amacı taşımaz. Tıbbi tavsiye için her zaman bir sağlık uzmanına danışın.
+
+Abonelik Ayrıntıları
+Vitals+ otomatik yenilenen abonelik olarak sunulur (Aylık 1,99 $ / Yıllık 14,99 $; 7 günlük ücretsiz deneme ile) veya tek seferlik Ömür Boyu satın alma (29,99 $). Ödeme, Apple Kimliğiniz üzerinden onay anında tahsil edilir. Abonelikler, dönem bitiminden en az 24 saat önce iptal edilmediği sürece otomatik yenilenir. Dilediğiniz zaman Ayarlar → Apple Kimliği → Abonelikler bölümünden yönetebilir veya iptal edebilirsiniz.
+
+Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

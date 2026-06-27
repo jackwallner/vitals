@@ -1,0 +1,275 @@
+
+==> ae (UAE) locales=[ar-SA, en-GB, en-US] — 40 kw
+    added ~0 new (42 existing, 0 missing, ~0 gap)
+
+==> al (Albania) locales=[en-GB, en-US] — 30 kw
+    added ~0 new (31 existing, 0 missing, ~0 gap)
+
+==> am (Armenia) locales=[ru, en-GB, en-US] — 40 kw
+    added ~9 new (44 existing, 4 missing, ~0 gap)
+
+==> ar (Argentina) locales=[es-ES, es-MX, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> at (Austria) locales=[de-DE, en-US] — 40 kw
+    added ~0 new (45 existing, 0 missing, ~0 gap)
+
+==> au (Australia) locales=[en-AU, en-US] — 30 kw
+    added ~0 new (0 existing, 30 missing, ~30 gap)
+
+==> az (Azerbaijan) locales=[tr, ru, en-US] — 40 kw
+    added ~7 new (0 existing, 40 missing, ~33 gap)
+
+==> be (Belgium) locales=[fr-FR, nl-NL, de-DE, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> bg (Bulgaria) locales=[en-GB, en-US] — 30 kw
+    added ~0 new (26 existing, 30 missing, ~30 gap)
+
+==> bh (Bahrain) locales=[ar-SA, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> bo (Bolivia) locales=[es-ES, es-MX, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> br (Brazil) locales=[pt-BR, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> ca (Canada) locales=[en-CA, fr-CA, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> ch (Switzerland) locales=[de-DE, fr-FR, it, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> cl (Chile) locales=[es-ES, es-MX, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> cn (China mainland) locales=[zh-Hans, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> co (Colombia) locales=[es-ES, es-MX, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> cr (Costa Rica) locales=[es-ES, es-MX, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> cy (Cyprus) locales=[el, en-GB, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> cz (Czech Republic) locales=[cs, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> de (Germany) locales=[de-DE, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> dk (Denmark) locales=[da, en-US] — 40 kw
+    added ~0 new (39 existing, 1 missing, ~1 gap)
+
+==> do (Dominican Republic) locales=[es-ES, es-MX, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> dz (Algeria) locales=[fr-FR, ar-SA, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> ec (Ecuador) locales=[es-ES, es-MX, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> ee (Estonia) locales=[en-GB, en-US] — 30 kw
+    added ~0 new (30 existing, 0 missing, ~0 gap)
+
+==> eg (Egypt) locales=[ar-SA, en-GB, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> es (Spain) locales=[es-ES, ca, en-US] — 40 kw
+    added ~0 new (38 existing, 40 missing, ~40 gap)
+
+==> fi (Finland) locales=[fi, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> fr (France) locales=[fr-FR, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> gb (UK) locales=[en-GB, en-US] — 30 kw
+    added ~0 new (30 existing, 0 missing, ~0 gap)
+
+==> gh (Ghana) locales=[en-GB, en-US] — 30 kw
+    added ~0 new (0 existing, 30 missing, ~30 gap)
+
+==> gr (Greece) locales=[el, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> gt (Guatemala) locales=[es-ES, es-MX, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> hk (Hong Kong) locales=[zh-Hant, en-GB, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> hn (Honduras) locales=[es-ES, es-MX, en-US] — 40 kw
+    added ~6 new (0 existing, 40 missing, ~34 gap)
+
+==> hr (Croatia) locales=[hr, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> hu (Hungary) locales=[hu, en-US] — 40 kw
+    added ~23 new (9 existing, 31 missing, ~8 gap)
+
+==> id (Indonesia) locales=[id, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> ie (Ireland) locales=[en-GB, en-US] — 30 kw
+    added ~0 new (0 existing, 30 missing, ~30 gap)
+
+==> il (Israel) locales=[he, en-GB, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> in (India) locales=[hi, en-GB, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> iq (Iraq) locales=[ar-SA, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> is (Iceland) locales=[en-GB, en-US] — 30 kw
+    added ~0 new (26 existing, 30 missing, ~30 gap)
+
+==> it (Italy) locales=[it, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> jo (Jordan) locales=[ar-SA, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> jp (Japan) locales=[ja, en-US] — 40 kw
+    added ~3 new (0 existing, 40 missing, ~37 gap)
+
+==> ke (Kenya) locales=[en-GB, en-US] — 30 kw
+    added ~3 new (0 existing, 30 missing, ~27 gap)
+
+==> kg (Kyrgyzstan) locales=[ru, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> kh (Cambodia) locales=[en-US, th] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> kr (South Korea) locales=[ko, en-US] — 40 kw
+    added ~0 new (19 existing, 21 missing, ~21 gap)
+
+==> kw (Kuwait) locales=[ar-SA, en-US] — 40 kw
+    added ~0 new (9 existing, 31 missing, ~31 gap)
+
+==> kz (Kazakhstan) locales=[ru, en-US] — 40 kw
+    added ~0 new (28 existing, 12 missing, ~12 gap)
+
+==> lb (Lebanon) locales=[ar-SA, fr-FR, en-US] — 40 kw
+    added ~0 new (18 existing, 22 missing, ~22 gap)
+
+==> lk (Sri Lanka) locales=[en-GB, en-US] — 30 kw
+    added ~0 new (0 existing, 30 missing, ~30 gap)
+
+==> lu (Luxembourg) locales=[fr-FR, de-DE, en-US] — 40 kw
+    added ~3 new (0 existing, 40 missing, ~37 gap)
+
+==> lv (Latvia) locales=[en-GB, en-US] — 30 kw
+    added ~3 new (15 existing, 15 missing, ~12 gap)
+
+==> ma (Morocco) locales=[fr-FR, ar-SA, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> mn (Mongolia) locales=[en-US] — 30 kw
+    added ~0 new (0 existing, 30 missing, ~30 gap)
+
+==> mo (Macau) locales=[zh-Hant, en-US] — 40 kw
+    added ~37 new (0 existing, 40 missing, ~3 gap)
+
+==> mx (Mexico) locales=[es-MX, en-US] — 40 kw
+    added ~0 new (32 existing, 37 missing, ~37 gap)
+
+==> my (Malaysia) locales=[ms, en-GB, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> nl (Netherlands) locales=[nl-NL, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> no (Norway) locales=[no, en-US] — 40 kw
+    added ~15 new (0 existing, 40 missing, ~25 gap)
+
+==> np (Nepal) locales=[en-GB, en-US] — 30 kw
+    added ~24 new (3 existing, 27 missing, ~3 gap)
+
+==> nz (New Zealand) locales=[en-AU, en-GB, en-US] — 30 kw
+    added ~20 new (40 existing, 30 missing, ~10 gap)
+
+==> om (Oman) locales=[ar-SA, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> pa (Panama) locales=[es-ES, es-MX, en-US] — 40 kw
+    added ~0 new (40 existing, 0 missing, ~0 gap)
+
+==> pe (Peru) locales=[es-ES, es-MX, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> ph (Philippines) locales=[en-US, en-GB] — 30 kw
+    added ~0 new (3 existing, 27 missing, ~27 gap)
+
+==> pk (Pakistan) locales=[en-GB, en-US] — 30 kw
+    added ~3 new (0 existing, 30 missing, ~27 gap)
+
+==> pl (Poland) locales=[pl, en-US] — 40 kw
+    added ~21 new (12 existing, 28 missing, ~7 gap)
+
+==> pt (Portugal) locales=[pt-PT, en-US] — 40 kw
+    added ~0 new (40 existing, 40 missing, ~40 gap)
+
+==> py (Paraguay) locales=[es-ES, es-MX, en-US] — 40 kw
+    added ~9 new (0 existing, 40 missing, ~31 gap)
+
+==> qa (Qatar) locales=[ar-SA, en-US] — 40 kw
+    added ~19 new (18 existing, 22 missing, ~3 gap)
+
+==> ro (Romania) locales=[ro, en-US] — 40 kw
+    added ~12 new (3 existing, 37 missing, ~25 gap)
+
+==> ru (Russia) locales=[ru, en-US] — 40 kw
+    added ~0 new (15 existing, 25 missing, ~25 gap)
+
+==> sa (Saudi Arabia) locales=[ar-SA, en-US] — 40 kw
+    added ~0 new (5 existing, 35 missing, ~35 gap)
+
+==> se (Sweden) locales=[sv, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> sg (Singapore) locales=[en-GB, en-US] — 30 kw
+    added ~0 new (9 existing, 21 missing, ~21 gap)
+
+==> si (Slovenia) locales=[hr, it, en-US] — 40 kw
+    added ~37 new (0 existing, 40 missing, ~3 gap)
+
+==> sk (Slovakia) locales=[sk, cs, en-US] — 40 kw
+    added ~0 new (3 existing, 37 missing, ~37 gap)
+
+==> sv (El Salvador) locales=[es-ES, es-MX, en-US] — 40 kw
+    added ~9 new (6 existing, 34 missing, ~25 gap)
+
+==> th (Thailand) locales=[th, en-US] — 40 kw
+    added ~9 new (0 existing, 40 missing, ~31 gap)
+
+==> tr (Türkiye) locales=[tr, en-US] — 40 kw
+    added ~0 new (0 existing, 40 missing, ~40 gap)
+
+==> tw (Taiwan) locales=[zh-Hant, en-US] — 40 kw
+    added ~37 new (24 existing, 40 missing, ~3 gap)
+
+==> ua (Ukraine) locales=[uk, ru, en-US] — 40 kw
+    added ~0 new (33 existing, 7 missing, ~7 gap)
+
+==> us (United States) locales=[en-US] — 36 kw
+    added ~0 new (0 existing, 36 missing, ~36 gap)
+
+==> uz (Uzbekistan) locales=[ru, en-US] — 40 kw
+    added ~0 new (3 existing, 37 missing, ~37 gap)
+
+==> vn (Vietnam) locales=[vi, en-US] — 40 kw
+    added ~0 new (6 existing, 34 missing, ~34 gap)
+
+==> za (South Africa) locales=[en-GB, en-US] — 30 kw
+    added ~0 new (32 existing, 30 missing, ~30 gap)
+
+Wrote /Users/jackwallner/vitals/scripts/astro-keywords-by-store/ (91 stores) — playbook: astro-global-aso-go-2026.md

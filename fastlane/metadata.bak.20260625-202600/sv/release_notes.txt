@@ -1,0 +1,9 @@
+Nytt i Vitals+
+
+• Prognos för dagen – se vart dagens totala kalorier är på väg, utifrån ditt eget tempo den senaste tiden.
+• Målsviter – en bricka på Idag-skärmen som räknar antalet dagar i rad du nått ditt mål.
+• Veckosammanfattning – en valfri sammanfattning på söndagskvällen av dina senaste 7 dagar jämfört med veckan innan.
+
+Alla tre slås på i Inställningar och är avstängda som standard, så den kostnadsfria Idag-vyn är precis som förut.
+
+Dessutom de vanliga förbättringarna under huven som håller dina kalorier och steg korrekta i appen, widgetarna och på Apple Watch.

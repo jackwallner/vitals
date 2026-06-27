@@ -1,0 +1,1 @@
+pedometer,ring,tdee,bmr,complication,deficit,resting,active,pace,fasting,walking,healthkit,activity
