@@ -248,6 +248,17 @@ struct HistoryView: View {
         return data.map(\.value).reduce(0, +) / Double(data.count)
     }
 
+    /// Symmetric around zero so 0 always sits at the vertical center of the chart —
+    /// otherwise Swift Charts fits the domain to the data's min/max, which (for
+    /// all-positive deficits) pushes 0 to the bottom edge and makes the average look
+    /// like the "center" of the chart instead.
+    private var netDeficitChartYDomain: ClosedRange<Double> {
+        let maxAbs = netDeficitChartData.map { abs($0.value) }.max() ?? 0
+        let padded = max(maxAbs, abs(chartAvgNetDeficit)) * 1.15
+        guard padded > 0 else { return -100...100 }
+        return -padded...padded
+    }
+
     private var peakCalorieDay: DayRecord? {
         records.max(by: { $0.totalCalories < $1.totalCalories })
     }
@@ -1014,6 +1025,12 @@ struct HistoryView: View {
             .opacity(selectedNetDate == nil || Calendar.current.isDate(item.date, equalTo: selectedNetDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3)
             .cornerRadius(4)
 
+            // Solid zero baseline so deficit (up) vs surplus (down) reads off a
+            // fixed reference — distinct from the dashed "avg" line below.
+            RuleMark(y: .value("Zero", 0))
+                .foregroundStyle(Theme.textTertiary.opacity(0.4))
+                .lineStyle(StrokeStyle(lineWidth: 1))
+
             if netDeficitChartData.count > 1 {
                 RuleMark(y: .value("Average", chartAvgNetDeficit))
                     .foregroundStyle(Theme.netDeficitBrand.opacity(0.5))
@@ -1025,6 +1042,7 @@ struct HistoryView: View {
                     }
             }
         }
+        .chartYScale(domain: netDeficitChartYDomain)
         .chartXSelection(value: $selectedNetDate)
         .chartXAxis {
             AxisMarks(values: .stride(by: chartXAxisStrideBy, count: chartXAxisStrideCount)) { value in
@@ -1206,10 +1224,16 @@ struct HistoryView: View {
             }
         case .net:
             if hasNetData {
-                HStack(spacing: 12) {
-                    AverageCard(label: "Avg Deficit", value: formatSignedNet(avgNetDeficit), color: netColor(for: avgNetDeficit))
+                VStack(spacing: 12) {
+                    HStack(spacing: 12) {
+                        AverageCard(label: "Avg Deficit", value: formatSignedNet(avgNetDeficit), color: netColor(for: avgNetDeficit))
+                        AverageCard(label: "Total Deficit", value: formatSignedNet(totalNetDeficit), color: netColor(for: totalNetDeficit))
+                    }
                     if let best = bestNetDay {
-                        PeakCard(label: "Best Day", value: formatSignedNet(netDeficit(for: best)), date: best.date, color: netColor(for: netDeficit(for: best)))
+                        HStack(spacing: 12) {
+                            PeakCard(label: "Best Day", value: formatSignedNet(netDeficit(for: best)), date: best.date, color: netColor(for: netDeficit(for: best)))
+                            Color.clear.frame(maxWidth: .infinity)
+                        }
                     }
                 }
             }
