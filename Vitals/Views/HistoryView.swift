@@ -1209,32 +1209,35 @@ struct HistoryView: View {
     private func focusedSummaryCards(_ metric: HistoryMetric) -> some View {
         switch metric {
         case .calories:
-            HStack(spacing: 12) {
-                AverageCard(label: "Avg Calories", value: avgCalories.formatted(.number.precision(.fractionLength(0))), color: Theme.caloriesPrimary)
-                if let peak = peakCalorieDay {
-                    PeakCard(label: "Best Day", value: peak.totalCalories.formatted(.number.precision(.fractionLength(0))), date: peak.date, color: Theme.caloriesPrimary)
+            VStack(spacing: 12) {
+                HStack(spacing: 12) {
+                    AverageCard(label: "Avg Calories", value: avgCalories.formatted(.number.precision(.fractionLength(0))), color: Theme.caloriesPrimary)
+                    if let peak = peakCalorieDay {
+                        PeakCard(label: "Best Day", value: peak.totalCalories.formatted(.number.precision(.fractionLength(0))), date: peak.date, color: Theme.caloriesPrimary)
+                    }
                 }
+                WideTotalCard(label: "Total Calories", value: totalCalories.formatted(.number.precision(.fractionLength(0))), color: Theme.caloriesPrimary)
             }
         case .steps:
-            HStack(spacing: 12) {
-                AverageCard(label: "Avg Steps", value: avgSteps.formatted(.number), color: Theme.stepsPrimary)
-                if let peak = peakStepDay {
-                    PeakCard(label: "Best Day", value: peak.steps.formatted(.number), date: peak.date, color: Theme.stepsPrimary)
+            VStack(spacing: 12) {
+                HStack(spacing: 12) {
+                    AverageCard(label: "Avg Steps", value: avgSteps.formatted(.number), color: Theme.stepsPrimary)
+                    if let peak = peakStepDay {
+                        PeakCard(label: "Best Day", value: peak.steps.formatted(.number), date: peak.date, color: Theme.stepsPrimary)
+                    }
                 }
+                WideTotalCard(label: "Total Steps", value: totalSteps.formatted(.number), color: Theme.stepsPrimary)
             }
         case .net:
             if hasNetData {
                 VStack(spacing: 12) {
                     HStack(spacing: 12) {
                         AverageCard(label: "Avg Deficit", value: formatSignedNet(avgNetDeficit), color: netColor(for: avgNetDeficit))
-                        AverageCard(label: "Total Deficit", value: formatSignedNet(totalNetDeficit), color: netColor(for: totalNetDeficit))
-                    }
-                    if let best = bestNetDay {
-                        HStack(spacing: 12) {
+                        if let best = bestNetDay {
                             PeakCard(label: "Best Day", value: formatSignedNet(netDeficit(for: best)), date: best.date, color: netColor(for: netDeficit(for: best)))
-                            Color.clear.frame(maxWidth: .infinity)
                         }
                     }
+                    WideTotalCard(label: "Total Deficit", value: formatSignedNet(totalNetDeficit), color: netColor(for: totalNetDeficit))
                 }
             }
         }
@@ -2187,6 +2190,34 @@ private struct AverageCard: View {
                 .foregroundStyle(color)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .padding(Theme.cardPadding)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(label)
+        .accessibilityValue(value)
+    }
+}
+
+/// Full-width total row: label on the left, value on the right. Sits under the
+/// Avg + Best Day pair in the focused metric views for a consistent layout.
+private struct WideTotalCard: View {
+    let label: String
+    let value: String
+    let color: Color
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Text(label)
+                .font(.caption)
+                .foregroundStyle(Theme.textSecondary)
+                .textCase(.uppercase)
+                .tracking(0.8)
+            Spacer(minLength: 0)
+            Text(value)
+                .font(.system(.title3, design: .rounded, weight: .bold).monospacedDigit())
+                .foregroundStyle(color)
+        }
+        .frame(maxWidth: .infinity)
         .padding(Theme.cardPadding)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
         .accessibilityElement(children: .combine)
