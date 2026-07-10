@@ -1,1 +1,1 @@
-adımsayar,halka,tdee,bmr,komplikasyon,açık,dinlenme,aktif,tempo,oruç,yürüyüş,hareket,healthkit,kcal
+adımsayar,bmr,komplikasyon,açık,dinlenme,aktif,tempo,oruç,yürüyüş,hareket,healthkit,kcal,bmi,yakılan

@@ -1,1 +1,1 @@
-pedometru,inel,tdee,bmr,complicație,deficit,odihnă,activ,ritm,post,mers,mișcare,healthkit,activitate
+pedometru,bmr,complicație,deficit,odihnă,activ,ritm,post,mers,mișcare,healthkit,activitate,bmi,arse

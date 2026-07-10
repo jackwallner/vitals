@@ -1,1 +1,1 @@
-podòmetre,anell,tdee,bmr,complicació,dèficit,repòs,actiu,ritme,dejuni,caminar,moure,healthkit,passos
+podòmetre,bmr,complicació,dèficit,repòs,actiu,ritme,dejuni,caminar,moure,healthkit,passos,bmi,kcal

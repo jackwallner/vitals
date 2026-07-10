@@ -1,1 +1,1 @@
-tdee,bmr,metabolismo basal,tasa metabólica,gasto calórico,déficit,complicación,reposo,activas,netas
+bmr,metabolismobasal,tasametabólica,gastocalórico,déficit,complicación,reposo,activas,netas,bmi,kcal

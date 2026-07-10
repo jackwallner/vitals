@@ -1,1 +1,1 @@
-grundumsatz,stoffwechsel,kalorienrechner,komplikation,defizit,tdee,bmr,aktiv,kalorienbedarf,kalorien
+grundumsatz,stoffwechsel,kalorienrechner,komplikation,defizit,bmr,aktiv,kalorienbedarf,kalorien,bmi
