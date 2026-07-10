@@ -52,7 +52,13 @@ build_app() {
   xcodebuild -scheme "$scheme" -configuration Debug \
     -destination "platform=iOS Simulator,id=${udid}" \
     -derivedDataPath "$dd" build CODE_SIGNING_ALLOWED=NO >"$log" 2>&1
-  find "$dd" -path "*/Build/Products/Debug-iphonesimulator/${scheme}.app" -print -quit
+  local app_path
+  app_path=$(find "$dd" -path "*/Build/Products/Debug-iphonesimulator/${scheme}.app" -print -quit)
+  if [[ -z "$app_path" ]]; then
+    app_path=$(find "$dd/Build/Products/Debug-iphonesimulator" -maxdepth 1 -name '*.app' -print -quit 2>/dev/null)
+  fi
+  [[ -n "$app_path" ]] || { echo "ERROR: No .app in $dd (see $log)" >&2; exit 1; }
+  echo "$app_path"
 }
 
 for DEVICE_NAME in "${DEVICES[@]}"; do
@@ -68,7 +74,7 @@ for DEVICE_NAME in "${DEVICES[@]}"; do
     OUT_FILE="${OUT_DIR}/${mode}.png"
     xcrun simctl terminate "$UDID" "$bundle" >/dev/null 2>&1 || true
     xcrun simctl launch "$UDID" "$bundle" -PaywallSnapshot "$mode" >/dev/null
-    sleep 6
+    sleep 12
     xcrun simctl io "$UDID" screenshot "$OUT_FILE"
     echo "  saved $OUT_FILE"
   done

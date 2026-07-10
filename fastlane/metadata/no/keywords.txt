@@ -1,1 +1,1 @@
-skritteller,ring,tdee,bmr,komplikasjon,underskudd,hvile,aktiv,takt,faste,gang,bevegelse,healthkit
+skritteller,bmr,komplikasjon,underskudd,hvile,aktiv,takt,faste,gang,bevegelse,healthkit,bmi,forbrent

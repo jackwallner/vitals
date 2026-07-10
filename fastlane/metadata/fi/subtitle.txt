@@ -1,1 +1,1 @@
-Päivittäinen kulutus kello
+TDEE Kulutus Kello Widget
