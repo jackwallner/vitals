@@ -346,6 +346,7 @@ struct DashboardView: View {
             Task { await refresh() }
         }) {
             OnboardingSheet(goals: goals)
+                .environmentObject(store)
                 .interactiveDismissDisabled()
         }
         }
@@ -1707,9 +1708,11 @@ private struct OnboardingSheet: View {
     private enum Step {
         case welcome
         case goals
+        case trial
     }
 
     @ObservedObject var goals: GoalSettings
+    @EnvironmentObject private var store: StoreService
     @Environment(\.dismiss) private var dismiss
 
     @State private var step: Step = .welcome
@@ -1718,6 +1721,11 @@ private struct OnboardingSheet: View {
     @State private var wantStepGoal = true
     @State private var stepText = "10000"
     @State private var hasRequestedHealthAccess = false
+    @State private var isStartingTrial = false
+    @State private var trialError: String?
+    /// Emergency fallback: presented only when the yearly package failed to load,
+    /// so the primary CTA is never a dead disabled button.
+    @State private var showPaywallFallback = false
 
     private var calValid: Bool {
         !wantCalGoal || (Double(calText).map { (500...50000).contains($0) } ?? false)
@@ -1735,6 +1743,7 @@ private struct OnboardingSheet: View {
                         switch step {
                         case .welcome: welcomePage
                         case .goals: goalsPage
+                        case .trial: trialPage
                         }
                     }
                     .padding(.top, 48)
@@ -1745,6 +1754,28 @@ private struct OnboardingSheet: View {
                 bottomBar
             }
         }
+        // Warm the products early so the trial step has live price/trial copy by
+        // the time the user reaches it (StatScout pattern).
+        .task {
+            if store.products.isEmpty { await store.fetchProducts() }
+        }
+        // A direct purchase (or restore) that flips Pro on finishes onboarding.
+        .onChange(of: store.isPro) { _, isPro in
+            if isPro { finishOnboarding() }
+        }
+        .sheet(isPresented: $showPaywallFallback) {
+            PaywallView()
+                .environmentObject(store)
+        }
+    }
+
+    /// Completes onboarding: persists the flag and stamps the passive trial
+    /// cooldown so the post-home `TrialOfferSheet` doesn't double-pitch ~5s
+    /// later, then dismisses. Reached only via Not now or a successful purchase.
+    private func finishOnboarding() {
+        goals.hasCompletedSetup = true
+        goals.lastTrialOfferShownDate = Date()
+        dismiss()
     }
 
     /// Fire the HealthKit prompt once, when the user leaves the welcome screen —
@@ -1857,6 +1888,7 @@ private struct OnboardingSheet: View {
         switch step {
         case .welcome: welcomeBottomBar
         case .goals: goalsBottomBar
+        case .trial: trialBottomBar
         }
     }
 
@@ -1901,10 +1933,11 @@ private struct OnboardingSheet: View {
                 } else {
                     goals.stepGoal = nil
                 }
-                goals.hasCompletedSetup = true
-                dismiss()
+                // Goals are saved, but onboarding continues to the trial step —
+                // don't finish here. The primary stays in the same coral slot.
+                withAnimation(.easeInOut(duration: 0.25)) { step = .trial }
             } label: {
-                primaryLabel("Get Started")
+                primaryLabel("Continue")
             }
             .disabled(!calValid || !stepValid)
             .opacity(calValid && stepValid ? 1 : 0.5)
@@ -1913,6 +1946,146 @@ private struct OnboardingSheet: View {
         .padding(.top, 12)
         .padding(.bottom, 24)
         .background(Theme.background)
+    }
+
+    // MARK: Trial step
+
+    /// The final onboarding step: reads like "your goals are set, here's what Pro
+    /// adds", not a hard paywall. Same chrome as Welcome/Goals — hero + short
+    /// pitch + benefit cards styled like Welcome's info cards.
+    private var trialPage: some View {
+        VStack(spacing: 28) {
+            VStack(spacing: 12) {
+                Image(systemName: "sparkles")
+                    .font(.system(size: 52))
+                    .foregroundStyle(Theme.caloriesGradient)
+                Text("Go further with Vitals+")
+                    .font(.system(.largeTitle, design: .rounded, weight: .bold))
+                    .multilineTextAlignment(.center)
+                Text("Your goals are set. Here’s what Vitals+ adds on top of your daily view.")
+                    .font(.system(.subheadline, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            VStack(spacing: 16) {
+                WelcomePoint(
+                    icon: "plus.forwardslash.minus",
+                    color: Theme.caloriesPrimary,
+                    title: "Net calories",
+                    detail: "Subtract food logged in Apple Health from what you burn, on Today and History."
+                )
+                WelcomePoint(
+                    icon: "flame.fill",
+                    color: Theme.streakPrimary,
+                    title: "Streaks & projections",
+                    detail: "Keep your goal streaks alive and see your projected end-of-day total."
+                )
+                WelcomePoint(
+                    icon: "chart.line.uptrend.xyaxis",
+                    color: Theme.stepsPrimary,
+                    title: "Deeper trends",
+                    detail: "TDEE and BMR maintenance averages plus 30-day trend insights."
+                )
+                WelcomePoint(
+                    icon: "doc.richtext.fill",
+                    color: Theme.netDeficitBrand,
+                    title: "Summary reports",
+                    detail: "Export a shareable PDF summary for any date range you choose."
+                )
+            }
+        }
+    }
+
+    private var trialBottomBar: some View {
+        VStack(spacing: 12) {
+            // Soft free exit sits ABOVE and de-emphasized so the primary trial
+            // button lands in the exact coral slot the user has been tapping.
+            Button {
+                finishOnboarding()
+            } label: {
+                Text("Not now")
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textSecondary)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 8)
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal, 24)
+
+            // Render no disclosure until the package loads — never a phantom price.
+            if let disclosure = store.yearlyCTADisclosureText {
+                Text(disclosure)
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 24)
+            }
+
+            Button {
+                startTrial()
+            } label: {
+                ZStack {
+                    primaryLabel(store.onboardingTrialCTALabel)
+                        .opacity(isStartingTrial ? 0 : 1)
+                    if isStartingTrial {
+                        ProgressView().tint(.white)
+                    }
+                }
+            }
+            .disabled(isStartingTrial)
+            .padding(.horizontal, 24)
+
+            if let trialError {
+                Text(trialError)
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.caloriesPrimary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
+            }
+
+            // Legal + Restore beside the purchase point.
+            HStack(spacing: 14) {
+                Link("Terms", destination: VitalsLinks.standardEULA)
+                Link("Privacy", destination: VitalsLinks.privacyPolicy)
+                Button("Restore") {
+                    Task { await store.restorePurchases() }
+                }
+                .buttonStyle(.plain)
+            }
+            .font(.system(.caption2, design: .rounded))
+            .foregroundStyle(Theme.textTertiary)
+        }
+        .padding(.top, 12)
+        .padding(.bottom, 24)
+        .background(Theme.background)
+    }
+
+    /// One-tap conversion: buy the yearly plan directly (trial when eligible) so
+    /// Apple's confirm sheet is the only interstitial. Falls back to the full
+    /// PaywallView only when products failed to load, never a dead button.
+    private func startTrial() {
+        guard let yearly = store.yearlyPackage else {
+            showPaywallFallback = true
+            return
+        }
+        trialError = nil
+        isStartingTrial = true
+        Task { @MainActor in
+            defer { isStartingTrial = false }
+            do {
+                switch try await store.purchase(yearly) {
+                case .purchased, .pending:
+                    finishOnboarding()
+                case .cancelled:
+                    trialError = "Trial wasn’t started. Tap again to continue."
+                }
+            } catch {
+                trialError = store.lastError ?? "Couldn’t start your trial. Please try again."
+            }
+        }
     }
 
     private func primaryLabel(_ title: String) -> some View {

@@ -245,6 +245,40 @@ final class StoreService: NSObject, ObservableObject {
         return introEligibility[package.storeProduct.productIdentifier] ?? true
     }
 
+    /// The yearly package — the one-tap conversion target for the onboarding
+    /// trial step. That surface purchases this directly (trial when eligible);
+    /// the full `PaywallView` is only the fallback when this is nil (products
+    /// not loaded). nil until `fetchProducts` completes.
+    var yearlyPackage: Package? {
+        products.first { $0.vitalsPackageKind == .yearly }
+    }
+
+    /// CTA label for the direct-purchase onboarding trial button. Leads with the
+    /// free-trial offer when the user is eligible ("Start 7-day free trial"),
+    /// falling back to price-forward yearly copy otherwise. nil-safe: returns a
+    /// generic label until products load (the button stays disabled then).
+    var onboardingTrialCTALabel: String {
+        guard let yearly = yearlyPackage else { return "Start Free Trial" }
+        if isEligibleForIntroOffer(yearly), let trial = yearly.vitalsIntroOfferLabel {
+            return "Start \(trial)"
+        }
+        return "Continue with Vitals+ for \(yearly.vitalsPriceLabel)"
+    }
+
+    /// Full Apple-3.1.2 auto-renew disclosure for the yearly plan, shown next to
+    /// the direct-purchase CTA so the real price (and trial terms, when offered)
+    /// are present at the point of purchase. Returns nil until the yearly package
+    /// loads, so no phantom/placeholder price is ever rendered. Ineligible users
+    /// get the price-only variant with no trial promise.
+    var yearlyCTADisclosureText: String? {
+        guard let yearly = yearlyPackage else { return nil }
+        let renew = "Auto-renews unless cancelled at least 24 hours before the end of the current period. Manage or cancel in Settings › Apple ID › Subscriptions."
+        if isEligibleForIntroOffer(yearly), let trial = yearly.vitalsIntroOfferLabel {
+            return "\(trial.capitalized), then \(yearly.vitalsPriceLabel). \(renew)"
+        }
+        return "\(yearly.vitalsPriceLabel). \(renew)"
+    }
+
     /// Reports a custom-paywall impression to RevenueCat so the native paywall
     /// still feeds RC's impression count, conversion %, and experiment
     /// enrollment (the RevenueCat-hosted UI did this automatically; there is no
