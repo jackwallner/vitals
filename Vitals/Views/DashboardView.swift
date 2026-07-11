@@ -1733,10 +1733,6 @@ private struct OnboardingSheet: View {
     @State private var calText = "2500"
     @State private var wantStepGoal = true
     @State private var stepText = "10000"
-    /// Net-deficit opt-in (Rev A): default on so a user finishing onboarding has
-    /// net deficit working (once Pro) or has explicitly turned it off, never
-    /// silently missing. Drives `goals.showNetCalories` + the dietary-read prompt.
-    @State private var wantNetDeficit = true
     @State private var hasRequestedHealthAccess = false
     @State private var isStartingTrial = false
     @State private var trialError: String?
@@ -1878,13 +1874,6 @@ private struct OnboardingSheet: View {
                     isValid: stepValid
                 )
 
-                // Net-deficit opt-in (Rev A): prompt during onboarding so the
-                // dashboard net-deficit tile has consumed-calorie data instead of
-                // rendering a placeholder dash. Enabling it requests the dietary
-                // read and turns the setting on; net deficit then works the moment
-                // the user is Pro.
-                NetDeficitOptInRow(enabled: $wantNetDeficit)
-
                 if !wantCalGoal && !wantStepGoal {
                     HStack(alignment: .top, spacing: 8) {
                         Image(systemName: "info.circle.fill")
@@ -1965,14 +1954,6 @@ private struct OnboardingSheet: View {
                     goals.stepGoal = stepValue
                 } else {
                     goals.stepGoal = nil
-                }
-                // Persist the net-deficit choice (Rev A) and, when opted in,
-                // request the dietary-energy read so the dashboard net-deficit
-                // tile has consumed-calorie data the moment the user is Pro
-                // instead of showing a placeholder dash.
-                goals.showNetCalories = wantNetDeficit
-                if wantNetDeficit {
-                    Task { try? await HealthKitService.shared.requestDietaryAuthorization() }
                 }
                 // Goals are saved, but onboarding continues to the trial step —
                 // don't finish here. The primary stays in the same coral slot.
@@ -2219,37 +2200,6 @@ private struct GoalRow: View {
         }
         .padding(16)
         .background(Theme.cardSurface.opacity(0.5), in: RoundedRectangle(cornerRadius: 14))
-    }
-}
-
-/// Onboarding net-deficit opt-in (Rev A). A toggle-only row (no numeric field)
-/// so the user is explicitly asked whether to track net calories. Enabling it
-/// turns `showNetCalories` on and requests the dietary-energy read, so the
-/// dashboard net-deficit tile has data instead of a placeholder dash once Pro.
-private struct NetDeficitOptInRow: View {
-    @Binding var enabled: Bool
-
-    var body: some View {
-        VStack(spacing: 8) {
-            HStack {
-                Image(systemName: "plus.forwardslash.minus")
-                    .foregroundStyle(Theme.netDeficitBrand)
-                Text("Net Calories")
-                    .font(.system(.headline, design: .rounded))
-                Spacer()
-                Toggle("", isOn: $enabled)
-                    .labelsHidden()
-            }
-            Text("Subtract the food energy you log in Apple Health from what you burn. Included with Vitals+.")
-                .font(.system(.caption, design: .rounded))
-                .foregroundStyle(Theme.textSecondary)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding(16)
-        .background(Theme.cardSurface.opacity(0.5), in: RoundedRectangle(cornerRadius: 14))
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Net Calories. Subtract food energy logged in Apple Health from calories burned. Included with Vitals Plus.")
     }
 }
 
