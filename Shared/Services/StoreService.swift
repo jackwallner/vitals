@@ -188,6 +188,9 @@ final class StoreService: NSObject, ObservableObject {
     /// RevenueCat-hosted paywall did this implicitly, and Apple 3.1.2 requires
     /// the offer shown to match what StoreKit will grant.
     @Published private(set) var introEligibility: [String: Bool] = [:]
+    /// True after the first eligibility check finishes (success or empty). Until
+    /// then, trial copy stays off so we never promise a used-trial user a free week.
+    @Published private(set) var introEligibilityResolved: Bool = false
 
     private let logger = Logger(subsystem: "com.jackwallner.vitals", category: "Store")
     private var isConfigured = false
@@ -230,61 +233,105 @@ final class StoreService: NSObject, ObservableObject {
     }
 
     /// Resolves StoreKit intro-offer eligibility for the loaded products. Only
-    /// products carrying an intro offer are queried; on any failure we leave the
-    /// map empty so the paywall conservatively hides trial framing rather than
+    /// products carrying an intro offer are queried; on any failure we mark
+    /// resolved with an empty map so callers hide trial framing rather than
     /// over-promising.
-    private func refreshIntroEligibility() async {
+    func refreshIntroEligibility() async {
+        #if DEBUG
+        if ScreenshotConfig.forceIntroIneligible {
+            let ids = products
+                .filter { $0.storeProduct.introductoryDiscount != nil }
+                .map(\.storeProduct.productIdentifier)
+            introEligibility = Dictionary(uniqueKeysWithValues: ids.map { ($0, false) })
+            introEligibilityResolved = true
+            return
+        }
+        #endif
         let identifiers = products
             .filter { $0.storeProduct.introductoryDiscount != nil }
             .map { $0.storeProduct.productIdentifier }
         guard !identifiers.isEmpty else {
             introEligibility = [:]
+            introEligibilityResolved = true
             return
         }
         let result = await Purchases.shared.checkTrialOrIntroDiscountEligibility(productIdentifiers: identifiers)
         introEligibility = result.mapValues { $0.status == .eligible }
+        introEligibilityResolved = true
     }
 
     /// True when this package advertises a free trial AND the user is eligible
-    /// for it. Eligibility-unknown resolves to true so a transient lookup
-    /// failure doesn't suppress a trial the user likely qualifies for.
+    /// for it. Until eligibility resolves, returns false so we never advertise a
+    /// trial StoreKit will not grant (used-trial / sandbox-exhausted accounts).
     func isEligibleForIntroOffer(_ package: Package) -> Bool {
         guard package.vitalsIntroOfferLabel != nil else { return false }
-        return introEligibility[package.storeProduct.productIdentifier] ?? true
+        #if DEBUG
+        if ScreenshotConfig.forceIntroIneligible { return false }
+        #endif
+        guard introEligibilityResolved else { return false }
+        return introEligibility[package.storeProduct.productIdentifier] ?? false
     }
 
-    /// The yearly package — the one-tap conversion target for the onboarding
-    /// trial step. That surface purchases this directly (trial when eligible);
-    /// the full `PaywallView` is only the fallback when this is nil (products
-    /// not loaded). nil until `fetchProducts` completes.
+    /// Intro label only when the user will actually receive the trial.
+    func eligibleIntroLabel(for package: Package) -> String? {
+        guard isEligibleForIntroOffer(package) else { return nil }
+        return package.vitalsIntroOfferLabel
+    }
+
+    /// True when the yearly plan can honestly be pitched as a free trial.
+    var canPitchFreeTrial: Bool {
+        guard let yearly = yearlyPackage else { return false }
+        return isEligibleForIntroOffer(yearly)
+    }
+
+    /// The yearly package — the one-tap conversion target. StoreKit applies the
+    /// free trial automatically when eligible; ineligible users pay the yearly
+    /// price on the same product. nil until `fetchProducts` completes.
     var yearlyPackage: Package? {
         products.first { $0.vitalsPackageKind == .yearly }
     }
 
-    /// CTA label for the direct-purchase onboarding trial button. Leads with the
-    /// free-trial offer when the user is eligible ("Start 7-day free trial"),
-    /// falling back to price-forward yearly copy otherwise. nil-safe: returns a
-    /// generic label until products load (the button stays disabled then).
+    /// CTA label for direct yearly purchase (onboarding, trial sheet, etc.).
     var onboardingTrialCTALabel: String {
-        guard let yearly = yearlyPackage else { return "Start Free Trial" }
-        if isEligibleForIntroOffer(yearly), let trial = yearly.vitalsIntroOfferLabel {
-            return "Start \(trial)"
-        }
-        return "Continue with Vitals+ for \(yearly.vitalsPriceLabel)"
+        guard let yearly = yearlyPackage else { return "Continue with Vitals+" }
+        return VitalsConversionCopy.ctaLabel(
+            trialLabel: yearly.vitalsIntroOfferLabel,
+            priceLabel: yearly.vitalsPriceLabel,
+            eligibleForTrial: isEligibleForIntroOffer(yearly)
+        )
     }
 
-    /// Full Apple-3.1.2 auto-renew disclosure for the yearly plan, shown next to
-    /// the direct-purchase CTA so the real price (and trial terms, when offered)
-    /// are present at the point of purchase. Returns nil until the yearly package
-    /// loads, so no phantom/placeholder price is ever rendered. Ineligible users
-    /// get the price-only variant with no trial promise.
+    /// Short CTA for milestone / What's New capsules.
+    var shortConversionCTALabel: String {
+        VitalsConversionCopy.shortCTALabel(eligibleForTrial: canPitchFreeTrial)
+    }
+
+    /// Full Apple-3.1.2 auto-renew disclosure for the yearly plan.
     var yearlyCTADisclosureText: String? {
         guard let yearly = yearlyPackage else { return nil }
-        let renew = "Auto-renews unless cancelled at least 24 hours before the end of the current period. Manage or cancel in Settings › Apple ID › Subscriptions."
-        if isEligibleForIntroOffer(yearly), let trial = yearly.vitalsIntroOfferLabel {
-            return "\(trial.capitalized), then \(yearly.vitalsPriceLabel). \(renew)"
-        }
-        return "\(yearly.vitalsPriceLabel). \(renew)"
+        return VitalsConversionCopy.disclosure(
+            trialLabel: yearly.vitalsIntroOfferLabel,
+            priceLabel: yearly.vitalsPriceLabel,
+            eligibleForTrial: isEligibleForIntroOffer(yearly)
+        )
+    }
+
+    /// Compact sheet disclosure under the trial-offer CTA.
+    var yearlySheetDisclosureText: String? {
+        guard let yearly = yearlyPackage else { return nil }
+        return VitalsConversionCopy.sheetDisclosure(
+            trialLabel: yearly.vitalsIntroOfferLabel,
+            priceLabel: yearly.vitalsPriceLabel,
+            eligibleForTrial: isEligibleForIntroOffer(yearly)
+        )
+    }
+
+    func purchaseCancelledMessage(for package: Package) -> String {
+        VitalsConversionCopy.purchaseCancelledMessage(eligibleForTrial: isEligibleForIntroOffer(package))
+    }
+
+    func purchaseFailedMessage(for package: Package) -> String {
+        VitalsConversionCopy.purchaseFailedMessage(eligibleForTrial: isEligibleForIntroOffer(package))
     }
 
     /// Reports a custom-paywall impression to RevenueCat so the native paywall

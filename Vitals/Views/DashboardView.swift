@@ -103,6 +103,10 @@ struct DashboardView: View {
     @State private var animateContent = false
     @State private var showSettings = false
     @State private var showOnboarding = false
+    /// Set when Pro enables Net Deficit while Settings (or another sheet) may be
+    /// covering the window. Auth runs from `showSettings` onDismiss / a follow-up
+    /// task so HealthKit's permission sheet isn't suppressed.
+    @State private var pendingNetDeficitDietaryAuth = false
     @State private var pacingCaloriesInsufficient = false
     @State private var pacingStepsInsufficient = false
     @State private var pacingCalorieSamples = 0
@@ -273,23 +277,12 @@ struct DashboardView: View {
             }
         .onChange(of: goals.showNetCalories) { _, enabled in
             guard enabled, store.isPro else { return }
+            // Covering-sheet path uses `pendingNetDeficitDietaryAuth` and requests
+            // after Settings dismisses. Skip the immediate request here so we don't
+            // fire while Settings is still animating closed.
+            guard !pendingNetDeficitDietaryAuth, !showSettings else { return }
             Task {
-                let statusBefore = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
-                dashboardLogger.debug("NetDeficit toggled on — auth status before: \(String(describing: statusBefore?.rawValue), privacy: .public)")
-
-                // Always request dietary auth separately — requesting only the new
-                // type avoids HealthKit silently suppressing the sheet when it's
-                // bundled with already-authorized types.
-                do {
-                    try await healthKit.requestDietaryAuthorization()
-                    let statusAfter = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
-                    dashboardLogger.debug("NetDeficit dietary auth requested — auth status after: \(String(describing: statusAfter?.rawValue), privacy: .public)")
-                } catch {
-                    dietaryEnergyFetchFailed = true
-                    dashboardLogger.error("NetDeficit dietary auth request failed: \(String(describing: error), privacy: .public)")
-                }
-
-                await refresh()
+                await requestDietaryAuthAndReload()
             }
         }
         .onChange(of: store.isPro) { oldValue, isPro in
@@ -323,6 +316,9 @@ struct DashboardView: View {
         .onReceive(NotificationCenter.default.publisher(for: .vitalsDismissSettings)) { _ in
             showSettings = false
         }
+        .onReceive(NotificationCenter.default.publisher(for: .vitalsEnableNetDeficitWithDietaryAuth)) { _ in
+            beginEnableNetDeficitWithDietaryAuth()
+        }
         .task {
             if ScreenshotConfig.wantsOnboarding {
                 showOnboarding = true
@@ -336,7 +332,11 @@ struct DashboardView: View {
             }
         }
         .sheet(isPresented: $showSettings, onDismiss: {
-            Task { await refresh() }
+            if pendingNetDeficitDietaryAuth {
+                Task { await finishEnableNetDeficitWithDietaryAuth() }
+            } else {
+                Task { await refresh() }
+            }
         }) {
             SettingsSheet(goals: goals)
                 .environmentObject(store)
@@ -915,8 +915,18 @@ struct DashboardView: View {
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
                     .multilineTextAlignment(align)
-                Button("Retry food calories") {
-                    Task { await loadDietaryEnergy() }
+                HStack(spacing: 14) {
+                    Button("Retry food calories") {
+                        Task {
+                            // Re-prompt if HealthKit still hasn't asked; no-op when
+                            // already determined (user must use Health permissions).
+                            try? await healthKit.requestDietaryAuthorization()
+                            await loadDietaryEnergy()
+                        }
+                    }
+                    Button("Health permissions") {
+                        openHealthApp()
+                    }
                 }
                 .font(.system(.caption2, design: .rounded, weight: .semibold))
                 .foregroundStyle(Theme.caloriesPrimary)
@@ -1005,6 +1015,43 @@ struct DashboardView: View {
         if let url = URL(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.open(url)
         }
+    }
+
+    /// Pro enable path: clear Settings first, then flip Net Deficit + request dietary auth.
+    private func beginEnableNetDeficitWithDietaryAuth() {
+        pendingNetDeficitDietaryAuth = true
+        if showSettings {
+            showSettings = false
+        } else {
+            Task { await finishEnableNetDeficitWithDietaryAuth() }
+        }
+    }
+
+    @MainActor
+    private func finishEnableNetDeficitWithDietaryAuth() async {
+        // Let the Settings dismiss animation finish — HealthKit suppresses the
+        // permission sheet while any modal is still covering the window.
+        try? await Task.sleep(nanoseconds: 500_000_000)
+        goals.showNetCalories = true
+        // Clear the pending flag only after the setting flips so onChange skips
+        // the mid-dismiss request, then we request explicitly below.
+        pendingNetDeficitDietaryAuth = false
+        await requestDietaryAuthAndReload()
+    }
+
+    @MainActor
+    private func requestDietaryAuthAndReload() async {
+        let statusBefore = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
+        dashboardLogger.debug("NetDeficit dietary auth — status before: \(String(describing: statusBefore?.rawValue), privacy: .public)")
+        do {
+            try await healthKit.requestDietaryAuthorization()
+            let statusAfter = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
+            dashboardLogger.debug("NetDeficit dietary auth — status after: \(String(describing: statusAfter?.rawValue), privacy: .public)")
+        } catch {
+            dietaryEnergyFetchFailed = true
+            dashboardLogger.error("NetDeficit dietary auth request failed: \(String(describing: error), privacy: .public)")
+        }
+        await refresh()
     }
 
     private func handleHealthNoticeAction(_ notice: HealthNotice) {
@@ -2038,20 +2085,19 @@ private struct OnboardingSheet: View {
             .padding(.horizontal, 24)
 
             // Render no disclosure until the package loads — never a phantom price.
-            if let disclosure = store.yearlyCTADisclosureText {
-                Text(disclosure)
-                    .font(.system(.caption2, design: .rounded))
-                    .foregroundStyle(Theme.textTertiary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 24)
-            }
-
+            // Error replaces disclosure in the same slot (no overlap).
             if let trialError {
                 Text(trialError)
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(Theme.caloriesPrimary)
                     .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
+            } else if let disclosure = store.yearlyCTADisclosureText {
+                Text(disclosure)
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 24)
             }
         }
@@ -2142,15 +2188,18 @@ private struct OnboardingSheet: View {
         isStartingTrial = true
         Task { @MainActor in
             defer { isStartingTrial = false }
+            await store.refreshIntroEligibility()
             do {
+                // Same yearly SKU either way — StoreKit grants the trial only when eligible.
                 switch try await store.purchase(yearly) {
                 case .purchased, .pending:
                     finishOnboarding()
                 case .cancelled:
-                    trialError = "Trial wasn’t started. Tap again to continue."
+                    trialError = store.purchaseCancelledMessage(for: yearly)
                 }
             } catch {
-                trialError = store.lastError ?? "Couldn’t start your trial. Please try again."
+                await store.refreshIntroEligibility()
+                trialError = store.lastError ?? store.purchaseFailedMessage(for: yearly)
             }
         }
     }
@@ -2305,15 +2354,13 @@ private struct SettingsSheet: View {
             set: { enabled in
                 if store.isPro {
                     if enabled {
-                        // HealthKit suppresses the dietary permission sheet while
-                        // Settings (or any other sheet) is covering the window.
-                        // Dismiss first, then flip the toggle so the system prompt
-                        // can actually appear.
-                        NotificationCenter.default.post(name: .vitalsDismissSettings, object: nil)
-                        Task { @MainActor in
-                            try? await Task.sleep(nanoseconds: 450_000_000)
-                            goals.showNetCalories = true
-                        }
+                        // Don't flip the setting from inside Settings — HealthKit
+                        // suppresses the dietary permission sheet while this sheet
+                        // is up. DashboardView dismisses first, then enables + asks.
+                        NotificationCenter.default.post(
+                            name: .vitalsEnableNetDeficitWithDietaryAuth,
+                            object: nil
+                        )
                     } else {
                         goals.showNetCalories = false
                     }

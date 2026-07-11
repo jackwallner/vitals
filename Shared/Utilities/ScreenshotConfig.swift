@@ -20,9 +20,14 @@ enum ScreenshotConfig {
     static let scene = isEnabled
         ? ScreenshotScene(rawValue: ProcessInfo.processInfo.environment["VITALS_SCREENSHOT_SCENE"] ?? "")
         : nil
+    /// Force intro-offer ineligible so we can verify used-trial / paid yearly
+    /// copy across onboarding, trial sheet, milestone, paywall, and What's New.
+    static let forceIntroIneligible =
+        ProcessInfo.processInfo.environment["VITALS_FORCE_INTRO_INELIGIBLE"] == "1"
 #else
     static let isEnabled = false
     static let scene: ScreenshotScene? = nil
+    static let forceIntroIneligible = false
 #endif
 
     static var wantsHistoryTab: Bool { scene == .history }
