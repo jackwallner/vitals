@@ -8,7 +8,9 @@ import SwiftUI
 /// user stays in control.
 struct WhatsNewSheet: View {
     let isPro: Bool
-    /// Non-Pro primary CTA — routes to the trial offer.
+    /// Non-Pro primary CTA label (trial vs paid yearly, from StoreService).
+    let tryFreeCTATitle: String
+    /// Non-Pro primary CTA — routes to the conversion offer.
     let onTryFree: () -> Void
     /// Pro primary CTA — opens Settings so they can pick extras to switch on.
     let onOpenSettings: () -> Void
@@ -85,7 +87,7 @@ struct WhatsNewSheet: View {
     private var footerCTAs: some View {
         VStack(spacing: 10) {
             Button(action: isPro ? onOpenSettings : onTryFree) {
-                Text(isPro ? "Choose in Settings" : "Try Vitals+ Free")
+                Text(isPro ? "Choose in Settings" : tryFreeCTATitle)
                     .font(.system(.headline, design: .rounded, weight: .bold))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)

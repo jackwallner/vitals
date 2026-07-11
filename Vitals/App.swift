@@ -388,19 +388,22 @@ struct MainTabView: View {
         }
     }
 
-    /// True when we have a Vitals+ package with a free-trial intro offer available.
-    private var hasTrialOffer: Bool {
-        store.products.contains { $0.vitalsIntroOfferLabel != nil }
+    /// True when yearly can honestly be pitched as a free trial (product has an
+    /// intro offer AND RevenueCat says this Apple ID is still eligible).
+    private var canPitchFreeTrial: Bool {
+        store.canPitchFreeTrial
     }
 
-    /// The package the direct trial purchase buys: prefer the yearly plan that
-    /// carries a free-trial intro offer, else any trial-bearing package.
-    private var directTrialPackage: Package? {
-        let trialPackages = store.products.filter { $0.vitalsIntroOfferLabel != nil }
-        return trialPackages.first { $0.vitalsPackageKind == .yearly } ?? trialPackages.first
+    /// Always the yearly package. StoreKit applies the free trial when eligible;
+    /// used-trial accounts pay the yearly price on the same product — no separate
+    /// SKU and no nested plan picker required.
+    private var directConversionPackage: Package? {
+        store.yearlyPackage
+            ?? store.products.first { $0.vitalsIntroOfferLabel != nil }
+            ?? store.products.first
     }
 
-    /// Hybrid one-tap purchase applies when a trial product is actually loaded;
+    /// Hybrid one-tap purchase applies when a yearly (or any) package is loaded;
     /// otherwise fall back to the full plan picker paywall.
     private var trialOfferIsDirect: Bool {
         trialOfferUsesDirectPurchase
@@ -409,14 +412,14 @@ struct MainTabView: View {
     private func presentTrialOffer(source: TrialOfferSource, focus: PlusFeature? = nil) {
         trialOfferSource = source
         trialOfferFocus = focus
-        trialOfferPackage = directTrialPackage
+        trialOfferPackage = directConversionPackage
         trialOfferUsesDirectPurchase = trialOfferPackage != nil
         trialOfferDetent = .fraction(0.68)
         showTrialOffer = true
     }
 
     private func startDirectTrialPurchase() {
-        guard let package = trialOfferPackage ?? directTrialPackage else {
+        guard let package = trialOfferPackage ?? directConversionPackage else {
             // Products failed to load - Upgrade tab is the plan browser.
             showTrialOffer = false
             selectedTab = 2
@@ -426,27 +429,33 @@ struct MainTabView: View {
         trialPurchaseInFlight = true
         Task { @MainActor in
             defer { trialPurchaseInFlight = false }
+            // Re-check eligibility so a used-trial account that was mis-cached
+            // as eligible flips to paid copy before/after the attempt.
+            await store.refreshIntroEligibility()
             do {
                 switch try await store.purchase(package) {
                 case .purchased, .pending:
                     markTrialOfferSeen()
                     showTrialOffer = false
                 case .cancelled:
-                    trialPurchaseError = "Trial wasn't started. Tap again to continue."
+                    trialPurchaseError = store.purchaseCancelledMessage(for: package)
                 }
             } catch {
-                trialPurchaseError = "Couldn't start your trial. Please try again."
+                await store.refreshIntroEligibility()
+                trialPurchaseError = store.purchaseFailedMessage(for: package)
             }
         }
     }
 
-    /// Milestone CTA: buy yearly trial in place (Apple confirm), no plan picker.
+    /// Milestone CTA: buy yearly in place (Apple confirm). Trial applies only
+    /// when eligible; otherwise it's a straight yearly purchase.
     private func startMilestoneDirectTrial() {
-        guard let package = directTrialPackage else {
+        guard let package = directConversionPackage else {
             selectedTab = 2
             return
         }
         Task { @MainActor in
+            await store.refreshIntroEligibility()
             do {
                 switch try await store.purchase(package) {
                 case .purchased, .pending:
@@ -455,6 +464,7 @@ struct MainTabView: View {
                     break
                 }
             } catch {
+                await store.refreshIntroEligibility()
                 selectedTab = 2
             }
         }
@@ -501,7 +511,7 @@ struct MainTabView: View {
         guard goals.hasCompletedSetup,
               !store.isPro,
               goals.passiveTrialOfferAllowed(),
-              hasTrialOffer,
+              canPitchFreeTrial,
               selectedTab == 0,
               // Strategic value moment: only pitch after the dashboard has shown
               // real, non-zero data — never over a spinner or a row of zeros.
@@ -511,11 +521,11 @@ struct MainTabView: View {
         // the pitch appears over the numbers the user just watched populate.
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 1_800_000_000)
-            if directTrialPackage == nil { await store.fetchProducts() }
+            if directConversionPackage == nil { await store.fetchProducts() }
             guard !skipPassiveTrialThisSession else { return }
             guard !showTrialOffer, !showTrialPaywall, !showWhatsNew else { return }
             guard selectedTab == 0 else { return }
-            if goals.passiveTrialOfferAllowed() && !store.isPro {
+            if canPitchFreeTrial && !store.isPro {
                 launchOfferShownThisSession = true
                 presentTrialOffer(source: .launch)
             }
@@ -598,7 +608,7 @@ struct MainTabView: View {
               !skipPassiveTrialThisSession,
               goals.passiveHistoryTrialOfferAllowed(),
               !launchOfferShownThisSession,
-              hasTrialOffer,
+              canPitchFreeTrial,
               selectedTab == 1,
               !showTrialOffer,
               !showTrialPaywall
@@ -639,10 +649,10 @@ struct MainTabView: View {
         case .weeklyRecapToggle: pendingFeatureEnable = .weeklyRecap
         default: pendingFeatureEnable = nil
         }
-        if hasTrialOffer {
+        if directConversionPackage != nil {
             presentTrialOffer(source: .intent, focus: focus)
         } else {
-            // No trial product loaded - Upgrade tab is the plan browser.
+            // No products loaded - Upgrade tab is the plan browser.
             selectedTab = 2
         }
     }
@@ -665,10 +675,10 @@ struct MainTabView: View {
                     // Sheet re-appeared; retry once shortly after.
                     try? await Task.sleep(nanoseconds: 700_000_000)
                     guard !showTrialOffer, !showTrialPaywall, !showMilestone else { return }
-                    await enableNetDeficitAndRequestDietaryAuth()
+                    NotificationCenter.default.post(name: .vitalsEnableNetDeficitWithDietaryAuth, object: nil)
                     return
                 }
-                await enableNetDeficitAndRequestDietaryAuth()
+                NotificationCenter.default.post(name: .vitalsEnableNetDeficitWithDietaryAuth, object: nil)
             }
         case .activeResting:
             goals.showActiveRestingBreakdown = true
@@ -683,26 +693,6 @@ struct MainTabView: View {
             Task { await NotificationService.scheduleWeeklyRecap() }
         default:
             break
-        }
-    }
-
-    @MainActor
-    private func enableNetDeficitAndRequestDietaryAuth() async {
-        // 1) Clear covering UI first (Settings is usually still open from the toggle).
-        NotificationCenter.default.post(name: .vitalsDismissSettings, object: nil)
-        // Sheet dismiss animation is ~0.35s; wait past it so HK isn't suppressed.
-        try? await Task.sleep(nanoseconds: 600_000_000)
-
-        // 2) Flip the setting. DashboardView's onChange requests dietary auth once
-        // the window is clear — that is what makes the system sheet appear.
-        goals.showNetCalories = true
-        try? await Task.sleep(nanoseconds: 350_000_000)
-        // Belt-and-suspenders if the onChange path no-op'd (already authorized /
-        // status check race). Harmless when the sheet already showed.
-        do {
-            try await HealthKitService.shared.requestDietaryAuthorization()
-        } catch {
-            // Non-fatal; user can re-toggle in Settings to retry.
         }
     }
 
@@ -743,12 +733,12 @@ struct MainTabView: View {
                 if store.isPro {
                     PremiumFeaturesView(
                         onOpenNetDeficit: {
-                            // Enable the toggle (DashboardView's onChange will request
-                            // dietary HK auth + refresh). Also request directly here so
-                            // the user gets the system sheet even if the toggle was
-                            // already on but auth was previously denied/revoked.
-                            GoalSettings.shared.showNetCalories = true
-                            Task { try? await HealthKitService.shared.requestDietaryAuthorization() }
+                            // Dismiss covering UI, enable Net Deficit, then request
+                            // dietary HealthKit auth once the window is clear.
+                            NotificationCenter.default.post(
+                                name: .vitalsEnableNetDeficitWithDietaryAuth,
+                                object: nil
+                            )
                             selectedTab = 0
                         }
                     )
@@ -894,6 +884,7 @@ struct MainTabView: View {
         }) {
             WhatsNewSheet(
                 isPro: store.isPro,
+                tryFreeCTATitle: store.shortConversionCTALabel,
                 onTryFree: {
                     pendingTrialAfterWhatsNewDismiss = true
                     showWhatsNew = false
@@ -925,8 +916,12 @@ struct MainTabView: View {
         }) {
             TrialOfferSheet(
                 focus: trialOfferFocus,
-                offerLabel: trialOfferPackage?.vitalsIntroOfferLabel ?? store.products.compactMap(\.vitalsIntroOfferLabel).first,
+                // Only pass a trial label when this Apple ID is still eligible —
+                // otherwise the sheet frames a straight yearly purchase.
+                offerLabel: trialOfferPackage.flatMap { store.eligibleIntroLabel(for: $0) },
                 priceLabel: trialOfferPackage?.vitalsPriceLabel,
+                ctaTitle: store.onboardingTrialCTALabel,
+                disclosureText: store.yearlySheetDisclosureText,
                 directPurchase: trialOfferIsDirect,
                 isPurchasing: trialPurchaseInFlight,
                 errorMessage: trialPurchaseError,
@@ -963,6 +958,7 @@ struct MainTabView: View {
             if let pendingMilestone {
                 MilestoneCelebrationSheet(
                     event: pendingMilestone,
+                    ctaTitle: store.shortConversionCTALabel,
                     onContinue: {
                         pendingDirectTrialAfterMilestoneDismiss = true
                         showMilestone = false
@@ -1445,11 +1441,16 @@ struct TrialOfferSheet: View {
     /// When set, the sheet leads with and highlights this feature instead of the
     /// generic toolkit pitch. `nil` for passive launch/history nudges.
     let focus: PlusFeature?
+    /// Free-trial label only when the user is eligible; nil frames a paid yearly buy.
     let offerLabel: String?
-    /// Recurring price after the trial, e.g. "$29.99 / year". Only required in
-    /// `directPurchase` mode (Apple 3.1.2 needs price + terms before purchase).
+    /// Recurring price, e.g. "$29.99 / year". Required in directPurchase mode.
     let priceLabel: String?
-    /// When true the primary button buys the trial product directly via StoreKit.
+    /// Primary button title (trial or paid yearly), from StoreService.
+    let ctaTitle: String
+    /// Apple 3.1.2 disclosure under the CTA. Hidden while an error is shown so
+    /// the two never overlap in the fixed footer.
+    let disclosureText: String?
+    /// When true the primary button buys the yearly product directly via StoreKit.
     /// When false (products not loaded) the CTA still calls `onStartTrial`, which
     /// routes to the Upgrade tab rather than nesting a plan picker.
     let directPurchase: Bool
@@ -1461,15 +1462,13 @@ struct TrialOfferSheet: View {
     @State private var animateGlow = false
     @State private var shimmerPhase: CGFloat = -1
 
-    /// Headline copy. Falls back to a generic title when StoreKit hasn't loaded a
-    /// trial-bearing product yet, but in practice `directTrialPackage` gates the
-    /// pitch so `offerLabel` is almost always present.
+    /// Headline copy. Trial language only when `offerLabel` is set (eligible).
     private var headline: String {
         if let focus { return focus.intentHeadline }
         if let offerLabel {
             return "\(offerLabel.capitalized), on us."
         }
-        return "Try Vitals+ free."
+        return "Go further with Vitals+"
     }
 
     private var subheadline: String {
@@ -1497,7 +1496,7 @@ struct TrialOfferSheet: View {
         guard let offerLabel,
               let days = offerLabel.split(whereSeparator: { !$0.isNumber }).first,
               !days.isEmpty else {
-            return "FREE TRIAL"
+            return "VITALS+"
         }
         return "\(days) DAYS FREE"
     }
@@ -1560,21 +1559,21 @@ struct TrialOfferSheet: View {
                 .padding(.top, 4)
                 .animation(glowAnimation, value: animateGlow)
 
-                // Prominent deal badge (Rev A): "7 DAYS FREE" in a coral,
-                // gradient-filled pill with a soft glow so the offer reads as a
-                // deal at a glance. Text derived from the real loaded offer.
-                Text(trialBadgeText)
-                    .font(.system(.caption, design: .rounded, weight: .heavy))
-                    .tracking(1.5)
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 6)
-                    .background(Theme.caloriesGradient, in: Capsule())
-                    .overlay(Capsule().stroke(.white.opacity(0.35), lineWidth: 1))
-                    .shadow(color: Theme.caloriesPrimary.opacity(0.5), radius: animateGlow ? 12 : 6, x: 0, y: 2)
-                    .scaleEffect(animateGlow ? 1.03 : 1.0)
-                    .animation(glowAnimation, value: animateGlow)
-                    .accessibilityLabel(trialBadgeText.capitalized)
+                // Deal badge only when pitching an eligible free trial.
+                if offerLabel != nil {
+                    Text(trialBadgeText)
+                        .font(.system(.caption, design: .rounded, weight: .heavy))
+                        .tracking(1.5)
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 6)
+                        .background(Theme.caloriesGradient, in: Capsule())
+                        .overlay(Capsule().stroke(.white.opacity(0.35), lineWidth: 1))
+                        .shadow(color: Theme.caloriesPrimary.opacity(0.5), radius: animateGlow ? 12 : 6, x: 0, y: 2)
+                        .scaleEffect(animateGlow ? 1.03 : 1.0)
+                        .animation(glowAnimation, value: animateGlow)
+                        .accessibilityLabel(trialBadgeText.capitalized)
+                }
 
                 VStack(spacing: 4) {
                     Text(headline)
@@ -1618,25 +1617,23 @@ struct TrialOfferSheet: View {
                     }
                 }
 
-                Group {
-                    if let errorMessage {
-                        Text(errorMessage)
-                            .font(.system(.footnote, design: .rounded))
-                            .foregroundStyle(.red)
-                            .multilineTextAlignment(.center)
-                            .transition(.opacity)
-                    }
-                }
-                .animation(.easeInOut(duration: 0.18), value: errorMessage)
-
                 Spacer(minLength: 0)
             }
             .padding(.horizontal, 24)
             .padding(.top, 6)
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 VStack(spacing: 8) {
-                    if directPurchase, let priceLabel {
-                        Text("Free during trial, then \(priceLabel). Auto-renews unless cancelled 24h before trial ends.")
+                    // Error replaces disclosure in the same slot — never stack both
+                    // (that was the overlapping red/grey text on purchase failure).
+                    if let errorMessage {
+                        Text(errorMessage)
+                            .font(.system(.caption, design: .rounded))
+                            .foregroundStyle(.red)
+                            .multilineTextAlignment(.center)
+                            .lineLimit(3)
+                            .fixedSize(horizontal: false, vertical: true)
+                    } else if directPurchase, let disclosureText {
+                        Text(disclosureText)
                             .font(.system(.caption2, design: .rounded))
                             .foregroundStyle(Theme.textSecondary)
                             .multilineTextAlignment(.center)
@@ -1646,9 +1643,12 @@ struct TrialOfferSheet: View {
 
                     Button(action: onStartTrial) {
                         ZStack {
-                            Text("Start My Free Trial")
+                            Text(ctaTitle)
                                 .font(.system(.headline, design: .rounded, weight: .bold))
                                 .foregroundStyle(.white)
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.75)
+                                .multilineTextAlignment(.center)
                                 .opacity(isPurchasing ? 0 : 1)
                             if isPurchasing {
                                 ProgressView()
@@ -1727,6 +1727,7 @@ struct TrialOfferSheet: View {
 /// offer; dismissing just closes.
 private struct MilestoneCelebrationSheet: View {
     let event: MilestoneEvent
+    let ctaTitle: String
     let onContinue: () -> Void
     let onDismiss: () -> Void
 
@@ -1809,7 +1810,7 @@ private struct MilestoneCelebrationSheet: View {
 
                 VStack(spacing: 10) {
                     Button(action: onContinue) {
-                        Text("Start Free Trial")
+                        Text(ctaTitle)
                             .font(.system(.headline, design: .rounded, weight: .bold))
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)

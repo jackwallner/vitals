@@ -16,8 +16,13 @@ struct PaywallScreenshotHarness: View {
                 trialBackdrop {
                     TrialOfferSheet(
                         focus: focus,
-                        offerLabel: trialPackage?.vitalsIntroOfferLabel ?? "7-day free trial",
+                        offerLabel: store.canPitchFreeTrial
+                            ? (trialPackage?.vitalsIntroOfferLabel ?? "7-day free trial")
+                            : nil,
                         priceLabel: trialPackage?.vitalsPriceLabel ?? "$29.99 / year",
+                        ctaTitle: store.onboardingTrialCTALabel,
+                        disclosureText: store.yearlySheetDisclosureText
+                            ?? "\(trialPackage?.vitalsPriceLabel ?? "$29.99 / year"). Auto-renews unless cancelled 24h before the period ends.",
                         directPurchase: true,
                         isPurchasing: false,
                         errorMessage: nil,

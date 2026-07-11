@@ -210,12 +210,17 @@ struct PaywallView: View {
     @State private var restoreMessage: String?
     @State private var isRestoring = false
 
-    /// Rich outcome bullets for the one-screen paywall. Intent taps lead with the
-    /// feature they asked for plus two related companions.
+    /// Outcome bullets. Intent taps lead with the feature they asked for plus
+    /// two related companions; the Upgrade tab lists every Vitals+ benefit.
     private var paywallBullets: [PlusFeature] {
         if let focus { return [focus] + focus.companionFeatures }
-        return [.netDeficit, .energyAverages, .projections, .deepTrends]
+        return [
+            .netDeficit, .activeResting, .energyAverages, .projections,
+            .streaks, .deepTrends, .customRangesPDF, .weeklyRecap, .bodyProfile
+        ]
     }
+
+    private var showsFullBenefitList: Bool { focus == nil }
 
     /// Annual savings vs. paying monthly for a year, as a whole percent. Drives
     /// the "SAVE X%" badge — loss-aversion anchoring against the monthly price.
@@ -301,18 +306,35 @@ struct PaywallView: View {
         paywallContent
     }
 
-    /// Single viewport — hero, outcome bullets, plans; checkout pinned slim below.
+    /// Hero + benefits + plans; checkout pinned slim below. Full Upgrade-tab
+    /// benefit list scrolls so every Vitals+ capability stays visible.
     private var paywallContent: some View {
-        VStack(spacing: 12) {
-            header(compact: true)
-            paywallFeatureList
-            planCards
-            Spacer(minLength: 0)
+        Group {
+            if showsFullBenefitList {
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 12) {
+                        header(compact: true)
+                        paywallFeatureList
+                        planCards
+                    }
+                    .padding(.horizontal, 22)
+                    .padding(.top, displayCloseButton ? 44 : 20)
+                    .padding(.bottom, 8)
+                }
+                .scrollBounceBehavior(.basedOnSize)
+            } else {
+                VStack(spacing: 12) {
+                    header(compact: true)
+                    paywallFeatureList
+                    planCards
+                    Spacer(minLength: 0)
+                }
+                .padding(.horizontal, 22)
+                .padding(.top, displayCloseButton ? 44 : 20)
+                .padding(.bottom, 4)
+                .frame(maxHeight: .infinity)
+            }
         }
-        .padding(.horizontal, 22)
-        .padding(.top, displayCloseButton ? 44 : 20)
-        .padding(.bottom, 4)
-        .frame(maxHeight: .infinity)
         .safeAreaInset(edge: .bottom, spacing: 0) {
             pinnedCheckoutFooter
         }
@@ -342,33 +364,36 @@ struct PaywallView: View {
             .disabled(isPurchasing || selectedPackage == nil)
 
             VStack(spacing: 4) {
-                ZStack(alignment: .top) {
-                    Text(disclosureText ?? " ")
+                // Error replaces disclosure in the same slot — never ZStack both
+                // (overlapping red + grey text on purchase failure).
+                if let errorMessage {
+                    Text(errorMessage)
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(.red)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(3)
+                        .minimumScaleFactor(0.9)
+                        .frame(maxWidth: .infinity)
+                } else if let restoreMessage {
+                    Text(restoreMessage)
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(3)
+                        .frame(maxWidth: .infinity)
+                } else if let disclosureText {
+                    Text(disclosureText)
                         .font(.system(.caption2, design: .rounded))
                         .foregroundStyle(Theme.textTertiary)
                         .multilineTextAlignment(.center)
                         .lineLimit(3)
                         .minimumScaleFactor(0.9)
                         .frame(maxWidth: .infinity)
-                        .opacity(disclosureText == nil ? 0 : 1)
-
-                    if let errorMessage {
-                        Text(errorMessage)
-                            .font(.system(.caption, design: .rounded))
-                            .foregroundStyle(.red)
-                            .multilineTextAlignment(.center)
-                    } else if let restoreMessage {
-                        Text(restoreMessage)
-                            .font(.system(.caption, design: .rounded))
-                            .foregroundStyle(Theme.textSecondary)
-                            .multilineTextAlignment(.center)
-                    }
                 }
-                .frame(height: 44, alignment: .top)
 
                 legalFooter
             }
-            .frame(height: 68, alignment: .top)
+            .frame(minHeight: 68, alignment: .top)
         }
         .padding(.horizontal, 22)
         .padding(.top, 8)
@@ -546,10 +571,11 @@ struct PaywallView: View {
                     // isPro flips via apply(); the onChange dismisses the sheet.
                     break
                 case .cancelled:
-                    errorMessage = "Purchase cancelled. Tap again to continue."
+                    errorMessage = store.purchaseCancelledMessage(for: package)
                 }
             } catch {
-                errorMessage = "Couldn't complete the purchase. Please try again."
+                await store.refreshIntroEligibility()
+                errorMessage = store.purchaseFailedMessage(for: package)
             }
         }
     }

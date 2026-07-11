@@ -29,6 +29,11 @@ extension Notification.Name {
     /// Posted after a Net Deficit unlock so Settings (if open) dismisses and the
     /// dietary HealthKit permission sheet can present without being covered.
     static let vitalsDismissSettings = Notification.Name("vitalsDismissSettings")
+
+    /// Pro user turned Net Deficit on (Settings toggle or Vitals+ Enable). Host
+    /// must dismiss covering sheets first, then flip the setting and request
+    /// dietary HealthKit auth — otherwise the system permission UI is suppressed.
+    static let vitalsEnableNetDeficitWithDietaryAuth = Notification.Name("vitalsEnableNetDeficitWithDietaryAuth")
 }
 
 @MainActor
