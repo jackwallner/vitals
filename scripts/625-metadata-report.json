@@ -1,0 +1,552 @@
+{
+  "ar-SA": {
+    "subtitle": {
+      "old": "حرق يومي ساعة وودجت",
+      "new": "TDEE حرق ساعة وودجت"
+    },
+    "keywords": {
+      "old": "عدادخطوات,حلقة,tdee,bmr,مضاعفة,عجز,راحة,نشط,إيقاع,صيام,مشي,حركة,healthkit,نشاط,خطوات,kcal,شاشةالقفل",
+      "new": "عدادخطوات,bmr,مضاعفة,عجز,راحة,نشط,إيقاع,صيام,مشي,حركة,healthkit,نشاط,خطوات,kcal,شاشةالقفل,bmi,محروق",
+      "len": 99
+    }
+  },
+  "bn-BD": {
+    "subtitle": {
+      "old": "ঘড়ি ওয়িজেট দৈনিক বার্ন",
+      "new": "TDEE বার্ন ঘড়ি ওয়িজেট"
+    },
+    "keywords": {
+      "old": "পেডোমিটার,রিং,tdee,bmr,জটিলতা,ঘাটতি,বিশ্রাম,সক্রিয়,গতি,উপবাস,হাঁটা,healthkit,কার্যকলাপ,ধাপ,kcal",
+      "new": "পেডোমিটার,bmr,জটিলতা,ঘাটতি,বিশ্রাম,সক্রিয়,গতি,উপবাস,হাঁটা,healthkit,কার্যকলাপ,ধাপ,kcal,bmi",
+      "len": 91
+    }
+  },
+  "ca": {
+    "subtitle": {
+      "old": "Cal cremat diari rellotge",
+      "new": "TDEE Cremat Rellotge Widget"
+    },
+    "keywords": {
+      "old": "podòmetre,anell,tdee,bmr,complicació,dèficit,repòs,actiu,ritme,dejuni,caminar,moure,healthkit,passos",
+      "new": "podòmetre,bmr,complicació,dèficit,repòs,actiu,ritme,dejuni,caminar,moure,healthkit,passos,bmi,kcal",
+      "len": 98
+    }
+  },
+  "cs": {
+    "subtitle": {
+      "old": "Denní spálení hodinky widget",
+      "new": "TDEE Spálení Hodinky"
+    },
+    "keywords": {
+      "old": "krokoměr,kroužek,tdee,bmr,komplikace,deficit,klid,aktivní,tempo,půst,chůze,pohyb,healthkit,aktivita",
+      "new": "krokoměr,bmr,komplikace,deficit,klid,aktivní,tempo,půst,chůze,pohyb,healthkit,aktivita,bmi,spálené",
+      "len": 98
+    }
+  },
+  "da": {
+    "subtitle": {
+      "old": "Dagligt forbrænd ur widget",
+      "new": "TDEE Forbrænding Ur Widget"
+    },
+    "keywords": {
+      "old": "skridttæller,ring,tdee,bmr,komplikation,underskud,hvile,aktiv,takt,faste,gang,bevægelse,healthkit",
+      "new": "skridttæller,bmr,komplikation,underskud,hvile,aktiv,takt,faste,gang,bevægelse,healthkit,bmi,kcal",
+      "len": 96
+    }
+  },
+  "de-DE": {
+    "subtitle": {
+      "old": "Tagesverbrennung Uhr & Widget",
+      "new": "TDEE Verbrennung Uhr Widget"
+    },
+    "keywords": {
+      "old": "grundumsatz,stoffwechsel,kalorienrechner,komplikation,defizit,tdee,bmr,aktiv,kalorienbedarf,kalorien",
+      "new": "grundumsatz,stoffwechsel,kalorienrechner,komplikation,defizit,bmr,aktiv,kalorienbedarf,kalorien,bmi",
+      "len": 99
+    }
+  },
+  "el": {
+    "subtitle": {
+      "old": "Ημερήσια καύση ρολόι widget",
+      "new": "TDEE Καύση Ρολόι Widget"
+    },
+    "keywords": {
+      "old": "βηματόμετρο,δακτύλιος,tdee,bmr,επιπλοκή,έλλειμμα,ανάπαυση,ενεργό,ρυθμός,νηστεία,περπάτημα,κίνηση",
+      "new": "βηματόμετρο,bmr,επιπλοκή,έλλειμμα,ανάπαυση,ενεργό,ρυθμός,νηστεία,περπάτημα,κίνηση,bmi,καμένες,kcal",
+      "len": 98
+    }
+  },
+  "en-AU": {
+    "subtitle": {
+      "old": "Daily Burn on Watch & Widget",
+      "new": "TDEE Burn on Watch & Widget"
+    },
+    "keywords": {
+      "old": "tdee,bmr,complication,resting,pace,pacing,active,move,calculator,deficit,net,metabolic,energy,steps",
+      "new": "bmr,complication,resting,active,ring,calculator,deficit,net,energy,steps,metabolic,pacing,bmi,burned",
+      "len": 100
+    }
+  },
+  "en-CA": {
+    "subtitle": {
+      "old": "Daily Burn on Watch & Widget",
+      "new": "TDEE Burn on Watch & Widget"
+    },
+    "keywords": {
+      "old": "tdee,bmr,complication,resting,pace,pacing,active,move,calculator,deficit,net,metabolic,energy,steps",
+      "new": "bmr,complication,resting,active,ring,calculator,deficit,net,energy,steps,metabolic,pacing,bmi,burned",
+      "len": 100
+    }
+  },
+  "en-GB": {
+    "subtitle": {
+      "old": "Daily Burn on Watch & Widget",
+      "new": "TDEE Burn on Watch & Widget"
+    },
+    "keywords": {
+      "old": "tdee,bmr,complication,resting,pace,pacing,active,move,calculator,deficit,net,metabolic,energy,steps",
+      "new": "bmr,complication,resting,active,ring,calculator,deficit,net,energy,steps,metabolic,pacing,bmi,burned",
+      "len": 100
+    }
+  },
+  "en-US": {
+    "subtitle": {
+      "old": "Daily Burn on Watch & Widget",
+      "new": "TDEE Burn on Watch & Widget"
+    },
+    "keywords": {
+      "old": "tdee,bmr,complication,resting,active,ring,calculator,deficit,net,kcal,energy,steps,metabolic,pacing",
+      "new": "bmr,complication,resting,active,ring,calculator,deficit,net,energy,steps,metabolic,pacing,bmi,burned",
+      "len": 100
+    }
+  },
+  "es-ES": {
+    "subtitle": {
+      "old": "Quema diaria reloj y widget",
+      "new": "TDEE Quema Reloj y Widget"
+    },
+    "keywords": {
+      "old": "tdee,bmr,metabolismo basal,tasa metabólica,gasto calórico,déficit,complicación,reposo,activas,netas",
+      "new": "bmr,metabolismobasal,tasametabólica,gastocalórico,déficit,complicación,reposo,activas,netas,bmi,kcal",
+      "len": 100
+    }
+  },
+  "es-MX": {
+    "subtitle": {
+      "old": "Quema diaria reloj y widget",
+      "new": "TDEE Quema Reloj y Widget"
+    },
+    "keywords": {
+      "old": "tdee,bmr,metabolismo basal,tasa metabólica,gasto calórico,déficit,complicación,reposo,activas,netas",
+      "new": "bmr,metabolismobasal,tasametabólica,gastocalórico,déficit,complicación,reposo,activas,netas,bmi,kcal",
+      "len": 100
+    }
+  },
+  "fi": {
+    "subtitle": {
+      "old": "Päivittäinen kulutus kello",
+      "new": "TDEE Kulutus Kello Widget"
+    },
+    "keywords": {
+      "old": "askelmittari,rengas,tdee,bmr,komplikaatio,alijäämä,lepo,aktiivinen,tahti,paasto,kävely,liike,kcal",
+      "new": "askelmittari,bmr,komplikaatio,alijäämä,lepo,aktiivinen,tahti,paasto,kävely,liike,kcal,bmi,poltettu",
+      "len": 98
+    }
+  },
+  "fr-CA": {
+    "subtitle": {
+      "old": "Brûlure du jour Montre Widget",
+      "new": "TDEE Brûlure Montre Widget"
+    },
+    "keywords": {
+      "old": "tdee,bmr,complication,actif,actives,besoin,calorique,nettes,métabolisme,base,repos",
+      "new": "bmr,complication,actif,actives,besoin,calorique,nettes,métabolisme,base,repos,bmi,brûlées,kcal",
+      "len": 94
+    }
+  },
+  "fr-FR": {
+    "subtitle": {
+      "old": "Brûlure du jour Montre Widget",
+      "new": "TDEE Brûlure Montre Widget"
+    },
+    "keywords": {
+      "old": "tdee,bmr,complication,actif,actives,besoin,calorique,nettes,métabolisme,base,repos",
+      "new": "bmr,complication,actif,actives,besoin,calorique,nettes,métabolisme,base,repos,bmi,brûlées,kcal",
+      "len": 94
+    }
+  },
+  "gu-IN": {
+    "subtitle": {
+      "old": "વોચ વિજેટ દૈનિક બર્ન",
+      "new": "TDEE બર્ન વોચ વિજેટ"
+    },
+    "keywords": {
+      "old": "પેડોમીટર,રિંગ,tdee,bmr,જટિલતા,ઘાટો,વિશ્રામ,સક્રિય,ગતિ,ઉપવાસ,ચાલ,healthkit,પ્રવૃત્તિ,પગલા,kcal",
+      "new": "પેડોમીટર,bmr,જટિલતા,ઘાટો,વિશ્રામ,સક્રિય,ગતિ,ઉપવાસ,ચાલ,healthkit,પ્રવૃત્તિ,પગલા,kcal,bmi",
+      "len": 87
+    }
+  },
+  "he": {
+    "subtitle": {
+      "old": "שריפה יומית שעון ווידג'ט",
+      "new": "TDEE שריפה שעון ווידג'ט"
+    },
+    "keywords": {
+      "old": "מדצעדים,טבעת,tdee,bmr,סיבוך,גירעון,מנוחה,פעיל,קצב,צום,הליכה,תנועה,healthkit,פעילות,צעדים,kcal,מונה",
+      "new": "מדצעדים,bmr,סיבוך,גירעון,מנוחה,פעיל,קצב,צום,הליכה,תנועה,healthkit,פעילות,צעדים,kcal,מונה,bmi,נשרף",
+      "len": 97
+    }
+  },
+  "hi": {
+    "subtitle": {
+      "old": "दैनिक बर्न घड़ी विजेट",
+      "new": "TDEE बर्न घड़ी विजेट"
+    },
+    "keywords": {
+      "old": "पेडोमीटर,रिंग,tdee,bmr,जटिलता,घाटा,विश्राम,सक्रिय,गति,उपवास,चलना,गति,healthkit,गतिविधि,कदम,kcal",
+      "new": "पेडोमीटर,bmr,जटिलता,घाटा,विश्राम,सक्रिय,गति,उपवास,चलना,healthkit,गतिविधि,कदम,kcal,bmi,जली",
+      "len": 89
+    }
+  },
+  "hr": {
+    "subtitle": {
+      "old": "Dnevno sagorijevanje sat",
+      "new": "TDEE Sagorijevanje Sat"
+    },
+    "keywords": {
+      "old": "pedometar,prsten,tdee,bmr,komplikacija,deficit,odmor,aktivan,ritam,post,hodanje,pokret,healthkit",
+      "new": "pedometar,bmr,komplikacija,deficit,odmor,aktivan,ritam,post,hodanje,pokret,healthkit,bmi,sagorjeno",
+      "len": 98
+    }
+  },
+  "hu": {
+    "subtitle": {
+      "old": "Napi elégés óra widget",
+      "new": "TDEE Elégés Óra Widget"
+    },
+    "keywords": {
+      "old": "lépésszámláló,gyűrű,tdee,bmr,komplikáció,hiány,pihenő,aktív,tempó,böjt,séta,mozgás,healthkit,lépések",
+      "new": "lépésszámláló,bmr,komplikáció,hiány,pihenő,aktív,tempó,böjt,séta,mozgás,healthkit,lépések,bmi,kcal",
+      "len": 98
+    }
+  },
+  "id": {
+    "subtitle": {
+      "old": "Pembakaran harian jam widget",
+      "new": "TDEE Bakar Jam Widget"
+    },
+    "keywords": {
+      "old": "pedometer,cincin,tdee,bmr,komplikasi,defisit,istirahat,aktif,ritme,puasa,jalan,gerak,healthkit,kcal",
+      "new": "pedometer,bmr,komplikasi,defisit,istirahat,aktif,ritme,puasa,jalan,gerak,healthkit,kcal,bmi,terbakar",
+      "len": 100
+    }
+  },
+  "it": {
+    "subtitle": {
+      "old": "Bruciatura giornaliera orologi",
+      "new": "TDEE Bruciatura Orologio"
+    },
+    "keywords": {
+      "old": "tdee,bmr,complicazione,riposo,deficit,attivo,ritmo,metabolismo,basale,fabbisogno,dispendio,calorico",
+      "new": "bmr,complicazione,riposo,deficit,attivo,ritmo,metabolismo,basale,fabbisogno,dispendio,calorico,bmi",
+      "len": 98
+    }
+  },
+  "ja": {
+    "subtitle": {
+      "old": "今日の消費 腕時計＆ウィジェット",
+      "new": "TDEE消費 腕時計＆ウィジェット"
+    },
+    "keywords": {
+      "old": "歩数計,リング,tdee,bmr,コンプリケーション,不足,安静,アクティブ,ペース,断食,ウォーキング,ムーブ,healthkit,活動,歩数,kcal,ロック画面,代謝,カウンター,健康",
+      "new": "歩数計,bmr,コンプリケーション,不足,安静,アクティブ,ペース,断食,ウォーキング,ムーブ,healthkit,活動,歩数,kcal,ロック画面,代謝,カウンター,健康,bmi,消費",
+      "len": 93
+    }
+  },
+  "kn-IN": {
+    "subtitle": {
+      "old": "ವಾಚ್ ವಿಜೆಟ್ ದೈನಿಕ ಬರ್ನ್",
+      "new": "TDEE ಬರ್ನ್ ವಾಚ್ ವಿಜೆಟ್"
+    },
+    "keywords": {
+      "old": "ಪೆಡೋಮೀಟರ್,ರಿಂಗ್,tdee,bmr,ಸಂಕೀರ್ಣತೆ,ಕೊರತೆ,ವಿಶ್ರಾಂತಿ,ಸಕ್ರಿಯ,ವೇಗ,ಉಪವಾಸ,ನಡೆ,healthkit,ಚಟುವಟಿಕೆ,ಸ್ಟೆಪ್ಸ್",
+      "new": "ಪೆಡೋಮೀಟರ್,bmr,ಸಂಕೀರ್ಣತೆ,ಕೊರತೆ,ವಿಶ್ರಾಂತಿ,ಸಕ್ರಿಯ,ವೇಗ,ಉಪವಾಸ,ನಡೆ,healthkit,ಚಟುವಟಿಕೆ,ಸ್ಟೆಪ್ಸ್,bmi,kcal",
+      "len": 97
+    }
+  },
+  "ko": {
+    "subtitle": {
+      "old": "일일 소모 워치·위젯",
+      "new": "TDEE 소모 워치·위젯"
+    },
+    "keywords": {
+      "old": "만보기,링,tdee,bmr,컴플리케이션,부족,휴식,활동,페이스,단식,걷기,이동,healthkit,활동량,걸음,kcal,잠금화면,대사,카운터,건강",
+      "new": "만보기,bmr,컴플리케이션,부족,휴식,활동,페이스,단식,걷기,이동,healthkit,활동량,걸음,kcal,잠금화면,대사,카운터,건강,bmi,소모",
+      "len": 80
+    }
+  },
+  "ml-IN": {
+    "subtitle": {
+      "old": "വാച്ച് വിജറ്റ് ദൈനിക ബേൺ",
+      "new": "TDEE ബേൺ വാച്ച് വിജറ്റ്"
+    },
+    "keywords": {
+      "old": "പീഡോമീറ്റർ,റിംഗ്,tdee,bmr,സങ്കീർണ്ണത,കമിഞ്ഞ,വിശ്രമം,സജീവ,വേഗത,ഉപവാസം,നടത്തം,healthkit,പ്രവർത്തനം",
+      "new": "പീഡോമീറ്റർ,bmr,സങ്കീർണ്ണത,കമിഞ്ഞ,വിശ്രമം,സജീവ,വേഗത,ഉപവാസം,നടത്തം,healthkit,പ്രവർത്തനം,bmi,kcal",
+      "len": 94
+    }
+  },
+  "mr-IN": {
+    "subtitle": {
+      "old": "वॉच विजेट दैनिक बर्न",
+      "new": "TDEE बर्न वॉच विजेट"
+    },
+    "keywords": {
+      "old": "पेडोमीटर,रिंग,tdee,bmr,जटिलता,घाटा,विश्राम,सक्रिय,गती,उपवास,चालण,healthkit,क्रियाकलाप,पायऱ्या,kcal",
+      "new": "पेडोमीटर,bmr,जटिलता,घाटा,विश्राम,सक्रिय,गती,उपवास,चालण,healthkit,क्रियाकलाप,पायऱ्या,kcal,bmi",
+      "len": 92
+    }
+  },
+  "ms": {
+    "subtitle": {
+      "old": "Pembakaran harian jam widget",
+      "new": "TDEE Bakar Jam Widget"
+    },
+    "keywords": {
+      "old": "pedometer,cincin,tdee,bmr,komplikasi,defisit,rehat,aktif,ritma,puasa,jalan,gerak,healthkit,aktiviti",
+      "new": "pedometer,bmr,komplikasi,defisit,rehat,aktif,ritma,puasa,jalan,gerak,healthkit,aktiviti,bmi,terbakar",
+      "len": 100
+    }
+  },
+  "nl-NL": {
+    "subtitle": {
+      "old": "Dagelijkse verbranding horloge",
+      "new": "TDEE Verbranding Horloge"
+    },
+    "keywords": {
+      "old": "tdee,bmr,complicatie,tekort,rust,actief,kcal,caloriebehoefte,basaalmetabolisme,stofwisseling,netto",
+      "new": "bmr,complicatie,tekort,rust,actief,kcal,caloriebehoefte,basaalmetabolisme,stofwisseling,netto,bmi",
+      "len": 97
+    }
+  },
+  "no": {
+    "subtitle": {
+      "old": "Daglig forbrenning klokke",
+      "new": "TDEE Forbrenning Klokke"
+    },
+    "keywords": {
+      "old": "skritteller,ring,tdee,bmr,komplikasjon,underskudd,hvile,aktiv,takt,faste,gang,bevegelse,healthkit",
+      "new": "skritteller,bmr,komplikasjon,underskudd,hvile,aktiv,takt,faste,gang,bevegelse,healthkit,bmi,forbrent",
+      "len": 100
+    }
+  },
+  "or-IN": {
+    "subtitle": {
+      "old": "ୱାଚ ଉଇଜେଟ ଦୈନିକ ବର୍ନ",
+      "new": "TDEE ବର୍ନ ୱାଚ ଉଇଜେଟ"
+    },
+    "keywords": {
+      "old": "ପେଡୋମିଟର,ରିଂ,tdee,bmr,ଜଟିଳତା,ଘାଟ,ବିଶ୍ରାମ,ସକ୍ରିୟ,ଗତି,ଉପବାସ,ଚାଲ,healthkit,କାର୍ଯ୍ୟକଳାପ,ପାଦକ୍ଷେପ,kcal",
+      "new": "ପେଡୋମିଟର,bmr,ଜଟିଳତା,ଘାଟ,ବିଶ୍ରାମ,ସକ୍ରିୟ,ଗତି,ଉପବାସ,ଚାଲ,healthkit,କାର୍ଯ୍ୟକଳାପ,ପାଦକ୍ଷେପ,kcal,bmi",
+      "len": 92
+    }
+  },
+  "pa-IN": {
+    "subtitle": {
+      "old": "ਵਾਚ ਵਿਜਟ ਰੋਜ਼ਾਨਾ ਬਰਨ",
+      "new": "TDEE ਬਰਨ ਵਾਚ ਵਿਜਟ"
+    },
+    "keywords": {
+      "old": "ਪੇਡੋਮੀਟਰ,ਰਿੰਗ,tdee,bmr,ਜਟਿਲਤਾ,ਘਾਟਾ,ਆਰਾਮ,ਸਕ੍ਰਿਯ,ਗਤੀ,ਵਰਤ,ਟੁਰਨਾ,healthkit,ਗਤੀਵਿਧੀ,ਕਦਮ,kcal",
+      "new": "ਪੇਡੋਮੀਟਰ,bmr,ਜਟਿਲਤਾ,ਘਾਟਾ,ਆਰਾਮ,ਸਕ੍ਰਿਯ,ਗਤੀ,ਵਰਤ,ਟੁਰਨਾ,healthkit,ਗਤੀਵਿਧੀ,ਕਦਮ,kcal,bmi",
+      "len": 81
+    }
+  },
+  "pl": {
+    "subtitle": {
+      "old": "Dzienna spalanka zegarek widge",
+      "new": "TDEE Spalanie Zegarek"
+    },
+    "keywords": {
+      "old": "krokomierz,pierścień,tdee,bmr,komplikacja,deficyt,spoczynek,aktywny,rytm,post,chodzenie,ruch,kroki",
+      "new": "krokomierz,bmr,komplikacja,deficyt,spoczynek,aktywny,rytm,post,chodzenie,ruch,kroki,bmi,spalone,kcal",
+      "len": 100
+    }
+  },
+  "pt-BR": {
+    "subtitle": {
+      "old": "Queima diária relógio widget",
+      "new": "TDEE Queima Relógio Widget"
+    },
+    "keywords": {
+      "old": "pedômetro,anel,tdee,bmr,complicação,déficit,repouso,ativo,ritmo,jejum,caminhar,mover,healthkit,kcal",
+      "new": "pedômetro,bmr,complicação,déficit,repouso,ativo,ritmo,jejum,caminhar,mover,healthkit,kcal,bmi",
+      "len": 93
+    }
+  },
+  "pt-PT": {
+    "subtitle": {
+      "old": "Queima diária relógio widget",
+      "new": "TDEE Queima Relógio Widget"
+    },
+    "keywords": {
+      "old": "pedómetro,anel,tdee,bmr,complicação,déficit,repouso,ativo,ritmo,jejum,caminhar,mover,healthkit,kcal",
+      "new": "pedómetro,bmr,complicação,déficit,repouso,ativo,ritmo,jejum,caminhar,mover,healthkit,kcal,bmi",
+      "len": 93
+    }
+  },
+  "ro": {
+    "subtitle": {
+      "old": "Ardere zilnică ceas widget",
+      "new": "TDEE Ardere Ceas Widget"
+    },
+    "keywords": {
+      "old": "pedometru,inel,tdee,bmr,complicație,deficit,odihnă,activ,ritm,post,mers,mișcare,healthkit,activitate",
+      "new": "pedometru,bmr,complicație,deficit,odihnă,activ,ritm,post,mers,mișcare,healthkit,activitate,bmi,arse",
+      "len": 99
+    }
+  },
+  "ru": {
+    "subtitle": {
+      "old": "Сжигание в день часы виджет",
+      "new": "TDEE Сжигание Часы Виджет"
+    },
+    "keywords": {
+      "old": "шагомер,кольцо,tdee,bmr,осложнение,дефицит,отдых,активный,темп,пост,ходьба,движение,healthkit,шаги",
+      "new": "шагомер,bmr,осложнение,дефицит,отдых,активный,темп,пост,ходьба,движение,healthkit,шаги,bmi,сожжённые",
+      "len": 100
+    }
+  },
+  "sk": {
+    "subtitle": {
+      "old": "Denné spaľovanie hodinky",
+      "new": "TDEE Spaľovanie Hodinky"
+    },
+    "keywords": {
+      "old": "krokoměr,krúžok,tdee,bmr,komplikácia,deficit,pokoj,aktívny,tempo,pôst,chôdza,pohyb,healthkit,kroky",
+      "new": "krokoměr,bmr,komplikácia,deficit,pokoj,aktívny,tempo,pôst,chôdza,pohyb,healthkit,kroky,bmi,spálené",
+      "len": 98
+    }
+  },
+  "sl-SI": {
+    "subtitle": {
+      "old": "Ura in pripomoček dnevno",
+      "new": "TDEE Zgorevanje Ura Widget"
+    },
+    "keywords": {
+      "old": "pedometer,obroč,tdee,bmr,komplikacija,primanjkljaj,mirenje,aktivno,tempo,post,hoja,healthkit,koraki",
+      "new": "pedometer,bmr,komplikacija,primanjkljaj,mirenje,aktivno,tempo,post,hoja,healthkit,koraki,bmi,kcal",
+      "len": 97
+    }
+  },
+  "sv": {
+    "subtitle": {
+      "old": "Daglig förbränning klocka",
+      "new": "TDEE Förbränning Klocka"
+    },
+    "keywords": {
+      "old": "stegräknare,ring,tdee,bmr,komplikation,underskott,vila,aktiv,takt,fasta,gång,rörelse,healthkit,steg",
+      "new": "stegräknare,bmr,komplikation,underskott,vila,aktiv,takt,fasta,gång,rörelse,healthkit,steg,bmi,kcal",
+      "len": 98
+    }
+  },
+  "ta-IN": {
+    "subtitle": {
+      "old": "வாட்ச் விஜெட் தினசரி எரிப்பு",
+      "new": "TDEE எரிப்பு வாட்ச் விஜெட்"
+    },
+    "keywords": {
+      "old": "பேடோமீட்டர்,ரிங்,tdee,bmr,சிக்கல்,பற்றாக்குறை,ஓய்வு,செயல்,வேகம்,உண்ணாவிரதம்,நடை,healthkit,செயல்பாடு",
+      "new": "பேடோமீட்டர்,ரிங்,bmr,சிக்கல்,பற்றாக்குறை,ஓய்வு,செயல்,வேகம்,உண்ணாவிரதம்,நடை,healthkit,செயல்பாடு,bmi",
+      "len": 98
+    }
+  },
+  "te-IN": {
+    "subtitle": {
+      "old": "వాచ్ విడ్జెట్ రోజు బర్న్",
+      "new": "TDEE బర్న్ వాచ్ విడ్జెట్"
+    },
+    "keywords": {
+      "old": "పీడోమీటర్,రింగ్,tdee,bmr,సంక్లిష్టత,లోపం,విశ్రాంతి,యాక్టివ్,వేగం,ఉపవాసం,నడక,healthkit,యాక్టివిటీ",
+      "new": "పీడోమీటర్,bmr,సంక్లిష్టత,లోపం,విశ్రాంతి,యాక్టివ్,వేగం,ఉపవాసం,నడక,healthkit,యాక్టివిటీ,bmi,kcal",
+      "len": 94
+    }
+  },
+  "th": {
+    "subtitle": {
+      "old": "เผาผลาญรายวัน นาฬิกา วิดเจ็ต",
+      "new": "TDEE เผาผลาญ นาฬิกา วิดเจ็ต"
+    },
+    "keywords": {
+      "old": "นับก้าว,แหวน,tdee,bmr,ภาพปะ,ขาด,พัก,กระตือ,จังหวะ,อด,เดิน,เคลื่อน,healthkit,กิจกรรม,ก้าว,kcal,ตัวนับ",
+      "new": "นับก้าว,bmr,ภาพปะ,ขาด,พัก,กระตือ,จังหวะ,อด,เดิน,เคลื่อน,healthkit,กิจกรรม,ก้าว,kcal,ตัวนับ,bmi",
+      "len": 94
+    }
+  },
+  "tr": {
+    "subtitle": {
+      "old": "Günlük yakım saat widget",
+      "new": "TDEE Yakım Saat Widget"
+    },
+    "keywords": {
+      "old": "adımsayar,halka,tdee,bmr,komplikasyon,açık,dinlenme,aktif,tempo,oruç,yürüyüş,hareket,healthkit,kcal",
+      "new": "adımsayar,bmr,komplikasyon,açık,dinlenme,aktif,tempo,oruç,yürüyüş,hareket,healthkit,kcal,bmi,yakılan",
+      "len": 100
+    }
+  },
+  "uk": {
+    "subtitle": {
+      "old": "Щоденне спалення годинник",
+      "new": "TDEE Спалення Годинник"
+    },
+    "keywords": {
+      "old": "крокомір,кільце,tdee,bmr,ускладнення,дефіцит,відпочинок,активний,темп,піст,ходьба,рух,healthkit,kcal",
+      "new": "крокомір,bmr,ускладнення,дефіцит,відпочинок,активний,темп,піст,ходьба,рух,healthkit,kcal,bmi,спалені",
+      "len": 100
+    }
+  },
+  "ur-PK": {
+    "subtitle": {
+      "old": "واچ ویجٹ روزانہ برن",
+      "new": "TDEE برن واچ ویجٹ"
+    },
+    "keywords": {
+      "old": "پیڈومیٹر,رنگ,tdee,bmr,پیچیدگی,کمی,آرام,فعال,رفتار,روزہ,چہل,healthkit,سرگرمی,قدم,kcal",
+      "new": "پیڈومیٹر,رنگ,bmr,پیچیدگی,کمی,آرام,فعال,رفتار,روزہ,چہل,healthkit,سرگرمی,قدم,kcal,bmi",
+      "len": 83
+    }
+  },
+  "vi": {
+    "subtitle": {
+      "old": "Đốt cháy hàng ngày đồng hồ",
+      "new": "TDEE Đốt cháy Đồng hồ"
+    },
+    "keywords": {
+      "old": "đếmbước,vòng,tdee,bmr,phứctạp,thiếu,nghỉ,hoạt,nhịp,nhịn,đibộ,dichuyen,healthkit,hoạtđộng,bước,kcal",
+      "new": "đếmbước,bmr,phứctạp,thiếu,nghỉ,hoạt,nhịp,nhịn,đibộ,dichuyen,healthkit,hoạtđộng,bước,kcal,bmi,đốt",
+      "len": 96
+    }
+  },
+  "zh-Hans": {
+    "subtitle": {
+      "old": "每日消耗 手表与小组件",
+      "new": "TDEE消耗 手表与小组件"
+    },
+    "keywords": {
+      "old": "计步器,圆环,tdee,bmr,表盘,缺口,静息,活动,节奏,断食,步行,移动,healthkit,活动量,步数,kcal,锁屏,代谢,计数器,健康",
+      "new": "计步器,bmr,表盘,缺口,静息,活动,节奏,断食,步行,移动,healthkit,活动量,步数,kcal,锁屏,代谢,计数器,健康,bmi,消耗",
+      "len": 73
+    }
+  },
+  "zh-Hant": {
+    "subtitle": {
+      "old": "每日消耗 手錶與小工具",
+      "new": "TDEE消耗 手錶與小工具"
+    },
+    "keywords": {
+      "old": "計步器,圓環,tdee,bmr,錶盤,缺口,靜息,活動,節奏,斷食,步行,移動,healthkit,活動量,步數,kcal,鎖屏,代謝,計數器,健康",
+      "new": "計步器,bmr,錶盤,缺口,靜息,活動,節奏,斷食,步行,移動,healthkit,活動量,步數,kcal,鎖屏,代謝,計數器,健康,bmi,消耗",
+      "len": 73
+    }
+  }
+}
