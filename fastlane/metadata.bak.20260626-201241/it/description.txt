@@ -1,0 +1,54 @@
+Total Calories mostra le calorie bruciate al giorno (attive + a riposo) e il conteggio dei passi dove ti servono di più: schermata Home e Schermata di blocco di iPhone e quadrante Apple Watch, gratis. Nessun abbonamento per le funzioni base. Nessun account. Nessun dato lascia il tuo telefono.
+
+Se hai mai desiderato che il quadrante Apple Watch mostrasse solo le calorie totali bruciate nella giornata, questa è l’app che fa per te.
+
+SU APPLE WATCH (GRATIS)
+- Complicazioni con calorie totali bruciate per ogni stile di quadrante: circolare, rettangolare, in linea e angolare.
+- Complicazione con passi in tempo reale.
+- L’app per Watch mostra la giornata a colpo d’occhio più le tendenze degli ultimi 30 giorni.
+- Gli obiettivi impostati su iPhone si sincronizzano subito con l’orologio.
+
+SU SCHERMATA HOME E SCHERMATA DI BLOCCO (GRATIS)
+- Widget Home in dimensioni piccole e medie.
+- Widget Schermata di blocco in layout circolare e rettangolare.
+- I widget rispettano le metriche attivate e gli obiettivi impostati.
+- Totali giornalieri completi visibili senza aprire l’app.
+
+LA DASHBOARD (GRATIS)
+- Calorie totali giornaliere bruciate in un’unica, chiara “ring”.
+- Passi giornalieri con barra di avanzamento e obiettivo.
+- Indicatore di ritmo: sei in anticipo o in ritardo rispetto al tuo solito a quest’ora?
+- Trascina per aggiornare. Tocca l’ingranaggio per le impostazioni.
+
+CRONOLOGIA (GRATIS)
+- Viste 7 / 30 / 90 / 365 giorni e qualsiasi intervallo personalizzato.
+- Frecce di tendenza, giorni di picco e grafici a barre puliti.
+- Esportazione dati in CSV.
+
+OBIETTIVI SU MISURA PER TE
+- Obiettivi giornalieri facoltativi per calorie e passi.
+- Oppure nessun obiettivo e usala solo come contatore pulito: decidi tu.
+- Confronto ritmo: stesso giorno della settimana vs tutti i giorni, periodo di analisi configurabile (14 / 30 / 90 giorni / 1 anno).
+
+Vitals+ (OPZIONALE)
+Un piccolo upgrade mensile, annuale o a vita sblocca:
+- Dettaglio calorie attive vs a riposo
+- Deficit netto: calorie bruciate meno energia dal cibo da Apple Health
+- Riepiloghi mensili in PDF pronti da condividere
+- Report PDF per intervallo di date personalizzato
+- Deep Trends: schede di confronto periodo su periodo
+Una prova gratuita è offerta ai nuovi abbonati.
+
+PRIVATA PER PROGETTAZIONE
+- Accesso in sola lettura a Apple Health. L’app non scrive mai nei tuoi dati sanitari.
+- Tutti i dati sono archiviati localmente sul dispositivo.
+- Niente analisi. Niente pubblicità. Niente server. Nessun account. Nessun tracciamento.
+- I report sono generati sul dispositivo.
+
+Total Calories non è un dispositivo medico e non è destinata a diagnosticare, trattare o prevenire alcuna condizione medica. Consulta sempre un professionista sanitario per consigli medici.
+
+Dettagli dell’abbonamento
+Vitals+ è disponibile come abbonamento con rinnovo automatico (Mensile 1,99 $ / Annuale 14,99 $ con prova gratuita di 7 giorni) oppure come acquisto Lifetime una tantum (29,99 $). Il pagamento viene addebitato sul tuo ID Apple alla conferma. L’abbonamento si rinnova automaticamente salvo annullamento almeno 24 ore prima della fine del periodo. Puoi gestire o annullare in qualsiasi momento in Impostazioni → ID Apple → Abbonamenti.
+
+Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

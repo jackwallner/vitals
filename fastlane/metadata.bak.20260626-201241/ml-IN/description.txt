@@ -1,0 +1,54 @@
+Total Calories നിങ്ങളുടെ ദൈനംദിനം കത്തിച്ച കലോറി (സജീവ + വിശ്രമം) ഉം ചുവടുകളും ആവശ്യമുള്ളിടത്ത് തന്നെ കാണിക്കുന്നു — iPhone Home Screen, Lock Screen, Apple Watch face എന്നിവയിൽ — പൂർണ്ണമായും സൗജന്യം. അടിസ്ഥാന സവിശേഷതകൾക്ക് സബ്‌സ്ക്രിപ്ഷൻ ആവശ്യമില്ല. അക്കൗണ്ട് ഇല്ല. ഡാറ്റ ഫോണിൽ നിന്ന് പുറത്തുപോകില്ല.
+
+Apple Watch face-ൽ ഇന്നത്തെ മൊത്തം കത്തിച്ച കലോറി വ്യക്തമായി കാണണമെന്ന് നിങ്ങൾ ആഗ്രഹിച്ചിട്ടുണ്ടെങ്കിൽ, ഇതാണ് ആ app.
+
+APPLE WATCH ൽ (സൗജന്യം)
+- എല്ലാ watch face ശൈലികൾക്കും മൊത്തം കത്തിച്ച കലോറി complications: circular, rectangular, inline, corner.
+- Live step count complication.
+- Watch app ഇന്നത്തെ summaryയും 30‑ദിവസ trend‑കളും കാണിക്കുന്നു.
+- iPhone‑ൽ നൽകിയ goals നേരിട്ട് watch‑ലേക്ക് sync ചെയ്യുന്നു.
+
+HOME SCREEN & LOCK SCREEN (സൗജന്യം)
+- Home Screen widgets ചെറിയ, средний sizes.
+- Lock Screen widgets circular, rectangular layouts.
+- Widgets നിങ്ങൾ ഓൺ ചെയ്ത metrics, goals കാണിക്കുന്നു.
+- App തുറക്കാതെ ദിവസത്തിന്റെ total കാണാം.
+
+DASHBOARD (സൗജന്യം)
+- ഒരു clean ring‑ൽ daily total calories burned.
+- Daily steps, progress bar, goal.
+- Pacing indicator: ഈ സമയത്ത് സാധാരണ ദിവസത്തേക്കാൾ മുന്നോ പിന്നോ?
+- Refresh: താഴേക്ക് pull. Settings: gear icon tap.
+
+HISTORY (സൗജന്യം)
+- 7 / 30 / 90 / 365‑ദിവസ views, custom date range.
+- Trend arrows, peak days, bar charts.
+- CSV export.
+
+നിങ്ങൾക്ക് അനുയോജ്യമായ goals
+- Optional daily calorie, step goals.
+- Goals skip ചെയ്ത് clean counter ആയി ഉപയോഗിക്കാം.
+- Pacing: same weekday vs all days, lookback (14 / 30 / 90 days / 1 year).
+
+Vitals+ (optional)
+ചെറിയ monthly, yearly, lifetime upgrade unlock:
+- Active vs resting calorie breakdown
+- Net Deficit: Apple Health food energy കഴിച്ച് burned calories
+- Share‑ready Monthly Summary PDF
+- Custom date‑range PDF reports
+- Deep Trends: period‑over‑period cards
+പുതിയ subscribers‑ക്ക് free trial.
+
+Privacy‑first design
+- Read‑only Apple Health. App health records‑ൽ എഴുതില്ല.
+- Data locally device‑ൽ store.
+- Analytics, ads, servers, accounts, tracking ഇല്ല.
+- Reports on‑device generate.
+
+Total Calories medical device അല്ല; diagnose, treat, prevent ചെയ്യാൻ intended അല്ല. Medical advice‑ക്ക് healthcare professional സമ്പർക്കം.
+
+Subscription Details
+Vitals+ auto‑renewing (Monthly $1.99 / Yearly $14.99, 7‑day free trial) അല്ലെങ്കിൽ Lifetime ($29.99). Payment Apple ID‑യിൽ charge. 24 hours മുമ്പ് cancel ചെയ്യാതെ auto‑renew. Settings → Apple ID → Subscriptions.
+
+Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

@@ -1,0 +1,54 @@
+Total Calories menampilkan kalori harian yang terbakar (aktif + istirahat) dan jumlah langkah tepat di tempat yang Anda butuhkan — Layar Utama iPhone, Layar Kunci, dan tampilan Apple Watch — gratis. Tanpa langganan untuk fitur dasar. Tanpa akun. Tidak ada data yang keluar dari ponsel Anda.
+
+Jika Anda pernah berharap tampilan Apple Watch hanya menampilkan total kalori harian yang terbakar, inilah aplikasinya.
+
+DI APPLE WATCH ANDA (GRATIS)
+- Komplikasi total kalori terbakar untuk setiap gaya tampilan: melingkar, persegi panjang, inline, dan sudut.
+- Komplikasi jumlah langkah langsung juga.
+- Aplikasi Watch menampilkan hari ini secara sekilas plus tren 30 hari.
+- Target yang Anda atur di iPhone tersinkron ke Watch.
+
+DI LAYAR UTAMA & LAYAR KUNCI (GRATIS)
+- Widget Layar Utama ukuran kecil dan sedang.
+- Widget Layar Kunci tata letak melingkar dan persegi panjang.
+- Widget mengikuti metrik dan target yang Anda pilih.
+- Total harian penuh terlihat tanpa membuka aplikasi.
+
+DASHBOARD (GRATIS)
+- Total kalori harian terbakar dalam satu cincin rapi.
+- Langkah harian dengan bilah progres dan target.
+- Indikator kecepatan: Anda lebih cepat atau lebih lambat dari hari biasa di waktu ini?
+- Tarik untuk segarkan. Ketuk ikon roda gigi untuk pengaturan.
+
+RIWAYAT (GRATIS)
+- Tampilan 7 / 30 / 90 / 365 hari dan rentang tanggal kustom.
+- Panah tren, hari puncak, dan grafik batang bersih.
+- Ekspor data CSV.
+
+TARGET YANG FLEKSIBEL
+- Target harian kalori dan langkah opsional.
+- Atau tanpa target dan gunakan sebagai penghitung bersih — terserah Anda.
+- Perbandingan kecepatan: hari kerja sama vs semua hari, periode kilas balik dapat diatur (14 / 30 / 90 hari / 1 tahun).
+
+Vitals+ (OPSIONAL)
+Upgrade kecil bulanan,tahunan,atau seumur hidup membuka:
+- Rincian kalori aktif vs istirahat
+- Net Deficit: kalori terbakar dikurangi energi makanan dari Apple Health
+- Ringkasan Bulanan PDF siap dibagikan
+- Laporan PDF rentang tanggal kustom
+- Deep Trends: kartu perbandingan periode ke periode
+Uji coba gratis tersedia untuk pelanggan baru.
+
+PRIVASI SEJAK DESAIN
+- Akses Apple Health hanya-baca. Aplikasi tidak pernah menulis ke data kesehatan Anda.
+- Semua data disimpan lokal di perangkat Anda.
+- Tanpa analitik. Tanpa iklan. Tanpa server. Tanpa akun. Tanpa pelacakan.
+- Laporan dibuat di perangkat.
+
+Total Calories bukan perangkat medis dan tidak dimaksudkan untuk mendiagnosis, mengobati, atau mencegah kondisi medis apa pun. Selalu konsultasikan dengan tenaga kesehatan profesional untuk nasihat medis.
+
+Detail Langganan
+Vitals+ tersedia sebagai langganan perpanjangan otomatis (Bulanan $1,99 / Tahunan $14,99 dengan uji coba gratis 7 hari) atau pembelian Lifetime satu kali ($29,99). Pembayaran dibebankan ke Apple ID Anda saat konfirmasi. Langganan diperpanjang otomatis kecuali dibatalkan minimal 24 jam sebelum periode berakhir. Kelola atau batalkan kapan saja di Pengaturan → Apple ID → Subscriptions.
+
+Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
