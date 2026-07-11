@@ -326,25 +326,28 @@ struct MainTabView: View {
     @State private var showMilestone = false
     @State private var showWeeklyRecap = false
     @State private var pendingMilestone: MilestoneEvent?
-    /// Set when the user taps the CTA inside a milestone sheet. Read in the
-    /// milestone sheet's onDismiss to chain the trial offer once it's gone —
-    /// same one-sheet-at-a-time constraint as the trial→paywall chain.
-    @State private var pendingTrialAfterMilestoneDismiss = false
+    /// Set when the user taps the CTA inside a milestone sheet. Chains the full
+    /// plan-picker paywall after dismiss — never another trial sheet on top.
+    @State private var pendingPaywallAfterMilestoneDismiss = false
     /// Guards against more than one milestone celebration per app session.
     @State private var milestoneShownThisSession = false
     /// Which trigger opened the current trial offer. Passive sources update the
     /// cooldown timestamp on dismiss; intent taps bypass the cooldown entirely.
     @State private var trialOfferSource: TrialOfferSource = .launch
-    /// True once the launch (1.5s) offer has been shown in *this* app session.
-    /// Gates the history-load offer so the two never fire back-to-back — the
-    /// history offer is strictly a later-session second touch.
+    /// True once the launch offer has been shown in *this* app session.
+    /// Gates the history-load offer so the two never fire back-to-back.
     @State private var launchOfferShownThisSession = false
+    /// Set when onboarding completes in this process. Suppresses the passive
+    /// TrialOfferSheet for the rest of the session so we don't re-pitch Vitals+
+    /// minutes after the onboarding trial step. Next cold launch can pitch at
+    /// the strategic value moment.
+    @State private var skipPassiveTrialThisSession = false
     /// Set when the Today dashboard posts that its data is on screen (even zeros).
     /// Gates the "What's New" announcement, which is fine over any dashboard state.
     @State private var dashboardDataLoaded = false
     /// Set the first time the dashboard shows real, non-zero burned/step data —
-    /// the strategic value moment (Rev A). The passive launch trial nudge waits
-    /// for this instead of a blind timer, so it never pitches over zeros/spinner.
+    /// the strategic value moment. The passive launch trial nudge waits for this
+    /// instead of a blind timer, so it never pitches over zeros/spinner.
     @State private var dashboardShowedRealData = false
     @State private var trialPurchaseInFlight = false
     @State private var trialPurchaseError: String?
@@ -360,6 +363,9 @@ struct MainTabView: View {
     @State private var reviewPromptInitialStep: ReviewPromptSheet.Step = .enjoyment
     @State private var reviewPromptShownThisSession = false
     @State private var pendingNativeReviewAfterDismiss = false
+    /// If a goal-hit review ask was blocked by an open trial/paywall sheet, retry
+    /// once those sheets clear instead of burning the positive moment.
+    @State private var pendingReviewAfterSheetsClear = false
     @Environment(\.requestReview) private var requestReview
     /// The feature an intent tap reached for, so the trial sheet (and the plan
     /// picker it can chain into) lead with it. `nil` for passive offers.
@@ -471,6 +477,9 @@ struct MainTabView: View {
         // The What's New announcement owns the launch moment for users who just
         // updated; don't stack the passive trial pitch on top of it.
         guard !showWhatsNew else { return }
+        // Just finished onboarding this session — they already saw the trial step.
+        // Re-pitch on a later cold launch at the value moment, not minutes later.
+        guard !skipPassiveTrialThisSession else { return }
         // Passive launch nudge: gated by [[GoalSettings.passiveTrialOfferAllowed]]
         // so the user re-encounters it after a 14-day cooldown rather than
         // being killed forever by a single "Not now". Intent-driven taps
@@ -480,26 +489,17 @@ struct MainTabView: View {
               goals.passiveTrialOfferAllowed(),
               hasTrialOffer,
               selectedTab == 0,
-              // Rev A: the strategic value moment. Only pitch after the dashboard
-              // has actually shown the user real, non-zero data (their ring and
-              // counters populated) — never over a spinner, and never over a row
-              // of zeros that hasn't demonstrated the app's value yet.
+              // Strategic value moment: only pitch after the dashboard has shown
+              // real, non-zero data — never over a spinner or a row of zeros.
               dashboardShowedRealData
         else { return }
         // Brief settle so the ring/counter first-paint animations finish before
         // the pitch appears over the numbers the user just watched populate.
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 1_800_000_000)
-            // Make sure the trial product is loaded before presenting so the
-            // sheet shows its direct-purchase deal framing (7-days-free badge,
-            // per-month value line, price disclosure) rather than the "See all
-            // plans" fallback. The real-data value moment can otherwise beat the
-            // slower RevenueCat offerings fetch.
             if directTrialPackage == nil { await store.fetchProducts() }
+            guard !skipPassiveTrialThisSession else { return }
             guard !showTrialOffer, !showTrialPaywall, !showWhatsNew else { return }
-            // Re-check the user is still on Today — they may have navigated to
-            // History or Vitals+ during the wait, in which case this pitch would
-            // pop over the wrong tab.
             guard selectedTab == 0 else { return }
             if goals.passiveTrialOfferAllowed() && !store.isPro {
                 launchOfferShownThisSession = true
@@ -517,11 +517,15 @@ struct MainTabView: View {
         guard ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup),
               !reviewPromptShownThisSession,
               selectedTab == 0,
-              !showTrialOffer,
-              !showTrialPaywall,
               !showMilestone,
               !showReviewPrompt
         else { return }
+
+        // Don't lose the ask to a trial/paywall sheet — retry when those clear.
+        if showTrialOffer || showTrialPaywall {
+            pendingReviewAfterSheetsClear = true
+            return
+        }
 
         Task { @MainActor in
             // Let the goal celebration toast finish (~2.5s) before asking.
@@ -532,12 +536,33 @@ struct MainTabView: View {
                   !showMilestone,
                   !showReviewPrompt,
                   ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup)
-            else { return }
+            else {
+                if showTrialOffer || showTrialPaywall {
+                    pendingReviewAfterSheetsClear = true
+                }
+                return
+            }
             ReviewPromptTracker.consumePendingPositiveMoment()
             reviewPromptInitialStep = .enjoyment
             reviewPromptShownThisSession = true
             showReviewPrompt = true
         }
+    }
+
+    private func presentPendingReviewIfNeeded() {
+        guard pendingReviewAfterSheetsClear,
+              !reviewPromptShownThisSession,
+              !showTrialOffer,
+              !showTrialPaywall,
+              !showMilestone,
+              !showReviewPrompt,
+              ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup)
+        else { return }
+        pendingReviewAfterSheetsClear = false
+        ReviewPromptTracker.consumePendingPositiveMoment()
+        reviewPromptInitialStep = .enjoyment
+        reviewPromptShownThisSession = true
+        showReviewPrompt = true
     }
 
     private func handleReviewPromptFinish(_ outcome: ReviewPromptDismissOutcome) {
@@ -556,6 +581,7 @@ struct MainTabView: View {
     private func evaluateHistoryTrialOffer() {
         guard goals.hasCompletedSetup,
               !store.isPro,
+              !skipPassiveTrialThisSession,
               goals.passiveHistoryTrialOfferAllowed(),
               !launchOfferShownThisSession,
               hasTrialOffer,
@@ -733,11 +759,11 @@ struct MainTabView: View {
         .onChange(of: store.products.count) { _, _ in evaluateTrialOffer() }
         // First-launch users complete onboarding *after* the .task /
         // products-loaded evaluations have already bailed on
-        // `hasCompletedSetup == false`. Without this, the launch offer (and
-        // therefore the history second-touch it gates) never fires until the
-        // 2nd app launch. Re-evaluate the moment onboarding finishes.
+        // `hasCompletedSetup == false`. Mark this session so the passive
+        // TrialOfferSheet doesn't re-pitch minutes after the onboarding trial
+        // step; the next cold launch can pitch at the value moment.
         .onChange(of: goals.hasCompletedSetup) { _, done in
-            if done { evaluateTrialOffer() }
+            if done { skipPassiveTrialThisSession = true }
         }
         .onChange(of: store.isPro) { _, isPro in
             if isPro {
@@ -843,13 +869,13 @@ struct MainTabView: View {
                 // picker — drop the intent so a later unrelated purchase doesn't
                 // silently flip the feature on.
                 pendingFeatureEnable = nil
+                presentPendingReviewIfNeeded()
             }
         }) {
             TrialOfferSheet(
                 focus: trialOfferFocus,
                 offerLabel: trialOfferPackage?.vitalsIntroOfferLabel ?? store.products.compactMap(\.vitalsIntroOfferLabel).first,
                 priceLabel: trialOfferPackage?.vitalsPriceLabel,
-                pricePerMonthLabel: trialOfferPackage?.vitalsPricePerMonthLabel,
                 directPurchase: trialOfferIsDirect,
                 isPurchasing: trialPurchaseInFlight,
                 errorMessage: trialPurchaseError,
@@ -862,6 +888,7 @@ struct MainTabView: View {
                     }
                 },
                 onSeeAllPlans: {
+                    // Always the full plan picker — never another trial sheet.
                     pendingPaywallAfterTrialDismiss = true
                     showTrialOffer = false
                 },
@@ -876,6 +903,7 @@ struct MainTabView: View {
         .sheet(isPresented: $showTrialPaywall, onDismiss: {
             trialOfferFocus = nil
             if !store.isPro { pendingFeatureEnable = nil }
+            presentPendingReviewIfNeeded()
         }) {
             PaywallView(focus: trialOfferFocus)
                 .environmentObject(store)
@@ -884,20 +912,22 @@ struct MainTabView: View {
                 .task { store.trackPaywallImpression(id: "vitals_trial_sheet") }
         }
         .sheet(isPresented: $showMilestone, onDismiss: {
-            let chainTrial = pendingTrialAfterMilestoneDismiss
-            pendingTrialAfterMilestoneDismiss = false
+            let chainPaywall = pendingPaywallAfterMilestoneDismiss
+            pendingPaywallAfterMilestoneDismiss = false
             pendingMilestone = nil
-            // Chain the trial offer after the celebration sheet has fully
-            // dismissed (one-sheet-at-a-time constraint again).
-            if chainTrial {
-                handleIntentTap(.milestoneCelebration)
+            // Explore → full plan picker only. Never chain into TrialOfferSheet
+            // (trial-on-trial).
+            if chainPaywall {
+                showTrialPaywall = true
+            } else {
+                presentPendingReviewIfNeeded()
             }
         }) {
             if let pendingMilestone {
                 MilestoneCelebrationSheet(
                     event: pendingMilestone,
                     onContinue: {
-                        pendingTrialAfterMilestoneDismiss = true
+                        pendingPaywallAfterMilestoneDismiss = true
                         showMilestone = false
                     },
                     onDismiss: { showMilestone = false }
@@ -1379,9 +1409,6 @@ struct TrialOfferSheet: View {
     /// Recurring price after the trial, e.g. "$29.99 / year". Only required in
     /// `directPurchase` mode (Apple 3.1.2 needs price + terms before purchase).
     let priceLabel: String?
-    /// Per-month equivalent of the recurring price, e.g. "$1.25". Powers the
-    /// deal-framing value line ("just $1.25/month, billed yearly"). nil hides it.
-    var pricePerMonthLabel: String? = nil
     /// When true the primary button buys the trial product directly via StoreKit
     /// and the sheet shows compliant billing disclosure + a "See all plans" link.
     /// When false it opens the full native plan picker paywall.
@@ -1434,14 +1461,6 @@ struct TrialOfferSheet: View {
             return "FREE TRIAL"
         }
         return "\(days) DAYS FREE"
-    }
-
-    /// Value-anchoring line for the deal framing, e.g. "Just $1.25/month, billed
-    /// yearly." Shown only in direct-purchase mode where the real price is known,
-    /// so it can never over-promise. nil hides it.
-    private var valueFramingText: String? {
-        guard directPurchase, let perMonth = pricePerMonthLabel else { return nil }
-        return "Just \(perMonth)/month, billed yearly"
     }
 
     /// Repeat-forever animation timing for the ambient glow. Scoped to the
@@ -1577,16 +1596,6 @@ struct TrialOfferSheet: View {
             .padding(.top, 6)
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 VStack(spacing: 8) {
-                    // Deal value anchor (Rev A): make the yearly price feel small
-                    // by showing its real per-month equivalent. Only in direct
-                    // mode where the price is loaded, so it can't over-promise.
-                    if let valueFramingText {
-                        Text(valueFramingText)
-                            .font(.system(.subheadline, design: .rounded, weight: .bold))
-                            .foregroundStyle(Theme.caloriesPrimary)
-                            .multilineTextAlignment(.center)
-                    }
-
                     if directPurchase, let priceLabel {
                         Text("Free during trial, then \(priceLabel). Auto-renews unless cancelled 24h before trial ends.")
                             .font(.system(.caption2, design: .rounded))

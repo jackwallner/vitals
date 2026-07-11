@@ -157,7 +157,7 @@ struct ReviewPromptSheet: View {
                 .buttonStyle(.plain)
 
                 Button {
-                    ReviewPromptTracker.markShown()
+                    ReviewPromptTracker.markSoftDeferred()
                     finish(.enjoyedMaybeLater)
                 } label: {
                     secondaryButtonLabel("Maybe later")

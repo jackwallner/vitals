@@ -1759,10 +1759,11 @@ private struct OnboardingSheet: View {
                         case .trial: trialPage
                         }
                     }
-                    .padding(.top, 48)
+                    .padding(.top, step == .trial ? 24 : 48)
                     .padding(.bottom, 24)
                     .padding(.horizontal, 24)
                 }
+                .scrollBounceBehavior(.basedOnSize)
 
                 bottomBar
             }
@@ -1782,12 +1783,11 @@ private struct OnboardingSheet: View {
         }
     }
 
-    /// Completes onboarding: persists the flag and stamps the passive trial
-    /// cooldown so the post-home `TrialOfferSheet` doesn't double-pitch ~5s
-    /// later, then dismisses. Reached only via Not now or a successful purchase.
+    /// Completes onboarding and dismisses. Does **not** stamp the passive trial
+    /// cooldown — that would block the thoughtful 2nd-session re-pitch. Same-session
+    /// suppression lives in `MainTabView` (`skipPassiveTrialThisSession`).
     private func finishOnboarding() {
         goals.hasCompletedSetup = true
-        goals.lastTrialOfferShownDate = Date()
         dismiss()
     }
 
@@ -2053,51 +2053,34 @@ private struct OnboardingSheet: View {
 
     // MARK: Trial step
 
-    /// The final onboarding step: reads like "your goals are set, here's what Pro
-    /// adds", not a hard paywall. Same chrome as Welcome/Goals — hero + short
-    /// pitch + benefit cards styled like Welcome's info cards.
+    /// Final onboarding step — StatScout-style: hero + short pitch + 3 one-line
+    /// selling points. No cards, no long copy, no scrolling on a normal phone.
     private var trialPage: some View {
-        VStack(spacing: 28) {
-            VStack(spacing: 12) {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 52))
-                    .foregroundStyle(Theme.caloriesGradient)
-                Text("Go further with Vitals+")
-                    .font(.system(.largeTitle, design: .rounded, weight: .bold))
-                    .multilineTextAlignment(.center)
-                Text("Your goals are set. Here’s what Vitals+ adds on top of your daily view.")
-                    .font(.system(.subheadline, design: .rounded))
-                    .foregroundStyle(Theme.textSecondary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
+        VStack(spacing: 20) {
+            Spacer(minLength: 0)
 
-            VStack(spacing: 16) {
-                WelcomePoint(
-                    icon: "plus.forwardslash.minus",
-                    color: Theme.caloriesPrimary,
-                    title: "Net calories",
-                    detail: "Subtract food logged in Apple Health from what you burn, on Today and History."
-                )
-                WelcomePoint(
-                    icon: "flame.fill",
-                    color: Theme.streakPrimary,
-                    title: "Streaks & projections",
-                    detail: "Keep your goal streaks alive and see your projected end-of-day total."
-                )
-                WelcomePoint(
-                    icon: "chart.line.uptrend.xyaxis",
-                    color: Theme.stepsPrimary,
-                    title: "Deeper trends",
-                    detail: "TDEE and BMR maintenance averages plus 30-day trend insights."
-                )
-                WelcomePoint(
-                    icon: "doc.richtext.fill",
-                    color: Theme.netDeficitBrand,
-                    title: "Summary reports",
-                    detail: "Export a shareable PDF summary for any date range you choose."
-                )
+            Image(systemName: "sparkles")
+                .font(.system(size: 44))
+                .foregroundStyle(Theme.caloriesGradient)
+
+            Text("Go further with Vitals+")
+                .font(.system(.title, design: .rounded, weight: .bold))
+                .multilineTextAlignment(.center)
+
+            Text("Net deficit, streaks, deeper trends — the extras on top of your daily view.")
+                .font(.system(.subheadline, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+
+            VStack(alignment: .leading, spacing: 12) {
+                TrialSellingPoint(icon: "plus.forwardslash.minus", color: Theme.caloriesPrimary, text: "Net deficit from Apple Health food logs")
+                TrialSellingPoint(icon: "flame.fill", color: Theme.streakPrimary, text: "Goal streaks and end-of-day projections")
+                TrialSellingPoint(icon: "chart.line.uptrend.xyaxis", color: Theme.stepsPrimary, text: "TDEE, BMR, and deeper history trends")
             }
+            .padding(.top, 8)
+
+            Spacer(minLength: 0)
         }
     }
 
@@ -2162,6 +2145,28 @@ private struct WelcomePoint: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Theme.cardSurface.opacity(0.5), in: RoundedRectangle(cornerRadius: 14))
+        .accessibilityElement(children: .combine)
+    }
+}
+
+/// Compact one-line selling point for the onboarding trial step (StatScout pattern).
+private struct TrialSellingPoint: View {
+    let icon: String
+    let color: Color
+    let text: String
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 10) {
+            Image(systemName: icon)
+                .font(.system(size: 14, weight: .bold))
+                .foregroundStyle(color)
+                .frame(width: 20, alignment: .center)
+            Text(text)
+                .font(.system(.body, design: .rounded))
+                .foregroundStyle(Theme.textPrimary)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
+        }
         .accessibilityElement(children: .combine)
     }
 }
