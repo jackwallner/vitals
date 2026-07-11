@@ -1,0 +1,7 @@
+Net Deficit, clearer than ever
+
+• The Net Deficit chart now centers on zero with a clear baseline, so deficit days (up) and surplus days (down) are easy to tell apart at a glance.
+
+• History details now show Average, Best Day, and a period Total together, with a consistent layout across Calories, Steps, and Net Deficit.
+
+Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.

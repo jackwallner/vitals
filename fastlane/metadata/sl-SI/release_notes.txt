@@ -1,7 +1,5 @@
-New in Vitals+
+Bolj gladka izkušnja Vitals+
 
-• TDEE & BMR - see your maintenance calories (TDEE) and resting burn (BMR) as a steady 30-day average from Apple Health, right under the ring. The number you'd plan a deficit around, from your own data.
-
-It's an opt-in toggle in Settings, off by default, so the free Today view stays exactly as it was.
-
-Plus the usual under-the-hood fixes to keep your calories and steps accurate across the app, widgets, and Apple Watch.
+• Jasnejše cene in podrobnosti poskusnega obdobja na vsakem zaslonu naročnine. Sporočila o napakah pri nakupu se ne prekrivajo več z drobnim tiskom.
+• Net Deficit: zahteva za dovoljenje Apple Zdravje se zdaj zanesljivo prikaže, ko vklopite spremljanje kalorij iz hrane, z bližnjico do dovoljenj Zdravja, če kalorij ni mogoče prebrati.
+• Popravki napak in izboljšave v aplikaciji, pripomočkih in na Apple Watch.
