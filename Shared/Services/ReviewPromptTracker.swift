@@ -148,6 +148,13 @@ enum ReviewPromptTracker {
         consumePendingPositiveMoment()
     }
 
+    /// True after "Maybe later" until the next hard `markShown` / outcome.
+    /// Hosts must not call `markShown()` on sheet dismiss when this is true —
+    /// that would clear the soft-defer flag and apply the 120-day jail instead.
+    static var isSoftDeferred: Bool {
+        defaults.bool(forKey: softDeferKey)
+    }
+
     /// User said Yes then "Maybe later" — we fire `requestReview()` which Apple
     /// often silently no-ops. Use a short cooldown so we can ask again instead
     /// of jailing them for 120 days.

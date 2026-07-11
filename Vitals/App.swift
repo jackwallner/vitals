@@ -326,9 +326,10 @@ struct MainTabView: View {
     @State private var showMilestone = false
     @State private var showWeeklyRecap = false
     @State private var pendingMilestone: MilestoneEvent?
-    /// Set when the user taps the CTA inside a milestone sheet. Chains the full
-    /// plan-picker paywall after dismiss — never another trial sheet on top.
-    @State private var pendingPaywallAfterMilestoneDismiss = false
+    /// Set when the user taps the CTA inside a milestone sheet. Chains a direct
+    /// yearly trial purchase after dismiss (Apple confirm sheet), never the
+    /// plan-picker paywall.
+    @State private var pendingDirectTrialAfterMilestoneDismiss = false
     /// Guards against more than one milestone celebration per app session.
     @State private var milestoneShownThisSession = false
     /// Which trigger opened the current trial offer. Passive sources update the
@@ -345,17 +346,12 @@ struct MainTabView: View {
     /// Set when the Today dashboard posts that its data is on screen (even zeros).
     /// Gates the "What's New" announcement, which is fine over any dashboard state.
     @State private var dashboardDataLoaded = false
-    /// Set the first time the dashboard shows real, non-zero burned/step data —
+    /// Set the first time the dashboard shows real, non-zero burned/step data -
     /// the strategic value moment. The passive launch trial nudge waits for this
     /// instead of a blind timer, so it never pitches over zeros/spinner.
     @State private var dashboardShowedRealData = false
     @State private var trialPurchaseInFlight = false
     @State private var trialPurchaseError: String?
-    /// Set when the user opts into the full plan picker from inside the trial-offer
-    /// sheet. The `.sheet(onDismiss:)` reads this and presents the paywall *after*
-    /// the trial sheet has fully dismissed — presenting both sheets in the same
-    /// runloop tick is racy in SwiftUI and frequently drops the second sheet.
-    @State private var pendingPaywallAfterTrialDismiss = false
     @State private var trialOfferPackage: Package?
     @State private var trialOfferUsesDirectPurchase = false
     @State private var trialOfferDetent: PresentationDetent = .fraction(0.68)
@@ -421,9 +417,9 @@ struct MainTabView: View {
 
     private func startDirectTrialPurchase() {
         guard let package = trialOfferPackage ?? directTrialPackage else {
-            // No trial product loaded — fall back to the full plan picker paywall.
-            pendingPaywallAfterTrialDismiss = true
+            // Products failed to load - Upgrade tab is the plan browser.
             showTrialOffer = false
+            selectedTab = 2
             return
         }
         trialPurchaseError = nil
@@ -436,12 +432,30 @@ struct MainTabView: View {
                     markTrialOfferSeen()
                     showTrialOffer = false
                 case .cancelled:
-                    // Surface a hint so the sheet doesn't sit silent — the StoreKit
-                    // sheet dismissed but the user might think the app froze.
-                    trialPurchaseError = "Trial wasn't started. Tap again, or pick a different plan."
+                    trialPurchaseError = "Trial wasn't started. Tap again to continue."
                 }
             } catch {
                 trialPurchaseError = "Couldn't start your trial. Please try again."
+            }
+        }
+    }
+
+    /// Milestone CTA: buy yearly trial in place (Apple confirm), no plan picker.
+    private func startMilestoneDirectTrial() {
+        guard let package = directTrialPackage else {
+            selectedTab = 2
+            return
+        }
+        Task { @MainActor in
+            do {
+                switch try await store.purchase(package) {
+                case .purchased, .pending:
+                    markTrialOfferSeen()
+                case .cancelled:
+                    break
+                }
+            } catch {
+                selectedTab = 2
             }
         }
     }
@@ -628,19 +642,34 @@ struct MainTabView: View {
         if hasTrialOffer {
             presentTrialOffer(source: .intent, focus: focus)
         } else {
-            showTrialPaywall = true
+            // No trial product loaded - Upgrade tab is the plan browser.
+            selectedTab = 2
         }
     }
 
     /// Flips on whichever toggle-gated feature the user reached for before they
     /// were paywalled, now that they're Pro. No-op for passive upgrades.
+    ///
+    /// Net Deficit dietary HealthKit auth MUST wait until conversion sheets are
+    /// gone. Requesting while a trial sheet is visible or dismissing causes
+    /// HealthKit to silently suppress the system permission UI.
     private func applyPendingFeatureEnable() {
         guard let feature = pendingFeatureEnable else { return }
         pendingFeatureEnable = nil
         switch feature {
         case .netDeficit:
-            goals.showNetCalories = true
-            Task { try? await HealthKitService.shared.requestDietaryAuthorization() }
+            Task { @MainActor in
+                // Wait for sheet dismiss animation + any StoreKit UI to clear.
+                try? await Task.sleep(nanoseconds: 700_000_000)
+                guard !showTrialOffer, !showTrialPaywall, !showMilestone else {
+                    // Sheet re-appeared; retry once shortly after.
+                    try? await Task.sleep(nanoseconds: 700_000_000)
+                    guard !showTrialOffer, !showTrialPaywall, !showMilestone else { return }
+                    await enableNetDeficitAndRequestDietaryAuth()
+                    return
+                }
+                await enableNetDeficitAndRequestDietaryAuth()
+            }
         case .activeResting:
             goals.showActiveRestingBreakdown = true
         case .energyAverages:
@@ -654,6 +683,26 @@ struct MainTabView: View {
             Task { await NotificationService.scheduleWeeklyRecap() }
         default:
             break
+        }
+    }
+
+    @MainActor
+    private func enableNetDeficitAndRequestDietaryAuth() async {
+        // 1) Clear covering UI first (Settings is usually still open from the toggle).
+        NotificationCenter.default.post(name: .vitalsDismissSettings, object: nil)
+        // Sheet dismiss animation is ~0.35s; wait past it so HK isn't suppressed.
+        try? await Task.sleep(nanoseconds: 600_000_000)
+
+        // 2) Flip the setting. DashboardView's onChange requests dietary auth once
+        // the window is clear — that is what makes the system sheet appear.
+        goals.showNetCalories = true
+        try? await Task.sleep(nanoseconds: 350_000_000)
+        // Belt-and-suspenders if the onChange path no-op'd (already authorized /
+        // status check race). Harmless when the sheet already showed.
+        do {
+            try await HealthKitService.shared.requestDietaryAuthorization()
+        } catch {
+            // Non-fatal; user can re-toggle in Settings to retry.
         }
     }
 
@@ -767,9 +816,15 @@ struct MainTabView: View {
         }
         .onChange(of: store.isPro) { _, isPro in
             if isPro {
-                applyPendingFeatureEnable()
+                // If a trial/milestone sheet is up, wait for its onDismiss to apply
+                // the pending feature. Requesting dietary HealthKit auth while that
+                // sheet is still visible (or dismissing) suppresses the system prompt.
+                let conversionSheetUp = showTrialOffer || showTrialPaywall || showMilestone
                 showTrialOffer = false
                 showMilestone = false
+                if !conversionSheetUp {
+                    applyPendingFeatureEnable()
+                }
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .vitalsDashboardDidLoadData)) { _ in
@@ -858,16 +913,12 @@ struct MainTabView: View {
             trialPurchaseError = nil
             trialOfferPackage = nil
             trialOfferUsesDirectPurchase = false
-            // Chain the plan picker paywall here rather than setting both bindings in
-            // the same tick — SwiftUI can only show one sheet per ancestor at a
-            // time and frequently drops the second when they fire together.
-            if pendingPaywallAfterTrialDismiss {
-                pendingPaywallAfterTrialDismiss = false
-                showTrialPaywall = true
-            } else if !store.isPro {
-                // Dismissed without upgrading and not chaining to the plan
-                // picker — drop the intent so a later unrelated purchase doesn't
-                // silently flip the feature on.
+            if store.isPro {
+                // Sheet is fully gone - safe to enable Net Deficit + request dietary auth.
+                applyPendingFeatureEnable()
+            } else {
+                // Dismissed without upgrading - drop the intent so a later
+                // unrelated purchase doesn't silently flip the feature on.
                 pendingFeatureEnable = nil
                 presentPendingReviewIfNeeded()
             }
@@ -880,17 +931,7 @@ struct MainTabView: View {
                 isPurchasing: trialPurchaseInFlight,
                 errorMessage: trialPurchaseError,
                 onStartTrial: {
-                    if trialOfferIsDirect {
-                        startDirectTrialPurchase()
-                    } else {
-                        pendingPaywallAfterTrialDismiss = true
-                        showTrialOffer = false
-                    }
-                },
-                onSeeAllPlans: {
-                    // Always the full plan picker — never another trial sheet.
-                    pendingPaywallAfterTrialDismiss = true
-                    showTrialOffer = false
+                    startDirectTrialPurchase()
                 },
                 onDismiss: {
                     showTrialOffer = false
@@ -907,18 +948,14 @@ struct MainTabView: View {
         }) {
             PaywallView(focus: trialOfferFocus)
                 .environmentObject(store)
-                // `.task` runs once per sheet presentation — the correct hook
-                // for a one-shot impression (unlike onAppear, which re-fires).
                 .task { store.trackPaywallImpression(id: "vitals_trial_sheet") }
         }
         .sheet(isPresented: $showMilestone, onDismiss: {
-            let chainPaywall = pendingPaywallAfterMilestoneDismiss
-            pendingPaywallAfterMilestoneDismiss = false
+            let startTrial = pendingDirectTrialAfterMilestoneDismiss
+            pendingDirectTrialAfterMilestoneDismiss = false
             pendingMilestone = nil
-            // Explore → full plan picker only. Never chain into TrialOfferSheet
-            // (trial-on-trial).
-            if chainPaywall {
-                showTrialPaywall = true
+            if startTrial {
+                startMilestoneDirectTrial()
             } else {
                 presentPendingReviewIfNeeded()
             }
@@ -927,7 +964,7 @@ struct MainTabView: View {
                 MilestoneCelebrationSheet(
                     event: pendingMilestone,
                     onContinue: {
-                        pendingPaywallAfterMilestoneDismiss = true
+                        pendingDirectTrialAfterMilestoneDismiss = true
                         showMilestone = false
                     },
                     onDismiss: { showMilestone = false }
@@ -937,10 +974,13 @@ struct MainTabView: View {
             }
         }
         .sheet(isPresented: $showReviewPrompt, onDismiss: {
-            ReviewPromptTracker.markShown()
+            // "Maybe later" already recorded a 30-day soft defer. Calling
+            // markShown() here would clear that flag and jail the ask for 120 days.
             if pendingNativeReviewAfterDismiss {
                 pendingNativeReviewAfterDismiss = false
                 requestReview()
+            } else if !ReviewPromptTracker.isSoftDeferred {
+                ReviewPromptTracker.markShown()
             }
         }) {
             ReviewPromptSheet(initialStep: reviewPromptInitialStep, onFinish: handleReviewPromptFinish)
@@ -1409,14 +1449,13 @@ struct TrialOfferSheet: View {
     /// Recurring price after the trial, e.g. "$29.99 / year". Only required in
     /// `directPurchase` mode (Apple 3.1.2 needs price + terms before purchase).
     let priceLabel: String?
-    /// When true the primary button buys the trial product directly via StoreKit
-    /// and the sheet shows compliant billing disclosure + a "See all plans" link.
-    /// When false it opens the full native plan picker paywall.
+    /// When true the primary button buys the trial product directly via StoreKit.
+    /// When false (products not loaded) the CTA still calls `onStartTrial`, which
+    /// routes to the Upgrade tab rather than nesting a plan picker.
     let directPurchase: Bool
     let isPurchasing: Bool
     let errorMessage: String?
     let onStartTrial: () -> Void
-    let onSeeAllPlans: () -> Void
     let onDismiss: () -> Void
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var animateGlow = false
@@ -1623,16 +1662,6 @@ struct TrialOfferSheet: View {
                     .buttonStyle(.plain)
                     .disabled(isPurchasing)
 
-                    if directPurchase {
-                        Button(action: onSeeAllPlans) {
-                            Text("See all plans")
-                                .font(.system(.subheadline, design: .rounded, weight: .semibold))
-                                .foregroundStyle(Theme.caloriesPrimary)
-                        }
-                        .buttonStyle(.plain)
-                        .disabled(isPurchasing)
-                    }
-
                     Button(action: onDismiss) {
                         Text("Not now")
                             .font(.system(.subheadline, design: .rounded, weight: .semibold))
@@ -1780,7 +1809,7 @@ private struct MilestoneCelebrationSheet: View {
 
                 VStack(spacing: 10) {
                     Button(action: onContinue) {
-                        Text("Explore with Vitals+")
+                        Text("Start Free Trial")
                             .font(.system(.headline, design: .rounded, weight: .bold))
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)

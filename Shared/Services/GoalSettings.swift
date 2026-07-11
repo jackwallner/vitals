@@ -195,12 +195,20 @@ final class GoalSettings: ObservableObject {
     static let trialOfferCooldownDays = 14
 
     /// Set of milestone ids ("streak_7", "month_2025-04") that have already
-    /// fired a celebration sheet. Each id is one-shot per user — once fired
+    /// fired a celebration sheet. Each id is one-shot per user - once fired
     /// it stays fired so we don't celebrate the same achievement twice.
     @Published var firedMilestoneIds: Set<String> {
         didSet {
             defaults.set(Array(firedMilestoneIds), forKey: "firedMilestoneIds")
         }
+    }
+
+    /// First history evaluation adopts any pre-existing HealthKit streak as
+    /// already-seen (no celebration sheet). After that, only newly crossed
+    /// tiers fire. Prevents "7-day streak!" on first launch for long-time
+    /// Apple Health users.
+    @Published var hasSeededStreakMilestones: Bool {
+        didSet { defaults.set(hasSeededStreakMilestones, forKey: "hasSeededStreakMilestones") }
     }
 
     /// True when a passive trial surface (launch, history-load) is allowed to
@@ -375,6 +383,7 @@ final class GoalSettings: ObservableObject {
         } else {
             self.firedMilestoneIds = []
         }
+        self.hasSeededStreakMilestones = defaults.bool(forKey: "hasSeededStreakMilestones")
         self.lastWhatsNewVersionShown = defaults.string(forKey: "lastWhatsNewVersionShown")
         self.appearance = AppAppearance(rawValue: defaults.integer(forKey: "appearance")) ?? .system
         self.showPacing = defaults.object(forKey: "showPacing") as? Bool ?? true
