@@ -1032,10 +1032,23 @@ struct DashboardView: View {
         }
     }
 
+    /// One-shot guard so the "real data on screen" value-moment notification
+    /// (Rev A passive-trial trigger) is posted only once per app session.
+    @State private var postedRealData = false
+
     private func applyStats(_ stats: (active: Double, resting: Double, steps: Int)) {
         activeCalories = stats.active
         restingCalories = stats.resting
         steps = stats.steps
+
+        // Strategic value moment (Rev A): the first time the dashboard actually
+        // has non-zero burned-calorie or step data on screen, signal it so the
+        // passive Vitals+ trial nudge can fire after real value is demonstrated
+        // rather than on a blind post-launch timer.
+        if !postedRealData, stats.active + stats.resting > 0 || stats.steps > 0 {
+            postedRealData = true
+            NotificationCenter.default.post(name: .vitalsDashboardDidShowRealData, object: nil)
+        }
 
         celebrateGoalsIfNeeded()
     }
@@ -1720,6 +1733,10 @@ private struct OnboardingSheet: View {
     @State private var calText = "2500"
     @State private var wantStepGoal = true
     @State private var stepText = "10000"
+    /// Net-deficit opt-in (Rev A): default on so a user finishing onboarding has
+    /// net deficit working (once Pro) or has explicitly turned it off, never
+    /// silently missing. Drives `goals.showNetCalories` + the dietary-read prompt.
+    @State private var wantNetDeficit = true
     @State private var hasRequestedHealthAccess = false
     @State private var isStartingTrial = false
     @State private var trialError: String?
@@ -1861,6 +1878,13 @@ private struct OnboardingSheet: View {
                     isValid: stepValid
                 )
 
+                // Net-deficit opt-in (Rev A): prompt during onboarding so the
+                // dashboard net-deficit tile has consumed-calorie data instead of
+                // rendering a placeholder dash. Enabling it requests the dietary
+                // read and turns the setting on; net deficit then works the moment
+                // the user is Pro.
+                NetDeficitOptInRow(enabled: $wantNetDeficit)
+
                 if !wantCalGoal && !wantStepGoal {
                     HStack(alignment: .top, spacing: 8) {
                         Image(systemName: "info.circle.fill")
@@ -1884,29 +1908,45 @@ private struct OnboardingSheet: View {
     // MARK: Bottom bar
 
     @ViewBuilder
+    /// Unified bottom bar across every onboarding page. The primary button is
+    /// pinned from the bottom by a fixed-height legal-footer slot (real
+    /// Terms/Privacy/Restore on the trial page, an invisible placeholder of
+    /// identical height elsewhere), so the CTA frame is pixel-identical on
+    /// Welcome, Goals, and the trial page (Rev A zero-shift requirement).
+    /// Page-specific content (trust line, soft exit, disclosure) sits ABOVE the
+    /// button, where variable height is fine because it never moves the
+    /// bottom-pinned button.
     private var bottomBar: some View {
+        VStack(spacing: 12) {
+            aboveButtonContent
+
+            primaryButton
+
+            // Fixed legal-footer slot. Identical view on every page so its height
+            // never changes; only visible + interactive on the trial page.
+            legalFooter
+                .opacity(step == .trial ? 1 : 0)
+                .allowsHitTesting(step == .trial)
+                .accessibilityHidden(step != .trial)
+        }
+        .padding(.top, 12)
+        .padding(.bottom, 24)
+        .background(Theme.background)
+    }
+
+    @ViewBuilder
+    private var aboveButtonContent: some View {
         switch step {
-        case .welcome: welcomeBottomBar
-        case .goals: goalsBottomBar
-        case .trial: trialBottomBar
+        case .welcome: welcomeTrustLine
+        case .goals: EmptyView()
+        case .trial: trialSoftExitAndDisclosure
         }
     }
 
-    private var welcomeBottomBar: some View {
-        VStack(spacing: 12) {
-            HStack(spacing: 5) {
-                Image(systemName: "lock.fill")
-                    .font(.system(size: 10, weight: .semibold))
-                    .foregroundStyle(Theme.stepsPrimary)
-                Text("Read-only. Stays on your device. No account.")
-                    .font(.system(.caption2, design: .rounded))
-                    .foregroundStyle(Theme.textTertiary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .padding(.horizontal, 24)
-            .accessibilityElement(children: .combine)
-
+    @ViewBuilder
+    private var primaryButton: some View {
+        switch step {
+        case .welcome:
             Button {
                 Task { await requestHealthAccessIfNeeded() }
                 withAnimation(.easeInOut(duration: 0.25)) { step = .goals }
@@ -1914,24 +1954,25 @@ private struct OnboardingSheet: View {
                 primaryLabel("Continue")
             }
             .padding(.horizontal, 24)
-        }
-        .padding(.top, 12)
-        .padding(.bottom, 24)
-        .background(Theme.background)
-    }
-
-    private var goalsBottomBar: some View {
-        VStack(spacing: 12) {
+        case .goals:
             Button {
                 if wantCalGoal, let cal = Double(calText), (500...50000).contains(cal) {
                     goals.calorieGoal = cal
                 } else {
                     goals.calorieGoal = nil
                 }
-                if wantStepGoal, let step = Int(stepText), (100...500000).contains(step) {
-                    goals.stepGoal = step
+                if wantStepGoal, let stepValue = Int(stepText), (100...500000).contains(stepValue) {
+                    goals.stepGoal = stepValue
                 } else {
                     goals.stepGoal = nil
+                }
+                // Persist the net-deficit choice (Rev A) and, when opted in,
+                // request the dietary-energy read so the dashboard net-deficit
+                // tile has consumed-calorie data the moment the user is Pro
+                // instead of showing a placeholder dash.
+                goals.showNetCalories = wantNetDeficit
+                if wantNetDeficit {
+                    Task { try? await HealthKitService.shared.requestDietaryAuthorization() }
                 }
                 // Goals are saved, but onboarding continues to the trial step —
                 // don't finish here. The primary stays in the same coral slot.
@@ -1942,10 +1983,91 @@ private struct OnboardingSheet: View {
             .disabled(!calValid || !stepValid)
             .opacity(calValid && stepValid ? 1 : 0.5)
             .padding(.horizontal, 24)
+        case .trial:
+            Button {
+                startTrial()
+            } label: {
+                ZStack {
+                    primaryLabel(store.onboardingTrialCTALabel)
+                        .opacity(isStartingTrial ? 0 : 1)
+                    if isStartingTrial {
+                        ProgressView().tint(.white)
+                    }
+                }
+            }
+            .disabled(isStartingTrial)
+            .padding(.horizontal, 24)
         }
-        .padding(.top, 12)
-        .padding(.bottom, 24)
-        .background(Theme.background)
+    }
+
+    private var welcomeTrustLine: some View {
+        HStack(spacing: 5) {
+            Image(systemName: "lock.fill")
+                .font(.system(size: 10, weight: .semibold))
+                .foregroundStyle(Theme.stepsPrimary)
+            Text("Read-only. Stays on your device. No account.")
+                .font(.system(.caption2, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(.horizontal, 24)
+        .accessibilityElement(children: .combine)
+    }
+
+    /// Trial-page content that lives ABOVE the primary button: the secondary
+    /// "Get Started" soft exit (StatScout label), the billing disclosure, and
+    /// any purchase error. Kept above the CTA so none of it can shift the button.
+    private var trialSoftExitAndDisclosure: some View {
+        VStack(spacing: 12) {
+            // Soft free exit sits ABOVE and de-emphasized so the primary trial
+            // button lands in the exact coral slot the user has been tapping.
+            Button {
+                finishOnboarding()
+            } label: {
+                Text("Get Started")
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textSecondary)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 8)
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal, 24)
+
+            // Render no disclosure until the package loads — never a phantom price.
+            if let disclosure = store.yearlyCTADisclosureText {
+                Text(disclosure)
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 24)
+            }
+
+            if let trialError {
+                Text(trialError)
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.caloriesPrimary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
+            }
+        }
+    }
+
+    /// Terms / Privacy / Restore beside the purchase point. Rendered on every
+    /// onboarding page (invisible off the trial page) so it reserves identical
+    /// height and the primary button never shifts between pages.
+    private var legalFooter: some View {
+        HStack(spacing: 14) {
+            Link("Terms", destination: VitalsLinks.standardEULA)
+            Link("Privacy", destination: VitalsLinks.privacyPolicy)
+            Button("Restore") {
+                Task { await store.restorePurchases() }
+            }
+            .buttonStyle(.plain)
+        }
+        .font(.system(.caption2, design: .rounded))
+        .foregroundStyle(Theme.textTertiary)
     }
 
     // MARK: Trial step
@@ -1996,71 +2118,6 @@ private struct OnboardingSheet: View {
                 )
             }
         }
-    }
-
-    private var trialBottomBar: some View {
-        VStack(spacing: 12) {
-            // Soft free exit sits ABOVE and de-emphasized so the primary trial
-            // button lands in the exact coral slot the user has been tapping.
-            Button {
-                finishOnboarding()
-            } label: {
-                Text("Not now")
-                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
-                    .foregroundStyle(Theme.textSecondary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 8)
-            }
-            .buttonStyle(.plain)
-            .padding(.horizontal, 24)
-
-            // Render no disclosure until the package loads — never a phantom price.
-            if let disclosure = store.yearlyCTADisclosureText {
-                Text(disclosure)
-                    .font(.system(.caption2, design: .rounded))
-                    .foregroundStyle(Theme.textTertiary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 24)
-            }
-
-            Button {
-                startTrial()
-            } label: {
-                ZStack {
-                    primaryLabel(store.onboardingTrialCTALabel)
-                        .opacity(isStartingTrial ? 0 : 1)
-                    if isStartingTrial {
-                        ProgressView().tint(.white)
-                    }
-                }
-            }
-            .disabled(isStartingTrial)
-            .padding(.horizontal, 24)
-
-            if let trialError {
-                Text(trialError)
-                    .font(.system(.caption2, design: .rounded))
-                    .foregroundStyle(Theme.caloriesPrimary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 24)
-            }
-
-            // Legal + Restore beside the purchase point.
-            HStack(spacing: 14) {
-                Link("Terms", destination: VitalsLinks.standardEULA)
-                Link("Privacy", destination: VitalsLinks.privacyPolicy)
-                Button("Restore") {
-                    Task { await store.restorePurchases() }
-                }
-                .buttonStyle(.plain)
-            }
-            .font(.system(.caption2, design: .rounded))
-            .foregroundStyle(Theme.textTertiary)
-        }
-        .padding(.top, 12)
-        .padding(.bottom, 24)
-        .background(Theme.background)
     }
 
     /// One-tap conversion: buy the yearly plan directly (trial when eligible) so
@@ -2162,6 +2219,37 @@ private struct GoalRow: View {
         }
         .padding(16)
         .background(Theme.cardSurface.opacity(0.5), in: RoundedRectangle(cornerRadius: 14))
+    }
+}
+
+/// Onboarding net-deficit opt-in (Rev A). A toggle-only row (no numeric field)
+/// so the user is explicitly asked whether to track net calories. Enabling it
+/// turns `showNetCalories` on and requests the dietary-energy read, so the
+/// dashboard net-deficit tile has data instead of a placeholder dash once Pro.
+private struct NetDeficitOptInRow: View {
+    @Binding var enabled: Bool
+
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack {
+                Image(systemName: "plus.forwardslash.minus")
+                    .foregroundStyle(Theme.netDeficitBrand)
+                Text("Net Calories")
+                    .font(.system(.headline, design: .rounded))
+                Spacer()
+                Toggle("", isOn: $enabled)
+                    .labelsHidden()
+            }
+            Text("Subtract the food energy you log in Apple Health from what you burn. Included with Vitals+.")
+                .font(.system(.caption, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(16)
+        .background(Theme.cardSurface.opacity(0.5), in: RoundedRectangle(cornerRadius: 14))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Net Calories. Subtract food energy logged in Apple Health from calories burned. Included with Vitals Plus.")
     }
 }
 
