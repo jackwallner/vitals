@@ -92,6 +92,8 @@ enum MilestoneCalculator {
 
     /// Returns the largest celebrated streak tier the user has reached or
     /// passed that hasn't already fired. nil = nothing to celebrate.
+    /// Callers must seed existing history first (see hasSeededStreakMilestones)
+    /// so this never congratulates a streak the user already had on first launch.
     static func unfiredStreakMilestone(
         currentStreak: Int,
         firedIds: Set<String>
@@ -100,6 +102,18 @@ enum MilestoneCalculator {
             .filter { $0 <= currentStreak && !firedIds.contains("streak_\($0)") }
             .max()
         return candidate.map { .goalStreak(n: $0) }
+    }
+
+    /// Marks every celebrated tier at or below `currentStreak` as already fired.
+    /// Used once on first history evaluation so pre-existing HealthKit streaks
+    /// are adopted silently.
+    static func seedFiredStreakIds(
+        currentStreak: Int,
+        into firedIds: inout Set<String>
+    ) {
+        for tier in celebratedStreaks where tier <= currentStreak {
+            firedIds.insert("streak_\(tier)")
+        }
     }
 
     /// "Reviewable" = today is day 1-3 of a new calendar month and the prior

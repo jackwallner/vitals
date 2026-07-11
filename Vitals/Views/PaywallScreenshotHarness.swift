@@ -22,7 +22,6 @@ struct PaywallScreenshotHarness: View {
                         isPurchasing: false,
                         errorMessage: nil,
                         onStartTrial: {},
-                        onSeeAllPlans: {},
                         onDismiss: {}
                     )
                 }

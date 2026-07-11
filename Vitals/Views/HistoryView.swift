@@ -25,6 +25,10 @@ extension Notification.Name {
     /// Posted by the "What's New" sheet's Open Settings CTA (Pro users) so the
     /// dashboard can present its Settings sheet for the user to opt into extras.
     static let vitalsOpenSettings = Notification.Name("vitalsOpenSettings")
+
+    /// Posted after a Net Deficit unlock so Settings (if open) dismisses and the
+    /// dietary HealthKit permission sheet can present without being covered.
+    static let vitalsDismissSettings = Notification.Name("vitalsDismissSettings")
 }
 
 @MainActor

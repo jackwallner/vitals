@@ -320,6 +320,9 @@ struct DashboardView: View {
         .onReceive(NotificationCenter.default.publisher(for: .vitalsOpenSettings)) { _ in
             showSettings = true
         }
+        .onReceive(NotificationCenter.default.publisher(for: .vitalsDismissSettings)) { _ in
+            showSettings = false
+        }
         .task {
             if ScreenshotConfig.wantsOnboarding {
                 showOnboarding = true
@@ -1445,14 +1448,25 @@ struct DashboardView: View {
         } ?? 0
 
         // Celebration sheets are a non-Pro upsell, fired off the *combined* streak
-        // (hit either goal) — the broadest "on a roll" signal, best for conversion.
+        // (hit either goal) - the broadest "on a roll" signal, best for conversion.
         let streak = MilestoneCalculator.currentGoalStreak(
             records: days,
             calorieGoal: goals.calorieGoal,
             stepGoal: goals.stepGoal
         )
-        // Milestone celebration sheets are a non-Pro upsell only.
         guard !store.isPro else { return }
+
+        // First evaluation after install/update: adopt whatever streak already
+        // exists in HealthKit history without celebrating it. Otherwise a user
+        // with a long-running goal streak gets "7-day streak!" on first open.
+        if !goals.hasSeededStreakMilestones {
+            var seeded = goals.firedMilestoneIds
+            MilestoneCalculator.seedFiredStreakIds(currentStreak: streak, into: &seeded)
+            goals.firedMilestoneIds = seeded
+            goals.hasSeededStreakMilestones = true
+            return
+        }
+
         guard let milestone = MilestoneCalculator.unfiredStreakMilestone(
             currentStreak: streak,
             firedIds: goals.firedMilestoneIds
@@ -1751,19 +1765,27 @@ private struct OnboardingSheet: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                ScrollView {
-                    Group {
-                        switch step {
-                        case .welcome: welcomePage
-                        case .goals: goalsPage
-                        case .trial: trialPage
+                if step == .trial {
+                    // Trial must NOT live in a ScrollView: Spacers need a bounded
+                    // height to center the pitch above the zero-shift CTA bar.
+                    trialPage
+                        .padding(.horizontal, 24)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    ScrollView {
+                        Group {
+                            switch step {
+                            case .welcome: welcomePage
+                            case .goals: goalsPage
+                            case .trial: EmptyView()
+                            }
                         }
+                        .padding(.top, 48)
+                        .padding(.bottom, 24)
+                        .padding(.horizontal, 24)
                     }
-                    .padding(.top, step == .trial ? 24 : 48)
-                    .padding(.bottom, 24)
-                    .padding(.horizontal, 24)
+                    .scrollBounceBehavior(.basedOnSize)
                 }
-                .scrollBounceBehavior(.basedOnSize)
 
                 bottomBar
             }
@@ -2053,34 +2075,58 @@ private struct OnboardingSheet: View {
 
     // MARK: Trial step
 
-    /// Final onboarding step — StatScout-style: hero + short pitch + 3 one-line
-    /// selling points. No cards, no long copy, no scrolling on a normal phone.
+    /// Final onboarding step: compact pitch with icon chips + short lines.
+    /// Content is vertically centered in the scroll area so the zero-shift CTA
+    /// bar below doesn't leave a dead band under the last selling point.
     private var trialPage: some View {
-        VStack(spacing: 20) {
-            Spacer(minLength: 0)
+        VStack(spacing: 0) {
+            Spacer(minLength: 8)
 
-            Image(systemName: "sparkles")
-                .font(.system(size: 44))
-                .foregroundStyle(Theme.caloriesGradient)
+            VStack(spacing: 18) {
+                Image(systemName: "sparkles")
+                    .font(.system(size: 44))
+                    .foregroundStyle(Theme.caloriesGradient)
 
-            Text("Go further with Vitals+")
-                .font(.system(.title, design: .rounded, weight: .bold))
-                .multilineTextAlignment(.center)
+                VStack(spacing: 6) {
+                    Text("Go further with Vitals+")
+                        .font(.system(.title, design: .rounded, weight: .bold))
+                        .multilineTextAlignment(.center)
+                    Text("Extras that sit on top of your daily calories and steps.")
+                        .font(.system(.subheadline, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
 
-            Text("Net deficit, streaks, deeper trends — the extras on top of your daily view.")
-                .font(.system(.subheadline, design: .rounded))
-                .foregroundStyle(Theme.textSecondary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-
-            VStack(alignment: .leading, spacing: 12) {
-                TrialSellingPoint(icon: "plus.forwardslash.minus", color: Theme.caloriesPrimary, text: "Net deficit from Apple Health food logs")
-                TrialSellingPoint(icon: "flame.fill", color: Theme.streakPrimary, text: "Goal streaks and end-of-day projections")
-                TrialSellingPoint(icon: "chart.line.uptrend.xyaxis", color: Theme.stepsPrimary, text: "TDEE, BMR, and deeper history trends")
+                VStack(alignment: .leading, spacing: 12) {
+                    TrialSellingPoint(
+                        icon: "plus.forwardslash.minus",
+                        color: Theme.caloriesPrimary,
+                        title: "Net deficit",
+                        detail: "Burned minus food logged in Apple Health"
+                    )
+                    TrialSellingPoint(
+                        icon: "flame.fill",
+                        color: Theme.streakPrimary,
+                        title: "Streaks & projections",
+                        detail: "Keep the chain and see end-of-day pace"
+                    )
+                    TrialSellingPoint(
+                        icon: "chart.line.uptrend.xyaxis",
+                        color: Theme.stepsPrimary,
+                        title: "Deeper trends",
+                        detail: "TDEE, BMR, and period comparisons"
+                    )
+                    TrialSellingPoint(
+                        icon: "doc.richtext.fill",
+                        color: Theme.netDeficitBrand,
+                        title: "Summary reports",
+                        detail: "Export a PDF for any date range"
+                    )
+                }
             }
-            .padding(.top, 8)
 
-            Spacer(minLength: 0)
+            Spacer(minLength: 8)
         }
     }
 
@@ -2149,22 +2195,30 @@ private struct WelcomePoint: View {
     }
 }
 
-/// Compact one-line selling point for the onboarding trial step (StatScout pattern).
+/// Compact selling point for the onboarding trial step: tinted icon + title +
+/// one short supporting line (StatScout density, Vitals icon mix).
 private struct TrialSellingPoint: View {
     let icon: String
     let color: Color
-    let text: String
+    let title: String
+    let detail: String
 
     var body: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 10) {
+        HStack(alignment: .top, spacing: 12) {
             Image(systemName: icon)
-                .font(.system(size: 14, weight: .bold))
+                .font(.system(size: 16, weight: .semibold))
                 .foregroundStyle(color)
-                .frame(width: 20, alignment: .center)
-            Text(text)
-                .font(.system(.body, design: .rounded))
-                .foregroundStyle(Theme.textPrimary)
-                .fixedSize(horizontal: false, vertical: true)
+                .frame(width: 36, height: 36)
+                .background(color.opacity(0.14), in: RoundedRectangle(cornerRadius: 10))
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.system(.body, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textPrimary)
+                Text(detail)
+                    .font(.system(.subheadline, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             Spacer(minLength: 0)
         }
         .accessibilityElement(children: .combine)
@@ -2250,7 +2304,19 @@ private struct SettingsSheet: View {
             get: { store.isPro && goals.showNetCalories },
             set: { enabled in
                 if store.isPro {
-                    goals.showNetCalories = enabled
+                    if enabled {
+                        // HealthKit suppresses the dietary permission sheet while
+                        // Settings (or any other sheet) is covering the window.
+                        // Dismiss first, then flip the toggle so the system prompt
+                        // can actually appear.
+                        NotificationCenter.default.post(name: .vitalsDismissSettings, object: nil)
+                        Task { @MainActor in
+                            try? await Task.sleep(nanoseconds: 450_000_000)
+                            goals.showNetCalories = true
+                        }
+                    } else {
+                        goals.showNetCalories = false
+                    }
                 } else if enabled {
                     goals.showNetCalories = false
                     requestTrialOffer(.netDeficitToggle)
@@ -2474,12 +2540,6 @@ private struct SettingsSheet: View {
                     }
                     Toggle(isOn: showNetCaloriesBinding) {
                         plusToggleLabel("Net Deficit")
-                    }
-                    .onChange(of: goals.showNetCalories) { _, enabled in
-                        guard enabled, store.isPro else { return }
-                        Task {
-                            try? await HealthKitService.shared.requestDietaryAuthorization()
-                        }
                     }
                     Toggle(isOn: netDeficitFastingBinding) {
                         plusToggleLabel("Fasting Mode")
