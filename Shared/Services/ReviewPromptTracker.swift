@@ -24,18 +24,20 @@ enum ReviewPromptTracker {
     private static let outcomeKey = "reviewPrompt.outcome"
     private static let positiveMomentCountKey = "reviewPrompt.positiveMomentCount"
     private static let pendingPositiveMomentKey = "reviewPrompt.pendingPositiveMoment"
+    private static let softDeferKey = "reviewPrompt.softDefer"
 
     /// Minimum cold starts before passive prompts are considered.
-    static let minimumLaunchCount = 5
+    static let minimumLaunchCount = 3
     /// Minimum days since first open.
-    static let minimumDaysSinceFirstOpen = 7
-    /// Minimum *cumulative* positive moments (goal hits, streak tiers) before we
-    /// surface the enjoyment funnel. A single good day isn't enough — we only ask
-    /// people who've repeatedly had a good experience, i.e. who actually like the
-    /// app. This is the core "only surface if they like it" gate.
-    static let minimumPositiveMoments = 3
+    static let minimumDaysSinceFirstOpen = 3
+    /// Minimum *cumulative* positive moments (goal hits) before we surface the
+    /// enjoyment funnel. Two good days is enough signal they like the app.
+    static let minimumPositiveMoments = 2
     /// Days before "Not now" can surface the enjoyment prompt again.
     static let cooldownDays = 120
+    /// Shorter cooldown after "Maybe later" on the review pitch — Apple's
+    /// `requestReview()` often shows nothing, so a 120-day jail was burning asks.
+    static let softDeferCooldownDays = 30
 
     static var appLaunchCount: Int {
         get { max(defaults.integer(forKey: launchCountKey), 0) }
@@ -110,7 +112,8 @@ enum ReviewPromptTracker {
     static func passivePromptAllowed(now: Date = .now) -> Bool {
         guard outcome == nil else { return false }
         guard let last = lastShownDate else { return true }
-        let cooldown = TimeInterval(cooldownDays) * 86_400
+        let days = defaults.bool(forKey: softDeferKey) ? softDeferCooldownDays : cooldownDays
+        let cooldown = TimeInterval(days) * 86_400
         return now.timeIntervalSince(last) >= cooldown
     }
 
@@ -141,6 +144,16 @@ enum ReviewPromptTracker {
 
     static func markShown(now: Date = .now) {
         lastShownDate = now
+        defaults.set(false, forKey: softDeferKey)
+        consumePendingPositiveMoment()
+    }
+
+    /// User said Yes then "Maybe later" — we fire `requestReview()` which Apple
+    /// often silently no-ops. Use a short cooldown so we can ask again instead
+    /// of jailing them for 120 days.
+    static func markSoftDeferred(now: Date = .now) {
+        lastShownDate = now
+        defaults.set(true, forKey: softDeferKey)
         consumePendingPositiveMoment()
     }
 
