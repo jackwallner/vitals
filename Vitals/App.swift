@@ -339,10 +339,13 @@ struct MainTabView: View {
     /// Gates the history-load offer so the two never fire back-to-back — the
     /// history offer is strictly a later-session second touch.
     @State private var launchOfferShownThisSession = false
-    /// Set when the Today dashboard posts that its data is on screen. The passive
-    /// launch nudge waits for this so the 5s countdown starts from real data
-    /// appearing, not from app launch (which can race a slow first HealthKit read).
+    /// Set when the Today dashboard posts that its data is on screen (even zeros).
+    /// Gates the "What's New" announcement, which is fine over any dashboard state.
     @State private var dashboardDataLoaded = false
+    /// Set the first time the dashboard shows real, non-zero burned/step data —
+    /// the strategic value moment (Rev A). The passive launch trial nudge waits
+    /// for this instead of a blind timer, so it never pitches over zeros/spinner.
+    @State private var dashboardShowedRealData = false
     @State private var trialPurchaseInFlight = false
     @State private var trialPurchaseError: String?
     /// Set when the user opts into the full plan picker from inside the trial-offer
@@ -477,16 +480,22 @@ struct MainTabView: View {
               goals.passiveTrialOfferAllowed(),
               hasTrialOffer,
               selectedTab == 0,
-              // Don't start the countdown until the dashboard's data is actually
-              // on screen — otherwise a slow first HealthKit read can push the
-              // numbers in *after* the pitch, or the pitch fires over a spinner.
-              dashboardDataLoaded
+              // Rev A: the strategic value moment. Only pitch after the dashboard
+              // has actually shown the user real, non-zero data (their ring and
+              // counters populated) — never over a spinner, and never over a row
+              // of zeros that hasn't demonstrated the app's value yet.
+              dashboardShowedRealData
         else { return }
-        // Defer ~5s so the user sees their dashboard (ring, counters) populate
-        // before the pitch — a cold pitch at first paint converts worse and
-        // collides with the dashboard's first-paint animations.
+        // Brief settle so the ring/counter first-paint animations finish before
+        // the pitch appears over the numbers the user just watched populate.
         Task { @MainActor in
-            try? await Task.sleep(nanoseconds: 5_000_000_000)
+            try? await Task.sleep(nanoseconds: 1_800_000_000)
+            // Make sure the trial product is loaded before presenting so the
+            // sheet shows its direct-purchase deal framing (7-days-free badge,
+            // per-month value line, price disclosure) rather than the "See all
+            // plans" fallback. The real-data value moment can otherwise beat the
+            // slower RevenueCat offerings fetch.
+            if directTrialPackage == nil { await store.fetchProducts() }
             guard !showTrialOffer, !showTrialPaywall, !showWhatsNew else { return }
             // Re-check the user is still on Today — they may have navigated to
             // History or Vitals+ during the wait, in which case this pitch would
@@ -739,6 +748,14 @@ struct MainTabView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .vitalsDashboardDidLoadData)) { _ in
             dashboardDataLoaded = true
+            // What's New can show over any dashboard state; the passive trial
+            // nudge waits for the real-data value moment below.
+            maybeShowWhatsNew()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .vitalsDashboardDidShowRealData)) { _ in
+            // Strategic value moment (Rev A): real numbers are on screen. Now the
+            // passive trial nudge is allowed to consider firing.
+            dashboardShowedRealData = true
             if !maybeShowWhatsNew() { evaluateTrialOffer() }
         }
         .onReceive(NotificationCenter.default.publisher(for: .vitalsHistoryDidFinishLoading)) { _ in
@@ -832,6 +849,7 @@ struct MainTabView: View {
                 focus: trialOfferFocus,
                 offerLabel: trialOfferPackage?.vitalsIntroOfferLabel ?? store.products.compactMap(\.vitalsIntroOfferLabel).first,
                 priceLabel: trialOfferPackage?.vitalsPriceLabel,
+                pricePerMonthLabel: trialOfferPackage?.vitalsPricePerMonthLabel,
                 directPurchase: trialOfferIsDirect,
                 isPurchasing: trialPurchaseInFlight,
                 errorMessage: trialPurchaseError,
@@ -1361,6 +1379,9 @@ struct TrialOfferSheet: View {
     /// Recurring price after the trial, e.g. "$29.99 / year". Only required in
     /// `directPurchase` mode (Apple 3.1.2 needs price + terms before purchase).
     let priceLabel: String?
+    /// Per-month equivalent of the recurring price, e.g. "$1.25". Powers the
+    /// deal-framing value line ("just $1.25/month, billed yearly"). nil hides it.
+    var pricePerMonthLabel: String? = nil
     /// When true the primary button buys the trial product directly via StoreKit
     /// and the sheet shows compliant billing disclosure + a "See all plans" link.
     /// When false it opens the full native plan picker paywall.
@@ -1403,6 +1424,26 @@ struct TrialOfferSheet: View {
         return [.netDeficit, .deepTrends, .customRangesPDF]
     }
 
+    /// Deal badge text derived from the real offer, e.g. "7-day free trial" →
+    /// "7 DAYS FREE". Falls back to a generic label if the day count can't be
+    /// parsed. Never invents a number — only reflects the loaded offer.
+    private var trialBadgeText: String {
+        guard let offerLabel,
+              let days = offerLabel.split(whereSeparator: { !$0.isNumber }).first,
+              !days.isEmpty else {
+            return "FREE TRIAL"
+        }
+        return "\(days) DAYS FREE"
+    }
+
+    /// Value-anchoring line for the deal framing, e.g. "Just $1.25/month, billed
+    /// yearly." Shown only in direct-purchase mode where the real price is known,
+    /// so it can never over-promise. nil hides it.
+    private var valueFramingText: String? {
+        guard directPurchase, let perMonth = pricePerMonthLabel else { return nil }
+        return "Just \(perMonth)/month, billed yearly"
+    }
+
     /// Repeat-forever animation timing for the ambient glow. Scoped to the
     /// specific views that read `animateGlow` via `.animation(_:value:)` so the
     /// animation context can't leak into unrelated layout changes (e.g. the
@@ -1419,15 +1460,17 @@ struct TrialOfferSheet: View {
     var body: some View {
         ZStack {
             Theme.background.ignoresSafeArea()
+            // Coral ambient glows (Rev A: deal framing consistent with the coral
+            // Vitals theme rather than the teal steps palette).
             Circle()
-                .fill(Theme.stepsPrimary.opacity(0.2))
-                .frame(width: 220, height: 220)
-                .blur(radius: 36)
+                .fill(Theme.caloriesPrimary.opacity(0.22))
+                .frame(width: 240, height: 240)
+                .blur(radius: 38)
                 .offset(x: animateGlow ? 96 : -96, y: animateGlow ? -220 : -180)
                 .animation(glowAnimation, value: animateGlow)
             Circle()
-                .fill(Theme.stepsSecondary.opacity(0.18))
-                .frame(width: 180, height: 180)
+                .fill(Theme.caloriesSecondary.opacity(0.20))
+                .frame(width: 190, height: 190)
                 .blur(radius: 34)
                 .offset(x: animateGlow ? -110 : 110, y: animateGlow ? 250 : 210)
                 .animation(glowAnimation, value: animateGlow)
@@ -1443,9 +1486,9 @@ struct TrialOfferSheet: View {
             VStack(spacing: 12) {
                 ZStack {
                     Circle()
-                        .fill(Theme.stepsGradient)
+                        .fill(Theme.caloriesGradient)
                         .frame(width: 60, height: 60)
-                        .shadow(color: Theme.stepsPrimary.opacity(0.4), radius: 12, x: 0, y: 4)
+                        .shadow(color: Theme.caloriesPrimary.opacity(0.45), radius: 14, x: 0, y: 4)
                         .scaleEffect(animateGlow ? 1.06 : 0.96)
                     Circle()
                         .stroke(.white.opacity(0.35), lineWidth: 1)
@@ -1459,6 +1502,22 @@ struct TrialOfferSheet: View {
                 .padding(.top, 4)
                 .animation(glowAnimation, value: animateGlow)
 
+                // Prominent deal badge (Rev A): "7 DAYS FREE" in a coral,
+                // gradient-filled pill with a soft glow so the offer reads as a
+                // deal at a glance. Text derived from the real loaded offer.
+                Text(trialBadgeText)
+                    .font(.system(.caption, design: .rounded, weight: .heavy))
+                    .tracking(1.5)
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 6)
+                    .background(Theme.caloriesGradient, in: Capsule())
+                    .overlay(Capsule().stroke(.white.opacity(0.35), lineWidth: 1))
+                    .shadow(color: Theme.caloriesPrimary.opacity(0.5), radius: animateGlow ? 12 : 6, x: 0, y: 2)
+                    .scaleEffect(animateGlow ? 1.03 : 1.0)
+                    .animation(glowAnimation, value: animateGlow)
+                    .accessibilityLabel(trialBadgeText.capitalized)
+
                 VStack(spacing: 4) {
                     Text(headline)
                         .font(.system(.title2, design: .rounded, weight: .bold))
@@ -1468,10 +1527,14 @@ struct TrialOfferSheet: View {
                         .minimumScaleFactor(0.85)
                         .overlay(shimmerOverlay)
                         .mask(
+                            // Must mirror the base Text's layout modifiers exactly
+                            // (including minimumScaleFactor) or a scaled-down longer
+                            // headline misaligns with the mask and renders garbled.
                             Text(headline)
                                 .font(.system(.title2, design: .rounded, weight: .bold))
                                 .multilineTextAlignment(.center)
                                 .lineLimit(2)
+                                .minimumScaleFactor(0.85)
                         )
                     Text(subheadline)
                         .font(.system(.footnote, design: .rounded))
@@ -1514,6 +1577,16 @@ struct TrialOfferSheet: View {
             .padding(.top, 6)
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 VStack(spacing: 8) {
+                    // Deal value anchor (Rev A): make the yearly price feel small
+                    // by showing its real per-month equivalent. Only in direct
+                    // mode where the price is loaded, so it can't over-promise.
+                    if let valueFramingText {
+                        Text(valueFramingText)
+                            .font(.system(.subheadline, design: .rounded, weight: .bold))
+                            .foregroundStyle(Theme.caloriesPrimary)
+                            .multilineTextAlignment(.center)
+                    }
+
                     if directPurchase, let priceLabel {
                         Text("Free during trial, then \(priceLabel). Auto-renews unless cancelled 24h before trial ends.")
                             .font(.system(.caption2, design: .rounded))

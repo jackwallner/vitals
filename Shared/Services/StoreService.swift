@@ -97,6 +97,14 @@ extension Package {
         return storeProduct.localizedPricePerWeek
     }
 
+    /// Per-month equivalent of the recurring price, e.g. "$1.25". Powers the
+    /// deal-framing "just $1.25/month, billed yearly" value line on the passive
+    /// trial sheet so the annual figure feels small. nil for non-subscriptions.
+    var vitalsPricePerMonthLabel: String? {
+        guard storeProduct.subscriptionPeriod != nil else { return nil }
+        return storeProduct.localizedPricePerMonth
+    }
+
     /// Number of free-trial days this package grants (P1W → 7), or nil if it
     /// carries no free trial. Used to label the trial timeline steps.
     var vitalsTrialDayCount: Int? {
