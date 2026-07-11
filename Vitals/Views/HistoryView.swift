@@ -10,10 +10,17 @@ extension Notification.Name {
     /// second-touch Vitals+ trial nudge in MainTabView.
     static let vitalsHistoryDidFinishLoading = Notification.Name("vitalsHistoryDidFinishLoading")
 
-    /// Posted when the Today dashboard finishes painting its first real data
-    /// (numbers + ring on screen). The passive launch trial nudge waits ~5s from
-    /// this so the pitch lands after the user sees their dashboard, not before.
+    /// Posted when the Today dashboard finishes painting its first data (numbers
+    /// + ring on screen), even if that data is all zeros. Drives the "What's New"
+    /// announcement, which is fine to show over any dashboard state.
     static let vitalsDashboardDidLoadData = Notification.Name("vitalsDashboardDidLoadData")
+
+    /// Posted the first time the dashboard shows real, non-zero burned-calorie or
+    /// step data — the strategic value moment (Rev A). The passive launch trial
+    /// nudge waits for this instead of a blind post-launch timer, so the pitch
+    /// only lands after the app has demonstrably shown the user their numbers,
+    /// never over a spinner or a row of zeros.
+    static let vitalsDashboardDidShowRealData = Notification.Name("vitalsDashboardDidShowRealData")
 
     /// Posted by the "What's New" sheet's Open Settings CTA (Pro users) so the
     /// dashboard can present its Settings sheet for the user to opt into extras.
