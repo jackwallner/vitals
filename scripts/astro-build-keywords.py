@@ -11,7 +11,7 @@ import json
 import re
 from pathlib import Path
 
-# Generic high-intent phrases — agent should extend per app in docs/astro-setup-process.md
+# Generic high-intent phrases — agent should extend per app in ~/ios/aso/astro-setup-process.md
 GENERIC_PHRASES = [
     "app tracker",
     "daily tracker",

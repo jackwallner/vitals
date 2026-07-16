@@ -177,4 +177,4 @@ if ratings:
     print(f"==> Ratings {store}: {r.get('currentRating')} ({r.get('currentCount')} reviews)")
 PY
 
-echo "==> Done. See docs/astro-setup-process.md to generate docs/astro-aso-setup.md and remove junk keywords."
+echo "==> Done. See ~/ios/aso/astro-setup-process.md to generate docs/astro-aso-setup.md and remove junk keywords."
