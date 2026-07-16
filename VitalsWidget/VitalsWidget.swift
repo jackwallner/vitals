@@ -504,9 +504,18 @@ struct VitalsWidgetEntryView: View {
     }
 }
 
-// MARK: - Widget
+// MARK: - Widget Bundle
 
 @main
+struct VitalsWidgetBundle: WidgetBundle {
+    var body: some Widget {
+        VitalsWidget()
+        EnergyAveragesWidget()
+    }
+}
+
+// MARK: - Widget
+
 struct VitalsWidget: Widget {
     let kind = "VitalsWidget"
 
