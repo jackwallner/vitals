@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 import os
+import WidgetKit
 @preconcurrency import RevenueCat
 
 /// Vitals+ subscription product identifiers. Must match App Store Connect and `Vitals.storekit`.
@@ -177,7 +178,20 @@ final class StoreService: NSObject, ObservableObject {
     @Published private(set) var products: [Package] = []
     @Published private(set) var currentOffering: Offering?
     @Published private(set) var customerInfo: CustomerInfo?
-    @Published private(set) var isPro: Bool = false
+    @Published private(set) var isPro: Bool = false {
+        didSet {
+            guard oldValue != isPro else { return }
+            // Mirror the entitlement into the App Group so extensions (the TDEE
+            // widget) can gate the paid figure without a StoreKit round-trip,
+            // then nudge widget timelines to re-render against the new state.
+            StoreService.cachedProDefaults?.set(isPro, forKey: StoreService.cachedProKey)
+            WidgetCenter.shared.reloadAllTimelines()
+        }
+    }
+
+    /// App Group key mirroring the live `isPro` entitlement for widget gating.
+    static let cachedProKey = "isProCached"
+    private static let cachedProDefaults = UserDefaults(suiteName: vitalsAppGroupID)
     @Published private(set) var purchaseInFlight: Bool = false
     @Published private(set) var isLoadingProducts: Bool = false
     @Published private(set) var lastError: String?

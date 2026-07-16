@@ -138,6 +138,9 @@ struct DashboardView: View {
     @State private var energyTDEE: Double? = nil
     @State private var energyBMR: Double? = nil
     @State private var energySampleDays: Int = 0
+    /// Measured top safe-area inset (status bar / Dynamic Island height), used to
+    /// size the mask that keeps scrolled content from colliding with the status bar.
+    @State private var topSafeAreaInset: CGFloat = 0
 
     private var totalCalories: Double { activeCalories + restingCalories }
 
@@ -246,7 +249,18 @@ struct DashboardView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Theme.background.ignoresSafeArea()
+                Theme.background
+                    .ignoresSafeArea()
+                    .overlay {
+                        // The base layer spans under the status bar, so a reader
+                        // over it sees the real top inset (0 on devices without
+                        // one). Captured here so the status-bar mask can be sized.
+                        GeometryReader { proxy in
+                            Color.clear
+                                .onAppear { topSafeAreaInset = proxy.safeAreaInsets.top }
+                                .onChange(of: proxy.safeAreaInsets.top) { _, v in topSafeAreaInset = v }
+                        }
+                    }
 
                 if isLoading {
                     loadingView
@@ -260,6 +274,14 @@ struct DashboardView: View {
                     }
                 }
             }
+            // The dashboard hides the navigation bar for its custom date header,
+            // which also removes the system scroll-edge treatment that normally
+            // masks content scrolling up behind the status bar. Without this the
+            // header/cards slide under the transparent status bar and collide with
+            // the clock and battery on devices tall enough to scroll (a bug that
+            // only shows when the content stack overflows the screen). Repaint the
+            // status-bar strip with the page background, above the scroll content.
+            .overlay(alignment: .top) { statusBarMask }
             .overlay(alignment: .top) {
                 if let message = celebrationMessage {
                     celebrationBanner(message)
@@ -353,6 +375,19 @@ struct DashboardView: View {
                 .interactiveDismissDisabled()
         }
         }
+    }
+
+    /// Opaque page-background strip sized to the top safe-area inset, drawn over
+    /// the scroll content so anything scrolling upward is hidden before it reaches
+    /// the status bar. The GeometryReader ignores the safe area so `safeAreaInsets`
+    /// still reports the real inset (0 on devices without one, so this is a no-op
+    /// there). Non-interactive so it never intercepts scroll/taps.
+    private var statusBarMask: some View {
+        Theme.background
+            .frame(height: topSafeAreaInset)
+            .frame(maxWidth: .infinity)
+            .ignoresSafeArea(edges: .top)
+            .allowsHitTesting(false)
     }
 
     private func celebrationBanner(_ message: String) -> some View {
