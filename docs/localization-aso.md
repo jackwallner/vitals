@@ -41,4 +41,4 @@ eval "$(python3 scripts/asc-ensure-draft-version.py | grep '^export ')"
 
 ## Playbook
 
-See [`astro-global-aso-go-2026.md`](astro-global-aso-go-2026.md) — keywords must **not repeat** tokens already in `name.txt` or `subtitle.txt` (deduped by `scripts/aso-apply-locale-optimizations.py`).
+See [global ASO rollout archive](~/ios/archive/aso/2026-05/astro-global-aso-go-2026.md) — keywords must **not repeat** tokens already in `name.txt` or `subtitle.txt` (deduped by `scripts/aso-apply-locale-optimizations.py`).

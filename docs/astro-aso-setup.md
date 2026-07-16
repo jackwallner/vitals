@@ -1,8 +1,8 @@
 # Astro ASO setup — Total Calories
 
-> **Playbook:** [`astro-global-aso-go-2026.md`](astro-global-aso-go-2026.md)  
+> **Playbook:** [global ASO rollout archive](~/ios/archive/aso/2026-05/astro-global-aso-go-2026.md)  
 > **Keyword strategy:** [`aso-keyword-strategy.md`](aso-keyword-strategy.md)  
-> **Phase B report:** [`astro-phase-b-report.md`](astro-phase-b-report.md)
+> **Phase B report:** [Phase B report](archive/aso/2026-05/astro-phase-b-report.md)
 
 Last updated: **2026-05-25** (local metadata optimize + name/subtitle dedupe; **no ASC upload**)
 

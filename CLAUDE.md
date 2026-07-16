@@ -34,7 +34,7 @@ XcodeGen project/scheme: `Vitals`, simulator device `agent-vitals`.
 - App Group: `group.com.jackwallner.vitals`.
 - Review funnel triggers after a **daily goal hit**; `AppStoreReviewLinks.writeReviewURL`. (Shared funnel mechanics + playbook in the `ios-dev` skill.)
 - App Store Submission specifics: privacy policy at `docs/privacy-policy.html` (GitHub Pages: `https://jackwallner.github.io/vitals/privacy-policy.html`); privacy manifests `Vitals/PrivacyInfo.xcprivacy` + `VitalsWatch/PrivacyInfo.xcprivacy`; `healthkit` in required device capabilities; VoiceOver labels on all interactive elements; goal validation (calories 500-50,000, steps 100-500,000); HealthKit-denied state shows guidance + Settings link.
-- Astro ASO: `./scripts/astro-setup.sh` (`--extra "phrase"` for app-specific terms); local MCP `http://127.0.0.1:8089/mcp`; playbook `docs/astro-setup-process.md`; re-sync keywords `./scripts/sync-astro-keywords.sh`.
+- Astro ASO: `./scripts/astro-setup.sh` (`--extra "phrase"` for app-specific terms); local MCP `http://127.0.0.1:8089/mcp`; playbook `~/ios/aso/astro-setup-process.md`; re-sync keywords `./scripts/sync-astro-keywords.sh`.
 
 ---
 Shared iOS conventions (build, simulator, release/TestFlight, ASC key, signing, review funnel, HealthKit/widget gotchas):
