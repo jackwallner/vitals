@@ -39,3 +39,6 @@ XcodeGen project/scheme: `Vitals`, simulator device `agent-vitals`.
 ---
 Shared iOS conventions (build, simulator, release/TestFlight, ASC key, signing, review funnel, HealthKit/widget gotchas):
 always-loaded global CLAUDE.md + the `ios-dev` skill.
+
+## Subagent delegation
+Follow the global CLAUDE.md subagent rules: ask Jack for the model before spawning, spawn at most one at a time unless Jack explicitly approves more, and never allow a subagent to spawn another subagent.
