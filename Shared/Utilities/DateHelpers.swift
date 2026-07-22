@@ -10,6 +10,17 @@ enum DateHelpers {
             ?? startOfDay(date)
     }
 
+    /// Exclusive end for a daily HealthKit query whose requested end date is inclusive.
+    /// Completed days extend to the next midnight; ranges containing today stop at `now`
+    /// so duration-based samples cannot contribute future quantities.
+    static func healthQueryEnd(including end: Date, now: Date = .now) -> Date {
+        let calendar = Calendar.current
+        let endDay = calendar.startOfDay(for: end)
+        let today = calendar.startOfDay(for: now)
+        guard endDay < today else { return now }
+        return calendar.date(byAdding: .day, value: 1, to: endDay) ?? endDay
+    }
+
     private static let shortDateFormatter: DateFormatter = {
         let f = DateFormatter()
         f.setLocalizedDateFormatFromTemplate("Md")

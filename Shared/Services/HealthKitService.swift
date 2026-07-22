@@ -181,21 +181,13 @@ final class HealthKitService: ObservableObject {
         // so Today disagreed with History (which has always bucketed). Same
         // shape and unit as `fetchHistory`'s per-day bucketing so the two
         // paths produce the same number for "today".
-        let calendar = Calendar.current
         let dayStart = DateHelpers.startOfDay()
-        guard let dayEnd = calendar.date(byAdding: .day, value: 1, to: dayStart) else {
-            healthKitLogger.error("fetchTodayStats: could not compute start of tomorrow after dayStart")
-            throw NSError(
-                domain: "com.jackwallner.vitals.healthkit",
-                code: 1,
-                userInfo: [NSLocalizedDescriptionKey: "Calendar could not compute end of day."]
-            )
-        }
+        let queryEnd = Date.now
         let interval = DateComponents(day: 1)
 
-        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: dayStart, end: dayEnd, interval: interval)
-        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: dayStart, end: dayEnd, interval: interval)
-        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: dayStart, end: dayEnd, interval: interval)
+        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: dayStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: true)
+        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: dayStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: true)
+        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: dayStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: true)
 
         let (active, resting, steps) = try await (activeMap, restingMap, stepsMap)
 
@@ -213,18 +205,9 @@ final class HealthKitService: ObservableObject {
             return ScreenshotFixtures.dietaryEnergyToday()
         }
         #endif
-        let calendar = Calendar.current
         let dayStart = DateHelpers.startOfDay()
-        guard let dayEnd = calendar.date(byAdding: .day, value: 1, to: dayStart) else {
-            healthKitLogger.error("fetchDietaryEnergyToday: could not compute end of day")
-            throw NSError(
-                domain: "com.jackwallner.vitals.healthkit",
-                code: 2,
-                userInfo: [NSLocalizedDescriptionKey: "Calendar could not compute end of day."]
-            )
-        }
         let interval = DateComponents(day: 1)
-        let map = try await queryStatisticsCollection(.dietaryEnergyConsumed, unit: .kilocalorie(), start: dayStart, end: dayEnd, interval: interval)
+        let map = try await queryStatisticsCollection(.dietaryEnergyConsumed, unit: .kilocalorie(), start: dayStart, end: .now, interval: interval, excludeSamplesEndingAfterEnd: true)
         let kcal = statisticValue(map, for: dayStart)
         healthKitLogger.debug("fetchDietaryEnergyToday: \(kcal, privacy: .public) kcal")
         // First non-zero read is our positive signal that dietary reads are authorized.
@@ -250,7 +233,7 @@ final class HealthKitService: ObservableObject {
         #endif
         let normalizedStart = DateHelpers.startOfDay(start)
         let endNormalized = DateHelpers.startOfDay(end)
-        let queryEnd = Calendar.current.date(byAdding: .day, value: 1, to: endNormalized) ?? endNormalized
+        let queryEnd = DateHelpers.healthQueryEnd(including: endNormalized)
         let interval = DateComponents(day: 1)
         let map = try await queryStatisticsCollection(.dietaryEnergyConsumed, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval)
 
@@ -284,9 +267,10 @@ final class HealthKitService: ObservableObject {
         }
         #endif
         let normalizedStart = DateHelpers.startOfDay(start)
-        // Include today by pushing end to tomorrow's start
+        // Completed days end at the next midnight; a range containing today stops
+        // at the current instant so partial duration samples cannot include the future.
         let endNormalized = DateHelpers.startOfDay(end)
-        let queryEnd = Calendar.current.date(byAdding: .day, value: 1, to: endNormalized) ?? endNormalized
+        let queryEnd = DateHelpers.healthQueryEnd(including: endNormalized)
         let interval = DateComponents(day: 1)
 
         async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval)
@@ -788,7 +772,8 @@ final class HealthKitService: ObservableObject {
             }
         }
         try context.save()
-        healthKitLogger.info("Saved history cache: \(inserted, privacy: .public) inserted, \(updated, privacy: .public) updated")
+        WidgetCenter.shared.reloadAllTimelines()
+        healthKitLogger.info("Saved history cache and reloaded widget timelines: \(inserted, privacy: .public) inserted, \(updated, privacy: .public) updated")
     }
 
     func hasRecordedData(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
@@ -818,17 +803,18 @@ final class HealthKitService: ObservableObject {
         unit: HKUnit,
         start: Date,
         end: Date,
-        interval: DateComponents
+        interval: DateComponents,
+        excludeSamplesEndingAfterEnd: Bool = false
     ) async throws -> [Date: Double] {
         let store = self.store
         // Scope the underlying sample scan to [start, end) so HK doesn't have
         // to consider every sample of the type ever recorded. Use the default
-        // overlap behavior (no `.strictStartDate`) so samples that cross the
-        // boundary are still included — `HKStatisticsCollectionQuery` will
-        // proportionally split their quantities across the day buckets based
-        // on duration, which is exactly what we want for cross-midnight
-        // workouts to land in the right day.
-        let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: [])
+        // overlap behavior so cross-midnight samples can enter the correct day
+        // bucket. Current-day queries additionally require samples to end by
+        // `end`; iOS 27 beta can expose basal samples spanning beyond now, and
+        // otherwise their future quantity is included in today's cumulative sum.
+        let options: HKQueryOptions = excludeSamplesEndingAfterEnd ? .strictEndDate : []
+        let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: options)
         return try await withCheckedThrowingContinuation { continuation in
             let query = HKStatisticsCollectionQuery(
                 quantityType: HKQuantityType(identifier),

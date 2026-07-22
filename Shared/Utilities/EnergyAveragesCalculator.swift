@@ -14,11 +14,13 @@ struct EnergyAveragesResult: Sendable, Equatable {
 /// HealthKit history; the widget feeds it cached SwiftData rows. Keeping the
 /// math here means both surfaces always report the same number.
 enum EnergyAveragesCalculator {
+    static let windowDays = 30
+
     /// - Parameters:
     ///   - records: daily `(date, active, resting)` samples in any order.
-    ///   - referenceDate: "now"; days on/after its start are treated as partial
-    ///     and excluded. Days with 0 resting energy are dropped as non-wear so a
-    ///     few watch-off days can't drag the figure down.
+    ///   - referenceDate: "now"; only the 30 completed calendar days immediately
+    ///     before its start are eligible. Days with 0 resting energy are dropped
+    ///     as non-wear so a few watch-off days can't drag the figure down.
     ///   - minSamples: minimum valid days before a figure is returned.
     static func compute(
         records: [(date: Date, active: Double, resting: Double)],
@@ -26,7 +28,11 @@ enum EnergyAveragesCalculator {
         minSamples: Int = 7
     ) -> EnergyAveragesResult {
         let today = DateHelpers.startOfDay(referenceDate)
-        let valid = records.filter { DateHelpers.startOfDay($0.date) < today && $0.resting > 0 }
+        let windowStart = DateHelpers.daysAgo(windowDays, from: referenceDate)
+        let valid = records.filter {
+            let day = DateHelpers.startOfDay($0.date)
+            return day >= windowStart && day < today && $0.resting > 0
+        }
         guard valid.count >= minSamples else {
             return EnergyAveragesResult(tdee: nil, bmr: nil, sampleDays: valid.count)
         }

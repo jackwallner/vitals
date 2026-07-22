@@ -57,13 +57,17 @@ struct EnergyAveragesProvider: TimelineProvider {
         let todayKey = DailyHealthRecord.key(for: DateHelpers.startOfDay())
         let container = DataService.sharedModelContainer
 
-        // Pull the most recent completed days (today is excluded via predicate).
-        // 34 rows comfortably covers the 30-day window even with a few gaps.
-        var descriptor = FetchDescriptor<DailyHealthRecord>(
-            predicate: #Predicate { $0.dateString < todayKey }
+        let windowStartKey = DailyHealthRecord.key(
+            for: DateHelpers.daysAgo(EnergyAveragesCalculator.windowDays)
         )
-        descriptor.sortBy = [SortDescriptor(\DailyHealthRecord.dateString, order: .reverse)]
-        descriptor.fetchLimit = 34
+        // Match the app's exact 30 completed calendar-day window. Missing days stay
+        // missing rather than being replaced with older rows outside that window.
+        let descriptor = FetchDescriptor<DailyHealthRecord>(
+            predicate: #Predicate {
+                $0.dateString >= windowStartKey && $0.dateString < todayKey
+            },
+            sortBy: [SortDescriptor(\DailyHealthRecord.dateString, order: .reverse)]
+        )
 
         guard let rows = try? container.mainContext.fetch(descriptor), !rows.isEmpty else {
             return EnergyAveragesEntry(date: .now, tdee: nil, bmr: nil, sampleDays: 0, isPro: isPro, hasCache: false)
