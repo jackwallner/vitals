@@ -1,5 +1,4 @@
 import XCTest
-@testable import Vitals
 
 final class VitalsConversionCopyTests: XCTestCase {
     func testEligibleCTAUsesTrialLabel() {

@@ -1,5 +1,4 @@
 import XCTest
-@testable import Vitals
 
 final class MilestoneCalculatorTests: XCTestCase {
     func testUnfiredPicksLargestReachedTier() {
