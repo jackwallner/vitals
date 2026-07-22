@@ -234,8 +234,9 @@ final class HealthKitService: ObservableObject {
         let normalizedStart = DateHelpers.startOfDay(start)
         let endNormalized = DateHelpers.startOfDay(end)
         let queryEnd = DateHelpers.healthQueryEnd(including: endNormalized)
+        let includesToday = endNormalized >= DateHelpers.startOfDay()
         let interval = DateComponents(day: 1)
-        let map = try await queryStatisticsCollection(.dietaryEnergyConsumed, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval)
+        let map = try await queryStatisticsCollection(.dietaryEnergyConsumed, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: includesToday)
 
         var results: [(date: Date, foodCalories: Double)] = []
         var current = normalizedStart
@@ -271,11 +272,16 @@ final class HealthKitService: ObservableObject {
         // at the current instant so partial duration samples cannot include the future.
         let endNormalized = DateHelpers.startOfDay(end)
         let queryEnd = DateHelpers.healthQueryEnd(including: endNormalized)
+        // A range containing today has to reject samples ending after now for the
+        // same reason `fetchTodayStats` does, otherwise today's row here (which is
+        // what `saveHistoryToCache` feeds the widgets) keeps the inflated total the
+        // Today screen already guards against.
+        let includesToday = endNormalized >= DateHelpers.startOfDay()
         let interval = DateComponents(day: 1)
 
-        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval)
-        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval)
-        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: normalizedStart, end: queryEnd, interval: interval)
+        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: includesToday)
+        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: includesToday)
+        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: normalizedStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: includesToday)
 
         let (active, resting, steps) = try await (activeMap, restingMap, stepsMap)
 
