@@ -32,7 +32,18 @@ struct EnergyAveragesProvider: TimelineProvider {
     }
 
     func getSnapshot(in context: Context, completion: @escaping (EnergyAveragesEntry) -> Void) {
-        completion(placeholder(in: context))
+        // Must use the real cache read — a fixed placeholder here made the
+        // Maintenance widget disagree with the in-app figure during snapshot
+        // refreshes. WidgetKit's completion isn't Sendable, so box it before
+        // hopping to the main actor (same pattern as a checked continuation).
+        if context.isPreview {
+            completion(placeholder(in: context))
+            return
+        }
+        let box = SnapshotCompletion(completion)
+        Task { @MainActor in
+            box.call(fetchLatestEntry())
+        }
     }
 
     func getTimeline(in context: Context, completion: @escaping @Sendable (Timeline<EnergyAveragesEntry>) -> Void) {
@@ -54,39 +65,33 @@ struct EnergyAveragesProvider: TimelineProvider {
         let defaults = UserDefaults(suiteName: vitalsAppGroupID) ?? .standard
         let isPro = defaults.bool(forKey: StoreService.cachedProKey)
 
-        let todayKey = DailyHealthRecord.key(for: DateHelpers.startOfDay())
-        let container = DataService.sharedModelContainer
-
-        let windowStartKey = DailyHealthRecord.key(
-            for: DateHelpers.daysAgo(EnergyAveragesCalculator.windowDays)
-        )
-        // Match the app's exact 30 completed calendar-day window. Missing days stay
-        // missing rather than being replaced with older rows outside that window.
-        let descriptor = FetchDescriptor<DailyHealthRecord>(
-            predicate: #Predicate {
-                $0.dateString >= windowStartKey && $0.dateString < todayKey
-            },
-            sortBy: [SortDescriptor(\DailyHealthRecord.dateString, order: .reverse)]
-        )
-
-        guard let rows = try? container.mainContext.fetch(descriptor), !rows.isEmpty else {
-            return EnergyAveragesEntry(date: .now, tdee: nil, bmr: nil, sampleDays: 0, isPro: isPro, hasCache: false)
-        }
-
-        let result = EnergyAveragesCalculator.compute(
-            records: rows.map { (date: $0.date, active: $0.activeCalories, resting: $0.restingCalories) },
+        // Shared with the debug lab harness so the widget's exact read path is
+        // what gets verified against the app's live figure.
+        let output = EnergyAveragesCacheReader.read(
+            container: DataService.sharedModelContainer,
             referenceDate: .now,
             minSamples: EnergyAveragesEntry.minSamples
         )
         return EnergyAveragesEntry(
             date: .now,
-            tdee: result.tdee,
-            bmr: result.bmr,
-            sampleDays: result.sampleDays,
+            tdee: output.result.tdee,
+            bmr: output.result.bmr,
+            sampleDays: output.result.sampleDays,
             isPro: isPro,
-            hasCache: true
+            hasCache: output.hasCache
         )
     }
+}
+
+/// Boxes WidgetKit's non-Sendable snapshot completion so it can cross an actor
+/// boundary. Safe because WidgetKit invokes the provider and consumes the
+/// completion on cooperating queues; we only ever call it once.
+private struct SnapshotCompletion: @unchecked Sendable {
+    private let completion: (EnergyAveragesEntry) -> Void
+    init(_ completion: @escaping (EnergyAveragesEntry) -> Void) {
+        self.completion = completion
+    }
+    func call(_ entry: EnergyAveragesEntry) { completion(entry) }
 }
 
 // MARK: - Shared pieces

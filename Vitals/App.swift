@@ -101,7 +101,9 @@ struct VitalsApp: App {
     var body: some Scene {
         WindowGroup {
             #if DEBUG
-            if let snap = PaywallSnapshotRequest.current {
+            if HealthKitLabConfig.isEnabled {
+                HealthKitLabHarness()
+            } else if let snap = PaywallSnapshotRequest.current {
                 PaywallScreenshotHarness(request: snap)
                     .environmentObject(store)
                     .preferredColorScheme(goals.appearance.colorScheme)
@@ -182,6 +184,15 @@ struct VitalsApp: App {
         let refreshTask = Task { @MainActor in
             do {
                 try await HealthKitService.shared.refreshCache()
+                // Also finalize recent completed days so the Maintenance/TDEE
+                // widget (which reads only the cache and excludes today) matches
+                // the in-app live figure even when the app isn't opened. Best
+                // effort: a failure here shouldn't fail the whole refresh.
+                do {
+                    try await HealthKitService.shared.refreshHistoryCache()
+                } catch {
+                    print("Background history cache refresh failed: \(error)")
+                }
                 return true
             } catch {
                 print("Background app refresh failed: \(error)")

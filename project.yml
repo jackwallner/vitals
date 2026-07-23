@@ -39,6 +39,16 @@ schemes:
         VitalsWatch: all
     run:
       config: Debug
+  # Kept out of the Vitals scheme: it needs a booted simulator and taps the
+  # HealthKit permission sheet, so it is far slower than the logic suite.
+  VitalsUITests:
+    build:
+      targets:
+        Vitals: all
+        VitalsUITests: [test]
+    test:
+      targets:
+        - VitalsUITests
 
 targets:
   Vitals:
@@ -112,6 +122,19 @@ targets:
       - package: RevenueCat
         product: RevenueCat
 
+  VitalsUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: VitalsUITests
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.jackwallner.vitals.uitests
+        TEST_TARGET_NAME: Vitals
+    dependencies:
+      - target: Vitals
+
   VitalsTests:
     type: bundle.unit-test
     platform: iOS
@@ -119,7 +142,9 @@ targets:
       - path: VitalsTests
       - path: Shared/Models/CalorieTrendSummary.swift
       - path: Shared/Utilities/EnergyAveragesCalculator.swift
+      - path: Shared/Utilities/EnergyAveragesCacheReader.swift
       - path: Shared/Utilities/DateHelpers.swift
+      - path: Shared/Models/HealthRecord.swift
       - path: Shared/Utilities/ProjectionCalculator.swift
       - path: Shared/Utilities/WeeklyRecap.swift
       - path: Shared/Utilities/MilestoneCalculator.swift
