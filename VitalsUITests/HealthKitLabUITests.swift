@@ -33,44 +33,63 @@ final class HealthKitLabUITests: XCTestCase {
 
         let loose = value(app, "hklab.loose")
         let strict = value(app, "hklab.strict")
+        let elapsedBucket = value(app, "hklab.elapsed")
         let todayResting = value(app, "hklab.todayResting")
+        let todayActive = value(app, "hklab.todayActive")
 
         XCTContext.runActivity(named: "measured") { _ in
-            print("loose=\(loose) strict=\(strict) todayResting=\(todayResting)")
+            print("loose=\(loose) strict=\(strict) elapsed=\(elapsedBucket) todayResting=\(todayResting) todayActive=\(todayActive)")
         }
 
-        // 700 kcal of basal genuinely elapsed today (short samples that all end
-        // before now). The pathological sample holds 3,600 kcal but ends ~11h in
-        // the future, so only a fraction has actually happened.
-        let elapsed = 700.0
+        // 700 kcal of basal genuinely elapsed today as short samples that all end
+        // before now. The pathological sample holds 3,600 kcal over 12h starting
+        // an hour ago, so exactly one hour of it — 300 kcal — has happened.
+        let closed = 700.0
+        let inProgressElapsed = 300.0
+        let trueTotal = closed + inProgressElapsed
 
-        // Bug (Ozzie's report): the default/loose predicate lets a basal sample
-        // that ends in the future leak its not-yet-burned energy into today's
-        // bucket, pushing the total well above what actually elapsed. The exact
-        // figure is time-of-day dependent (HealthKit proportionally splits the
-        // sample into the day bucket), but it always clears `elapsed` by the full
-        // hour of the sample that precedes now (~300 kcal) plus its in-day future.
+        // Bug (Ozzie's report): the default/loose predicate credits today's
+        // calendar-day bucket with the whole in-day portion of the spanning
+        // sample, including the hours that haven't happened yet.
         XCTAssertGreaterThan(
-            loose, elapsed + 200,
+            loose, trueTotal + 200,
             "loose predicate no longer overcounts the future-spanning sample — bug premise changed"
         )
 
-        // Fix: `.strictEndDate` drops the sample that ends after now entirely,
-        // leaving only basal that genuinely elapsed today.
+        // The rejected alternative, kept as a comparison: `.strictEndDate` cures
+        // the overcount by discarding the spanning sample whole, which also throws
+        // away the hour of it that genuinely elapsed.
         XCTAssertEqual(
-            strict, elapsed, accuracy: 60,
-            "strictEndDate should drop the sample that ends after now"
+            strict, closed, accuracy: 60,
+            "strictEndDate should drop the whole sample that ends after now"
         )
 
-        // The shipping read path must use the fixed predicate, so the number the
-        // user actually sees matches `strict`, not the inflated `loose` total.
+        // The fix: a bucket ending at `now` prorates the in-progress sample to the
+        // share that has actually elapsed — no future energy, nothing real lost.
         XCTAssertEqual(
-            todayResting, strict, accuracy: 60,
-            "fetchTodayStats must use strictEndDate so today's resting isn't inflated"
+            elapsedBucket, trueTotal, accuracy: 60,
+            "an elapsed-window bucket should count the in-progress sample's elapsed share"
+        )
+
+        // The shipping read path must be the fixed one.
+        XCTAssertEqual(
+            todayResting, elapsedBucket, accuracy: 1,
+            "fetchTodayStats must use the elapsed-window bucket"
         )
         XCTAssertLessThan(
             todayResting, loose,
-            "fetchTodayStats must not report the inflated loose total the user reported"
+            "fetchTodayStats must not report the inflated total the user reported"
+        )
+        XCTAssertGreaterThan(
+            todayResting, strict + 100,
+            "fetchTodayStats must not discard the part of the in-progress sample that already happened"
+        )
+
+        // Regression guard: prorating must not disturb ordinary closed samples.
+        // 54 kcal of active energy was written wholly inside today, well before now.
+        XCTAssertEqual(
+            todayActive, 54, accuracy: 1,
+            "a fully-elapsed sample must still be counted in full"
         )
     }
 
@@ -105,9 +124,10 @@ final class HealthKitLabUITests: XCTestCase {
         let liveTDEE = value(app, "hklab.liveTDEE")
         let staleTDEE = value(app, "hklab.staleTDEE")
         let fixedTDEE = value(app, "hklab.fixedTDEE")
+        let rolloverTDEE = value(app, "hklab.rolloverTDEE")
 
         XCTContext.runActivity(named: "measured") { _ in
-            print("liveTDEE=\(liveTDEE) staleTDEE=\(staleTDEE) fixedTDEE=\(fixedTDEE)")
+            print("liveTDEE=\(liveTDEE) staleTDEE=\(staleTDEE) fixedTDEE=\(fixedTDEE) rolloverTDEE=\(rolloverTDEE)")
         }
 
         // Scenario writes 8 full days of 1,600 resting + 500 active → TDEE 2,100.
@@ -125,6 +145,14 @@ final class HealthKitLabUITests: XCTestCase {
         XCTAssertEqual(
             fixedTDEE, liveTDEE, accuracy: 30,
             "refreshHistoryCache must bring the widget cache back in line with the live figure"
+        )
+
+        // And the trigger: with stale rows restored and the last write dated to an
+        // earlier day, the ordinary refresh entry point (what the HealthKit
+        // observer calls after midnight) must finalize them on its own.
+        XCTAssertEqual(
+            rolloverTDEE, liveTDEE, accuracy: 30,
+            "a day rollover must finalize the completed days without the app being opened"
         )
     }
 

@@ -127,6 +127,11 @@ final class HealthKitLabModel: ObservableObject {
             .basalEnergyBurned, unit: .kilocalorie(),
             start: dayStart, end: now, strictEnd: true
         )
+        phase = "querying elapsed"
+        status = phase
+        let elapsed = try await healthKit.debugElapsedTotal(
+            .basalEnergyBurned, unit: .kilocalorie(), dayStart: dayStart, now: now
+        )
         phase = "querying today"
         status = phase
         let today = try await healthKit.fetchTodayStats()
@@ -134,6 +139,7 @@ final class HealthKitLabModel: ObservableObject {
         results = [
             .init(label: "loose", value: Self.format(loose[dayStart] ?? 0)),
             .init(label: "strict", value: Self.format(strict[dayStart] ?? 0)),
+            .init(label: "elapsed", value: Self.format(elapsed)),
             .init(label: "todayResting", value: Self.format(today.resting)),
             .init(label: "todayActive", value: Self.format(today.active)),
         ]
@@ -186,10 +192,27 @@ final class HealthKitLabModel: ObservableObject {
             container: DataService.sharedModelContainer, minSamples: 7
         )
 
+        // Now prove the *trigger*, not just the repair: put the stale rows back,
+        // mark the last cache write as having happened on an earlier day, and go
+        // through the ordinary refresh entry point the HealthKit observer uses
+        // after midnight. Nothing calls refreshHistoryCache directly here.
+        phase = "re-seeding stale cache for rollover"
+        status = phase
+        try healthKit.saveHistoryToCache(history: staleHistory)
+        healthKit.debugSetLastCachedDay(DailyHealthRecord.key(for: DateHelpers.daysAgo(1)))
+
+        phase = "simulating midnight rollover"
+        status = phase
+        try await healthKit.refreshCache()
+        let rolledOver = EnergyAveragesCacheReader.read(
+            container: DataService.sharedModelContainer, minSamples: 7
+        )
+
         results = [
             .init(label: "liveTDEE", value: Self.format(live.tdee ?? -1)),
             .init(label: "staleTDEE", value: Self.format(stale.result.tdee ?? -1)),
             .init(label: "fixedTDEE", value: Self.format(fixed.result.tdee ?? -1)),
+            .init(label: "rolloverTDEE", value: Self.format(rolledOver.result.tdee ?? -1)),
         ]
     }
 
