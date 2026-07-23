@@ -1,5 +1,5 @@
-Daha akıcı bir Vitals+ deneyimi
+Doğru günlük toplamlar
 
-• Her abonelik ekranında daha net fiyat ve deneme süresi bilgileri. Satın alma hata mesajları artık küçük yazılarla üst üste binmiyor.
-• Net Deficit: Yemek kalorisi takibini açtığınızda Apple Sağlık izin isteği artık güvenilir şekilde görünüyor; kaloriler okunamazsa Sağlık izinlerine kısayol eklendi.
-• Uygulamada, widget'larda ve Apple Watch'ta hata düzeltmeleri ve iyileştirmeler.
+• Bazı cihazlarda bugünün kalori toplamının çok yüksek görünmesi düzeltildi. Hâlâ devam eden dinlenme enerjisi artık günün yalnızca gerçekten geçen kısmı için sayılıyor.
+• Bazal widget'ı artık uygulamadaki değerle aynı. Tamamlanan günler gece yarısı kesinleşiyor, böylece uygulamayı açmasanız da widget'larınız güncel kalıyor.
+• Bugün, Geçmiş ve widget'lar artık her zaman aynı sayıları gösteriyor.

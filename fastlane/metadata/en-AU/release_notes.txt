@@ -1,5 +1,5 @@
-A smoother Vitals+ experience
+Accurate daily totals
 
-• Clearer pricing and trial details on every upgrade screen. Purchase error messages no longer overlap the fine print.
-• Net Deficit: the Apple Health permission request now appears reliably when you turn on food-calorie tracking, and a new shortcut opens Health permissions if food calories can't be read.
-• Bug fixes and polish across the app, widgets, and Apple Watch.
+• Fixed today's calorie total reading far too high on some devices. Resting energy that is still in progress now counts only the part of the day that has actually happened.
+• The Maintenance widget now matches the figure inside the app. Completed days are finalised at midnight, so your widgets stay in step even if you don't open the app.
+• Today, History, and the widgets now always report the same numbers.

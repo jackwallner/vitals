@@ -1,5 +1,5 @@
-Uma experiência Vitals+ mais fluida
+Totais diários exatos
 
-• Preços e detalhes do período experimental mais claros em cada ecrã de subscrição. As mensagens de erro de compra já não se sobrepõem às letras pequenas.
-• Net Deficit: o pedido de permissão da app Saúde aparece agora de forma fiável ao ativar o registo de calorias dos alimentos, com um atalho para as permissões de Saúde caso não seja possível lê-las.
-• Correções de erros e melhorias na app, nos widgets e no Apple Watch.
+• Corrigido o total de calorias de hoje que aparecia muito acima do real em alguns dispositivos. A energia em repouso ainda a decorrer conta agora apenas a parte do dia que realmente passou.
+• O widget de Manutenção corresponde agora ao valor dentro da app. Os dias concluídos são finalizados à meia-noite, pelo que os widgets se mantêm alinhados mesmo que não abra a app.
+• Hoje, Histórico e os widgets mostram agora sempre os mesmos números.

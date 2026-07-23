@@ -1,5 +1,5 @@
-Une expérience Vitals+ plus fluide
+Des totaux quotidiens exacts
 
-• Tarifs et détails de l'essai plus clairs sur chaque écran d'abonnement. Les messages d'erreur d'achat ne chevauchent plus les mentions légales.
-• Net Deficit : la demande d'autorisation Apple Santé s'affiche désormais de façon fiable quand vous activez le suivi des calories alimentaires, avec un raccourci vers les autorisations Santé si elles ne peuvent pas être lues.
-• Corrections de bugs et améliorations dans l'app, les widgets et sur l'Apple Watch.
+• Correction du total de calories du jour qui s'affichait bien trop haut sur certains appareils. L'énergie au repos encore en cours ne compte désormais que la partie de la journée réellement écoulée.
+• Le widget Maintenance correspond maintenant au chiffre affiché dans l'app. Les journées terminées sont finalisées à minuit, vos widgets restent donc à jour même si vous n'ouvrez pas l'app.
+• Aujourd'hui, Historique et les widgets affichent désormais toujours les mêmes chiffres.

@@ -1,5 +1,5 @@
-Plynulejší zážitek z Vitals+
+Přesné denní součty
 
-• Přehlednější ceny a podmínky zkušební doby na každé obrazovce předplatného. Chybové zprávy při nákupu se už nepřekrývají s drobným písmem.
-• Net Deficit: žádost o oprávnění Apple Zdraví se nyní zobrazuje spolehlivě po zapnutí sledování kalorií z jídla, navíc zkratka do oprávnění Zdraví, pokud je nelze načíst.
-• Opravy chyb a vylepšení v aplikaci, widgetech a na Apple Watch.
+• Opraveno zobrazování dnešního součtu kalorií, který byl na některých zařízeních výrazně vyšší. Klidová energie, která stále probíhá, se nyní počítá jen za část dne, která už skutečně uplynula.
+• Widget Udržovací příjem se nyní shoduje s hodnotou v aplikaci. Dokončené dny se uzavřou o půlnoci, takže widgety zůstanou aktuální, i když aplikaci neotevřete.
+• Dnes, Historie i widgety nyní vždy uvádějí stejná čísla.

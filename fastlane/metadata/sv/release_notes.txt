@@ -1,5 +1,5 @@
-En smidigare Vitals+-upplevelse
+Exakta dagssummor
 
-• Tydligare priser och provperiodsinformation på varje uppgraderingsskärm. Felmeddelanden vid köp överlappar inte längre det finstilta.
-• Net Deficit: behörighetsförfrågan för Apple Hälsa visas nu tillförlitligt när du aktiverar matkalorier, med en genväg till Hälsa-behörigheter om matkalorier inte kan läsas.
-• Buggfixar och putsning i appen, widgetarna och på Apple Watch.
+• Åtgärdat att dagens kalorisumma visades alldeles för högt på vissa enheter. Vilenergi som fortfarande pågår räknas nu bara för den del av dagen som faktiskt har gått.
+• Widgeten Underhåll stämmer nu med siffran inne i appen. Avslutade dagar färdigställs vid midnatt, så dina widgetar hänger med även om du inte öppnar appen.
+• I dag, Historik och widgetarna visar nu alltid samma siffror.

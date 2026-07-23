@@ -1,5 +1,5 @@
-Glatkije Vitals+ iskustvo
+Točni dnevni zbrojevi
 
-• Jasnije cijene i detalji probnog razdoblja na svakom zaslonu pretplate. Poruke o pogreškama pri kupnji više se ne preklapaju sa sitnim slovima.
-• Net Deficit: zahtjev za dozvolu Apple Zdravlje sada se pouzdano prikazuje kada uključite praćenje kalorija iz hrane, uz prečac do dozvola Zdravlja ako se kalorije ne mogu očitati.
-• Ispravci pogrešaka i dorade u aplikaciji, widgetima i na Apple Watchu.
+• Ispravljeno prikazivanje današnjeg zbroja kalorija koji je na nekim uređajima bio znatno previsok. Energija mirovanja koja je još u tijeku sada se broji samo za dio dana koji je stvarno protekao.
+• Widget Održavanje sada odgovara broju unutar aplikacije. Završeni dani zaključuju se u ponoć pa widgeti ostaju ažurni i ako ne otvorite aplikaciju.
+• Danas, Povijest i widgeti sada uvijek prikazuju iste brojeve.

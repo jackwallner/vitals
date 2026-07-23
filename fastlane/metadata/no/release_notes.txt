@@ -1,5 +1,5 @@
-En smidigere Vitals+-opplevelse
+Nøyaktige dagssummer
 
-• Tydeligere priser og prøveperiodedetaljer på alle oppgraderingsskjermer. Feilmeldinger ved kjøp overlapper ikke lenger den lille skriften.
-• Net Deficit: Tillatelsesforespørselen for Apple Helse vises nå pålitelig når du slår på matkalorier, med en snarvei til Helse-tillatelser hvis matkalorier ikke kan leses.
-• Feilrettinger og finpuss i appen, widgetene og på Apple Watch.
+• Rettet at dagens kalorisum ble vist altfor høyt på enkelte enheter. Hvileforbrenning som fortsatt pågår telles nå bare for den delen av dagen som faktisk har gått.
+• Vedlikehold-modulen stemmer nå med tallet inne i appen. Avsluttede dager gjøres ferdige ved midnatt, så modulene holder følge selv om du ikke åpner appen.
+• I dag, Historikk og modulene viser nå alltid de samme tallene.

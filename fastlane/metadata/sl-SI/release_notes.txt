@@ -1,5 +1,5 @@
-Bolj gladka izkušnja Vitals+
+Natančni dnevni seštevki
 
-• Jasnejše cene in podrobnosti poskusnega obdobja na vsakem zaslonu naročnine. Sporočila o napakah pri nakupu se ne prekrivajo več z drobnim tiskom.
-• Net Deficit: zahteva za dovoljenje Apple Zdravje se zdaj zanesljivo prikaže, ko vklopite spremljanje kalorij iz hrane, z bližnjico do dovoljenj Zdravja, če kalorij ni mogoče prebrati.
-• Popravki napak in izboljšave v aplikaciji, pripomočkih in na Apple Watch.
+• Odpravljeno prikazovanje veliko previsokega današnjega seštevka kalorij na nekaterih napravah. Energija v mirovanju, ki še poteka, se zdaj šteje le za del dneva, ki je resnično minil.
+• Pripomoček Vzdrževanje se zdaj ujema s številko v aplikaciji. Končani dnevi se zaključijo opolnoči, zato pripomočki ostanejo usklajeni, tudi če aplikacije ne odprete.
+• Danes, Zgodovina in pripomočki zdaj vedno prikazujejo enake številke.
