@@ -185,9 +185,12 @@ final class HealthKitService: ObservableObject {
         let queryEnd = Date.now
         let interval = DateComponents(day: 1)
 
+        // Energy is required; steps are best-effort. A user (or the lab harness)
+        // can grant Active/Resting while leaving Steps off — that must not blank
+        // the whole Today total with `Authorization not determined`.
         async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: dayStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: true)
         async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: dayStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: true)
-        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: dayStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: true)
+        async let stepsMap = queryStatisticsCollectionIfAuthorized(.stepCount, unit: .count(), start: dayStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: true)
 
         let (active, resting, steps) = try await (activeMap, restingMap, stepsMap)
 
@@ -307,11 +310,36 @@ final class HealthKitService: ObservableObject {
     /// is 0 are dropped as non-wear so a few watch-off days can't drag the figure
     /// down. Returns nil values until at least `minSamples` valid days exist.
     /// Shares its math with the widget via `EnergyAveragesCalculator`.
+    ///
+    /// Only queries active + resting energy — steps aren't part of TDEE/BMR, so
+    /// a missing Steps grant must not block the Maintenance figure.
     func fetchEnergyAverages(days: Int = 30, minSamples: Int = 7) async throws -> EnergyAverages {
         // Pull one extra day so excluding today still leaves a full window.
-        let history = try await fetchHistory(days: days + 1)
+        let start = DateHelpers.daysAgo(max(days, 0))
+        let end = Date.now
+        let normalizedStart = DateHelpers.startOfDay(start)
+        let endNormalized = DateHelpers.startOfDay(end)
+        let queryEnd = DateHelpers.healthQueryEnd(including: endNormalized)
+        let includesToday = endNormalized >= DateHelpers.startOfDay()
+        let interval = DateComponents(day: 1)
+
+        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: includesToday)
+        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: includesToday)
+        let (active, resting) = try await (activeMap, restingMap)
+
+        var records: [(date: Date, active: Double, resting: Double)] = []
+        var current = normalizedStart
+        while current < queryEnd {
+            records.append((
+                date: current,
+                active: statisticValue(active, for: current),
+                resting: statisticValue(resting, for: current)
+            ))
+            guard let next = Calendar.current.date(byAdding: .day, value: 1, to: current) else { break }
+            current = next
+        }
         return EnergyAveragesCalculator.compute(
-            records: history.map { (date: $0.date, active: $0.active, resting: $0.resting) },
+            records: records,
             referenceDate: .now,
             minSamples: minSamples
         )
@@ -649,6 +677,27 @@ final class HealthKitService: ObservableObject {
         healthKitLogger.info("Saved today cache and reloaded widget timelines")
     }
 
+    /// Finalizes recent *completed* days in the shared cache from live HealthKit.
+    ///
+    /// The today/observer path (`refreshCache`) only ever writes a partial
+    /// snapshot for the *current* day. Once that day completes it stays partial
+    /// in the cache until the app is next foregrounded and `saveHistoryToCache`
+    /// overwrites it with the full-day total. The Maintenance/TDEE widget
+    /// (`EnergyAveragesWidget`) reads *only* the cache and excludes today, so a
+    /// stale partial "yesterday" made its 30-day average drift below the in-app
+    /// figure (which is computed live) — the mismatch users reported. Running
+    /// this from the periodic background refresh keeps the cache window in sync
+    /// without requiring the user to open the app.
+    ///
+    /// Covers the full TDEE window (plus a small buffer) so every completed day
+    /// the widget can include is finalized. `saveHistoryToCache` reloads widget
+    /// timelines, so the Maintenance widget updates on the same pass.
+    func refreshHistoryCache(days: Int = EnergyAveragesCalculator.windowDays + 2) async throws {
+        let history = try await fetchHistory(days: days)
+        try saveHistoryToCache(history: history)
+        healthKitLogger.info("Refreshed \(history.count, privacy: .public)-day history cache for TDEE widget parity")
+    }
+
     func updateCachedFoodCalories(_ kcal: Double) throws {
         let context = ModelContext(DataService.sharedModelContainer)
         let todayKey = DailyHealthRecord.key(for: DateHelpers.startOfDay())
@@ -802,6 +851,70 @@ final class HealthKitService: ObservableObject {
         if let exact = map[dayStart] { return exact }
         let calendar = Calendar.current
         return map.first { calendar.isDate($0.key, inSameDayAs: dayStart) }?.value ?? 0
+    }
+
+    #if DEBUG
+    /// Test-only seam. `HealthKitLabHarness` needs to run the *same* bucketing
+    /// code against a real `HKHealthStore` with both predicate variants so the
+    /// overcount can be reproduced before it is fixed. Nothing in the shipping
+    /// build references this.
+    func debugDailyTotals(
+        _ identifier: HKQuantityTypeIdentifier,
+        unit: HKUnit,
+        start: Date,
+        end: Date,
+        strictEnd: Bool
+    ) async throws -> [Date: Double] {
+        try await queryStatisticsCollection(
+            identifier,
+            unit: unit,
+            start: start,
+            end: end,
+            interval: DateComponents(day: 1),
+            excludeSamplesEndingAfterEnd: strictEnd
+        )
+    }
+
+    /// Test-only seam: the lab writes samples, so it needs the same store the
+    /// queries read from.
+    var debugStore: HKHealthStore { store }
+
+    /// Test-only: wipe every cached day so the maintenance-cache lab scenario
+    /// starts from a known-empty cache regardless of prior runs.
+    func debugClearAllCachedRecords() throws {
+        let context = ModelContext(DataService.sharedModelContainer)
+        for record in try context.fetch(FetchDescriptor<DailyHealthRecord>()) {
+            context.delete(record)
+        }
+        try context.save()
+    }
+    #endif
+
+    /// Like `queryStatisticsCollection`, but returns `[:]` when the type has not
+    /// been authorized yet instead of failing the whole Today/history fetch.
+    private func queryStatisticsCollectionIfAuthorized(
+        _ identifier: HKQuantityTypeIdentifier,
+        unit: HKUnit,
+        start: Date,
+        end: Date,
+        interval: DateComponents,
+        excludeSamplesEndingAfterEnd: Bool = false
+    ) async -> [Date: Double] {
+        do {
+            return try await queryStatisticsCollection(
+                identifier,
+                unit: unit,
+                start: start,
+                end: end,
+                interval: interval,
+                excludeSamplesEndingAfterEnd: excludeSamplesEndingAfterEnd
+            )
+        } catch {
+            healthKitLogger.error(
+                "Optional \(identifier.rawValue, privacy: .public) query failed; treating as zero: \(String(describing: error), privacy: .public)"
+            )
+            return [:]
+        }
     }
 
     private func queryStatisticsCollection(

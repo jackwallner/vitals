@@ -1462,12 +1462,14 @@ struct DashboardView: View {
                 }
             }
 
-            // Background history sync for the watch shared cache
+            // Background history sync for the watch shared cache AND the
+            // Maintenance/TDEE widget (which reads only finalized completed days).
             Task(priority: .utility) {
                 do {
-                    let history = try await healthKit.fetchHistory(days: 90)
-                    try healthKit.saveHistoryToCache(history: history)
-                    await checkGoalStreakMilestone(history: history)
+                    try await healthKit.refreshHistoryCache(days: 90)
+                    await checkGoalStreakMilestone(
+                        history: (try? healthKit.fetchCachedHistory(days: 90)) ?? []
+                    )
                 } catch {
                     dashboardLogger.error("Background history cache sync failed: \(String(describing: error), privacy: .public)")
                 }
