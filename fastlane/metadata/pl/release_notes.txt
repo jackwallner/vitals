@@ -1,5 +1,5 @@
-Płynniejsze korzystanie z Vitals+
+Dokładne sumy dzienne
 
-• Czytelniejsze ceny i szczegóły okresu próbnego na każdym ekranie subskrypcji. Komunikaty o błędach zakupu nie nakładają się już na drobny druk.
-• Net Deficit: prośba o uprawnienia Apple Zdrowie pojawia się teraz niezawodnie po włączeniu śledzenia kalorii z jedzenia, a nowy skrót otwiera uprawnienia Zdrowia, gdy kalorii nie można odczytać.
-• Poprawki błędów i szlif w aplikacji, widżetach i na Apple Watch.
+• Naprawiono zawyżoną dzisiejszą sumę kalorii na niektórych urządzeniach. Trwająca jeszcze energia spoczynkowa liczy się teraz tylko za tę część dnia, która faktycznie minęła.
+• Widżet Zapotrzebowanie zgadza się teraz z wartością w aplikacji. Zakończone dni są finalizowane o północy, więc widżety pozostają aktualne, nawet gdy nie otworzysz aplikacji.
+• Dziś, Historia i widżety pokazują teraz zawsze te same liczby.

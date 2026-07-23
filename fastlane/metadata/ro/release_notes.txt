@@ -1,5 +1,5 @@
-O experiență Vitals+ mai fluidă
+Totaluri zilnice exacte
 
-• Prețuri și detalii despre perioada de probă mai clare pe fiecare ecran de abonare. Mesajele de eroare la cumpărare nu se mai suprapun peste textul cu litere mici.
-• Net Deficit: solicitarea de permisiune Apple Sănătate apare acum în mod fiabil când activezi urmărirea caloriilor din alimente, plus o scurtătură către permisiunile Sănătate dacă acestea nu pot fi citite.
-• Remedieri de erori și finisaje în aplicație, widgeturi și pe Apple Watch.
+• S-a remediat afișarea totalului de calorii de azi mult prea mare pe unele dispozitive. Energia de repaus aflată încă în desfășurare se contorizează acum doar pentru partea din zi care a trecut cu adevărat.
+• Widgetul Întreținere corespunde acum cifrei din aplicație. Zilele încheiate sunt finalizate la miezul nopții, așa că widgeturile rămân la zi chiar dacă nu deschizi aplicația.
+• Azi, Istoric și widgeturile afișează acum mereu aceleași cifre.

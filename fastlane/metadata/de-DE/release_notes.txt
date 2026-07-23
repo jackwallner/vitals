@@ -1,5 +1,5 @@
-Ein runderes Vitals+ Erlebnis
+Genaue Tageswerte
 
-• Klarere Preis- und Testzeitraum-Infos auf jedem Upgrade-Bildschirm. Fehlermeldungen beim Kauf überlagern nicht mehr das Kleingedruckte.
-• Net Deficit: Die Apple-Health-Berechtigungsanfrage erscheint jetzt zuverlässig, wenn du das Erfassen von Nahrungskalorien aktivierst. Neu: eine Verknüpfung zu den Health-Berechtigungen, falls Nahrungskalorien nicht gelesen werden können.
-• Fehlerbehebungen und Feinschliff in App, Widgets und auf der Apple Watch.
+• Behoben, dass die heutige Kaloriensumme auf manchen Geräten viel zu hoch angezeigt wurde. Noch laufender Ruheumsatz zählt jetzt nur für den Teil des Tages, der tatsächlich vergangen ist.
+• Das Grundumsatz-Widget stimmt jetzt mit dem Wert in der App überein. Abgeschlossene Tage werden um Mitternacht finalisiert, sodass deine Widgets aktuell bleiben, auch wenn du die App nicht öffnest.
+• Heute, Verlauf und Widgets zeigen jetzt immer dieselben Zahlen.

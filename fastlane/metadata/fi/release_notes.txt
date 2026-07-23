@@ -1,5 +1,5 @@
-Sujuvampi Vitals+-kokemus
+Tarkat päivittäiset summat
 
-• Selkeämmät hinta- ja kokeilujaksotiedot jokaisella tilausnäytöllä. Ostovirheilmoitukset eivät enää mene pienen tekstin päälle.
-• Net Deficit: Apple Terveys -käyttöoikeuspyyntö näkyy nyt luotettavasti, kun otat ruokakalorien seurannan käyttöön. Lisäksi pikalinkki Terveys-käyttöoikeuksiin, jos ruokakaloreita ei voida lukea.
-• Virheenkorjauksia ja viimeistelyä sovelluksessa, widgeteissä ja Apple Watchissa.
+• Korjattu virhe, jonka vuoksi päivän kalorisumma näkyi joissakin laitteissa aivan liian suurena. Yhä käynnissä oleva lepoenergia lasketaan nyt vain siltä osalta päivää, joka on todella kulunut.
+• Perusaineenvaihdunnan widget vastaa nyt sovelluksen sisäistä lukua. Päättyneet päivät viimeistellään keskiyöllä, joten widgetit pysyvät ajan tasalla, vaikka et avaisi sovellusta.
+• Tänään, Historia ja widgetit näyttävät nyt aina samat luvut.

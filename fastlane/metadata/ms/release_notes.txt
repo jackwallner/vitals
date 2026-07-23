@@ -1,5 +1,5 @@
-Pengalaman Vitals+ yang lebih lancar
+Jumlah harian yang tepat
 
-• Harga dan butiran percubaan kini lebih jelas pada setiap skrin langganan. Mesej ralat pembelian tidak lagi bertindih dengan tulisan halus.
-• Net Deficit: Permintaan kebenaran Apple Health kini muncul dengan boleh dipercayai apabila anda menghidupkan penjejakan kalori makanan, serta pintasan ke kebenaran Health jika kalori tidak dapat dibaca.
-• Pembetulan pepijat dan penambahbaikan dalam apl, widget dan Apple Watch.
+• Membaiki jumlah kalori hari ini yang dipaparkan jauh lebih tinggi pada sesetengah peranti. Tenaga rehat yang masih berjalan kini dikira hanya untuk bahagian hari yang benar-benar telah berlalu.
+• Widget Penyelenggaraan kini sepadan dengan angka di dalam apl. Hari yang telah tamat dimuktamadkan pada tengah malam, jadi widget anda kekal selari walaupun anda tidak membuka apl.
+• Hari Ini, Sejarah dan widget kini sentiasa memaparkan angka yang sama.

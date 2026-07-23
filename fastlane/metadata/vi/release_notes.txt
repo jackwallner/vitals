@@ -1,5 +1,5 @@
-Trải nghiệm Vitals+ mượt mà hơn
+Tổng số hằng ngày chính xác
 
-• Giá và chi tiết dùng thử rõ ràng hơn trên mọi màn hình đăng ký. Thông báo lỗi mua hàng không còn chồng lên phần chữ nhỏ.
-• Net Deficit: Yêu cầu quyền Apple Health giờ hiển thị ổn định khi bạn bật theo dõi calo từ thức ăn, kèm lối tắt đến quyền của Health nếu không đọc được calo.
-• Sửa lỗi và tinh chỉnh trong ứng dụng, tiện ích và Apple Watch.
+• Đã sửa lỗi tổng calo hôm nay hiển thị cao hơn nhiều so với thực tế trên một số thiết bị. Năng lượng nghỉ đang được ghi nhận giờ chỉ tính cho phần ngày đã thực sự trôi qua.
+• Widget Duy trì giờ khớp với con số bên trong ứng dụng. Những ngày đã kết thúc được chốt vào nửa đêm, nên widget vẫn đúng ngay cả khi bạn không mở ứng dụng.
+• Hôm nay, Lịch sử và các widget giờ luôn hiển thị cùng một con số.

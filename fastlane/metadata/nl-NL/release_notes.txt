@@ -1,5 +1,5 @@
-Een soepelere Vitals+ ervaring
+Nauwkeurige dagtotalen
 
-• Duidelijkere prijzen en proefperiode-details op elk upgradescherm. Foutmeldingen bij aankopen overlappen de kleine lettertjes niet meer.
-• Net Deficit: het Apple Health-toestemmingsverzoek verschijnt nu betrouwbaar wanneer je voedingscalorieën inschakelt, met een snelkoppeling naar Health-toestemmingen als voedingscalorieën niet gelezen kunnen worden.
-• Bugfixes en verfijningen in de app, widgets en op Apple Watch.
+• Opgelost dat het caloriestotaal van vandaag op sommige apparaten veel te hoog werd weergegeven. Rustverbranding die nog loopt telt nu alleen mee voor het deel van de dag dat echt voorbij is.
+• De Onderhoud-widget komt nu overeen met het getal in de app. Afgeronde dagen worden om middernacht vastgezet, zodat je widgets kloppen ook als je de app niet opent.
+• Vandaag, Geschiedenis en de widgets tonen nu altijd dezelfde getallen.
