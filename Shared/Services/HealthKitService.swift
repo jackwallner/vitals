@@ -182,22 +182,21 @@ final class HealthKitService: ObservableObject {
         // shape and unit as `fetchHistory`'s per-day bucketing so the two
         // paths produce the same number for "today".
         let dayStart = DateHelpers.startOfDay()
-        let queryEnd = Date.now
-        let interval = DateComponents(day: 1)
+        let now = Date.now
 
         // Energy is required; steps are best-effort. A user (or the lab harness)
         // can grant Active/Resting while leaving Steps off — that must not blank
         // the whole Today total with `Authorization not determined`.
-        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: dayStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: true)
-        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: dayStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: true)
-        async let stepsMap = queryStatisticsCollectionIfAuthorized(.stepCount, unit: .count(), start: dayStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: true)
+        async let active = queryElapsedTotal(.activeEnergyBurned, unit: .kilocalorie(), dayStart: dayStart, now: now)
+        async let resting = queryElapsedTotal(.basalEnergyBurned, unit: .kilocalorie(), dayStart: dayStart, now: now)
+        async let steps = queryElapsedTotalIfAuthorized(.stepCount, unit: .count(), dayStart: dayStart, now: now)
 
-        let (active, resting, steps) = try await (activeMap, restingMap, stepsMap)
+        let (activeToday, restingToday, stepsToday) = try await (active, resting, steps)
 
         return (
-            active: statisticValue(active, for: dayStart),
-            resting: statisticValue(resting, for: dayStart),
-            steps: Int(statisticValue(steps, for: dayStart))
+            active: activeToday,
+            resting: restingToday,
+            steps: Int(stepsToday)
         )
     }
 
@@ -210,7 +209,7 @@ final class HealthKitService: ObservableObject {
         #endif
         let dayStart = DateHelpers.startOfDay()
         let interval = DateComponents(day: 1)
-        let map = try await queryStatisticsCollection(.dietaryEnergyConsumed, unit: .kilocalorie(), start: dayStart, end: .now, interval: interval, excludeSamplesEndingAfterEnd: true)
+        let map = try await queryStatisticsCollection(.dietaryEnergyConsumed, unit: .kilocalorie(), start: dayStart, end: .now, interval: interval)
         let kcal = statisticValue(map, for: dayStart)
         healthKitLogger.debug("fetchDietaryEnergyToday: \(kcal, privacy: .public) kcal")
         // First non-zero read is our positive signal that dietary reads are authorized.
@@ -237,9 +236,10 @@ final class HealthKitService: ObservableObject {
         let normalizedStart = DateHelpers.startOfDay(start)
         let endNormalized = DateHelpers.startOfDay(end)
         let queryEnd = DateHelpers.healthQueryEnd(including: endNormalized)
-        let includesToday = endNormalized >= DateHelpers.startOfDay()
         let interval = DateComponents(day: 1)
-        let map = try await queryStatisticsCollection(.dietaryEnergyConsumed, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: includesToday)
+        // Food is logged as instants, not as ongoing samples, so there is no
+        // in-progress quantity to prorate — the default predicate is correct here.
+        let map = try await queryStatisticsCollection(.dietaryEnergyConsumed, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval)
 
         var results: [(date: Date, foodCalories: Double)] = []
         var current = normalizedStart
@@ -275,29 +275,43 @@ final class HealthKitService: ObservableObject {
         // at the current instant so partial duration samples cannot include the future.
         let endNormalized = DateHelpers.startOfDay(end)
         let queryEnd = DateHelpers.healthQueryEnd(including: endNormalized)
-        // A range containing today has to reject samples ending after now for the
-        // same reason `fetchTodayStats` does, otherwise today's row here (which is
-        // what `saveHistoryToCache` feeds the widgets) keeps the inflated total the
-        // Today screen already guards against.
         let includesToday = endNormalized >= DateHelpers.startOfDay()
         let interval = DateComponents(day: 1)
 
-        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: includesToday)
-        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: includesToday)
-        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: normalizedStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: includesToday)
+        // Completed days are correct with the default predicate: a sample that
+        // straddles midnight is split between the days it actually covers.
+        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval)
+        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval)
+        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: normalizedStart, end: queryEnd, interval: interval)
 
         let (active, resting, steps) = try await (activeMap, restingMap, stepsMap)
 
+        // Today's calendar-day bucket would include the not-yet-elapsed part of any
+        // sample still in progress. Take today's row from the same call the Today
+        // screen uses, so History, the widgets (via `saveHistoryToCache`) and Today
+        // can't disagree by construction.
+        let todayStats = includesToday ? try await fetchTodayStats() : nil
+
+        let calendar = Calendar.current
         var results: [(date: Date, active: Double, resting: Double, steps: Int)] = []
         var current = normalizedStart
         while current < queryEnd {
-            results.append((
-                date: current,
-                active: statisticValue(active, for: current),
-                resting: statisticValue(resting, for: current),
-                steps: Int(statisticValue(steps, for: current))
-            ))
-            guard let next = Calendar.current.date(byAdding: .day, value: 1, to: current) else { break }
+            if let todayStats, calendar.isDateInToday(current) {
+                results.append((
+                    date: current,
+                    active: todayStats.active,
+                    resting: todayStats.resting,
+                    steps: todayStats.steps
+                ))
+            } else {
+                results.append((
+                    date: current,
+                    active: statisticValue(active, for: current),
+                    resting: statisticValue(resting, for: current),
+                    steps: Int(statisticValue(steps, for: current))
+                ))
+            }
+            guard let next = calendar.date(byAdding: .day, value: 1, to: current) else { break }
             current = next
         }
         return results
@@ -320,11 +334,13 @@ final class HealthKitService: ObservableObject {
         let normalizedStart = DateHelpers.startOfDay(start)
         let endNormalized = DateHelpers.startOfDay(end)
         let queryEnd = DateHelpers.healthQueryEnd(including: endNormalized)
-        let includesToday = endNormalized >= DateHelpers.startOfDay()
         let interval = DateComponents(day: 1)
 
-        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: includesToday)
-        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval, excludeSamplesEndingAfterEnd: includesToday)
+        // Only completed days feed the average (see `EnergyAveragesCalculator`),
+        // so today's partial bucket is discarded downstream and the default
+        // predicate is what keeps midnight-straddling samples on the right day.
+        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval)
+        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: normalizedStart, end: queryEnd, interval: interval)
         let (active, resting) = try await (activeMap, restingMap)
 
         var records: [(date: Date, active: Double, resting: Double)] = []
@@ -523,6 +539,13 @@ final class HealthKitService: ObservableObject {
         set { (UserDefaults(suiteName: vitalsAppGroupID) ?? .standard).set(newValue, forKey: "dietaryBackgroundDeliveryEnabled") }
     }
 
+    /// The calendar day `refreshCache` last wrote a today-row for. Comparing it to
+    /// the current day is how a midnight rollover is detected without a timer.
+    private var lastCachedDayKey: String? {
+        get { (UserDefaults(suiteName: vitalsAppGroupID) ?? .standard).string(forKey: "lastCachedDayKey") }
+        set { (UserDefaults(suiteName: vitalsAppGroupID) ?? .standard).set(newValue, forKey: "lastCachedDayKey") }
+    }
+
     func enableBackgroundDelivery() {
         if ScreenshotConfig.isEnabled { return }
         guard HKHealthStore.isHealthDataAvailable() else { return }
@@ -598,7 +621,52 @@ final class HealthKitService: ObservableObject {
         }
     }
 
+    /// Finalizes the day that just ended, the first time anything refreshes after
+    /// local midnight.
+    ///
+    /// `refreshCache` only ever writes a row for the *current* day, so at 00:00 the
+    /// day that just ended is frozen at whatever partial snapshot it happened to
+    /// hold — and it immediately becomes the newest completed day in the
+    /// Maintenance/TDEE widget's window, dragging that average below the in-app
+    /// figure. Rather than a timer, the rollover is detected by comparing the day
+    /// of the last write against today: HealthKit background delivery wakes the app
+    /// within minutes of midnight as fresh basal samples land, so the finalize runs
+    /// without the user opening anything. Also covers travel across timezones and
+    /// any gap where the device was off overnight.
+    ///
+    /// Best effort by design: a failure here must not stop today's cache write.
+    /// Skipped on watchOS, where the observer callback runs under a tight CPU
+    /// budget and a multi-day history fetch risks the CAROUSEL watchdog.
+    func finalizeDayRolloverIfNeeded() async {
+        #if os(watchOS)
+        return
+        #else
+        let todayKey = DailyHealthRecord.key(for: DateHelpers.startOfDay())
+        let previousKey = lastCachedDayKey
+        guard previousKey != todayKey else { return }
+        // First run ever: nothing stale to finalize, just record where we are.
+        guard previousKey != nil else {
+            lastCachedDayKey = todayKey
+            return
+        }
+        healthKitLogger.info(
+            "Day rolled over from \(previousKey ?? "-", privacy: .public) to \(todayKey, privacy: .public); finalizing completed days"
+        )
+        do {
+            try await refreshHistoryCache()
+            lastCachedDayKey = todayKey
+        } catch {
+            // Leave the marker alone so the next refresh retries the finalize.
+            healthKitLogger.error(
+                "Day-rollover finalize failed; will retry on next refresh: \(String(describing: error), privacy: .public)"
+            )
+        }
+        #endif
+    }
+
     func refreshCache(stats: (active: Double, resting: Double, steps: Int)? = nil) async throws {
+        await finalizeDayRolloverIfNeeded()
+
         let resolvedStats: (active: Double, resting: Double, steps: Int)
         if let stats {
             resolvedStats = stats
@@ -875,9 +943,28 @@ final class HealthKitService: ObservableObject {
         )
     }
 
+    /// Test-only seam for the third variant the lab compares against the other
+    /// two: one bucket ending at `now`, which is what the shipping Today path
+    /// uses.
+    func debugElapsedTotal(
+        _ identifier: HKQuantityTypeIdentifier,
+        unit: HKUnit,
+        dayStart: Date,
+        now: Date
+    ) async throws -> Double {
+        try await queryElapsedTotal(identifier, unit: unit, dayStart: dayStart, now: now)
+    }
+
     /// Test-only seam: the lab writes samples, so it needs the same store the
     /// queries read from.
     var debugStore: HKHealthStore { store }
+
+    /// Test-only seam: lets the lab pretend the last cache write happened on an
+    /// earlier day, so the midnight-rollover path can be exercised without
+    /// waiting for (or faking) local midnight.
+    func debugSetLastCachedDay(_ key: String?) {
+        lastCachedDayKey = key
+    }
 
     /// Test-only: wipe every cached day so the maintenance-cache lab scenario
     /// starts from a known-empty cache regardless of prior runs.
@@ -890,30 +977,54 @@ final class HealthKitService: ObservableObject {
     }
     #endif
 
-    /// Like `queryStatisticsCollection`, but returns `[:]` when the type has not
-    /// been authorized yet instead of failing the whole Today/history fetch.
-    private func queryStatisticsCollectionIfAuthorized(
+    /// Total for `[dayStart, now)`, using a single statistics bucket whose end is
+    /// `now` rather than the next midnight.
+    ///
+    /// HealthKit splits a sample across bucket boundaries in proportion to how
+    /// much of its duration falls inside each bucket, so a bucket that stops at
+    /// `now` credits today with exactly the share that has actually elapsed.
+    /// The two alternatives are both wrong for a sample still in progress:
+    /// a calendar-day bucket also counts the part lying in the future (the
+    /// "4,397 kcal of resting energy before lunch" report), and `.strictEndDate`
+    /// throws the sample away whole, losing the part that genuinely happened.
+    private func queryElapsedTotal(
         _ identifier: HKQuantityTypeIdentifier,
         unit: HKUnit,
-        start: Date,
-        end: Date,
-        interval: DateComponents,
-        excludeSamplesEndingAfterEnd: Bool = false
-    ) async -> [Date: Double] {
+        dayStart: Date,
+        now: Date
+    ) async throws -> Double {
+        // HealthKit rejects a zero-length interval, and at the stroke of midnight
+        // there is nothing elapsed to report anyway. Round up so the single
+        // bucket covers the whole window with nothing left over.
+        let elapsed = Int(now.timeIntervalSince(dayStart).rounded(.up))
+        guard elapsed >= 1 else { return 0 }
+        let map = try await queryStatisticsCollection(
+            identifier,
+            unit: unit,
+            start: dayStart,
+            end: now,
+            interval: DateComponents(second: elapsed)
+        )
+        return statisticValue(map, for: dayStart)
+    }
+
+    /// Like `queryElapsedTotal`, but returns 0 when the type has not been
+    /// authorized yet instead of failing the whole Today fetch. Energy is
+    /// required; steps are best-effort, since a user (or the lab harness) can
+    /// grant Active/Resting while leaving Steps off.
+    private func queryElapsedTotalIfAuthorized(
+        _ identifier: HKQuantityTypeIdentifier,
+        unit: HKUnit,
+        dayStart: Date,
+        now: Date
+    ) async -> Double {
         do {
-            return try await queryStatisticsCollection(
-                identifier,
-                unit: unit,
-                start: start,
-                end: end,
-                interval: interval,
-                excludeSamplesEndingAfterEnd: excludeSamplesEndingAfterEnd
-            )
+            return try await queryElapsedTotal(identifier, unit: unit, dayStart: dayStart, now: now)
         } catch {
             healthKitLogger.error(
                 "Optional \(identifier.rawValue, privacy: .public) query failed; treating as zero: \(String(describing: error), privacy: .public)"
             )
-            return [:]
+            return 0
         }
     }
 

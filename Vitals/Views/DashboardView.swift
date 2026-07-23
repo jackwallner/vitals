@@ -332,6 +332,13 @@ struct DashboardView: View {
                 Task { await refresh() }
             }
         }
+        // Local midnight. Without this the dashboard sits on the previous day —
+        // header date, ring, and totals — until the app is backgrounded and
+        // reopened, because nothing else re-reads the day while it stays active.
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.significantTimeChangeNotification)) { _ in
+            guard goals.hasCompletedSetup else { return }
+            Task { await refresh() }
+        }
         .onReceive(NotificationCenter.default.publisher(for: .vitalsOpenSettings)) { _ in
             showSettings = true
         }

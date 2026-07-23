@@ -125,6 +125,16 @@ struct VitalsApp: App {
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
                     Task { await store.updateCustomerProductStatus() }
                 }
+                // Local midnight (also a timezone change or a manual clock change).
+                // Finalizes the day that just ended and rewrites today's row, so an
+                // app left running across midnight doesn't keep showing the old day
+                // and the widgets don't inherit a partial final day.
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.significantTimeChangeNotification)) { _ in
+                    Task {
+                        await HealthKitService.shared.finalizeDayRolloverIfNeeded()
+                        try? await HealthKitService.shared.refreshCache()
+                    }
+                }
                 .task {
                     #if canImport(WatchConnectivity)
                     PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
