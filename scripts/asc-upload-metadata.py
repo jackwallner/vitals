@@ -90,6 +90,11 @@ def create_version_loc(client: ASCClient, version_id: str, locale: str, source: 
         v = read_meta(locale, src)
         if v:
             body["data"]["attributes"][dst] = v
+    # New version localizations do not inherit promotional text; carry it over
+    # (falling back to en-US) or the field ships empty.
+    promo = read_meta(locale, "promotional_text") or read_meta("en-US", "promotional_text")
+    if promo:
+        body["data"]["attributes"]["promotionalText"] = promo[:170]
     return client.post("/appStoreVersionLocalizations", body)["data"]
 
 
