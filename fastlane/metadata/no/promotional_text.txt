@@ -1,1 +1,1 @@
-Most calorie apps want you to log food. This one just shows what your body actually burns all day, active plus resting, straight from Apple Health. The basics are free.
+Total calories means active + resting, added up. See the whole number live on your watch face and Home Screen, straight from Apple Health. No food logging.
