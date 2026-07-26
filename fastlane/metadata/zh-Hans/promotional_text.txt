@@ -1,1 +1,1 @@
-Total calories means active + resting, added up. See the whole number live on your watch face and Home Screen, straight from Apple Health. No food logging.
+你每天消耗的总热量（活动＋静息），随处可见：iPhone、小组件、锁定屏幕、表盘、复杂功能。数据来自 Apple Health，自动更新。

@@ -1,1 +1,1 @@
-Total calories means active + resting, added up. See the whole number live on your watch face and Home Screen, straight from Apple Health. No food logging.
+1日の総消費カロリー（アクティブ＋安静時）を、見る場所すべてに。iPhone、ウィジェット、ロック画面、文字盤、コンプリケーションに表示。Apple Healthから自動で。
