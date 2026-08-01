@@ -439,12 +439,18 @@ final class StoreService: NSObject, ObservableObject {
 
     private func configureIfNeeded() {
         guard !isConfigured else { return }
+        #if targetEnvironment(simulator)
+        // Agent/simulator runs must never create customers in the production
+        // RevenueCat project. Use local UI state and StoreKit Testing instead.
+        return
+        #else
         #if DEBUG
         Purchases.logLevel = .debug
         #endif
         Purchases.configure(withAPIKey: RevenueCatConfig.apiKey)
         Purchases.shared.delegate = self
         isConfigured = true
+        #endif
     }
 }
 
