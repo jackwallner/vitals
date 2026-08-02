@@ -2,7 +2,7 @@
 
 Personal iPhone + Apple Watch health tracker. Tracks total calories (active + resting) and steps via HealthKit. Local-only storage, no CloudKit.
 
-XcodeGen project/scheme: `Vitals`, simulator device `agent-vitals`.
+XcodeGen project/scheme: `Vitals`, sim lease owner `vitals`.
 
 ## Tech Stack
 
