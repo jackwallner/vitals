@@ -48,7 +48,7 @@ SUUNNITELTU YKSITYISEKSI
 Total Calories ei ole lääkinnällinen laite, eikä sitä ole tarkoitettu minkään sairauden diagnosointiin, hoitoon tai ehkäisyyn. Käänny aina terveydenhuollon ammattilaisen puoleen lääkinnällisissä kysymyksissä.
 
 Tilaustiedot
-Vitals+ on saatavilla automaattisesti uusiutuvana tilauksena (Monthly 6,99 $ / Yearly 29,99 $ sisältäen 7 päivän ilmaisen kokeilun) tai kertaluonteisena Lifetime-ostona (59,99 $). Maksu veloitetaan Apple ID -tililtäsi vahvistuksen yhteydessä. Tilaukset uusiutuvat automaattisesti, ellei niitä peruta vähintään 24 tuntia ennen jakson päättymistä. Hallinnoi tai peru milloin tahansa kohdassa Asetukset → Apple ID → Tilaukset.
+Vitals+ on saatavana automaattisesti uusiutuvana tilauksena (kuukausi tai vuosi, molemmissa 7 päivän ilmainen kokeilu) tai kertaostoksena Lifetime. Hinnat näkyvät apissa ennen ostoa ja vaihtelevat alueittain. Maksu veloitetaan Apple ID:ltäsi vahvistuksen yhteydessä. Tilaukset uusiutuvat automaattisesti, ellei niitä peruuteta vähintään 24 tuntia ennen kuluvan jakson päättymistä. Voit hallita tai peruuttaa milloin tahansa: Asetukset → Apple ID → Tilaukset.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

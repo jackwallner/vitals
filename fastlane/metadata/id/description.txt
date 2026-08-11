@@ -48,7 +48,7 @@ PRIVASI SEJAK DESAIN
 Total Calories bukan perangkat medis dan tidak dimaksudkan untuk mendiagnosis, mengobati, atau mencegah kondisi medis apa pun. Selalu konsultasikan dengan tenaga kesehatan profesional untuk nasihat medis.
 
 Detail Langganan
-Vitals+ tersedia sebagai langganan perpanjangan otomatis (Bulanan $6,99 / Tahunan $29,99 dengan uji coba gratis 7 hari) atau pembelian Lifetime satu kali ($59,99). Pembayaran dibebankan ke Apple ID Anda saat konfirmasi. Langganan diperpanjang otomatis kecuali dibatalkan minimal 24 jam sebelum periode berakhir. Kelola atau batalkan kapan saja di Pengaturan → Apple ID → Subscriptions.
+Vitals+ tersedia sebagai langganan perpanjangan otomatis (Bulanan atau Tahunan, keduanya dengan uji coba gratis 7 hari) atau sebagai pembelian Lifetime sekali bayar. Harga ditampilkan di aplikasi sebelum Anda membeli dan berbeda-beda menurut wilayah. Pembayaran dibebankan ke Apple ID Anda saat konfirmasi. Langganan diperpanjang otomatis kecuali dibatalkan setidaknya 24 jam sebelum periode berjalan berakhir. Kelola atau batalkan kapan saja di Pengaturan → Apple ID → Langganan.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

@@ -48,7 +48,7 @@ ZASEBNOST NA PRVEM MESTU
 Total Calories ni medicinska naprava in ni namenjen diagnosticiranju, zdravljenju ali preprečevanju bolezni. Za medicinski nasvet se posvetujte s strokovnjakom.
 
 Podrobnosti naročnine
-Vitals+ je na voljo kot auto-renewing subscription (Monthly $6.99 / Yearly $29.99, 7-day free trial) ali enkratni Lifetime ($59.99). Plačilo se zaračuna na Apple ID ob potrditvi. Naročnine se auto-renew, razen če prekličete vsaj 24 ur pred koncem obdobja. Upravljajte v Settings → Apple ID → Subscriptions.
+Vitals+ je na voljo kot samodejno obnavljajoča se naročnina (mesečna ali letna, obe s 7-dnevnim brezplačnim preizkusom) ali kot enkratni nakup Lifetime. Cene so prikazane v aplikaciji pred nakupom in se razlikujejo glede na regijo. Plačilo se ob potrditvi zaračuna na vaš Apple ID. Naročnine se samodejno obnovijo, razen če jih prekličete vsaj 24 ur pred koncem tekočega obdobja. Upravljajte ali prekličite jih kadar koli v Nastavitve → Apple ID → Naročnine.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

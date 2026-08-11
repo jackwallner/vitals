@@ -48,7 +48,7 @@ CONFIDENTIALITÉ AVANT TOUT
 Total Calories n’est pas un dispositif médical et n’est pas destiné à diagnostiquer, traiter ou prévenir une maladie. Demandez toujours l’avis d’un professionnel de la santé pour toute question médicale.
 
 Détails d’abonnement
-Vitals+ est offert sous forme d’abonnement à renouvellement automatique (mensuel 6,99 $ / annuel 29,99 $ avec essai gratuit de 7 jours) ou d’achat unique à vie (59,99 $). Le paiement est facturé à votre identifiant Apple à la confirmation. L’abonnement se renouvelle automatiquement sauf annulation au moins 24 heures avant la fin de la période. Gérez ou annulez en tout temps dans Réglages → Identifiant Apple → Abonnements.
+Vitals+ est offert en abonnement à renouvellement automatique (mensuel ou annuel, les deux avec 7 jours d'essai gratuit) ou en achat unique Lifetime. Les prix sont affichés dans l'app avant l'achat et varient selon la région. Le paiement est débité de ton compte Apple ID à la confirmation. Les abonnements se renouvellent automatiquement sauf annulation au moins 24 heures avant la fin de la période en cours. Gère ou annule à tout moment dans Réglages → Apple ID → Abonnements.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

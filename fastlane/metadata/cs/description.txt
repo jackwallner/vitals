@@ -48,7 +48,7 @@ SOUKROMÍ NA PRVNÍM MÍSTĚ
 Total Calories není zdravotnický prostředek a není určena k diagnostice, léčbě ani prevenci žádného onemocnění. Vždy se ohledně zdravotních otázek poraďte se zdravotnickým odborníkem.
 
 Podrobnosti o předplatném
-Vitals+ je dostupné jako automaticky obnovované předplatné (měsíčně 6,99 $ / ročně 29,99 $ se 7denní zkušební dobou) nebo jednorázový doživotní nákup (59,99 $). Platba bude stržena z vašeho Apple ID při potvrzení. Předplatné se automaticky obnovuje, pokud jej nezrušíte alespoň 24 hodin před koncem období. Spravovat nebo zrušit jej můžete kdykoli v Nastavení → Apple ID → Předplatná.
+Vitals+ je k dispozici jako automaticky obnovované předplatné (měsíční nebo roční, obojí se 7denní bezplatnou zkušební verzí) nebo jako jednorázový nákup Lifetime. Ceny se zobrazují v aplikaci před nákupem a liší se podle regionu. Platba se strhne z vašeho Apple ID při potvrzení. Předplatné se automaticky obnovuje, pokud ho nezrušíte alespoň 24 hodin před koncem aktuálního období. Spravovat nebo zrušit můžete kdykoli v Nastavení → Apple ID → Předplatné.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

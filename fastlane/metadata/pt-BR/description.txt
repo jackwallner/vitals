@@ -48,7 +48,7 @@ PRIVACIDADE EM PRIMEIRO LUGAR
 Total Calories não é um dispositivo médico e não se destina a diagnosticar, tratar ou prevenir qualquer condição médica. Sempre consulte um profissional de saúde para orientações médicas.
 
 Detalhes da assinatura
-Vitals+ está disponível como assinatura renovável automaticamente (Mensal US$ 6,99 / Anual US$ 29,99 com teste grátis de 7 dias) ou compra única Vitalícia (US$ 59,99). O pagamento é cobrado do seu ID Apple na confirmação. As assinaturas são renovadas automaticamente, a menos que sejam canceladas com pelo menos 24 horas de antecedência antes do fim do período. Gerencie ou cancele a qualquer momento em Ajustes → ID Apple → Assinaturas.
+O Vitals+ está disponível como assinatura de renovação automática (mensal ou anual, ambas com 7 dias de teste grátis) ou como compra única Lifetime. Os preços aparecem no app antes da compra e variam conforme a região. O pagamento é cobrado no seu Apple ID na confirmação. As assinaturas se renovam automaticamente, a menos que sejam canceladas ao menos 24 horas antes do fim do período atual. Gerencie ou cancele quando quiser em Ajustes → Apple ID → Assinaturas.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
