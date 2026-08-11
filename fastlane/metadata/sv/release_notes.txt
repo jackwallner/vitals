@@ -1,5 +1,3 @@
-Exakta dagssummor
+Tydligare uppgraderingsvy: varje plan visar nu vad den motsvarar per månad och årsplanen anger hur mycket du sparar.
 
-• Åtgärdat att dagens kalorisumma visades alldeles för högt på vissa enheter. Vilenergi som fortfarande pågår räknas nu bara för den del av dagen som faktiskt har gått.
-• Widgeten Underhåll stämmer nu med siffran inne i appen. Avslutade dagar färdigställs vid midnatt, så dina widgetar hänger med även om du inte öppnar appen.
-• I dag, Historik och widgetarna visar nu alltid samma siffror.
+Dessutom mindre rättelser.

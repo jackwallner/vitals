@@ -192,12 +192,17 @@ def ensure_draft_version(client: ASCClient, app_id: str, preferred: str | None =
     if editable:
         return editable
     live = find_live_version(client, app_id)
-    base = preferred or (live["attributes"]["versionString"] if live else "1.0.0")
     if preferred:
         v = find_version_by_string(client, app_id, preferred)
         if v and v.get("attributes", {}).get("appStoreState") in EDITABLE_STATES:
             return v
-    candidate = bump_version(base)
+        # An explicit version is a request for that exact string, not a floor to
+        # bump past. Bumping it created a draft the built binary can never match.
+        candidate = preferred
+    else:
+        candidate = bump_version(
+            live["attributes"]["versionString"] if live else "1.0.0"
+        )
     for _ in range(8):
         if find_version_by_string(client, app_id, candidate):
             candidate = bump_version(candidate)

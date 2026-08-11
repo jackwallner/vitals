@@ -48,7 +48,7 @@ PRIVATA PER PROGETTAZIONE
 Total Calories non è un dispositivo medico e non è destinata a diagnosticare, trattare o prevenire alcuna condizione medica. Consulta sempre un professionista sanitario per consigli medici.
 
 Dettagli dell’abbonamento
-Vitals+ è disponibile come abbonamento con rinnovo automatico (Mensile 1,99 $ / Annuale 14,99 $ con prova gratuita di 7 giorni) oppure come acquisto Lifetime una tantum (29,99 $). Il pagamento viene addebitato sul tuo ID Apple alla conferma. L’abbonamento si rinnova automaticamente salvo annullamento almeno 24 ore prima della fine del periodo. Puoi gestire o annullare in qualsiasi momento in Impostazioni → ID Apple → Abbonamenti.
+Vitals+ è disponibile come abbonamento con rinnovo automatico (Mensile 6,99 $ / Annuale 29,99 $ con prova gratuita di 7 giorni) oppure come acquisto Lifetime una tantum (59,99 $). Il pagamento viene addebitato sul tuo ID Apple alla conferma. L’abbonamento si rinnova automaticamente salvo annullamento almeno 24 ore prima della fine del periodo. Puoi gestire o annullare in qualsiasi momento in Impostazioni → ID Apple → Abbonamenti.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

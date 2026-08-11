@@ -1,5 +1,3 @@
-Totales diarios exactos
+Pantalla de mejora más clara: cada plan muestra ahora su coste mensual equivalente y el plan anual indica cuánto ahorras.
 
-• Se ha corregido que el total de calorías de hoy apareciera muy por encima de lo real en algunos dispositivos. La energía en reposo aún en curso ahora solo cuenta la parte del día que realmente ha transcurrido.
-• El widget de Mantenimiento ya coincide con la cifra de dentro de la app. Los días completos se cierran a medianoche, así que tus widgets siguen al día aunque no abras la app.
-• Hoy, Historial y los widgets ahora muestran siempre las mismas cifras.
+Además, pequeñas correcciones.

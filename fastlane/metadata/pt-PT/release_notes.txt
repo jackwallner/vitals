@@ -1,5 +1,3 @@
-Totais diários exatos
+Ecrã de subscrição mais claro: cada plano mostra agora quanto fica por mês e o plano anual indica quanto poupa.
 
-• Corrigido o total de calorias de hoje que aparecia muito acima do real em alguns dispositivos. A energia em repouso ainda a decorrer conta agora apenas a parte do dia que realmente passou.
-• O widget de Manutenção corresponde agora ao valor dentro da app. Os dias concluídos são finalizados à meia-noite, pelo que os widgets se mantêm alinhados mesmo que não abra a app.
-• Hoje, Histórico e os widgets mostram agora sempre os mesmos números.
+Além de pequenas correções.

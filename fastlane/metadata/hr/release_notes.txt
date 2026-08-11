@@ -1,5 +1,3 @@
-Točni dnevni zbrojevi
+Pregledniji zaslon nadogradnje: svaki plan sada prikazuje mjesečni iznos, a godišnji plan navodi koliko štedite.
 
-• Ispravljeno prikazivanje današnjeg zbroja kalorija koji je na nekim uređajima bio znatno previsok. Energija mirovanja koja je još u tijeku sada se broji samo za dio dana koji je stvarno protekao.
-• Widget Održavanje sada odgovara broju unutar aplikacije. Završeni dani zaključuju se u ponoć pa widgeti ostaju ažurni i ako ne otvorite aplikaciju.
-• Danas, Povijest i widgeti sada uvijek prikazuju iste brojeve.
+Uz to, sitni popravci.

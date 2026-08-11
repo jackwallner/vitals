@@ -1,5 +1,3 @@
-Genaue Tageswerte
+Übersichtlichere Upgrade-Seite: Jeder Tarif zeigt jetzt den Preis pro Monat, und der Jahrestarif nennt die Ersparnis.
 
-• Behoben, dass die heutige Kaloriensumme auf manchen Geräten viel zu hoch angezeigt wurde. Noch laufender Ruheumsatz zählt jetzt nur für den Teil des Tages, der tatsächlich vergangen ist.
-• Das Grundumsatz-Widget stimmt jetzt mit dem Wert in der App überein. Abgeschlossene Tage werden um Mitternacht finalisiert, sodass deine Widgets aktuell bleiben, auch wenn du die App nicht öffnest.
-• Heute, Verlauf und Widgets zeigen jetzt immer dieselben Zahlen.
+Dazu kleinere Korrekturen.

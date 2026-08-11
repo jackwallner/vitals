@@ -48,7 +48,7 @@ INBYGGT SKYDD AV INTEGRITETEN
 Total Calories är inte en medicinteknisk produkt och är inte avsedd att diagnostisera, behandla eller förebygga någon medicinsk åkomma. Kontakta alltid vårdpersonal för medicinsk rådgivning.
 
 Prenumerationsinfo
-Vitals+ finns som självförnyande prenumeration (Monthly $1.99 / Yearly $14.99 med 7 dagars gratis provperiod) eller engångsköp Lifetime ($29.99). Betalning debiteras ditt Apple‑ID vid bekräftelse. Prenumerationer förnyas automatiskt om de inte avslutas minst 24 timmar före periodens slut. Hantera eller avsluta när som helst i Inställningar → Apple‑ID → Prenumerationer.
+Vitals+ finns som självförnyande prenumeration (Monthly $6.99 / Yearly $29.99 med 7 dagars gratis provperiod) eller engångsköp Lifetime ($59.99). Betalning debiteras ditt Apple‑ID vid bekräftelse. Prenumerationer förnyas automatiskt om de inte avslutas minst 24 timmar före periodens slut. Hantera eller avsluta när som helst i Inställningar → Apple‑ID → Prenumerationer.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

@@ -48,7 +48,7 @@ RIÊNG TƯ NGAY TỪ THIẾT KẾ
 Total Calories không phải là thiết bị y tế và không nhằm mục đích chẩn đoán, điều trị hay phòng ngừa bất kỳ tình trạng y khoa nào. Luôn hỏi ý kiến chuyên gia y tế để được tư vấn.
 
 Chi tiết gói đăng ký
-Vitals+ có sẵn dưới dạng gói tự gia hạn (Hàng tháng 1,99 USD / Hàng năm 14,99 USD với 7 ngày dùng thử miễn phí) hoặc mua trọn đời một lần (29,99 USD). Thanh toán được tính vào Apple ID của bạn khi xác nhận. Gói tự động gia hạn trừ khi bạn hủy ít nhất 24 giờ trước khi kết thúc chu kỳ. Quản lý hoặc hủy bất cứ lúc nào trong Cài đặt → Apple ID → Đăng ký.
+Vitals+ có sẵn dưới dạng gói tự gia hạn (Hàng tháng 6,99 USD / Hàng năm 29,99 USD với 7 ngày dùng thử miễn phí) hoặc mua trọn đời một lần (59,99 USD). Thanh toán được tính vào Apple ID của bạn khi xác nhận. Gói tự động gia hạn trừ khi bạn hủy ít nhất 24 giờ trước khi kết thúc chu kỳ. Quản lý hoặc hủy bất cứ lúc nào trong Cài đặt → Apple ID → Đăng ký.
 
 Chính sách quyền riêng tư: https://jackwallner.github.io/vitals/privacy-policy.html
 Điều khoản sử dụng (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

@@ -1,5 +1,3 @@
-Pontos napi összesítők
+Áttekinthetőbb előfizetési képernyő: minden csomag mutatja a havi árat, az éves csomag pedig a megtakarítást.
 
-• Javítva, hogy a mai kalóriaösszeg egyes készülékeken jóval magasabbnak látszott. A még folyamatban lévő nyugalmi energia mostantól csak a nap ténylegesen eltelt részére számít.
-• A Fenntartás widget mostantól megegyezik az alkalmazásban látható értékkel. A lezárult napok éjfélkor véglegesülnek, így a widgetek akkor is naprakészek maradnak, ha nem nyitod meg az alkalmazást.
-• A Ma, az Előzmények és a widgetek mostantól mindig ugyanazokat a számokat mutatják.
+Ezenkívül apró javítások.

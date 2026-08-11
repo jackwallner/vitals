@@ -1,5 +1,3 @@
-Des totaux quotidiens exacts
+Écran d'abonnement plus clair : chaque forfait affiche maintenant son coût mensuel et le forfait annuel indique l'économie réalisée.
 
-• Correction du total de calories du jour qui s'affichait beaucoup trop élevé sur certains appareils. L'énergie au repos encore en cours ne compte désormais que la partie de la journée réellement écoulée.
-• Le widget Maintien correspond maintenant au chiffre affiché dans l'appli. Les journées terminées sont finalisées à minuit, vos widgets restent donc à jour même si vous n'ouvrez pas l'appli.
-• Aujourd'hui, Historique et les widgets affichent désormais toujours les mêmes chiffres.
+Plus quelques petites corrections.

@@ -48,7 +48,7 @@ PRIVATLIV SOM STANDARD
 Total Calories er ikke et medicinsk udstyr og er ikke beregnet til at diagnosticere, behandle eller forebygge nogen medicinsk tilstand. Søg altid råd hos en sundhedsprofessionel for medicinsk vejledning.
 
 Abonnementsoplysninger
-Vitals+ fås som et automatisk fornyende abonnement (Månedligt 1,99 $ / Årligt 14,99 $ med 7 dages gratis prøve) eller et engangskøb som Lifetime (29,99 $). Betaling trækkes fra dit Apple-id ved bekræftelse. Abonnementer fornyes automatisk, medmindre de opsiges mindst 24 timer før periodens udløb. Administrer eller opsig når som helst under Indstillinger → Apple-id → Abonnementer.
+Vitals+ fås som et automatisk fornyende abonnement (Månedligt 6,99 $ / Årligt 29,99 $ med 7 dages gratis prøve) eller et engangskøb som Lifetime (59,99 $). Betaling trækkes fra dit Apple-id ved bekræftelse. Abonnementer fornyes automatisk, medmindre de opsiges mindst 24 timer før periodens udløb. Administrer eller opsig når som helst under Indstillinger → Apple-id → Abonnementer.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

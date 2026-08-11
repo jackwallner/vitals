@@ -1,5 +1,3 @@
-Total harian yang akurat
+Layar peningkatan lebih jelas: setiap paket kini menampilkan biaya per bulan, dan paket tahunan menyebutkan berapa yang Anda hemat.
 
-• Memperbaiki total kalori hari ini yang tampil jauh lebih tinggi di sebagian perangkat. Energi istirahat yang masih berjalan kini hanya dihitung untuk bagian hari yang benar-benar sudah berlalu.
-• Widget Pemeliharaan kini cocok dengan angka di dalam aplikasi. Hari yang sudah selesai difinalkan pada tengah malam, sehingga widget tetap selaras meski Anda tidak membuka aplikasi.
-• Hari Ini, Riwayat, dan widget kini selalu menampilkan angka yang sama.
+Plus perbaikan kecil.
