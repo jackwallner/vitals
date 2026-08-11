@@ -48,7 +48,7 @@ PROIECTAT PENTRU CONFIDENȚIALITATE
 Total Calories nu este un dispozitiv medical și nu este destinată diagnosticării, tratării sau prevenirii niciunei afecțiuni medicale. Consultă întotdeauna un specialist medical pentru sfaturi de sănătate.
 
 Detalii abonament
-Vitals+ este disponibil ca abonament cu reînnoire automată (lunar 1,99 $ / anual 14,99 $, cu 7 zile trial gratuit) sau achiziție unică Lifetime (29,99 $). Plata este taxată pe Apple ID la confirmare. Abonamentele se reînnoiesc automat, cu excepția cazului în care sunt anulate cu cel puțin 24 de ore înainte de sfârșitul perioadei. Le poți gestiona sau anula oricând în Setări → Apple ID → Subscriptions.
+Vitals+ este disponibil ca abonament cu reînnoire automată (lunar 6,99 $ / anual 29,99 $, cu 7 zile trial gratuit) sau achiziție unică Lifetime (59,99 $). Plata este taxată pe Apple ID la confirmare. Abonamentele se reînnoiesc automat, cu excepția cazului în care sunt anulate cu cel puțin 24 de ore înainte de sfârșitul perioadei. Le poți gestiona sau anula oricând în Setări → Apple ID → Subscriptions.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

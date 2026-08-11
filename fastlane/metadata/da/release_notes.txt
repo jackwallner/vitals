@@ -1,5 +1,3 @@
-Præcise daglige totaler
+Tydeligere opgraderingsside: hver plan viser nu, hvad den svarer til pr. måned, og årsplanen viser, hvor meget du sparer.
 
-• Rettet at dagens kalorietotal blev vist alt for højt på nogle enheder. Hvileenergi, der stadig er i gang, tæller nu kun den del af dagen, der rent faktisk er gået.
-• Vedligeholdelses-widgetten passer nu med tallet inde i appen. Afsluttede dage gøres færdige ved midnat, så dine widgets følger med, selv hvis du ikke åbner appen.
-• I dag, Historik og widgets viser nu altid de samme tal.
+Derudover mindre rettelser.

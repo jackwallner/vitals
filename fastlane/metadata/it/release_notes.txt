@@ -1,5 +1,3 @@
-Totali giornalieri accurati
+Schermata di abbonamento più chiara: ogni piano mostra ora il costo mensile e il piano annuale indica quanto fa risparmiare.
 
-• Risolto il totale calorie di oggi che su alcuni dispositivi risultava molto più alto del reale. L'energia a riposo ancora in corso ora conta solo la parte di giornata effettivamente trascorsa.
-• Il widget Mantenimento ora corrisponde al valore mostrato nell'app. I giorni conclusi vengono finalizzati a mezzanotte, così i widget restano allineati anche se non apri l'app.
-• Oggi, Cronologia e i widget ora riportano sempre gli stessi numeri.
+In più, piccole correzioni.

@@ -1,5 +1,3 @@
-Totals diaris exactes
+Pantalla de millora més clara: cada pla mostra ara el cost mensual equivalent i el pla anual indica quant estalvies.
 
-• S'ha corregit que el total de calories d'avui es mostrés molt més alt del compte en alguns dispositius. L'energia en repòs encara en curs ara només compta la part del dia que ja ha passat.
-• El widget de Manteniment ja coincideix amb la xifra de dins de l'app. Els dies acabats es tanquen a mitjanit, així els widgets es mantenen al dia encara que no obris l'app.
-• Avui, Historial i els widgets ara mostren sempre les mateixes xifres.
+A més, petites correccions.

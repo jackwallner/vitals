@@ -1,5 +1,3 @@
-Totaluri zilnice exacte
+Ecran de abonare mai clar: fiecare plan arată acum costul lunar, iar planul anual precizează cât economisești.
 
-• S-a remediat afișarea totalului de calorii de azi mult prea mare pe unele dispozitive. Energia de repaus aflată încă în desfășurare se contorizează acum doar pentru partea din zi care a trecut cu adevărat.
-• Widgetul Întreținere corespunde acum cifrei din aplicație. Zilele încheiate sunt finalizate la miezul nopții, așa că widgeturile rămân la zi chiar dacă nu deschizi aplicația.
-• Azi, Istoric și widgeturile afișează acum mereu aceleași cifre.
+În plus, mici corecturi.

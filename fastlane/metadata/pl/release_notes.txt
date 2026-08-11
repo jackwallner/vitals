@@ -1,5 +1,3 @@
-Dokładne sumy dzienne
+Czytelniejszy ekran subskrypcji: każdy plan pokazuje teraz kwotę miesięczną, a plan roczny podaje wysokość oszczędności.
 
-• Naprawiono zawyżoną dzisiejszą sumę kalorii na niektórych urządzeniach. Trwająca jeszcze energia spoczynkowa liczy się teraz tylko za tę część dnia, która faktycznie minęła.
-• Widżet Zapotrzebowanie zgadza się teraz z wartością w aplikacji. Zakończone dni są finalizowane o północy, więc widżety pozostają aktualne, nawet gdy nie otworzysz aplikacji.
-• Dziś, Historia i widżety pokazują teraz zawsze te same liczby.
+Do tego drobne poprawki.

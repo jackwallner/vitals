@@ -1,5 +1,3 @@
-Nauwkeurige dagtotalen
+Duidelijker upgradescherm: elk abonnement toont nu de prijs per maand en het jaarabonnement vermeldt hoeveel je bespaart.
 
-• Opgelost dat het caloriestotaal van vandaag op sommige apparaten veel te hoog werd weergegeven. Rustverbranding die nog loopt telt nu alleen mee voor het deel van de dag dat echt voorbij is.
-• De Onderhoud-widget komt nu overeen met het getal in de app. Afgeronde dagen worden om middernacht vastgezet, zodat je widgets kloppen ook als je de app niet opent.
-• Vandaag, Geschiedenis en de widgets tonen nu altijd dezelfde getallen.
+Daarnaast kleine verbeteringen.

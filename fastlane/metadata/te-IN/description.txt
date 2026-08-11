@@ -48,7 +48,7 @@ Privacy-first design
 Total Calories medical device కాదు; diagnose, treat, prevent కోసం intended కాదు. Medical advice కు healthcare professional consult.
 
 Subscription Details
-Vitals+ auto-renewing (Monthly $1.99 / Yearly $14.99, 7-day free trial) లేదా Lifetime ($29.99). Payment Apple ID confirm చేసినప్పుడు charge. 24 hours ముందు cancel చేయకపోతే auto-renew. Settings → Apple ID → Subscriptions.
+Vitals+ auto-renewing (Monthly $6.99 / Yearly $29.99, 7-day free trial) లేదా Lifetime ($59.99). Payment Apple ID confirm చేసినప్పుడు charge. 24 hours ముందు cancel చేయకపోతే auto-renew. Settings → Apple ID → Subscriptions.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

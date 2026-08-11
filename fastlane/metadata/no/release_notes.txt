@@ -1,5 +1,3 @@
-Nøyaktige dagssummer
+Tydeligere oppgraderingsside: hver plan viser nå hva den tilsvarer per måned, og årsplanen viser hvor mye du sparer.
 
-• Rettet at dagens kalorisum ble vist altfor høyt på enkelte enheter. Hvileforbrenning som fortsatt pågår telles nå bare for den delen av dagen som faktisk har gått.
-• Vedlikehold-modulen stemmer nå med tallet inne i appen. Avsluttede dager gjøres ferdige ved midnatt, så modulene holder følge selv om du ikke åpner appen.
-• I dag, Historikk og modulene viser nå alltid de samme tallene.
+I tillegg små rettelser.

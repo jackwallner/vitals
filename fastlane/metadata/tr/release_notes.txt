@@ -1,5 +1,3 @@
-Doğru günlük toplamlar
+Daha anlaşılır yükseltme ekranı: her plan artık aylık tutarını gösteriyor, yıllık plan ise ne kadar kazandırdığını belirtiyor.
 
-• Bazı cihazlarda bugünün kalori toplamının çok yüksek görünmesi düzeltildi. Hâlâ devam eden dinlenme enerjisi artık günün yalnızca gerçekten geçen kısmı için sayılıyor.
-• Bazal widget'ı artık uygulamadaki değerle aynı. Tamamlanan günler gece yarısı kesinleşiyor, böylece uygulamayı açmasanız da widget'larınız güncel kalıyor.
-• Bugün, Geçmiş ve widget'lar artık her zaman aynı sayıları gösteriyor.
+Ayrıca küçük düzeltmeler.

@@ -48,7 +48,7 @@ DATENSCHUTZ VON ANFANG AN
 Total Calories ist kein Medizinprodukt und nicht dazu bestimmt, Krankheiten zu diagnostizieren, zu behandeln oder zu verhindern. Hole dir immer medizinischen Rat bei Fachpersonal.
 
 Abonnementdetails
-Vitals+ ist als automatisch verlängerndes Abonnement verfügbar (Monatlich 1,99 $ / Jährlich 14,99 $ mit 7‑tägigem Gratiszeitraum) oder als einmaliger Lifetime-Kauf (29,99 $). Die Zahlung wird bei Bestätigung deinem Apple‑ID‑Konto belastet. Abos verlängern sich automatisch, sofern sie nicht mindestens 24 Stunden vor Ende des Zeitraums gekündigt werden. Verwalte oder kündige jederzeit unter „Einstellungen → Apple ID → Abonnements“.
+Vitals+ ist als automatisch verlängerndes Abonnement verfügbar (Monatlich 6,99 $ / Jährlich 29,99 $ mit 7‑tägigem Gratiszeitraum) oder als einmaliger Lifetime-Kauf (59,99 $). Die Zahlung wird bei Bestätigung deinem Apple‑ID‑Konto belastet. Abos verlängern sich automatisch, sofern sie nicht mindestens 24 Stunden vor Ende des Zeitraums gekündigt werden. Verwalte oder kündige jederzeit unter „Einstellungen → Apple ID → Abonnements“.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

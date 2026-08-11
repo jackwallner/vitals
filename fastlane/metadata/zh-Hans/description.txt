@@ -48,7 +48,7 @@ Vitals+（可选）
 Total Calories 不是医疗设备，也不用于诊断、治疗或预防任何医疗状况。如需医疗建议，请始终咨询专业医护人员。
 
 订阅详情
-Vitals+ 提供自动续订订阅（每月 US$1.99 / 每年 US$14.99，含 7 天免费试用），也可一次性购买终身版（US$29.99）。费用将在你通过 Apple ID 确认后收取。订阅会自动续期，除非在当前计费周期结束前至少 24 小时取消。你可随时在“设置 → Apple ID → 订阅”中管理或取消订阅。
+Vitals+ 提供自动续订订阅（每月 US$6.99 / 每年 US$29.99，含 7 天免费试用），也可一次性购买终身版（US$59.99）。费用将在你通过 Apple ID 确认后收取。订阅会自动续期，除非在当前计费周期结束前至少 24 小时取消。你可随时在“设置 → Apple ID → 订阅”中管理或取消订阅。
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

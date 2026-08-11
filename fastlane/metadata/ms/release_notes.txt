@@ -1,5 +1,3 @@
-Jumlah harian yang tepat
+Skrin naik taraf lebih jelas: setiap pelan kini menunjukkan kos sebulan, dan pelan tahunan menyatakan jumlah penjimatan.
 
-• Membaiki jumlah kalori hari ini yang dipaparkan jauh lebih tinggi pada sesetengah peranti. Tenaga rehat yang masih berjalan kini dikira hanya untuk bahagian hari yang benar-benar telah berlalu.
-• Widget Penyelenggaraan kini sepadan dengan angka di dalam apl. Hari yang telah tamat dimuktamadkan pada tengah malam, jadi widget anda kekal selari walaupun anda tidak membuka apl.
-• Hari Ini, Sejarah dan widget kini sentiasa memaparkan angka yang sama.
+Selain itu, pembetulan kecil.

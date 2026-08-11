@@ -1,5 +1,3 @@
-Natančni dnevni seštevki
+Preglednejši zaslon za nadgradnjo: vsak paket zdaj prikaže mesečni znesek, letni paket pa navede, koliko prihranite.
 
-• Odpravljeno prikazovanje veliko previsokega današnjega seštevka kalorij na nekaterih napravah. Energija v mirovanju, ki še poteka, se zdaj šteje le za del dneva, ki je resnično minil.
-• Pripomoček Vzdrževanje se zdaj ujema s številko v aplikaciji. Končani dnevi se zaključijo opolnoči, zato pripomočki ostanejo usklajeni, tudi če aplikacije ne odprete.
-• Danes, Zgodovina in pripomočki zdaj vedno prikazujejo enake številke.
+Poleg tega manjši popravki.

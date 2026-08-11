@@ -1,5 +1,3 @@
-Tarkat päivittäiset summat
+Selkeämpi tilausnäkymä: jokainen tilaus näyttää nyt kuukausihinnan ja vuositilaus kertoo, paljonko säästät.
 
-• Korjattu virhe, jonka vuoksi päivän kalorisumma näkyi joissakin laitteissa aivan liian suurena. Yhä käynnissä oleva lepoenergia lasketaan nyt vain siltä osalta päivää, joka on todella kulunut.
-• Perusaineenvaihdunnan widget vastaa nyt sovelluksen sisäistä lukua. Päättyneet päivät viimeistellään keskiyöllä, joten widgetit pysyvät ajan tasalla, vaikka et avaisi sovellusta.
-• Tänään, Historia ja widgetit näyttävät nyt aina samat luvut.
+Lisäksi pieniä korjauksia.

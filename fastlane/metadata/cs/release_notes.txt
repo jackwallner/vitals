@@ -1,5 +1,3 @@
-Přesné denní součty
+Přehlednější obrazovka předplatného: u každého tarifu je nyní měsíční ekvivalent a roční tarif uvádí, kolik ušetříte.
 
-• Opraveno zobrazování dnešního součtu kalorií, který byl na některých zařízeních výrazně vyšší. Klidová energie, která stále probíhá, se nyní počítá jen za část dne, která už skutečně uplynula.
-• Widget Udržovací příjem se nyní shoduje s hodnotou v aplikaci. Dokončené dny se uzavřou o půlnoci, takže widgety zůstanou aktuální, i když aplikaci neotevřete.
-• Dnes, Historie i widgety nyní vždy uvádějí stejná čísla.
+Plus drobné opravy.

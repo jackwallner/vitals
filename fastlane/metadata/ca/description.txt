@@ -48,7 +48,7 @@ PRIVACITAT PER DISSENY
 Total Calories no és un dispositiu mèdic i no està pensada per diagnosticar, tractar o prevenir cap malaltia. Consulta sempre un professional sanitari per obtenir assessorament mèdic.
 
 Detalls de la subscripció
-Vitals+ està disponible com a subscripció de renovació automàtica (mensual per 1,99 $ / anual per 14,99 $ amb 7 dies de prova gratuïta) o com a compra única de per vida (29,99 $). El pagament es carrega al teu ID d’Apple en confirmar. Les subscripcions es renoven automàticament tret que les cancel·lis com a mínim 24 hores abans que acabi el període. Pots gestionar o cancel·lar la subscripció en qualsevol moment a Configuració → ID d’Apple → Subscripcions.
+Vitals+ està disponible com a subscripció de renovació automàtica (mensual per 6,99 $ / anual per 29,99 $ amb 7 dies de prova gratuïta) o com a compra única de per vida (59,99 $). El pagament es carrega al teu ID d’Apple en confirmar. Les subscripcions es renoven automàticament tret que les cancel·lis com a mínim 24 hores abans que acabi el període. Pots gestionar o cancel·lar la subscripció en qualsevol moment a Configuració → ID d’Apple → Subscripcions.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

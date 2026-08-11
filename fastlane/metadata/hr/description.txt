@@ -48,7 +48,7 @@ PRIVATNOST U SREDIŠTU DIZAJNA
 Total Calories nije medicinski uređaj i nije namijenjen dijagnosticiranju, liječenju ili sprječavanju bilo kakvog medicinskog stanja. Za medicinski savjet uvijek se obratite zdravstvenom stručnjaku.
 
 Pojedinosti pretplate
-Vitals+ je dostupan kao pretplata s automatskom obnovom (mjesečno 1,99 USD / godišnje 14,99 USD sa 7-dnevnim besplatnim probnim razdobljem) ili jednokratna Lifetime kupnja (29,99 USD). Plaćanje se naplaćuje na vaš Apple ID pri potvrdi. Pretplate se automatski obnavljaju osim ako se ne otkažu najmanje 24 sata prije isteka razdoblja. Upravljaajte ili otkažite bilo kada u Postavke → Apple ID → Subscriptions.
+Vitals+ je dostupan kao pretplata s automatskom obnovom (mjesečno 6,99 USD / godišnje 29,99 USD sa 7-dnevnim besplatnim probnim razdobljem) ili jednokratna Lifetime kupnja (59,99 USD). Plaćanje se naplaćuje na vaš Apple ID pri potvrdi. Pretplate se automatski obnavljaju osim ako se ne otkažu najmanje 24 sata prije isteka razdoblja. Upravljaajte ili otkažite bilo kada u Postavke → Apple ID → Subscriptions.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

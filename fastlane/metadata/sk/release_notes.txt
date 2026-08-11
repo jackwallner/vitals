@@ -1,5 +1,3 @@
-Presné denné súčty
+Prehľadnejšia obrazovka predplatného: pri každom pláne je teraz mesačná suma a ročný plán uvádza, koľko ušetríte.
 
-• Opravené zobrazovanie dnešného súčtu kalórií, ktorý bol na niektorých zariadeniach výrazne vyšší. Pokojová energia, ktorá stále prebieha, sa teraz počíta len za časť dňa, ktorá skutočne uplynula.
-• Widget Udržiavací príjem sa teraz zhoduje s hodnotou v aplikácii. Dokončené dni sa uzatvárajú o polnoci, takže widgety zostanú aktuálne, aj keď aplikáciu neotvoríte.
-• Dnes, História aj widgety teraz vždy uvádzajú rovnaké čísla.
+Plus drobné opravy.
