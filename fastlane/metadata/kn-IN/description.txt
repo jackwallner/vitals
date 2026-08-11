@@ -48,7 +48,7 @@ Vitals+ (ಐಚ್ಛಿಕ)
 Total Calories ವೈದ್ಯಕೀಯ device ಅಲ್ಲ ಮತ್ತು ಯಾವುದೇ ವೈದ್ಯಕೀಯ ಸ್ಥಿತಿಯ diagnose, treat ಅಥವಾ prevent ಮಾಡಲು intended ಅಲ್ಲ. ವೈದ್ಯಕೀಯ advice ಗಾಗಿ ಯಾವಾಗಲೂ qualified healthcare professional ಸಂಪರ್ಕಿಸಿ.
 
 ಚಂದಾ ವಿವರಗಳು
-Vitals+ auto‑renewing subscription ಆಗಿ ಲಭ್ಯ (Monthly $6.99 / Yearly $29.99, 7‑ದಿನದ ಉಚಿತ trial ಜೊತೆ) ಅಥವಾ one‑time Lifetime purchase ($59.99). Payment confirmation ನಲ್ಲಿ Apple ID ಗೆ charge ಆಗುತ್ತದೆ. Period ಮುಗಿಯುವ 24 ಗಂಟೆಗಳ ಮೊದಲು cancel ಮಾಡದ ಹೊರತು subscriptions auto‑renew ಆಗುತ್ತವೆ. Settings → Apple ID → Subscriptions ನಲ್ಲಿ manage ಅಥವಾ cancel.
+Vitals+ ಸ್ವಯಂ-ನವೀಕರಣಗೊಳ್ಳುವ ಚಂದಾದಾರಿಕೆಯಾಗಿ (ಮಾಸಿಕ ಅಥವಾ ವಾರ್ಷಿಕ, ಎರಡರಲ್ಲೂ 7 ದಿನಗಳ ಉಚಿತ ಟ್ರಯಲ್) ಅಥವಾ ಒಂದೇ ಬಾರಿಯ Lifetime ಖರೀದಿಯಾಗಿ ಲಭ್ಯವಿದೆ. ಖರೀದಿಗೂ ಮೊದಲು ಬೆಲೆಗಳು ಆ್ಯಪ್‌ನಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ ಮತ್ತು ಪ್ರದೇಶಕ್ಕೆ ತಕ್ಕಂತೆ ಬದಲಾಗುತ್ತವೆ. ದೃಢೀಕರಿಸಿದಾಗ ನಿಮ್ಮ Apple ID ಯಿಂದ ಪಾವತಿ ಪಡೆಯಲಾಗುತ್ತದೆ. ಪ್ರಸ್ತುತ ಅವಧಿ ಮುಗಿಯುವ ಕನಿಷ್ಠ 24 ಗಂಟೆ ಮೊದಲು ರದ್ದುಗೊಳಿಸದಿದ್ದರೆ ಚಂದಾದಾರಿಕೆ ತಾನಾಗಿಯೇ ನವೀಕರಣಗೊಳ್ಳುತ್ತದೆ. ಯಾವಾಗ ಬೇಕಾದರೂ Settings → Apple ID → Subscriptions ನಲ್ಲಿ ನಿರ್ವಹಿಸಿ ಅಥವಾ ರದ್ದುಗೊಳಿಸಿ.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

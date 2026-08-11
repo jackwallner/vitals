@@ -48,7 +48,7 @@ GİZLİLİK ODAKLI TASARIM
 Total Calories bir tıbbi cihaz değildir ve hiçbir tıbbi durumu teşhis etme, tedavi etme veya önleme amacı taşımaz. Tıbbi tavsiye için her zaman bir sağlık uzmanına danışın.
 
 Abonelik Ayrıntıları
-Vitals+ otomatik yenilenen abonelik olarak sunulur (Aylık 6,99 $ / Yıllık 29,99 $; 7 günlük ücretsiz deneme ile) veya tek seferlik Ömür Boyu satın alma (59,99 $). Ödeme, Apple Kimliğiniz üzerinden onay anında tahsil edilir. Abonelikler, dönem bitiminden en az 24 saat önce iptal edilmediği sürece otomatik yenilenir. Dilediğiniz zaman Ayarlar → Apple Kimliği → Abonelikler bölümünden yönetebilir veya iptal edebilirsiniz.
+Vitals+, otomatik yenilenen abonelik (Aylık veya Yıllık, ikisinde de 7 günlük ücretsiz deneme) ya da tek seferlik Lifetime satın alma olarak sunulur. Fiyatlar satın almadan önce uygulamada gösterilir ve bölgeye göre değişir. Ödeme, onay sırasında Apple Kimliğinizden tahsil edilir. Geçerli dönemin bitiminden en az 24 saat önce iptal edilmediği sürece abonelikler otomatik olarak yenilenir. Ayarlar → Apple Kimliği → Abonelikler bölümünden istediğiniz zaman yönetin veya iptal edin.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
