@@ -19,10 +19,10 @@ struct PaywallScreenshotHarness: View {
                         offerLabel: store.canPitchFreeTrial
                             ? (trialPackage?.vitalsIntroOfferLabel ?? "7-day free trial")
                             : nil,
-                        priceLabel: trialPackage?.vitalsPriceLabel ?? "$29.99 / year",
+                        priceLabel: trialPackage?.vitalsPriceLabel ?? "$6.99 / month",
                         ctaTitle: store.onboardingTrialCTALabel,
-                        disclosureText: store.yearlySheetDisclosureText
-                            ?? "\(trialPackage?.vitalsPriceLabel ?? "$29.99 / year"). Auto-renews unless cancelled 24h before the period ends.",
+                        disclosureText: store.onboardingTrialDisclosureText
+                            ?? "\(trialPackage?.vitalsPriceLabel ?? "$6.99 / month"). Auto-renews unless cancelled 24h before the period ends.",
                         directPurchase: true,
                         isPurchasing: false,
                         errorMessage: nil,
@@ -41,7 +41,7 @@ struct PaywallScreenshotHarness: View {
     }
 
     private var trialPackage: Package? {
-        store.products.first { $0.vitalsPackageKind == .yearly } ?? store.products.first
+        store.products.first { $0.vitalsPackageKind == .monthly } ?? store.products.first
     }
 
     private func trialBackdrop<Content: View>(@ViewBuilder content: () -> Content) -> some View {
