@@ -229,8 +229,8 @@ struct PaywallView: View {
         guard let yearly = store.products.first(where: { $0.vitalsPackageKind == .yearly }),
               let monthly = store.products.first(where: { $0.vitalsPackageKind == .monthly })
         else { return nil }
-        let annualized = (monthly.storeProduct.price as NSDecimalNumber).doubleValue * 12
-        let yearlyPrice = (yearly.storeProduct.price as NSDecimalNumber).doubleValue
+        let annualized = (monthly.vitalsPriceAmount as NSDecimalNumber).doubleValue * 12
+        let yearlyPrice = (yearly.vitalsPriceAmount as NSDecimalNumber).doubleValue
         guard annualized > 0, yearlyPrice > 0 else { return nil }
         let pct = Int(((annualized - yearlyPrice) / annualized * 100).rounded())
         return pct > 0 ? pct : nil

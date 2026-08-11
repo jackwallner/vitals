@@ -1841,7 +1841,7 @@ private struct OnboardingSheet: View {
     @State private var hasRequestedHealthAccess = false
     @State private var isStartingTrial = false
     @State private var trialError: String?
-    /// Emergency fallback: presented only when the yearly package failed to load,
+    /// Emergency fallback: presented only when the monthly package failed to load,
     /// so the primary CTA is never a dead disabled button.
     @State private var showPaywallFallback = false
 
@@ -2136,7 +2136,7 @@ private struct OnboardingSheet: View {
                     .foregroundStyle(Theme.caloriesPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 24)
-            } else if let disclosure = store.yearlyCTADisclosureText {
+            } else if let disclosure = store.onboardingTrialDisclosureText {
                 Text(disclosure)
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
@@ -2220,11 +2220,11 @@ private struct OnboardingSheet: View {
         }
     }
 
-    /// One-tap conversion: buy the yearly plan directly (trial when eligible) so
+    /// One-tap conversion: buy the monthly plan directly (trial when eligible) so
     /// Apple's confirm sheet is the only interstitial. Falls back to the full
     /// PaywallView only when products failed to load, never a dead button.
     private func startTrial() {
-        guard let yearly = store.yearlyPackage else {
+        guard let monthly = store.monthlyPackage else {
             showPaywallFallback = true
             return
         }
@@ -2234,16 +2234,16 @@ private struct OnboardingSheet: View {
             defer { isStartingTrial = false }
             await store.refreshIntroEligibility()
             do {
-                // Same yearly SKU either way — StoreKit grants the trial only when eligible.
-                switch try await store.purchase(yearly) {
+                // StoreKit grants the trial only when this customer is eligible.
+                switch try await store.purchase(monthly) {
                 case .purchased, .pending:
                     finishOnboarding()
                 case .cancelled:
-                    trialError = store.purchaseCancelledMessage(for: yearly)
+                    trialError = store.purchaseCancelledMessage(for: monthly)
                 }
             } catch {
                 await store.refreshIntroEligibility()
-                trialError = store.lastError ?? store.purchaseFailedMessage(for: yearly)
+                trialError = store.lastError ?? store.purchaseFailedMessage(for: monthly)
             }
         }
     }

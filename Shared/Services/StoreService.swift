@@ -1,7 +1,8 @@
-import Foundation
 import Combine
+import Foundation
 import os
 import WidgetKit
+
 @preconcurrency import RevenueCat
 
 /// Vitals+ subscription product identifiers. Must match App Store Connect and `Vitals.storekit`.
@@ -10,10 +11,19 @@ enum VitalsProduct {
     static let yearly = "yearly"
     static let monthly = "monthly"
     static let all: [String] = [lifetime, yearly, monthly]
+    static let identifiers = [
+        "com.jackwallner.vitals.plus.lifetime",
+        "com.jackwallner.vitals.yearly",
+        "com.jackwallner.vitals.monthly",
+    ]
 }
 
 enum RevenueCatConfig {
+    #if DEBUG
+    static let apiKey = "test_vTWUOqDAlDjyOpIAeDZiFCsmqFQ"
+    #else
     static let apiKey = "appl_uiELZiyBHXCKzJyjqwaCbVkZRXB"
+    #endif
     static let proEntitlement = "Vitals+"
     static let fallbackEntitlement = "pro"
 }
@@ -56,6 +66,14 @@ extension RevenueCatPackageKind {
 }
 
 extension Package {
+    var vitalsPriceAmount: Decimal {
+        return storeProduct.price
+    }
+
+    var vitalsLocalizedPriceString: String {
+        return storeProduct.localizedPriceString
+    }
+
     var vitalsPackageKind: RevenueCatPackageKind {
         RevenueCatPackageKind(package: self)
     }
@@ -74,7 +92,7 @@ extension Package {
     }
 
     var vitalsPriceLabel: String {
-        guard let period = storeProduct.subscriptionPeriod else { return storeProduct.localizedPriceString }
+        guard let period = storeProduct.subscriptionPeriod else { return vitalsLocalizedPriceString }
         let unit: String
         switch period.unit {
         case .day: unit = period.value == 1 ? "day" : "days"
@@ -84,9 +102,9 @@ extension Package {
         @unknown default: unit = ""
         }
         if period.value == 1 {
-            return "\(storeProduct.localizedPriceString) / \(unit)"
+            return "\(vitalsLocalizedPriceString) / \(unit)"
         } else {
-            return "\(storeProduct.localizedPriceString) / \(period.value) \(unit)"
+            return "\(vitalsLocalizedPriceString) / \(period.value) \(unit)"
         }
     }
 
@@ -95,7 +113,7 @@ extension Package {
     /// it on the annual card so the headline yearly figure feels small.
     var vitalsPricePerWeekLabel: String? {
         guard storeProduct.subscriptionPeriod != nil else { return nil }
-        return storeProduct.localizedPricePerWeek
+        return formattedEquivalent(divisor: vitalsPackageKind == .yearly ? 52 : 4.345)
     }
 
     /// Per-month equivalent of the recurring price, e.g. "$1.25". Powers the
@@ -103,12 +121,25 @@ extension Package {
     /// trial sheet so the annual figure feels small. nil for non-subscriptions.
     var vitalsPricePerMonthLabel: String? {
         guard storeProduct.subscriptionPeriod != nil else { return nil }
-        return storeProduct.localizedPricePerMonth
+        return formattedEquivalent(divisor: vitalsPackageKind == .yearly ? 12 : 1)
+    }
+
+    private func formattedEquivalent(divisor: Decimal) -> String? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = storeProduct.priceFormatter?.locale ?? Locale(identifier: "en_US")
+        return formatter.string(from: (vitalsPriceAmount / divisor) as NSDecimalNumber)
     }
 
     /// Number of free-trial days this package grants (P1W → 7), or nil if it
     /// carries no free trial. Used to label the trial timeline steps.
     var vitalsTrialDayCount: Int? {
+        #if DEBUG && targetEnvironment(simulator)
+        if RevenueCatConfig.apiKey.hasPrefix("test_"),
+           vitalsPackageKind == .monthly || vitalsPackageKind == .yearly {
+            return 7
+        }
+        #endif
         guard let intro = storeProduct.introductoryDiscount, intro.paymentMode == .freeTrial else {
             return nil
         }
@@ -123,6 +154,12 @@ extension Package {
     }
 
     var vitalsIntroOfferLabel: String? {
+        #if DEBUG && targetEnvironment(simulator)
+        if RevenueCatConfig.apiKey.hasPrefix("test_"),
+           vitalsPackageKind == .monthly || vitalsPackageKind == .yearly {
+            return "7-day free trial"
+        }
+        #endif
         guard let intro = storeProduct.introductoryDiscount, intro.paymentMode == .freeTrial else {
             return nil
         }
@@ -154,11 +191,19 @@ extension CustomerInfo {
 
 extension Offering {
     var vitalsSortedPackages: [Package] {
-        availablePackages.sorted {
+        func rank(_ kind: RevenueCatPackageKind) -> Int {
+            switch kind {
+            case .yearly: return 0
+            case .monthly: return 1
+            case .lifetime: return 2
+            case .other: return 3
+            }
+        }
+        return availablePackages.sorted {
             let lhsKind = $0.vitalsPackageKind
             let rhsKind = $1.vitalsPackageKind
-            if lhsKind.rawValue != rhsKind.rawValue {
-                return lhsKind.rawValue < rhsKind.rawValue
+            if rank(lhsKind) != rank(rhsKind) {
+                return rank(lhsKind) < rank(rhsKind)
             }
             return $0.storeProduct.productIdentifier < $1.storeProduct.productIdentifier
         }
@@ -233,6 +278,7 @@ final class StoreService: NSObject, ObservableObject {
         configureIfNeeded()
         isLoadingProducts = true
         defer { isLoadingProducts = false }
+        guard isConfigured else { return }
         do {
             let offerings = try await Purchases.shared.offerings()
             let offering = offerings.vitalsPaywallOffering
@@ -251,6 +297,15 @@ final class StoreService: NSObject, ObservableObject {
     /// resolved with an empty map so callers hide trial framing rather than
     /// over-promising.
     func refreshIntroEligibility() async {
+        #if DEBUG && targetEnvironment(simulator)
+        if RevenueCatConfig.apiKey.hasPrefix("test_") {
+            introEligibility = Dictionary(uniqueKeysWithValues: products.compactMap { package in
+                package.vitalsIntroOfferLabel == nil ? nil : (package.storeProduct.productIdentifier, true)
+            })
+            introEligibilityResolved = true
+            return
+        }
+        #endif
         #if DEBUG
         if ScreenshotConfig.forceIntroIneligible {
             let ids = products
@@ -305,13 +360,29 @@ final class StoreService: NSObject, ObservableObject {
         products.first { $0.vitalsPackageKind == .yearly }
     }
 
-    /// CTA label for direct yearly purchase (onboarding, trial sheet, etc.).
+    /// The lower-commitment onboarding target. The full paywall still leads
+    /// with yearly and its quantified savings.
+    var monthlyPackage: Package? {
+        products.first { $0.vitalsPackageKind == .monthly }
+    }
+
+    /// CTA label for the direct monthly onboarding purchase.
     var onboardingTrialCTALabel: String {
-        guard let yearly = yearlyPackage else { return "Continue with Vitals+" }
+        guard let monthly = monthlyPackage else { return "Continue with Vitals+" }
         return VitalsConversionCopy.ctaLabel(
-            trialLabel: yearly.vitalsIntroOfferLabel,
-            priceLabel: yearly.vitalsPriceLabel,
-            eligibleForTrial: isEligibleForIntroOffer(yearly)
+            trialLabel: monthly.vitalsIntroOfferLabel,
+            priceLabel: monthly.vitalsPriceLabel,
+            eligibleForTrial: isEligibleForIntroOffer(monthly)
+        )
+    }
+
+    /// Full Apple 3.1.2 disclosure for the monthly onboarding purchase.
+    var onboardingTrialDisclosureText: String? {
+        guard let monthly = monthlyPackage else { return nil }
+        return VitalsConversionCopy.disclosure(
+            trialLabel: monthly.vitalsIntroOfferLabel,
+            priceLabel: monthly.vitalsPriceLabel,
+            eligibleForTrial: isEligibleForIntroOffer(monthly)
         )
     }
 
@@ -363,6 +434,7 @@ final class StoreService: NSObject, ObservableObject {
         #if DEBUG
         if ScreenshotConfig.isEnabled { return }
         #endif
+        guard isConfigured else { return }
         if oncePerSession {
             guard !paywallImpressionsThisSession.contains(id) else { return }
             paywallImpressionsThisSession.insert(id)
@@ -376,6 +448,7 @@ final class StoreService: NSObject, ObservableObject {
     @discardableResult
     func purchase(_ product: Package) async throws -> PurchaseState {
         configureIfNeeded()
+        guard isConfigured else { return .pending }
         purchaseInFlight = true
         defer { purchaseInFlight = false }
 
@@ -400,6 +473,7 @@ final class StoreService: NSObject, ObservableObject {
             return
         }
         #endif
+        guard isConfigured else { return }
         do {
             let info = try await Purchases.shared.customerInfo(fetchPolicy: fetchPolicy)
             apply(customerInfo: info)
@@ -413,6 +487,7 @@ final class StoreService: NSObject, ObservableObject {
     func restorePurchases() async {
         configureIfNeeded()
         lastError = nil
+        guard isConfigured else { return }
         do {
             let info = try await Purchases.shared.restorePurchases()
             apply(customerInfo: info)
@@ -440,17 +515,14 @@ final class StoreService: NSObject, ObservableObject {
     private func configureIfNeeded() {
         guard !isConfigured else { return }
         #if targetEnvironment(simulator)
-        // Agent/simulator runs must never create customers in the production
-        // RevenueCat project. Use local UI state and StoreKit Testing instead.
-        return
-        #else
+        guard RevenueCatConfig.apiKey.hasPrefix("test_") else { return }
+        #endif
         #if DEBUG
         Purchases.logLevel = .debug
         #endif
         Purchases.configure(withAPIKey: RevenueCatConfig.apiKey)
         Purchases.shared.delegate = self
         isConfigured = true
-        #endif
     }
 }
 
