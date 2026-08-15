@@ -1862,6 +1862,9 @@ private struct OnboardingSheet: View {
                     trialPage
                         .padding(.horizontal, 24)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .onAppear {
+                            store.trackPaywallImpression(id: "vitals_onboarding_trial", oncePerSession: true)
+                        }
                 } else {
                     ScrollView {
                         Group {
@@ -1893,6 +1896,7 @@ private struct OnboardingSheet: View {
         .sheet(isPresented: $showPaywallFallback) {
             PaywallView()
                 .environmentObject(store)
+                .task { store.trackPaywallImpression(id: "vitals_onboarding_fallback") }
         }
     }
 
