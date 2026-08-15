@@ -394,7 +394,7 @@ struct MainTabView: View {
     /// those features stay off until the user chooses them.
     @State private var pendingFeatureEnable: PlusFeature?
 
-    private enum TrialOfferSource {
+    private enum TrialOfferSource: String {
         case launch
         case historyLoad
         case intent
@@ -956,6 +956,10 @@ struct MainTabView: View {
             .presentationDetents([.fraction(0.68), .large], selection: $trialOfferDetent)
             .presentationDragIndicator(.visible)
             .interactiveDismissDisabled(trialPurchaseInFlight)
+            // The sheet that actually sells the trial. It was the one surface
+            // never reported, which is why encounters and trials came out
+            // nearly equal and the encounter rate read as 13%.
+            .task { store.trackPaywallImpression(id: "vitals_trial_offer_\(trialOfferSource.rawValue)") }
         }
         .sheet(isPresented: $showTrialPaywall, onDismiss: {
             trialOfferFocus = nil
