@@ -558,6 +558,17 @@ struct MainTabView: View {
     /// fires back-to-back with the launch offer in the same session.
     /// Passive review ask after a positive moment (e.g. daily goal). Waits for the
     /// on-dashboard celebration toast to clear; never fires on cold launch.
+    /// Two positive moments that don't depend on clearing a goal: a week of
+    /// actually using the app, and a subscriber who has kept Vitals+ for a month.
+    /// Evaluated once real numbers are on screen so the ask never lands on an
+    /// empty dashboard. Each fires at most once ever.
+    private func evaluateHabitMilestones() {
+        let habit = ReviewPromptTracker.recordTrackedDay()
+        let subscriber = ReviewPromptTracker.recordProStatus(isPro: store.isPro)
+        guard habit || subscriber else { return }
+        scheduleReviewPromptAfterPositiveMoment()
+    }
+
     private func scheduleReviewPromptAfterPositiveMoment() {
         guard ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup),
               !reviewPromptShownThisSession,
@@ -849,6 +860,7 @@ struct MainTabView: View {
             // passive trial nudge is allowed to consider firing.
             dashboardShowedRealData = true
             if !maybeShowWhatsNew() { evaluateTrialOffer() }
+            evaluateHabitMilestones()
         }
         .onReceive(NotificationCenter.default.publisher(for: .vitalsHistoryDidFinishLoading)) { _ in
             evaluateHistoryTrialOffer()
