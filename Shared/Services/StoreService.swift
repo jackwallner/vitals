@@ -366,23 +366,29 @@ final class StoreService: NSObject, ObservableObject {
         products.first { $0.vitalsPackageKind == .monthly }
     }
 
-    /// CTA label for the direct monthly onboarding purchase.
+    /// The package the onboarding one-tap CTA buys. Yearly: Health & Fitness sells
+    /// 68% annual, the highest share of any category, and yearly renews at 86.4%
+    /// against monthly's 39.2%. Kept behind one accessor so the arm can be moved
+    /// to an offering-driven experiment without touching the views.
+    var onboardingTrialPackage: Package? { yearlyPackage }
+
+    /// CTA label for the direct onboarding purchase.
     var onboardingTrialCTALabel: String {
-        guard let monthly = monthlyPackage else { return "Continue with Vitals+" }
+        guard let package = onboardingTrialPackage else { return "Continue with Vitals+" }
         return VitalsConversionCopy.ctaLabel(
-            trialLabel: monthly.vitalsIntroOfferLabel,
-            priceLabel: monthly.vitalsPriceLabel,
-            eligibleForTrial: isEligibleForIntroOffer(monthly)
+            trialLabel: package.vitalsIntroOfferLabel,
+            priceLabel: package.vitalsPriceLabel,
+            eligibleForTrial: isEligibleForIntroOffer(package)
         )
     }
 
-    /// Full Apple 3.1.2 disclosure for the monthly onboarding purchase.
+    /// Full Apple 3.1.2 disclosure for the onboarding purchase.
     var onboardingTrialDisclosureText: String? {
-        guard let monthly = monthlyPackage else { return nil }
+        guard let package = onboardingTrialPackage else { return nil }
         return VitalsConversionCopy.disclosure(
-            trialLabel: monthly.vitalsIntroOfferLabel,
-            priceLabel: monthly.vitalsPriceLabel,
-            eligibleForTrial: isEligibleForIntroOffer(monthly)
+            trialLabel: package.vitalsIntroOfferLabel,
+            priceLabel: package.vitalsPriceLabel,
+            eligibleForTrial: isEligibleForIntroOffer(package)
         )
     }
 

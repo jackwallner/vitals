@@ -1841,7 +1841,7 @@ private struct OnboardingSheet: View {
     @State private var hasRequestedHealthAccess = false
     @State private var isStartingTrial = false
     @State private var trialError: String?
-    /// Emergency fallback: presented only when the monthly package failed to load,
+    /// Emergency fallback: presented only when the onboarding package failed to load,
     /// so the primary CTA is never a dead disabled button.
     @State private var showPaywallFallback = false
 
@@ -2224,11 +2224,11 @@ private struct OnboardingSheet: View {
         }
     }
 
-    /// One-tap conversion: buy the monthly plan directly (trial when eligible) so
-    /// Apple's confirm sheet is the only interstitial. Falls back to the full
+    /// One-tap conversion: buy the onboarding plan directly (trial when eligible)
+    /// so Apple's confirm sheet is the only interstitial. Falls back to the full
     /// PaywallView only when products failed to load, never a dead button.
     private func startTrial() {
-        guard let monthly = store.monthlyPackage else {
+        guard let package = store.onboardingTrialPackage else {
             showPaywallFallback = true
             return
         }
@@ -2239,15 +2239,15 @@ private struct OnboardingSheet: View {
             await store.refreshIntroEligibility()
             do {
                 // StoreKit grants the trial only when this customer is eligible.
-                switch try await store.purchase(monthly) {
+                switch try await store.purchase(package) {
                 case .purchased, .pending:
                     finishOnboarding()
                 case .cancelled:
-                    trialError = store.purchaseCancelledMessage(for: monthly)
+                    trialError = store.purchaseCancelledMessage(for: package)
                 }
             } catch {
                 await store.refreshIntroEligibility()
-                trialError = store.lastError ?? store.purchaseFailedMessage(for: monthly)
+                trialError = store.lastError ?? store.purchaseFailedMessage(for: package)
             }
         }
     }

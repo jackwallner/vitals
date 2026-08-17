@@ -1,3 +1,5 @@
-Clearer upgrade screen: every plan now shows what it comes to per month, and the yearly plan states how much it saves.
+Your BMI, free, from the height and weight already in Apple Health — or enter them by hand. Body fat and your TDEE/BMR reference figures are in Vitals+.
+
+Clearer upgrade screen: every plan shows what it comes to per month, and the yearly plan states how much it saves.
 
 Plus small fixes throughout.
