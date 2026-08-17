@@ -25,6 +25,11 @@ enum ReviewPromptTracker {
     private static let positiveMomentCountKey = "reviewPrompt.positiveMomentCount"
     private static let pendingPositiveMomentKey = "reviewPrompt.pendingPositiveMoment"
     private static let softDeferKey = "reviewPrompt.softDefer"
+    private static let trackedDayCountKey = "reviewPrompt.trackedDayCount"
+    private static let lastTrackedDayKey = "reviewPrompt.lastTrackedDay"
+    private static let habitMomentFiredKey = "reviewPrompt.habitMomentFired"
+    private static let proSinceKey = "reviewPrompt.proSince"
+    private static let subscriberMomentFiredKey = "reviewPrompt.subscriberMomentFired"
 
     /// Minimum cold starts before passive prompts are considered.
     static let minimumLaunchCount = 3
@@ -33,8 +38,17 @@ enum ReviewPromptTracker {
     /// Minimum *cumulative* positive moments (goal hits) before we surface the
     /// enjoyment funnel. Two good days is enough signal they like the app.
     static let minimumPositiveMoments = 2
-    /// Days before "Not now" can surface the enjoyment prompt again.
-    static let cooldownDays = 120
+    /// Distinct days the app has been opened before the habit itself counts as a
+    /// positive moment. A goal hit is the outcome; this is the behaviour, and it
+    /// catches everyone using the app happily without ever clearing a goal.
+    static let minimumTrackedDays = 7
+    /// Days a paying subscriber must have kept Vitals+ before that counts as a
+    /// positive moment. They paid, stayed, and never cancelled — the best-disposed
+    /// group the app has, and previously treated like a first-day stranger.
+    static let subscriberMomentDays = 30
+    /// Days before "Not now" can surface the enjoyment prompt again. At this app's
+    /// volume 120 days was effectively one ask per user, forever.
+    static let cooldownDays = 60
     /// Shorter cooldown after "Maybe later" on the review pitch — Apple's
     /// `requestReview()` often shows nothing, so a 120-day jail was burning asks.
     static let softDeferCooldownDays = 30
@@ -103,6 +117,46 @@ enum ReviewPromptTracker {
     static func recordPositiveMoment() {
         positiveMomentCount += 1
         hasPendingPositiveMoment = true
+    }
+
+    /// Distinct calendar days the app has been opened.
+    static var trackedDayCount: Int {
+        get { max(defaults.integer(forKey: trackedDayCountKey), 0) }
+        set { defaults.set(newValue, forKey: trackedDayCountKey) }
+    }
+
+    /// Records today against the tracked-day streak and reports whether this is
+    /// the launch that crossed `minimumTrackedDays`. Fires at most once ever.
+    static func recordTrackedDay(now: Date = .now) -> Bool {
+        let today = Calendar.current.startOfDay(for: now)
+        if let last = defaults.object(forKey: lastTrackedDayKey) as? Date,
+           Calendar.current.isDate(last, inSameDayAs: today) {
+            return false
+        }
+        defaults.set(today, forKey: lastTrackedDayKey)
+        trackedDayCount += 1
+        guard trackedDayCount >= minimumTrackedDays,
+              !defaults.bool(forKey: habitMomentFiredKey) else { return false }
+        defaults.set(true, forKey: habitMomentFiredKey)
+        recordPositiveMoment()
+        return true
+    }
+
+    /// Stamps when Vitals+ first turned on and reports whether the subscriber has
+    /// now held it for `subscriberMomentDays`. Fires at most once ever, and only
+    /// while they still have it — a lapsed subscriber is not a happy moment.
+    static func recordProStatus(isPro: Bool, now: Date = .now) -> Bool {
+        guard isPro else { return false }
+        guard let since = defaults.object(forKey: proSinceKey) as? Date else {
+            defaults.set(now, forKey: proSinceKey)
+            return false
+        }
+        let elapsed = now.timeIntervalSince(since)
+        guard elapsed >= TimeInterval(subscriberMomentDays) * 86_400,
+              !defaults.bool(forKey: subscriberMomentFiredKey) else { return false }
+        defaults.set(true, forKey: subscriberMomentFiredKey)
+        recordPositiveMoment()
+        return true
     }
 
     static func consumePendingPositiveMoment() {
