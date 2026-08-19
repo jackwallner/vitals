@@ -1489,35 +1489,50 @@ struct HistoryView: View {
             }
         case .macros:
             if let summary = macroSummary {
+                // A peak day is only an achievement for protein. Nobody is
+                // chasing their highest-fat day, and for someone counting carbs
+                // the biggest carb day is the opposite of a win — so the peak
+                // card belongs to protein alone, and is simply absent when
+                // protein isn't tracked (or hasn't been logged this period).
+                let bestProtein = goals.isMacroVisible(.protein) ? summary.bestDay(for: .protein) : nil
+                // Neutral, not `macrosBrand`: these span all three macros, and
+                // the brand blue is protein's colour everywhere else on screen.
+                let daysLogged = AverageCard(
+                    label: "Days Logged",
+                    value: summary.loggedDays.formatted(.number),
+                    color: Theme.textPrimary
+                )
+                let avgMacroCalories = Int(summary.average.calories.rounded()).formatted(.number)
+
                 VStack(spacing: 12) {
                     macroAverageCards
                     HStack(spacing: 12) {
-                        // Peak is for whichever macro the user leads with, so a
-                        // carb counter gets "Best Carbs", not a protein figure
-                        // they never asked to see.
-                        if let primary = goals.visibleMacros.first,
-                           let best = summary.bestDay(for: primary) {
+                        if let bestProtein {
                             PeakCard(
-                                label: "Best \(primary.label)",
-                                value: "\(Int(best.grams.rounded())) g",
-                                date: best.date,
-                                color: Theme.macroColor(primary)
+                                label: "Best Protein",
+                                value: "\(Int(bestProtein.grams.rounded())) g",
+                                date: bestProtein.date,
+                                color: Theme.proteinPrimary
+                            )
+                            daysLogged
+                        } else {
+                            // No peak card to pair with, so the calorie figure
+                            // moves up rather than leaving a half-empty row.
+                            daysLogged
+                            AverageCard(
+                                label: "Avg Macro Calories",
+                                value: avgMacroCalories,
+                                color: Theme.textPrimary
                             )
                         }
-                        // Neutral, not `macrosBrand`: these span all three
-                        // macros, and the brand blue is protein's colour
-                        // everywhere else on the screen.
-                        AverageCard(
-                            label: "Days Logged",
-                            value: summary.loggedDays.formatted(.number),
+                    }
+                    if bestProtein != nil {
+                        WideTotalCard(
+                            label: "Avg Macro Calories",
+                            value: avgMacroCalories,
                             color: Theme.textPrimary
                         )
                     }
-                    WideTotalCard(
-                        label: "Avg Macro Calories",
-                        value: Int(summary.average.calories.rounded()).formatted(.number),
-                        color: Theme.textPrimary
-                    )
                 }
             }
         }
