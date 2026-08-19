@@ -64,6 +64,34 @@ enum ScreenshotFixtures {
         }
     }
 
+    static func macrosToday() -> MacroTotals {
+        switch ScreenshotConfig.scene {
+        case .minimal:
+            return MacroTotals(protein: 118, carbs: 156, fat: 52)
+        default:
+            return MacroTotals(protein: 142, carbs: 186, fat: 61)
+        }
+    }
+
+    /// Plausible macro history for capture runs. Deterministic per day offset so
+    /// repeated captures produce identical charts.
+    static func macroHistory(days: Int, end: Date = .now) -> [(date: Date, macros: MacroTotals)] {
+        let calendar = Calendar.current
+        let start = calendar.startOfDay(for: end)
+        return (0..<max(days, 0)).reversed().map { offset in
+            let date = calendar.date(byAdding: .day, value: -offset, to: start) ?? start
+            let wobble = Double((offset * 37) % 11) - 5
+            return (
+                date: date,
+                macros: MacroTotals(
+                    protein: 140 + wobble * 3,
+                    carbs: 185 + wobble * 6,
+                    fat: 60 + wobble * 2
+                )
+            )
+        }
+    }
+
     static func pacing() -> PacingResult {
         switch ScreenshotConfig.scene {
         case .minimal:

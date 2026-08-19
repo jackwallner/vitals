@@ -24,6 +24,15 @@ final class HealthKitService: ObservableObject {
 
     private let dietaryReadType: HKObjectType = HKQuantityType(.dietaryEnergyConsumed)
 
+    /// Macronutrients, written to Health by the same food apps that write
+    /// dietary energy. HealthKit grants reads per type, so authorizing
+    /// `dietaryEnergyConsumed` says nothing about these; they must be asked for.
+    private let macroReadTypes: Set<HKObjectType> = [
+        HKQuantityType(.dietaryProtein),
+        HKQuantityType(.dietaryCarbohydrates),
+        HKQuantityType(.dietaryFatTotal),
+    ]
+
     /// Body Profile reads are requested separately (and only on explicit user
     /// action) so the core onboarding sheet keeps asking for just the three
     /// energy/step types. Mixing new read types into an existing request can
@@ -78,19 +87,43 @@ final class HealthKitService: ObservableObject {
         }
     }
 
-    /// Request authorization for dietary energy only. Calling this separately avoids a
+    /// Request authorization for the food types only. Calling this separately avoids a
     /// HealthKit quirk where mixing already-authorized types with new ones can silently
     /// suppress the permission sheet (especially when called shortly after a prior auth).
+    ///
+    /// Asks for dietary energy *and* the macros in one sheet: they come from the same
+    /// food app, and a user who grants food access once shouldn't be re-prompted when
+    /// they later turn Macros on. Users who already granted energy on an older build
+    /// get `requestMacroAuthorization` instead, which asks only for the new types.
     func requestDietaryAuthorization() async throws {
         if ScreenshotConfig.isEnabled { return }
         guard HKHealthStore.isHealthDataAvailable() else { return }
-        healthKitLogger.info("Requesting HealthKit authorization for dietary energy only")
+        healthKitLogger.info("Requesting HealthKit authorization for dietary energy + macros")
         do {
-            try await store.requestAuthorization(toShare: [], read: [dietaryReadType])
+            try await store.requestAuthorization(toShare: [], read: macroReadTypes.union([dietaryReadType]))
             enableBackgroundDelivery()
-            healthKitLogger.info("Dietary energy authorization request completed")
+            healthKitLogger.info("Dietary authorization request completed")
         } catch {
-            healthKitLogger.error("Dietary energy authorization request failed: \(String(describing: error), privacy: .public)")
+            healthKitLogger.error("Dietary authorization request failed: \(String(describing: error), privacy: .public)")
+            throw error
+        }
+    }
+
+    /// Request authorization for the three macronutrient types only. Kept separate
+    /// from `requestDietaryAuthorization` for the upgrade path: a user who granted
+    /// dietary energy on an earlier build has that type already determined, and
+    /// bundling a determined type with undetermined ones is exactly the case that
+    /// can suppress the permission sheet.
+    func requestMacroAuthorization() async throws {
+        if ScreenshotConfig.isEnabled { return }
+        guard HKHealthStore.isHealthDataAvailable() else { return }
+        healthKitLogger.info("Requesting HealthKit authorization for macros only")
+        do {
+            try await store.requestAuthorization(toShare: [], read: macroReadTypes)
+            enableBackgroundDelivery()
+            healthKitLogger.info("Macro authorization request completed")
+        } catch {
+            healthKitLogger.error("Macro authorization request failed: \(String(describing: error), privacy: .public)")
             throw error
         }
     }
@@ -115,13 +148,18 @@ final class HealthKitService: ObservableObject {
         }
     }
 
-    func authorizationRequestStatus(includeDietaryEnergy: Bool = false, includeBodyProfile: Bool = false) async -> HKAuthorizationRequestStatus? {
+    func authorizationRequestStatus(
+        includeDietaryEnergy: Bool = false,
+        includeMacros: Bool = false,
+        includeBodyProfile: Bool = false
+    ) async -> HKAuthorizationRequestStatus? {
         if ScreenshotConfig.isEnabled {
             return .unnecessary
         }
         guard HKHealthStore.isHealthDataAvailable() else { return nil }
         var readTypes = baseReadTypes
         if includeDietaryEnergy { readTypes.formUnion([dietaryReadType]) }
+        if includeMacros { readTypes.formUnion(macroReadTypes) }
         if includeBodyProfile { readTypes.formUnion(bodyProfileReadTypes) }
 
         return await withCheckedContinuation { continuation in
@@ -245,6 +283,82 @@ final class HealthKitService: ObservableObject {
         var current = normalizedStart
         while current < queryEnd {
             results.append((date: current, foodCalories: statisticValue(map, for: current)))
+            guard let next = Calendar.current.date(byAdding: .day, value: 1, to: current) else { break }
+            current = next
+        }
+        return results
+    }
+
+    /// Macronutrient grams logged for today in Health (e.g. from MyFitnessPal).
+    ///
+    /// All three types are queried concurrently and a failure on any one is fatal
+    /// to the call: a partial read would render as "0 g fat" and look like the
+    /// user ate no fat, which is worse than showing the unavailable state.
+    func fetchMacrosToday() async throws -> MacroTotals {
+        #if DEBUG
+        if ScreenshotConfig.isEnabled {
+            return ScreenshotFixtures.macrosToday()
+        }
+        #endif
+        let dayStart = DateHelpers.startOfDay()
+        let interval = DateComponents(day: 1)
+        async let protein = queryStatisticsCollection(.dietaryProtein, unit: .gram(), start: dayStart, end: .now, interval: interval)
+        async let carbs = queryStatisticsCollection(.dietaryCarbohydrates, unit: .gram(), start: dayStart, end: .now, interval: interval)
+        async let fat = queryStatisticsCollection(.dietaryFatTotal, unit: .gram(), start: dayStart, end: .now, interval: interval)
+
+        let (proteinMap, carbMap, fatMap) = try await (protein, carbs, fat)
+        let totals = MacroTotals(
+            protein: statisticValue(proteinMap, for: dayStart),
+            carbs: statisticValue(carbMap, for: dayStart),
+            fat: statisticValue(fatMap, for: dayStart)
+        )
+        healthKitLogger.debug("fetchMacrosToday: P\(totals.protein, privacy: .public) C\(totals.carbs, privacy: .public) F\(totals.fat, privacy: .public)")
+        // Same positive-signal trick as dietary energy: HealthKit never reports
+        // read authorization, so the first non-zero read is how we learn the
+        // macro observers are worth installing on future launches.
+        if totals.hasData && !macroBackgroundDeliveryEnabled {
+            macroBackgroundDeliveryEnabled = true
+            enableBackgroundDelivery()
+        }
+        return totals
+    }
+
+    /// Daily macro totals between two dates. One entry per day in the window,
+    /// zero-filled where no food was logged (callers filter on `hasData`).
+    func fetchMacroHistory(days: Int) async throws -> [(date: Date, macros: MacroTotals)] {
+        let start = DateHelpers.daysAgo(max(days - 1, 0))
+        return try await fetchMacroHistory(from: start, to: .now)
+    }
+
+    func fetchMacroHistory(from start: Date, to end: Date) async throws -> [(date: Date, macros: MacroTotals)] {
+        #if DEBUG
+        if ScreenshotConfig.isEnabled {
+            let dayCount = max(Calendar.current.dateComponents([.day], from: start, to: end).day ?? 0, 30)
+            return ScreenshotFixtures.macroHistory(days: dayCount, end: end)
+        }
+        #endif
+        let normalizedStart = DateHelpers.startOfDay(start)
+        let endNormalized = DateHelpers.startOfDay(end)
+        let queryEnd = DateHelpers.healthQueryEnd(including: endNormalized)
+        let interval = DateComponents(day: 1)
+        // Food is logged as instants, so the default predicate is correct here,
+        // same reasoning as `fetchDietaryHistory`.
+        async let proteinMap = queryStatisticsCollection(.dietaryProtein, unit: .gram(), start: normalizedStart, end: queryEnd, interval: interval)
+        async let carbMap = queryStatisticsCollection(.dietaryCarbohydrates, unit: .gram(), start: normalizedStart, end: queryEnd, interval: interval)
+        async let fatMap = queryStatisticsCollection(.dietaryFatTotal, unit: .gram(), start: normalizedStart, end: queryEnd, interval: interval)
+        let (protein, carbs, fat) = try await (proteinMap, carbMap, fatMap)
+
+        var results: [(date: Date, macros: MacroTotals)] = []
+        var current = normalizedStart
+        while current < queryEnd {
+            results.append((
+                date: current,
+                macros: MacroTotals(
+                    protein: statisticValue(protein, for: current),
+                    carbs: statisticValue(carbs, for: current),
+                    fat: statisticValue(fat, for: current)
+                )
+            ))
             guard let next = Calendar.current.date(byAdding: .day, value: 1, to: current) else { break }
             current = next
         }
@@ -539,6 +653,12 @@ final class HealthKitService: ObservableObject {
         set { (UserDefaults(suiteName: vitalsAppGroupID) ?? .standard).set(newValue, forKey: "dietaryBackgroundDeliveryEnabled") }
     }
 
+    /// Same signal as `dietaryBackgroundDeliveryEnabled`, for the macro types.
+    private var macroBackgroundDeliveryEnabled: Bool {
+        get { (UserDefaults(suiteName: vitalsAppGroupID) ?? .standard).bool(forKey: "macroBackgroundDeliveryEnabled") }
+        set { (UserDefaults(suiteName: vitalsAppGroupID) ?? .standard).set(newValue, forKey: "macroBackgroundDeliveryEnabled") }
+    }
+
     /// The calendar day `refreshCache` last wrote a today-row for. Comparing it to
     /// the current day is how a midnight rollover is detected without a timer.
     private var lastCachedDayKey: String? {
@@ -564,6 +684,14 @@ final class HealthKitService: ObservableObject {
         let includeDietary = GoalSettings.shared.showNetCalories || dietaryBackgroundDeliveryEnabled
         if includeDietary {
             types.append(HKQuantityType(.dietaryEnergyConsumed))
+        }
+
+        // Macros ride the same "only when the user cares" rule. Protein alone is
+        // enough of an observer: food apps write all three macros in the same
+        // save, so one type firing means the whole day's macros just changed.
+        // Registering three observers would just triple the wakeups for nothing.
+        if GoalSettings.shared.showMacros || macroBackgroundDeliveryEnabled {
+            types.append(HKQuantityType(.dietaryProtein))
         }
 
         for type in types {
@@ -740,6 +868,16 @@ final class HealthKitService: ObservableObject {
             }
         }
 
+        // Macros cache on the same pass, for the same reason: without it the
+        // stored row only ever reflects the last foreground dashboard read.
+        if GoalSettings.shared.showMacros || macroBackgroundDeliveryEnabled {
+            if let macros = try? await fetchMacrosToday() {
+                record.proteinGrams = macros.protein
+                record.carbGrams = macros.carbs
+                record.fatGrams = macros.fat
+            }
+        }
+
         try context.save()
         WidgetCenter.shared.reloadAllTimelines()
         healthKitLogger.info("Saved today cache and reloaded widget timelines")
@@ -778,6 +916,23 @@ final class HealthKitService: ObservableObject {
             try context.save()
             WidgetCenter.shared.reloadAllTimelines()
             healthKitLogger.info("Cached food calories: \(kcal, privacy: .public) kcal")
+        }
+    }
+
+    func updateCachedMacros(_ macros: MacroTotals) throws {
+        let context = ModelContext(DataService.sharedModelContainer)
+        let todayKey = DailyHealthRecord.key(for: DateHelpers.startOfDay())
+        let descriptor = FetchDescriptor<DailyHealthRecord>(
+            predicate: #Predicate { $0.dateString == todayKey }
+        )
+        if let record = try context.fetch(descriptor).first {
+            record.proteinGrams = macros.protein
+            record.carbGrams = macros.carbs
+            record.fatGrams = macros.fat
+            record.lastUpdated = .now
+            try context.save()
+            WidgetCenter.shared.reloadAllTimelines()
+            healthKitLogger.info("Cached macros: P\(macros.protein, privacy: .public) C\(macros.carbs, privacy: .public) F\(macros.fat, privacy: .public)")
         }
     }
 

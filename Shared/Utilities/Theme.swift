@@ -43,6 +43,21 @@ enum Theme {
     static let netDeficitPositive = Color(red: 0.20, green: 0.68, blue: 0.45)
     static let netDeficitNegative = Color(red: 0.92, green: 0.42, blue: 0.38)
 
+    // Macros: one hue per macronutrient, kept clear of the calorie coral and
+    // step teal so a stacked macro bar never reads as "calories" or "steps".
+    static let macrosBrand = Color(red: 0.30, green: 0.59, blue: 1.0)         // #4D96FF blue
+    static let proteinPrimary = Color(red: 0.30, green: 0.59, blue: 1.0)      // blue
+    static let carbsPrimary = Color(red: 0.95, green: 0.71, blue: 0.25)       // amber
+    static let fatPrimary = Color(red: 0.78, green: 0.49, blue: 0.84)         // orchid
+
+    static func macroColor(_ kind: MacroKind) -> Color {
+        switch kind {
+        case .protein: proteinPrimary
+        case .carbs: carbsPrimary
+        case .fat: fatPrimary
+        }
+    }
+
     // MARK: - Constants
 
     static let cardRadius: CGFloat = 20

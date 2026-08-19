@@ -9,9 +9,19 @@ final class DailyHealthRecord {
     var restingCalories: Double
     var steps: Int
     var foodCalories: Double
+    /// Macronutrient grams logged in Apple Health for this day (Vitals+ Macros).
+    /// Defaulted so SwiftData migrates existing stores additively, exactly like
+    /// `foodCalories` did. Widgets and the watch read the same cached row.
+    var proteinGrams: Double = 0
+    var carbGrams: Double = 0
+    var fatGrams: Double = 0
     var lastUpdated: Date
 
     var totalCalories: Double { activeCalories + restingCalories }
+
+    var macros: MacroTotals {
+        MacroTotals(protein: proteinGrams, carbs: carbGrams, fat: fatGrams)
+    }
 
     private static let gregorian = Calendar(identifier: .gregorian)
 
@@ -23,6 +33,9 @@ final class DailyHealthRecord {
         self.restingCalories = restingCalories
         self.steps = steps
         self.foodCalories = 0
+        self.proteinGrams = 0
+        self.carbGrams = 0
+        self.fatGrams = 0
         self.lastUpdated = Date()
     }
 

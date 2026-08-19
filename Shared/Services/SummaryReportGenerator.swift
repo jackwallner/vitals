@@ -8,6 +8,24 @@ struct ReportDay: Sendable, Identifiable {
     let restingCalories: Double
     let steps: Int
     let foodCalories: Double?
+    /// Macros logged that day, or nil when the user doesn't have Macros on.
+    let macros: MacroTotals?
+
+    init(
+        date: Date,
+        activeCalories: Double,
+        restingCalories: Double,
+        steps: Int,
+        foodCalories: Double?,
+        macros: MacroTotals? = nil
+    ) {
+        self.date = date
+        self.activeCalories = activeCalories
+        self.restingCalories = restingCalories
+        self.steps = steps
+        self.foodCalories = foodCalories
+        self.macros = macros
+    }
 
     var totalCalories: Double { activeCalories + restingCalories }
     var netDeficit: Double? {
@@ -52,6 +70,12 @@ struct SummaryReport: Sendable {
     let totalNetDeficit: Double?
     let bestNetDay: ReportDay?
     let netDeficitDayCount: Int
+
+    /// Macro averages over the days that actually have macros logged. nil when
+    /// Macros is off or nothing was logged in the window, exactly like the net
+    /// deficit aggregates above.
+    let avgMacros: MacroTotals?
+    let macroDayCount: Int
 
     var calendarLabel: String {
         let f = DateFormatter()
@@ -113,6 +137,12 @@ enum SummaryReportGenerator {
         let totalNet: Double? = netDays.isEmpty ? nil : netDays.map(\.value).reduce(0, +)
         let bestNet: ReportDay? = netDays.max(by: { $0.value < $1.value })?.day
 
+        // Same "only count logged days" rule the in-app macro averages use.
+        let macroDays = days.compactMap { $0.macros }.filter(\.hasData)
+        let avgMacros: MacroTotals? = macroDays.isEmpty
+            ? nil
+            : macroDays.reduce(MacroTotals.zero, +) / Double(macroDays.count)
+
         return SummaryReport(
             title: title,
             periodStart: periodStart,
@@ -138,7 +168,9 @@ enum SummaryReportGenerator {
             avgNetDeficit: avgNet,
             totalNetDeficit: totalNet,
             bestNetDay: bestNet,
-            netDeficitDayCount: netDays.count
+            netDeficitDayCount: netDays.count,
+            avgMacros: avgMacros,
+            macroDayCount: macroDays.count
         )
     }
 

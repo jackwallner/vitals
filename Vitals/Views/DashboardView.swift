@@ -107,6 +107,8 @@ struct DashboardView: View {
     /// covering the window. Auth runs from `showSettings` onDismiss / a follow-up
     /// task so HealthKit's permission sheet isn't suppressed.
     @State private var pendingNetDeficitDietaryAuth = false
+    /// Macros equivalent of `pendingNetDeficitDietaryAuth`. See that property.
+    @State private var pendingMacrosHealthAuth = false
     @State private var pacingCaloriesInsufficient = false
     @State private var pacingStepsInsufficient = false
     @State private var pacingCalorieSamples = 0
@@ -131,6 +133,11 @@ struct DashboardView: View {
     @State private var dietaryEnergyReady = false
     /// True when the last dietary fetch failed (don’t treat as “0 kcal logged”).
     @State private var dietaryEnergyFetchFailed = false
+    @State private var macros: MacroTotals = .zero
+    /// True after a successful macro read this session (while Macros is on).
+    @State private var macrosReady = false
+    /// True when the last macro fetch failed (don’t treat as “0 g logged”).
+    @State private var macrosFetchFailed = false
     /// Transient celebration banner shown once per goal per day (paired with the haptic).
     @State private var celebrationMessage: String? = nil
     // Vitals+ energy averages: stable 30-day maintenance (TDEE) and resting (BMR)
@@ -154,6 +161,18 @@ struct DashboardView: View {
 
     private var isNetDeficitEnabled: Bool {
         store.isPro && goals.showNetCalories
+    }
+
+    /// Macros are Vitals+ and opt-in, and independent of Net Deficit. Tracking
+    /// protein without caring about burn-minus-eaten is a perfectly normal way
+    /// to use the app (it's what the diabetes/macro crowd asked for).
+    private var isMacrosEnabled: Bool {
+        store.isPro && goals.showMacros
+    }
+
+    /// Whether we can show numeric macros (not loading, not failed).
+    private var macrosNumericReady: Bool {
+        isMacrosEnabled && macrosReady && !macrosFetchFailed
     }
 
     /// Active/resting breakdown is Vitals+ only and gated by the user's setting.
@@ -307,10 +326,22 @@ struct DashboardView: View {
                 await requestDietaryAuthAndReload()
             }
         }
+        .onChange(of: goals.showMacros) { _, enabled in
+            guard enabled, store.isPro else { return }
+            guard !pendingMacrosHealthAuth, !showSettings else { return }
+            Task {
+                await requestMacroAuthAndReload()
+            }
+        }
         .onChange(of: store.isPro) { oldValue, isPro in
             if oldValue && !isPro && goals.showNetCalories {
                 goals.showNetCalories = false
             } else if isPro && goals.showNetCalories {
+                Task { await refresh() }
+            }
+            if oldValue && !isPro && goals.showMacros {
+                goals.showMacros = false
+            } else if isPro && goals.showMacros {
                 Task { await refresh() }
             }
             // Weekly recap notifications are scheduled in the system, so they'd
@@ -348,6 +379,9 @@ struct DashboardView: View {
         .onReceive(NotificationCenter.default.publisher(for: .vitalsEnableNetDeficitWithDietaryAuth)) { _ in
             beginEnableNetDeficitWithDietaryAuth()
         }
+        .onReceive(NotificationCenter.default.publisher(for: .vitalsEnableMacrosWithHealthAuth)) { _ in
+            beginEnableMacrosWithHealthAuth()
+        }
         .task {
             if ScreenshotConfig.wantsOnboarding {
                 showOnboarding = true
@@ -363,6 +397,8 @@ struct DashboardView: View {
         .sheet(isPresented: $showSettings, onDismiss: {
             if pendingNetDeficitDietaryAuth {
                 Task { await finishEnableNetDeficitWithDietaryAuth() }
+            } else if pendingMacrosHealthAuth {
+                Task { await finishEnableMacrosWithHealthAuth() }
             } else {
                 Task { await refresh() }
             }
@@ -726,8 +762,24 @@ struct DashboardView: View {
                 .accessibilityHint("Opens net deficit history")
             }
 
+            // Macros sit below net deficit: both come from the same logged food,
+            // and macros are always a supporting card rather than a headline
+            // number, so they never compete with the ring for the top of the view.
+            if isMacrosEnabled && (goals.showCalories || goals.showSteps || isNetDeficitEnabled) {
+                Spacer(minLength: 16)
+            }
+
+            if isMacrosEnabled {
+                NavigationLink(value: HistoryMetric.macros) {
+                    macrosSection()
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint("Opens macro history")
+            }
+
             // Nothing enabled — gentle prompt
-            if !goals.showCalories && !goals.showSteps && !isNetDeficitEnabled {
+            if !goals.showCalories && !goals.showSteps && !isNetDeficitEnabled && !isMacrosEnabled {
                 VStack(spacing: 12) {
                     Image(systemName: "heart.text.clipboard")
                         .font(.system(size: 48))
@@ -997,6 +1049,163 @@ struct DashboardView: View {
         }
         let n = Int(deficit.rounded())
         return "\(n) calories, \(deficit < 0 ? "surplus" : "deficit"), burned minus food from Health"
+    }
+
+    // MARK: - Macros
+
+    /// Protein / carbs / fat for today, straight from whatever food app writes to
+    /// Apple Health. Deliberately read-only and never reconciled against
+    /// `dietaryEnergyConsumed`: alcohol and per-item rounding mean macro calories
+    /// and logged calories rarely agree, and "your app disagrees with MyFitnessPal"
+    /// is a support burden with no upside.
+    private func macrosSection() -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 4) {
+                Text("macros")
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textSecondary)
+                    .textCase(.uppercase)
+                    .tracking(1.5)
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(Theme.textTertiary)
+                Spacer(minLength: 8)
+                if macrosNumericReady && macros.hasData {
+                    Text("\(Int(macros.calories.rounded()).formatted(.number)) cal")
+                        .font(.system(.caption, design: .rounded).monospacedDigit())
+                        .foregroundStyle(Theme.textTertiary)
+                }
+            }
+
+            macrosContent
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(Theme.cardPadding)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .padding(.horizontal, 24)
+        .opacity(animateContent ? 1 : 0)
+        .offset(y: animateContent ? 0 : 20)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Macros")
+    }
+
+    @ViewBuilder
+    private var macrosContent: some View {
+        if macrosFetchFailed {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Couldn't read macros. Check Health permissions.")
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                HStack(spacing: 14) {
+                    Button("Retry macros") {
+                        Task {
+                            try? await healthKit.requestMacroAuthorization()
+                            await loadMacros()
+                        }
+                    }
+                    Button("Health permissions") {
+                        openHealthApp()
+                    }
+                }
+                .font(.system(.caption2, design: .rounded, weight: .semibold))
+                .foregroundStyle(Theme.caloriesPrimary)
+            }
+        } else if !macrosReady {
+            // Reserve the rows' footprint so the card doesn't jump when data lands.
+            VStack(spacing: 10) {
+                ForEach(MacroKind.allCases) { kind in
+                    SkeletonBlock(cornerRadius: 6)
+                        .frame(height: 14)
+                        .accessibilityHidden(true)
+                        .id(kind)
+                }
+            }
+        } else if macros.hasData {
+            let percentages = macros.sharePercentages()
+            VStack(spacing: 10) {
+                ForEach(MacroKind.allCases) { kind in
+                    MacroBarRow(
+                        kind: kind,
+                        grams: macros.grams(kind),
+                        goal: goals.macroGoal(for: kind),
+                        sharePercent: percentages?[kind]
+                    )
+                }
+            }
+            if goals.macroGoalsEnabled {
+                Text(macroSplitText)
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+            }
+        } else {
+            Text("No macros logged in Apple Health today. Log meals in a food app that writes to Health, like MyFitnessPal.")
+                .font(.system(.caption2, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    /// "29% protein · 38% carbs · 33% fat", shown only when goals are on, since
+    /// the goal-less rows already carry each macro's percentage inline.
+    private var macroSplitText: String {
+        let percentages = macros.sharePercentages() ?? [:]
+        return MacroKind.allCases
+            .map { "\(percentages[$0] ?? 0)% \($0.label.lowercased())" }
+            .joined(separator: " · ")
+    }
+
+    private func loadMacros() async {
+        guard isMacrosEnabled else {
+            macros = .zero
+            macrosReady = false
+            macrosFetchFailed = false
+            return
+        }
+        do {
+            let totals = try await healthKit.fetchMacrosToday()
+            macros = totals
+            // As with dietary energy, HealthKit hides read authorization, so a
+            // successful fetch is the only signal we get. All-zero is a valid
+            // result (nothing logged), not a failure.
+            macrosFetchFailed = false
+            macrosReady = true
+            try? healthKit.updateCachedMacros(totals)
+        } catch {
+            macrosFetchFailed = true
+            macrosReady = false
+            dashboardLogger.error("Macro fetch failed: \(String(describing: error), privacy: .public)")
+        }
+    }
+
+    /// Pro enable path for Macros, mirroring `beginEnableNetDeficitWithDietaryAuth`:
+    /// HealthKit suppresses its permission sheet while Settings is still covering
+    /// the window, so dismiss first and request afterwards.
+    private func beginEnableMacrosWithHealthAuth() {
+        pendingMacrosHealthAuth = true
+        if showSettings {
+            showSettings = false
+        } else {
+            Task { await finishEnableMacrosWithHealthAuth() }
+        }
+    }
+
+    @MainActor
+    private func finishEnableMacrosWithHealthAuth() async {
+        try? await Task.sleep(nanoseconds: 500_000_000)
+        goals.showMacros = true
+        pendingMacrosHealthAuth = false
+        await requestMacroAuthAndReload()
+    }
+
+    @MainActor
+    private func requestMacroAuthAndReload() async {
+        do {
+            try await healthKit.requestMacroAuthorization()
+        } catch {
+            macrosFetchFailed = true
+            dashboardLogger.error("Macro auth request failed: \(String(describing: error), privacy: .public)")
+        }
+        await refresh()
     }
 
     private func calorieLabel(numberSize: CGFloat) -> some View {
@@ -1400,6 +1609,7 @@ struct DashboardView: View {
         // pacing window don't depend on today's totals; the previous code only
         // started them after `fetchTodayStats` returned.
         async let dietaryEarly: Void = loadDietaryEnergy()
+        async let macrosEarly: Void = loadMacros()
         async let pacingEarly: Void = loadPacing(stats: nil)
         async let energyEarly: Void = loadEnergyAverages()
 
@@ -1484,6 +1694,7 @@ struct DashboardView: View {
 
             // Wait for the in-flight dietary + pacing reads we kicked off above.
             await dietaryEarly
+            await macrosEarly
             await pacingEarly
             await energyEarly
             // Pacing compares "what we've done so far today" against a typical
@@ -1499,6 +1710,7 @@ struct DashboardView: View {
             // Drain the in-flight reads first so their state writes can't land
             // after we reset below.
             await dietaryEarly
+            await macrosEarly
             await pacingEarly
             await energyEarly
             if let cachedStats = try? healthKit.fetchCachedTodayStats() {
@@ -1516,6 +1728,9 @@ struct DashboardView: View {
             foodCalories = 0
             dietaryEnergyReady = false
             dietaryEnergyFetchFailed = false
+            macros = .zero
+            macrosReady = false
+            macrosFetchFailed = false
             showLoadedStateIfNeeded()
         }
     }
@@ -1656,6 +1871,7 @@ private struct PacingPill: View {
 private enum SettingsInfoTopic: Identifiable {
     case netDeficit
     case fastingMode
+    case macros
     case endOfDayProjection
     case goalStreak
 
@@ -1665,6 +1881,7 @@ private enum SettingsInfoTopic: Identifiable {
         switch self {
         case .netDeficit: "Net Deficit"
         case .fastingMode: "Fasting Mode"
+        case .macros: "Macros"
         case .endOfDayProjection: "End-of-Day Projection"
         case .goalStreak: "Goal Streak"
         }
@@ -1674,6 +1891,7 @@ private enum SettingsInfoTopic: Identifiable {
         switch self {
         case .netDeficit: "minus.plus.batteryblock"
         case .fastingMode: "moon.zzz"
+        case .macros: "chart.pie.fill"
         case .endOfDayProjection: "chart.line.uptrend.xyaxis"
         case .goalStreak: "flame.fill"
         }
@@ -1685,6 +1903,8 @@ private enum SettingsInfoTopic: Identifiable {
             "Net Deficit is calories burned minus food energy from Apple Health. A positive number means a deficit. Connect a food app like MyFitnessPal to populate food energy."
         case .fastingMode:
             "When Fasting Mode is on, days with no food logged count toward your Net Deficit history. Off by default. Unlogged days are skipped so they don't read as a full-burn deficit."
+        case .macros:
+            "Macros are the protein, carbs, and fat your food app writes to Apple Health. Log meals in MyFitnessPal (or any app that writes to Health) and they appear here alongside your calories and steps. Vitals only reads them; it never asks you to log food twice. Turn on Macro Goals to track each one against a daily gram target."
         case .endOfDayProjection:
             "Projects where today's calories and steps will land based on your pace so far. Uses the same pacing window you've chosen above."
         case .goalStreak:
@@ -1817,6 +2037,92 @@ private struct MetricPill: View {
         .padding(.horizontal, 14)
         .padding(.vertical, 8)
         .background(Theme.cardSurface, in: Capsule())
+    }
+}
+
+// MARK: - Macro Row
+
+/// One macronutrient on the dashboard: name, a proportional bar, and the number.
+///
+/// The bar means one of two things depending on whether the user set targets.
+/// With a goal it's progress toward that goal (capped at full, with the overage
+/// still readable in the number). Without one it's the macro's share of the
+/// day's macro calories, so the row still says something, which is the whole
+/// point for people who track composition rather than targets.
+private struct MacroBarRow: View {
+    let kind: MacroKind
+    let grams: Double
+    let goal: Int?
+    /// Whole-percent share of the day's macro calories, from the allocation that
+    /// keeps the three rows summing to 100. nil when nothing is logged.
+    let sharePercent: Int?
+
+    private var fraction: Double {
+        if let goal, goal > 0 {
+            return min(grams / Double(goal), 1)
+        }
+        return min(max(Double(sharePercent ?? 0) / 100, 0), 1)
+    }
+
+    private var valueText: String {
+        let rounded = Int(grams.rounded())
+        if let goal {
+            return "\(rounded.formatted(.number)) / \(goal.formatted(.number)) g"
+        }
+        return "\(rounded.formatted(.number)) g"
+    }
+
+    private var trailingNote: String? {
+        guard goal == nil, let sharePercent else { return nil }
+        return "\(sharePercent)%"
+    }
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Text(kind.label)
+                .font(.system(.caption, design: .rounded, weight: .medium))
+                .foregroundStyle(Theme.textSecondary)
+                .frame(width: 54, alignment: .leading)
+
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule()
+                        .fill(Theme.ringTrack)
+                    Capsule()
+                        .fill(Theme.macroColor(kind))
+                        .frame(width: max(geo.size.width * fraction, fraction > 0 ? 4 : 0))
+                }
+            }
+            .frame(height: 8)
+
+            HStack(spacing: 4) {
+                Text(valueText)
+                    .font(.system(.caption, design: .rounded, weight: .semibold).monospacedDigit())
+                    .foregroundStyle(Theme.textPrimary)
+                if let trailingNote {
+                    Text(trailingNote)
+                        .font(.system(.caption2, design: .rounded).monospacedDigit())
+                        .foregroundStyle(Theme.textTertiary)
+                }
+            }
+            .lineLimit(1)
+            .minimumScaleFactor(0.7)
+            .frame(minWidth: 88, alignment: .trailing)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(kind.label)
+        .accessibilityValue(accessibilityValue)
+    }
+
+    private var accessibilityValue: String {
+        let rounded = Int(grams.rounded())
+        if let goal {
+            return "\(rounded) of \(goal) grams"
+        }
+        if let sharePercent {
+            return "\(rounded) grams, \(sharePercent) percent of macro calories"
+        }
+        return "\(rounded) grams"
     }
 }
 
@@ -2368,11 +2674,12 @@ private struct SettingsSheet: View {
     @State private var calText = ""
     @State private var stepEnabled = true
     @State private var stepText = ""
+    @State private var macroGoalText: [MacroKind: String] = [:]
     @State private var appliedGoalDrafts = false
     @State private var settingsInfoTopic: SettingsInfoTopic?
     @FocusState private var focusedGoalField: GoalField?
 
-    private enum GoalField { case calories, steps }
+    private enum GoalField: Hashable { case calories, steps, macro(MacroKind) }
 
     private var calValid: Bool {
         !calEnabled || (Double(calText).map { (500...50000).contains($0) } ?? false)
@@ -2380,6 +2687,22 @@ private struct SettingsSheet: View {
 
     private var stepValid: Bool {
         !stepEnabled || (Int(stepText).map { (100...500000).contains($0) } ?? false)
+    }
+
+    private func macroGoalBinding(_ kind: MacroKind) -> Binding<String> {
+        Binding(
+            get: { macroGoalText[kind] ?? String(kind.defaultGoal) },
+            set: { macroGoalText[kind] = $0 }
+        )
+    }
+
+    private func macroGoalValid(_ kind: MacroKind) -> Bool {
+        guard goals.macroGoalsEnabled else { return true }
+        return Int(macroGoalText[kind] ?? "").map { kind.goalRange.contains($0) } ?? false
+    }
+
+    private var macroGoalsValid: Bool {
+        MacroKind.allCases.allSatisfy(macroGoalValid)
     }
 
     private var showCaloriesBinding: Binding<Bool> {
@@ -2428,6 +2751,41 @@ private struct SettingsSheet: View {
             set: { enabled in
                 guard store.isPro else { return }
                 goals.netDeficitFastingMode = enabled
+            }
+        )
+    }
+
+    /// Macros mirrors Net Deficit's enable dance: the toggle can't flip the
+    /// setting from inside Settings, because HealthKit suppresses its permission
+    /// sheet while this sheet covers the window.
+    private var showMacrosBinding: Binding<Bool> {
+        Binding(
+            get: { store.isPro && goals.showMacros },
+            set: { enabled in
+                if store.isPro {
+                    if enabled {
+                        NotificationCenter.default.post(
+                            name: .vitalsEnableMacrosWithHealthAuth,
+                            object: nil
+                        )
+                    } else {
+                        goals.showMacros = false
+                    }
+                } else if enabled {
+                    goals.showMacros = false
+                    requestTrialOffer(.macrosToggle)
+                }
+            }
+        )
+    }
+
+    /// Peer toggle to Macros. Only meaningful when Macros is on.
+    private var macroGoalsBinding: Binding<Bool> {
+        Binding(
+            get: { store.isPro && goals.macroGoalsEnabled },
+            set: { enabled in
+                guard store.isPro else { return }
+                goals.macroGoalsEnabled = enabled
             }
         )
     }
@@ -2596,6 +2954,12 @@ private struct SettingsSheet: View {
         } else {
             goals.stepGoal = nil
         }
+
+        for kind in MacroKind.allCases {
+            if let grams = Int(macroGoalText[kind] ?? ""), kind.goalRange.contains(grams) {
+                goals.setMacroGoal(grams, for: kind)
+            }
+        }
     }
 
     var body: some View {
@@ -2647,6 +3011,46 @@ private struct SettingsSheet: View {
                         Text("Active + Resting, TDEE & BMR, Net Deficit, and Fasting Mode are Vitals+ extras, off until you turn them on. Goal changes save when you tap Done.")
                         settingsLearnMoreButton("Learn more about Net Deficit", topic: .netDeficit)
                         settingsLearnMoreButton("Learn more about Fasting Mode", topic: .fastingMode)
+                    }
+                }
+
+                // Macros gets its own section rather than a fourth Calories row:
+                // it comes from logged food (not burn), and with goals on it owns
+                // three more fields than any other extra.
+                Section {
+                    Toggle(isOn: showMacrosBinding) {
+                        plusToggleLabel("Show Macros")
+                    }
+                    Toggle(isOn: macroGoalsBinding) {
+                        plusToggleLabel("Macro Goals")
+                    }
+                    .disabled(!store.isPro || !goals.showMacros)
+                    if store.isPro && goals.showMacros && goals.macroGoalsEnabled {
+                        ForEach(MacroKind.allCases) { kind in
+                            HStack {
+                                Text(kind.label)
+                                    .foregroundStyle(Theme.textSecondary)
+                                Spacer()
+                                TextField(String(kind.defaultGoal), text: macroGoalBinding(kind))
+                                    .keyboardType(.numberPad)
+                                    .multilineTextAlignment(.trailing)
+                                    .focused($focusedGoalField, equals: .macro(kind))
+                                Text("g")
+                                    .foregroundStyle(Theme.textTertiary)
+                            }
+                            if !macroGoalValid(kind) {
+                                Text("Enter \(kind.goalRange.lowerBound.formatted(.number))–\(kind.goalRange.upperBound.formatted(.number)) g.")
+                                    .font(.caption)
+                                    .foregroundStyle(.red)
+                            }
+                        }
+                    }
+                } header: {
+                    Text("Macros")
+                } footer: {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Protein, carbs, and fat you log in Apple Health. A Vitals+ extra, off until you turn it on. Goal changes save when you tap Done.")
+                        settingsLearnMoreButton("Learn more about Macros", topic: .macros)
                     }
                 }
 
@@ -2797,7 +3201,7 @@ private struct SettingsSheet: View {
                         dismiss()
                     }
                     .bold()
-                    .disabled(!calValid || !stepValid)
+                    .disabled(!calValid || !stepValid || !macroGoalsValid)
                 }
                 // The number pad has no return key, so give it an explicit way out.
                 ToolbarItemGroup(placement: .keyboard) {
@@ -2815,6 +3219,9 @@ private struct SettingsSheet: View {
                 calText = goals.calorieGoal.map { String(Int($0)) } ?? "2500"
                 stepEnabled = goals.stepGoal != nil
                 stepText = goals.stepGoal.map { String($0) } ?? "10000"
+                macroGoalText = Dictionary(
+                    uniqueKeysWithValues: MacroKind.allCases.map { ($0, String(goals.macroGoal(for: $0) ?? $0.defaultGoal)) }
+                )
                 Task { await store.updateCustomerProductStatus() }
             }
             .sheet(item: $settingsInfoTopic) { topic in
