@@ -12,9 +12,9 @@ import Foundation
 enum WhatsNew {
     /// Bump this when there's a new announcement to surface. It tracks the
     /// *announcement content*, not the app's marketing version, so unrelated
-    /// build bumps don't re-trigger the sheet. Set to "1.7" — the release that
-    /// introduces the opt-in Vitals+ extras this sheet advertises.
-    static let currentVersion = "1.7"
+    /// build bumps don't re-trigger the sheet. Set to "1.8.1", the release that
+    /// adds Macros to the opt-in Vitals+ extras this sheet advertises.
+    static let currentVersion = "1.8.1"
 
     /// True when the user hasn't yet seen the announcement for `currentVersion`.
     static func shouldShow(lastShown: String?) -> Bool {

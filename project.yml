@@ -12,7 +12,7 @@ settings:
     SWIFT_VERSION: "6.0"
     DEVELOPMENT_TEAM: YXG4MP6W39
     CODE_SIGN_STYLE: Automatic
-    MARKETING_VERSION: "1.8.0"
+    MARKETING_VERSION: "1.8.1"
     CURRENT_PROJECT_VERSION: "147"
     GENERATE_INFOPLIST_FILE: NO
 
@@ -141,6 +141,7 @@ targets:
     sources:
       - path: VitalsTests
       - path: Shared/Models/CalorieTrendSummary.swift
+      - path: Shared/Models/MacroTotals.swift
       - path: Shared/Utilities/EnergyAveragesCalculator.swift
       - path: Shared/Utilities/EnergyAveragesCacheReader.swift
       - path: Shared/Utilities/DateHelpers.swift

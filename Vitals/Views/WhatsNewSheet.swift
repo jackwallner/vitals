@@ -21,7 +21,7 @@ struct WhatsNewSheet: View {
 
     /// The extras to advertise, newest-feeling first. Pulled straight from
     /// `PlusFeature` so the copy stays in sync with the paywall and settings.
-    private let features: [PlusFeature] = [.projections, .streaks, .weeklyRecap, .netDeficit]
+    private let features: [PlusFeature] = [.macros, .netDeficit, .projections, .streaks]
 
     var body: some View {
         ZStack {
@@ -38,7 +38,7 @@ struct WhatsNewSheet: View {
                                 .font(.system(.title2, design: .rounded, weight: .bold))
                                 .foregroundStyle(Theme.textPrimary)
                                 .multilineTextAlignment(.center)
-                            Text("A few optional Vitals+ extras, now tucked right next to the metrics they belong with. Everything you already use stays exactly the same. These are off until you switch them on.")
+                            Text("Macros join the optional Vitals+ extras: protein, carbs, and fat read straight from the food you already log in Apple Health. Everything you already use stays exactly the same, and these are off until you switch them on.")
                                 .font(.system(.subheadline, design: .rounded))
                                 .foregroundStyle(Theme.textSecondary)
                                 .multilineTextAlignment(.center)

@@ -16,6 +16,7 @@ enum PaywallLinks {
 /// everything" message.
 enum PlusFeature: CaseIterable {
     case netDeficit
+    case macros
     case activeResting
     case energyAverages
     case deepTrends
@@ -28,6 +29,7 @@ enum PlusFeature: CaseIterable {
     var icon: String {
         switch self {
         case .netDeficit: "plus.forwardslash.minus"
+        case .macros: "chart.pie.fill"
         case .activeResting: "flame.fill"
         case .energyAverages: "speedometer"
         case .deepTrends: "chart.line.uptrend.xyaxis"
@@ -42,6 +44,7 @@ enum PlusFeature: CaseIterable {
     var tint: Color {
         switch self {
         case .netDeficit: Theme.netDeficitBrand
+        case .macros: Theme.macrosBrand
         case .activeResting: Theme.caloriesPrimary
         case .energyAverages: Theme.caloriesPrimary
         case .deepTrends: Theme.stepsPrimary
@@ -57,6 +60,7 @@ enum PlusFeature: CaseIterable {
     var title: String {
         switch self {
         case .netDeficit: "Net Deficit"
+        case .macros: "Macros"
         case .activeResting: "Active vs. resting"
         case .energyAverages: "TDEE & BMR"
         case .deepTrends: "Deep Trends"
@@ -72,6 +76,7 @@ enum PlusFeature: CaseIterable {
     var detail: String {
         switch self {
         case .netDeficit: "Burned minus food logged in Apple Health, updated through the day."
+        case .macros: "Protein, carbs, and fat from the food you already log in Apple Health."
         case .activeResting: "See how much of today's burn came from activity vs. resting."
         case .energyAverages: "30-day maintenance (TDEE) and resting burn (BMR) from your data."
         case .deepTrends: "Compare any period to the one before it."
@@ -87,6 +92,7 @@ enum PlusFeature: CaseIterable {
     var featureListTitle: String {
         switch self {
         case .netDeficit: "Net Deficit: burned minus food logged, live"
+        case .macros: "Macros: protein, carbs, and fat, every day"
         case .activeResting: "Active vs. resting calorie breakdown"
         case .energyAverages: "TDEE & BMR from your Apple Health averages"
         case .deepTrends: "Deep Trends: every period vs. the one before"
@@ -102,6 +108,7 @@ enum PlusFeature: CaseIterable {
     var intentHeadline: String {
         switch self {
         case .netDeficit: "Track your live deficit"
+        case .macros: "See your macros here too"
         case .activeResting: "Split active and resting burn"
         case .energyAverages: "See your maintenance calories"
         case .deepTrends: "Compare every period"
@@ -117,6 +124,7 @@ enum PlusFeature: CaseIterable {
     var intentSubheadline: String {
         switch self {
         case .netDeficit: "Calories burned minus food logged, updated all day from Apple Health."
+        case .macros: "Protein, carbs, and fat read straight from the food app you already use."
         case .activeResting: "See what actually moved today's calorie number."
         case .energyAverages: "TDEE and BMR averaged over the last 30 days from your own data."
         case .deepTrends: "Stack this week against last week, this month against the last."
@@ -131,7 +139,8 @@ enum PlusFeature: CaseIterable {
     /// Two related features shown under an intent-driven pitch (not random extras).
     var companionFeatures: [PlusFeature] {
         switch self {
-        case .netDeficit: [.projections, .deepTrends]
+        case .netDeficit: [.macros, .projections]
+        case .macros: [.netDeficit, .deepTrends]
         case .activeResting: [.netDeficit, .energyAverages]
         case .energyAverages: [.netDeficit, .projections]
         case .deepTrends: [.customRangesPDF, .projections]
@@ -151,6 +160,7 @@ enum PlusFeature: CaseIterable {
     var snapshotSlug: String {
         switch self {
         case .netDeficit: "net-deficit"
+        case .macros: "macros"
         case .activeResting: "active-resting"
         case .energyAverages: "tdee"
         case .deepTrends: "deep-trends"
@@ -165,6 +175,7 @@ enum PlusFeature: CaseIterable {
     static func fromSnapshotSlug(_ slug: String) -> PlusFeature? {
         switch slug {
         case "net-deficit": .netDeficit
+        case "macros": .macros
         case "active-resting": .activeResting
         case "tdee": .energyAverages
         case "deep-trends": .deepTrends
@@ -179,8 +190,8 @@ enum PlusFeature: CaseIterable {
 
     /// Every feature-gate a free user can hit (settings toggles + History + Body Profile).
     static let allSnapshotGates: [PlusFeature] = [
-        .netDeficit, .activeResting, .energyAverages, .projections, .streaks, .weeklyRecap,
-        .deepTrends, .customRangesPDF, .bodyProfile
+        .netDeficit, .macros, .activeResting, .energyAverages, .projections, .streaks,
+        .weeklyRecap, .deepTrends, .customRangesPDF, .bodyProfile
     ]
     #endif
 }
@@ -215,7 +226,7 @@ struct PaywallView: View {
     private var paywallBullets: [PlusFeature] {
         if let focus { return [focus] + focus.companionFeatures }
         return [
-            .netDeficit, .activeResting, .energyAverages, .projections,
+            .netDeficit, .macros, .activeResting, .energyAverages, .projections,
             .streaks, .deepTrends, .customRangesPDF, .weeklyRecap, .bodyProfile
         ]
     }

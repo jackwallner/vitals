@@ -32,6 +32,7 @@ enum GoalSyncKeys {
     static let stepGoalEnabled = "goalSync.stepGoalEnabled"
     static let showNetCalories = "goalSync.showNetCalories"
     static let netDeficitFastingMode = "goalSync.netDeficitFastingMode"
+    static let showMacros = "goalSync.showMacros"
     static let showCalories = "goalSync.showCalories"
     static let showSteps = "goalSync.showSteps"
 }
@@ -290,6 +291,56 @@ final class GoalSettings: ObservableObject {
         didSet { defaults.set(netDeficitFastingMode, forKey: "netDeficitFastingMode") }
     }
 
+    /// Vitals+ feature: show protein / carbs / fat logged in Apple Health, from
+    /// whichever food app the user already uses. Independent of Net Deficit (plenty
+    /// of people track macros without caring about burn-minus-eaten), but both read
+    /// food data, so enabling either asks HealthKit for the food types.
+    @Published var showMacros: Bool {
+        didSet {
+            defaults.set(showMacros, forKey: "showMacros")
+            WidgetCenter.shared.reloadAllTimelines()
+        }
+    }
+
+    /// Sub-option of Macros: when off (default) the dashboard shows grams and the
+    /// day's split with no target to miss. When on, each macro gets a progress bar
+    /// against `proteinGoal` / `carbGoal` / `fatGoal`. One switch rather than three,
+    /// because macro targets are set as a set, never one at a time.
+    @Published var macroGoalsEnabled: Bool {
+        didSet { defaults.set(macroGoalsEnabled, forKey: "macroGoalsEnabled") }
+    }
+
+    @Published var proteinGoal: Int {
+        didSet { defaults.set(proteinGoal, forKey: "proteinGoal") }
+    }
+
+    @Published var carbGoal: Int {
+        didSet { defaults.set(carbGoal, forKey: "carbGoal") }
+    }
+
+    @Published var fatGoal: Int {
+        didSet { defaults.set(fatGoal, forKey: "fatGoal") }
+    }
+
+    /// Daily gram target for `kind`, or nil when macro goals are off. Callers then
+    /// render a plain gram count instead of a progress bar.
+    func macroGoal(for kind: MacroKind) -> Int? {
+        guard macroGoalsEnabled else { return nil }
+        switch kind {
+        case .protein: return proteinGoal
+        case .carbs: return carbGoal
+        case .fat: return fatGoal
+        }
+    }
+
+    func setMacroGoal(_ grams: Int, for kind: MacroKind) {
+        switch kind {
+        case .protein: proteinGoal = grams
+        case .carbs: carbGoal = grams
+        case .fat: fatGoal = grams
+        }
+    }
+
     /// Vitals+ feature: show the active vs. resting calorie split below the ring on the dashboard.
     @Published var showActiveRestingBreakdown: Bool {
         didSet { defaults.set(showActiveRestingBreakdown, forKey: "showActiveRestingBreakdown") }
@@ -403,6 +454,11 @@ final class GoalSettings: ObservableObject {
         self.showSteps = defaults.object(forKey: "showSteps") as? Bool ?? true
         self.showNetCalories = defaults.object(forKey: "showNetCalories") as? Bool ?? false
         self.netDeficitFastingMode = defaults.object(forKey: "netDeficitFastingMode") as? Bool ?? false
+        self.showMacros = defaults.object(forKey: "showMacros") as? Bool ?? false
+        self.macroGoalsEnabled = defaults.object(forKey: "macroGoalsEnabled") as? Bool ?? false
+        self.proteinGoal = Self.sanitizedMacroGoal(defaults.object(forKey: "proteinGoal") as? Int, kind: .protein)
+        self.carbGoal = Self.sanitizedMacroGoal(defaults.object(forKey: "carbGoal") as? Int, kind: .carbs)
+        self.fatGoal = Self.sanitizedMacroGoal(defaults.object(forKey: "fatGoal") as? Int, kind: .fat)
         self.showActiveRestingBreakdown = defaults.object(forKey: "showActiveRestingBreakdown") as? Bool ?? false
         self.showEnergyAverages = defaults.object(forKey: "showEnergyAverages") as? Bool ?? false
         self.showProjections = defaults.object(forKey: "showProjections") as? Bool ?? false
@@ -437,12 +493,20 @@ final class GoalSettings: ObservableObject {
         applyScreenshotOverridesIfNeeded()
     }
 
+    /// Clamps a stored macro goal into its accepted range, falling back to the
+    /// per-macro default. Mirrors how `calorieGoal` / `stepGoal` sanitize on load.
+    private static func sanitizedMacroGoal(_ stored: Int?, kind: MacroKind) -> Int {
+        guard let stored, kind.goalRange.contains(stored) else { return kind.defaultGoal }
+        return stored
+    }
+
     private func applyScreenshotOverridesIfNeeded() {
         guard ScreenshotConfig.isEnabled else { return }
 
         showCalories = true
         showSteps = true
         showNetCalories = false
+        showMacros = false
         appearance = .system
 
         if ScreenshotConfig.usesMinimalGoals {

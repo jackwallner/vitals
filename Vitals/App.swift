@@ -235,6 +235,7 @@ final class TrialOfferCoordinator: ObservableObject {
         case lockedSummaryReport
         case deepTrendsUpgrade
         case netDeficitToggle
+        case macrosToggle
         case activeRestingToggle
         case energyAveragesToggle
         case projectionsToggle
@@ -251,6 +252,7 @@ final class TrialOfferCoordinator: ObservableObject {
         var focusFeature: PlusFeature? {
             switch self {
             case .netDeficitToggle: .netDeficit
+            case .macrosToggle: .macros
             case .activeRestingToggle: .activeResting
             case .energyAveragesToggle: .energyAverages
             case .deepTrendsUpgrade: .deepTrends
@@ -674,6 +676,7 @@ struct MainTabView: View {
         // PDF unlock implicitly with Pro and need no stored setting.
         switch intent {
         case .netDeficitToggle: pendingFeatureEnable = .netDeficit
+        case .macrosToggle: pendingFeatureEnable = .macros
         case .activeRestingToggle: pendingFeatureEnable = .activeResting
         case .energyAveragesToggle: pendingFeatureEnable = .energyAverages
         case .projectionsToggle: pendingFeatureEnable = .projections
@@ -711,6 +714,19 @@ struct MainTabView: View {
                     return
                 }
                 NotificationCenter.default.post(name: .vitalsEnableNetDeficitWithDietaryAuth, object: nil)
+            }
+        case .macros:
+            // Same deferral as Net Deficit: the macro HealthKit permission sheet
+            // is suppressed while any conversion sheet is still on screen.
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 700_000_000)
+                guard !showTrialOffer, !showTrialPaywall, !showMilestone else {
+                    try? await Task.sleep(nanoseconds: 700_000_000)
+                    guard !showTrialOffer, !showTrialPaywall, !showMilestone else { return }
+                    NotificationCenter.default.post(name: .vitalsEnableMacrosWithHealthAuth, object: nil)
+                    return
+                }
+                NotificationCenter.default.post(name: .vitalsEnableMacrosWithHealthAuth, object: nil)
             }
         case .activeResting:
             goals.showActiveRestingBreakdown = true
@@ -1271,6 +1287,7 @@ private struct PremiumFeaturesView: View {
             let periodEnd = history.map(\.date).max() ?? end ?? Date.now
             let previous = await previousWindow(start: periodStart, end: periodEnd, days: days)
             let foodMap = await dietaryMap(start: start, end: end, days: days)
+            let macrosByDay = await macroMap(start: start, end: end, days: days)
             let calendar = Calendar.current
 
             let reportDays = history.map { rec in
@@ -1279,7 +1296,8 @@ private struct PremiumFeaturesView: View {
                     activeCalories: rec.active,
                     restingCalories: rec.resting,
                     steps: rec.steps,
-                    foodCalories: foodMap[calendar.startOfDay(for: rec.date)]
+                    foodCalories: foodMap[calendar.startOfDay(for: rec.date)],
+                    macros: macrosByDay[calendar.startOfDay(for: rec.date)]
                 )
             }
             let previousDays = previous.map { rec in
@@ -1316,6 +1334,28 @@ private struct PremiumFeaturesView: View {
         let priorEnd = calendar.date(byAdding: .day, value: -1, to: start) ?? start
         let priorStart = calendar.date(byAdding: .day, value: -(lengthDays - 1), to: priorEnd) ?? priorEnd
         return (try? await healthKit.fetchHistory(from: priorStart, to: priorEnd)) ?? []
+    }
+
+    private func macroMap(start: Date?, end: Date?, days: Int?) async -> [Date: MacroTotals] {
+        guard goals.showMacros else { return [:] }
+        let daily: [(date: Date, macros: MacroTotals)]
+        do {
+            if let days {
+                daily = try await healthKit.fetchMacroHistory(days: days)
+            } else if let start, let end {
+                daily = try await healthKit.fetchMacroHistory(from: start, to: end)
+            } else {
+                daily = try await healthKit.fetchMacroHistory(days: 30)
+            }
+        } catch {
+            return [:]
+        }
+        var map: [Date: MacroTotals] = [:]
+        let calendar = Calendar.current
+        for day in daily {
+            map[calendar.startOfDay(for: day.date)] = day.macros
+        }
+        return map
     }
 
     private func dietaryMap(start: Date?, end: Date?, days: Int?) async -> [Date: Double] {

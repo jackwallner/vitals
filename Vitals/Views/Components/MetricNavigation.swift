@@ -6,6 +6,7 @@ enum HistoryMetric: String, Identifiable, Hashable {
     case calories
     case steps
     case net
+    case macros
 
     var id: String { rawValue }
 
@@ -14,6 +15,7 @@ enum HistoryMetric: String, Identifiable, Hashable {
         case .calories: return "Calories"
         case .steps: return "Steps"
         case .net: return "Net Deficit"
+        case .macros: return "Macros"
         }
     }
 
@@ -22,6 +24,7 @@ enum HistoryMetric: String, Identifiable, Hashable {
         case .calories: return Theme.caloriesPrimary
         case .steps: return Theme.stepsPrimary
         case .net: return Theme.netDeficitBrand
+        case .macros: return Theme.macrosBrand
         }
     }
 }

@@ -125,6 +125,20 @@ struct SummaryReportView: View {
                     )
                 }
             }
+            if let avgMacros = report.avgMacros {
+                HStack(spacing: 10) {
+                    ForEach(MacroKind.allCases) { kind in
+                        MetricTile(
+                            label: "AVG \(kind.label.uppercased())",
+                            value: "\(Int(avgMacros.grams(kind).rounded())) g",
+                            sub: "\(report.macroDayCount) logged days",
+                            accent: Theme.macroColor(kind),
+                            trendPct: nil,
+                            compact: isCompact
+                        )
+                    }
+                }
+            }
             if hasGoalsRow {
                 HStack(spacing: 10) {
                     if let goal = report.calorieGoal {

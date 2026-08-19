@@ -34,6 +34,10 @@ extension Notification.Name {
     /// must dismiss covering sheets first, then flip the setting and request
     /// dietary HealthKit auth — otherwise the system permission UI is suppressed.
     static let vitalsEnableNetDeficitWithDietaryAuth = Notification.Name("vitalsEnableNetDeficitWithDietaryAuth")
+
+    /// Pro user turned Macros on. Same dance as Net Deficit: dismiss covering
+    /// sheets, flip the setting, then ask HealthKit for the macro read types.
+    static let vitalsEnableMacrosWithHealthAuth = Notification.Name("vitalsEnableMacrosWithHealthAuth")
 }
 
 @MainActor
@@ -121,6 +125,7 @@ struct HistoryView: View {
     @State private var showCustomRange = false
     @State private var records: [DayRecord] = []
     @State private var foodByDay: [Date: Double] = [:]
+    @State private var macrosByDay: [Date: MacroTotals] = [:]
     @State private var previousRecords: [DayRecord] = []
     @State private var isLoading = true
     @State private var loadToken: Int = 0
@@ -139,6 +144,7 @@ struct HistoryView: View {
     @State private var selectedCalorieDate: Date?
     @State private var selectedStepDate: Date?
     @State private var selectedNetDate: Date?
+    @State private var selectedMacroDate: Date?
     @State private var loadErrorMessage: String? = nil
     @State private var generateReportAfterCustomApply = false
     @State private var generatedMonthlySummaryMonth: String? = HistoryPrefs.generatedMonthlySummaryMonth()
@@ -340,6 +346,78 @@ struct HistoryView: View {
 
     private func netColor(for value: Double) -> Color {
         value >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative
+    }
+
+    // MARK: - Macro Helpers
+
+    private var isMacrosEnabled: Bool {
+        store.isPro && goals.showMacros
+    }
+
+    private func macros(for date: Date) -> MacroTotals {
+        macrosByDay[Calendar.current.startOfDay(for: date)] ?? .zero
+    }
+
+    /// Only days with macros actually logged. A day where the user forgot to log
+    /// (or used an app that writes calories but not macros) would otherwise pull
+    /// every average toward zero and read as a real drop in intake.
+    private var macroRecords: [DayRecord] {
+        records.filter { macros(for: $0.date).hasData }
+    }
+
+    private var hasMacroData: Bool { !macroRecords.isEmpty }
+
+    private var macroSummary: MacroSummary? {
+        MacroSummary.make(macrosByDay: macrosByDay)
+    }
+
+    /// One stacked entry per macro per bucket. Aggregated buckets average across
+    /// the logged days they contain, matching how the other charts aggregate.
+    private var macroChartData: [(date: Date, kind: MacroKind, value: Double, id: String)] {
+        let buckets: [(date: Date, days: [DayRecord])]
+        if shouldAggregateByMonth {
+            buckets = aggregateByMonth(records: macroRecords).map { month in
+                (month.monthStart, macroRecords.filter {
+                    Calendar.current.isDate($0.date, equalTo: month.monthStart, toGranularity: .month)
+                })
+            }
+        } else if shouldAggregateByWeek {
+            buckets = aggregateByWeek(records: macroRecords).map { week in
+                (week.weekStart, macroRecords.filter {
+                    Calendar.current.isDate(DateHelpers.startOfWeek($0.date), equalTo: week.weekStart, toGranularity: .day)
+                })
+            }
+        } else {
+            buckets = macroRecords.map { ($0.date, [$0]) }
+        }
+
+        return buckets.flatMap { bucket -> [(date: Date, kind: MacroKind, value: Double, id: String)] in
+            guard !bucket.days.isEmpty else { return [] }
+            let avg = bucket.days.reduce(MacroTotals.zero) { $0 + macros(for: $1.date) } / Double(bucket.days.count)
+            return MacroKind.allCases.map {
+                (bucket.date, $0, avg.grams($0), "\(bucket.date.timeIntervalSince1970)-\($0.rawValue)")
+            }
+        }
+    }
+
+    /// Total grams (all three macros) for the bucket containing `date`, used for
+    /// the chart's selection readout.
+    private func macroBucketTotal(for date: Date) -> MacroTotals {
+        let cal = Calendar.current
+        let matching = macroChartData.filter { cal.isDate($0.date, equalTo: date, toGranularity: chartDateGranularity) }
+        guard !matching.isEmpty else { return .zero }
+        return MacroTotals(
+            protein: matching.first { $0.kind == .protein }?.value ?? 0,
+            carbs: matching.first { $0.kind == .carbs }?.value ?? 0,
+            fat: matching.first { $0.kind == .fat }?.value ?? 0
+        )
+    }
+
+    /// "142P · 186C · 61F" — the compact form used in cards and the recent list.
+    private func macroShortText(_ totals: MacroTotals) -> String {
+        MacroKind.allCases
+            .map { "\(Int(totals.grams($0).rounded()))\($0.initial)" }
+            .joined(separator: " · ")
     }
 
     @ViewBuilder
@@ -545,6 +623,11 @@ struct HistoryView: View {
                                 }
                             }
 
+                            // Macros row (if enabled)
+                            if isMacrosEnabled && hasMacroData {
+                                macroAverageCards
+                            }
+
                             // Calories chart
                             ChartCard(title: "Calories", selection: selectedCalorieRecord, metricLink: .calories) {
                                 caloriesChart
@@ -561,6 +644,15 @@ struct HistoryView: View {
                             if store.isPro && goals.showNetCalories {
                                 ChartCard(title: "Net Deficit", selection: hasNetData ? selectedNetRecord : nil, metricLink: .net) {
                                     netDeficitCardContent
+                                }
+                            }
+
+                            // Macros chart, same always-present treatment as Net
+                            // Deficit so the section is discoverable before any
+                            // food has been logged.
+                            if isMacrosEnabled {
+                                ChartCard(title: "Macros", selection: hasMacroData ? selectedMacroRecord : nil, metricLink: .macros) {
+                                    macrosCardContent
                                 }
                             }
 
@@ -594,6 +686,9 @@ struct HistoryView: View {
             }
         }
         .onChange(of: goals.showNetCalories) { _, _ in
+            Task { await loadHistory() }
+        }
+        .onChange(of: goals.showMacros) { _, _ in
             Task { await loadHistory() }
         }
         .onChange(of: healthKit.isAuthorized) { _, newValue in
@@ -747,7 +842,8 @@ struct HistoryView: View {
                 activeCalories: rec.activeCalories,
                 restingCalories: rec.restingCalories,
                 steps: rec.steps,
-                foodCalories: foodByDay[Calendar.current.startOfDay(for: rec.date)]
+                foodCalories: foodByDay[Calendar.current.startOfDay(for: rec.date)],
+                macros: isMacrosEnabled ? macros(for: rec.date) : nil
             )
         }
         let prevDays: [ReportDay] = previousRecords.map { rec in
@@ -807,13 +903,23 @@ struct HistoryView: View {
                 }
             }
 
+            var macroMap: [Date: MacroTotals] = [:]
+            if isMacrosEnabled {
+                if let daily = try? await healthKit.fetchMacroHistory(days: 30) {
+                    for day in daily {
+                        macroMap[calendar.startOfDay(for: day.date)] = day.macros
+                    }
+                }
+            }
+
             let reportDays = history.map { rec in
                 ReportDay(
                     date: rec.date,
                     activeCalories: rec.active,
                     restingCalories: rec.resting,
                     steps: rec.steps,
-                    foodCalories: foodMap[calendar.startOfDay(for: rec.date)]
+                    foodCalories: foodMap[calendar.startOfDay(for: rec.date)],
+                    macros: macroMap[calendar.startOfDay(for: rec.date)]
                 )
             }
             let previousDays = previous.map { rec in
@@ -917,6 +1023,19 @@ struct HistoryView: View {
             date: item.date,
             primary: ("Net", selectedChartValue(formatSignedNet(item.value))),
             dateLabel: selectedChartDateLabel(for: item.date)
+        )
+    }
+
+    private var selectedMacroRecord: ChartSelection? {
+        guard let selectedMacroDate,
+              let bucket = macroChartData.first(where: {
+                  Calendar.current.isDate($0.date, equalTo: selectedMacroDate, toGranularity: chartDateGranularity)
+              })
+        else { return nil }
+        return ChartSelection(
+            date: bucket.date,
+            primary: ("Macros", macroShortText(macroBucketTotal(for: bucket.date))),
+            dateLabel: selectedChartDateLabel(for: bucket.date)
         )
     }
 
@@ -1114,6 +1233,99 @@ struct HistoryView: View {
         }
     }
 
+    // MARK: - Macros chart
+
+    /// Stacked grams per day: one bar, three segments, so the day's composition
+    /// reads at a glance without three separate charts competing for space.
+    /// Grams (not calories) because that is the unit people set targets in.
+    private var macrosChart: some View {
+        Chart(macroChartData, id: \.id) { item in
+            BarMark(
+                x: .value("Date", item.date, unit: chartDateUnit),
+                y: .value("Grams", item.value)
+            )
+            .foregroundStyle(by: .value("Macro", item.kind.label))
+            .opacity(selectedMacroDate == nil || Calendar.current.isDate(item.date, equalTo: selectedMacroDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3)
+            .cornerRadius(2)
+        }
+        .chartForegroundStyleScale([
+            MacroKind.protein.label: Theme.proteinPrimary,
+            MacroKind.carbs.label: Theme.carbsPrimary,
+            MacroKind.fat.label: Theme.fatPrimary,
+        ])
+        .chartLegend(position: .bottom, spacing: 8)
+        .chartXSelection(value: $selectedMacroDate)
+        .chartXAxis {
+            AxisMarks(values: .stride(by: chartXAxisStrideBy, count: chartXAxisStrideCount)) { value in
+                AxisValueLabel {
+                    if let date = value.as(Date.self) {
+                        Text(chartDateLabel(date))
+                            .font(.caption2)
+                            .foregroundStyle(Theme.textTertiary)
+                    }
+                }
+            }
+        }
+        .chartYAxis {
+            AxisMarks { value in
+                AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
+                    .foregroundStyle(Color(.separator).opacity(0.3))
+                AxisValueLabel {
+                    if let v = value.as(Double.self) {
+                        Text("\(Int(v)) g")
+                            .font(.caption2)
+                            .foregroundStyle(Theme.textTertiary)
+                    }
+                }
+            }
+        }
+        .frame(minHeight: 180, maxHeight: 240)
+    }
+
+    @ViewBuilder
+    private var macrosCardContent: some View {
+        if hasMacroData {
+            macrosChart
+        } else if inflightLoads > 0 {
+            SkeletonBlock()
+                .frame(minHeight: 180, maxHeight: 240)
+                .frame(maxWidth: .infinity)
+        } else {
+            VStack(spacing: 8) {
+                Image(systemName: "chart.pie")
+                    .font(.system(size: 28))
+                    .foregroundStyle(Theme.textTertiary)
+                Text("No macros logged this period")
+                    .font(.system(.subheadline, design: .rounded, weight: .medium))
+                    .foregroundStyle(Theme.textSecondary)
+                Text("Log meals in a food app that writes protein, carbs, and fat to Apple Health, like MyFitnessPal.")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .multilineTextAlignment(.center)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(minHeight: 180)
+            .padding(.horizontal, 8)
+        }
+    }
+
+    /// Avg grams per logged day, one card per macro. Three across rather than the
+    /// usual two, because a macro split only makes sense read together.
+    @ViewBuilder
+    private var macroAverageCards: some View {
+        if let summary = macroSummary {
+            HStack(spacing: 12) {
+                ForEach(MacroKind.allCases) { kind in
+                    AverageCard(
+                        label: "Avg \(kind.label)",
+                        value: "\(Int(summary.average.grams(kind).rounded())) g",
+                        color: Theme.macroColor(kind)
+                    )
+                }
+            }
+        }
+    }
+
     // MARK: - Focused single-metric detail
 
     private var periodSelectorBar: some View {
@@ -1203,6 +1415,9 @@ struct HistoryView: View {
         .onChange(of: goals.showNetCalories) { _, _ in
             Task { await loadHistory() }
         }
+        .onChange(of: goals.showMacros) { _, _ in
+            Task { await loadHistory() }
+        }
         .onChange(of: healthKit.isAuthorized) { _, newValue in
             if newValue { Task { await loadHistory() } }
         }
@@ -1256,6 +1471,32 @@ struct HistoryView: View {
                     WideTotalCard(label: "Total Deficit", value: formatSignedNet(totalNetDeficit), color: netColor(for: totalNetDeficit))
                 }
             }
+        case .macros:
+            if let summary = macroSummary {
+                VStack(spacing: 12) {
+                    macroAverageCards
+                    if let bestDate = summary.bestProteinDate {
+                        HStack(spacing: 12) {
+                            PeakCard(
+                                label: "Best Protein",
+                                value: "\(Int(summary.bestProtein.rounded())) g",
+                                date: bestDate,
+                                color: Theme.proteinPrimary
+                            )
+                            AverageCard(
+                                label: "Days Logged",
+                                value: summary.loggedDays.formatted(.number),
+                                color: Theme.macrosBrand
+                            )
+                        }
+                    }
+                    WideTotalCard(
+                        label: "Avg Macro Calories",
+                        value: Int(summary.average.calories.rounded()).formatted(.number),
+                        color: Theme.macrosBrand
+                    )
+                }
+            }
         }
     }
 
@@ -1268,6 +1509,8 @@ struct HistoryView: View {
             ChartCard(title: "Steps", selection: selectedStepRecord) { stepsChart }
         case .net:
             ChartCard(title: "Net Deficit", selection: hasNetData ? selectedNetRecord : nil) { netDeficitCardContent }
+        case .macros:
+            ChartCard(title: "Macros", selection: hasMacroData ? selectedMacroRecord : nil) { macrosCardContent }
         }
     }
 
@@ -1280,6 +1523,8 @@ struct HistoryView: View {
             source = records.filter { $0.totalCalories > 0 || $0.steps > 0 }
         case .net:
             source = netRecords
+        case .macros:
+            source = macroRecords
         }
         let sorted = source.sorted { $0.date > $1.date }
         let value: (DayRecord) -> Double = { rec in
@@ -1287,6 +1532,9 @@ struct HistoryView: View {
             case .calories: return rec.totalCalories
             case .steps: return Double(rec.steps)
             case .net: return netDeficit(for: rec)
+            // Macros have no single number; the row renders its own text below,
+            // and total grams is the only sensible thing to trend against.
+            case .macros: return MacroKind.allCases.reduce(0) { $0 + macros(for: rec.date).grams($1) }
             }
         }
         return sorted.prefix(limit).enumerated().map { index, rec in
@@ -1299,6 +1547,7 @@ struct HistoryView: View {
             case .calories: valueText = v.formatted(.number.precision(.fractionLength(0)))
             case .steps: valueText = Int(v.rounded()).formatted(.number)
             case .net: valueText = formatSignedNet(v)
+            case .macros: valueText = macroShortText(macros(for: rec.date))
             }
             return RecentDayRow(date: rec.date, valueText: valueText, delta: delta, tint: metric.tint)
         }
@@ -1398,9 +1647,11 @@ struct HistoryView: View {
         records = []
         previousRecords = []
         foodByDay = [:]
+        macrosByDay = [:]
         selectedCalorieDate = nil
         selectedStepDate = nil
         selectedNetDate = nil
+        selectedMacroDate = nil
         animateContent = false
         isLoading = true
     }
@@ -1419,6 +1670,7 @@ struct HistoryView: View {
         selectedCalorieDate = nil
         selectedStepDate = nil
         selectedNetDate = nil
+        selectedMacroDate = nil
         loadErrorMessage = nil
 
         // Cache prime: paint instantly from SwiftData when we have any cached
@@ -1477,11 +1729,34 @@ struct HistoryView: View {
                 }
             }
 
+            // Macros are independent of Net Deficit, so they get their own fetch
+            // and their own non-fatal failure: a macro read that fails shouldn't
+            // take the calorie and step charts down with it.
+            var macroMap: [Date: MacroTotals] = [:]
+            if isMacrosEnabled {
+                do {
+                    let daily: [(date: Date, macros: MacroTotals)]
+                    if period == .custom {
+                        daily = try await healthKit.fetchMacroHistory(from: rangeStart, to: rangeEnd)
+                    } else {
+                        daily = try await healthKit.fetchMacroHistory(days: period.days ?? 7)
+                    }
+                    guard token == loadToken else { return }
+                    let cal = Calendar.current
+                    for day in daily {
+                        macroMap[cal.startOfDay(for: day.date)] = day.macros
+                    }
+                } catch {
+                    historyLogger.error("Macro history fetch failed: \(String(describing: error), privacy: .public)")
+                }
+            }
+
             withAnimation(.easeOut(duration: 0.3)) {
                 records = history.map {
                     DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
                 }
                 foodByDay = foodMap
+                macrosByDay = macroMap
             }
             // Persist the fetched history to the shared cache so the watch can read it.
             try? healthKit.saveHistoryToCache(history: history)
@@ -1584,9 +1859,13 @@ struct HistoryView: View {
         formatter.dateFormat = "yyyy-MM-dd"
 
         let includeNet = store.isPro && goals.showNetCalories
-        let columns = includeNet
-            ? ["Date", "Active Calories", "Resting Calories", "Total Calories", "Steps", "Food Calories", "Net Deficit"]
-            : ["Date", "Active Calories", "Resting Calories", "Total Calories", "Steps"]
+        var columns = ["Date", "Active Calories", "Resting Calories", "Total Calories", "Steps"]
+        if includeNet {
+            columns += ["Food Calories", "Net Deficit"]
+        }
+        if isMacrosEnabled {
+            columns += ["Protein (g)", "Carbs (g)", "Fat (g)"]
+        }
         let header = columns.map(Self.csvEscape).joined(separator: ",") + "\n"
 
         let rows = records.map { r -> String in
@@ -1604,6 +1883,17 @@ struct HistoryView: View {
                 } else {
                     fields.append("")
                     fields.append("")
+                }
+            }
+            if isMacrosEnabled {
+                let day = macros(for: r.date)
+                // Blank, not 0, on unlogged days: a spreadsheet average over
+                // zeros would misreport intake exactly the way the in-app
+                // averages deliberately avoid.
+                if day.hasData {
+                    fields += MacroKind.allCases.map { String(format: "%.0f", day.grams($0)) }
+                } else {
+                    fields += ["", "", ""]
                 }
             }
             return fields.map(Self.csvEscape).joined(separator: ",")
@@ -2201,6 +2491,11 @@ private struct AverageCard: View {
                 .foregroundStyle(Theme.textSecondary)
                 .textCase(.uppercase)
                 .tracking(0.8)
+                // Three-across macro cards ("AVG PROTEIN") would otherwise wrap
+                // and push their value down out of line with the shorter labels
+                // beside them.
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
             Text(value)
                 .font(.system(.title3, design: .rounded, weight: .bold).monospacedDigit())
                 .foregroundStyle(color)
@@ -2340,6 +2635,14 @@ private struct RecentDaysList: View {
     let metric: HistoryMetric
     let rows: [RecentDayRow]
 
+    private var recentDaysEmptyText: String {
+        switch metric {
+        case .net: "No days with food logged yet."
+        case .macros: "No days with macros logged yet."
+        case .calories, .steps: "No recent activity to show."
+        }
+    }
+
     private static let dateFormatter: DateFormatter = {
         let f = DateFormatter()
         f.dateFormat = "EEE, MMM d"
@@ -2353,7 +2656,7 @@ private struct RecentDaysList: View {
                 .foregroundStyle(Theme.textPrimary)
 
             if rows.isEmpty {
-                Text(metric == .net ? "No days with food logged yet." : "No recent activity to show.")
+                Text(recentDaysEmptyText)
                     .font(.system(.subheadline, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
                     .frame(maxWidth: .infinity, alignment: .leading)
