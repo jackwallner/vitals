@@ -76,6 +76,9 @@ struct SummaryReport: Sendable {
     /// deficit aggregates above.
     let avgMacros: MacroTotals?
     let macroDayCount: Int
+    /// Which macros the user tracks, in display order. The report shows only
+    /// these, matching what they see in the app.
+    let macroKinds: [MacroKind]
 
     var calendarLabel: String {
         let f = DateFormatter()
@@ -96,7 +99,8 @@ enum SummaryReportGenerator {
         previousDays: [ReportDay] = [],
         calorieGoal: Double?,
         stepGoal: Int?,
-        netDeficitFastingMode: Bool = false
+        netDeficitFastingMode: Bool = false,
+        macroKinds: [MacroKind] = MacroKind.allCases
     ) -> SummaryReport {
         let nonZeroCalDays = days.filter { $0.totalCalories > 0 }
         let nonZeroStepDays = days.filter { $0.steps > 0 }
@@ -137,8 +141,10 @@ enum SummaryReportGenerator {
         let totalNet: Double? = netDays.isEmpty ? nil : netDays.map(\.value).reduce(0, +)
         let bestNet: ReportDay? = netDays.max(by: { $0.value < $1.value })?.day
 
-        // Same "only count logged days" rule the in-app macro averages use.
-        let macroDays = days.compactMap { $0.macros }.filter(\.hasData)
+        // Same "only count logged days" rule the in-app macro averages use,
+        // scoped to the macros the user actually tracks.
+        let trackedMacros = Set(macroKinds)
+        let macroDays = days.compactMap { $0.macros }.filter { $0.hasData(in: trackedMacros) }
         let avgMacros: MacroTotals? = macroDays.isEmpty
             ? nil
             : macroDays.reduce(MacroTotals.zero, +) / Double(macroDays.count)
@@ -170,7 +176,8 @@ enum SummaryReportGenerator {
             bestNetDay: bestNet,
             netDeficitDayCount: netDays.count,
             avgMacros: avgMacros,
-            macroDayCount: macroDays.count
+            macroDayCount: macroDays.count,
+            macroKinds: macroKinds
         )
     }
 

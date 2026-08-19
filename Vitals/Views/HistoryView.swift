@@ -360,15 +360,17 @@ struct HistoryView: View {
 
     /// Only days with macros actually logged. A day where the user forgot to log
     /// (or used an app that writes calories but not macros) would otherwise pull
-    /// every average toward zero and read as a real drop in intake.
+    /// every average toward zero and read as a real drop in intake. Scoped to the
+    /// macros the user is tracking, so a carb counter's history isn't padded with
+    /// days that only carry protein.
     private var macroRecords: [DayRecord] {
-        records.filter { macros(for: $0.date).hasData }
+        records.filter { macros(for: $0.date).hasData(in: goals.visibleMacroSet) }
     }
 
     private var hasMacroData: Bool { !macroRecords.isEmpty }
 
     private var macroSummary: MacroSummary? {
-        MacroSummary.make(macrosByDay: macrosByDay)
+        MacroSummary.make(macrosByDay: macrosByDay, visible: goals.visibleMacroSet)
     }
 
     /// One stacked entry per macro per bucket. Aggregated buckets average across
@@ -394,7 +396,7 @@ struct HistoryView: View {
         return buckets.flatMap { bucket -> [(date: Date, kind: MacroKind, value: Double, id: String)] in
             guard !bucket.days.isEmpty else { return [] }
             let avg = bucket.days.reduce(MacroTotals.zero) { $0 + macros(for: $1.date) } / Double(bucket.days.count)
-            return MacroKind.allCases.map {
+            return goals.visibleMacros.map {
                 (bucket.date, $0, avg.grams($0), "\(bucket.date.timeIntervalSince1970)-\($0.rawValue)")
             }
         }
@@ -866,7 +868,8 @@ struct HistoryView: View {
             previousDays: prevDays,
             calorieGoal: goals.calorieGoal,
             stepGoal: goals.stepGoal,
-            netDeficitFastingMode: goals.netDeficitFastingMode
+            netDeficitFastingMode: goals.netDeficitFastingMode,
+            macroKinds: goals.visibleMacros
         )
 
         do {
@@ -942,7 +945,8 @@ struct HistoryView: View {
                 previousDays: previousDays,
                 calorieGoal: goals.calorieGoal,
                 stepGoal: goals.stepGoal,
-                netDeficitFastingMode: goals.netDeficitFastingMode
+                netDeficitFastingMode: goals.netDeficitFastingMode,
+                macroKinds: goals.visibleMacros
             )
             let url = try SummaryReportPDF.render(report)
             pdfFile = PDFFile(url: url)
@@ -1248,12 +1252,12 @@ struct HistoryView: View {
             .opacity(selectedMacroDate == nil || Calendar.current.isDate(item.date, equalTo: selectedMacroDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3)
             .cornerRadius(2)
         }
-        .chartForegroundStyleScale([
-            MacroKind.protein.label: Theme.proteinPrimary,
-            MacroKind.carbs.label: Theme.carbsPrimary,
-            MacroKind.fat.label: Theme.fatPrimary,
-        ])
-        .chartLegend(position: .bottom, spacing: 8)
+        .chartForegroundStyleScale(
+            domain: goals.visibleMacros.map(\.label),
+            range: goals.visibleMacros.map(Theme.macroColor)
+        )
+        // A single tracked macro needs no legend to tell it apart from itself.
+        .chartLegend(goals.visibleMacros.count > 1 ? .visible : .hidden)
         .chartXSelection(value: $selectedMacroDate)
         .chartXAxis {
             AxisMarks(values: .stride(by: chartXAxisStrideBy, count: chartXAxisStrideCount)) { value in
@@ -1314,13 +1318,25 @@ struct HistoryView: View {
     @ViewBuilder
     private var macroAverageCards: some View {
         if let summary = macroSummary {
-            HStack(spacing: 12) {
-                ForEach(MacroKind.allCases) { kind in
-                    AverageCard(
-                        label: "Avg \(kind.label)",
-                        value: "\(Int(summary.average.grams(kind).rounded())) g",
-                        color: Theme.macroColor(kind)
-                    )
+            let visible = goals.visibleMacros
+            if let only = visible.first, visible.count == 1 {
+                // A lone tall card leaves most of its width empty; the wide row
+                // form (label left, value right) is what the rest of the screen
+                // uses for a single full-width figure.
+                WideTotalCard(
+                    label: "Avg \(only.label)",
+                    value: "\(Int(summary.average.grams(only).rounded())) g",
+                    color: Theme.macroColor(only)
+                )
+            } else {
+                HStack(spacing: 12) {
+                    ForEach(visible) { kind in
+                        AverageCard(
+                            label: "Avg \(kind.label)",
+                            value: "\(Int(summary.average.grams(kind).rounded())) g",
+                            color: Theme.macroColor(kind)
+                        )
+                    }
                 }
             }
         }
@@ -1475,25 +1491,32 @@ struct HistoryView: View {
             if let summary = macroSummary {
                 VStack(spacing: 12) {
                     macroAverageCards
-                    if let bestDate = summary.bestProteinDate {
-                        HStack(spacing: 12) {
+                    HStack(spacing: 12) {
+                        // Peak is for whichever macro the user leads with, so a
+                        // carb counter gets "Best Carbs", not a protein figure
+                        // they never asked to see.
+                        if let primary = goals.visibleMacros.first,
+                           let best = summary.bestDay(for: primary) {
                             PeakCard(
-                                label: "Best Protein",
-                                value: "\(Int(summary.bestProtein.rounded())) g",
-                                date: bestDate,
-                                color: Theme.proteinPrimary
-                            )
-                            AverageCard(
-                                label: "Days Logged",
-                                value: summary.loggedDays.formatted(.number),
-                                color: Theme.macrosBrand
+                                label: "Best \(primary.label)",
+                                value: "\(Int(best.grams.rounded())) g",
+                                date: best.date,
+                                color: Theme.macroColor(primary)
                             )
                         }
+                        // Neutral, not `macrosBrand`: these span all three
+                        // macros, and the brand blue is protein's colour
+                        // everywhere else on the screen.
+                        AverageCard(
+                            label: "Days Logged",
+                            value: summary.loggedDays.formatted(.number),
+                            color: Theme.textPrimary
+                        )
                     }
                     WideTotalCard(
                         label: "Avg Macro Calories",
                         value: Int(summary.average.calories.rounded()).formatted(.number),
-                        color: Theme.macrosBrand
+                        color: Theme.textPrimary
                     )
                 }
             }
@@ -1534,7 +1557,7 @@ struct HistoryView: View {
             case .net: return netDeficit(for: rec)
             // Macros have no single number; the row renders its own text below,
             // and total grams is the only sensible thing to trend against.
-            case .macros: return MacroKind.allCases.reduce(0) { $0 + macros(for: rec.date).grams($1) }
+            case .macros: return goals.visibleMacros.reduce(0) { $0 + macros(for: rec.date).grams($1) }
             }
         }
         return sorted.prefix(limit).enumerated().map { index, rec in
@@ -1542,6 +1565,20 @@ struct HistoryView: View {
             // Delta compares against the next-older day in the list.
             let olderIndex = index + 1
             let delta: Double? = olderIndex < sorted.count ? v - value(sorted[olderIndex]) : nil
+            if metric == .macros {
+                let day = macros(for: rec.date)
+                let visible = goals.visibleMacros
+                // The P/C/F suffix only earns its place when there is more than
+                // one number in the row to tell apart.
+                let segments = visible.map { kind in
+                    let grams = Int(day.grams(kind).rounded())
+                    return RecentDayRow.Segment(
+                        text: visible.count == 1 ? "\(grams) g" : "\(grams)\(kind.initial)",
+                        color: Theme.macroColor(kind)
+                    )
+                }
+                return RecentDayRow(date: rec.date, segments: segments, delta: delta)
+            }
             let valueText: String
             switch metric {
             case .calories: valueText = v.formatted(.number.precision(.fractionLength(0)))
@@ -1864,7 +1901,7 @@ struct HistoryView: View {
             columns += ["Food Calories", "Net Deficit"]
         }
         if isMacrosEnabled {
-            columns += ["Protein (g)", "Carbs (g)", "Fat (g)"]
+            columns += goals.visibleMacros.map { "\($0.label) (g)" }
         }
         let header = columns.map(Self.csvEscape).joined(separator: ",") + "\n"
 
@@ -1890,10 +1927,10 @@ struct HistoryView: View {
                 // Blank, not 0, on unlogged days: a spreadsheet average over
                 // zeros would misreport intake exactly the way the in-app
                 // averages deliberately avoid.
-                if day.hasData {
-                    fields += MacroKind.allCases.map { String(format: "%.0f", day.grams($0)) }
+                if day.hasData(in: goals.visibleMacroSet) {
+                    fields += goals.visibleMacros.map { String(format: "%.0f", day.grams($0)) }
                 } else {
-                    fields += ["", "", ""]
+                    fields += goals.visibleMacros.map { _ in "" }
                 }
             }
             return fields.map(Self.csvEscape).joined(separator: ",")
@@ -2623,10 +2660,32 @@ private struct ChartCard<Content: View>: View {
 struct RecentDayRow: Identifiable {
     let id = UUID()
     let date: Date
-    let valueText: String
+    /// One tinted piece of the day's value. Single-number metrics have exactly
+    /// one; macros have one per tracked macro so "155C" is drawn in the carb
+    /// colour instead of inheriting a blue that means protein everywhere else.
+    let segments: [Segment]
     /// Change vs the next-older day in the list; nil when there's no prior day.
     let delta: Double?
-    let tint: Color
+
+    struct Segment: Identifiable {
+        let id = UUID()
+        let text: String
+        let color: Color
+    }
+
+    var valueText: String {
+        segments.map(\.text).joined(separator: " · ")
+    }
+
+    init(date: Date, valueText: String, delta: Double?, tint: Color) {
+        self.init(date: date, segments: [Segment(text: valueText, color: tint)], delta: delta)
+    }
+
+    init(date: Date, segments: [Segment], delta: Double?) {
+        self.date = date
+        self.segments = segments
+        self.delta = delta
+    }
 }
 
 /// Recent-days list shown on the single-metric detail screen so "what was
@@ -2668,10 +2727,20 @@ private struct RecentDaysList: View {
                             .font(.system(.subheadline, design: .rounded))
                             .foregroundStyle(Theme.textSecondary)
                         Spacer()
-                        Text(row.valueText)
-                            .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
-                            .foregroundStyle(row.tint)
-                            .frame(minWidth: 64, alignment: .trailing)
+                        HStack(spacing: 5) {
+                            ForEach(Array(row.segments.enumerated()), id: \.element.id) { segmentIndex, segment in
+                                Text(segment.text)
+                                    .foregroundStyle(segment.color)
+                                if segmentIndex < row.segments.count - 1 {
+                                    Text("·")
+                                        .foregroundStyle(Theme.textTertiary)
+                                }
+                            }
+                        }
+                        .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
+                        .frame(minWidth: 64, alignment: .trailing)
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel("\(Self.dateFormatter.string(from: row.date)): \(row.valueText)")

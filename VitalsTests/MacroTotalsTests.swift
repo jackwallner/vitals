@@ -62,8 +62,7 @@ final class MacroTotalsTests: XCTestCase {
         XCTAssertEqual(summary.average.carbs, 150, accuracy: 0.001)
         XCTAssertEqual(summary.average.fat, 60, accuracy: 0.001)
         XCTAssertEqual(summary.total.protein, 300, accuracy: 0.001)
-        XCTAssertEqual(summary.bestProtein, 200, accuracy: 0.001)
-        XCTAssertEqual(summary.bestProteinDate, day(2))
+        XCTAssertEqual(summary.days.map(\.date), [day(0), day(2)])
     }
 
     func testSummaryIsNilWhenNothingLogged() {
@@ -99,5 +98,60 @@ extension MacroTotalsTests {
 
     func testSharePercentagesNilWhenNothingLogged() {
         XCTAssertNil(MacroTotals.zero.sharePercentages())
+    }
+}
+
+extension MacroTotalsTests {
+    func testHasDataIsScopedToTrackedMacros() {
+        let proteinOnlyDay = MacroTotals(protein: 40, carbs: 0, fat: 0)
+        XCTAssertTrue(proteinOnlyDay.hasData(in: [.protein]))
+        // A carb counter shouldn't see this day counted just because protein synced.
+        XCTAssertFalse(proteinOnlyDay.hasData(in: [.carbs]))
+        XCTAssertFalse(proteinOnlyDay.hasData(in: [.carbs, .fat]))
+        XCTAssertTrue(proteinOnlyDay.hasData(in: [.protein, .carbs]))
+    }
+
+    func testSummaryOnlyCountsDaysWithATrackedMacro() throws {
+        let calendar = Calendar(identifier: .gregorian)
+        let base = calendar.startOfDay(for: Date(timeIntervalSince1970: 1_700_000_000))
+        let day = { (o: Int) in calendar.date(byAdding: .day, value: o, to: base)! }
+        let macrosByDay: [Date: MacroTotals] = [
+            day(0): MacroTotals(protein: 100, carbs: 0, fat: 0),   // protein only
+            day(1): MacroTotals(protein: 0, carbs: 200, fat: 0),   // carbs only
+            day(2): MacroTotals(protein: 150, carbs: 100, fat: 40),
+        ]
+
+        let carbsOnly = try XCTUnwrap(MacroSummary.make(macrosByDay: macrosByDay, visible: [.carbs], calendar: calendar))
+        XCTAssertEqual(carbsOnly.loggedDays, 2)
+        XCTAssertEqual(carbsOnly.average.carbs, 150, accuracy: 0.001)
+
+        let all = try XCTUnwrap(MacroSummary.make(macrosByDay: macrosByDay, calendar: calendar))
+        XCTAssertEqual(all.loggedDays, 3)
+    }
+
+    func testBestDayIsPerMacroAndNilWhenUnlogged() throws {
+        let calendar = Calendar(identifier: .gregorian)
+        let base = calendar.startOfDay(for: Date(timeIntervalSince1970: 1_700_000_000))
+        let day = { (o: Int) in calendar.date(byAdding: .day, value: o, to: base)! }
+        let macrosByDay: [Date: MacroTotals] = [
+            day(0): MacroTotals(protein: 100, carbs: 300, fat: 0),
+            day(1): MacroTotals(protein: 180, carbs: 120, fat: 0),
+        ]
+        let summary = try XCTUnwrap(MacroSummary.make(macrosByDay: macrosByDay, calendar: calendar))
+
+        let bestProtein = try XCTUnwrap(summary.bestDay(for: .protein))
+        XCTAssertEqual(bestProtein.grams, 180, accuracy: 0.001)
+        XCTAssertEqual(bestProtein.date, day(1))
+
+        // Best carbs is a different day than best protein.
+        let bestCarbs = try XCTUnwrap(summary.bestDay(for: .carbs))
+        XCTAssertEqual(bestCarbs.date, day(0))
+
+        // Nothing logged for fat, so there is no best fat day to show.
+        XCTAssertNil(summary.bestDay(for: .fat))
+    }
+
+    func testMacroKindSortIsProteinCarbsFat() {
+        XCTAssertEqual(Set(MacroKind.allCases).sorted(), [.protein, .carbs, .fat])
     }
 }

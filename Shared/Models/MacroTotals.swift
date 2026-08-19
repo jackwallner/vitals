@@ -3,12 +3,18 @@ import Foundation
 /// The three macronutrients Vitals reads from Apple Health. Food apps
 /// (MyFitnessPal, Cronometer, Lose It) write these alongside dietary energy, so
 /// a user who already logs meals gets macros with no extra work.
-enum MacroKind: String, CaseIterable, Sendable, Identifiable {
+enum MacroKind: String, CaseIterable, Sendable, Identifiable, Comparable {
     case protein
     case carbs
     case fat
 
     var id: String { rawValue }
+
+    /// Sets of macros are rendered in declaration order (protein, carbs, fat)
+    /// everywhere, so a user toggling one off never reshuffles the other two.
+    static func < (lhs: MacroKind, rhs: MacroKind) -> Bool {
+        (allCases.firstIndex(of: lhs) ?? 0) < (allCases.firstIndex(of: rhs) ?? 0)
+    }
 
     var label: String {
         switch self {
@@ -86,7 +92,13 @@ struct MacroTotals: Equatable, Sendable {
     /// True once any macro has been logged. Days with no food (or a food app
     /// that only writes calories) stay out of averages and charts.
     var hasData: Bool {
-        protein > 0 || carbs > 0 || fat > 0
+        hasData(in: Set(MacroKind.allCases))
+    }
+
+    /// True when any of `kinds` was logged. A user tracking only carbs shouldn't
+    /// see a day counted (or a chart bar drawn) because they logged protein.
+    func hasData(in kinds: Set<MacroKind>) -> Bool {
+        kinds.contains { grams($0) > 0 }
     }
 
     /// Share of the day's macro calories this macro accounts for, 0...1.
@@ -141,25 +153,43 @@ struct MacroSummary: Equatable, Sendable {
     let average: MacroTotals
     let total: MacroTotals
     let loggedDays: Int
-    /// Best protein day in the window, the macro people actually chase.
-    let bestProteinDate: Date?
-    let bestProtein: Double
+    /// Logged days, oldest first, so callers can pick a best day per macro
+    /// rather than being handed one the user may not even be tracking.
+    let days: [Day]
 
-    static func make(macrosByDay: [Date: MacroTotals], calendar: Calendar = .current) -> MacroSummary? {
+    struct Day: Equatable, Sendable {
+        let date: Date
+        let totals: MacroTotals
+    }
+
+    /// Highest day for `kind`, or nil when nothing was logged for it.
+    func bestDay(for kind: MacroKind) -> (date: Date, grams: Double)? {
+        guard let best = days.max(by: { $0.totals.grams(kind) < $1.totals.grams(kind) }),
+              best.totals.grams(kind) > 0
+        else { return nil }
+        return (best.date, best.totals.grams(kind))
+    }
+
+    /// - Parameter visible: which macros count toward "this day has data". Days
+    ///   are still summed in full so the calorie split stays honest; the filter
+    ///   only decides which days qualify.
+    static func make(
+        macrosByDay: [Date: MacroTotals],
+        visible: Set<MacroKind> = Set(MacroKind.allCases),
+        calendar: Calendar = .current
+    ) -> MacroSummary? {
         let logged = macrosByDay
-            .filter { $0.value.hasData }
-            .map { (date: calendar.startOfDay(for: $0.key), totals: $0.value) }
+            .filter { $0.value.hasData(in: visible) }
+            .map { Day(date: calendar.startOfDay(for: $0.key), totals: $0.value) }
             .sorted { $0.date < $1.date }
         guard !logged.isEmpty else { return nil }
 
         let total = logged.reduce(MacroTotals.zero) { $0 + $1.totals }
-        let best = logged.max { $0.totals.protein < $1.totals.protein }
         return MacroSummary(
             average: total / Double(logged.count),
             total: total,
             loggedDays: logged.count,
-            bestProteinDate: best?.date,
-            bestProtein: best?.totals.protein ?? 0
+            days: logged
         )
     }
 }

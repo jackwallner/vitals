@@ -127,7 +127,7 @@ struct SummaryReportView: View {
             }
             if let avgMacros = report.avgMacros {
                 HStack(spacing: 10) {
-                    ForEach(MacroKind.allCases) { kind in
+                    ForEach(report.macroKinds, id: \.self) { kind in
                         MetricTile(
                             label: "AVG \(kind.label.uppercased())",
                             value: "\(Int(avgMacros.grams(kind).rounded())) g",
