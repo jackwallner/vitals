@@ -33,6 +33,7 @@ enum GoalSyncKeys {
     static let showNetCalories = "goalSync.showNetCalories"
     static let netDeficitFastingMode = "goalSync.netDeficitFastingMode"
     static let showMacros = "goalSync.showMacros"
+    static let visibleMacros = "goalSync.visibleMacros"
     static let showCalories = "goalSync.showCalories"
     static let showSteps = "goalSync.showSteps"
 }
@@ -302,6 +303,40 @@ final class GoalSettings: ObservableObject {
         }
     }
 
+    /// Which macros to show. Defaults to all three, but plenty of people track
+    /// one thing: carbs for diabetes management, protein for training. Toggling
+    /// the rest off keeps the card to what they actually look at, and the
+    /// calorie split still reads honestly because the hidden macros stay in the
+    /// denominator (the percentages just no longer sum to 100).
+    ///
+    /// Never empty (see `setMacroVisible`). An empty set would be a Macros
+    /// feature that shows nothing, which is what the Show Macros switch is for.
+    @Published private(set) var visibleMacroSet: Set<MacroKind> {
+        didSet {
+            defaults.set(visibleMacroSet.map(\.rawValue), forKey: "visibleMacros")
+            WidgetCenter.shared.reloadAllTimelines()
+        }
+    }
+
+    /// `visibleMacroSet` in the canonical protein / carbs / fat order.
+    var visibleMacros: [MacroKind] {
+        MacroKind.allCases.filter { visibleMacroSet.contains($0) }
+    }
+
+    func isMacroVisible(_ kind: MacroKind) -> Bool {
+        visibleMacroSet.contains(kind)
+    }
+
+    /// Turning the last visible macro off is a no-op: the user wants Macros off,
+    /// not a card with three empty rows, and Show Macros is right above it.
+    func setMacroVisible(_ visible: Bool, for kind: MacroKind) {
+        if visible {
+            visibleMacroSet.insert(kind)
+        } else if visibleMacroSet.count > 1 {
+            visibleMacroSet.remove(kind)
+        }
+    }
+
     /// Sub-option of Macros: when off (default) the dashboard shows grams and the
     /// day's split with no target to miss. When on, each macro gets a progress bar
     /// against `proteinGoal` / `carbGoal` / `fatGoal`. One switch rather than three,
@@ -455,6 +490,11 @@ final class GoalSettings: ObservableObject {
         self.showNetCalories = defaults.object(forKey: "showNetCalories") as? Bool ?? false
         self.netDeficitFastingMode = defaults.object(forKey: "netDeficitFastingMode") as? Bool ?? false
         self.showMacros = defaults.object(forKey: "showMacros") as? Bool ?? false
+        let storedVisibleMacros = (defaults.array(forKey: "visibleMacros") as? [String] ?? [])
+            .compactMap(MacroKind.init(rawValue:))
+        // Absent key (or a store wiped to nothing) means "all three", which is
+        // both the default and the only sane recovery from an empty set.
+        self.visibleMacroSet = storedVisibleMacros.isEmpty ? Set(MacroKind.allCases) : Set(storedVisibleMacros)
         self.macroGoalsEnabled = defaults.object(forKey: "macroGoalsEnabled") as? Bool ?? false
         self.proteinGoal = Self.sanitizedMacroGoal(defaults.object(forKey: "proteinGoal") as? Int, kind: .protein)
         self.carbGoal = Self.sanitizedMacroGoal(defaults.object(forKey: "carbGoal") as? Int, kind: .carbs)

@@ -1070,7 +1070,7 @@ struct DashboardView: View {
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(Theme.textTertiary)
                 Spacer(minLength: 8)
-                if macrosNumericReady && macros.hasData {
+                if macrosNumericReady && macros.hasData(in: goals.visibleMacroSet) {
                     Text("\(Int(macros.calories.rounded()).formatted(.number)) cal")
                         .font(.system(.caption, design: .rounded).monospacedDigit())
                         .foregroundStyle(Theme.textTertiary)
@@ -1113,21 +1113,21 @@ struct DashboardView: View {
         } else if !macrosReady {
             // Reserve the rows' footprint so the card doesn't jump when data lands.
             VStack(spacing: 10) {
-                ForEach(MacroKind.allCases) { kind in
+                ForEach(goals.visibleMacros) { kind in
                     SkeletonBlock(cornerRadius: 6)
                         .frame(height: 14)
                         .accessibilityHidden(true)
                         .id(kind)
                 }
             }
-        } else if macros.hasData {
+        } else if macros.hasData(in: goals.visibleMacroSet) {
             // Two presentations for two different jobs, the same split the app
             // already makes for calories: with a goal you get a progress bar,
             // without one you get the number. Goal-less macros are a reference
             // readout, so they use the same pill row as TDEE / BMR.
             if goals.macroGoalsEnabled {
                 VStack(spacing: 10) {
-                    ForEach(MacroKind.allCases) { kind in
+                    ForEach(goals.visibleMacros) { kind in
                         MacroBarRow(
                             kind: kind,
                             grams: macros.grams(kind),
@@ -1136,10 +1136,12 @@ struct DashboardView: View {
                     }
                 }
             } else {
+                let visible = goals.visibleMacros
                 HStack(spacing: 8) {
-                    ForEach(MacroKind.allCases) { kind in
-                        MacroPill(kind: kind, grams: macros.grams(kind))
+                    ForEach(visible) { kind in
+                        MacroPill(kind: kind, grams: macros.grams(kind), stretch: visible.count > 1)
                     }
+                    if visible.count == 1 { Spacer(minLength: 0) }
                 }
             }
             macroSplitCaption
@@ -1170,11 +1172,12 @@ struct DashboardView: View {
     @ViewBuilder
     private var macroSplitCaption: some View {
         if let percentages = macros.sharePercentages() {
+            let visible = goals.visibleMacros
             HStack(spacing: 5) {
-                ForEach(Array(MacroKind.allCases.enumerated()), id: \.element) { index, kind in
+                ForEach(Array(visible.enumerated()), id: \.element) { index, kind in
                     Text("\(percentages[kind] ?? 0)%")
                         .foregroundStyle(Theme.macroColor(kind))
-                    if index < MacroKind.allCases.count - 1 {
+                    if index < visible.count - 1 {
                         Text("·")
                             .foregroundStyle(Theme.textTertiary)
                     }
@@ -1191,7 +1194,7 @@ struct DashboardView: View {
     }
 
     private func macroSplitAccessibilityText(_ percentages: [MacroKind: Int]) -> String {
-        let parts = MacroKind.allCases.map { "\(percentages[$0] ?? 0) percent \($0.label.lowercased())" }
+        let parts = goals.visibleMacros.map { "\(percentages[$0] ?? 0) percent \($0.label.lowercased())" }
         return parts.joined(separator: ", ") + ", of macro calories"
     }
 
@@ -1945,7 +1948,7 @@ private enum SettingsInfoTopic: Identifiable {
         case .fastingMode:
             "When Fasting Mode is on, days with no food logged count toward your Net Deficit history. Off by default. Unlogged days are skipped so they don't read as a full-burn deficit."
         case .macros:
-            "Macros are the protein, carbs, and fat your food app writes to Apple Health. Log meals in MyFitnessPal (or any app that writes to Health) and they appear here alongside your calories and steps. Vitals only reads them; it never asks you to log food twice. Turn on Macro Goals to track each one against a daily gram target."
+            "Macros are the protein, carbs, and fat your food app writes to Apple Health. Log meals in MyFitnessPal (or any app that writes to Health) and they appear here alongside your calories and steps. Vitals only reads them; it never asks you to log food twice.\n\nShow only the ones you track: carbs alone for carb counting, protein alone for training. Turn on Macro Goals to track each against a daily gram target.\n\nIf your calories sync but macros stay empty, your food app is sharing Energy without the Nutrition categories. In MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing."
         case .endOfDayProjection:
             "Projects where today's calories and steps will land based on your pace so far. Uses the same pacing window you've chosen above."
         case .goalStreak:
@@ -2090,6 +2093,10 @@ private struct MetricPill: View {
 private struct MacroPill: View {
     let kind: MacroKind
     let grams: Double
+    /// Two or three pills divide the row evenly. A lone pill doesn't: stretching
+    /// one capsule the full width of the card leaves a number marooned in the
+    /// middle of it, so a single tracked macro keeps its natural width.
+    var stretch: Bool = true
 
     var body: some View {
         HStack(spacing: 4) {
@@ -2105,7 +2112,8 @@ private struct MacroPill: View {
         }
         .lineLimit(1)
         .minimumScaleFactor(0.7)
-        .frame(maxWidth: .infinity)
+        .padding(.horizontal, stretch ? 0 : 16)
+        .frame(maxWidth: stretch ? .infinity : nil)
         .padding(.vertical, 8)
         // The pills live inside the macros card, so they need the lighter
         // surface to read as raised — MetricPill sits on the page background
@@ -2737,6 +2745,13 @@ private struct SettingsSheet: View {
         !stepEnabled || (Int(stepText).map { (100...500000).contains($0) } ?? false)
     }
 
+    private func macroVisibleBinding(_ kind: MacroKind) -> Binding<Bool> {
+        Binding(
+            get: { goals.isMacroVisible(kind) },
+            set: { goals.setMacroVisible($0, for: kind) }
+        )
+    }
+
     private func macroGoalBinding(_ kind: MacroKind) -> Binding<String> {
         Binding(
             get: { macroGoalText[kind] ?? String(kind.defaultGoal) },
@@ -2745,7 +2760,7 @@ private struct SettingsSheet: View {
     }
 
     private func macroGoalValid(_ kind: MacroKind) -> Bool {
-        guard goals.macroGoalsEnabled else { return true }
+        guard goals.macroGoalsEnabled, goals.isMacroVisible(kind) else { return true }
         return Int(macroGoalText[kind] ?? "").map { kind.goalRange.contains($0) } ?? false
     }
 
@@ -3069,14 +3084,31 @@ private struct SettingsSheet: View {
                     Toggle(isOn: showMacrosBinding) {
                         plusToggleLabel("Show Macros")
                     }
+                    if store.isPro && goals.showMacros {
+                        ForEach(MacroKind.allCases) { kind in
+                            Toggle(isOn: macroVisibleBinding(kind)) {
+                                HStack(spacing: 10) {
+                                    // Same dot colour the pills, bars, and chart
+                                    // use, so the toggle teaches the mapping.
+                                    Circle()
+                                        .fill(Theme.macroColor(kind))
+                                        .frame(width: 10, height: 10)
+                                    Text(kind.label)
+                                }
+                            }
+                            // The last one on can't be switched off; Show Macros
+                            // above is the way to hide the card.
+                            .disabled(goals.isMacroVisible(kind) && goals.visibleMacroSet.count == 1)
+                        }
+                    }
                     Toggle(isOn: macroGoalsBinding) {
                         plusToggleLabel("Macro Goals")
                     }
                     .disabled(!store.isPro || !goals.showMacros)
                     if store.isPro && goals.showMacros && goals.macroGoalsEnabled {
-                        ForEach(MacroKind.allCases) { kind in
+                        ForEach(goals.visibleMacros) { kind in
                             HStack {
-                                Text(kind.label)
+                                Text("\(kind.label) goal")
                                     .foregroundStyle(Theme.textSecondary)
                                 Spacer()
                                 TextField(String(kind.defaultGoal), text: macroGoalBinding(kind))
@@ -3097,10 +3129,11 @@ private struct SettingsSheet: View {
                     Text("Macros")
                 } footer: {
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("Protein, carbs, and fat you log in Apple Health. A Vitals+ extra, off until you turn it on. Goal changes save when you tap Done.")
+                        Text("Protein, carbs, and fat you log in Apple Health. A Vitals+ extra, off until you turn it on. Turn off the ones you don't track. Goal changes save when you tap Done.")
                         settingsLearnMoreButton("Learn more about Macros", topic: .macros)
                     }
                 }
+
 
                 // Steps — the step counter and its goal together.
                 Section {

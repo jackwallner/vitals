@@ -37,6 +37,8 @@ private final class PhoneGoalSyncService: NSObject, WCSessionDelegate {
             GoalSyncKeys.calorieGoal: goals.calorieGoal ?? 2500,
             GoalSyncKeys.stepGoal: goals.stepGoal ?? 10000,
             GoalSyncKeys.showNetCalories: goals.showNetCalories && StoreService.shared.isPro,
+            GoalSyncKeys.showMacros: goals.showMacros && StoreService.shared.isPro,
+            GoalSyncKeys.visibleMacros: goals.visibleMacros.map(\.rawValue),
             GoalSyncKeys.netDeficitFastingMode: goals.netDeficitFastingMode,
             GoalSyncKeys.showCalories: goals.showCalories,
             GoalSyncKeys.showSteps: goals.showSteps,
@@ -1316,7 +1318,8 @@ private struct PremiumFeaturesView: View {
                 days: reportDays,
                 previousDays: previousDays,
                 calorieGoal: goals.calorieGoal,
-                stepGoal: goals.stepGoal
+                stepGoal: goals.stepGoal,
+                macroKinds: goals.visibleMacros
             )
             let url = try SummaryReportPDF.render(report)
             pdfTitle = title
