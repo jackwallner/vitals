@@ -1121,37 +1121,78 @@ struct DashboardView: View {
                 }
             }
         } else if macros.hasData {
-            let percentages = macros.sharePercentages()
-            VStack(spacing: 10) {
-                ForEach(MacroKind.allCases) { kind in
-                    MacroBarRow(
-                        kind: kind,
-                        grams: macros.grams(kind),
-                        goal: goals.macroGoal(for: kind),
-                        sharePercent: percentages?[kind]
-                    )
+            // Two presentations for two different jobs, the same split the app
+            // already makes for calories: with a goal you get a progress bar,
+            // without one you get the number. Goal-less macros are a reference
+            // readout, so they use the same pill row as TDEE / BMR.
+            if goals.macroGoalsEnabled {
+                VStack(spacing: 10) {
+                    ForEach(MacroKind.allCases) { kind in
+                        MacroBarRow(
+                            kind: kind,
+                            grams: macros.grams(kind),
+                            goal: goals.macroGoal(for: kind) ?? kind.defaultGoal
+                        )
+                    }
+                }
+            } else {
+                HStack(spacing: 8) {
+                    ForEach(MacroKind.allCases) { kind in
+                        MacroPill(kind: kind, grams: macros.grams(kind))
+                    }
                 }
             }
-            if goals.macroGoalsEnabled {
-                Text(macroSplitText)
+            macroSplitCaption
+        } else if foodCalories > 0 {
+            // Food energy is arriving but macros aren't: the food app is sharing
+            // Energy without the Nutrition sub-categories. Naming the fix beats
+            // telling someone who is already logging to start logging.
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Food calories are syncing, but macros aren't. In your food app's Apple Health sharing settings (MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing), turn on Protein, Carbohydrates, and Fat.")
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
+                    .fixedSize(horizontal: false, vertical: true)
+                Button("Health permissions") { openHealthApp() }
+                    .font(.system(.caption2, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.caloriesPrimary)
             }
         } else {
-            Text("No macros logged in Apple Health today. Log meals in a food app that writes to Health, like MyFitnessPal.")
+            Text("No macros logged in Apple Health today. Log meals in a food app that writes protein, carbs, and fat to Health, like MyFitnessPal.")
                 .font(.system(.caption2, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
                 .fixedSize(horizontal: false, vertical: true)
         }
     }
 
-    /// "29% protein · 38% carbs · 33% fat", shown only when goals are on, since
-    /// the goal-less rows already carry each macro's percentage inline.
-    private var macroSplitText: String {
-        let percentages = macros.sharePercentages() ?? [:]
-        return MacroKind.allCases
-            .map { "\(percentages[$0] ?? 0)% \($0.label.lowercased())" }
-            .joined(separator: " · ")
+    /// Calorie split under the macro readout. The percentages are tinted to match
+    /// the pills (or bars) directly above rather than repeating "protein / carbs /
+    /// fat", which those rows already spell out.
+    @ViewBuilder
+    private var macroSplitCaption: some View {
+        if let percentages = macros.sharePercentages() {
+            HStack(spacing: 5) {
+                ForEach(Array(MacroKind.allCases.enumerated()), id: \.element) { index, kind in
+                    Text("\(percentages[kind] ?? 0)%")
+                        .foregroundStyle(Theme.macroColor(kind))
+                    if index < MacroKind.allCases.count - 1 {
+                        Text("·")
+                            .foregroundStyle(Theme.textTertiary)
+                    }
+                }
+                Text("of macro calories")
+                    .foregroundStyle(Theme.textTertiary)
+            }
+            .font(.system(.caption2, design: .rounded))
+            .lineLimit(1)
+            .minimumScaleFactor(0.75)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(macroSplitAccessibilityText(percentages))
+        }
+    }
+
+    private func macroSplitAccessibilityText(_ percentages: [MacroKind: Int]) -> String {
+        let parts = MacroKind.allCases.map { "\(percentages[$0] ?? 0) percent \($0.label.lowercased())" }
+        return parts.joined(separator: ", ") + ", of macro calories"
     }
 
     private func loadMacros() async {
@@ -2040,41 +2081,62 @@ private struct MetricPill: View {
     }
 }
 
+// MARK: - Macro Pill
+
+/// One macro as a compact capsule, deliberately the same shape and rhythm as
+/// `MetricPill` (TDEE / BMR): a reference readout, not a progress tracker.
+/// Used when no macro goals are set, where there is nothing to make progress
+/// against and a bar would be inventing a denominator.
+private struct MacroPill: View {
+    let kind: MacroKind
+    let grams: Double
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Text("\(Int(grams.rounded()))")
+                .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
+                .foregroundStyle(Theme.macroColor(kind))
+            Text("g")
+                .font(.system(.caption2, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
+            Text(kind.label.lowercased())
+                .font(.system(.caption2, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+        }
+        .lineLimit(1)
+        .minimumScaleFactor(0.7)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 8)
+        // The pills live inside the macros card, so they need the lighter
+        // surface to read as raised — MetricPill sits on the page background
+        // and can use cardSurface directly.
+        .background(Theme.cardSurfaceLight, in: Capsule())
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(kind.label)
+        .accessibilityValue("\(Int(grams.rounded())) grams")
+    }
+}
+
 // MARK: - Macro Row
 
-/// One macronutrient on the dashboard: name, a proportional bar, and the number.
-///
-/// The bar means one of two things depending on whether the user set targets.
-/// With a goal it's progress toward that goal (capped at full, with the overage
-/// still readable in the number). Without one it's the macro's share of the
-/// day's macro calories, so the row still says something, which is the whole
-/// point for people who track composition rather than targets.
+/// One macronutrient as a labelled progress bar. Only used when the user has set
+/// macro goals; without a target there is nothing to make progress against and
+/// the card falls back to `MacroPill`, matching how calories drop the ring when
+/// no calorie goal is set.
 private struct MacroBarRow: View {
     let kind: MacroKind
     let grams: Double
-    let goal: Int?
-    /// Whole-percent share of the day's macro calories, from the allocation that
-    /// keeps the three rows summing to 100. nil when nothing is logged.
-    let sharePercent: Int?
+    let goal: Int
 
+    /// Capped at full so an over-goal day doesn't overflow the track; the
+    /// overage stays readable in the number beside it.
     private var fraction: Double {
-        if let goal, goal > 0 {
-            return min(grams / Double(goal), 1)
-        }
-        return min(max(Double(sharePercent ?? 0) / 100, 0), 1)
+        guard goal > 0 else { return 0 }
+        return min(grams / Double(goal), 1)
     }
 
     private var valueText: String {
-        let rounded = Int(grams.rounded())
-        if let goal {
-            return "\(rounded.formatted(.number)) / \(goal.formatted(.number)) g"
-        }
-        return "\(rounded.formatted(.number)) g"
-    }
-
-    private var trailingNote: String? {
-        guard goal == nil, let sharePercent else { return nil }
-        return "\(sharePercent)%"
+        "\(Int(grams.rounded()).formatted(.number)) / \(goal.formatted(.number)) g"
     }
 
     var body: some View {
@@ -2095,19 +2157,12 @@ private struct MacroBarRow: View {
             }
             .frame(height: 8)
 
-            HStack(spacing: 4) {
-                Text(valueText)
-                    .font(.system(.caption, design: .rounded, weight: .semibold).monospacedDigit())
-                    .foregroundStyle(Theme.textPrimary)
-                if let trailingNote {
-                    Text(trailingNote)
-                        .font(.system(.caption2, design: .rounded).monospacedDigit())
-                        .foregroundStyle(Theme.textTertiary)
-                }
-            }
-            .lineLimit(1)
-            .minimumScaleFactor(0.7)
-            .frame(minWidth: 88, alignment: .trailing)
+            Text(valueText)
+                .font(.system(.caption, design: .rounded, weight: .semibold).monospacedDigit())
+                .foregroundStyle(Theme.textPrimary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+                .frame(minWidth: 88, alignment: .trailing)
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(kind.label)
@@ -2115,14 +2170,7 @@ private struct MacroBarRow: View {
     }
 
     private var accessibilityValue: String {
-        let rounded = Int(grams.rounded())
-        if let goal {
-            return "\(rounded) of \(goal) grams"
-        }
-        if let sharePercent {
-            return "\(rounded) grams, \(sharePercent) percent of macro calories"
-        }
-        return "\(rounded) grams"
+        "\(Int(grams.rounded())) of \(goal) grams"
     }
 }
 
