@@ -550,8 +550,8 @@ final class GoalSettings: ObservableObject {
         appearance = ScreenshotConfig.wantsDarkDashboard ? .dark : .light
 
         if ScreenshotConfig.wantsMacroScene {
-            showCalories = false
-            showSteps = false
+            showCalories = true
+            showSteps = true
             showPacing = false
             showNetCalories = false
             showMacros = true

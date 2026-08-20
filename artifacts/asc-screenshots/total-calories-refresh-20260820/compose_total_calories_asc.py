@@ -34,7 +34,12 @@ def font_path(italic: bool) -> str:
 
 
 def load_font(size: int, italic: bool = False) -> ImageFont.FreeTypeFont:
-    return ImageFont.truetype(font_path(italic), size)
+    font = ImageFont.truetype(font_path(italic), size)
+    if italic:
+        font.set_variation_by_axes([28, 400, 700])
+    else:
+        font.set_variation_by_axes([400, 700])
+    return font
 
 
 def load_rgb(path: Path) -> Image.Image:
