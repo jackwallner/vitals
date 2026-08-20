@@ -32,7 +32,7 @@
         2868
       ],
       "mode": "RGBA",
-      "sha256": "c3951fe5b09dfe7b9901f24480ac0cad925d59c6db8c7c39f0a390e58e1c096d"
+      "sha256": "fa048da555ab1af9bbf10237b7ed66d810722b441cdd26ef6a94c4a422ebb90c"
     },
     {
       "name": "premium-dashboard.png",
@@ -42,7 +42,7 @@
         2868
       ],
       "mode": "RGBA",
-      "sha256": "825db5d05c64f33f7ae5d98139b21a32af49bacff18c702e88e8662b1709f48c"
+      "sha256": "9b9199efa47843d63aa23c0c2db614e34a905c30903ec88b4a30569d42cf07b7"
     },
     {
       "name": "history.png",
@@ -62,7 +62,7 @@
         2868
       ],
       "mode": "RGBA",
-      "sha256": "7cc879b1ff210f424a155b14ec95161cf17d40c734bfc297400c2bf7300b23fc"
+      "sha256": "caa883c4d32b9e62d3dfb2e31eeee474b2b2b9d95ae7fca9fa58beefb773936f"
     },
     {
       "name": "macro-dashboard.png",
@@ -72,7 +72,7 @@
         2868
       ],
       "mode": "RGBA",
-      "sha256": "e76c4bbbfbe38a252a06b83929a1f6f1718adfec39141920e10c8e59e822fba9"
+      "sha256": "e674d9e3be65b7bb0615e515c56c8dfda9f0093aafab5e3b371979948ca2a7b5"
     },
     {
       "name": "macro-goals.png",
@@ -82,7 +82,7 @@
         2868
       ],
       "mode": "RGBA",
-      "sha256": "52b3a04b10a2fdd9e7e7ae0a34044feb65517939119fa809f855fa9bf98823e4"
+      "sha256": "ef69e0f818dda02080a9673fd2a202e681c8ba709023f1b50a7cd384bbdb5908"
     },
     {
       "name": "macro-history.png",
@@ -92,7 +92,7 @@
         2868
       ],
       "mode": "RGBA",
-      "sha256": "784913f3211ca407c12cbad88bd436375e4869505fe7ae2889e7a3e577615087"
+      "sha256": "5d183ae39b5e97fae056f71b17b08ec3ed6e9a6341dbf201363584f6bfb77afd"
     },
     {
       "name": "dark-dashboard.png",
@@ -102,7 +102,7 @@
         2868
       ],
       "mode": "RGBA",
-      "sha256": "b47276a5d61762060e7dcc3d295dc054c91a7f057228016b1f11d125c23db28a"
+      "sha256": "75a8e005d00234802fb0436fc953ea630196ba107f66a14da5e7bf3910028340"
     },
     {
       "name": "settings.png",
@@ -112,7 +112,7 @@
         2868
       ],
       "mode": "RGBA",
-      "sha256": "22705e7d74de9cf33fbcf50758bf25a86e7e52c3f52a686e5c122ae7cb413b86"
+      "sha256": "e5751e859ed6c488520296b581e5f6906424ee64e410d0e1a070c3211857f30b"
     },
     {
       "name": "premium.png",
@@ -189,7 +189,7 @@
   ],
   "app_repo": {
     "path": "/Users/jackwallner/vitals",
-    "git_commit": "dbb5a227b70fef1860f82b8a9b01fadd578a4716"
+    "git_commit": "7290149d38916f0ea719c8565bb88851affc1ae4"
   },
   "device": {
     "udid": "05E7E41C-11D7-47C4-9EFE-494464932ED0",

@@ -25,7 +25,7 @@ Ten 1284 x 2778 RGB App Store screenshot candidates in the same screen-first sty
 - `watch-capture.png` is the current local Watch capture used in the Watch composition.
 - `macro-still-life.png` is the only generated visual. It is used as a background plate; no phone UI was sent to image generation.
 
-The macro captures use the app's screenshot fixtures: 142 g protein, 186 g carbs, 61 g fat on the dashboard; 150 g, 250 g, and 70 g goals; and a 30-day history chart. The TDEE/BMR capture uses 2,380 TDEE, 1,715 BMR, and a 30-day Apple Health average label.
+The macro captures use the app's screenshot fixtures in the normal Today context: 2,400 calories, 10,342 steps, 142 g protein, 186 g carbs, and 61 g fat on the dashboard; 150 g, 250 g, and 70 g goals; and a 30-day history chart. The TDEE/BMR capture uses 2,380 TDEE, 1,715 BMR, and a 30-day Apple Health average label.
 
 ## Verification
 
