@@ -442,6 +442,11 @@ final class HealthKitService: ObservableObject {
     /// Only queries active + resting energy — steps aren't part of TDEE/BMR, so
     /// a missing Steps grant must not block the Maintenance figure.
     func fetchEnergyAverages(days: Int = 30, minSamples: Int = 7) async throws -> EnergyAverages {
+#if DEBUG
+        if ScreenshotConfig.isEnabled, ScreenshotConfig.scene == .premiumDashboard {
+            return ScreenshotFixtures.energyAverages()
+        }
+#endif
         // Pull one extra day so excluding today still leaves a full window.
         let start = DateHelpers.daysAgo(max(days, 0))
         let end = Date.now

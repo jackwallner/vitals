@@ -7,6 +7,11 @@ enum ScreenshotScene: String {
     case premium
     case premiumActive
     case premiumDashboard
+    case netDeficit
+    case macroDashboard
+    case macroGoals
+    case macroHistory
+    case darkDashboard
     case settings
     case onboarding
     case watchToday
@@ -30,16 +35,29 @@ enum ScreenshotConfig {
     static let forceIntroIneligible = false
 #endif
 
-    static var wantsHistoryTab: Bool { scene == .history }
+    static var wantsHistoryTab: Bool { scene == .history || scene == .macroHistory }
     static var wantsPremiumTab: Bool { scene == .premium || scene == .premiumActive }
     // "Premium unlocked" (isPro true + Vitals+ readouts on). Covers the paywall-
     // while-subscribed scene and the premium Today-tab hero showing TDEE/BMR.
-    static var wantsPremiumActive: Bool { scene == .premiumActive || scene == .premiumDashboard }
+    static var wantsPremiumActive: Bool {
+        scene == .premiumActive
+            || scene == .premiumDashboard
+            || scene == .netDeficit
+            || scene == .macroDashboard
+            || scene == .macroGoals
+            || scene == .macroHistory
+    }
     static var wantsSettingsSheet: Bool { scene == .settings }
     static var wantsOnboarding: Bool { scene == .onboarding }
     static var wantsWatchHelp: Bool { scene == .watchHelp }
     static var wantsWatchBreakdown: Bool { scene == .watchBreakdown }
     static var usesMinimalGoals: Bool { scene == .minimal }
+    static var wantsMacroScene: Bool {
+        scene == .macroDashboard || scene == .macroGoals || scene == .macroHistory
+    }
+    static var wantsMacroHistory: Bool { scene == .macroHistory }
+    static var wantsNetDeficit: Bool { scene == .netDeficit }
+    static var wantsDarkDashboard: Bool { scene == .darkDashboard }
 }
 
 #if DEBUG
@@ -71,6 +89,10 @@ enum ScreenshotFixtures {
         default:
             return MacroTotals(protein: 142, carbs: 186, fat: 61)
         }
+    }
+
+    static func energyAverages() -> EnergyAveragesResult {
+        EnergyAveragesResult(tdee: 2380, bmr: 1715, sampleDays: 30)
     }
 
     /// Plausible macro history for capture runs. Deterministic per day offset so
