@@ -1,0 +1,119 @@
+{
+  "canvas": [
+    1284,
+    2778
+  ],
+  "color_mode": "RGB",
+  "reference_zip": "/Users/jackwallner/Downloads/Total Calories.zip",
+  "style_source": "screenshots-app/panels.jsx",
+  "phone_source": "screenshots-app/phone-screens.jsx",
+  "generated_asset": "macro-still-life.png",
+  "watch_source": {
+    "filename": "watch-capture.png",
+    "sha256": "cbaa829f4289828ea9a069d17915f0d7ece7ab3a10c8e91a230c7b396ca155d6"
+  },
+  "frames": [
+    {
+      "filename": "01-total-burn.png",
+      "headline": "Know your total burn",
+      "literal_source": "dashboard.png",
+      "sha256": "441909d351fa7aac54d46fead7c4bde0ada8968f6d5621288f627f1956c3b0ba"
+    },
+    {
+      "filename": "02-active-resting.png",
+      "headline": "See what makes your burn",
+      "literal_source": "premium-dashboard.png",
+      "sha256": "90a19494583401db76e6a28384c343f7affde7497609d8203df5534ffcc8aa11"
+    },
+    {
+      "filename": "03-daily-patterns.png",
+      "headline": "Find your daily patterns",
+      "literal_source": "history.png",
+      "sha256": "50ab5cecdb67023c25e13e1da227132617b8f49990a23ef459deec18b5cf5fd0"
+    },
+    {
+      "filename": "04-net-deficit.png",
+      "headline": "Burned minus eaten",
+      "literal_source": "net-deficit.png",
+      "sha256": "9d80e5e389d032f8ad3e6bd6c95d62dfb311e9c0c65c7f5cace60012d6c74c61"
+    },
+    {
+      "filename": "05-macros.png",
+      "headline": "See your macros",
+      "literal_source": "macro-dashboard.png",
+      "sha256": "cd211b246bb00831eb5e364df50149952b8953d52e5aae1e5de8d651d30d4bbf"
+    },
+    {
+      "filename": "06-macro-goals.png",
+      "headline": "Set your macro goals",
+      "literal_source": "macro-goals.png",
+      "sha256": "6b0a8cbeea459325f7fdc4be8a6a42d120e890976ce85fcd2e7def5c41c2d23c"
+    },
+    {
+      "filename": "07-macro-patterns.png",
+      "headline": "Spot your macro patterns",
+      "literal_source": "macro-history.png",
+      "sha256": "4bcb03d9f895b37b49e71b090da50518da5c9e730879b287bc3866e5115fd8e8"
+    },
+    {
+      "filename": "08-on-your-wrist.png",
+      "headline": "Keep it on your wrist",
+      "literal_source": "watch",
+      "sha256": "aef0e5adb90fa0299bc56089badc23f5e6b0055c8b8c7b6f5a3db2c866e18cd1"
+    },
+    {
+      "filename": "09-dark-mode.png",
+      "headline": "Read it in dark mode",
+      "literal_source": "dark-dashboard.png",
+      "sha256": "a7f965e5503008131c953ae8de9495b8e678c6b4f73c38709c94e9e9a709b308"
+    },
+    {
+      "filename": "10-go-further.png",
+      "headline": "Go further",
+      "literal_source": "premium.png",
+      "sha256": "ad18bd682e26527cd1b05817d0ffc7d92ad976433ac4459d6e85e0e4da0788e3"
+    }
+  ],
+  "raw_sources": {
+    "dark-dashboard.png": {
+      "size_bytes": 587668,
+      "sha256": "b47276a5d61762060e7dcc3d295dc054c91a7f057228016b1f11d125c23db28a"
+    },
+    "dashboard.png": {
+      "size_bytes": 573278,
+      "sha256": "c3951fe5b09dfe7b9901f24480ac0cad925d59c6db8c7c39f0a390e58e1c096d"
+    },
+    "history.png": {
+      "size_bytes": 786292,
+      "sha256": "c87aae3b339f8a470d39e2673270ecc282ae8125962c66d04a8c398849cc7ca0"
+    },
+    "macro-dashboard.png": {
+      "size_bytes": 205654,
+      "sha256": "e76c4bbbfbe38a252a06b83929a1f6f1718adfec39141920e10c8e59e822fba9"
+    },
+    "macro-goals.png": {
+      "size_bytes": 208863,
+      "sha256": "52b3a04b10a2fdd9e7e7ae0a34044feb65517939119fa809f855fa9bf98823e4"
+    },
+    "macro-history.png": {
+      "size_bytes": 394828,
+      "sha256": "784913f3211ca407c12cbad88bd436375e4869505fe7ae2889e7a3e577615087"
+    },
+    "net-deficit.png": {
+      "size_bytes": 597483,
+      "sha256": "7cc879b1ff210f424a155b14ec95161cf17d40c734bfc297400c2bf7300b23fc"
+    },
+    "premium-dashboard.png": {
+      "size_bytes": 607937,
+      "sha256": "825db5d05c64f33f7ae5d98139b21a32af49bacff18c702e88e8662b1709f48c"
+    },
+    "premium.png": {
+      "size_bytes": 638276,
+      "sha256": "1497cba2ed299ce26514cb88ee3943c68cfad974450ae4a0425ca165475838ea"
+    },
+    "settings.png": {
+      "size_bytes": 332346,
+      "sha256": "22705e7d74de9cf33fbcf50758bf25a86e7e52c3f52a686e5c122ae7cb413b86"
+    }
+  }
+}

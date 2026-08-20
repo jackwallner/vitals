@@ -1,0 +1,110 @@
+{
+  "app": "total-calories",
+  "display_name": "Total Calories",
+  "health_app": true,
+  "target": "iphone_69",
+  "capture_report": "raw/capture-report.json",
+  "capture": {
+    "mode": "generic",
+    "lease": "vitals",
+    "project_root": "/Users/jackwallner/vitals",
+    "project": "Vitals.xcodeproj",
+    "scheme": "Vitals",
+    "app_name": "Vitals",
+    "bundle_id": "com.jackwallner.vitals",
+    "generate_project": false,
+    "expected_size": [1320, 2868],
+    "flows": [
+      {
+        "id": "dashboard",
+        "environment": {
+          "VITALS_SCREENSHOT_MODE": "1",
+          "VITALS_SCREENSHOT_SCENE": "dashboard",
+          "VITALS_FORCE_INTRO_INELIGIBLE": "1"
+        },
+        "screenshots": [{ "name": "dashboard.png" }]
+      },
+      {
+        "id": "premium-dashboard",
+        "environment": {
+          "VITALS_SCREENSHOT_MODE": "1",
+          "VITALS_SCREENSHOT_SCENE": "premiumDashboard",
+          "VITALS_FORCE_INTRO_INELIGIBLE": "1"
+        },
+        "screenshots": [{ "name": "premium-dashboard.png" }]
+      },
+      {
+        "id": "history",
+        "environment": {
+          "VITALS_SCREENSHOT_MODE": "1",
+          "VITALS_SCREENSHOT_SCENE": "history",
+          "VITALS_FORCE_INTRO_INELIGIBLE": "1"
+        },
+        "screenshots": [{ "name": "history.png" }]
+      },
+      {
+        "id": "net-deficit",
+        "environment": {
+          "VITALS_SCREENSHOT_MODE": "1",
+          "VITALS_SCREENSHOT_SCENE": "netDeficit",
+          "VITALS_FORCE_INTRO_INELIGIBLE": "1"
+        },
+        "screenshots": [{ "name": "net-deficit.png" }]
+      },
+      {
+        "id": "macro-dashboard",
+        "environment": {
+          "VITALS_SCREENSHOT_MODE": "1",
+          "VITALS_SCREENSHOT_SCENE": "macroDashboard",
+          "VITALS_FORCE_INTRO_INELIGIBLE": "1"
+        },
+        "screenshots": [{ "name": "macro-dashboard.png" }]
+      },
+      {
+        "id": "macro-goals",
+        "environment": {
+          "VITALS_SCREENSHOT_MODE": "1",
+          "VITALS_SCREENSHOT_SCENE": "macroGoals",
+          "VITALS_FORCE_INTRO_INELIGIBLE": "1"
+        },
+        "screenshots": [{ "name": "macro-goals.png" }]
+      },
+      {
+        "id": "macro-history",
+        "environment": {
+          "VITALS_SCREENSHOT_MODE": "1",
+          "VITALS_SCREENSHOT_SCENE": "macroHistory",
+          "VITALS_FORCE_INTRO_INELIGIBLE": "1"
+        },
+        "screenshots": [{ "name": "macro-history.png" }]
+      },
+      {
+        "id": "dark-dashboard",
+        "environment": {
+          "VITALS_SCREENSHOT_MODE": "1",
+          "VITALS_SCREENSHOT_SCENE": "darkDashboard",
+          "VITALS_FORCE_INTRO_INELIGIBLE": "1"
+        },
+        "screenshots": [{ "name": "dark-dashboard.png" }]
+      },
+      {
+        "id": "settings",
+        "environment": {
+          "VITALS_SCREENSHOT_MODE": "1",
+          "VITALS_SCREENSHOT_SCENE": "settings",
+          "VITALS_FORCE_INTRO_INELIGIBLE": "1"
+        },
+        "screenshots": [{ "name": "settings.png" }]
+      },
+      {
+        "id": "premium",
+        "environment": {
+          "VITALS_SCREENSHOT_MODE": "1",
+          "VITALS_SCREENSHOT_SCENE": "premium",
+          "VITALS_FORCE_INTRO_INELIGIBLE": "1"
+        },
+        "screenshots": [{ "name": "premium.png" }]
+      }
+    ]
+  }
+}

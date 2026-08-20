@@ -773,11 +773,17 @@ struct MainTabView: View {
                 .allowsHitTesting(selectedTab == 0)
                 .accessibilityHidden(selectedTab != 0)
             if historyHasAppeared {
-                HistoryView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .opacity(selectedTab == 1 ? 1 : 0)
-                    .allowsHitTesting(selectedTab == 1)
-                    .accessibilityHidden(selectedTab != 1)
+                Group {
+                    if ScreenshotConfig.wantsMacroHistory {
+                        HistoryView(focusMetric: .macros)
+                    } else {
+                        HistoryView()
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .opacity(selectedTab == 1 ? 1 : 0)
+                .allowsHitTesting(selectedTab == 1)
+                .accessibilityHidden(selectedTab != 1)
             }
             Group {
                 if store.isPro {

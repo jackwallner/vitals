@@ -547,7 +547,29 @@ final class GoalSettings: ObservableObject {
         showSteps = true
         showNetCalories = false
         showMacros = false
-        appearance = .system
+        appearance = ScreenshotConfig.wantsDarkDashboard ? .dark : .light
+
+        if ScreenshotConfig.wantsMacroScene {
+            showCalories = false
+            showSteps = false
+            showPacing = false
+            showNetCalories = false
+            showMacros = true
+            showActiveRestingBreakdown = false
+            macroGoalsEnabled = ScreenshotConfig.scene == .macroGoals
+            showEnergyAverages = false
+            hasCompletedSetup = true
+            return
+        }
+
+        if ScreenshotConfig.wantsNetDeficit {
+            showNetCalories = true
+            showEnergyAverages = false
+        }
+
+        if ScreenshotConfig.wantsDarkDashboard {
+            appearance = .dark
+        }
 
         if ScreenshotConfig.usesMinimalGoals {
             calorieGoal = nil
@@ -560,9 +582,10 @@ final class GoalSettings: ObservableObject {
         calorieGoal = 2500
         stepGoal = 10000
         showPacing = true
+        showActiveRestingBreakdown = ScreenshotConfig.wantsPremiumActive && !ScreenshotConfig.wantsNetDeficit
         // Surface the TDEE/BMR readout in the premium-active marketing scene so
         // the store screenshot shows the feature; off elsewhere.
-        showEnergyAverages = ScreenshotConfig.wantsPremiumActive
+        showEnergyAverages = ScreenshotConfig.wantsPremiumActive && !ScreenshotConfig.wantsNetDeficit
         hasCompletedSetup = !ScreenshotConfig.wantsOnboarding
     }
 }
