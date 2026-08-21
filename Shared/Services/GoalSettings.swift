@@ -578,6 +578,23 @@ final class GoalSettings: ObservableObject {
             return
         }
 
+        // Calorie Intake marketing scene: the ring, Net Deficit, and the macro
+        // card together, with steps off so the frame is calories end to end.
+        if ScreenshotConfig.wantsCalorieIntake {
+            showCalories = true
+            showSteps = false
+            showPacing = true
+            showNetCalories = true
+            showMacros = true
+            macroSplitEnabled = true
+            macroGoalsEnabled = false
+            showActiveRestingBreakdown = false
+            showEnergyAverages = false
+            calorieGoal = 2500
+            hasCompletedSetup = true
+            return
+        }
+
         if ScreenshotConfig.wantsMacroScene {
             showCalories = true
             showSteps = true

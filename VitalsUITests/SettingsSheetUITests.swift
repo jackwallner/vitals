@@ -50,6 +50,70 @@ final class SettingsSheetUITests: XCTestCase {
         }
     }
 
+    /// The ⓘ beside a setting expands its explanation under the row, and tapping
+    /// it again collapses it. Covers both halves of the pattern that replaced the
+    /// footer prose: the dot's hit target actually fires (it is a tap gesture on
+    /// a content shape, not a Button, precisely because the Button form did not),
+    /// and the explanation is real text in the tree rather than a presentation
+    /// that silently failed to appear.
+    func testInfoDotRevealsExplanation() {
+        let app = launchSettings(scene: "settingsPro")
+
+        let dot = app.buttons["About Net Deficit"]
+        XCTAssertTrue(dot.waitForExistence(timeout: 20), "Net Deficit ⓘ missing")
+
+        let explanation = app.staticTexts[
+            "Calories burned minus the food energy in Apple Health. A positive number means a deficit."
+        ]
+        XCTAssertFalse(explanation.exists, "Explanation should start collapsed")
+
+        dot.tap()
+        XCTAssertTrue(
+            explanation.waitForExistence(timeout: 5),
+            "Tapping the ⓘ did not reveal the Net Deficit explanation"
+        )
+        attach(app.screenshot(), name: "info-dot-expanded")
+
+        dot.tap()
+        XCTAssertTrue(
+            waitForDisappearance(of: explanation),
+            "Tapping the ⓘ again did not collapse the explanation"
+        )
+    }
+
+    /// Only one explanation is open at a time, so opening a second closes the
+    /// first instead of stacking two walls of prose inside one section.
+    func testOpeningASecondInfoDotClosesTheFirst() {
+        let app = launchSettings(scene: "settingsPro")
+
+        let netDeficitDot = app.buttons["About Net Deficit"]
+        XCTAssertTrue(netDeficitDot.waitForExistence(timeout: 20))
+
+        let netDeficitText = app.staticTexts[
+            "Calories burned minus the food energy in Apple Health. A positive number means a deficit."
+        ]
+        netDeficitDot.tap()
+        XCTAssertTrue(netDeficitText.waitForExistence(timeout: 5))
+
+        // A Form realizes rows lazily, so the Macros ⓘ is not in the tree until
+        // it scrolls into view. Expanding Net Deficit above it pushes it further
+        // down, which is exactly the case worth covering.
+        let macrosDot = app.buttons["About Macros"]
+        let form = app.collectionViews.firstMatch.exists
+            ? app.collectionViews.firstMatch
+            : app.tables.firstMatch
+        for _ in 0..<6 where !macrosDot.isHittable {
+            form.swipeUp(velocity: .slow)
+        }
+        XCTAssertTrue(macrosDot.isHittable, "Macros ⓘ never scrolled into view")
+
+        macrosDot.tap()
+        XCTAssertTrue(
+            waitForDisappearance(of: netDeficitText),
+            "Opening the Macros explanation left the Net Deficit one open"
+        )
+    }
+
     // MARK: - Helpers
 
     private func launchSettings(scene: String) -> XCUIApplication {
@@ -99,6 +163,21 @@ final class SettingsSheetUITests: XCTestCase {
             if index < frames { form.swipeUp(velocity: .slow) }
         }
         return found
+    }
+
+    /// Polls rather than `expectation(for:evaluatedWith:)`, which Swift 6 rejects
+    /// here: XCTestCase is not Sendable, so handing self to the predicate form is
+    /// a data-race error.
+    private func waitForDisappearance(
+        of element: XCUIElement,
+        timeout: TimeInterval = 5
+    ) -> Bool {
+        let deadline = Date().addingTimeInterval(timeout)
+        while Date() < deadline {
+            if !element.exists { return true }
+            usleep(100_000)
+        }
+        return !element.exists
     }
 
     private func attach(_ screenshot: XCUIScreenshot, name: String) {

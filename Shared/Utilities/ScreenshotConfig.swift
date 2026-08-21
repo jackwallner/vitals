@@ -8,6 +8,9 @@ enum ScreenshotScene: String {
     case premiumActive
     case premiumDashboard
     case netDeficit
+    /// Every calorie number the app can show, on one screen: Net Deficit plus
+    /// the macro card, with steps hidden so intake reads as one block.
+    case calorieIntake
     case macroDashboard
     case macroGoals
     case macroHistory
@@ -46,6 +49,7 @@ enum ScreenshotConfig {
         scene == .premiumActive
             || scene == .premiumDashboard
             || scene == .netDeficit
+            || scene == .calorieIntake
             || scene == .macroDashboard
             || scene == .macroGoals
             || scene == .macroHistory
@@ -61,6 +65,7 @@ enum ScreenshotConfig {
     }
     static var wantsMacroHistory: Bool { scene == .macroHistory }
     static var wantsNetDeficit: Bool { scene == .netDeficit }
+    static var wantsCalorieIntake: Bool { scene == .calorieIntake }
     static var wantsDarkDashboard: Bool { scene == .darkDashboard }
 }
 
