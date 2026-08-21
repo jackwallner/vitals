@@ -1072,6 +1072,10 @@ private struct PremiumFeaturesView: View {
     @State private var deepTrendHighlights: [String] = []
     @State private var deepTrendsLoaded = false
 
+    @StateObject private var bodyProfile = BodyProfileStore.shared
+    @State private var resolvedBMI: Double?
+    @State private var showBodyProfile = false
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -1104,6 +1108,19 @@ private struct PremiumFeaturesView: View {
                                 buttonTitle: "Choose Dates",
                                 action: { showCustomReportSheet = true }
                             )
+                            // Body Profile belongs here rather than on Today.
+                            // BMI moves on the scale of weeks; Today is a
+                            // dashboard of numbers that change hourly, and a
+                            // static figure under the ring reads as noise. Here
+                            // it sits with the other things a subscriber opens
+                            // deliberately, and body fat is the Vitals+ half.
+                            PremiumActionRow(
+                                icon: "figure",
+                                title: "Body Profile",
+                                detail: bodyProfileDetail,
+                                buttonTitle: "Open",
+                                action: { showBodyProfile = true }
+                            )
                         }
 
                         deepTrendsSection
@@ -1118,8 +1135,12 @@ private struct PremiumFeaturesView: View {
             }
             .navigationTitle("Vitals+")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(isPresented: $showBodyProfile) {
+                BodyProfileView()
+            }
             .task {
                 if !deepTrendsLoaded { await loadDeepTrends() }
+                await loadBodyProfile()
             }
             .onChange(of: scenePhase) { _, newPhase in
                 if newPhase == .active {
@@ -1174,6 +1195,23 @@ private struct PremiumFeaturesView: View {
             }
             .animation(.easeInOut(duration: 0.2), value: isGeneratingReport)
         }
+    }
+
+    /// Reads as a status line: the BMI itself once it resolves, which is the
+    /// only "is this set up" signal that also tells you something.
+    private var bodyProfileDetail: String {
+        guard let resolvedBMI else {
+            return "Free BMI from Apple Health, plus body fat and calorie context."
+        }
+        return String(
+            format: "BMI %.1f · body fat and calorie context inside.",
+            resolvedBMI
+        )
+    }
+
+    private func loadBodyProfile() async {
+        let health = (try? await healthKit.fetchBodyProfileFromHealth()) ?? .empty
+        resolvedBMI = bodyProfile.resolved(health: health).bmi
     }
 
     private var deepTrendsSection: some View {
