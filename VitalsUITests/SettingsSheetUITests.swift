@@ -139,8 +139,12 @@ final class SettingsSheetUITests: XCTestCase {
         )
         attach(app.screenshot(), name: "body-profile-context")
 
-        // The link must still work: the dot sits inside the same row.
-        app.staticTexts["Body Profile"].tap()
+        // The link must still work: the dot sits inside the same row. Target
+        // the row's unique accessible button label because the navigation link
+        // also exposes a child StaticText with the same title.
+        let bodyProfileRow = app.buttons["Body Profile, BMI, height, and weight"]
+        XCTAssertTrue(bodyProfileRow.isHittable, "Body Profile row is not hittable")
+        bodyProfileRow.tap()
         XCTAssertTrue(
             app.navigationBars["Body Profile"].waitForExistence(timeout: 10),
             "Body Profile row no longer navigates"

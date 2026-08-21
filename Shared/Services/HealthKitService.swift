@@ -38,11 +38,14 @@ final class HealthKitService: ObservableObject {
     /// energy/step types. Mixing new read types into an existing request can
     /// silently suppress the HealthKit permission sheet — the same quirk the
     /// dietary energy flow already works around.
-    private let bodyProfileReadTypes: Set<HKObjectType> = [
+    private let bodyProfileBaseReadTypes: Set<HKObjectType> = [
         HKQuantityType(.height),
         HKQuantityType(.bodyMass),
-        HKQuantityType(.bodyFatPercentage),
     ]
+    private let bodyFatReadType: HKObjectType = HKQuantityType(.bodyFatPercentage)
+    private var bodyProfileReadTypes: Set<HKObjectType> {
+        bodyProfileBaseReadTypes.union([bodyFatReadType])
+    }
 
     private init() {
         if ScreenshotConfig.isEnabled {
@@ -133,14 +136,17 @@ final class HealthKitService: ObservableObject {
     /// body-fat). Requested separately from the core types — see
     /// `bodyProfileReadTypes`. Does not flip `isAuthorized`, which tracks core
     /// energy/step access.
-    func requestBodyProfileAuthorization() async throws {
+    func requestBodyProfileAuthorization(includeBodyFat: Bool = true) async throws {
         if ScreenshotConfig.isEnabled { return }
         guard HKHealthStore.isHealthDataAvailable() else { return }
+        let readTypes = includeBodyFat
+            ? bodyProfileReadTypes
+            : bodyProfileBaseReadTypes
         healthKitLogger.info(
-            "Requesting HealthKit authorization for \(self.bodyProfileReadTypes.count, privacy: .public) body profile read types"
+            "Requesting HealthKit authorization for \(readTypes.count, privacy: .public) body profile read types includeBodyFat=\(includeBodyFat, privacy: .public)"
         )
         do {
-            try await store.requestAuthorization(toShare: [], read: bodyProfileReadTypes)
+            try await store.requestAuthorization(toShare: [], read: readTypes)
             healthKitLogger.info("Body profile authorization request completed")
         } catch {
             healthKitLogger.error("Body profile authorization request failed: \(String(describing: error), privacy: .public)")
@@ -595,16 +601,18 @@ final class HealthKitService: ObservableObject {
     /// Any field is nil when no sample exists or the read is unauthorized — the
     /// caller can't distinguish "denied" from "absent" (HealthKit doesn't expose
     /// read auth), so the UI offers manual entry either way.
-    func fetchBodyProfileFromHealth() async throws -> HealthBodyProfile {
+    func fetchBodyProfileFromHealth(includeBodyFat: Bool = true) async throws -> HealthBodyProfile {
         guard HKHealthStore.isHealthDataAvailable() else { return .empty }
 
         async let height = mostRecentQuantity(.height, unit: .meter())
         async let weight = mostRecentQuantity(.bodyMass, unit: .gramUnit(with: .kilo))
+
+        let (h, w) = await (height, weight)
+        let bf = includeBodyFat
+            ? await mostRecentQuantity(.bodyFatPercentage, unit: .percent())
+            : nil
         // HealthKit body fat is stored as a fraction (0.20 == 20%); convert to a
         // 0–100 percent for storage/display so callers never re-derive the scale.
-        async let bodyFatFraction = mostRecentQuantity(.bodyFatPercentage, unit: .percent())
-
-        let (h, w, bf) = await (height, weight, bodyFatFraction)
         let bodyFatPercent = bf.map { $0 * 100 }
 
         healthKitLogger.info(

@@ -50,6 +50,12 @@ final class BodyProfileCalculatorTests: XCTestCase {
         XCTAssertEqual(BodyProfileCalculator.kilograms(pounds: 154), 69.85, accuracy: 0.02)
     }
 
+    func testDecimalParsingSupportsDotAndComma() {
+        XCTAssertEqual(BodyProfileCalculator.parseDecimal("1.75"), 1.75)
+        XCTAssertEqual(BodyProfileCalculator.parseDecimal("1,75"), 1.75)
+        XCTAssertNil(BodyProfileCalculator.parseDecimal(""))
+    }
+
     func testMetersToFeetInchesRoundTrip() {
         let (feet, inches) = BodyProfileCalculator.feetInches(fromMeters: 1.8034)
         XCTAssertEqual(feet, 5)
@@ -101,6 +107,17 @@ final class BodyProfileCalculatorTests: XCTestCase {
         XCTAssertEqual(resolved.weightKilograms, 70)
     }
 
+    func testResolveCombinesManualFallbackWithPartialHealth() {
+        let health = HealthBodyProfile(heightMeters: 1.80, weightKilograms: nil, bodyFatPercent: nil)
+        let manual = ManualBodyProfile(heightMeters: nil, weightKilograms: 80, bodyFatPercent: nil)
+        let resolved = BodyProfileResolver.resolve(preferred: .appleHealth, health: health, manual: manual)
+
+        XCTAssertEqual(resolved.source, .manual)
+        XCTAssertEqual(resolved.heightMeters, 1.80)
+        XCTAssertEqual(resolved.weightKilograms, 80)
+        XCTAssertNotNil(resolved.bmi)
+    }
+
     func testResolveManualPreferredUsesManual() {
         let health = HealthBodyProfile(heightMeters: 1.80, weightKilograms: 80, bodyFatPercent: 18)
         let manual = ManualBodyProfile(heightMeters: 1.70, weightKilograms: 70, bodyFatPercent: nil)
@@ -109,6 +126,21 @@ final class BodyProfileCalculatorTests: XCTestCase {
         XCTAssertEqual(resolved.heightMeters, 1.70)
         XCTAssertEqual(resolved.weightKilograms, 70)
         // Body fat absent in manual falls back to health so a Pro user still sees it.
+        XCTAssertEqual(resolved.bodyFatPercent, 18)
+    }
+
+    func testResolveManualPreferredDoesNotUseHealthHeightOrWeight() {
+        let health = HealthBodyProfile(heightMeters: 1.80, weightKilograms: 80, bodyFatPercent: 18)
+        let resolved = BodyProfileResolver.resolve(
+            preferred: .manual,
+            health: health,
+            manual: .empty
+        )
+
+        XCTAssertEqual(resolved.source, .manual)
+        XCTAssertNil(resolved.heightMeters)
+        XCTAssertNil(resolved.weightKilograms)
+        XCTAssertNil(resolved.bmi)
         XCTAssertEqual(resolved.bodyFatPercent, 18)
     }
 
