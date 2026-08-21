@@ -1,0 +1,68 @@
+{
+  "filename": "04-calorie-gap.png",
+  "path": "calorie-intake-led/04-calorie-gap.png",
+  "output_sha256": "3debf3882a7f28798b06b02d71ffff8f2f257422d9c631ef0543e39de0ae42de",
+  "output_size": [
+    1284,
+    2778
+  ],
+  "device": "iphone",
+  "header": "See burned minus eaten",
+  "pitch": {
+    "benefit": "Understand the daily gap between energy burned and food logged",
+    "problem": "A food total alone does not show how it relates to the energy your body used.",
+    "advantage": "Net deficit puts burned calories, eaten calories, and the difference in one card.",
+    "header_problem": "food total alone",
+    "header_advantage": "burned minus eaten",
+    "search_terms": [
+      "calorie deficit",
+      "net calories"
+    ],
+    "proof": "The literal net-deficit capture shows +450 deficit with 2,400 burned minus 1,950 eaten."
+  },
+  "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/net-deficit.png",
+  "source_sha256": "1e70a665a1b18527287764b2a406e67afedfae41237e1c32e4016b685c453c48",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/calorie-intake-led/04-calorie-gap.foreground.png",
+  "foreground_sha256": "4acd1ae150046f0aebe5d6ef69340eab119c8e0818dc003dd23860ae7d153600",
+  "ui_mask": "manifests/calorie-intake-led/04-calorie-gap.ui-mask.png",
+  "ui_coverage": 0.5721,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_65",
+  "size": [
+    1284,
+    2778
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#155846",
+  "background_bottom": "#0e4437",
+  "background_asset_applied": false,
+  "phone": {
+    "x": 139,
+    "y": 600,
+    "width": 1006,
+    "height": 2143,
+    "screen_x": 158,
+    "screen_y": 619,
+    "screen_width": 968,
+    "screen_height": 2105
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 164,
+  "header_lines": 2,
+  "header_text": "See burned minus eaten",
+  "header_bounds": [
+    224,
+    158,
+    1060,
+    443
+  ],
+  "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/net-deficit.png",
+  "source_evidence_sha256": "1e70a665a1b18527287764b2a406e67afedfae41237e1c32e4016b685c453c48"
+}

@@ -1,0 +1,68 @@
+{
+  "filename": "07-active-resting.png",
+  "path": "calorie-intake-led/07-active-resting.png",
+  "output_sha256": "0b12eab40b8b786c3a5b5f6f650fcfda00ff22a9a155ab05f3fb873e58b25843",
+  "output_size": [
+    1284,
+    2778
+  ],
+  "device": "iphone",
+  "header": "See what makes your burn",
+  "pitch": {
+    "benefit": "See active and resting energy behind the total number",
+    "problem": "A single daily total can hide what is driving the number.",
+    "advantage": "The premium dashboard breaks total burn into active and resting energy with TDEE and BMR context.",
+    "header_problem": "one daily total",
+    "header_advantage": "what makes your burn",
+    "search_terms": [
+      "active calories",
+      "resting calories"
+    ],
+    "proof": "The literal premium-dashboard capture shows active, resting, TDEE, and BMR values."
+  },
+  "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/premium-dashboard.png",
+  "source_sha256": "54c8714a3729643b95e17b64bed7dd682c11b2bda07bc18ce971747aa380f620",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/calorie-intake-led/07-active-resting.foreground.png",
+  "foreground_sha256": "457ab475a14e63691fb36deba84b56455041702b8c2cbaf2c5ea913b193794da",
+  "ui_mask": "manifests/calorie-intake-led/07-active-resting.ui-mask.png",
+  "ui_coverage": 0.5721,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_65",
+  "size": [
+    1284,
+    2778
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#fbf7f1",
+  "background_bottom": "#efe3d4",
+  "background_asset_applied": false,
+  "phone": {
+    "x": 139,
+    "y": 600,
+    "width": 1006,
+    "height": 2143,
+    "screen_x": 158,
+    "screen_y": 619,
+    "screen_width": 968,
+    "screen_height": 2105
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 152,
+  "header_lines": 2,
+  "header_text": "See what makes your burn",
+  "header_bounds": [
+    121,
+    154,
+    1163,
+    447
+  ],
+  "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/premium-dashboard.png",
+  "source_evidence_sha256": "54c8714a3729643b95e17b64bed7dd682c11b2bda07bc18ce971747aa380f620"
+}

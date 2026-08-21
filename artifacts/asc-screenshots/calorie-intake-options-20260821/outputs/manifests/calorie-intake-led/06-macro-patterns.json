@@ -1,0 +1,68 @@
+{
+  "filename": "06-macro-patterns.png",
+  "path": "calorie-intake-led/06-macro-patterns.png",
+  "output_sha256": "8a3b86fdb55c3d34368018e0bbc0fd9a82be7066c7b829765ac3480a57898172",
+  "output_size": [
+    1284,
+    2778
+  ],
+  "device": "iphone",
+  "header": "Spot your macro patterns",
+  "pitch": {
+    "benefit": "See how protein, carbs, and fat add up across a month of logged days",
+    "problem": "One day of intake does not explain the pattern across a routine.",
+    "advantage": "Macro history turns logged food into an easy-to-scan trend.",
+    "header_problem": "one day of intake",
+    "header_advantage": "macro patterns",
+    "search_terms": [
+      "macro history",
+      "macro tracker"
+    ],
+    "proof": "The literal macro-history capture shows 30-day averages, a stacked macro chart, and recent macro totals."
+  },
+  "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-history.png",
+  "source_sha256": "7f26f7ee2b9fa3fc4199c6f1a2ee27a751f0f42b38830a6bf7bc1df94746fc7b",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/calorie-intake-led/06-macro-patterns.foreground.png",
+  "foreground_sha256": "aac2ed4ccf08e7462182a711ef64c60c9107c7ad6efc73a19e1aa8abb396e3cb",
+  "ui_mask": "manifests/calorie-intake-led/06-macro-patterns.ui-mask.png",
+  "ui_coverage": 0.5887,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_65",
+  "size": [
+    1284,
+    2778
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#ffffff",
+  "background_bottom": "#e5f1ed",
+  "background_asset_applied": false,
+  "phone": {
+    "x": 133,
+    "y": 570,
+    "width": 1018,
+    "height": 2171,
+    "screen_x": 151,
+    "screen_y": 588,
+    "screen_width": 982,
+    "screen_height": 2135
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 164,
+  "header_lines": 2,
+  "header_text": "Spot your macro patterns",
+  "header_bounds": [
+    123,
+    158,
+    1160,
+    471
+  ],
+  "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-history.png",
+  "source_evidence_sha256": "7f26f7ee2b9fa3fc4199c6f1a2ee27a751f0f42b38830a6bf7bc1df94746fc7b"
+}

@@ -1,0 +1,620 @@
+{
+  "app": "total-calories",
+  "display_name": "Total Calories",
+  "health_app": true,
+  "target": "iphone_65",
+  "capture_report": "raw/capture-report.json",
+  "copy_contract": "single-header-benefit-story-v3",
+  "market": {
+    "category": "Apple Watch calorie and macro trackers",
+    "audience": "People who want total burn, food intake, and macros in one private daily view",
+    "problem": "Apple Health separates total burn from food intake, so the relationship between burned calories, eaten calories, and macros is easy to miss.",
+    "advantage": "Total Calories combines active plus resting burn with logged food, net deficit, protein, carbs, and fat, then puts the daily number on the wrist.",
+    "competitive_context": "The app connects burn and intake without an account, a social feed, or a crowded food diary, while keeping the daily check-in glanceable on iPhone and Apple Watch.",
+    "search_intent": [
+      "total calories",
+      "calorie deficit",
+      "calorie intake",
+      "macro tracker",
+      "apple watch calories"
+    ],
+    "proof_points": [
+      {
+        "claim": "The dashboard shows total calories against a daily target.",
+        "source": "raw/dashboard.png"
+      },
+      {
+        "claim": "The net-deficit capture shows burned calories, eaten calories, and the resulting deficit together.",
+        "source": "raw/net-deficit.png"
+      },
+      {
+        "claim": "The macro dashboard shows logged calories plus protein, carbs, and fat with their macro-calorie split.",
+        "source": "raw/macro-dashboard.png"
+      },
+      {
+        "claim": "The Watch capture shows the daily calorie number on a literal Watch surface.",
+        "source": "assets/watch-capture.png"
+      }
+    ]
+  },
+  "theme": {
+    "background": "#fbf7f1",
+    "background_2": "#efe3d4",
+    "ink": "#17130f",
+    "muted": "#655b50",
+    "accent": "#d7644e",
+    "accent_2": "#2da987",
+    "headline_font": "rounded",
+    "body_font": "sans"
+  },
+  "sets": [
+    {
+      "id": "calorie-intake-led",
+      "submission": true,
+      "style": "calorie-intake-led",
+      "story": {
+        "throughline": "See total burn, keep it on the wrist, then understand every calorie and macro",
+        "sequence": ["problem", "mechanism", "proof"]
+      },
+      "frames": [
+        {
+          "filename": "01-total-burn.png",
+          "header": "Know your total burn",
+          "story_role": "problem",
+          "story_focus": "total burn",
+          "pitch": {
+            "benefit": "Read one combined daily-burn number instead of piecing together separate energy surfaces",
+            "problem": "Activity rings and separate Health details make total burn easy to miss.",
+            "advantage": "Total Calories puts active plus resting energy into one daily number.",
+            "header_problem": "separate energy surfaces",
+            "header_advantage": "total burn",
+            "search_terms": ["total calories", "daily burn"],
+            "proof": "The literal dashboard capture shows 2,400 total calories against a 2,500 calorie target."
+          },
+          "source": "raw/dashboard.png",
+          "source_evidence": "raw/dashboard.png",
+          "capture_flow": "dashboard",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "phone_top": 620,
+            "bottom_margin": 36,
+            "phone_width": 1120
+          }
+        },
+        {
+          "filename": "02-on-your-wrist.png",
+          "header": "See total burn on your wrist",
+          "story_role": "mechanism",
+          "story_focus": "total burn on your wrist",
+          "pitch": {
+            "benefit": "Check total burn from the Watch face without opening the phone",
+            "problem": "The calorie number is least useful when it is buried inside a phone app.",
+            "advantage": "Total Calories puts the daily number on a literal Watch surface for a quick check.",
+            "header_problem": "opening the phone",
+            "header_advantage": "total burn on your wrist",
+            "search_terms": ["apple watch calories", "watch calories"],
+            "proof": "The Watch capture is the literal source used in the Watch hero composition."
+          },
+          "source": "assets/watch-capture.png",
+          "source_evidence": "assets/watch-capture.png",
+          "capture_flow": "app-repo-watch-validation",
+          "evidence_status": "validated-staged",
+          "device": "watch_hero",
+          "photo": {
+            "source": "assets/watch-context.jpg",
+            "box": [50, 820, 460, 1680],
+            "radius": 68
+          },
+          "watch": {
+            "x": 560,
+            "y": 900,
+            "size": 670,
+            "band_color": "#d7644e",
+            "complication_mode": "synthetic-presentation",
+            "complication": {
+              "x": 940,
+              "y": 2140,
+              "size": 220,
+              "value": "2,789",
+              "label": "CAL",
+              "accent": "#2da987"
+            }
+          },
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2
+          }
+        },
+        {
+          "filename": "03-calorie-intake.png",
+          "header": "See your calorie intake at a glance",
+          "story_role": "proof",
+          "story_focus": "calorie intake",
+          "pitch": {
+            "benefit": "See logged food calories beside protein, carbs, and fat in one daily view",
+            "problem": "Food intake is hard to act on when calories and macros live in different places.",
+            "advantage": "The intake card keeps logged calories and all three macros visible together.",
+            "header_problem": "scattered food details",
+            "header_advantage": "calorie intake",
+            "search_terms": ["calorie intake", "macro tracker"],
+            "proof": "The literal macro-dashboard capture shows 1,950 logged calories, 142 g protein, 186 g carbs, and 61 g fat."
+          },
+          "source": "raw/macro-dashboard.png",
+          "source_evidence": "raw/macro-dashboard.png",
+          "capture_flow": "macro-dashboard",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "background_asset": "assets/macro-still-life.png",
+          "background_opacity": 0.18,
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "phone_top": 600,
+            "bottom_margin": 36,
+            "phone_width": 1080
+          }
+        },
+        {
+          "filename": "04-calorie-gap.png",
+          "header": "See burned minus eaten",
+          "story_role": "support",
+          "story_focus": "burned minus eaten",
+          "pitch": {
+            "benefit": "Understand the daily gap between energy burned and food logged",
+            "problem": "A food total alone does not show how it relates to the energy your body used.",
+            "advantage": "Net deficit puts burned calories, eaten calories, and the difference in one card.",
+            "header_problem": "food total alone",
+            "header_advantage": "burned minus eaten",
+            "search_terms": ["calorie deficit", "net calories"],
+            "proof": "The literal net-deficit capture shows +450 deficit with 2,400 burned minus 1,950 eaten."
+          },
+          "source": "raw/net-deficit.png",
+          "source_evidence": "raw/net-deficit.png",
+          "capture_flow": "net-deficit",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "theme": {
+            "background": "#155846",
+            "background_2": "#0e4437",
+            "ink": "#ffffff",
+            "accent": "#a4e7c7"
+          },
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "phone_top": 600,
+            "bottom_margin": 36,
+            "phone_width": 1080
+          }
+        },
+        {
+          "filename": "05-macro-goals.png",
+          "header": "Set your macro goals",
+          "story_role": "support",
+          "story_focus": "macro goals",
+          "pitch": {
+            "benefit": "Compare logged protein, carbs, and fat with the targets you set",
+            "problem": "Macro numbers are difficult to use without a clear daily target for each one.",
+            "advantage": "Macro goals show progress for protein, carbs, and fat together.",
+            "header_problem": "numbers without targets",
+            "header_advantage": "macro goals",
+            "search_terms": ["macro goals", "protein carbs fat tracker"],
+            "proof": "The literal macro-goals capture shows progress against 150 g protein, 250 g carbs, and 70 g fat goals."
+          },
+          "source": "raw/macro-goals.png",
+          "source_evidence": "raw/macro-goals.png",
+          "capture_flow": "macro-goals",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "phone_top": 590,
+            "bottom_margin": 36,
+            "phone_width": 1080
+          }
+        },
+        {
+          "filename": "06-macro-patterns.png",
+          "header": "Spot your macro patterns",
+          "story_role": "support",
+          "story_focus": "macro patterns",
+          "pitch": {
+            "benefit": "See how protein, carbs, and fat add up across a month of logged days",
+            "problem": "One day of intake does not explain the pattern across a routine.",
+            "advantage": "Macro history turns logged food into an easy-to-scan trend.",
+            "header_problem": "one day of intake",
+            "header_advantage": "macro patterns",
+            "search_terms": ["macro history", "macro tracker"],
+            "proof": "The literal macro-history capture shows 30-day averages, a stacked macro chart, and recent macro totals."
+          },
+          "source": "raw/macro-history.png",
+          "source_evidence": "raw/macro-history.png",
+          "capture_flow": "macro-history",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "theme": {
+            "background": "#ffffff",
+            "background_2": "#e5f1ed",
+            "accent": "#2d9a80"
+          },
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "phone_top": 570,
+            "bottom_margin": 36,
+            "phone_width": 1040
+          }
+        },
+        {
+          "filename": "07-active-resting.png",
+          "header": "See what makes your burn",
+          "story_role": "support",
+          "story_focus": "what makes your burn",
+          "pitch": {
+            "benefit": "See active and resting energy behind the total number",
+            "problem": "A single daily total can hide what is driving the number.",
+            "advantage": "The premium dashboard breaks total burn into active and resting energy with TDEE and BMR context.",
+            "header_problem": "one daily total",
+            "header_advantage": "what makes your burn",
+            "search_terms": ["active calories", "resting calories"],
+            "proof": "The literal premium-dashboard capture shows active, resting, TDEE, and BMR values."
+          },
+          "source": "raw/premium-dashboard.png",
+          "source_evidence": "raw/premium-dashboard.png",
+          "capture_flow": "premium-dashboard",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "phone_top": 600,
+            "bottom_margin": 36,
+            "phone_width": 1080
+          }
+        },
+        {
+          "filename": "08-dark-mode.png",
+          "header": "Read it in dark mode",
+          "story_role": "support",
+          "story_focus": "dark mode",
+          "pitch": {
+            "benefit": "Keep the same calorie and intake view comfortable in a darker setting",
+            "problem": "A bright daily check-in is not ideal in every setting.",
+            "advantage": "The dashboard follows a dark appearance while keeping total burn and steps readable.",
+            "header_problem": "a bright check-in",
+            "header_advantage": "dark mode",
+            "search_terms": ["dark mode calorie tracker", "total calories"],
+            "proof": "The literal dark-dashboard capture shows the loaded dark dashboard with total calories and steps."
+          },
+          "source": "raw/dark-dashboard.png",
+          "source_evidence": "raw/dark-dashboard.png",
+          "capture_flow": "dark-dashboard",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "theme": {
+            "background": "#2a1711",
+            "background_2": "#55251b",
+            "ink": "#ffffff",
+            "accent": "#ff9a78"
+          },
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "phone_top": 600,
+            "bottom_margin": 36,
+            "phone_width": 1080
+          }
+        }
+      ]
+    },
+    {
+      "id": "net-deficit-led",
+      "submission": false,
+      "style": "net-deficit-led",
+      "story": {
+        "throughline": "Start with total burn, keep it on the wrist, then connect the calorie gap to every macro",
+        "sequence": ["problem", "mechanism", "proof"]
+      },
+      "theme": {
+        "background": "#fff4e8",
+        "background_2": "#f2c9a4",
+        "ink": "#2a1710",
+        "muted": "#695247",
+        "accent": "#b85138",
+        "accent_2": "#2a826e",
+        "headline_font": "rounded",
+        "body_font": "sans"
+      },
+      "frames": [
+        {
+          "filename": "01-total-burn.png",
+          "header": "Know your total burn",
+          "story_role": "problem",
+          "story_focus": "total burn",
+          "pitch": {
+            "benefit": "Start with one combined number for the energy your day used",
+            "problem": "Active and resting energy are easy to miss when they are separated.",
+            "advantage": "Total Calories makes total burn the first number you see.",
+            "header_problem": "separated energy",
+            "header_advantage": "total burn",
+            "search_terms": ["total calories", "daily burn"],
+            "proof": "The literal dashboard capture shows 2,400 total calories against a 2,500 calorie target."
+          },
+          "source": "raw/dashboard.png",
+          "source_evidence": "raw/dashboard.png",
+          "capture_flow": "dashboard",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "phone_top": 620,
+            "bottom_margin": 36,
+            "phone_width": 1120
+          }
+        },
+        {
+          "filename": "02-on-your-wrist.png",
+          "header": "Keep total burn on your wrist",
+          "story_role": "mechanism",
+          "story_focus": "total burn on your wrist",
+          "pitch": {
+            "benefit": "Check total burn during the day without opening the phone",
+            "problem": "The number is easiest to use when it is available at the moment you look.",
+            "advantage": "The Watch surface keeps total burn close at hand.",
+            "header_problem": "opening the phone",
+            "header_advantage": "total burn on your wrist",
+            "search_terms": ["apple watch calories", "watch calorie tracker"],
+            "proof": "The Watch capture is the literal source used in the Watch hero composition."
+          },
+          "source": "assets/watch-capture.png",
+          "source_evidence": "assets/watch-capture.png",
+          "capture_flow": "app-repo-watch-validation",
+          "evidence_status": "validated-staged",
+          "device": "watch_hero",
+          "photo": {
+            "source": "assets/watch-context.jpg",
+            "box": [50, 820, 460, 1680],
+            "radius": 68
+          },
+          "watch": {
+            "x": 560,
+            "y": 900,
+            "size": 670,
+            "band_color": "#2a826e",
+            "complication_mode": "synthetic-presentation",
+            "complication": {
+              "x": 940,
+              "y": 2140,
+              "size": 220,
+              "value": "2,789",
+              "label": "CAL",
+              "accent": "#b85138"
+            }
+          },
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2
+          }
+        },
+        {
+          "filename": "03-calorie-gap.png",
+          "header": "Know your calorie gap",
+          "story_role": "proof",
+          "story_focus": "calorie gap",
+          "pitch": {
+            "benefit": "See how burned calories compare with the food you logged",
+            "problem": "It is difficult to interpret intake without the burn number beside it.",
+            "advantage": "Net deficit connects total burn and food intake in one glance.",
+            "header_problem": "intake without burn",
+            "header_advantage": "calorie gap",
+            "search_terms": ["calorie deficit", "calorie intake"],
+            "proof": "The literal net-deficit capture shows +450 deficit with 2,400 burned minus 1,950 eaten."
+          },
+          "source": "raw/net-deficit.png",
+          "source_evidence": "raw/net-deficit.png",
+          "capture_flow": "net-deficit",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "theme": {
+            "background": "#175b48",
+            "background_2": "#0d3f34",
+            "ink": "#ffffff",
+            "accent": "#a4e7c7"
+          },
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "phone_top": 600,
+            "bottom_margin": 36,
+            "phone_width": 1080
+          }
+        },
+        {
+          "filename": "04-macros-together.png",
+          "header": "See all three macros together",
+          "story_role": "support",
+          "story_focus": "all three macros",
+          "pitch": {
+            "benefit": "See protein, carbs, and fat beside the calories you logged",
+            "problem": "Macro details are easy to lose when food calories are shown alone.",
+            "advantage": "The macro card keeps all three macros and the logged calorie total together.",
+            "header_problem": "food calories alone",
+            "header_advantage": "all three macros",
+            "search_terms": ["macro tracker", "protein carbs fat"],
+            "proof": "The literal macro-dashboard capture shows 1,950 logged calories, 142 g protein, 186 g carbs, and 61 g fat."
+          },
+          "source": "raw/macro-dashboard.png",
+          "source_evidence": "raw/macro-dashboard.png",
+          "capture_flow": "macro-dashboard",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "background_asset": "assets/macro-still-life.png",
+          "background_opacity": 0.16,
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "phone_top": 600,
+            "bottom_margin": 36,
+            "phone_width": 1080
+          }
+        },
+        {
+          "filename": "05-macro-goals.png",
+          "header": "Compare intake with macro goals",
+          "story_role": "support",
+          "story_focus": "macro goals",
+          "pitch": {
+            "benefit": "See whether your logged protein, carbs, and fat are moving toward target",
+            "problem": "A macro total is not actionable without a target to compare against.",
+            "advantage": "The goal rows make intake progress clear for each macro.",
+            "header_problem": "no target to compare",
+            "header_advantage": "macro goals",
+            "search_terms": ["macro goals", "calorie intake tracker"],
+            "proof": "The literal macro-goals capture shows protein, carbs, and fat progress against daily goals."
+          },
+          "source": "raw/macro-goals.png",
+          "source_evidence": "raw/macro-goals.png",
+          "capture_flow": "macro-goals",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "phone_top": 590,
+            "bottom_margin": 36,
+            "phone_width": 1080
+          }
+        },
+        {
+          "filename": "06-intake-patterns.png",
+          "header": "Spot your intake patterns",
+          "story_role": "support",
+          "story_focus": "intake patterns",
+          "pitch": {
+            "benefit": "See how your macro intake changes across logged days",
+            "problem": "A single meal or day does not show the shape of your routine.",
+            "advantage": "Macro history makes the longer intake pattern easy to scan.",
+            "header_problem": "one day of intake",
+            "header_advantage": "intake patterns",
+            "search_terms": ["macro history", "food intake history"],
+            "proof": "The literal macro-history capture shows 30-day averages, stacked macro history, and recent macro totals."
+          },
+          "source": "raw/macro-history.png",
+          "source_evidence": "raw/macro-history.png",
+          "capture_flow": "macro-history",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "theme": {
+            "background": "#fffdfb",
+            "background_2": "#f2dfd0",
+            "accent": "#b85138"
+          },
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "phone_top": 570,
+            "bottom_margin": 36,
+            "phone_width": 1040
+          }
+        },
+        {
+          "filename": "07-active-resting.png",
+          "header": "See active and resting burn",
+          "story_role": "support",
+          "story_focus": "active and resting burn",
+          "pitch": {
+            "benefit": "Understand the active and resting energy behind total burn",
+            "problem": "The total number is less useful when its sources are hidden.",
+            "advantage": "The premium dashboard keeps active, resting, TDEE, and BMR context together.",
+            "header_problem": "hidden energy sources",
+            "header_advantage": "active and resting burn",
+            "search_terms": ["active calories", "resting calories"],
+            "proof": "The literal premium-dashboard capture shows active, resting, TDEE, and BMR values."
+          },
+          "source": "raw/premium-dashboard.png",
+          "source_evidence": "raw/premium-dashboard.png",
+          "capture_flow": "premium-dashboard",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "phone_top": 600,
+            "bottom_margin": 36,
+            "phone_width": 1080
+          }
+        },
+        {
+          "filename": "08-go-further.png",
+          "header": "Go further with Vitals+",
+          "story_role": "support",
+          "story_focus": "go further",
+          "pitch": {
+            "benefit": "Unlock more ways to understand your burn and intake",
+            "problem": "A daily calorie view becomes more useful when deeper context is available.",
+            "advantage": "Vitals+ adds deeper calorie, fasting, and macro-related surfaces beyond the daily check-in.",
+            "header_problem": "a shallow daily check-in",
+            "header_advantage": "go further",
+            "search_terms": ["calorie tracker", "macro tracker"],
+            "proof": "The literal Vitals+ capture shows the available premium feature list and subscription surface."
+          },
+          "source": "raw/premium.png",
+          "source_evidence": "raw/premium.png",
+          "capture_flow": "premium",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "theme": {
+            "background": "#2a1711",
+            "background_2": "#55251b",
+            "ink": "#ffffff",
+            "accent": "#ff9a78"
+          },
+          "layout": {
+            "header_top": 116,
+            "header_size": 164,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "phone_top": 600,
+            "bottom_margin": 36,
+            "phone_width": 1080
+          }
+        }
+      ]
+    }
+  ]
+}

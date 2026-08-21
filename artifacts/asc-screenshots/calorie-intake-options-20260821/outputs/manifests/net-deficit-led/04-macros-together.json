@@ -1,0 +1,68 @@
+{
+  "filename": "04-macros-together.png",
+  "path": "net-deficit-led/04-macros-together.png",
+  "output_sha256": "b50be440342aecc5ecfc02132e2d17422d8104bb7bb5fc95fb4811f2f6517ed2",
+  "output_size": [
+    1284,
+    2778
+  ],
+  "device": "iphone",
+  "header": "See all three macros together",
+  "pitch": {
+    "benefit": "See protein, carbs, and fat beside the calories you logged",
+    "problem": "Macro details are easy to lose when food calories are shown alone.",
+    "advantage": "The macro card keeps all three macros and the logged calorie total together.",
+    "header_problem": "food calories alone",
+    "header_advantage": "all three macros",
+    "search_terms": [
+      "macro tracker",
+      "protein carbs fat"
+    ],
+    "proof": "The literal macro-dashboard capture shows 1,950 logged calories, 142 g protein, 186 g carbs, and 61 g fat."
+  },
+  "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-dashboard.png",
+  "source_sha256": "f51b9eb2cd7c075b82bd0382228f800538c109a61fb9df34c230cf136b5654f0",
+  "background_asset": "assets/macro-still-life.png",
+  "background_asset_sha256": "3bf55b62e48c04a7117987b383816cc01481bf95b16ae9d664e4728cb281ac7d",
+  "background_override": null,
+  "foreground": "manifests/net-deficit-led/04-macros-together.foreground.png",
+  "foreground_sha256": "b0e1ed02bbe2bf7a4fca9470e7a9bcae5585bd58d9df24fb0738995dd1749607",
+  "ui_mask": "manifests/net-deficit-led/04-macros-together.ui-mask.png",
+  "ui_coverage": 0.5721,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_65",
+  "size": [
+    1284,
+    2778
+  ],
+  "background_mode": "theme-plus-asset",
+  "background_id": "theme-plus-asset",
+  "background_top": "#fff4e8",
+  "background_bottom": "#f2c9a4",
+  "background_asset_applied": true,
+  "phone": {
+    "x": 139,
+    "y": 600,
+    "width": 1006,
+    "height": 2143,
+    "screen_x": 158,
+    "screen_y": 619,
+    "screen_width": 968,
+    "screen_height": 2105
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 152,
+  "header_lines": 2,
+  "header_text": "See all three macros together",
+  "header_bounds": [
+    120,
+    154,
+    1164,
+    447
+  ],
+  "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-dashboard.png",
+  "source_evidence_sha256": "f51b9eb2cd7c075b82bd0382228f800538c109a61fb9df34c230cf136b5654f0"
+}

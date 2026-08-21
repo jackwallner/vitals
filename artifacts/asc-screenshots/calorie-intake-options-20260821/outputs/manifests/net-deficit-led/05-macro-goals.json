@@ -1,0 +1,68 @@
+{
+  "filename": "05-macro-goals.png",
+  "path": "net-deficit-led/05-macro-goals.png",
+  "output_sha256": "688b1f10cdcf2a53ab6361a77621b7a99f4ce3a609489955549eafbf3c94b861",
+  "output_size": [
+    1284,
+    2778
+  ],
+  "device": "iphone",
+  "header": "Compare intake with macro goals",
+  "pitch": {
+    "benefit": "See whether your logged protein, carbs, and fat are moving toward target",
+    "problem": "A macro total is not actionable without a target to compare against.",
+    "advantage": "The goal rows make intake progress clear for each macro.",
+    "header_problem": "no target to compare",
+    "header_advantage": "macro goals",
+    "search_terms": [
+      "macro goals",
+      "calorie intake tracker"
+    ],
+    "proof": "The literal macro-goals capture shows protein, carbs, and fat progress against daily goals."
+  },
+  "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-goals.png",
+  "source_sha256": "fa7374daee9af23675f9231d1797dd9b82ea555275d959b6273c60e1829a2eaa",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/net-deficit-led/05-macro-goals.foreground.png",
+  "foreground_sha256": "0ef33e6738bb7d286e3fcd8e05f8d6c9fabaa777ea6f145cdeb2dfd044525568",
+  "ui_mask": "manifests/net-deficit-led/05-macro-goals.ui-mask.png",
+  "ui_coverage": 0.5767,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_65",
+  "size": [
+    1284,
+    2778
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#fff4e8",
+  "background_bottom": "#f2c9a4",
+  "background_asset_applied": false,
+  "phone": {
+    "x": 137,
+    "y": 590,
+    "width": 1010,
+    "height": 2151,
+    "screen_x": 156,
+    "screen_y": 609,
+    "screen_width": 972,
+    "screen_height": 2113
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 148,
+  "header_lines": 2,
+  "header_text": "Compare intake with macro goals",
+  "header_bounds": [
+    119,
+    154,
+    1165,
+    439
+  ],
+  "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-goals.png",
+  "source_evidence_sha256": "fa7374daee9af23675f9231d1797dd9b82ea555275d959b6273c60e1829a2eaa"
+}

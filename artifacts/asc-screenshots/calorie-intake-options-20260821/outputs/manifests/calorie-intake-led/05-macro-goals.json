@@ -1,0 +1,68 @@
+{
+  "filename": "05-macro-goals.png",
+  "path": "calorie-intake-led/05-macro-goals.png",
+  "output_sha256": "cc40bfb5cd251031cdafa95df43c372b48b66f0d77532cea302947943f3dbb4c",
+  "output_size": [
+    1284,
+    2778
+  ],
+  "device": "iphone",
+  "header": "Set your macro goals",
+  "pitch": {
+    "benefit": "Compare logged protein, carbs, and fat with the targets you set",
+    "problem": "Macro numbers are difficult to use without a clear daily target for each one.",
+    "advantage": "Macro goals show progress for protein, carbs, and fat together.",
+    "header_problem": "numbers without targets",
+    "header_advantage": "macro goals",
+    "search_terms": [
+      "macro goals",
+      "protein carbs fat tracker"
+    ],
+    "proof": "The literal macro-goals capture shows progress against 150 g protein, 250 g carbs, and 70 g fat goals."
+  },
+  "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-goals.png",
+  "source_sha256": "fa7374daee9af23675f9231d1797dd9b82ea555275d959b6273c60e1829a2eaa",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/calorie-intake-led/05-macro-goals.foreground.png",
+  "foreground_sha256": "7aa41542b04abdf053f23fd9ef99aac89a90a2c3317ed35314f6380f19ceea55",
+  "ui_mask": "manifests/calorie-intake-led/05-macro-goals.ui-mask.png",
+  "ui_coverage": 0.5767,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_65",
+  "size": [
+    1284,
+    2778
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#fbf7f1",
+  "background_bottom": "#efe3d4",
+  "background_asset_applied": false,
+  "phone": {
+    "x": 137,
+    "y": 590,
+    "width": 1010,
+    "height": 2151,
+    "screen_x": 156,
+    "screen_y": 609,
+    "screen_width": 972,
+    "screen_height": 2113
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 164,
+  "header_lines": 2,
+  "header_text": "Set your macro goals",
+  "header_bounds": [
+    124,
+    158,
+    1160,
+    473
+  ],
+  "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-goals.png",
+  "source_evidence_sha256": "fa7374daee9af23675f9231d1797dd9b82ea555275d959b6273c60e1829a2eaa"
+}

@@ -1,0 +1,66 @@
+{
+  "filename": "02-on-your-wrist.png",
+  "path": "calorie-intake-led/02-on-your-wrist.png",
+  "output_sha256": "d55476f4c4b187f0ca89637a4628f3e1eb155cef3cf58a93bb1e3f0f98cad971",
+  "output_size": [
+    1284,
+    2778
+  ],
+  "device": "watch_hero",
+  "header": "See total burn on your wrist",
+  "pitch": {
+    "benefit": "Check total burn from the Watch face without opening the phone",
+    "problem": "The calorie number is least useful when it is buried inside a phone app.",
+    "advantage": "Total Calories puts the daily number on a literal Watch surface for a quick check.",
+    "header_problem": "opening the phone",
+    "header_advantage": "total burn on your wrist",
+    "search_terms": [
+      "apple watch calories",
+      "watch calories"
+    ],
+    "proof": "The Watch capture is the literal source used in the Watch hero composition."
+  },
+  "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/assets/watch-capture.png",
+  "source_sha256": "cbaa829f4289828ea9a069d17915f0d7ece7ab3a10c8e91a230c7b396ca155d6",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/calorie-intake-led/02-on-your-wrist.foreground.png",
+  "foreground_sha256": "4004ae04ad956106db733b6af0c0834342d8ea7591e84a9a28f9152fd38ff04a",
+  "ui_mask": "manifests/calorie-intake-led/02-on-your-wrist.ui-mask.png",
+  "ui_coverage": 0.1118,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_65",
+  "size": [
+    1284,
+    2778
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#fbf7f1",
+  "background_bottom": "#efe3d4",
+  "background_asset_applied": false,
+  "photo": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/assets/watch-context.jpg",
+  "watch": {
+    "x": 600,
+    "y": 933,
+    "width": 589,
+    "height": 675
+  },
+  "complication_mode": "synthetic-presentation",
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 164,
+  "header_lines": 2,
+  "header_text": "See total burn on your wrist",
+  "header_bounds": [
+    166,
+    158,
+    1118,
+    473
+  ],
+  "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/assets/watch-capture.png",
+  "source_evidence_sha256": "cbaa829f4289828ea9a069d17915f0d7ece7ab3a10c8e91a230c7b396ca155d6"
+}

@@ -1,0 +1,66 @@
+{
+  "filename": "02-on-your-wrist.png",
+  "path": "net-deficit-led/02-on-your-wrist.png",
+  "output_sha256": "b4ccff4065060c315fbbbe761590014ddc48f1f164ee5e2bc361d163cebf4b1a",
+  "output_size": [
+    1284,
+    2778
+  ],
+  "device": "watch_hero",
+  "header": "Keep total burn on your wrist",
+  "pitch": {
+    "benefit": "Check total burn during the day without opening the phone",
+    "problem": "The number is easiest to use when it is available at the moment you look.",
+    "advantage": "The Watch surface keeps total burn close at hand.",
+    "header_problem": "opening the phone",
+    "header_advantage": "total burn on your wrist",
+    "search_terms": [
+      "apple watch calories",
+      "watch calorie tracker"
+    ],
+    "proof": "The Watch capture is the literal source used in the Watch hero composition."
+  },
+  "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/assets/watch-capture.png",
+  "source_sha256": "cbaa829f4289828ea9a069d17915f0d7ece7ab3a10c8e91a230c7b396ca155d6",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/net-deficit-led/02-on-your-wrist.foreground.png",
+  "foreground_sha256": "5770dca36490a16fbb8ee8b461ecd0abe9baf538b354a204b9783c0b14ae85bf",
+  "ui_mask": "manifests/net-deficit-led/02-on-your-wrist.ui-mask.png",
+  "ui_coverage": 0.1118,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_65",
+  "size": [
+    1284,
+    2778
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#fff4e8",
+  "background_bottom": "#f2c9a4",
+  "background_asset_applied": false,
+  "photo": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/assets/watch-context.jpg",
+  "watch": {
+    "x": 600,
+    "y": 933,
+    "width": 589,
+    "height": 675
+  },
+  "complication_mode": "synthetic-presentation",
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 164,
+  "header_lines": 2,
+  "header_text": "Keep total burn on your wrist",
+  "header_bounds": [
+    119,
+    158,
+    1165,
+    473
+  ],
+  "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/assets/watch-capture.png",
+  "source_evidence_sha256": "cbaa829f4289828ea9a069d17915f0d7ece7ab3a10c8e91a230c7b396ca155d6"
+}

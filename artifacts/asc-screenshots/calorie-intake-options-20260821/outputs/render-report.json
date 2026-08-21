@@ -1,0 +1,1121 @@
+{
+  "app": "total-calories",
+  "manifest": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/manifest.json",
+  "target": "iphone_65",
+  "copy_contract": "single-header-benefit-story-v3",
+  "background_override": null,
+  "sets": [
+    {
+      "id": "calorie-intake-led",
+      "style": "calorie-intake-led",
+      "frames": [
+        {
+          "filename": "01-total-burn.png",
+          "path": "calorie-intake-led/01-total-burn.png",
+          "output_sha256": "2d1a8311d6a5d44f1fa9f7fb1ce307759d1d3e585b0bf60c29fb937bb93c0007",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "iphone",
+          "header": "Know your total burn",
+          "pitch": {
+            "benefit": "Read one combined daily-burn number instead of piecing together separate energy surfaces",
+            "problem": "Activity rings and separate Health details make total burn easy to miss.",
+            "advantage": "Total Calories puts active plus resting energy into one daily number.",
+            "header_problem": "separate energy surfaces",
+            "header_advantage": "total burn",
+            "search_terms": [
+              "total calories",
+              "daily burn"
+            ],
+            "proof": "The literal dashboard capture shows 2,400 total calories against a 2,500 calorie target."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/dashboard.png",
+          "source_sha256": "9d5898574818ffe01ef42628d4645a5404e0baf26acb1c60690e7f68eb7652c7",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/calorie-intake-led/01-total-burn.foreground.png",
+          "foreground_sha256": "550ee8cfcd39966e1cfc9df0299087eee4be8b9a4af05c19672eec705c1585aa",
+          "ui_mask": "manifests/calorie-intake-led/01-total-burn.ui-mask.png",
+          "ui_coverage": 0.5603,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#fbf7f1",
+          "background_bottom": "#efe3d4",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 143,
+            "y": 620,
+            "width": 998,
+            "height": 2123,
+            "screen_x": 163,
+            "screen_y": 640,
+            "screen_width": 958,
+            "screen_height": 2083
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 164,
+          "header_lines": 2,
+          "header_text": "Know your total burn",
+          "header_bounds": [
+            277,
+            158,
+            1006,
+            444
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/dashboard.png",
+          "source_evidence_sha256": "9d5898574818ffe01ef42628d4645a5404e0baf26acb1c60690e7f68eb7652c7",
+          "manifest": "manifests/calorie-intake-led/01-total-burn.json"
+        },
+        {
+          "filename": "02-on-your-wrist.png",
+          "path": "calorie-intake-led/02-on-your-wrist.png",
+          "output_sha256": "d55476f4c4b187f0ca89637a4628f3e1eb155cef3cf58a93bb1e3f0f98cad971",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "watch_hero",
+          "header": "See total burn on your wrist",
+          "pitch": {
+            "benefit": "Check total burn from the Watch face without opening the phone",
+            "problem": "The calorie number is least useful when it is buried inside a phone app.",
+            "advantage": "Total Calories puts the daily number on a literal Watch surface for a quick check.",
+            "header_problem": "opening the phone",
+            "header_advantage": "total burn on your wrist",
+            "search_terms": [
+              "apple watch calories",
+              "watch calories"
+            ],
+            "proof": "The Watch capture is the literal source used in the Watch hero composition."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/assets/watch-capture.png",
+          "source_sha256": "cbaa829f4289828ea9a069d17915f0d7ece7ab3a10c8e91a230c7b396ca155d6",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/calorie-intake-led/02-on-your-wrist.foreground.png",
+          "foreground_sha256": "4004ae04ad956106db733b6af0c0834342d8ea7591e84a9a28f9152fd38ff04a",
+          "ui_mask": "manifests/calorie-intake-led/02-on-your-wrist.ui-mask.png",
+          "ui_coverage": 0.1118,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#fbf7f1",
+          "background_bottom": "#efe3d4",
+          "background_asset_applied": false,
+          "photo": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/assets/watch-context.jpg",
+          "watch": {
+            "x": 600,
+            "y": 933,
+            "width": 589,
+            "height": 675
+          },
+          "complication_mode": "synthetic-presentation",
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 164,
+          "header_lines": 2,
+          "header_text": "See total burn on your wrist",
+          "header_bounds": [
+            166,
+            158,
+            1118,
+            473
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/assets/watch-capture.png",
+          "source_evidence_sha256": "cbaa829f4289828ea9a069d17915f0d7ece7ab3a10c8e91a230c7b396ca155d6",
+          "manifest": "manifests/calorie-intake-led/02-on-your-wrist.json"
+        },
+        {
+          "filename": "03-calorie-intake.png",
+          "path": "calorie-intake-led/03-calorie-intake.png",
+          "output_sha256": "68f04f47d953bfcbd919cb3ba30577d8cb3b02a983495e9e709078743c844f7a",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "iphone",
+          "header": "See your calorie intake at a glance",
+          "pitch": {
+            "benefit": "See logged food calories beside protein, carbs, and fat in one daily view",
+            "problem": "Food intake is hard to act on when calories and macros live in different places.",
+            "advantage": "The intake card keeps logged calories and all three macros visible together.",
+            "header_problem": "scattered food details",
+            "header_advantage": "calorie intake",
+            "search_terms": [
+              "calorie intake",
+              "macro tracker"
+            ],
+            "proof": "The literal macro-dashboard capture shows 1,950 logged calories, 142 g protein, 186 g carbs, and 61 g fat."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-dashboard.png",
+          "source_sha256": "f51b9eb2cd7c075b82bd0382228f800538c109a61fb9df34c230cf136b5654f0",
+          "background_asset": "assets/macro-still-life.png",
+          "background_asset_sha256": "3bf55b62e48c04a7117987b383816cc01481bf95b16ae9d664e4728cb281ac7d",
+          "background_override": null,
+          "foreground": "manifests/calorie-intake-led/03-calorie-intake.foreground.png",
+          "foreground_sha256": "d1adb8005a20fd25980bd36f990fed9f61a3aec640534d26a173d6b6a0597f51",
+          "ui_mask": "manifests/calorie-intake-led/03-calorie-intake.ui-mask.png",
+          "ui_coverage": 0.5721,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme-plus-asset",
+          "background_id": "theme-plus-asset",
+          "background_top": "#fbf7f1",
+          "background_bottom": "#efe3d4",
+          "background_asset_applied": true,
+          "phone": {
+            "x": 139,
+            "y": 600,
+            "width": 1006,
+            "height": 2143,
+            "screen_x": 158,
+            "screen_y": 619,
+            "screen_width": 968,
+            "screen_height": 2105
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 144,
+          "header_lines": 2,
+          "header_text": "See your calorie intake at a glance",
+          "header_bounds": [
+            117,
+            152,
+            1166,
+            430
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-dashboard.png",
+          "source_evidence_sha256": "f51b9eb2cd7c075b82bd0382228f800538c109a61fb9df34c230cf136b5654f0",
+          "manifest": "manifests/calorie-intake-led/03-calorie-intake.json"
+        },
+        {
+          "filename": "04-calorie-gap.png",
+          "path": "calorie-intake-led/04-calorie-gap.png",
+          "output_sha256": "3debf3882a7f28798b06b02d71ffff8f2f257422d9c631ef0543e39de0ae42de",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "iphone",
+          "header": "See burned minus eaten",
+          "pitch": {
+            "benefit": "Understand the daily gap between energy burned and food logged",
+            "problem": "A food total alone does not show how it relates to the energy your body used.",
+            "advantage": "Net deficit puts burned calories, eaten calories, and the difference in one card.",
+            "header_problem": "food total alone",
+            "header_advantage": "burned minus eaten",
+            "search_terms": [
+              "calorie deficit",
+              "net calories"
+            ],
+            "proof": "The literal net-deficit capture shows +450 deficit with 2,400 burned minus 1,950 eaten."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/net-deficit.png",
+          "source_sha256": "1e70a665a1b18527287764b2a406e67afedfae41237e1c32e4016b685c453c48",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/calorie-intake-led/04-calorie-gap.foreground.png",
+          "foreground_sha256": "4acd1ae150046f0aebe5d6ef69340eab119c8e0818dc003dd23860ae7d153600",
+          "ui_mask": "manifests/calorie-intake-led/04-calorie-gap.ui-mask.png",
+          "ui_coverage": 0.5721,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#155846",
+          "background_bottom": "#0e4437",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 139,
+            "y": 600,
+            "width": 1006,
+            "height": 2143,
+            "screen_x": 158,
+            "screen_y": 619,
+            "screen_width": 968,
+            "screen_height": 2105
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 164,
+          "header_lines": 2,
+          "header_text": "See burned minus eaten",
+          "header_bounds": [
+            224,
+            158,
+            1060,
+            443
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/net-deficit.png",
+          "source_evidence_sha256": "1e70a665a1b18527287764b2a406e67afedfae41237e1c32e4016b685c453c48",
+          "manifest": "manifests/calorie-intake-led/04-calorie-gap.json"
+        },
+        {
+          "filename": "05-macro-goals.png",
+          "path": "calorie-intake-led/05-macro-goals.png",
+          "output_sha256": "cc40bfb5cd251031cdafa95df43c372b48b66f0d77532cea302947943f3dbb4c",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "iphone",
+          "header": "Set your macro goals",
+          "pitch": {
+            "benefit": "Compare logged protein, carbs, and fat with the targets you set",
+            "problem": "Macro numbers are difficult to use without a clear daily target for each one.",
+            "advantage": "Macro goals show progress for protein, carbs, and fat together.",
+            "header_problem": "numbers without targets",
+            "header_advantage": "macro goals",
+            "search_terms": [
+              "macro goals",
+              "protein carbs fat tracker"
+            ],
+            "proof": "The literal macro-goals capture shows progress against 150 g protein, 250 g carbs, and 70 g fat goals."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-goals.png",
+          "source_sha256": "fa7374daee9af23675f9231d1797dd9b82ea555275d959b6273c60e1829a2eaa",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/calorie-intake-led/05-macro-goals.foreground.png",
+          "foreground_sha256": "7aa41542b04abdf053f23fd9ef99aac89a90a2c3317ed35314f6380f19ceea55",
+          "ui_mask": "manifests/calorie-intake-led/05-macro-goals.ui-mask.png",
+          "ui_coverage": 0.5767,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#fbf7f1",
+          "background_bottom": "#efe3d4",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 137,
+            "y": 590,
+            "width": 1010,
+            "height": 2151,
+            "screen_x": 156,
+            "screen_y": 609,
+            "screen_width": 972,
+            "screen_height": 2113
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 164,
+          "header_lines": 2,
+          "header_text": "Set your macro goals",
+          "header_bounds": [
+            124,
+            158,
+            1160,
+            473
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-goals.png",
+          "source_evidence_sha256": "fa7374daee9af23675f9231d1797dd9b82ea555275d959b6273c60e1829a2eaa",
+          "manifest": "manifests/calorie-intake-led/05-macro-goals.json"
+        },
+        {
+          "filename": "06-macro-patterns.png",
+          "path": "calorie-intake-led/06-macro-patterns.png",
+          "output_sha256": "8a3b86fdb55c3d34368018e0bbc0fd9a82be7066c7b829765ac3480a57898172",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "iphone",
+          "header": "Spot your macro patterns",
+          "pitch": {
+            "benefit": "See how protein, carbs, and fat add up across a month of logged days",
+            "problem": "One day of intake does not explain the pattern across a routine.",
+            "advantage": "Macro history turns logged food into an easy-to-scan trend.",
+            "header_problem": "one day of intake",
+            "header_advantage": "macro patterns",
+            "search_terms": [
+              "macro history",
+              "macro tracker"
+            ],
+            "proof": "The literal macro-history capture shows 30-day averages, a stacked macro chart, and recent macro totals."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-history.png",
+          "source_sha256": "7f26f7ee2b9fa3fc4199c6f1a2ee27a751f0f42b38830a6bf7bc1df94746fc7b",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/calorie-intake-led/06-macro-patterns.foreground.png",
+          "foreground_sha256": "aac2ed4ccf08e7462182a711ef64c60c9107c7ad6efc73a19e1aa8abb396e3cb",
+          "ui_mask": "manifests/calorie-intake-led/06-macro-patterns.ui-mask.png",
+          "ui_coverage": 0.5887,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#ffffff",
+          "background_bottom": "#e5f1ed",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 133,
+            "y": 570,
+            "width": 1018,
+            "height": 2171,
+            "screen_x": 151,
+            "screen_y": 588,
+            "screen_width": 982,
+            "screen_height": 2135
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 164,
+          "header_lines": 2,
+          "header_text": "Spot your macro patterns",
+          "header_bounds": [
+            123,
+            158,
+            1160,
+            471
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-history.png",
+          "source_evidence_sha256": "7f26f7ee2b9fa3fc4199c6f1a2ee27a751f0f42b38830a6bf7bc1df94746fc7b",
+          "manifest": "manifests/calorie-intake-led/06-macro-patterns.json"
+        },
+        {
+          "filename": "07-active-resting.png",
+          "path": "calorie-intake-led/07-active-resting.png",
+          "output_sha256": "0b12eab40b8b786c3a5b5f6f650fcfda00ff22a9a155ab05f3fb873e58b25843",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "iphone",
+          "header": "See what makes your burn",
+          "pitch": {
+            "benefit": "See active and resting energy behind the total number",
+            "problem": "A single daily total can hide what is driving the number.",
+            "advantage": "The premium dashboard breaks total burn into active and resting energy with TDEE and BMR context.",
+            "header_problem": "one daily total",
+            "header_advantage": "what makes your burn",
+            "search_terms": [
+              "active calories",
+              "resting calories"
+            ],
+            "proof": "The literal premium-dashboard capture shows active, resting, TDEE, and BMR values."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/premium-dashboard.png",
+          "source_sha256": "54c8714a3729643b95e17b64bed7dd682c11b2bda07bc18ce971747aa380f620",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/calorie-intake-led/07-active-resting.foreground.png",
+          "foreground_sha256": "457ab475a14e63691fb36deba84b56455041702b8c2cbaf2c5ea913b193794da",
+          "ui_mask": "manifests/calorie-intake-led/07-active-resting.ui-mask.png",
+          "ui_coverage": 0.5721,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#fbf7f1",
+          "background_bottom": "#efe3d4",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 139,
+            "y": 600,
+            "width": 1006,
+            "height": 2143,
+            "screen_x": 158,
+            "screen_y": 619,
+            "screen_width": 968,
+            "screen_height": 2105
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 152,
+          "header_lines": 2,
+          "header_text": "See what makes your burn",
+          "header_bounds": [
+            121,
+            154,
+            1163,
+            447
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/premium-dashboard.png",
+          "source_evidence_sha256": "54c8714a3729643b95e17b64bed7dd682c11b2bda07bc18ce971747aa380f620",
+          "manifest": "manifests/calorie-intake-led/07-active-resting.json"
+        },
+        {
+          "filename": "08-dark-mode.png",
+          "path": "calorie-intake-led/08-dark-mode.png",
+          "output_sha256": "42cdbe57446f2433cd6b99bf0d3bbde541dbfdc7bfd3a5f013907ca42adb8c25",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "iphone",
+          "header": "Read it in dark mode",
+          "pitch": {
+            "benefit": "Keep the same calorie and intake view comfortable in a darker setting",
+            "problem": "A bright daily check-in is not ideal in every setting.",
+            "advantage": "The dashboard follows a dark appearance while keeping total burn and steps readable.",
+            "header_problem": "a bright check-in",
+            "header_advantage": "dark mode",
+            "search_terms": [
+              "dark mode calorie tracker",
+              "total calories"
+            ],
+            "proof": "The literal dark-dashboard capture shows the loaded dark dashboard with total calories and steps."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/dark-dashboard.png",
+          "source_sha256": "3d89ddd2cc63bdb7edc88ad7d0c8c0e871ba0556a1b329b55e6c7231db00cc47",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/calorie-intake-led/08-dark-mode.foreground.png",
+          "foreground_sha256": "edf00b44971f5fb7eaf838d02da0feaf698147477da7dfb2029ebf9c0ae62690",
+          "ui_mask": "manifests/calorie-intake-led/08-dark-mode.ui-mask.png",
+          "ui_coverage": 0.5721,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#2a1711",
+          "background_bottom": "#55251b",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 139,
+            "y": 600,
+            "width": 1006,
+            "height": 2143,
+            "screen_x": 158,
+            "screen_y": 619,
+            "screen_width": 968,
+            "screen_height": 2105
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 164,
+          "header_lines": 2,
+          "header_text": "Read it in dark mode",
+          "header_bounds": [
+            159,
+            158,
+            1124,
+            444
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/dark-dashboard.png",
+          "source_evidence_sha256": "3d89ddd2cc63bdb7edc88ad7d0c8c0e871ba0556a1b329b55e6c7231db00cc47",
+          "manifest": "manifests/calorie-intake-led/08-dark-mode.json"
+        }
+      ]
+    },
+    {
+      "id": "net-deficit-led",
+      "style": "net-deficit-led",
+      "frames": [
+        {
+          "filename": "01-total-burn.png",
+          "path": "net-deficit-led/01-total-burn.png",
+          "output_sha256": "1487f0c950353ceb2b7a7e3fee61c34bda3c4cbc97ed8e6e03f270ce8bcef283",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "iphone",
+          "header": "Know your total burn",
+          "pitch": {
+            "benefit": "Start with one combined number for the energy your day used",
+            "problem": "Active and resting energy are easy to miss when they are separated.",
+            "advantage": "Total Calories makes total burn the first number you see.",
+            "header_problem": "separated energy",
+            "header_advantage": "total burn",
+            "search_terms": [
+              "total calories",
+              "daily burn"
+            ],
+            "proof": "The literal dashboard capture shows 2,400 total calories against a 2,500 calorie target."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/dashboard.png",
+          "source_sha256": "9d5898574818ffe01ef42628d4645a5404e0baf26acb1c60690e7f68eb7652c7",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/net-deficit-led/01-total-burn.foreground.png",
+          "foreground_sha256": "e64e2ef90489ca7c8163d1c77040b11afbface9947a1d4f0567b40a521526f97",
+          "ui_mask": "manifests/net-deficit-led/01-total-burn.ui-mask.png",
+          "ui_coverage": 0.5603,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#fff4e8",
+          "background_bottom": "#f2c9a4",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 143,
+            "y": 620,
+            "width": 998,
+            "height": 2123,
+            "screen_x": 163,
+            "screen_y": 640,
+            "screen_width": 958,
+            "screen_height": 2083
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 164,
+          "header_lines": 2,
+          "header_text": "Know your total burn",
+          "header_bounds": [
+            277,
+            158,
+            1006,
+            444
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/dashboard.png",
+          "source_evidence_sha256": "9d5898574818ffe01ef42628d4645a5404e0baf26acb1c60690e7f68eb7652c7",
+          "manifest": "manifests/net-deficit-led/01-total-burn.json"
+        },
+        {
+          "filename": "02-on-your-wrist.png",
+          "path": "net-deficit-led/02-on-your-wrist.png",
+          "output_sha256": "b4ccff4065060c315fbbbe761590014ddc48f1f164ee5e2bc361d163cebf4b1a",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "watch_hero",
+          "header": "Keep total burn on your wrist",
+          "pitch": {
+            "benefit": "Check total burn during the day without opening the phone",
+            "problem": "The number is easiest to use when it is available at the moment you look.",
+            "advantage": "The Watch surface keeps total burn close at hand.",
+            "header_problem": "opening the phone",
+            "header_advantage": "total burn on your wrist",
+            "search_terms": [
+              "apple watch calories",
+              "watch calorie tracker"
+            ],
+            "proof": "The Watch capture is the literal source used in the Watch hero composition."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/assets/watch-capture.png",
+          "source_sha256": "cbaa829f4289828ea9a069d17915f0d7ece7ab3a10c8e91a230c7b396ca155d6",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/net-deficit-led/02-on-your-wrist.foreground.png",
+          "foreground_sha256": "5770dca36490a16fbb8ee8b461ecd0abe9baf538b354a204b9783c0b14ae85bf",
+          "ui_mask": "manifests/net-deficit-led/02-on-your-wrist.ui-mask.png",
+          "ui_coverage": 0.1118,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#fff4e8",
+          "background_bottom": "#f2c9a4",
+          "background_asset_applied": false,
+          "photo": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/assets/watch-context.jpg",
+          "watch": {
+            "x": 600,
+            "y": 933,
+            "width": 589,
+            "height": 675
+          },
+          "complication_mode": "synthetic-presentation",
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 164,
+          "header_lines": 2,
+          "header_text": "Keep total burn on your wrist",
+          "header_bounds": [
+            119,
+            158,
+            1165,
+            473
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/assets/watch-capture.png",
+          "source_evidence_sha256": "cbaa829f4289828ea9a069d17915f0d7ece7ab3a10c8e91a230c7b396ca155d6",
+          "manifest": "manifests/net-deficit-led/02-on-your-wrist.json"
+        },
+        {
+          "filename": "03-calorie-gap.png",
+          "path": "net-deficit-led/03-calorie-gap.png",
+          "output_sha256": "9ac8c64109b22ec01e8fe729958daca2168ee145622b6070cef396a738c73e40",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "iphone",
+          "header": "Know your calorie gap",
+          "pitch": {
+            "benefit": "See how burned calories compare with the food you logged",
+            "problem": "It is difficult to interpret intake without the burn number beside it.",
+            "advantage": "Net deficit connects total burn and food intake in one glance.",
+            "header_problem": "intake without burn",
+            "header_advantage": "calorie gap",
+            "search_terms": [
+              "calorie deficit",
+              "calorie intake"
+            ],
+            "proof": "The literal net-deficit capture shows +450 deficit with 2,400 burned minus 1,950 eaten."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/net-deficit.png",
+          "source_sha256": "1e70a665a1b18527287764b2a406e67afedfae41237e1c32e4016b685c453c48",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/net-deficit-led/03-calorie-gap.foreground.png",
+          "foreground_sha256": "6ada36326b5004dd6f1789facdb8d1de6a896b8b00cef09e9298eb54b4d55032",
+          "ui_mask": "manifests/net-deficit-led/03-calorie-gap.ui-mask.png",
+          "ui_coverage": 0.5721,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#175b48",
+          "background_bottom": "#0d3f34",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 139,
+            "y": 600,
+            "width": 1006,
+            "height": 2143,
+            "screen_x": 158,
+            "screen_y": 619,
+            "screen_width": 968,
+            "screen_height": 2105
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 164,
+          "header_lines": 2,
+          "header_text": "Know your calorie gap",
+          "header_bounds": [
+            267,
+            158,
+            1017,
+            473
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/net-deficit.png",
+          "source_evidence_sha256": "1e70a665a1b18527287764b2a406e67afedfae41237e1c32e4016b685c453c48",
+          "manifest": "manifests/net-deficit-led/03-calorie-gap.json"
+        },
+        {
+          "filename": "04-macros-together.png",
+          "path": "net-deficit-led/04-macros-together.png",
+          "output_sha256": "b50be440342aecc5ecfc02132e2d17422d8104bb7bb5fc95fb4811f2f6517ed2",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "iphone",
+          "header": "See all three macros together",
+          "pitch": {
+            "benefit": "See protein, carbs, and fat beside the calories you logged",
+            "problem": "Macro details are easy to lose when food calories are shown alone.",
+            "advantage": "The macro card keeps all three macros and the logged calorie total together.",
+            "header_problem": "food calories alone",
+            "header_advantage": "all three macros",
+            "search_terms": [
+              "macro tracker",
+              "protein carbs fat"
+            ],
+            "proof": "The literal macro-dashboard capture shows 1,950 logged calories, 142 g protein, 186 g carbs, and 61 g fat."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-dashboard.png",
+          "source_sha256": "f51b9eb2cd7c075b82bd0382228f800538c109a61fb9df34c230cf136b5654f0",
+          "background_asset": "assets/macro-still-life.png",
+          "background_asset_sha256": "3bf55b62e48c04a7117987b383816cc01481bf95b16ae9d664e4728cb281ac7d",
+          "background_override": null,
+          "foreground": "manifests/net-deficit-led/04-macros-together.foreground.png",
+          "foreground_sha256": "b0e1ed02bbe2bf7a4fca9470e7a9bcae5585bd58d9df24fb0738995dd1749607",
+          "ui_mask": "manifests/net-deficit-led/04-macros-together.ui-mask.png",
+          "ui_coverage": 0.5721,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme-plus-asset",
+          "background_id": "theme-plus-asset",
+          "background_top": "#fff4e8",
+          "background_bottom": "#f2c9a4",
+          "background_asset_applied": true,
+          "phone": {
+            "x": 139,
+            "y": 600,
+            "width": 1006,
+            "height": 2143,
+            "screen_x": 158,
+            "screen_y": 619,
+            "screen_width": 968,
+            "screen_height": 2105
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 152,
+          "header_lines": 2,
+          "header_text": "See all three macros together",
+          "header_bounds": [
+            120,
+            154,
+            1164,
+            447
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-dashboard.png",
+          "source_evidence_sha256": "f51b9eb2cd7c075b82bd0382228f800538c109a61fb9df34c230cf136b5654f0",
+          "manifest": "manifests/net-deficit-led/04-macros-together.json"
+        },
+        {
+          "filename": "05-macro-goals.png",
+          "path": "net-deficit-led/05-macro-goals.png",
+          "output_sha256": "688b1f10cdcf2a53ab6361a77621b7a99f4ce3a609489955549eafbf3c94b861",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "iphone",
+          "header": "Compare intake with macro goals",
+          "pitch": {
+            "benefit": "See whether your logged protein, carbs, and fat are moving toward target",
+            "problem": "A macro total is not actionable without a target to compare against.",
+            "advantage": "The goal rows make intake progress clear for each macro.",
+            "header_problem": "no target to compare",
+            "header_advantage": "macro goals",
+            "search_terms": [
+              "macro goals",
+              "calorie intake tracker"
+            ],
+            "proof": "The literal macro-goals capture shows protein, carbs, and fat progress against daily goals."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-goals.png",
+          "source_sha256": "fa7374daee9af23675f9231d1797dd9b82ea555275d959b6273c60e1829a2eaa",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/net-deficit-led/05-macro-goals.foreground.png",
+          "foreground_sha256": "0ef33e6738bb7d286e3fcd8e05f8d6c9fabaa777ea6f145cdeb2dfd044525568",
+          "ui_mask": "manifests/net-deficit-led/05-macro-goals.ui-mask.png",
+          "ui_coverage": 0.5767,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#fff4e8",
+          "background_bottom": "#f2c9a4",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 137,
+            "y": 590,
+            "width": 1010,
+            "height": 2151,
+            "screen_x": 156,
+            "screen_y": 609,
+            "screen_width": 972,
+            "screen_height": 2113
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 148,
+          "header_lines": 2,
+          "header_text": "Compare intake with macro goals",
+          "header_bounds": [
+            119,
+            154,
+            1165,
+            439
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-goals.png",
+          "source_evidence_sha256": "fa7374daee9af23675f9231d1797dd9b82ea555275d959b6273c60e1829a2eaa",
+          "manifest": "manifests/net-deficit-led/05-macro-goals.json"
+        },
+        {
+          "filename": "06-intake-patterns.png",
+          "path": "net-deficit-led/06-intake-patterns.png",
+          "output_sha256": "b11be0558bfc6b82d19f6ccb5c2dce329f1d29f8e1a321ccfb1ac2f9833bc955",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "iphone",
+          "header": "Spot your intake patterns",
+          "pitch": {
+            "benefit": "See how your macro intake changes across logged days",
+            "problem": "A single meal or day does not show the shape of your routine.",
+            "advantage": "Macro history makes the longer intake pattern easy to scan.",
+            "header_problem": "one day of intake",
+            "header_advantage": "intake patterns",
+            "search_terms": [
+              "macro history",
+              "food intake history"
+            ],
+            "proof": "The literal macro-history capture shows 30-day averages, stacked macro history, and recent macro totals."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-history.png",
+          "source_sha256": "7f26f7ee2b9fa3fc4199c6f1a2ee27a751f0f42b38830a6bf7bc1df94746fc7b",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/net-deficit-led/06-intake-patterns.foreground.png",
+          "foreground_sha256": "6ab0009d9cbac47d9c153aacd4b52a3cfb840aaa2d5c49428741f3687dad4018",
+          "ui_mask": "manifests/net-deficit-led/06-intake-patterns.ui-mask.png",
+          "ui_coverage": 0.5887,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#fffdfb",
+          "background_bottom": "#f2dfd0",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 133,
+            "y": 570,
+            "width": 1018,
+            "height": 2171,
+            "screen_x": 151,
+            "screen_y": 588,
+            "screen_width": 982,
+            "screen_height": 2135
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 164,
+          "header_lines": 2,
+          "header_text": "Spot your intake patterns",
+          "header_bounds": [
+            132,
+            158,
+            1152,
+            471
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-history.png",
+          "source_evidence_sha256": "7f26f7ee2b9fa3fc4199c6f1a2ee27a751f0f42b38830a6bf7bc1df94746fc7b",
+          "manifest": "manifests/net-deficit-led/06-intake-patterns.json"
+        },
+        {
+          "filename": "07-active-resting.png",
+          "path": "net-deficit-led/07-active-resting.png",
+          "output_sha256": "0a439a759ceb90c20474adebf21b94691c787d40a3878e80a2a6f9395efb7066",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "iphone",
+          "header": "See active and resting burn",
+          "pitch": {
+            "benefit": "Understand the active and resting energy behind total burn",
+            "problem": "The total number is less useful when its sources are hidden.",
+            "advantage": "The premium dashboard keeps active, resting, TDEE, and BMR context together.",
+            "header_problem": "hidden energy sources",
+            "header_advantage": "active and resting burn",
+            "search_terms": [
+              "active calories",
+              "resting calories"
+            ],
+            "proof": "The literal premium-dashboard capture shows active, resting, TDEE, and BMR values."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/premium-dashboard.png",
+          "source_sha256": "54c8714a3729643b95e17b64bed7dd682c11b2bda07bc18ce971747aa380f620",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/net-deficit-led/07-active-resting.foreground.png",
+          "foreground_sha256": "d13ef9bc2df5a53044c14b1dab6b5f17d09ded04a3557683f221e45ada9d5f0b",
+          "ui_mask": "manifests/net-deficit-led/07-active-resting.ui-mask.png",
+          "ui_coverage": 0.5721,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#fff4e8",
+          "background_bottom": "#f2c9a4",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 139,
+            "y": 600,
+            "width": 1006,
+            "height": 2143,
+            "screen_x": 158,
+            "screen_y": 619,
+            "screen_width": 968,
+            "screen_height": 2105
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 164,
+          "header_lines": 2,
+          "header_text": "See active and resting burn",
+          "header_bounds": [
+            139,
+            158,
+            1144,
+            473
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/premium-dashboard.png",
+          "source_evidence_sha256": "54c8714a3729643b95e17b64bed7dd682c11b2bda07bc18ce971747aa380f620",
+          "manifest": "manifests/net-deficit-led/07-active-resting.json"
+        },
+        {
+          "filename": "08-go-further.png",
+          "path": "net-deficit-led/08-go-further.png",
+          "output_sha256": "7f54f712d196548357ae0042145ada38321266bfa5c08394736493c80b4c38cf",
+          "output_size": [
+            1284,
+            2778
+          ],
+          "device": "iphone",
+          "header": "Go further with Vitals+",
+          "pitch": {
+            "benefit": "Unlock more ways to understand your burn and intake",
+            "problem": "A daily calorie view becomes more useful when deeper context is available.",
+            "advantage": "Vitals+ adds deeper calorie, fasting, and macro-related surfaces beyond the daily check-in.",
+            "header_problem": "a shallow daily check-in",
+            "header_advantage": "go further",
+            "search_terms": [
+              "calorie tracker",
+              "macro tracker"
+            ],
+            "proof": "The literal Vitals+ capture shows the available premium feature list and subscription surface."
+          },
+          "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/premium.png",
+          "source_sha256": "cbcd54611c311565543a97a119e10a4dedb31feaeb08a1dd1bfae9638e5cc27e",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/net-deficit-led/08-go-further.foreground.png",
+          "foreground_sha256": "ece7d87b26ef28fe6bebc9d789c51e6932d07661cbb883117b1368c9750c063c",
+          "ui_mask": "manifests/net-deficit-led/08-go-further.ui-mask.png",
+          "ui_coverage": 0.5721,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_65",
+          "size": [
+            1284,
+            2778
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#2a1711",
+          "background_bottom": "#55251b",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 139,
+            "y": 600,
+            "width": 1006,
+            "height": 2143,
+            "screen_x": 158,
+            "screen_y": 619,
+            "screen_width": 968,
+            "screen_height": 2105
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 164,
+          "header_lines": 2,
+          "header_text": "Go further with Vitals+",
+          "header_bounds": [
+            132,
+            158,
+            1152,
+            444
+          ],
+          "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/premium.png",
+          "source_evidence_sha256": "cbcd54611c311565543a97a119e10a4dedb31feaeb08a1dd1bfae9638e5cc27e",
+          "manifest": "manifests/net-deficit-led/08-go-further.json"
+        }
+      ]
+    }
+  ]
+}
