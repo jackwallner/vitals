@@ -24,174 +24,124 @@
     {
       "name": "dashboard.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/dashboard.png",
-      "size": [
-        1206,
-        2622
-      ],
+      "size": [1206, 2622],
       "mode": "RGBA",
-      "sha256": "54f949a1a01bdfe8269342c86cddba7e88002436d40034abd612005c392bc2ba"
+      "sha256": "9d5898574818ffe01ef42628d4645a5404e0baf26acb1c60690e7f68eb7652c7"
     },
     {
       "name": "premium-dashboard.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/premium-dashboard.png",
-      "size": [
-        1206,
-        2622
-      ],
+      "size": [1206, 2622],
       "mode": "RGBA",
-      "sha256": "0139f2432d7396b5df1fdd6474dec08c2153017de5cc39847065f9afcba9806f"
+      "sha256": "54c8714a3729643b95e17b64bed7dd682c11b2bda07bc18ce971747aa380f620"
     },
     {
       "name": "history.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/history.png",
-      "size": [
-        1206,
-        2622
-      ],
+      "size": [1206, 2622],
       "mode": "RGBA",
-      "sha256": "6867151056d63a8e3660a8f10e9e01349b5e49687ee742c5c432b19bd5a6cd3d"
+      "sha256": "82d46ce4696ed396f4a2ddd44bb77d8f2aff6ea30e22cf15406d125d726a2c0a"
     },
     {
       "name": "net-deficit.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/net-deficit.png",
-      "size": [
-        1206,
-        2622
-      ],
+      "size": [1206, 2622],
       "mode": "RGBA",
-      "sha256": "7c37c95da476ef94f961f1232ef59a79a8be0eaf890d151b803bc38655c687b1"
+      "sha256": "1e70a665a1b18527287764b2a406e67afedfae41237e1c32e4016b685c453c48"
     },
     {
       "name": "macro-dashboard.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/macro-dashboard.png",
-      "size": [
-        1206,
-        2622
-      ],
+      "size": [1206, 2622],
       "mode": "RGBA",
-      "sha256": "28a944a6765f265f27aa499bbf7653044e5830f165e27533aa6236c0b0951ec7"
+      "sha256": "f51b9eb2cd7c075b82bd0382228f800538c109a61fb9df34c230cf136b5654f0"
     },
     {
       "name": "macro-goals.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/macro-goals.png",
-      "size": [
-        1206,
-        2622
-      ],
+      "size": [1206, 2622],
       "mode": "RGBA",
-      "sha256": "983966b6deda0eb16148a42db3b204fcf4e2cc14a4b04bb733de02d832335205"
+      "sha256": "fa7374daee9af23675f9231d1797dd9b82ea555275d959b6273c60e1829a2eaa"
     },
     {
       "name": "macro-history.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/macro-history.png",
-      "size": [
-        1206,
-        2622
-      ],
+      "size": [1206, 2622],
       "mode": "RGBA",
-      "sha256": "ca8cf8f2f7ef705a8ab465062c8db246a5c8bc18d8201b0f1251509653ea1ace"
+      "sha256": "7f26f7ee2b9fa3fc4199c6f1a2ee27a751f0f42b38830a6bf7bc1df94746fc7b"
     },
     {
       "name": "dark-dashboard.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/dark-dashboard.png",
-      "size": [
-        1206,
-        2622
-      ],
+      "size": [1206, 2622],
       "mode": "RGBA",
-      "sha256": "4d7a4639d508185af47eb3593dec69da75d56d8711d632710bc0b2aaf360bec9"
+      "sha256": "3d89ddd2cc63bdb7edc88ad7d0c8c0e871ba0556a1b329b55e6c7231db00cc47"
     },
     {
       "name": "settings.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/settings.png",
-      "size": [
-        1206,
-        2622
-      ],
+      "size": [1206, 2622],
       "mode": "RGBA",
-      "sha256": "da594b6e78a843911a7b4c71ae4c3a8308258b7f969ebec7cb903ce4e2548c24"
+      "sha256": "b75b5881beaa90fce1d07e62d55c253916a301de4458e39cd520ae28961a2a85"
     },
     {
       "name": "premium.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/premium.png",
-      "size": [
-        1206,
-        2622
-      ],
+      "size": [1206, 2622],
       "mode": "RGBA",
-      "sha256": "ec51448ef12a648165c3e1183d8916526fab50cc8966993da58fc5de5f622ae9"
+      "sha256": "cbcd54611c311565543a97a119e10a4dedb31feaeb08a1dd1bfae9638e5cc27e"
     }
   ],
   "flows": [
     {
       "id": "dashboard",
-      "screenshots": [
-        "dashboard.png"
-      ]
+      "screenshots": ["dashboard.png"]
     },
     {
       "id": "premium-dashboard",
-      "screenshots": [
-        "premium-dashboard.png"
-      ]
+      "screenshots": ["premium-dashboard.png"]
     },
     {
       "id": "history",
-      "screenshots": [
-        "history.png"
-      ]
+      "screenshots": ["history.png"]
     },
     {
       "id": "net-deficit",
-      "screenshots": [
-        "net-deficit.png"
-      ]
+      "screenshots": ["net-deficit.png"]
     },
     {
       "id": "macro-dashboard",
-      "screenshots": [
-        "macro-dashboard.png"
-      ]
+      "screenshots": ["macro-dashboard.png"]
     },
     {
       "id": "macro-goals",
-      "screenshots": [
-        "macro-goals.png"
-      ]
+      "screenshots": ["macro-goals.png"]
     },
     {
       "id": "macro-history",
-      "screenshots": [
-        "macro-history.png"
-      ]
+      "screenshots": ["macro-history.png"]
     },
     {
       "id": "dark-dashboard",
-      "screenshots": [
-        "dark-dashboard.png"
-      ]
+      "screenshots": ["dark-dashboard.png"]
     },
     {
       "id": "settings",
-      "screenshots": [
-        "settings.png"
-      ]
+      "screenshots": ["settings.png"]
     },
     {
       "id": "premium",
-      "screenshots": [
-        "premium.png"
-      ]
+      "screenshots": ["premium.png"]
     }
   ],
   "app_repo": {
     "path": "/Users/jackwallner/vitals",
-    "git_commit": "adf9243f0e2c9a4fcf3bd4542ce09fd8336f0a1a"
+    "git_commit": "6c664c0f7c6943d4db0d9e7b2bbff963a19cbcea"
   },
   "device": {
-    "udid": "2C7A80C1-1228-411A-B9AD-A7DEED683F79",
-    "name": "agent-sim-1",
-    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+    "udid": "3BA38835-1CCB-4BBA-8045-4F0DD14AED56",
+    "name": "agent-sim-4",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-3",
     "device_type": "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro"
   }
 }
