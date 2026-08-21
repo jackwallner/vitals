@@ -170,11 +170,6 @@ struct DashboardView: View {
         store.isPro && goals.showMacros
     }
 
-    /// Whether we can show numeric macros (not loading, not failed).
-    private var macrosNumericReady: Bool {
-        isMacrosEnabled && macrosReady && !macrosFetchFailed
-    }
-
     /// Active/resting breakdown is Vitals+ only and gated by the user's setting.
     /// Hidden in minimal mode (no goals + no pacing) to keep that layout uncluttered.
     private var showActiveResting: Bool {
@@ -1055,10 +1050,12 @@ struct DashboardView: View {
     // MARK: - Macros
 
     /// Protein / carbs / fat for today, straight from whatever food app writes to
-    /// Apple Health. Deliberately read-only and never reconciled against
-    /// `dietaryEnergyConsumed`: alcohol and per-item rounding mean macro calories
-    /// and logged calories rarely agree, and "your app disagrees with MyFitnessPal"
-    /// is a support burden with no upside.
+    /// Apple Health. The calorie figure in the header is the food energy the
+    /// user's own app logged (`dietaryEnergyConsumed`), not grams run back
+    /// through Atwater factors: inventing a second, slightly different calorie
+    /// total for the same meals is the one thing guaranteed to read as a bug.
+    /// The 4/4/9 factors still drive the percentage split below, where they're
+    /// a ratio rather than a competing number.
     private func macrosSection() -> some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 4) {
@@ -1071,14 +1068,17 @@ struct DashboardView: View {
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(Theme.textTertiary)
                 Spacer(minLength: 8)
-                if macrosNumericReady && macros.hasData(in: goals.visibleMacroSet) {
-                    // Approximation sign, not decoration: this is grams run
-                    // through Atwater factors, not the food energy the user's
-                    // app logged, and the two rarely agree to the calorie.
-                    Text("≈\(Int(macros.calories.rounded()).formatted(.number)) cal")
+                if isMacrosEnabled, goals.macroSplitEnabled, !isNetDeficitEnabled, dietaryEnergyReady, !dietaryEnergyFetchFailed, foodCalories > 0 {
+                    // Only when Net Deficit is off: its breakdown pill already
+                    // prints "… − 1,950 eaten" higher up the same screen, and the
+                    // same number twice invites the reader to look for a
+                    // difference between them. "logged" is doing real work too —
+                    // the ring above is calories *burned*, so an unqualified
+                    // count here would read as part of that number.
+                    Text("\(Int(foodCalories.rounded()).formatted(.number)) cal logged")
                         .font(.system(.caption, design: .rounded).monospacedDigit())
                         .foregroundStyle(Theme.textTertiary)
-                        .accessibilityLabel("About \(Int(macros.calories.rounded())) calories, estimated from logged grams")
+                        .accessibilityLabel("\(Int(foodCalories.rounded())) calories logged in Health today")
                 }
             }
 
@@ -1176,7 +1176,7 @@ struct DashboardView: View {
     /// fat", which those rows already spell out.
     @ViewBuilder
     private var macroSplitCaption: some View {
-        if let percentages = macros.sharePercentages() {
+        if goals.macroSplitEnabled, let percentages = macros.sharePercentages() {
             let visible = goals.visibleMacros
             HStack(spacing: 5) {
                 ForEach(Array(visible.enumerated()), id: \.element) { index, kind in
@@ -1237,14 +1237,22 @@ struct DashboardView: View {
     }
 
     /// Pro enable path for Macros, mirroring `beginEnableNetDeficitWithDietaryAuth`:
-    /// HealthKit suppresses its permission sheet while Settings is still covering
-    /// the window, so dismiss first and request afterwards.
+    /// dismiss Settings only when HealthKit still has a permission sheet to show,
+    /// otherwise flip the switch in place and leave the user where they were.
     private func beginEnableMacrosWithHealthAuth() {
-        pendingMacrosHealthAuth = true
-        if showSettings {
-            showSettings = false
-        } else {
-            Task { await finishEnableMacrosWithHealthAuth() }
+        Task {
+            let status = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true, includeMacros: true)
+            guard status == .shouldRequest else {
+                goals.showMacros = true
+                await refresh()
+                return
+            }
+            pendingMacrosHealthAuth = true
+            if showSettings {
+                showSettings = false
+            } else {
+                await finishEnableMacrosWithHealthAuth()
+            }
         }
     }
 
@@ -1328,12 +1336,26 @@ struct DashboardView: View {
     }
 
     /// Pro enable path: clear Settings first, then flip Net Deficit + request dietary auth.
+    ///
+    /// Only when a permission sheet is actually coming. HealthKit suppresses that
+    /// sheet while Settings covers the window, so the dismiss is necessary the
+    /// first time — but once Health has been asked, `requestAuthorization` is a
+    /// silent no-op, and closing Settings for it just looks like the screen
+    /// collapsing on its own.
     private func beginEnableNetDeficitWithDietaryAuth() {
-        pendingNetDeficitDietaryAuth = true
-        if showSettings {
-            showSettings = false
-        } else {
-            Task { await finishEnableNetDeficitWithDietaryAuth() }
+        Task {
+            let status = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
+            guard status == .shouldRequest else {
+                goals.showNetCalories = true
+                await refresh()
+                return
+            }
+            pendingNetDeficitDietaryAuth = true
+            if showSettings {
+                showSettings = false
+            } else {
+                await finishEnableNetDeficitWithDietaryAuth()
+            }
         }
     }
 
@@ -1973,7 +1995,7 @@ private enum SettingsInfoTopic: Identifiable {
         case .fastingMode:
             "When Fasting Mode is on, days with no food logged count toward your Net Deficit history. Off by default. Unlogged days are skipped so they don't read as a full-burn deficit."
         case .macros:
-            "Macros are the protein, carbs, and fat your food app writes to Apple Health. Log meals in MyFitnessPal (or any app that writes to Health) and they appear here alongside your calories and steps. Vitals only reads them; it never asks you to log food twice.\n\nShow only the ones you track: carbs alone for carb counting, protein alone for training. Turn on Macro Goals to track each against a daily gram target.\n\nThe calorie figure on the macros card is estimated from grams (4 per gram of protein and carbs, 9 for fat), not the food energy your app logs, so it won't match to the calorie. Hiding a macro hides its row, but its calories stay in the split — that's why the percentages you can see may not add to 100%.\n\nIf your calories sync but macros stay empty, your food app is sharing Energy without the Nutrition categories. In MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing."
+            "Macros are the protein, carbs, and fat your food app writes to Apple Health. Log meals in MyFitnessPal (or any app that writes to Health) and they appear here alongside your calories and steps. Vitals only reads them; it never asks you to log food twice.\n\nShow only the ones you track: carbs alone for carb counting, protein alone for training. Turn on Macro Goals to track each against a daily gram target.\n\nThe calorie figure on the card is the food energy your app logged to Health, not something Vitals works out from grams.\n\nTurn on Calorie Split to add the share each macro accounts for. Those percentages are worked out from grams the way food labels do it (4 per gram of protein and carbs, 9 for fat), so they won't line up exactly with the logged figure — alcohol and per-item rounding sit between the two. Hiding a macro hides its row, but its share stays in the split, which is why the percentages you can see may not add to 100%.\n\nIf your calories sync but macros stay empty, your food app is sharing Energy without the Nutrition categories. In MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing."
         case .endOfDayProjection:
             "Projects where today's calories and steps will land based on your pace so far. Uses the same pacing window you've chosen above."
         case .goalStreak:
@@ -2868,6 +2890,16 @@ private struct SettingsSheet: View {
     }
 
     /// Peer toggle to Macros. Only meaningful when Macros is on.
+    private var macroSplitBinding: Binding<Bool> {
+        Binding(
+            get: { store.isPro && goals.macroSplitEnabled },
+            set: { enabled in
+                guard store.isPro else { return }
+                goals.macroSplitEnabled = enabled
+            }
+        )
+    }
+
     private var macroGoalsBinding: Binding<Bool> {
         Binding(
             get: { store.isPro && goals.macroGoalsEnabled },
@@ -2949,9 +2981,31 @@ private struct SettingsSheet: View {
     }
 
     @ViewBuilder
-    private func settingsLearnMoreButton(_ title: String, topic: SettingsInfoTopic) -> some View {
-        Button(title) { settingsInfoTopic = topic }
-            .font(.caption)
+    /// A Vitals+ toggle with an ⓘ beside its label. The switch is built from a
+    /// labelless Toggle rather than a plain one so the button can sit between the
+    /// title and the switch without the row's tap target swallowing it.
+    private func settingsToggleRow(
+        _ title: String,
+        isOn: Binding<Bool>,
+        topic: SettingsInfoTopic,
+        toggleDisabled: Bool = false
+    ) -> some View {
+        HStack(spacing: 6) {
+            plusToggleLabel(title)
+            Button {
+                settingsInfoTopic = topic
+            } label: {
+                Image(systemName: "info.circle")
+                    .foregroundStyle(Theme.caloriesPrimary)
+            }
+            .buttonStyle(.borderless)
+            .accessibilityLabel("About \(title)")
+            Spacer(minLength: 8)
+            Toggle("", isOn: isOn)
+                .labelsHidden()
+                .accessibilityLabel(title)
+                .disabled(toggleDisabled)
+        }
     }
 
     private var weeklyRecapBinding: Binding<Bool> {
@@ -3055,9 +3109,9 @@ private struct SettingsSheet: View {
             Form {
                 vitalsPlusSection
 
-                // Calories — the ring plus everything that shapes that number,
-                // including its goal and the Vitals+ calorie extras, all in one
-                // place instead of scattered across the sheet.
+                // Calorie Burn — the ring and everything that shapes the number
+                // in it. Split from intake because "2,400" and "1,950" are two
+                // different quantities that were previously toggled side by side.
                 Section {
                     Toggle("Show Calories", isOn: showCaloriesBinding)
                     Toggle("Calorie Goal", isOn: $calEnabled)
@@ -3085,30 +3139,33 @@ private struct SettingsSheet: View {
                     Toggle(isOn: showEnergyAveragesBinding) {
                         plusToggleLabel("TDEE & BMR")
                     }
-                    Toggle(isOn: showNetCaloriesBinding) {
-                        plusToggleLabel("Net Deficit")
-                    }
-                    Toggle(isOn: netDeficitFastingBinding) {
-                        plusToggleLabel("Fasting Mode")
-                    }
-                    .disabled(!store.isPro || !goals.showNetCalories)
                 } header: {
-                    Text("Calories")
+                    Text("Calorie Burn")
                 } footer: {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("Active + Resting, TDEE & BMR, Net Deficit, and Fasting Mode are Vitals+ extras, off until you turn them on. Goal changes save when you close Settings.")
-                        settingsLearnMoreButton("Learn more about Net Deficit", topic: .netDeficit)
-                        settingsLearnMoreButton("Learn more about Fasting Mode", topic: .fastingMode)
-                    }
+                    Text("What you burn, from Apple Health. Vitals+ extras are off until you turn them on. Goal changes save when you close Settings.")
                 }
 
-                // Macros gets its own section rather than a fourth Calories row:
-                // it comes from logged food (not burn), and with goals on it owns
-                // three more fields than any other extra.
+                // Calorie Intake — everything read from logged food, in the order
+                // it builds: the burn-minus-food number, its fasting rule, then
+                // the macros behind that food. The ⓘ on each row carries the
+                // explanation these switches used to spend a footer paragraph on.
                 Section {
-                    Toggle(isOn: showMacrosBinding) {
-                        plusToggleLabel("Show Macros")
-                    }
+                    settingsToggleRow(
+                        "Net Deficit",
+                        isOn: showNetCaloriesBinding,
+                        topic: .netDeficit
+                    )
+                    settingsToggleRow(
+                        "Fasting Mode",
+                        isOn: netDeficitFastingBinding,
+                        topic: .fastingMode,
+                        toggleDisabled: !store.isPro || !goals.showNetCalories
+                    )
+                    settingsToggleRow(
+                        "Show Macros",
+                        isOn: showMacrosBinding,
+                        topic: .macros
+                    )
                     if store.isPro && goals.showMacros {
                         ForEach(MacroKind.allCases) { kind in
                             Toggle(isOn: macroVisibleBinding(kind)) {
@@ -3126,6 +3183,10 @@ private struct SettingsSheet: View {
                             .disabled(goals.isMacroVisible(kind) && goals.visibleMacroSet.count == 1)
                         }
                     }
+                    Toggle(isOn: macroSplitBinding) {
+                        plusToggleLabel("Calorie Split")
+                    }
+                    .disabled(!store.isPro || !goals.showMacros)
                     Toggle(isOn: macroGoalsBinding) {
                         plusToggleLabel("Macro Goals")
                     }
@@ -3151,12 +3212,9 @@ private struct SettingsSheet: View {
                         }
                     }
                 } header: {
-                    Text("Macros")
+                    Text("Calorie Intake")
                 } footer: {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("Protein, carbs, and fat you log in Apple Health. A Vitals+ extra, off until you turn it on. Turn off the ones you don't track. Goal changes save when you close Settings.")
-                        settingsLearnMoreButton("Learn more about Macros", topic: .macros)
-                    }
+                    Text("Read from the food you log in Apple Health — Vitals+ extras, off until you turn them on. Calorie Split adds what you logged today and each macro's share of it.")
                 }
 
 
@@ -3205,20 +3263,22 @@ private struct SettingsSheet: View {
                             }
                         }
                     }
-                    Toggle(isOn: showProjectionsBinding) {
-                        plusToggleLabel("End-of-Day Projection")
-                    }
-                    Toggle(isOn: showStreaksBinding) {
-                        plusToggleLabel("Goal Streak")
-                    }
+                    settingsToggleRow(
+                        "End-of-Day Projection",
+                        isOn: showProjectionsBinding,
+                        topic: .endOfDayProjection
+                    )
+                    settingsToggleRow(
+                        "Goal Streak",
+                        isOn: showStreaksBinding,
+                        topic: .goalStreak
+                    )
                 } header: {
                     Text("Pacing & Projections")
                 } footer: {
                     VStack(alignment: .leading, spacing: 6) {
                         Text(pacingFooter)
                         Text("End-of-Day Projection and Goal Streak are Vitals+ extras, off by default.")
-                        settingsLearnMoreButton("Learn more about End-of-Day Projection", topic: .endOfDayProjection)
-                        settingsLearnMoreButton("Learn more about Goal Streak", topic: .goalStreak)
                     }
                 }
 
@@ -3386,7 +3446,29 @@ private struct SettingsSheet: View {
                 .buttonStyle(.plain)
             }
         } header: {
-            Text("Vitals+")
+            // Rate and Get Help ride the header line instead of adding two more
+            // rows to a sheet that already scrolls: the section title only ever
+            // used the left half of it. The Help section at the bottom still
+            // carries the full set of links.
+            HStack(spacing: 0) {
+                Text("Vitals+")
+                Spacer(minLength: 8)
+                Button("Rate App") {
+                    dismiss()
+                    Task { @MainActor in
+                        try? await Task.sleep(nanoseconds: 350_000_000)
+                        ReviewPromptCoordinator.shared.requestEnjoymentPrompt()
+                    }
+                }
+                .buttonStyle(.borderless)
+                Text("·")
+                    .foregroundStyle(Theme.textTertiary)
+                    .padding(.horizontal, 8)
+                Link("Get Help", destination: VitalsLinks.supportEmail)
+                    .buttonStyle(.borderless)
+            }
+            .textCase(nil)
+            .font(.footnote.weight(.semibold))
         }
     }
 }

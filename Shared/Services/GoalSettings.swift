@@ -337,6 +337,17 @@ final class GoalSettings: ObservableObject {
         }
     }
 
+    /// Sub-option of Macros: the percentage split under the grams ("40% · 31% ·
+    /// 29% of macro calories"). Off by default — plenty of people want the grams
+    /// they logged and nothing else, and a percentage of a calorie total the card
+    /// doesn't print is a question mark unless you went looking for it.
+    @Published var macroSplitEnabled: Bool {
+        didSet {
+            defaults.set(macroSplitEnabled, forKey: "macroSplitEnabled")
+            WidgetCenter.shared.reloadAllTimelines()
+        }
+    }
+
     /// Sub-option of Macros: when off (default) the dashboard shows grams and the
     /// day's split with no target to miss. When on, each macro gets a progress bar
     /// against `proteinGoal` / `carbGoal` / `fatGoal`. One switch rather than three,
@@ -495,6 +506,7 @@ final class GoalSettings: ObservableObject {
         // Absent key (or a store wiped to nothing) means "all three", which is
         // both the default and the only sane recovery from an empty set.
         self.visibleMacroSet = storedVisibleMacros.isEmpty ? Set(MacroKind.allCases) : Set(storedVisibleMacros)
+        self.macroSplitEnabled = defaults.object(forKey: "macroSplitEnabled") as? Bool ?? false
         self.macroGoalsEnabled = defaults.object(forKey: "macroGoalsEnabled") as? Bool ?? false
         self.proteinGoal = Self.sanitizedMacroGoal(defaults.object(forKey: "proteinGoal") as? Int, kind: .protein)
         self.carbGoal = Self.sanitizedMacroGoal(defaults.object(forKey: "carbGoal") as? Int, kind: .carbs)
@@ -547,6 +559,7 @@ final class GoalSettings: ObservableObject {
         showSteps = true
         showNetCalories = false
         showMacros = false
+        macroSplitEnabled = false
         appearance = ScreenshotConfig.wantsDarkDashboard ? .dark : .light
 
         if ScreenshotConfig.wantsMacroScene {
@@ -556,6 +569,7 @@ final class GoalSettings: ObservableObject {
             showNetCalories = false
             showMacros = true
             showActiveRestingBreakdown = false
+            macroSplitEnabled = true
             macroGoalsEnabled = ScreenshotConfig.scene == .macroGoals
             showEnergyAverages = false
             hasCompletedSetup = true
