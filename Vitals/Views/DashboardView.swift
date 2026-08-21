@@ -1964,82 +1964,144 @@ private struct PacingPill: View {
 // MARK: - Settings feature explainers
 
 private enum SettingsInfoTopic: Identifiable {
+    case activeResting
+    case energyAverages
     case netDeficit
     case fastingMode
     case macros
+    case calorieSplit
     case endOfDayProjection
     case goalStreak
+    case weeklyRecap
 
     var id: Self { self }
 
     var title: String {
         switch self {
+        case .activeResting: "Active + Resting"
+        case .energyAverages: "TDEE & BMR"
         case .netDeficit: "Net Deficit"
         case .fastingMode: "Fasting Mode"
         case .macros: "Macros"
+        case .calorieSplit: "Calorie Split"
         case .endOfDayProjection: "End-of-Day Projection"
         case .goalStreak: "Goal Streak"
+        case .weeklyRecap: "Weekly Recap"
         }
     }
 
     var systemImage: String {
         switch self {
+        case .activeResting: "flame.fill"
+        case .energyAverages: "speedometer"
         case .netDeficit: "minus.plus.batteryblock"
         case .fastingMode: "moon.zzz"
         case .macros: "chart.pie.fill"
+        case .calorieSplit: "chart.pie"
         case .endOfDayProjection: "chart.line.uptrend.xyaxis"
         case .goalStreak: "flame.fill"
+        case .weeklyRecap: "calendar.badge.clock"
         }
     }
 
+    /// Kept to a couple of sentences: this is the body of a popover anchored to
+    /// an ⓘ, not a page. Anything longer than the reader will stand still for
+    /// belongs in `detail`, which renders quieter and below.
     var message: String {
         switch self {
+        case .activeResting:
+            "Splits the ring into the calories you burned moving and the calories your body burned at rest."
+        case .energyAverages:
+            "TDEE is your maintenance burn, BMR your resting burn, each averaged over the last 30 days of your own Apple Health data. They are reference figures, not goals."
         case .netDeficit:
-            "Net Deficit is calories burned minus food energy from Apple Health. A positive number means a deficit. Connect a food app like MyFitnessPal to populate food energy."
+            "Calories burned minus the food energy in Apple Health. A positive number means a deficit."
         case .fastingMode:
-            "When Fasting Mode is on, days with no food logged count toward your Net Deficit history. Off by default. Unlogged days are skipped so they don't read as a full-burn deficit."
+            "Counts days with no food logged toward your Net Deficit history. Off by default, so an unlogged day doesn't read as a full-burn deficit."
         case .macros:
-            "Macros are the protein, carbs, and fat your food app writes to Apple Health. Log meals in MyFitnessPal (or any app that writes to Health) and they appear here alongside your calories and steps. Vitals only reads them; it never asks you to log food twice.\n\nShow only the ones you track: carbs alone for carb counting, protein alone for training. Turn on Macro Goals to track each against a daily gram target.\n\nThe calorie figure on the card is the food energy your app logged to Health, not something Vitals works out from grams.\n\nTurn on Calorie Split to add the share each macro accounts for. Those percentages are worked out from grams the way food labels do it (4 per gram of protein and carbs, 9 for fat), so they won't line up exactly with the logged figure — alcohol and per-item rounding sit between the two. Hiding a macro hides its row, but its share stays in the split, which is why the percentages you can see may not add to 100%.\n\nIf your calories sync but macros stay empty, your food app is sharing Energy without the Nutrition categories. In MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing."
+            "The protein, carbs, and fat your food app writes to Apple Health. Log meals wherever you already do and they appear beside your calories. Vitals only reads them."
+        case .calorieSplit:
+            "Adds the food energy you logged today and each macro's share of it."
         case .endOfDayProjection:
-            "Projects where today's calories and steps will land based on your pace so far. Uses the same pacing window you've chosen above."
+            "Projects where today's calories and steps will land from your pace so far, using the pacing window set above."
         case .goalStreak:
-            "Counts consecutive days you've hit a calorie or step goal. Empty days break the streak."
+            "Counts consecutive days you hit a calorie or step goal. Empty days break the streak."
+        case .weeklyRecap:
+            "A Sunday evening notification summarizing your week. Turning it on asks permission to notify you."
+        }
+    }
+
+    /// Secondary paragraphs: caveats and troubleshooting that used to live in a
+    /// section footer where every reader paid for them. Rendered smaller, under
+    /// a divider, so the popover opens on the sentence that answers the question.
+    var detail: String? {
+        switch self {
+        case .macros:
+            "Show only the ones you track: carbs alone for carb counting, protein alone for training. Macro Goals tracks each against a daily gram target.\n\nIf your calories sync but macros stay empty, your food app is sharing Energy without the Nutrition categories. In MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing."
+        case .calorieSplit:
+            "The percentages come from grams the way food labels do it (4 per gram of protein and carbs, 9 for fat), so they won't match the logged figure exactly. Hiding a macro hides its row but keeps its share in the split, so visible percentages may not total 100%."
+        case .energyAverages:
+            "Needs about a month of Apple Health data to settle. Days without resting energy are skipped rather than counted as zero."
+        default:
+            nil
         }
     }
 }
 
-private struct SettingsInfoSheet: View {
+/// The ⓘ beside a settings row.
+///
+/// Inline rather than a `.popover`, because Settings is itself a sheet and a
+/// popover here would be a second presentation stacked on the first — the exact
+/// weight this replaced. Expanding under the row keeps the setting and its
+/// explanation on screen together, which is the point when the reader is
+/// deciding whether to flip the switch.
+///
+/// A tap gesture on an enlarged content shape rather than a `Button`: a
+/// `.borderless` Button sharing a row with a Toggle has unreliable hit testing
+/// in a Form. `SettingsSheetUITests.testInfoDotRevealsExplanation` covers it.
+private struct SettingsInfoDot: View {
     let topic: SettingsInfoTopic
-    @Environment(\.dismiss) private var dismiss
+    let isOpen: Bool
+    let toggle: () -> Void
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 20) {
-                Image(systemName: topic.systemImage)
-                    .font(.system(size: 44))
-                    .foregroundStyle(Theme.caloriesPrimary)
-                    .padding(.top, 12)
+        Image(systemName: isOpen ? "info.circle.fill" : "info.circle")
+            .foregroundStyle(isOpen ? Theme.textSecondary : Theme.textTertiary)
+            // The glyph is ~17pt; the padding gives it a finger-sized target
+            // without pushing the row's title and switch apart.
+            .padding(.vertical, 8)
+            .padding(.horizontal, 6)
+            .contentShape(Rectangle())
+            .onTapGesture(perform: toggle)
+            .accessibilityElement()
+            .accessibilityLabel("About \(topic.title)")
+            .accessibilityAddTraits(.isButton)
+            .accessibilityValue(isOpen ? "Shown" : "Hidden")
+    }
+}
 
-                Text(topic.title)
-                    .font(.system(.title2, design: .rounded, weight: .bold))
+/// The explanation itself, shown under its row while the ⓘ is on. Reads as a
+/// callout rather than a list row: tinted, inset, and quieter than the setting
+/// it describes.
+private struct SettingsInfoCallout: View {
+    let topic: SettingsInfoTopic
 
-                Text(topic.message)
-                    .font(.system(.body, design: .rounded))
-                    .foregroundStyle(Theme.textSecondary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-
-                Spacer()
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, 28)
-            .background(Theme.background.ignoresSafeArea())
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }
-                }
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(topic.message)
+                .font(.system(.footnote, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+            if let detail = topic.detail {
+                Text(detail)
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
             }
         }
+        .fixedSize(horizontal: false, vertical: true)
+        .multilineTextAlignment(.leading)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(12)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 10))
+        .padding(.top, 2)
     }
 }
 
@@ -2783,7 +2845,9 @@ private struct SettingsSheet: View {
     @State private var stepText = ""
     @State private var macroGoalText: [MacroKind: String] = [:]
     @State private var appliedGoalDrafts = false
-    @State private var settingsInfoTopic: SettingsInfoTopic?
+    /// Only one explainer is open at a time; two expanded callouts turn the
+    /// section into a wall of prose, which is what this replaced.
+    @State private var expandedInfoTopic: SettingsInfoTopic?
     @FocusState private var focusedGoalField: GoalField?
 
     private enum GoalField: Hashable { case calories, steps, macro(MacroKind) }
@@ -2994,21 +3058,24 @@ private struct SettingsSheet: View {
         topic: SettingsInfoTopic,
         toggleDisabled: Bool = false
     ) -> some View {
-        HStack(spacing: 6) {
-            plusToggleLabel(title)
-            Button {
-                settingsInfoTopic = topic
-            } label: {
-                Image(systemName: "info.circle")
-                    .foregroundStyle(Theme.caloriesPrimary)
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 0) {
+                plusToggleLabel(title)
+                SettingsInfoDot(topic: topic, isOpen: expandedInfoTopic == topic) {
+                    withAnimation(.snappy(duration: 0.22)) {
+                        expandedInfoTopic = expandedInfoTopic == topic ? nil : topic
+                    }
+                }
+                Spacer(minLength: 8)
+                Toggle("", isOn: isOn)
+                    .labelsHidden()
+                    .accessibilityLabel(title)
+                    .disabled(toggleDisabled)
             }
-            .buttonStyle(.borderless)
-            .accessibilityLabel("About \(title)")
-            Spacer(minLength: 8)
-            Toggle("", isOn: isOn)
-                .labelsHidden()
-                .accessibilityLabel(title)
-                .disabled(toggleDisabled)
+            if expandedInfoTopic == topic {
+                SettingsInfoCallout(topic: topic)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+            }
         }
     }
 
@@ -3072,13 +3139,10 @@ private struct SettingsSheet: View {
         )
     }
 
-    /// The Calorie Split sentence only earns its place once that toggle is on
-    /// screen. With macros off the section is two rows, and explaining a switch
-    /// the reader can't see just adds a paragraph to scroll past.
+    /// Every switch in this section now explains itself on its own ⓘ, so the
+    /// footer says only where the numbers come from.
     private var calorieIntakeFooter: String {
-        let base = "Read from the food you log in Apple Health. Vitals+ extras, off until you turn them on."
-        guard store.isPro, goals.showMacros else { return base }
-        return base + " Calorie Split adds what you logged today and each macro's share of it."
+        "Read from the food you log in Apple Health."
     }
 
     private var pacingFooter: String {
@@ -3146,16 +3210,22 @@ private struct SettingsSheet: View {
                                 .foregroundStyle(.red)
                         }
                     }
-                    Toggle(isOn: showActiveRestingBinding) {
-                        plusToggleLabel("Active + Resting Breakdown")
-                    }
-                    Toggle(isOn: showEnergyAveragesBinding) {
-                        plusToggleLabel("TDEE & BMR")
-                    }
+                    settingsToggleRow(
+                        "Active + Resting Breakdown",
+                        isOn: showActiveRestingBinding,
+                        topic: .activeResting
+                    )
+                    settingsToggleRow(
+                        "TDEE & BMR",
+                        isOn: showEnergyAveragesBinding,
+                        topic: .energyAverages
+                    )
                 } header: {
                     Text("Calorie Burn")
                 } footer: {
-                    Text("What you burn, from Apple Health. Vitals+ extras are off until you turn them on. Goal changes save when you close Settings.")
+                    // What each Vitals+ switch does now lives on its own ⓘ, so
+                    // the footer is down to the two facts no row can carry.
+                    Text("What you burn, from Apple Health. Goal changes save when you close Settings.")
                 }
 
                 // Calorie Intake — everything read from logged food, in the order
@@ -3199,9 +3269,11 @@ private struct SettingsSheet: View {
                         // Sub-options of Show Macros, so they appear under it
                         // rather than sitting greyed out above the fold for
                         // everyone who doesn't track food at all.
-                        Toggle(isOn: macroSplitBinding) {
-                            plusToggleLabel("Calorie Split")
-                        }
+                        settingsToggleRow(
+                            "Calorie Split",
+                            isOn: macroSplitBinding,
+                            topic: .calorieSplit
+                        )
                         Toggle(isOn: macroGoalsBinding) {
                             plusToggleLabel("Macro Goals")
                         }
@@ -3291,22 +3363,22 @@ private struct SettingsSheet: View {
                 } header: {
                     Text("Pacing & Projections")
                 } footer: {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text(pacingFooter)
-                        Text("End-of-Day Projection and Goal Streak are Vitals+ extras, off by default.")
-                    }
+                    // Projection and Streak explain themselves on their own ⓘ;
+                    // what's left is how pacing itself is calculated, which no
+                    // single row owns.
+                    Text(pacingFooter)
                 }
 
                 // Notifications — Weekly Recap is the only push the app sends, so
                 // it gets its own native section.
                 Section {
-                    Toggle(isOn: weeklyRecapBinding) {
-                        plusToggleLabel("Weekly Recap")
-                    }
+                    settingsToggleRow(
+                        "Weekly Recap",
+                        isOn: weeklyRecapBinding,
+                        topic: .weeklyRecap
+                    )
                 } header: {
                     Text("Notifications")
-                } footer: {
-                    Text("Weekly Recap is a Vitals+ extra, off by default. It sends a Sunday evening notification summarizing your week. Turning it on asks permission to notify you.")
                 }
 
                 Section("Appearance") {
@@ -3405,85 +3477,98 @@ private struct SettingsSheet: View {
                 )
                 Task { await store.updateCustomerProductStatus() }
             }
-            .sheet(item: $settingsInfoTopic) { topic in
-                SettingsInfoSheet(topic: topic)
-                    .presentationDetents([.medium])
-                    .presentationDragIndicator(.visible)
-            }
         }
+    }
+
+    /// Rate App and Get Help, on one line, in the same place for subscribers and
+    /// free users. They used to ride the section *header*, which put them above
+    /// the card they belong to and left the free state without an equivalent.
+    /// Living inside the status row means the same two actions sit under the
+    /// same block of copy whichever state you're in.
+    @ViewBuilder
+    private var vitalsPlusActionRow: some View {
+        HStack(spacing: 0) {
+            Button("Rate App") {
+                dismiss()
+                Task { @MainActor in
+                    try? await Task.sleep(nanoseconds: 350_000_000)
+                    ReviewPromptCoordinator.shared.requestEnjoymentPrompt()
+                }
+            }
+            .buttonStyle(.borderless)
+            Text("·")
+                .foregroundStyle(Theme.textTertiary)
+                .padding(.horizontal, 8)
+            Link("Get Help", destination: VitalsLinks.supportEmail)
+                .buttonStyle(.borderless)
+            Spacer(minLength: 0)
+        }
+        .font(.system(.footnote, design: .rounded, weight: .semibold))
     }
 
     @ViewBuilder
     private var vitalsPlusSection: some View {
         Section {
             if store.isPro {
-                HStack(spacing: 12) {
-                    Image(systemName: "checkmark.seal.fill")
-                        .font(.system(size: 22, weight: .semibold))
-                        .foregroundStyle(Theme.caloriesPrimary)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Vitals+ Active")
-                            .font(.system(.subheadline, design: .rounded, weight: .semibold))
-                            .foregroundStyle(Theme.textPrimary)
-                        Text("Thanks for supporting the app.")
-                            .font(.system(.caption, design: .rounded))
-                            .foregroundStyle(Theme.textSecondary)
-                    }
-                }
-            } else {
-                Button {
-                    requestTrialOffer(.settingsUpgradeRow)
-                } label: {
+                VStack(alignment: .leading, spacing: 10) {
                     HStack(spacing: 12) {
-                        ZStack {
-                            Circle()
-                                .fill(Theme.caloriesGradient)
-                                .frame(width: 32, height: 32)
-                            Image(systemName: "sparkles")
-                                .font(.system(size: 14, weight: .bold))
-                                .foregroundStyle(.white)
-                        }
+                        Image(systemName: "checkmark.seal.fill")
+                            .font(.system(size: 22, weight: .semibold))
+                            .foregroundStyle(Theme.caloriesPrimary)
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("Unlock Vitals+")
+                            Text("Vitals+ Active")
                                 .font(.system(.subheadline, design: .rounded, weight: .semibold))
                                 .foregroundStyle(Theme.textPrimary)
-                            Text("PDF reports, custom-range exports, deep trends.")
+                            Text("Thanks for supporting the app.")
                                 .font(.system(.caption, design: .rounded))
                                 .foregroundStyle(Theme.textSecondary)
-                                .lineLimit(2)
                         }
-                        Spacer(minLength: 0)
-                        Image(systemName: "chevron.right")
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(Theme.textTertiary)
                     }
+                    Divider()
+                    vitalsPlusActionRow
                 }
-                .buttonStyle(.plain)
+            } else {
+                // Same shape as the subscriber card: pitch on top, the same two
+                // actions under the same divider. Only the pitch is tappable —
+                // wrapping the whole stack in the upgrade Button would make
+                // Rate and Get Help open the paywall.
+                VStack(alignment: .leading, spacing: 10) {
+                    Button {
+                        requestTrialOffer(.settingsUpgradeRow)
+                    } label: {
+                        HStack(spacing: 12) {
+                            ZStack {
+                                Circle()
+                                    .fill(Theme.caloriesGradient)
+                                    .frame(width: 32, height: 32)
+                                Image(systemName: "sparkles")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundStyle(.white)
+                            }
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Unlock Vitals+")
+                                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                                    .foregroundStyle(Theme.textPrimary)
+                                Text("Macros, Net Deficit, TDEE & BMR, PDF reports.")
+                                    .font(.system(.caption, design: .rounded))
+                                    .foregroundStyle(Theme.textSecondary)
+                                    .lineLimit(2)
+                            }
+                            Spacer(minLength: 0)
+                            Image(systemName: "chevron.right")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(Theme.textTertiary)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    Divider()
+                    vitalsPlusActionRow
+                }
             }
         } header: {
-            // Rate and Get Help ride the header line instead of adding two more
-            // rows to a sheet that already scrolls: the section title only ever
-            // used the left half of it. The Help section at the bottom still
-            // carries the full set of links.
-            HStack(spacing: 0) {
-                Text("Vitals+")
-                Spacer(minLength: 8)
-                Button("Rate App") {
-                    dismiss()
-                    Task { @MainActor in
-                        try? await Task.sleep(nanoseconds: 350_000_000)
-                        ReviewPromptCoordinator.shared.requestEnjoymentPrompt()
-                    }
-                }
-                .buttonStyle(.borderless)
-                Text("·")
-                    .foregroundStyle(Theme.textTertiary)
-                    .padding(.horizontal, 8)
-                Link("Get Help", destination: VitalsLinks.supportEmail)
-                    .buttonStyle(.borderless)
-            }
-            .textCase(nil)
-            .font(.footnote.weight(.semibold))
+            Text("Vitals+")
+                .textCase(nil)
+                .font(.footnote.weight(.semibold))
         }
     }
 }
