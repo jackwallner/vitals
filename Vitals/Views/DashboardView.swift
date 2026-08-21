@@ -1973,6 +1973,7 @@ private enum SettingsInfoTopic: Identifiable {
     case endOfDayProjection
     case goalStreak
     case weeklyRecap
+    case bodyProfile
 
     var id: Self { self }
 
@@ -1987,6 +1988,7 @@ private enum SettingsInfoTopic: Identifiable {
         case .endOfDayProjection: "End-of-Day Projection"
         case .goalStreak: "Goal Streak"
         case .weeklyRecap: "Weekly Recap"
+        case .bodyProfile: "Body Profile"
         }
     }
 
@@ -2001,6 +2003,7 @@ private enum SettingsInfoTopic: Identifiable {
         case .endOfDayProjection: "chart.line.uptrend.xyaxis"
         case .goalStreak: "flame.fill"
         case .weeklyRecap: "calendar.badge.clock"
+        case .bodyProfile: "figure"
         }
     }
 
@@ -2027,6 +2030,8 @@ private enum SettingsInfoTopic: Identifiable {
             "Counts consecutive days you hit a calorie or step goal. Empty days break the streak."
         case .weeklyRecap:
             "A Sunday evening notification summarizing your week. Turning it on asks permission to notify you."
+        case .bodyProfile:
+            "Your BMI, free, calculated from the height and weight already in Apple Health. No Health data? Enter them by hand instead."
         }
     }
 
@@ -2041,6 +2046,8 @@ private enum SettingsInfoTopic: Identifiable {
             "The percentages come from grams the way food labels do it (4 per gram of protein and carbs, 9 for fat), so they won't match the logged figure exactly. Hiding a macro hides its row but keeps its share in the split, so visible percentages may not total 100%."
         case .energyAverages:
             "Needs about a month of Apple Health data to settle. Days without resting energy are skipped rather than counted as zero."
+        case .bodyProfile:
+            "It gives your calorie numbers something to sit against: BMI puts today's burn in the context of your size rather than leaving it as a bare figure. Body fat percentage is a Vitals+ extra; the BMI readout never is."
         default:
             nil
         }
@@ -3390,17 +3397,41 @@ private struct SettingsSheet: View {
                     .pickerStyle(.segmented)
                 }
 
+                // Body Profile used to sit in an unlabelled section under
+                // Appearance, which read as a leftover rather than a feature.
+                // It gets a header like every other group, and the same ⓘ, so
+                // "what is this and why would I open it" is answerable without
+                // opening it.
                 Section {
-                    NavigationLink {
-                        BodyProfileView()
-                    } label: {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Body Profile")
-                            Text("BMI, height, and weight")
-                                .font(.caption)
-                                .foregroundStyle(Theme.textSecondary)
+                    VStack(alignment: .leading, spacing: 0) {
+                        HStack(spacing: 0) {
+                            NavigationLink {
+                                BodyProfileView()
+                            } label: {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text("Body Profile")
+                                    Text("BMI, height, and weight")
+                                        .font(.caption)
+                                        .foregroundStyle(Theme.textSecondary)
+                                }
+                            }
+                            SettingsInfoDot(
+                                topic: .bodyProfile,
+                                isOpen: expandedInfoTopic == .bodyProfile
+                            ) {
+                                withAnimation(.snappy(duration: 0.22)) {
+                                    expandedInfoTopic =
+                                        expandedInfoTopic == .bodyProfile ? nil : .bodyProfile
+                                }
+                            }
+                        }
+                        if expandedInfoTopic == .bodyProfile {
+                            SettingsInfoCallout(topic: .bodyProfile)
+                                .transition(.opacity.combined(with: .move(edge: .top)))
                         }
                     }
+                } header: {
+                    Text("Body")
                 }
 
                 Section {
