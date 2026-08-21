@@ -41,3 +41,9 @@ paywall_screenshot.png
 # SourceKit-LSP build server config (local, machine-specific paths)
 buildServer.json
 .compile
+
+# Scheduled-task runner lock (machine-local, was committed by accident)
+.claude/scheduled_tasks.lock
+
+# Local metadata backups taken before ASC pushes
+fastlane/metadata.bak.*
