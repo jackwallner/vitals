@@ -184,7 +184,7 @@ struct HistoryView: View {
     }
 
     private var hasLoggedFoodData: Bool {
-        store.isPro && goals.showNetCalories && foodByDay.values.contains { $0 > 0 }
+        foodByDay.values.contains { $0 > 0 }
     }
 
     private var totalCalories: Double {
@@ -384,6 +384,16 @@ struct HistoryView: View {
     }
 
     private var hasMacroData: Bool { !macroRecords.isEmpty }
+
+    /// Food energy the user's own app logged, averaged over the days it logged
+    /// any. Shown beside the macro averages instead of converting grams back
+    /// into calories: it's the same meals either way, and only one of the two
+    /// numbers is one the user can go and check in their food app.
+    private var avgLoggedFoodCalories: Double? {
+        let logged = foodByDay.values.filter { $0 > 0 }
+        guard !logged.isEmpty else { return nil }
+        return logged.reduce(0, +) / Double(logged.count)
+    }
 
     private var macroSummary: MacroSummary? {
         MacroSummary.make(macrosByDay: macrosByDay, visible: goals.visibleMacroSet)
@@ -1569,7 +1579,6 @@ struct HistoryView: View {
                     value: summary.loggedDays.formatted(.number),
                     color: Theme.textPrimary
                 )
-                let avgMacroCalories = Int(summary.average.calories.rounded()).formatted(.number)
 
                 VStack(spacing: 12) {
                     macroAverageCards
@@ -1582,29 +1591,33 @@ struct HistoryView: View {
                                 color: Theme.proteinPrimary
                             )
                             daysLogged
-                        } else {
+                        } else if let avgFood = avgLoggedFoodCalories {
                             // No peak card to pair with, so the calorie figure
                             // moves up rather than leaving a half-empty row.
                             daysLogged
                             AverageCard(
-                                label: "Avg Macro Calories",
-                                value: avgMacroCalories,
+                                label: "Avg Logged Cal",
+                                value: Int(avgFood.rounded()).formatted(.number),
+                                color: Theme.textPrimary
+                            )
+                        } else {
+                            // Nothing to pair it with (no protein tracked, no
+                            // food energy logged): the wide row form, same as a
+                            // lone macro average.
+                            WideTotalCard(
+                                label: "Days Logged",
+                                value: summary.loggedDays.formatted(.number),
                                 color: Theme.textPrimary
                             )
                         }
                     }
-                    if bestProtein != nil {
+                    if bestProtein != nil, let avgFood = avgLoggedFoodCalories {
                         WideTotalCard(
-                            label: "Avg Macro Calories",
-                            value: avgMacroCalories,
+                            label: "Avg Logged Calories",
+                            value: Int(avgFood.rounded()).formatted(.number),
                             color: Theme.textPrimary
                         )
                     }
-                    Text("Macro calories are estimated from grams (4/4/9), not the food energy your app logs to Health, so the two rarely match exactly.")
-                        .font(.system(.caption2, design: .rounded))
-                        .foregroundStyle(Theme.textTertiary)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
         }
@@ -1833,10 +1846,11 @@ struct HistoryView: View {
             }
             guard token == loadToken else { return }
 
-            // Only fetch dietary history when Net Deficit is enabled; failure here is
-            // non-fatal — calorie/step charts still render without it.
+            // Fetched for Net Deficit and for the Macros summary's "avg logged"
+            // figure; failure here is non-fatal — calorie/step charts still
+            // render without it.
             var foodMap: [Date: Double] = [:]
-            if store.isPro && goals.showNetCalories {
+            if store.isPro && (goals.showNetCalories || goals.showMacros) {
                 do {
                     let dietary: [(date: Date, foodCalories: Double)]
                     if period == .custom {
