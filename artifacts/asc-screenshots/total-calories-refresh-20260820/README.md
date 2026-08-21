@@ -26,7 +26,7 @@ Ten 1284 x 2778 RGB App Store screenshot candidates in the same screen-first sty
 - `macro-still-life.png` is the only generated visual. It is used as a background plate; no phone UI was sent to image generation.
 - The canonical raw phone captures are 1206 x 2622 from an iPhone 17 Pro. The compositor outputs the 1284 x 2778 App Store candidates.
 
-The capture run uses the app's screenshot fixtures in the normal Today context: 2,400 calories, 10,342 steps, 1,950 logged food calories, and the current visible macro selection of 186 g carbs and 61 g fat on the dashboard; 150 g, 250 g, and 70 g goals; and a 30-day history chart. The macro split uses the current `of all macro calories` denominator. The TDEE/BMR capture uses 2,380 TDEE, 1,715 BMR, and a 30-day Apple Health average label.
+The capture run uses the app's screenshot fixtures in the normal Today context: 2,400 calories, 10,342 steps, 1,950 logged food calories, and all three visible macros, 142 g protein, 186 g carbs, and 61 g fat; 150 g, 250 g, and 70 g goals; and a 30-day history chart. The macro split uses the current `of macro calories` denominator. The TDEE/BMR capture uses 2,380 TDEE, 1,715 BMR, and a 30-day Apple Health average label.
 
 ## Verification
 

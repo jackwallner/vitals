@@ -18,6 +18,7 @@
       {
         "id": "dashboard",
         "launch_timeout": 90,
+        "ready_timeout": 60,
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "dashboard",
@@ -28,6 +29,7 @@
       {
         "id": "premium-dashboard",
         "launch_timeout": 90,
+        "ready_timeout": 60,
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "premiumDashboard",
@@ -39,6 +41,7 @@
         "id": "history",
         "launch_timeout": 90,
         "launch_wait": 35,
+        "ready_timeout": 60,
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "history",
@@ -49,6 +52,7 @@
       {
         "id": "net-deficit",
         "launch_timeout": 90,
+        "ready_timeout": 60,
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "netDeficit",
@@ -59,6 +63,8 @@
       {
         "id": "macro-dashboard",
         "launch_timeout": 90,
+        "ready_timeout": 60,
+        "ready_labels": ["Protein", "Carbs", "Fat"],
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "macroDashboard",
@@ -69,6 +75,8 @@
       {
         "id": "macro-goals",
         "launch_timeout": 90,
+        "ready_timeout": 60,
+        "ready_labels": ["Protein", "Carbs", "Fat"],
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "macroGoals",
@@ -80,6 +88,8 @@
         "id": "macro-history",
         "launch_timeout": 90,
         "launch_wait": 35,
+        "ready_timeout": 60,
+        "ready_labels": ["Protein", "Carbs", "Fat"],
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "macroHistory",
@@ -90,6 +100,8 @@
       {
         "id": "dark-dashboard",
         "launch_timeout": 90,
+        "ready_timeout": 60,
+        "ready_labels": ["2,400", "10,342"],
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "darkDashboard",
@@ -112,6 +124,7 @@
       {
         "id": "premium",
         "launch_timeout": 90,
+        "ready_timeout": 60,
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "premium",
