@@ -532,6 +532,7 @@ struct DashboardView: View {
                             .background(Theme.cardSurface, in: Circle())
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Settings")
                 }
                 HStack(spacing: 8) {
                     if healthNotice == .accessNeeded || healthNotice == .accessBlocked {
@@ -1071,9 +1072,13 @@ struct DashboardView: View {
                     .foregroundStyle(Theme.textTertiary)
                 Spacer(minLength: 8)
                 if macrosNumericReady && macros.hasData(in: goals.visibleMacroSet) {
-                    Text("\(Int(macros.calories.rounded()).formatted(.number)) cal")
+                    // Approximation sign, not decoration: this is grams run
+                    // through Atwater factors, not the food energy the user's
+                    // app logged, and the two rarely agree to the calorie.
+                    Text("≈\(Int(macros.calories.rounded()).formatted(.number)) cal")
                         .font(.system(.caption, design: .rounded).monospacedDigit())
                         .foregroundStyle(Theme.textTertiary)
+                        .accessibilityLabel("About \(Int(macros.calories.rounded())) calories, estimated from logged grams")
                 }
             }
 
@@ -1150,7 +1155,7 @@ struct DashboardView: View {
             // Energy without the Nutrition sub-categories. Naming the fix beats
             // telling someone who is already logging to start logging.
             VStack(alignment: .leading, spacing: 8) {
-                Text("Food calories are syncing, but macros aren't. In your food app's Apple Health sharing settings (MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing), turn on Protein, Carbohydrates, and Fat.")
+                Text("Food calories are syncing, but macros aren't. In your food app's Apple Health sharing settings, turn on Protein, Carbohydrates, and Fat. (In MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing.)")
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -1159,7 +1164,7 @@ struct DashboardView: View {
                     .foregroundStyle(Theme.caloriesPrimary)
             }
         } else {
-            Text("No macros logged in Apple Health today. Log meals in a food app that writes protein, carbs, and fat to Health, like MyFitnessPal.")
+            Text("No macros logged in Apple Health today. Log meals in a food app that writes protein, carbs, and fat to Health (MyFitnessPal, Cronometer, Lose It, and most others).")
                 .font(.system(.caption2, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -1182,7 +1187,7 @@ struct DashboardView: View {
                             .foregroundStyle(Theme.textTertiary)
                     }
                 }
-                Text("of macro calories")
+                Text(macroSplitDenominatorText)
                     .foregroundStyle(Theme.textTertiary)
             }
             .font(.system(.caption2, design: .rounded))
@@ -1193,9 +1198,19 @@ struct DashboardView: View {
         }
     }
 
+    /// Hidden macros stay in the denominator on purpose — the split of a day's
+    /// food doesn't change because you stopped looking at fat — so when one is
+    /// hidden the visible percentages no longer sum to 100. Saying "all macro
+    /// calories" is the difference between an honest split and an arithmetic bug.
+    private var macroSplitDenominatorText: String {
+        goals.visibleMacros.count == MacroKind.allCases.count
+            ? "of macro calories"
+            : "of all macro calories"
+    }
+
     private func macroSplitAccessibilityText(_ percentages: [MacroKind: Int]) -> String {
         let parts = goals.visibleMacros.map { "\(percentages[$0] ?? 0) percent \($0.label.lowercased())" }
-        return parts.joined(separator: ", ") + ", of macro calories"
+        return parts.joined(separator: ", ") + ", \(macroSplitDenominatorText)"
     }
 
     private func loadMacros() async {
@@ -1486,8 +1501,13 @@ struct DashboardView: View {
         usualStepsFullDay = nil
     }
 
+    /// Also runs for Macros-only users: the macro card's "energy is syncing but
+    /// nutrition isn't" diagnostic needs today's food calories to know which of
+    /// the two empty states it's looking at. Read denials surface as zero
+    /// samples, not errors, so a user who never granted dietary energy simply
+    /// gets 0 and the generic empty state.
     private func loadDietaryEnergy() async {
-        guard isNetDeficitEnabled else {
+        guard isNetDeficitEnabled || isMacrosEnabled else {
             foodCalories = 0
             dietaryEnergyReady = false
             dietaryEnergyFetchFailed = false
@@ -1501,7 +1521,12 @@ struct DashboardView: View {
             // (no food logged), not an error. Display the numeric result.
             dietaryEnergyFetchFailed = false
             dietaryEnergyReady = true
-            try? healthKit.updateCachedFoodCalories(food)
+            // Only Net Deficit users' widgets read this; a Macros-only user who
+            // never granted dietary energy would otherwise write a hollow 0 over
+            // whatever the cache already holds.
+            if isNetDeficitEnabled {
+                try? healthKit.updateCachedFoodCalories(food)
+            }
         } catch {
             dietaryEnergyFetchFailed = true
             dietaryEnergyReady = false
@@ -1948,7 +1973,7 @@ private enum SettingsInfoTopic: Identifiable {
         case .fastingMode:
             "When Fasting Mode is on, days with no food logged count toward your Net Deficit history. Off by default. Unlogged days are skipped so they don't read as a full-burn deficit."
         case .macros:
-            "Macros are the protein, carbs, and fat your food app writes to Apple Health. Log meals in MyFitnessPal (or any app that writes to Health) and they appear here alongside your calories and steps. Vitals only reads them; it never asks you to log food twice.\n\nShow only the ones you track: carbs alone for carb counting, protein alone for training. Turn on Macro Goals to track each against a daily gram target.\n\nIf your calories sync but macros stay empty, your food app is sharing Energy without the Nutrition categories. In MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing."
+            "Macros are the protein, carbs, and fat your food app writes to Apple Health. Log meals in MyFitnessPal (or any app that writes to Health) and they appear here alongside your calories and steps. Vitals only reads them; it never asks you to log food twice.\n\nShow only the ones you track: carbs alone for carb counting, protein alone for training. Turn on Macro Goals to track each against a daily gram target.\n\nThe calorie figure on the macros card is estimated from grams (4 per gram of protein and carbs, 9 for fat), not the food energy your app logs, so it won't match to the calorie. Hiding a macro hides its row, but its calories stay in the split — that's why the percentages you can see may not add to 100%.\n\nIf your calories sync but macros stay empty, your food app is sharing Energy without the Nutrition categories. In MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing."
         case .endOfDayProjection:
             "Projects where today's calories and steps will land based on your pace so far. Uses the same pacing window you've chosen above."
         case .goalStreak:
@@ -3071,7 +3096,7 @@ private struct SettingsSheet: View {
                     Text("Calories")
                 } footer: {
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("Active + Resting, TDEE & BMR, Net Deficit, and Fasting Mode are Vitals+ extras, off until you turn them on. Goal changes save when you tap Done.")
+                        Text("Active + Resting, TDEE & BMR, Net Deficit, and Fasting Mode are Vitals+ extras, off until you turn them on. Goal changes save when you close Settings.")
                         settingsLearnMoreButton("Learn more about Net Deficit", topic: .netDeficit)
                         settingsLearnMoreButton("Learn more about Fasting Mode", topic: .fastingMode)
                     }
@@ -3129,7 +3154,7 @@ private struct SettingsSheet: View {
                     Text("Macros")
                 } footer: {
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("Protein, carbs, and fat you log in Apple Health. A Vitals+ extra, off until you turn it on. Turn off the ones you don't track. Goal changes save when you tap Done.")
+                        Text("Protein, carbs, and fat you log in Apple Health. A Vitals+ extra, off until you turn it on. Turn off the ones you don't track. Goal changes save when you close Settings.")
                         settingsLearnMoreButton("Learn more about Macros", topic: .macros)
                     }
                 }
@@ -3160,7 +3185,7 @@ private struct SettingsSheet: View {
                 } header: {
                     Text("Steps")
                 } footer: {
-                    Text("Goal changes save when you tap Done; other settings apply instantly.")
+                    Text("Goal changes save when you close Settings; other settings apply instantly.")
                 }
 
                 // Pacing & Projections — the "how am I tracking today" family.

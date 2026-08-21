@@ -126,6 +126,9 @@ struct HistoryView: View {
     @State private var records: [DayRecord] = []
     @State private var foodByDay: [Date: Double] = [:]
     @State private var macrosByDay: [Date: MacroTotals] = [:]
+    /// Macro history read threw. Kept apart from "nothing logged" so a
+    /// permission or HealthKit failure doesn't read as an empty diet.
+    @State private var macrosLoadFailed = false
     @State private var previousRecords: [DayRecord] = []
     @State private var isLoading = true
     @State private var loadToken: Int = 0
@@ -167,8 +170,21 @@ struct HistoryView: View {
         }
     }
 
+    /// The activity empty state is only right when the whole screen would be
+    /// empty. Someone who logs food but leaves the phone on a desk (no watch,
+    /// few steps) still has macros and food energy to show, and telling them to
+    /// "start moving" hides the data they came for.
     private var hasNoData: Bool {
-        records.isEmpty || records.allSatisfy { $0.totalCalories == 0 && $0.steps == 0 }
+        guard !hasLoggedMacroData, !hasLoggedFoodData else { return false }
+        return records.isEmpty || records.allSatisfy { $0.totalCalories == 0 && $0.steps == 0 }
+    }
+
+    private var hasLoggedMacroData: Bool {
+        isMacrosEnabled && macrosByDay.values.contains { $0.hasData(in: goals.visibleMacroSet) }
+    }
+
+    private var hasLoggedFoodData: Bool {
+        store.isPro && goals.showNetCalories && foodByDay.values.contains { $0 > 0 }
     }
 
     private var totalCalories: Double {
@@ -416,8 +432,12 @@ struct HistoryView: View {
     }
 
     /// "142P · 186C · 61F" — the compact form used in cards and the recent list.
+    /// Only the macros the user is tracking: a hidden macro has no bar in the
+    /// chart above and no column in the export, so printing it here (or, worse,
+    /// printing the chart's zero for it) is the one place the app would
+    /// contradict itself.
     private func macroShortText(_ totals: MacroTotals) -> String {
-        MacroKind.allCases
+        goals.visibleMacros
             .map { "\(Int(totals.grams($0).rounded()))\($0.initial)" }
             .joined(separator: " · ")
     }
@@ -1294,6 +1314,34 @@ struct HistoryView: View {
             SkeletonBlock()
                 .frame(minHeight: 180, maxHeight: 240)
                 .frame(maxWidth: .infinity)
+        } else if macrosLoadFailed {
+            // A failed read is not an empty diet. Same two actions the dashboard
+            // card offers, because the fix is always one of the two.
+            VStack(spacing: 8) {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.system(size: 28))
+                    .foregroundStyle(Theme.textTertiary)
+                Text("Couldn't read macros")
+                    .font(.system(.subheadline, design: .rounded, weight: .medium))
+                    .foregroundStyle(Theme.textSecondary)
+                Text("Apple Health didn't return protein, carbs, and fat for this period.")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .multilineTextAlignment(.center)
+                HStack(spacing: 16) {
+                    Button("Try Again") {
+                        Task { await loadHistory() }
+                    }
+                    Button("Health Permissions") {
+                        openHealthApp()
+                    }
+                }
+                .font(.system(.caption, design: .rounded, weight: .semibold))
+                .foregroundStyle(Theme.caloriesPrimary)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(minHeight: 180)
+            .padding(.horizontal, 8)
         } else {
             VStack(spacing: 8) {
                 Image(systemName: "chart.pie")
@@ -1313,33 +1361,52 @@ struct HistoryView: View {
         }
     }
 
+    private func openHealthApp() {
+        if let url = URL(string: "x-apple-health://") {
+            UIApplication.shared.open(url)
+        }
+    }
+
     /// Avg grams per logged day, one card per macro. Three across rather than the
     /// usual two, because a macro split only makes sense read together.
     @ViewBuilder
     private var macroAverageCards: some View {
         if let summary = macroSummary {
-            let visible = goals.visibleMacros
-            if let only = visible.first, visible.count == 1 {
-                // A lone tall card leaves most of its width empty; the wide row
-                // form (label left, value right) is what the rest of the screen
-                // uses for a single full-width figure.
-                WideTotalCard(
-                    label: "Avg \(only.label)",
-                    value: "\(Int(summary.average.grams(only).rounded())) g",
-                    color: Theme.macroColor(only)
-                )
-            } else {
-                HStack(spacing: 12) {
-                    ForEach(visible) { kind in
-                        AverageCard(
-                            label: "Avg \(kind.label)",
-                            value: "\(Int(summary.average.grams(kind).rounded())) g",
-                            color: Theme.macroColor(kind)
-                        )
+            VStack(alignment: .leading, spacing: 6) {
+                let visible = goals.visibleMacros
+                if let only = visible.first, visible.count == 1 {
+                    // A lone tall card leaves most of its width empty; the wide row
+                    // form (label left, value right) is what the rest of the screen
+                    // uses for a single full-width figure.
+                    WideTotalCard(
+                        label: "Avg \(only.label)",
+                        value: "\(Int(summary.average.grams(only).rounded())) g",
+                        color: Theme.macroColor(only)
+                    )
+                } else {
+                    HStack(spacing: 12) {
+                        ForEach(visible) { kind in
+                            AverageCard(
+                                label: "Avg \(kind.label)",
+                                value: "\(Int(summary.average.grams(kind).rounded())) g",
+                                color: Theme.macroColor(kind)
+                            )
+                        }
                     }
                 }
+                macroAverageDenominatorCaption(summary)
             }
         }
+    }
+
+    /// Spells out the denominator. The average deliberately skips days with
+    /// nothing logged, which is the right maths and the wrong number if you
+    /// assume it covers the whole period.
+    private func macroAverageDenominatorCaption(_ summary: MacroSummary) -> some View {
+        Text("Per logged day · \(summary.loggedDays) of \(records.count) days")
+            .font(.system(.caption2, design: .rounded))
+            .foregroundStyle(Theme.textTertiary)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     // MARK: - Focused single-metric detail
@@ -1533,6 +1600,11 @@ struct HistoryView: View {
                             color: Theme.textPrimary
                         )
                     }
+                    Text("Macro calories are estimated from grams (4/4/9), not the food energy your app logs to Health, so the two rarely match exactly.")
+                        .font(.system(.caption2, design: .rounded))
+                        .foregroundStyle(Theme.textTertiary)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
         }
@@ -1700,6 +1772,7 @@ struct HistoryView: View {
         previousRecords = []
         foodByDay = [:]
         macrosByDay = [:]
+        macrosLoadFailed = false
         selectedCalorieDate = nil
         selectedStepDate = nil
         selectedNetDate = nil
@@ -1785,6 +1858,7 @@ struct HistoryView: View {
             // and their own non-fatal failure: a macro read that fails shouldn't
             // take the calorie and step charts down with it.
             var macroMap: [Date: MacroTotals] = [:]
+            var macroFailed = false
             if isMacrosEnabled {
                 do {
                     let daily: [(date: Date, macros: MacroTotals)]
@@ -1799,6 +1873,8 @@ struct HistoryView: View {
                         macroMap[cal.startOfDay(for: day.date)] = day.macros
                     }
                 } catch {
+                    guard token == loadToken else { return }
+                    macroFailed = true
                     historyLogger.error("Macro history fetch failed: \(String(describing: error), privacy: .public)")
                 }
             }
@@ -1809,6 +1885,7 @@ struct HistoryView: View {
                 }
                 foodByDay = foodMap
                 macrosByDay = macroMap
+                macrosLoadFailed = macroFailed
             }
             // Persist the fetched history to the shared cache so the watch can read it.
             try? healthKit.saveHistoryToCache(history: history)
