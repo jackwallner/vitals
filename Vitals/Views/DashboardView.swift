@@ -383,10 +383,14 @@ struct DashboardView: View {
             } else if !goals.hasCompletedSetup {
                 showOnboarding = true
             } else {
-                await refresh()
+                // Capture runs present Settings before the first refresh: the
+                // sheet is what the run exists to photograph, and a loaded
+                // machine can leave that HealthKit round trip pending for a
+                // minute.
                 if ScreenshotConfig.wantsSettingsSheet {
                     showSettings = true
                 }
+                await refresh()
             }
         }
         .sheet(isPresented: $showSettings, onDismiss: {
@@ -1198,8 +1202,8 @@ struct DashboardView: View {
         }
     }
 
-    /// Hidden macros stay in the denominator on purpose — the split of a day's
-    /// food doesn't change because you stopped looking at fat — so when one is
+    /// Hidden macros stay in the denominator on purpose. The split of a day's
+    /// food doesn't change because you stopped looking at fat, so when one is
     /// hidden the visible percentages no longer sum to 100. Saying "all macro
     /// calories" is the difference between an honest split and an arithmetic bug.
     private var macroSplitDenominatorText: String {
@@ -3068,6 +3072,15 @@ private struct SettingsSheet: View {
         )
     }
 
+    /// The Calorie Split sentence only earns its place once that toggle is on
+    /// screen. With macros off the section is two rows, and explaining a switch
+    /// the reader can't see just adds a paragraph to scroll past.
+    private var calorieIntakeFooter: String {
+        let base = "Read from the food you log in Apple Health. Vitals+ extras, off until you turn them on."
+        guard store.isPro, goals.showMacros else { return base }
+        return base + " Calorie Split adds what you logged today and each macro's share of it."
+    }
+
     private var pacingFooter: String {
         let window = goals.pacingLookback.label.lowercased()
         let basis = goals.pacingComparison == .dayOfWeek
@@ -3216,7 +3229,7 @@ private struct SettingsSheet: View {
                 } header: {
                     Text("Calorie Intake")
                 } footer: {
-                    Text("Read from the food you log in Apple Health. Vitals+ extras, off until you turn them on. Calorie Split adds what you logged today and each macro's share of it.")
+                    Text(calorieIntakeFooter)
                 }
 
 
