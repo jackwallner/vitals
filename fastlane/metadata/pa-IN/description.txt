@@ -20,6 +20,12 @@ DASHBOARD (ਮੁਫ਼ਤ)
 - Pacing indicator: ਇਸ ਸਮੇਂ usual day ਤੋਂ ਅੱਗੇ ਜਾਂ ਪਿੱਛੇ?
 - Pull to refresh. Gear icon tap for settings.
 
+ਮੈਕਰੋ (VITALS+)
+- ਪ੍ਰੋਟੀਨ, ਕਾਰਬਸ ਅਤੇ ਫੈਟ ਤੁਹਾਡੀਆਂ ਕੈਲੋਰੀਆਂ ਦੇ ਨਾਲ, ਉਸੇ ਐਪ ਤੋਂ ਪੜ੍ਹੇ ਜੋ ਖਾਣਾ ਪਹਿਲਾਂ ਹੀ Apple Health ਵਿੱਚ ਲਿਖਦੀ ਹੈ।
+- ਕੁਝ ਵੀ ਦੋ ਵਾਰ ਦਰਜ ਨਹੀਂ। ਜੋ Health ਵਿੱਚ ਹੈ, ਉਹੀ ਇੱਥੇ ਹੈ।
+- ਤਿੰਨੇ ਟਰੈਕ ਕਰੋ, ਜਾਂ ਸਿਰਫ਼ ਉਹ ਮੈਕਰੋ ਜੋ ਤੁਸੀਂ ਸੱਚਮੁੱਚ ਗਿਣਦੇ ਹੋ।
+- ਵਿਕਲਪਿਕ ਗ੍ਰਾਮ ਟੀਚੇ, ਨਾਲ ਹੀ ਔਸਤ, ਚਾਰਟ, CSV ਕਾਲਮ ਅਤੇ PDF ਰਿਪੋਰਟਾਂ।
+
 HISTORY (ਮੁਫ਼ਤ)
 - 7 / 30 / 90 / 365‑day views, custom date range।
 - Trend arrows, peak days, bar charts।
@@ -32,6 +38,7 @@ HISTORY (ਮੁਫ਼ਤ)
 
 Vitals+ (optional)
 ਛੋਟਾ monthly, yearly, lifetime upgrade unlock:
+- ਮੈਕਰੋ: Apple Health ਵਿੱਚ ਦਰਜ ਖਾਣੇ ਤੋਂ ਪ੍ਰੋਟੀਨ, ਕਾਰਬਸ ਅਤੇ ਫੈਟ
 - Active vs resting calorie breakdown
 - Net Deficit: Apple Health food energy ਘਟਾ ਕੇ burned calories
 - Share-ready Monthly Summary PDF

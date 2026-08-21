@@ -20,6 +20,12 @@ TABLOUL DE BORD (GRATUIT)
 - Indicator de ritm: ești înainte sau în urmă față de o zi obișnuită la aceeași oră?
 - Trage în jos pentru actualizare. Atinge pictograma rotiță pentru setări.
 
+MACRO (VITALS+)
+- Proteine, carbohidrați și grăsimi lângă caloriile tale, citite din aplicația care oricum îți scrie mâncarea în Apple Health.
+- Nimic de introdus de două ori. Ce e în Health e și aici.
+- Urmărește-le pe toate trei sau doar macro-ul pe care chiar îl numeri.
+- Obiective opționale în grame, medii, grafice, coloane CSV și rapoarte PDF.
+
 ISTORIC (GRATUIT)
 - Vizualizări pe 7 / 30 / 90 / 365 de zile și orice interval de date personalizat.
 - Săgeți de tendință, zile de vârf și grafice tip bară clare.
@@ -32,6 +38,7 @@ OBIECTIVE CARE ȚI SE POTRIVESC
 
 Vitals+ (OPȚIONAL)
 Un mic upgrade lunar, anual sau pe viață deblochează:
+- Macro: proteine, carbohidrați și grăsimi din Apple Health
 - Defalcare între calorii active și în repaus
 - Deficit net: calorii arse minus energia din alimente din Apple Health
 - Rapoarte lunare PDF gata de partajat

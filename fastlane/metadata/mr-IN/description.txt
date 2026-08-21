@@ -20,6 +20,12 @@ DASHBOARD (मोफत)
 - Pacing indicator: या वेळी सामान्य दिवसापेक्षा पुढे की मागे?
 - Refresh: खाली ओढा. Settings: gear icon tap.
 
+मॅक्रो (VITALS+)
+- प्रथिने, कर्बोदके आणि स्निग्धांश तुमच्या कॅलरीजच्या शेजारी, जेवण आधीपासून Apple Health मध्ये लिहिणाऱ्या अ‍ॅपमधून वाचले जातात.
+- काहीही दोनदा नोंदवायचे नाही. जे Health मध्ये आहे, ते इथे आहे.
+- तिन्ही ट्रॅक करा, किंवा फक्त तुम्ही खरोखर मोजता तोच मॅक्रो.
+- ऐच्छिक ग्रॅम लक्ष्ये, सोबत सरासरी, चार्ट, CSV स्तंभ आणि PDF अहवाल.
+
 HISTORY (मोफत)
 - 7 / 30 / 90 / 365‑दिवस views, custom date range.
 - Trend arrows, peak days, bar charts.
@@ -32,6 +38,7 @@ HISTORY (मोफत)
 
 Vitals+ (optional)
 लहान monthly, yearly, lifetime upgrade unlock:
+- मॅक्रो: Apple Health मध्ये नोंदवलेल्या जेवणातून प्रथिने, कर्बोदके आणि स्निग्धांश
 - Active vs resting calorie breakdown
 - Net Deficit: Apple Health food energy वजा burned calories
 - Share-ready Monthly Summary PDF

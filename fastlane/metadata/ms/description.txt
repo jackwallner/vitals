@@ -20,6 +20,12 @@ PAPAN PEMUKA (PERCUMA)
 - Penunjuk rentak: adakah anda mendahului atau ketinggalan berbanding hari biasa anda pada masa ini?
 - Tarik untuk segar semula. Ketik ikon gear untuk tetapan.
 
+MAKRO (VITALS+)
+- Protein, karbohidrat dan lemak di sebelah kalori anda, dibaca daripada aplikasi yang sudah merekod makanan anda ke Apple Health.
+- Tiada apa dimasukkan dua kali. Apa yang ada dalam Health, ada di sini.
+- Jejaki ketiga-tiganya, atau hanya makro yang benar-benar anda kira.
+- Sasaran gram pilihan, serta purata, carta, lajur CSV dan laporan PDF.
+
 SEJARAH (PERCUMA)
 - Paparan 7 / 30 / 90 / 365 hari dan sebarang julat tarikh tersuai.
 - Anak panah trend, hari puncak, dan carta bar yang kemas.
@@ -32,6 +38,7 @@ MATLAMAT YANG SESUAI DENGAN ANDA
 
 Vitals+ (PILIHAN)
 Naik taraf kecil bulanan, tahunan, atau seumur hidup membuka akses kepada:
+- Makro: protein, karbohidrat dan lemak daripada makanan yang sudah direkod dalam Apple Health
 - Pecahan kalori aktif berbanding rehat
 - Defisit Bersih: kalori dibakar tolak tenaga makanan daripada Apple Health
 - PDF Ringkasan Bulanan sedia untuk dikongsi

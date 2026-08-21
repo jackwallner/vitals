@@ -1,3 +1,5 @@
-Prehľadnejšia obrazovka predplatného: pri každom pláne je teraz mesačná suma a ročný plán uvádza, koľko ušetríte.
+Makrá sú tu. Bielkoviny, sacharidy a tuky stoja vedľa tvojich kalórií, načítané z aplikácie, ktorá tvoje jedlo aj tak zapisuje do Apple Health. Nič nezadávaš dvakrát.
 
-Plus drobné opravy.
+Sleduj všetky tri alebo len to jedno, ktoré počítaš, nastav voliteľné ciele v gramoch a pozri si priemery, trendy a najsilnejšie dni v Histórii, v exporte CSV aj v PDF prehľadoch. Makrá sú súčasťou Vitals+.
+
+Nastavenia sú teraz rozdelené na Spaľovanie kalórií a Príjem kalórií, s jasným vysvetlením pri každom prepínači.

@@ -20,6 +20,12 @@ PŘEHLED (ZDARMA)
 - Ukazatel tempa: jste napřed, nebo pozadu oproti běžnému dni v tuto dobu?
 - Stažením dolů obnovíte data. Klepnutím na ozubené kolečko otevřete nastavení.
 
+MAKRA (VITALS+)
+- Bílkoviny, sacharidy a tuky vedle tvých kalorií, načtené z aplikace, která jídlo stejně zapisuje do Apple Health.
+- Nic nezadáváš dvakrát. Co je v Health, je i tady.
+- Sleduj všechna tři, nebo jen to makro, které opravdu počítáš.
+- Volitelné cíle v gramech, průměry, grafy, sloupce CSV a PDF přehledy.
+
 HISTORIE (ZDARMA)
 - Přehledy za 7 / 30 / 90 / 365 dní a libovolný vlastní rozsah.
 - Trendové šipky, rekordní dny a čisté sloupcové grafy.
@@ -32,6 +38,7 @@ CÍLE, KTERÉ VÁM SEDNOU
 
 Vitals+ (VOLITELNÉ)
 Malý měsíční, roční nebo doživotní jednorázový upgrade odemkne:
+- Makra: bílkoviny, sacharidy a tuky z jídla zapsaného v Apple Health
 - Rozklad aktivních vs. klidových kalorií
 - Čistý deficit: spálené kalorie mínus přijatá energie z Apple Health
 - Měsíční souhrnné PDF připravené ke sdílení

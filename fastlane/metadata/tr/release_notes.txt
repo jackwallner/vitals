@@ -1,3 +1,5 @@
-Daha anlaşılır yükseltme ekranı: her plan artık aylık tutarını gösteriyor, yıllık plan ise ne kadar kazandırdığını belirtiyor.
+Makrolar geldi. Protein, karbonhidrat ve yağ artık kalorilerinin yanında duruyor; yemeğini zaten Apple Health'e yazan uygulamadan okunuyor. Hiçbir şeyi iki kez girmiyorsun.
 
-Ayrıca küçük düzeltmeler.
+Üçünü birden ya da yalnızca saydığın tek makroyu takip et, isteğe bağlı gram hedefleri koy, ortalamaları, eğilimleri ve zirve günleri Geçmiş'te, CSV dışa aktarımında ve PDF raporlarında gör. Makrolar Vitals+ kapsamındadır.
+
+Ayarlar artık Kalori Yakımı ve Kalori Alımı olarak gruplanıyor, her anahtarın yanında anlaşılır bir açıklama var.

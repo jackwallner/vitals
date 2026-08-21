@@ -20,6 +20,18 @@ THE DASHBOARD (FREE)
 - Pacing indicator: are you ahead or behind your usual day at this time?
 - Pull to refresh. Tap the gear for settings.
 
+BODY PROFILE & BMI (FREE)
+- Your BMI, calculated from the height and weight already in Apple Health.
+- No Health data? Enter height and weight by hand instead.
+- BMI category reference, with a plain-English note on what the number does and doesn't mean.
+- Body fat percentage and calorie context are part of Vitals+.
+
+MACROS (VITALS+)
+- Protein, carbs and fat beside your calories, read from the app that already logs your food to Apple Health.
+- Nothing to log twice. If it is in Health, it is here.
+- Track all three, or only the macro you actually count.
+- Optional gram goals, plus macro averages, charts, CSV columns and PDF reports.
+
 HISTORY (FREE)
 - 7 / 30 / 90 / 365-day views and any custom date range.
 - Trend arrows, peak days, and clean bar charts.
@@ -32,6 +44,9 @@ GOALS THAT WORK FOR YOU
 
 VITALS+ (OPTIONAL)
 A small monthly, yearly, or lifetime upgrade unlocks:
+- Macros: protein, carbs and fat from the food you already log to Apple Health
+- TDEE and BMR reference figures: your 30-day maintenance and resting energy averages, straight from Apple Health
+- Body fat percentage alongside your BMI
 - Active vs. resting calorie breakdown
 - Net Deficit: calories burned minus food energy from Apple Health
 - Monthly Summary PDFs ready to share

@@ -20,6 +20,12 @@ DASHBOARD (இலவசம்)
 - Pacing indicator: இந்த நேரத்தில் உங்கள் வழக்கமான நாளை விட முன்னா அல்லது பின்னா?
 - Refresh: pull down. Settings: gear icon tap.
 
+மேக்ரோ (VITALS+)
+- புரதம், கார்ப்ஸ், கொழுப்பு உங்கள் கலோரிகளுக்கு அருகில்; உணவை ஏற்கெனவே Apple Health-இல் எழுதும் ஆப்பிலிருந்து படிக்கப்படுகிறது.
+- எதையும் இரண்டு முறை பதிவு செய்ய வேண்டாம். Health-இல் உள்ளது இங்கேயும் உள்ளது.
+- மூன்றையும் கண்காணியுங்கள், அல்லது நீங்கள் உண்மையில் எண்ணும் மேக்ரோவை மட்டும்.
+- விருப்பமான கிராம் இலக்குகள், சராசரி, விளக்கப்படங்கள், CSV நெடுவரிசைகள், PDF அறிக்கைகள்.
+
 HISTORY (இலவசம்)
 - 7 / 30 / 90 / 365‑நாள் views, custom date range.
 - Trend arrows, peak days, bar charts.
@@ -32,6 +38,7 @@ HISTORY (இலவசம்)
 
 Vitals+ (optional)
 சிறிய monthly, yearly, lifetime upgrade unlock:
+- மேக்ரோ: Apple Health-இல் பதிவான உணவிலிருந்து புரதம், கார்ப்ஸ், கொழுப்பு
 - Active vs resting calorie breakdown
 - Net Deficit: Apple Health food energy கழித்து burned calories
 - Share-ready Monthly Summary PDF

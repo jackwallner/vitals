@@ -20,6 +20,12 @@ DASHBOARD (مفت)
 - Pacing indicator: اس وقت usual day سے آگے یا پیچھے؟
 - Pull to refresh۔ Gear icon tap for settings۔
 
+میکروز (VITALS+)
+- پروٹین، کاربوہائیڈریٹس اور چکنائی آپ کی کیلوریز کے ساتھ، اُسی ایپ سے پڑھے جاتے ہیں جو کھانا پہلے ہی Apple Health میں لکھتی ہے۔
+- کچھ بھی دو بار درج نہیں کرنا۔ جو Health میں ہے، وہی یہاں ہے۔
+- تینوں کو ٹریک کریں، یا صرف وہ میکرو جسے آپ واقعی گنتے ہیں۔
+- اختیاری گرام اہداف، ساتھ اوسط، چارٹس، CSV کالم اور PDF رپورٹس۔
+
 HISTORY (مفت)
 - 7 / 30 / 90 / 365‑day views، custom date range۔
 - Trend arrows، peak days، bar charts۔
@@ -32,6 +38,7 @@ HISTORY (مفت)
 
 Vitals+ (optional)
 چھوٹا monthly، yearly، lifetime upgrade unlock:
+- میکروز: Apple Health میں درج کھانے سے پروٹین، کاربوہائیڈریٹس اور چکنائی
 - Active vs resting calorie breakdown
 - Net Deficit: Apple Health food energy گھٹا کر burned calories
 - Share-ready Monthly Summary PDF

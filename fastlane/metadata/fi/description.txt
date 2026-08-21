@@ -20,6 +20,12 @@ KOJELAUTA (ILMAINEN)
 - Tahtimittari: oletko edellä vai jäljessä tavalliseen päivääsi tähän kellonaikaan?
 - Vedä päivittääksesi. Avaa asetukset hammasrattaasta.
 
+MAKROT (VITALS+)
+- Proteiini, hiilihydraatit ja rasva kalorien rinnalla, luettuina sovelluksesta, joka jo kirjaa ruokasi Apple Healthiin.
+- Mitään ei syötetä kahdesti. Mikä on Healthissa, on täällä.
+- Seuraa kaikkia kolmea tai vain sitä makroa, jota oikeasti lasket.
+- Valinnaiset grammatavoitteet sekä keskiarvot, kaaviot, CSV-sarakkeet ja PDF-raportit.
+
 HISTORIA (ILMAINEN)
 - 7 / 30 / 90 / 365 päivän näkymät ja mikä tahansa mukautettu aikaväli.
 - Trendinuolet, huippupäivät ja selkeät pylväskaaviot.
@@ -32,6 +38,7 @@ TAVOITTEET, JOTKA SOPIVAT SINULLE
 
 Vitals+ (VALINNAINEN)
 Pieni kuukausi-, vuosi- tai kertamaksullinen päivitys avaa:
+- Makrot: proteiini, hiilihydraatit ja rasva ruoasta, jonka jo kirjaat Apple Healthiin
 - Aktiivisten ja lepokaloreiden erittelyn
 - Nettivajeen: kulutetut kalorit miinus ruoan energia Apple Health -datasta
 - Kuukausiyhteenvedot PDF-muodossa jakamista varten

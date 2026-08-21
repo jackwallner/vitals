@@ -20,6 +20,12 @@ PANONUZ (ÜCRETSİZ)
 - Tempo göstergesi: Günün bu saatinde alışılmış temponuza göre önde misiniz, geride mi?
 - Yenilemek için aşağı çekin. Ayarlar için dişliye dokunun.
 
+MAKROLAR (VITALS+)
+- Protein, karbonhidrat ve yağ kalorilerinin yanında; yemeğini zaten Apple Health'e yazan uygulamadan okunur.
+- Hiçbir şey iki kez girilmez. Health'te ne varsa burada da var.
+- Üçünü birden ya da yalnızca gerçekten saydığın makroyu takip et.
+- İsteğe bağlı gram hedefleri, ortalamalar, grafikler, CSV sütunları ve PDF raporları.
+
 GEÇMİŞ (ÜCRETSİZ)
 - 7 / 30 / 90 / 365 günlük görünümler ve istediğiniz özel tarih aralığı.
 - Trend okları, zirve günler ve sade çubuk grafikler.
@@ -32,6 +38,7 @@ SİZE UYAN HEDEFLER
 
 Vitals+ (OPSİYONEL)
 Küçük bir aylık, yıllık veya ömür boyu yükseltme ile şunların kilidini açın:
+- Makrolar: Apple Health'e kaydettiğin yemeklerden protein, karbonhidrat ve yağ
 - Aktif ve dinlenme kalorisi ayrımı
 - Net Açık: Apple Health’ten gelen besin enerjisi çıkarıldıktan sonra kalan kaloriler
 - Paylaşmaya hazır Aylık Özet PDF’leri

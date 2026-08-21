@@ -1,3 +1,5 @@
-Selkeämpi tilausnäkymä: jokainen tilaus näyttää nyt kuukausihinnan ja vuositilaus kertoo, paljonko säästät.
+Makrot ovat täällä. Proteiini, hiilihydraatit ja rasva näkyvät nyt kalorien rinnalla, luettuina sovelluksesta, joka jo kirjaa ruokasi Apple Healthiin. Mitään ei tarvitse syöttää kahdesti.
 
-Lisäksi pieniä korjauksia.
+Seuraa kaikkia kolmea tai vain sitä yhtä, jota lasket, aseta valinnaiset grammatavoitteet ja katso makrojen keskiarvot, trendit ja huippupäivät Historiassa, CSV-viennissä ja PDF-raporteissa. Makrot kuuluvat Vitals+:aan.
+
+Asetukset on nyt jaettu Kalorinkulutukseen ja Kalorinsaantiin, ja jokaisella kytkimellä on selkokielinen selitys.

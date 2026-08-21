@@ -20,6 +20,12 @@ LA DASHBOARD (GRATIS)
 - Indicatore di ritmo: sei in anticipo o in ritardo rispetto al tuo solito a quest’ora?
 - Trascina per aggiornare. Tocca l’ingranaggio per le impostazioni.
 
+MACRO (VITALS+)
+- Proteine, carboidrati e grassi accanto alle tue calorie, letti dall'app che registra già i tuoi pasti in Apple Health.
+- Niente da inserire due volte. Quello che c'è in Health c'è qui.
+- Seguili tutti e tre, o solo il macro che conti davvero.
+- Obiettivi in grammi facoltativi, medie, grafici, colonne CSV e report PDF.
+
 CRONOLOGIA (GRATIS)
 - Viste 7 / 30 / 90 / 365 giorni e qualsiasi intervallo personalizzato.
 - Frecce di tendenza, giorni di picco e grafici a barre puliti.
@@ -32,6 +38,7 @@ OBIETTIVI SU MISURA PER TE
 
 Vitals+ (OPZIONALE)
 Un piccolo upgrade mensile, annuale o a vita sblocca:
+- Macro: proteine, carboidrati e grassi da Apple Health
 - Dettaglio calorie attive vs a riposo
 - Deficit netto: calorie bruciate meno energia dal cibo da Apple Health
 - Riepiloghi mensili in PDF pronti da condividere

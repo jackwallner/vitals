@@ -20,6 +20,12 @@ NADZORNA PLOČA (BESPLATNO)
 - Pokazatelj tempa: jeste li ispred ili iza svog uobičajenog dana u ovo vrijeme?
 - Povucite za osvježavanje. Dodirnite zupčanik za postavke.
 
+MAKRONUTRIJENTI (VITALS+)
+- Proteini, ugljikohidrati i masti uz tvoje kalorije, očitani iz aplikacije koja hranu ionako zapisuje u Apple Health.
+- Ništa se ne unosi dvaput. Što je u Healthu, tu je.
+- Prati sva tri ili samo onaj koji stvarno brojiš.
+- Neobavezni ciljevi u gramima, prosjeci, grafikoni, CSV stupci i PDF izvješća.
+
 POVIJEST (BESPLATNO)
 - Prikazi za 7 / 30 / 90 / 365 dana i bilo koji prilagođeni raspon datuma.
 - Strelice trenda, dani vrhunca i jasni stupčasti grafikoni.
@@ -32,6 +38,7 @@ CILJEVI PRILAGOĐENI VAMA
 
 Vitals+ (NEOBVEZNO)
 Mala mjesečna, godišnja ili trajna nadogradnja otključava:
+- Makronutrijenti: proteini, ugljikohidrati i masti iz Apple Healtha
 - Razdvajanje aktivnih i kalorija u mirovanju
 - Neto manjak: potrošene kalorije minus energija iz hrane iz Apple Health
 - Mjesečni PDF sažeci spremni za dijeljenje

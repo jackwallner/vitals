@@ -1,3 +1,5 @@
-Preglednejši zaslon za nadgradnjo: vsak paket zdaj prikaže mesečni znesek, letni paket pa navede, koliko prihranite.
+Makri so tu. Beljakovine, ogljikovi hidrati in maščobe zdaj stojijo ob tvojih kalorijah, prebrani iz aplikacije, ki tvojo hrano tako ali tako zapisuje v Apple Health. Nič ni treba vnesti dvakrat.
 
-Poleg tega manjši popravki.
+Spremljaj vse tri ali samo tistega, ki ga šteješ, nastavi neobvezne cilje v gramih ter poglej povprečja, trende in najmočnejše dneve v Zgodovini, v izvozu CSV in v poročilih PDF. Makri so del Vitals+.
+
+Nastavitve so zdaj razdeljene na Porabo kalorij in Vnos kalorij, z razumljivo razlago ob vsakem stikalu.

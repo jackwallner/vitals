@@ -20,6 +20,12 @@ EL TAULER (GRATUÏT)
 - Indicador de ritme: vas per davant o per darrere d'un dia habitual a aquesta hora?
 - Estira per actualitzar. Toca la roda dentada per accedir a la configuració.
 
+MACROS (VITALS+)
+- Proteïnes, carbohidrats i greixos al costat de les teves calories, llegits de l'app que ja registra el teu menjar a Apple Health.
+- Res per apuntar dues vegades. El que és a Health és aquí.
+- Segueix-los tots tres, o només el macro que comptes de debò.
+- Objectius en grams opcionals, mitjanes, gràfics, columnes CSV i informes PDF.
+
 HISTORIAL (GRATUÏT)
 - Vistes de 7 / 30 / 90 / 365 dies i qualsevol interval de dates personalitzat.
 - Fletxes de tendència, dies punta i gràfics de barres nets.
@@ -32,6 +38,7 @@ OBJECTIUS ADAPTATS A TU
 
 Vitals+ (OPCIONAL)
 Una petita millora mensual, anual o de per vida desbloqueja:
+- Macros: proteïnes, carbohidrats i greixos des d'Apple Health
 - Desglossament de calories actives vs. en repòs
 - Dèficit net: calories cremades menys energia dels aliments des d'Apple Health
 - Resums mensuals en PDF llestos per compartir

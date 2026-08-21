@@ -20,6 +20,12 @@ HET DASHBOARD (GRATIS)
 - Tempo-indicator: lig je voor of achter op een gebruikelijke dag op dit tijdstip?
 - Trek omlaag om te verversen. Tik op het tandwiel voor instellingen.
 
+MACRO'S (VITALS+)
+- Eiwit, koolhydraten en vet naast je calorieën, gelezen uit de app die je eten toch al naar Apple Health schrijft.
+- Niets dubbel invoeren. Wat in Health staat, staat hier.
+- Volg alle drie, of alleen de macro die je echt telt.
+- Optionele gramdoelen, plus macrogemiddelden, grafieken, CSV-kolommen en pdf-rapporten.
+
 GESCHIEDENIS (GRATIS)
 - Weergaven van 7 / 30 / 90 / 365 dagen en elk aangepast datumbereik.
 - Trendpijlen, piekdagen en strakke staafdiagrammen.
@@ -32,6 +38,7 @@ DOELEN DIE BIJ JOU PASSEN
 
 Vitals+ (OPTIONEEL)
 Een kleine maandelijkse, jaarlijkse of levenslange upgrade ontgrendelt:
+- Macro's: eiwit, koolhydraten en vet uit het eten dat je toch al in Apple Health bijhoudt
 - Uitsplitsing actieve vs. rustcalorieën
 - Netto tekort: verbrande calorieën min voedingsenergie uit Apple Health
 - Maandelijkse samenvatting-pdf’s die klaar zijn om te delen

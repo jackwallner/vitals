@@ -1,3 +1,5 @@
-Duidelijker upgradescherm: elk abonnement toont nu de prijs per maand en het jaarabonnement vermeldt hoeveel je bespaart.
+Macro's zijn er. Eiwit, koolhydraten en vet staan nu naast je calorieën, gelezen uit de app die je eten toch al naar Apple Health schrijft. Niets dubbel invoeren.
 
-Daarnaast kleine verbeteringen.
+Volg alle drie of alleen de macro die jij telt, stel optionele gramdoelen in en bekijk macrogemiddelden, trends en piekdagen in Geschiedenis, in de CSV-export en in je pdf-rapporten. Macro's horen bij Vitals+.
+
+Instellingen is nu ingedeeld in Calorieverbranding en Calorie-inname, met een begrijpelijke uitleg bij elke schakelaar.

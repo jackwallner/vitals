@@ -1,3 +1,5 @@
-Écran d'abonnement plus clair : chaque forfait affiche maintenant son coût mensuel et le forfait annuel indique l'économie réalisée.
+Les macros arrivent. Protéines, glucides et lipides s'affichent à côté de vos calories, lus depuis l'app qui enregistre déjà vos repas dans Apple Health. Rien à saisir deux fois.
 
-Plus quelques petites corrections.
+Suivez les trois ou seulement celui qui compte pour vous, fixez des objectifs en grammes facultatifs, et retrouvez moyennes, tendances et jours de pointe dans l'Historique, l'exportation CSV et vos rapports PDF. Les macros font partie de Vitals+.
+
+Les réglages sont maintenant regroupés en Calories brûlées et Calories consommées, avec une explication claire pour chaque option.

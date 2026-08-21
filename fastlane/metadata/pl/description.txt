@@ -20,6 +20,12 @@ PULPIT (ZA DARMO)
 - Wskaźnik tempa: jesteś przed czy za swoim typowym dniem o tej porze?
 - Pociągnij, aby odświeżyć. Stuknij w koło zębate, aby przejść do ustawień.
 
+MAKRO (VITALS+)
+- Białko, węglowodany i tłuszcze obok kalorii, odczytane z aplikacji, która i tak zapisuje jedzenie do Apple Health.
+- Nic nie wpisujesz dwa razy. Co jest w Health, jest tutaj.
+- Śledź wszystkie trzy albo tylko to makro, które naprawdę liczysz.
+- Opcjonalne cele w gramach, średnie, wykresy, kolumny CSV i raporty PDF.
+
 HISTORIA (ZA DARMO)
 - Widoki 7 / 30 / 90 / 365 dni oraz dowolny własny zakres dat.
 - Strzałki trendu, dni szczytowe i przejrzyste wykresy słupkowe.
@@ -32,6 +38,7 @@ CELE DOPASOWANE DO CIEBIE
 
 Vitals+ (OPCJONALNE)
 Niewielka opłata miesięczna, roczna lub jednorazowa dożywotnia odblokowuje:
+- Makro: białko, węglowodany i tłuszcze z jedzenia zapisanego w Apple Health
 - Podział kalorii aktywnych vs. spoczynkowych
 - Bilans netto: kalorie spalone minus energia z jedzenia z Apple Health
 - Miesięczne podsumowania PDF gotowe do udostępniania
