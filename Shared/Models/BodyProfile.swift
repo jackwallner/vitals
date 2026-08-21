@@ -109,8 +109,8 @@ enum BodyProfileResolver {
             )
         case .manual:
             return ResolvedBodyProfile(
-                heightMeters: manual.heightMeters ?? health.heightMeters,
-                weightKilograms: manual.weightKilograms ?? health.weightKilograms,
+                heightMeters: manual.heightMeters,
+                weightKilograms: manual.weightKilograms,
                 bodyFatPercent: manual.bodyFatPercent ?? health.bodyFatPercent,
                 source: .manual
             )

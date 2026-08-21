@@ -60,6 +60,23 @@ enum BodyProfileCalculator {
         pounds * kilogramsPerPound
     }
 
+    /// Parses decimal input from the device locale, with a comma fallback for
+    /// pasted values on devices that use a dot decimal separator.
+    static func parseDecimal(_ text: String) -> Double? {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return nil }
+        if let value = Double(trimmed) { return value }
+
+        let separator = Locale.current.decimalSeparator ?? "."
+        var normalized = trimmed
+        if separator != "." {
+            normalized = normalized.replacingOccurrences(of: separator, with: ".")
+        } else if !normalized.contains(".") {
+            normalized = normalized.replacingOccurrences(of: ",", with: ".")
+        }
+        return Double(normalized)
+    }
+
     /// Returns (feet, inches) for a height in meters, inches rounded to nearest.
     static func feetInches(fromMeters meters: Double) -> (feet: Int, inches: Int) {
         let totalInches = (meters / metersPerInch).rounded()

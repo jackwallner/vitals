@@ -68,7 +68,7 @@ struct BodyProfileView: View {
             seedManualDrafts()
             // Settled-auth silent read: populates from Health when already
             // authorized, without prompting. The user explicitly syncs otherwise.
-            health = (try? await HealthKitService.shared.fetchBodyProfileFromHealth()) ?? .empty
+            health = (try? await HealthKitService.shared.fetchBodyProfileFromHealth(includeBodyFat: store.isPro)) ?? .empty
         }
     }
 
@@ -562,8 +562,8 @@ struct BodyProfileView: View {
         isSyncing = true
         defer { isSyncing = false }
         do {
-            try await HealthKitService.shared.requestBodyProfileAuthorization()
-            let fetched = try await HealthKitService.shared.fetchBodyProfileFromHealth()
+            try await HealthKitService.shared.requestBodyProfileAuthorization(includeBodyFat: store.isPro)
+            let fetched = try await HealthKitService.shared.fetchBodyProfileFromHealth(includeBodyFat: store.isPro)
             health = fetched
             if fetched.hasHeightAndWeight {
                 bodyProfile.preferredSource = .appleHealth
@@ -581,8 +581,8 @@ struct BodyProfileView: View {
     private func commitManualEntry() {
         // Height
         if unitSystem == .us {
-            let feet = Double(feetText) ?? 0
-            let inches = Double(inchesText) ?? 0
+            let feet = BodyProfileCalculator.parseDecimal(feetText) ?? 0
+            let inches = BodyProfileCalculator.parseDecimal(inchesText) ?? 0
             if feetText.isEmpty && inchesText.isEmpty {
                 bodyProfile.setManualHeight(meters: nil)
                 heightError = false
@@ -593,7 +593,7 @@ struct BodyProfileView: View {
             if poundsText.isEmpty {
                 bodyProfile.setManualWeight(kilograms: nil)
                 weightError = false
-            } else if let pounds = Double(poundsText) {
+            } else if let pounds = BodyProfileCalculator.parseDecimal(poundsText) {
                 let kg = BodyProfileCalculator.kilograms(pounds: pounds)
                 weightError = !bodyProfile.setManualWeight(kilograms: kg)
             } else {
@@ -603,7 +603,7 @@ struct BodyProfileView: View {
             if cmText.isEmpty {
                 bodyProfile.setManualHeight(meters: nil)
                 heightError = false
-            } else if let cm = Double(cmText) {
+            } else if let cm = BodyProfileCalculator.parseDecimal(cmText) {
                 let meters = BodyProfileCalculator.meters(centimeters: cm)
                 heightError = !bodyProfile.setManualHeight(meters: meters)
             } else {
@@ -612,7 +612,7 @@ struct BodyProfileView: View {
             if kgText.isEmpty {
                 bodyProfile.setManualWeight(kilograms: nil)
                 weightError = false
-            } else if let kg = Double(kgText) {
+            } else if let kg = BodyProfileCalculator.parseDecimal(kgText) {
                 weightError = !bodyProfile.setManualWeight(kilograms: kg)
             } else {
                 weightError = true
@@ -624,17 +624,11 @@ struct BodyProfileView: View {
             if bodyFatText.isEmpty {
                 bodyProfile.setManualBodyFat(percent: nil)
                 bodyFatError = false
-            } else if let pct = Double(bodyFatText) {
+            } else if let pct = BodyProfileCalculator.parseDecimal(bodyFatText) {
                 bodyFatError = !bodyProfile.setManualBodyFat(percent: pct)
             } else {
                 bodyFatError = true
             }
-        }
-
-        // Editing manual fields implies the user wants manual values to win.
-        if !feetText.isEmpty || !inchesText.isEmpty || !poundsText.isEmpty
-            || !cmText.isEmpty || !kgText.isEmpty {
-            bodyProfile.preferredSource = .manual
         }
     }
 
@@ -644,13 +638,22 @@ struct BodyProfileView: View {
             feetText = String(feet)
             inchesText = String(inches)
             cmText = String(format: "%.0f", BodyProfileCalculator.centimeters(fromMeters: meters))
+        } else {
+            feetText = ""
+            inchesText = ""
+            cmText = ""
         }
         if let kg = bodyProfile.manualWeightKilograms {
             poundsText = String(format: "%.0f", BodyProfileCalculator.pounds(fromKilograms: kg))
             kgText = String(format: "%.1f", kg)
+        } else {
+            poundsText = ""
+            kgText = ""
         }
         if let pct = bodyProfile.manualBodyFatPercent {
             bodyFatText = String(format: "%.1f", pct)
+        } else {
+            bodyFatText = ""
         }
     }
 }
