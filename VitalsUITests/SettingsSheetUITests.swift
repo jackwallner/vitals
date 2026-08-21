@@ -114,6 +114,39 @@ final class SettingsSheetUITests: XCTestCase {
         )
     }
 
+    /// Body Profile lives behind a NavigationLink, so its ⓘ shares a row with a
+    /// link that wants the whole row's tap. Covers both halves: the dot opens the
+    /// explanation, and the row still navigates rather than the dot swallowing it.
+    func testBodyProfileRowHasContextAndStillNavigates() {
+        let app = launchSettings(scene: "settingsPro")
+
+        let form = app.collectionViews.firstMatch.exists
+            ? app.collectionViews.firstMatch
+            : app.tables.firstMatch
+        let dot = app.buttons["About Body Profile"]
+        for _ in 0..<10 where !dot.isHittable {
+            form.swipeUp(velocity: .slow)
+        }
+        XCTAssertTrue(dot.isHittable, "Body Profile ⓘ never scrolled into view")
+
+        let explanation = app.staticTexts[
+            "Your BMI, free, calculated from the height and weight already in Apple Health. No Health data? Enter them by hand instead."
+        ]
+        dot.tap()
+        XCTAssertTrue(
+            explanation.waitForExistence(timeout: 5),
+            "Body Profile ⓘ did not reveal its explanation"
+        )
+        attach(app.screenshot(), name: "body-profile-context")
+
+        // The link must still work: the dot sits inside the same row.
+        app.staticTexts["Body Profile"].tap()
+        XCTAssertTrue(
+            app.navigationBars["Body Profile"].waitForExistence(timeout: 10),
+            "Body Profile row no longer navigates"
+        )
+    }
+
     // MARK: - Helpers
 
     private func launchSettings(scene: String) -> XCUIApplication {
