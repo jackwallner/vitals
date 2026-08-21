@@ -1,0 +1,68 @@
+{
+  "filename": "03-calorie-intake.png",
+  "path": "calorie-intake-led/03-calorie-intake.png",
+  "output_sha256": "68f04f47d953bfcbd919cb3ba30577d8cb3b02a983495e9e709078743c844f7a",
+  "output_size": [
+    1284,
+    2778
+  ],
+  "device": "iphone",
+  "header": "See your calorie intake at a glance",
+  "pitch": {
+    "benefit": "See logged food calories beside protein, carbs, and fat in one daily view",
+    "problem": "Food intake is hard to act on when calories and macros live in different places.",
+    "advantage": "The intake card keeps logged calories and all three macros visible together.",
+    "header_problem": "scattered food details",
+    "header_advantage": "calorie intake",
+    "search_terms": [
+      "calorie intake",
+      "macro tracker"
+    ],
+    "proof": "The literal macro-dashboard capture shows 1,950 logged calories, 142 g protein, 186 g carbs, and 61 g fat."
+  },
+  "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-dashboard.png",
+  "source_sha256": "f51b9eb2cd7c075b82bd0382228f800538c109a61fb9df34c230cf136b5654f0",
+  "background_asset": "assets/macro-still-life.png",
+  "background_asset_sha256": "3bf55b62e48c04a7117987b383816cc01481bf95b16ae9d664e4728cb281ac7d",
+  "background_override": null,
+  "foreground": "manifests/calorie-intake-led/03-calorie-intake.foreground.png",
+  "foreground_sha256": "d1adb8005a20fd25980bd36f990fed9f61a3aec640534d26a173d6b6a0597f51",
+  "ui_mask": "manifests/calorie-intake-led/03-calorie-intake.ui-mask.png",
+  "ui_coverage": 0.5721,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_65",
+  "size": [
+    1284,
+    2778
+  ],
+  "background_mode": "theme-plus-asset",
+  "background_id": "theme-plus-asset",
+  "background_top": "#fbf7f1",
+  "background_bottom": "#efe3d4",
+  "background_asset_applied": true,
+  "phone": {
+    "x": 139,
+    "y": 600,
+    "width": 1006,
+    "height": 2143,
+    "screen_x": 158,
+    "screen_y": 619,
+    "screen_width": 968,
+    "screen_height": 2105
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 144,
+  "header_lines": 2,
+  "header_text": "See your calorie intake at a glance",
+  "header_bounds": [
+    117,
+    152,
+    1166,
+    430
+  ],
+  "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-dashboard.png",
+  "source_evidence_sha256": "f51b9eb2cd7c075b82bd0382228f800538c109a61fb9df34c230cf136b5654f0"
+}

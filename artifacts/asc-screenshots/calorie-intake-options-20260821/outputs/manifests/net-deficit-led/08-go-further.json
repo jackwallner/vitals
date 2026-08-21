@@ -1,0 +1,68 @@
+{
+  "filename": "08-go-further.png",
+  "path": "net-deficit-led/08-go-further.png",
+  "output_sha256": "7f54f712d196548357ae0042145ada38321266bfa5c08394736493c80b4c38cf",
+  "output_size": [
+    1284,
+    2778
+  ],
+  "device": "iphone",
+  "header": "Go further with Vitals+",
+  "pitch": {
+    "benefit": "Unlock more ways to understand your burn and intake",
+    "problem": "A daily calorie view becomes more useful when deeper context is available.",
+    "advantage": "Vitals+ adds deeper calorie, fasting, and macro-related surfaces beyond the daily check-in.",
+    "header_problem": "a shallow daily check-in",
+    "header_advantage": "go further",
+    "search_terms": [
+      "calorie tracker",
+      "macro tracker"
+    ],
+    "proof": "The literal Vitals+ capture shows the available premium feature list and subscription surface."
+  },
+  "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/premium.png",
+  "source_sha256": "cbcd54611c311565543a97a119e10a4dedb31feaeb08a1dd1bfae9638e5cc27e",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/net-deficit-led/08-go-further.foreground.png",
+  "foreground_sha256": "ece7d87b26ef28fe6bebc9d789c51e6932d07661cbb883117b1368c9750c063c",
+  "ui_mask": "manifests/net-deficit-led/08-go-further.ui-mask.png",
+  "ui_coverage": 0.5721,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_65",
+  "size": [
+    1284,
+    2778
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#2a1711",
+  "background_bottom": "#55251b",
+  "background_asset_applied": false,
+  "phone": {
+    "x": 139,
+    "y": 600,
+    "width": 1006,
+    "height": 2143,
+    "screen_x": 158,
+    "screen_y": 619,
+    "screen_width": 968,
+    "screen_height": 2105
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 164,
+  "header_lines": 2,
+  "header_text": "Go further with Vitals+",
+  "header_bounds": [
+    132,
+    158,
+    1152,
+    444
+  ],
+  "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/premium.png",
+  "source_evidence_sha256": "cbcd54611c311565543a97a119e10a4dedb31feaeb08a1dd1bfae9638e5cc27e"
+}

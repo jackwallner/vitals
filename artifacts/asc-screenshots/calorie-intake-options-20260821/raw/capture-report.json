@@ -1,0 +1,116 @@
+{
+  "status": "ok",
+  "manifest": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/manifest.json",
+  "app": "total-calories",
+  "mode": "generic",
+  "lease": "vitals",
+  "output": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw",
+  "proof_only": false,
+  "lease_checked_in": true,
+  "screenshots": [
+    "dashboard.png",
+    "premium-dashboard.png",
+    "history.png",
+    "net-deficit.png",
+    "macro-dashboard.png",
+    "macro-goals.png",
+    "macro-history.png",
+    "dark-dashboard.png",
+    "settings.png",
+    "premium.png"
+  ],
+  "screenshot_records": [
+    {
+      "name": "dashboard.png",
+      "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/dashboard.png",
+      "size": [1206, 2622],
+      "mode": "RGBA",
+      "sha256": "9d5898574818ffe01ef42628d4645a5404e0baf26acb1c60690e7f68eb7652c7"
+    },
+    {
+      "name": "premium-dashboard.png",
+      "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/premium-dashboard.png",
+      "size": [1206, 2622],
+      "mode": "RGBA",
+      "sha256": "54c8714a3729643b95e17b64bed7dd682c11b2bda07bc18ce971747aa380f620"
+    },
+    {
+      "name": "history.png",
+      "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/history.png",
+      "size": [1206, 2622],
+      "mode": "RGBA",
+      "sha256": "82d46ce4696ed396f4a2ddd44bb77d8f2aff6ea30e22cf15406d125d726a2c0a"
+    },
+    {
+      "name": "net-deficit.png",
+      "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/net-deficit.png",
+      "size": [1206, 2622],
+      "mode": "RGBA",
+      "sha256": "1e70a665a1b18527287764b2a406e67afedfae41237e1c32e4016b685c453c48"
+    },
+    {
+      "name": "macro-dashboard.png",
+      "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-dashboard.png",
+      "size": [1206, 2622],
+      "mode": "RGBA",
+      "sha256": "f51b9eb2cd7c075b82bd0382228f800538c109a61fb9df34c230cf136b5654f0"
+    },
+    {
+      "name": "macro-goals.png",
+      "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-goals.png",
+      "size": [1206, 2622],
+      "mode": "RGBA",
+      "sha256": "fa7374daee9af23675f9231d1797dd9b82ea555275d959b6273c60e1829a2eaa"
+    },
+    {
+      "name": "macro-history.png",
+      "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-history.png",
+      "size": [1206, 2622],
+      "mode": "RGBA",
+      "sha256": "7f26f7ee2b9fa3fc4199c6f1a2ee27a751f0f42b38830a6bf7bc1df94746fc7b"
+    },
+    {
+      "name": "dark-dashboard.png",
+      "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/dark-dashboard.png",
+      "size": [1206, 2622],
+      "mode": "RGBA",
+      "sha256": "3d89ddd2cc63bdb7edc88ad7d0c8c0e871ba0556a1b329b55e6c7231db00cc47"
+    },
+    {
+      "name": "settings.png",
+      "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/settings.png",
+      "size": [1206, 2622],
+      "mode": "RGBA",
+      "sha256": "b75b5881beaa90fce1d07e62d55c253916a301de4458e39cd520ae28961a2a85"
+    },
+    {
+      "name": "premium.png",
+      "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/premium.png",
+      "size": [1206, 2622],
+      "mode": "RGBA",
+      "sha256": "cbcd54611c311565543a97a119e10a4dedb31feaeb08a1dd1bfae9638e5cc27e"
+    }
+  ],
+  "flows": [
+    { "id": "dashboard", "screenshots": ["dashboard.png"] },
+    { "id": "premium-dashboard", "screenshots": ["premium-dashboard.png"] },
+    { "id": "history", "screenshots": ["history.png"] },
+    { "id": "net-deficit", "screenshots": ["net-deficit.png"] },
+    { "id": "macro-dashboard", "screenshots": ["macro-dashboard.png"] },
+    { "id": "macro-goals", "screenshots": ["macro-goals.png"] },
+    { "id": "macro-history", "screenshots": ["macro-history.png"] },
+    { "id": "dark-dashboard", "screenshots": ["dark-dashboard.png"] },
+    { "id": "settings", "screenshots": ["settings.png"] },
+    { "id": "premium", "screenshots": ["premium.png"] }
+  ],
+  "app_repo": {
+    "path": "/Users/jackwallner/vitals",
+    "git_commit": "6c664c0f7c6943d4db0d9e7b2bbff963a19cbcea"
+  },
+  "device": {
+    "udid": "3BA38835-1CCB-4BBA-8045-4F0DD14AED56",
+    "name": "agent-sim-4",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-3",
+    "device_type": "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro"
+  }
+}

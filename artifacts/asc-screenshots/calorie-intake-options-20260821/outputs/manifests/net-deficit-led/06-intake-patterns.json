@@ -1,0 +1,68 @@
+{
+  "filename": "06-intake-patterns.png",
+  "path": "net-deficit-led/06-intake-patterns.png",
+  "output_sha256": "b11be0558bfc6b82d19f6ccb5c2dce329f1d29f8e1a321ccfb1ac2f9833bc955",
+  "output_size": [
+    1284,
+    2778
+  ],
+  "device": "iphone",
+  "header": "Spot your intake patterns",
+  "pitch": {
+    "benefit": "See how your macro intake changes across logged days",
+    "problem": "A single meal or day does not show the shape of your routine.",
+    "advantage": "Macro history makes the longer intake pattern easy to scan.",
+    "header_problem": "one day of intake",
+    "header_advantage": "intake patterns",
+    "search_terms": [
+      "macro history",
+      "food intake history"
+    ],
+    "proof": "The literal macro-history capture shows 30-day averages, stacked macro history, and recent macro totals."
+  },
+  "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-history.png",
+  "source_sha256": "7f26f7ee2b9fa3fc4199c6f1a2ee27a751f0f42b38830a6bf7bc1df94746fc7b",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/net-deficit-led/06-intake-patterns.foreground.png",
+  "foreground_sha256": "6ab0009d9cbac47d9c153aacd4b52a3cfb840aaa2d5c49428741f3687dad4018",
+  "ui_mask": "manifests/net-deficit-led/06-intake-patterns.ui-mask.png",
+  "ui_coverage": 0.5887,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_65",
+  "size": [
+    1284,
+    2778
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#fffdfb",
+  "background_bottom": "#f2dfd0",
+  "background_asset_applied": false,
+  "phone": {
+    "x": 133,
+    "y": 570,
+    "width": 1018,
+    "height": 2171,
+    "screen_x": 151,
+    "screen_y": 588,
+    "screen_width": 982,
+    "screen_height": 2135
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 164,
+  "header_lines": 2,
+  "header_text": "Spot your intake patterns",
+  "header_bounds": [
+    132,
+    158,
+    1152,
+    471
+  ],
+  "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/macro-history.png",
+  "source_evidence_sha256": "7f26f7ee2b9fa3fc4199c6f1a2ee27a751f0f42b38830a6bf7bc1df94746fc7b"
+}

@@ -1,0 +1,68 @@
+{
+  "filename": "08-dark-mode.png",
+  "path": "calorie-intake-led/08-dark-mode.png",
+  "output_sha256": "42cdbe57446f2433cd6b99bf0d3bbde541dbfdc7bfd3a5f013907ca42adb8c25",
+  "output_size": [
+    1284,
+    2778
+  ],
+  "device": "iphone",
+  "header": "Read it in dark mode",
+  "pitch": {
+    "benefit": "Keep the same calorie and intake view comfortable in a darker setting",
+    "problem": "A bright daily check-in is not ideal in every setting.",
+    "advantage": "The dashboard follows a dark appearance while keeping total burn and steps readable.",
+    "header_problem": "a bright check-in",
+    "header_advantage": "dark mode",
+    "search_terms": [
+      "dark mode calorie tracker",
+      "total calories"
+    ],
+    "proof": "The literal dark-dashboard capture shows the loaded dark dashboard with total calories and steps."
+  },
+  "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/dark-dashboard.png",
+  "source_sha256": "3d89ddd2cc63bdb7edc88ad7d0c8c0e871ba0556a1b329b55e6c7231db00cc47",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/calorie-intake-led/08-dark-mode.foreground.png",
+  "foreground_sha256": "edf00b44971f5fb7eaf838d02da0feaf698147477da7dfb2029ebf9c0ae62690",
+  "ui_mask": "manifests/calorie-intake-led/08-dark-mode.ui-mask.png",
+  "ui_coverage": 0.5721,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_65",
+  "size": [
+    1284,
+    2778
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#2a1711",
+  "background_bottom": "#55251b",
+  "background_asset_applied": false,
+  "phone": {
+    "x": 139,
+    "y": 600,
+    "width": 1006,
+    "height": 2143,
+    "screen_x": 158,
+    "screen_y": 619,
+    "screen_width": 968,
+    "screen_height": 2105
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 164,
+  "header_lines": 2,
+  "header_text": "Read it in dark mode",
+  "header_bounds": [
+    159,
+    158,
+    1124,
+    444
+  ],
+  "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/dark-dashboard.png",
+  "source_evidence_sha256": "3d89ddd2cc63bdb7edc88ad7d0c8c0e871ba0556a1b329b55e6c7231db00cc47"
+}

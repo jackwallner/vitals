@@ -1,0 +1,68 @@
+{
+  "filename": "03-calorie-gap.png",
+  "path": "net-deficit-led/03-calorie-gap.png",
+  "output_sha256": "9ac8c64109b22ec01e8fe729958daca2168ee145622b6070cef396a738c73e40",
+  "output_size": [
+    1284,
+    2778
+  ],
+  "device": "iphone",
+  "header": "Know your calorie gap",
+  "pitch": {
+    "benefit": "See how burned calories compare with the food you logged",
+    "problem": "It is difficult to interpret intake without the burn number beside it.",
+    "advantage": "Net deficit connects total burn and food intake in one glance.",
+    "header_problem": "intake without burn",
+    "header_advantage": "calorie gap",
+    "search_terms": [
+      "calorie deficit",
+      "calorie intake"
+    ],
+    "proof": "The literal net-deficit capture shows +450 deficit with 2,400 burned minus 1,950 eaten."
+  },
+  "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/net-deficit.png",
+  "source_sha256": "1e70a665a1b18527287764b2a406e67afedfae41237e1c32e4016b685c453c48",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/net-deficit-led/03-calorie-gap.foreground.png",
+  "foreground_sha256": "6ada36326b5004dd6f1789facdb8d1de6a896b8b00cef09e9298eb54b4d55032",
+  "ui_mask": "manifests/net-deficit-led/03-calorie-gap.ui-mask.png",
+  "ui_coverage": 0.5721,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_65",
+  "size": [
+    1284,
+    2778
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#175b48",
+  "background_bottom": "#0d3f34",
+  "background_asset_applied": false,
+  "phone": {
+    "x": 139,
+    "y": 600,
+    "width": 1006,
+    "height": 2143,
+    "screen_x": 158,
+    "screen_y": 619,
+    "screen_width": 968,
+    "screen_height": 2105
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 164,
+  "header_lines": 2,
+  "header_text": "Know your calorie gap",
+  "header_bounds": [
+    267,
+    158,
+    1017,
+    473
+  ],
+  "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/net-deficit.png",
+  "source_evidence_sha256": "1e70a665a1b18527287764b2a406e67afedfae41237e1c32e4016b685c453c48"
+}

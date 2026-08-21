@@ -1,0 +1,68 @@
+{
+  "filename": "01-total-burn.png",
+  "path": "calorie-intake-led/01-total-burn.png",
+  "output_sha256": "2d1a8311d6a5d44f1fa9f7fb1ce307759d1d3e585b0bf60c29fb937bb93c0007",
+  "output_size": [
+    1284,
+    2778
+  ],
+  "device": "iphone",
+  "header": "Know your total burn",
+  "pitch": {
+    "benefit": "Read one combined daily-burn number instead of piecing together separate energy surfaces",
+    "problem": "Activity rings and separate Health details make total burn easy to miss.",
+    "advantage": "Total Calories puts active plus resting energy into one daily number.",
+    "header_problem": "separate energy surfaces",
+    "header_advantage": "total burn",
+    "search_terms": [
+      "total calories",
+      "daily burn"
+    ],
+    "proof": "The literal dashboard capture shows 2,400 total calories against a 2,500 calorie target."
+  },
+  "source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/dashboard.png",
+  "source_sha256": "9d5898574818ffe01ef42628d4645a5404e0baf26acb1c60690e7f68eb7652c7",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/calorie-intake-led/01-total-burn.foreground.png",
+  "foreground_sha256": "550ee8cfcd39966e1cfc9df0299087eee4be8b9a4af05c19672eec705c1585aa",
+  "ui_mask": "manifests/calorie-intake-led/01-total-burn.ui-mask.png",
+  "ui_coverage": 0.5603,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_65",
+  "size": [
+    1284,
+    2778
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#fbf7f1",
+  "background_bottom": "#efe3d4",
+  "background_asset_applied": false,
+  "phone": {
+    "x": 143,
+    "y": 620,
+    "width": 998,
+    "height": 2123,
+    "screen_x": 163,
+    "screen_y": 640,
+    "screen_width": 958,
+    "screen_height": 2083
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 164,
+  "header_lines": 2,
+  "header_text": "Know your total burn",
+  "header_bounds": [
+    277,
+    158,
+    1006,
+    444
+  ],
+  "source_evidence": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-options-20260821/raw/dashboard.png",
+  "source_evidence_sha256": "9d5898574818ffe01ef42628d4645a5404e0baf26acb1c60690e7f68eb7652c7"
+}
