@@ -60,6 +60,36 @@ enum MacroKind: String, CaseIterable, Sendable, Identifiable, Comparable {
     }
 }
 
+/// Which macros draw a progress bar and which stay a plain gram pill.
+///
+/// Whether a macro has a target is a per-macro decision (a protein number to hit
+/// while carbs and fat stay a reference readout is a normal way to eat), so the
+/// answer is set arithmetic over three inputs rather than one switch. It lives
+/// here, as pure functions, so the rules are testable without standing up the
+/// app-group-backed `GoalSettings` singleton.
+enum MacroGoalSelection {
+
+    /// Visible macros with a target, canonical order. Empty when Macro Goals is
+    /// off, so callers can treat it as the whole question of "does anything here
+    /// have a target".
+    static func goaled(enabled: Bool, goaled: Set<MacroKind>, visible: Set<MacroKind>) -> [MacroKind] {
+        guard enabled else { return [] }
+        return MacroKind.allCases.filter { goaled.contains($0) && visible.contains($0) }
+    }
+
+    /// Visible macros shown as a plain gram pill: no target, or Macro Goals off.
+    static func ungoaled(enabled: Bool, goaled goaledSet: Set<MacroKind>, visible: Set<MacroKind>) -> [MacroKind] {
+        let barred = Set(goaled(enabled: enabled, goaled: goaledSet, visible: visible))
+        return MacroKind.allCases.filter { visible.contains($0) && !barred.contains($0) }
+    }
+
+    /// The last goaled macro can't be switched off: that state is Macro Goals
+    /// off, and its switch sits directly above these rows.
+    static func canDisableGoal(enabled: Bool, goaled goaledSet: Set<MacroKind>, visible: Set<MacroKind>) -> Bool {
+        goaled(enabled: enabled, goaled: goaledSet, visible: visible).count > 1
+    }
+}
+
 /// One day's macronutrient totals in grams.
 struct MacroTotals: Equatable, Sendable {
     var protein: Double

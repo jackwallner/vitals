@@ -349,11 +349,50 @@ final class GoalSettings: ObservableObject {
     }
 
     /// Sub-option of Macros: when off (default) the dashboard shows grams and the
-    /// day's split with no target to miss. When on, each macro gets a progress bar
-    /// against `proteinGoal` / `carbGoal` / `fatGoal`. One switch rather than three,
-    /// because macro targets are set as a set, never one at a time.
+    /// day's split with no target to miss. When on, the macros in `goaledMacroSet`
+    /// get a progress bar against `proteinGoal` / `carbGoal` / `fatGoal` and the
+    /// rest stay a plain gram readout.
     @Published var macroGoalsEnabled: Bool {
         didSet { defaults.set(macroGoalsEnabled, forKey: "macroGoalsEnabled") }
+    }
+
+    /// Which macros actually have a target while Macro Goals is on. Wanting a
+    /// protein number to hit while carbs and fat stay a reference readout is a
+    /// normal way to eat, so the target is a per-macro decision rather than one
+    /// set of three.
+    ///
+    /// Defaults to all three, so turning Macro Goals on behaves as it always has.
+    /// Never emptied through `setMacroGoalEnabled`, for the same reason
+    /// `visibleMacroSet` isn't: Macro Goals on with nothing goaled is what the
+    /// Macro Goals switch itself is for.
+    @Published private(set) var goaledMacroSet: Set<MacroKind> {
+        didSet { defaults.set(goaledMacroSet.map(\.rawValue), forKey: "goaledMacros") }
+    }
+
+    /// Visible macros that currently draw a progress bar, in canonical order.
+    /// Empty when Macro Goals is off, so callers can treat it as the whole
+    /// question of "does anything here have a target".
+    var goaledMacros: [MacroKind] {
+        MacroGoalSelection.goaled(enabled: macroGoalsEnabled, goaled: goaledMacroSet, visible: visibleMacroSet)
+    }
+
+    /// Visible macros shown as a plain gram pill: no target set, or Macro Goals off.
+    var ungoaledMacros: [MacroKind] {
+        MacroGoalSelection.ungoaled(enabled: macroGoalsEnabled, goaled: goaledMacroSet, visible: visibleMacroSet)
+    }
+
+    func isMacroGoalEnabled(_ kind: MacroKind) -> Bool {
+        macroGoalsEnabled && goaledMacroSet.contains(kind)
+    }
+
+    /// Turning the last goaled macro off is a no-op: that state is Macro Goals
+    /// off, and its switch is directly above these rows.
+    func setMacroGoalEnabled(_ enabled: Bool, for kind: MacroKind) {
+        if enabled {
+            goaledMacroSet.insert(kind)
+        } else if MacroGoalSelection.canDisableGoal(enabled: macroGoalsEnabled, goaled: goaledMacroSet, visible: visibleMacroSet) {
+            goaledMacroSet.remove(kind)
+        }
     }
 
     @Published var proteinGoal: Int {
@@ -368,10 +407,17 @@ final class GoalSettings: ObservableObject {
         didSet { defaults.set(fatGoal, forKey: "fatGoal") }
     }
 
-    /// Daily gram target for `kind`, or nil when macro goals are off. Callers then
-    /// render a plain gram count instead of a progress bar.
+    /// Daily gram target for `kind`, or nil when that macro has no target set.
+    /// Callers then render a plain gram count instead of a progress bar.
     func macroGoal(for kind: MacroKind) -> Int? {
-        guard macroGoalsEnabled else { return nil }
+        guard isMacroGoalEnabled(kind) else { return nil }
+        return storedMacroGoal(for: kind)
+    }
+
+    /// The stored gram target regardless of whether it's currently in use, so
+    /// Settings can seed its field without a switched-off macro losing the number
+    /// the user typed last time.
+    func storedMacroGoal(for kind: MacroKind) -> Int {
         switch kind {
         case .protein: return proteinGoal
         case .carbs: return carbGoal
@@ -508,6 +554,11 @@ final class GoalSettings: ObservableObject {
         self.visibleMacroSet = storedVisibleMacros.isEmpty ? Set(MacroKind.allCases) : Set(storedVisibleMacros)
         self.macroSplitEnabled = defaults.object(forKey: "macroSplitEnabled") as? Bool ?? false
         self.macroGoalsEnabled = defaults.object(forKey: "macroGoalsEnabled") as? Bool ?? false
+        let storedGoaledMacros = (defaults.array(forKey: "goaledMacros") as? [String] ?? [])
+            .compactMap(MacroKind.init(rawValue:))
+        // Nothing stored means either a fresh install or an upgrade from the
+        // all-or-nothing switch; both want all three goaled.
+        self.goaledMacroSet = storedGoaledMacros.isEmpty ? Set(MacroKind.allCases) : Set(storedGoaledMacros)
         self.proteinGoal = Self.sanitizedMacroGoal(defaults.object(forKey: "proteinGoal") as? Int, kind: .protein)
         self.carbGoal = Self.sanitizedMacroGoal(defaults.object(forKey: "carbGoal") as? Int, kind: .carbs)
         self.fatGoal = Self.sanitizedMacroGoal(defaults.object(forKey: "fatGoal") as? Int, kind: .fat)
@@ -571,6 +622,7 @@ final class GoalSettings: ObservableObject {
             showMacros = true
             macroSplitEnabled = true
             macroGoalsEnabled = true
+            goaledMacroSet = Set(MacroKind.allCases)
             showPacing = true
             calorieGoal = 2500
             stepGoal = 10000
@@ -604,6 +656,7 @@ final class GoalSettings: ObservableObject {
             showActiveRestingBreakdown = false
             macroSplitEnabled = true
             macroGoalsEnabled = ScreenshotConfig.scene == .macroGoals
+            goaledMacroSet = Set(MacroKind.allCases)
             showEnergyAverages = false
             hasCompletedSetup = true
             return
