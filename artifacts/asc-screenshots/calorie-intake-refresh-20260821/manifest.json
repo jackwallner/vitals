@@ -1,0 +1,32 @@
+{
+  "app": "total-calories",
+  "display_name": "Total Calories",
+  "health_app": true,
+  "target": "iphone_65",
+  "capture": {
+    "mode": "generic",
+    "lease": "vitals",
+    "project_root": "/Users/jackwallner/vitals",
+    "project": "Vitals.xcodeproj",
+    "scheme": "Vitals",
+    "app_name": "Vitals",
+    "bundle_id": "com.jackwallner.vitals",
+    "generate_project": false,
+    "expected_size": [1206, 2622],
+    "flows": [
+      {
+        "id": "calorie-intake",
+        "launch_timeout": 90,
+        "launch_wait": 8,
+        "ready_timeout": 60,
+        "ready_labels": ["Net calories", "Macros"],
+        "environment": {
+          "VITALS_SCREENSHOT_MODE": "1",
+          "VITALS_SCREENSHOT_SCENE": "calorieIntake",
+          "VITALS_FORCE_INTRO_INELIGIBLE": "1"
+        },
+        "screenshots": [{ "name": "calorie-intake.png" }]
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "canvas": [
+    1284,
+    2778
+  ],
+  "color_mode": "RGB",
+  "style_source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/compose_total_calories_asc.py",
+  "headline": "See your calorie intake",
+  "literal_source": "raw/calorie-intake.png",
+  "raw_sha256": "0c98007a850462aff91151c187070102c617e3e2d5cd26039afb129121db9b64",
+  "final_sha256": "0ee7dfc0488a4a0f2db9078a80755a11b497596c18766236b03bb9017dc49188",
+  "capture_report": "raw/capture-report.json",
+  "proof": "One literal app screen shows the +450 net deficit, 2,400 burned minus 1,950 eaten, and the macro card with protein, carbs, fat, and the macro-calorie split."
+}

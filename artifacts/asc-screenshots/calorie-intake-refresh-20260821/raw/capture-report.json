@@ -1,0 +1,44 @@
+{
+  "status": "ok",
+  "manifest": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-refresh-20260821/manifest.json",
+  "app": "total-calories",
+  "mode": "generic",
+  "lease": "vitals",
+  "output": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-refresh-20260821/raw",
+  "proof_only": false,
+  "checkout_options": [],
+  "lease_checked_in": true,
+  "screenshots": [
+    "calorie-intake.png"
+  ],
+  "screenshot_records": [
+    {
+      "name": "calorie-intake.png",
+      "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/calorie-intake-refresh-20260821/raw/calorie-intake.png",
+      "size": [
+        1206,
+        2622
+      ],
+      "mode": "RGBA",
+      "sha256": "0c98007a850462aff91151c187070102c617e3e2d5cd26039afb129121db9b64"
+    }
+  ],
+  "flows": [
+    {
+      "id": "calorie-intake",
+      "screenshots": [
+        "calorie-intake.png"
+      ]
+    }
+  ],
+  "app_repo": {
+    "path": "/Users/jackwallner/vitals",
+    "git_commit": "4b7dd3e1458f837f55f4c4f066570cd9658f6539"
+  },
+  "device": {
+    "udid": "2C7A80C1-1228-411A-B9AD-A7DEED683F79",
+    "name": "agent-sim-1",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+    "device_type": "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro"
+  }
+}
