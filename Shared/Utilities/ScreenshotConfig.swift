@@ -13,6 +13,9 @@ enum ScreenshotScene: String {
     case macroHistory
     case darkDashboard
     case settings
+    /// Settings sheet with Vitals+ unlocked and the intake toggles on, so the
+    /// nested Fasting Mode / macro sub-options can be reviewed in capture runs.
+    case settingsPro
     case onboarding
     case watchToday
     case watchBreakdown
@@ -46,8 +49,9 @@ enum ScreenshotConfig {
             || scene == .macroDashboard
             || scene == .macroGoals
             || scene == .macroHistory
+            || scene == .settingsPro
     }
-    static var wantsSettingsSheet: Bool { scene == .settings }
+    static var wantsSettingsSheet: Bool { scene == .settings || scene == .settingsPro }
     static var wantsOnboarding: Bool { scene == .onboarding }
     static var wantsWatchHelp: Bool { scene == .watchHelp }
     static var wantsWatchBreakdown: Bool { scene == .watchBreakdown }

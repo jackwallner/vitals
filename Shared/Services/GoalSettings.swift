@@ -562,6 +562,22 @@ final class GoalSettings: ObservableObject {
         macroSplitEnabled = false
         appearance = ScreenshotConfig.wantsDarkDashboard ? .dark : .light
 
+        // Settings review scene: Vitals+ unlocked with both intake parents on,
+        // so Fasting Mode, the per-macro rows, Calorie Split, Macro Goals, and
+        // the gram fields all render nested under their parent toggle.
+        if ScreenshotConfig.scene == .settingsPro {
+            showNetCalories = true
+            netDeficitFastingMode = true
+            showMacros = true
+            macroSplitEnabled = true
+            macroGoalsEnabled = true
+            showPacing = true
+            calorieGoal = 2500
+            stepGoal = 10000
+            hasCompletedSetup = true
+            return
+        }
+
         if ScreenshotConfig.wantsMacroScene {
             showCalories = true
             showSteps = true

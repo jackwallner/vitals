@@ -506,6 +506,15 @@ final class StoreService: NSObject, ObservableObject {
 
     func apply(customerInfo: CustomerInfo) {
         self.customerInfo = customerInfo
+        #if DEBUG
+        // Capture runs force `isPro` on in `start()`. RevenueCat configures with
+        // the test key on simulator and pushes anonymous customer info a moment
+        // later, which has no entitlements: without this guard that push flips
+        // `isPro` back off mid-capture, and DashboardView's isPro observer then
+        // switches Net Deficit and Macros off with it. That race is why premium
+        // scenes sometimes rendered in the free state.
+        if ScreenshotConfig.wantsPremiumActive { return }
+        #endif
         let activeKeys = customerInfo.entitlements.active.keys.sorted().joined(separator: ", ")
         let allKeys = customerInfo.entitlements.all.keys.sorted().joined(separator: ", ")
         logger.info("Applied customerInfo — active: [\(activeKeys, privacy: .public)] all: [\(allKeys, privacy: .public)]")
