@@ -24,15 +24,17 @@ Ten 1284 x 2778 RGB App Store screenshot candidates in the same screen-first sty
 - The reference source was `/Users/jackwallner/Downloads/Total Calories.zip`, especially `screenshots-app/panels.jsx` and `screenshots-app/phone-screens.jsx`.
 - `watch-capture.png` is the current local Watch capture used in the Watch composition.
 - `macro-still-life.png` is the only generated visual. It is used as a background plate; no phone UI was sent to image generation.
+- The canonical raw phone captures are 1206 x 2622 from an iPhone 17 Pro. The compositor outputs the 1284 x 2778 App Store candidates.
 
-The macro captures use the app's screenshot fixtures in the normal Today context: 2,400 calories, 10,342 steps, 142 g protein, 186 g carbs, and 61 g fat on the dashboard; 150 g, 250 g, and 70 g goals; and a 30-day history chart. The TDEE/BMR capture uses 2,380 TDEE, 1,715 BMR, and a 30-day Apple Health average label.
+The capture run uses the app's screenshot fixtures in the normal Today context: 2,400 calories, 10,342 steps, 1,950 logged food calories, and the current visible macro selection of 186 g carbs and 61 g fat on the dashboard; 150 g, 250 g, and 70 g goals; and a 30-day history chart. The macro split uses the current `of all macro calories` denominator. The TDEE/BMR capture uses 2,380 TDEE, 1,715 BMR, and a 30-day Apple Health average label.
 
 ## Verification
 
 - 10 final PNGs
 - Every final PNG is 1284 x 2778 and RGB
-- Raw capture status is `ok`
+- Raw capture status is `ok`, with ten 1206 x 2622 RGBA sources
 - Simulator lease was checked in
-- Unit tests: `xcodebuild test ...`, 67 tests passed
+- Compositor regenerated the final frames, contact sheet, and provenance hashes
+- Screenshot pipeline tests: `python3 -m unittest discover -s tests -v`, 20 tests passed
 
 These are review artifacts only. Nothing was uploaded or changed in App Store Connect.

@@ -5,11 +5,8 @@
   "mode": "generic",
   "lease": "vitals",
   "output": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw",
-  "proof_only": true,
-  "checkout_options": [
-    "--device",
-    "iPhone 17 Pro Max"
-  ],
+  "proof_only": false,
+  "checkout_options": [],
   "lease_checked_in": true,
   "screenshots": [
     "dashboard.png",
@@ -28,101 +25,101 @@
       "name": "dashboard.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/dashboard.png",
       "size": [
-        1320,
-        2868
+        1206,
+        2622
       ],
       "mode": "RGBA",
-      "sha256": "fa048da555ab1af9bbf10237b7ed66d810722b441cdd26ef6a94c4a422ebb90c"
+      "sha256": "54f949a1a01bdfe8269342c86cddba7e88002436d40034abd612005c392bc2ba"
     },
     {
       "name": "premium-dashboard.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/premium-dashboard.png",
       "size": [
-        1320,
-        2868
+        1206,
+        2622
       ],
       "mode": "RGBA",
-      "sha256": "9b9199efa47843d63aa23c0c2db614e34a905c30903ec88b4a30569d42cf07b7"
+      "sha256": "0139f2432d7396b5df1fdd6474dec08c2153017de5cc39847065f9afcba9806f"
     },
     {
       "name": "history.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/history.png",
       "size": [
-        1320,
-        2868
+        1206,
+        2622
       ],
       "mode": "RGBA",
-      "sha256": "c87aae3b339f8a470d39e2673270ecc282ae8125962c66d04a8c398849cc7ca0"
+      "sha256": "6867151056d63a8e3660a8f10e9e01349b5e49687ee742c5c432b19bd5a6cd3d"
     },
     {
       "name": "net-deficit.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/net-deficit.png",
       "size": [
-        1320,
-        2868
+        1206,
+        2622
       ],
       "mode": "RGBA",
-      "sha256": "caa883c4d32b9e62d3dfb2e31eeee474b2b2b9d95ae7fca9fa58beefb773936f"
+      "sha256": "7c37c95da476ef94f961f1232ef59a79a8be0eaf890d151b803bc38655c687b1"
     },
     {
       "name": "macro-dashboard.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/macro-dashboard.png",
       "size": [
-        1320,
-        2868
+        1206,
+        2622
       ],
       "mode": "RGBA",
-      "sha256": "e674d9e3be65b7bb0615e515c56c8dfda9f0093aafab5e3b371979948ca2a7b5"
+      "sha256": "28a944a6765f265f27aa499bbf7653044e5830f165e27533aa6236c0b0951ec7"
     },
     {
       "name": "macro-goals.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/macro-goals.png",
       "size": [
-        1320,
-        2868
+        1206,
+        2622
       ],
       "mode": "RGBA",
-      "sha256": "ef69e0f818dda02080a9673fd2a202e681c8ba709023f1b50a7cd384bbdb5908"
+      "sha256": "983966b6deda0eb16148a42db3b204fcf4e2cc14a4b04bb733de02d832335205"
     },
     {
       "name": "macro-history.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/macro-history.png",
       "size": [
-        1320,
-        2868
+        1206,
+        2622
       ],
       "mode": "RGBA",
-      "sha256": "5d183ae39b5e97fae056f71b17b08ec3ed6e9a6341dbf201363584f6bfb77afd"
+      "sha256": "ca8cf8f2f7ef705a8ab465062c8db246a5c8bc18d8201b0f1251509653ea1ace"
     },
     {
       "name": "dark-dashboard.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/dark-dashboard.png",
       "size": [
-        1320,
-        2868
+        1206,
+        2622
       ],
       "mode": "RGBA",
-      "sha256": "75a8e005d00234802fb0436fc953ea630196ba107f66a14da5e7bf3910028340"
+      "sha256": "4d7a4639d508185af47eb3593dec69da75d56d8711d632710bc0b2aaf360bec9"
     },
     {
       "name": "settings.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/settings.png",
       "size": [
-        1320,
-        2868
+        1206,
+        2622
       ],
       "mode": "RGBA",
-      "sha256": "e5751e859ed6c488520296b581e5f6906424ee64e410d0e1a070c3211857f30b"
+      "sha256": "da594b6e78a843911a7b4c71ae4c3a8308258b7f969ebec7cb903ce4e2548c24"
     },
     {
       "name": "premium.png",
       "path": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/raw/premium.png",
       "size": [
-        1320,
-        2868
+        1206,
+        2622
       ],
       "mode": "RGBA",
-      "sha256": "1497cba2ed299ce26514cb88ee3943c68cfad974450ae4a0425ca165475838ea"
+      "sha256": "ec51448ef12a648165c3e1183d8916526fab50cc8966993da58fc5de5f622ae9"
     }
   ],
   "flows": [
@@ -189,12 +186,12 @@
   ],
   "app_repo": {
     "path": "/Users/jackwallner/vitals",
-    "git_commit": "7290149d38916f0ea719c8565bb88851affc1ae4"
+    "git_commit": "adf9243f0e2c9a4fcf3bd4542ce09fd8336f0a1a"
   },
   "device": {
-    "udid": "05E7E41C-11D7-47C4-9EFE-494464932ED0",
-    "name": "agent-sim-2",
+    "udid": "2C7A80C1-1228-411A-B9AD-A7DEED683F79",
+    "name": "agent-sim-1",
     "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
-    "device_type": "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro-Max"
+    "device_type": "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro"
   }
 }

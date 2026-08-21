@@ -13,10 +13,11 @@
     "app_name": "Vitals",
     "bundle_id": "com.jackwallner.vitals",
     "generate_project": false,
-    "expected_size": [1320, 2868],
+    "expected_size": [1206, 2622],
     "flows": [
       {
         "id": "dashboard",
+        "launch_timeout": 90,
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "dashboard",
@@ -26,6 +27,7 @@
       },
       {
         "id": "premium-dashboard",
+        "launch_timeout": 90,
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "premiumDashboard",
@@ -35,6 +37,8 @@
       },
       {
         "id": "history",
+        "launch_timeout": 90,
+        "launch_wait": 35,
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "history",
@@ -44,6 +48,7 @@
       },
       {
         "id": "net-deficit",
+        "launch_timeout": 90,
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "netDeficit",
@@ -53,6 +58,7 @@
       },
       {
         "id": "macro-dashboard",
+        "launch_timeout": 90,
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "macroDashboard",
@@ -62,6 +68,7 @@
       },
       {
         "id": "macro-goals",
+        "launch_timeout": 90,
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "macroGoals",
@@ -71,6 +78,8 @@
       },
       {
         "id": "macro-history",
+        "launch_timeout": 90,
+        "launch_wait": 35,
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "macroHistory",
@@ -80,6 +89,7 @@
       },
       {
         "id": "dark-dashboard",
+        "launch_timeout": 90,
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "darkDashboard",
@@ -89,6 +99,9 @@
       },
       {
         "id": "settings",
+        "launch_timeout": 90,
+        "launch_wait": 10,
+        "ready_timeout": 30,
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "settings",
@@ -98,6 +111,7 @@
       },
       {
         "id": "premium",
+        "launch_timeout": 90,
         "environment": {
           "VITALS_SCREENSHOT_MODE": "1",
           "VITALS_SCREENSHOT_SCENE": "premium",
