@@ -20,6 +20,12 @@ A VEZÉRŐPULT (INGYENES)
 - Tempójelző: előrébb vagy vagy lemaradva a szokásos napodhoz képest az adott időpontban?
 - Lehúzással frissítés. Fogaskerékre koppintva beállítások.
 
+MAKRÓK (VITALS+)
+- Fehérje, szénhidrát és zsír a kalóriáid mellett, abból az appból beolvasva, amely az ételeidet amúgy is az Apple Healthbe írja.
+- Semmit nem kell kétszer bevinni. Ami a Healthben van, itt is megjelenik.
+- Kövesd mind a hármat, vagy csak azt a makrót, amit tényleg számolsz.
+- Opcionális grammcélok, átlagok, diagramok, CSV-oszlopok és PDF-jelentések.
+
 ELŐZMÉNYEK (INGYENES)
 - 7 / 30 / 90 / 365 napos nézetek és tetszőleges egyéni dátumtartomány.
 - Trendnyilak, csúcsnapok és letisztult oszlopdiagramok.
@@ -32,6 +38,7 @@ CÉLOK, AMELYEK HOZZÁD IGAZODNAK
 
 Vitals+ (OPCIONÁLIS)
 Egy kisebb havi, éves vagy örökös frissítés feloldja:
+- Makrók: fehérje, szénhidrát és zsír az Apple Healthbe rögzített ételeidből
 - Aktív és nyugalmi kalóriák bontása
 - Nettó deficit: elégetett kalória mínusz az Apple Health által jelzett felvett energia
 - Havi összefoglaló PDF-ek, azonnal megoszthatók

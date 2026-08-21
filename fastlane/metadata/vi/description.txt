@@ -20,6 +20,12 @@ BẢNG ĐIỀU KHIỂN (MIỄN PHÍ)
 - Chỉ báo nhịp độ: bạn đang vượt trước hay chậm hơn so với một ngày điển hình ở cùng thời điểm.
 - Kéo để làm mới. Chạm biểu tượng bánh răng để mở cài đặt.
 
+MACRO (VITALS+)
+- Đạm, tinh bột và chất béo ngay cạnh lượng calo, đọc từ ứng dụng vẫn ghi bữa ăn của bạn vào Apple Health.
+- Không phải nhập lại. Có trong Health thì có ở đây.
+- Theo dõi cả ba, hoặc chỉ macro bạn thật sự đếm.
+- Mục tiêu gam tùy chọn, cùng trung bình, biểu đồ, cột CSV và báo cáo PDF.
+
 LỊCH SỬ (MIỄN PHÍ)
 - Xem 7 / 30 / 90 / 365 ngày và bất kỳ khoảng ngày tùy chỉnh nào.
 - Mũi tên xu hướng, ngày đỉnh điểm và biểu đồ cột gọn gàng.
@@ -32,6 +38,7 @@ MỤC TIÊU PHÙ HỢP VỚI BẠN
 
 Vitals+ (TÙY CHỌN)
 Nâng cấp nhỏ theo tháng, năm hoặc trọn đời sẽ mở khóa:
+- Macro: đạm, tinh bột và chất béo từ bữa ăn đã ghi trong Apple Health
 - Tách calo hoạt động và calo nghỉ ngơi
 - Thâm hụt ròng: calo đốt trừ năng lượng từ thức ăn trong Apple Health
 - PDF tổng kết hàng tháng sẵn sàng chia sẻ

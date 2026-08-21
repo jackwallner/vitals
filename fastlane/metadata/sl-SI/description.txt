@@ -20,6 +20,12 @@ DASHBOARD (BREZPLAČNO)
 - Pacing indicator: ste ob tem času pred ali za običajnim dnem?
 - Pull to refresh. Tap gear icon za settings.
 
+MAKRI (VITALS+)
+- Beljakovine, ogljikovi hidrati in maščobe ob tvojih kalorijah, prebrani iz aplikacije, ki hrano tako ali tako zapisuje v Apple Health.
+- Nič se ne vnaša dvakrat. Kar je v Healthu, je tudi tukaj.
+- Spremljaj vse tri ali samo makro, ki ga v resnici šteješ.
+- Neobvezni cilji v gramih, povprečja, grafi, stolpci CSV in poročila PDF.
+
 HISTORY (BREZPLAČNO)
 - Pogledi 7 / 30 / 90 / 365 dni in poljubno obdobje.
 - Trend arrows, peak days, bar charts.
@@ -32,6 +38,7 @@ CILJI, KI DELUJEJO ZA VAS
 
 Vitals+ (OPTIONAL)
 Majhna mesečna, letna ali lifetime nadgradnja odklene:
+- Makri: beljakovine, ogljikovi hidrati in maščobe iz Apple Healtha
 - Active vs resting calorie breakdown
 - Net Deficit: poraba minus food energy iz Apple Health
 - Share-ready Monthly Summary PDF

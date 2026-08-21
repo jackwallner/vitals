@@ -1,3 +1,5 @@
-Übersichtlichere Upgrade-Seite: Jeder Tarif zeigt jetzt den Preis pro Monat, und der Jahrestarif nennt die Ersparnis.
+Makros sind da. Protein, Kohlenhydrate und Fett stehen jetzt neben deinen Kalorien, gelesen aus der App, die dein Essen ohnehin in Apple Health schreibt. Nichts doppelt eintragen.
 
-Dazu kleinere Korrekturen.
+Verfolge alle drei oder nur den Makro, der für dich zählt, setze optionale Gramm-Ziele und sieh Makro-Durchschnitte, Trends und Spitzentage im Verlauf, im CSV-Export und in deinen PDF-Berichten. Makros gehören zu Vitals+.
+
+Die Einstellungen sind jetzt in Kalorienverbrauch und Kalorienzufuhr gegliedert, mit einer verständlichen Erklärung zu jedem Schalter.

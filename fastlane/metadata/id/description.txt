@@ -20,6 +20,12 @@ DASHBOARD (GRATIS)
 - Indikator kecepatan: Anda lebih cepat atau lebih lambat dari hari biasa di waktu ini?
 - Tarik untuk segarkan. Ketuk ikon roda gigi untuk pengaturan.
 
+MAKRO (VITALS+)
+- Protein, karbohidrat, dan lemak di samping kalorimu, dibaca dari aplikasi yang sudah mencatat makananmu ke Apple Health.
+- Tidak ada yang diisi dua kali. Yang ada di Health, ada di sini.
+- Lacak ketiganya, atau hanya makro yang benar-benar kamu hitung.
+- Target gram opsional, plus rata-rata, grafik, kolom CSV, dan laporan PDF.
+
 RIWAYAT (GRATIS)
 - Tampilan 7 / 30 / 90 / 365 hari dan rentang tanggal kustom.
 - Panah tren, hari puncak, dan grafik batang bersih.
@@ -32,6 +38,7 @@ TARGET YANG FLEKSIBEL
 
 Vitals+ (OPSIONAL)
 Upgrade kecil bulanan,tahunan,atau seumur hidup membuka:
+- Makro: protein, karbohidrat, dan lemak dari makanan yang sudah tercatat di Apple Health
 - Rincian kalori aktif vs istirahat
 - Net Deficit: kalori terbakar dikurangi energi makanan dari Apple Health
 - Ringkasan Bulanan PDF siap dibagikan

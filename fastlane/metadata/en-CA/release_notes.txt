@@ -1,3 +1,5 @@
-Clearer upgrade screen: every plan now shows what it comes to per month, and the yearly plan states how much it saves.
+Macros are here. Protein, carbs, and fat sit beside your calories, read from whatever app already logs your food to Apple Health. Nothing to enter twice.
 
-Plus small fixes throughout.
+Track all three or just the one you count, set optional gram goals, and follow macro averages, trends, and peak days in History, CSV export, and your PDF reports. Macros are part of Vitals+.
+
+Settings is now grouped into Calorie Burn and Calorie Intake, with a plain-English explainer on every switch.

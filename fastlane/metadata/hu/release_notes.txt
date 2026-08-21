@@ -1,3 +1,5 @@
-Áttekinthetőbb előfizetési képernyő: minden csomag mutatja a havi árat, az éves csomag pedig a megtakarítást.
+Megjöttek a makrók. A fehérje, a szénhidrát és a zsír mostantól a kalóriáid mellett áll, abból az appból beolvasva, amely az ételeidet amúgy is az Apple Healthbe írja. Semmit nem kell kétszer bevinni.
 
-Ezenkívül apró javítások.
+Kövesd mind a hármat, vagy csak azt az egyet, amit számolsz, állíts be opcionális grammcélokat, és nézd meg az átlagokat, a trendeket és a csúcsnapokat az Előzményekben, a CSV-exportban és a PDF-jelentéseidben. A makrók a Vitals+ része.
+
+A beállítások mostantól Kalóriaégetés és Kalóriabevitel szerint csoportosulnak, minden kapcsolónál érthető magyarázattal.

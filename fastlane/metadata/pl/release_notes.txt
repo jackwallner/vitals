@@ -1,3 +1,5 @@
-Czytelniejszy ekran subskrypcji: każdy plan pokazuje teraz kwotę miesięczną, a plan roczny podaje wysokość oszczędności.
+Makroskładniki już są. Białko, węglowodany i tłuszcze stoją obok Twoich kalorii, odczytane z aplikacji, która i tak zapisuje jedzenie do Apple Health. Nic nie wpisujesz dwa razy.
 
-Do tego drobne poprawki.
+Śledź wszystkie trzy albo tylko ten jeden, który liczysz, ustaw opcjonalne cele w gramach i sprawdzaj średnie, trendy i dni szczytowe w Historii, w eksporcie CSV i w raportach PDF. Makro jest częścią Vitals+.
+
+Ustawienia są teraz podzielone na Spalanie kalorii i Spożycie kalorii, z prostym wyjaśnieniem przy każdym przełączniku.

@@ -20,6 +20,12 @@ DASHBOARD (ମାଗଣା)
 - Pacing indicator: ଏହି ସମୟରେ usual day ଠାରୁ ahead କି behind?
 - Pull to refresh. Gear icon tap for settings.
 
+ମାକ୍ରୋ (VITALS+)
+- ପ୍ରୋଟିନ୍, କାର୍ବ ଏବଂ ଫ୍ୟାଟ୍ ଆପଣଙ୍କ କ୍ୟାଲୋରୀ ପାଖରେ, ଖାଦ୍ୟକୁ ପୂର୍ବରୁ Apple Health କୁ ଲେଖୁଥିବା ଆପ୍ ରୁ ପଢ଼ାଯାଏ।
+- କିଛି ବି ଦୁଇଥର ଲେଖିବାକୁ ପଡ଼ିବ ନାହିଁ। Health ରେ ଯାହା ଅଛି, ଏଠାରେ ମଧ୍ୟ ଅଛି।
+- ତିନୋଟିଯାକ ଟ୍ରାକ୍ କରନ୍ତୁ, କିମ୍ବା କେବଳ ସେଇ ମାକ୍ରୋ ଯାହା ଆପଣ ପ୍ରକୃତରେ ଗଣନ୍ତି।
+- ବୈକଳ୍ପିକ ଗ୍ରାମ ଲକ୍ଷ୍ୟ, ସହିତ ହାରାହାରି, ଚାର୍ଟ, CSV କଲମ ଓ PDF ରିପୋର୍ଟ।
+
 HISTORY (ମାଗଣା)
 - 7 / 30 / 90 / 365‑day views, custom date range।
 - Trend arrows, peak days, bar charts।
@@ -32,6 +38,7 @@ HISTORY (ମାଗଣା)
 
 Vitals+ (optional)
 ଛୋଟ monthly, yearly, lifetime upgrade unlock:
+- ମାକ୍ରୋ: Apple Health ରେ ଲିପିବଦ୍ଧ ଖାଦ୍ୟରୁ ପ୍ରୋଟିନ୍, କାର୍ବ ଏବଂ ଫ୍ୟାଟ୍
 - Active vs resting calorie breakdown
 - Net Deficit: Apple Health food energy ବସାଇ burned calories
 - Share-ready Monthly Summary PDF

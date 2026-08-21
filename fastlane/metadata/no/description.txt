@@ -20,6 +20,12 @@ DASHBOARD (GRATIS)
 - Fartindikator: ligger du foran eller bak en vanlig dag på dette tidspunktet?
 - Dra for å oppdatere. Trykk på tannhjulet for innstillinger.
 
+MAKROER (VITALS+)
+- Protein, karbohydrater og fett ved siden av kaloriene dine, lest fra appen som allerede skriver maten din til Apple Health.
+- Ingenting å føre to ganger. Står det i Health, står det her.
+- Følg alle tre, eller bare makroen du faktisk teller.
+- Valgfrie grammål pluss makrosnitt, grafer, CSV-kolonner og PDF-rapporter.
+
 HISTORIKK (GRATIS)
 - 7 / 30 / 90 / 365-dagersvisninger og vilkårlig datoperiode.
 - Trendpiler, toppdager og rene stolpediagrammer.
@@ -32,6 +38,7 @@ MÅL SOM FUNGERER FOR DEG
 
 Vitals+ (VALGFRI)
 Et lite månedlig, årlig eller livstidskjøp låser opp:
+- Makroer: protein, karbohydrater og fett fra maten du allerede logger i Apple Health
 - Fordeling aktive vs. hvilekalorier
 - Netto underskudd: kalorier forbrent minus matenergi fra Apple Health
 - Månedlige sammendrags-PDF-er klare til deling

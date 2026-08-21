@@ -1,3 +1,5 @@
-Ecran de abonare mai clar: fiecare plan arată acum costul lunar, iar planul anual precizează cât economisești.
+Au sosit macro. Proteinele, carbohidrații și grăsimile stau acum lângă caloriile tale, citite din aplicația care oricum îți scrie mâncarea în Apple Health. Nimic de introdus de două ori.
 
-În plus, mici corecturi.
+Urmărește-le pe toate trei sau doar pe cea pe care o numeri, setează obiective opționale în grame și vezi mediile, tendințele și zilele de vârf în Istoric, în exportul CSV și în rapoartele PDF. Macro fac parte din Vitals+.
+
+Setările sunt acum grupate în Calorii arse și Calorii consumate, cu o explicație clară la fiecare comutator.

@@ -1,3 +1,5 @@
-Pregledniji zaslon nadogradnje: svaki plan sada prikazuje mjesečni iznos, a godišnji plan navodi koliko štedite.
+Stigli su makronutrijenti. Proteini, ugljikohidrati i masti sada stoje uz tvoje kalorije, očitani iz aplikacije koja tvoju hranu ionako zapisuje u Apple Health. Ništa se ne unosi dvaput.
 
-Uz to, sitni popravci.
+Prati sva tri ili samo onaj koji brojiš, postavi neobavezne ciljeve u gramima i pogledaj prosjeke, trendove i najjače dane u Povijesti, u CSV izvozu i u PDF izvješćima. Makronutrijenti su dio Vitals+.
+
+Postavke su sada podijeljene na Potrošnju kalorija i Unos kalorija, uz jasno objašnjenje uz svaki prekidač.

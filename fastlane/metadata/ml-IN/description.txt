@@ -20,6 +20,12 @@ DASHBOARD (സൗജന്യം)
 - Pacing indicator: ഈ സമയത്ത് സാധാരണ ദിവസത്തേക്കാൾ മുന്നോ പിന്നോ?
 - Refresh: താഴേക്ക് pull. Settings: gear icon tap.
 
+മാക്രോ (VITALS+)
+- പ്രോട്ടീൻ, കാർബ്സ്, ഫാറ്റ് നിങ്ങളുടെ കലോറിക്ക് അരികിൽ, ഭക്ഷണം നേരത്തേ Apple Health-ലേക്ക് എഴുതുന്ന ആപ്പിൽ നിന്ന് വായിക്കുന്നു.
+- ഒന്നും രണ്ടു തവണ ചേർക്കേണ്ട. Health-ൽ ഉള്ളത് ഇവിടെയുമുണ്ട്.
+- മൂന്നും ട്രാക്ക് ചെയ്യുക, അല്ലെങ്കിൽ നിങ്ങൾ ശരിക്കും എണ്ണുന്ന മാക്രോ മാത്രം.
+- ഓപ്ഷണൽ ഗ്രാം ലക്ഷ്യങ്ങൾ, ഒപ്പം ശരാശരി, ചാർട്ട്, CSV കോളം, PDF റിപ്പോർട്ട്.
+
 HISTORY (സൗജന്യം)
 - 7 / 30 / 90 / 365‑ദിവസ views, custom date range.
 - Trend arrows, peak days, bar charts.
@@ -32,6 +38,7 @@ HISTORY (സൗജന്യം)
 
 Vitals+ (optional)
 ചെറിയ monthly, yearly, lifetime upgrade unlock:
+- മാക്രോ: Apple Health-ൽ രേഖപ്പെടുത്തിയ ഭക്ഷണത്തിൽ നിന്ന് പ്രോട്ടീൻ, കാർബ്സ്, ഫാറ്റ്
 - Active vs resting calorie breakdown
 - Net Deficit: Apple Health food energy കഴിച്ച് burned calories
 - Share‑ready Monthly Summary PDF

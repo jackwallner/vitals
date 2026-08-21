@@ -1,3 +1,5 @@
-Màn hình nâng cấp rõ ràng hơn: mỗi gói giờ hiển thị mức tương đương mỗi tháng, và gói năm nêu rõ mức tiết kiệm.
+Macro đã có mặt. Đạm, tinh bột và chất béo giờ nằm ngay cạnh lượng calo của bạn, được đọc từ chính ứng dụng vẫn ghi bữa ăn của bạn vào Apple Health. Không phải nhập lại lần nữa.
 
-Cùng vài chỉnh sửa nhỏ.
+Theo dõi cả ba hoặc chỉ một chỉ số bạn thật sự đếm, đặt mục tiêu gam tùy chọn, và xem trung bình, xu hướng cùng ngày cao nhất trong Lịch sử, bản xuất CSV và báo cáo PDF. Macro thuộc Vitals+.
+
+Cài đặt nay được chia thành Calo đốt và Calo nạp, kèm giải thích dễ hiểu ở từng công tắc.

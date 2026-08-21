@@ -1,3 +1,5 @@
-Skrin naik taraf lebih jelas: setiap pelan kini menunjukkan kos sebulan, dan pelan tahunan menyatakan jumlah penjimatan.
+Makro kini ada. Protein, karbohidrat dan lemak kini berada di sebelah kalori anda, dibaca daripada aplikasi yang memang sudah merekod makanan anda ke Apple Health. Tiada apa perlu dimasukkan dua kali.
 
-Selain itu, pembetulan kecil.
+Jejaki ketiga-tiganya atau hanya satu yang anda kira, tetapkan sasaran gram pilihan, dan lihat purata, arah aliran serta hari puncak dalam Sejarah, eksport CSV dan laporan PDF anda. Makro ialah sebahagian daripada Vitals+.
+
+Tetapan kini dikumpulkan kepada Pembakaran Kalori dan Pengambilan Kalori, dengan penjelasan mudah pada setiap suis.

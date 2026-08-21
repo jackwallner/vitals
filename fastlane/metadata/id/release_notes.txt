@@ -1,3 +1,5 @@
-Layar peningkatan lebih jelas: setiap paket kini menampilkan biaya per bulan, dan paket tahunan menyebutkan berapa yang Anda hemat.
+Makro sudah hadir. Protein, karbohidrat, dan lemak kini berdampingan dengan kalorimu, dibaca dari aplikasi yang memang sudah mencatat makananmu ke Apple Health. Tidak ada yang perlu diisi dua kali.
 
-Plus perbaikan kecil.
+Lacak ketiganya atau hanya satu yang kamu hitung, tetapkan target gram opsional, dan lihat rata-rata, tren, serta hari puncak di Riwayat, ekspor CSV, dan laporan PDF-mu. Makro adalah bagian dari Vitals+.
+
+Pengaturan kini dikelompokkan menjadi Pembakaran Kalori dan Asupan Kalori, dengan penjelasan sederhana di setiap sakelar.

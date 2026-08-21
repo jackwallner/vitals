@@ -4,21 +4,27 @@ Si vous avez déjà souhaité que votre cadran Apple Watch affiche simplement vo
 
 SUR VOTRE APPLE WATCH (GRATUIT)
 - Complications de calories totales brûlées pour tous les styles de cadrans : circulaire, rectangulaire, en ligne et d’angle.
-- Complication de nombre de pas en direct également.
+- Complication de nombre de pas en direct.
 - L’app Watch affiche la journée en un coup d’œil plus les tendances sur 30 jours.
 - Les objectifs définis sur iPhone se synchronisent directement avec la montre.
 
 SUR L’ÉCRAN D’ACCUEIL ET L’ÉCRAN VERROUILLÉ (GRATUIT)
 - Widgets d’écran d’accueil en petits et moyens formats.
 - Widgets d’écran verrouillé en dispositions circulaire et rectangulaire.
-- Les widgets respectent les mesures que vous avez activées et les objectifs que vous avez définis.
+- Les widgets suivent les mesures et objectifs que vous avez définis.
 - Totaux quotidiens complets visibles sans ouvrir l’app.
 
 TABLEAU DE BORD (GRATUIT)
 - Total quotidien de calories brûlées sur un seul anneau épuré.
 - Nombre de pas quotidien avec barre de progression et objectif.
-- Indicateur de rythme : en avance ou en retard par rapport à votre journée habituelle à cette heure.
-- Tirez pour actualiser. Touchez la roue pour les réglages.
+- Indicateur de rythme : en avance ou en retard sur votre journée habituelle ?
+- Tirez pour actualiser.
+
+MACROS (VITALS+)
+- Protéines, glucides et lipides à côté de vos calories, lus depuis l'app qui enregistre déjà vos repas dans Apple Health.
+- Rien à saisir deux fois. Ce qui est dans Health est ici.
+- Suivez les trois, ou seulement le macro que vous comptez.
+- Objectifs en grammes facultatifs, moyennes, graphiques, colonnes CSV et rapports PDF.
 
 HISTORIQUE (GRATUIT)
 - Vues 7 / 30 / 90 / 365 jours et plage de dates personnalisée.
@@ -28,10 +34,11 @@ HISTORIQUE (GRATUIT)
 DES OBJECTIFS QUI VOUS CONVIENNENT
 - Objectifs quotidiens facultatifs de calories et de pas.
 - Ou ignorez les objectifs et utilisez l’app comme un simple compteur — à vous de choisir.
-- Comparaison de rythme : même jour de semaine ou tous les jours, période de référence configurable (14 / 30 / 90 jours / 1 an).
+- Comparaison de rythme : même jour de semaine ou tous les jours, période configurable (14 / 30 / 90 jours / 1 an).
 
 Vitals+ (OPTIONNEL)
 Un petit forfait mensuel, annuel ou à vie débloque :
+- Macros : protéines, glucides et lipides depuis Apple Health
 - Détail calories actives vs au repos
 - Déficit net : calories brûlées moins énergie alimentaire provenant d’Apple Health
 - Résumés mensuels en PDF prêts à partager

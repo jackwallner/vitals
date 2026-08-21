@@ -1,3 +1,5 @@
-Ecrã de subscrição mais claro: cada plano mostra agora quanto fica por mês e o plano anual indica quanto poupa.
+Os macros chegaram. Proteínas, hidratos de carbono e gorduras aparecem ao lado das suas calorias, lidos da app que já regista a sua comida no Apple Health. Nada para introduzir duas vezes.
 
-Além de pequenas correções.
+Siga os três ou apenas o que conta para si, defina objetivos em gramas opcionais e veja médias, tendências e dias de pico no Histórico, na exportação CSV e nos seus relatórios PDF. Os macros fazem parte do Vitals+.
+
+As definições estão agora agrupadas em Calorias queimadas e Calorias consumidas, com uma explicação clara em cada opção.

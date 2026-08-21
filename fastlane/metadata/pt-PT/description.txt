@@ -20,6 +20,12 @@ O PAINEL (GRÁTIS)
 - Indicador de ritmo: está adiantado ou atrasado em relação ao seu dia habitual a esta hora?
 - Puxe para atualizar. Toque na roda dentada para definições.
 
+MACROS (VITALS+)
+- Proteínas, hidratos de carbono e gorduras ao lado das suas calorias, lidos da app que já regista a sua comida no Apple Health.
+- Nada para introduzir duas vezes. O que está no Health está aqui.
+- Siga os três, ou apenas o macro que conta para si.
+- Objetivos em gramas opcionais, médias, gráficos, colunas CSV e relatórios PDF.
+
 HISTÓRICO (GRÁTIS)
 - Vistas de 7 / 30 / 90 / 365 dias e qualquer intervalo de datas personalizado.
 - Setas de tendência, dias de pico e gráficos de barras limpos.
@@ -32,6 +38,7 @@ OBJETIVOS QUE FUNCIONAM CONSIGO
 
 Vitals+ (OPCIONAL)
 Um pequeno upgrade mensal, anual ou vitalício desbloqueia:
+- Macros: proteínas, hidratos de carbono e gorduras do Apple Health
 - Separação entre calorias ativas e em repouso
 - Défice líquido: calorias queimadas menos energia dos alimentos do Apple Health
 - PDFs de resumo mensal prontos a partilhar

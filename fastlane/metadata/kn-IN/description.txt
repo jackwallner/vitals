@@ -20,6 +20,12 @@ HOME SCREEN ಮತ್ತು LOCK SCREEN ನಲ್ಲಿ (ಉಚಿತ)
 - Pacing ಸೂಚಕ: ಈ ಸಮಯದಲ್ಲಿ ನಿಮ್ಮ ಸಾಮಾನ್ಯ ದಿನಕ್ಕಿಂತ ಮುಂದೆ ಅಥವಾ ಹಿಂದೆ?
 - Refresh ಗಾಗಿ ಕೆಳಗೆ ಎಳೆಯಿರಿ. Settings ಗಾಗಿ gear icon ಟ್ಯಾಪ್ ಮಾಡಿ.
 
+ಮ್ಯಾಕ್ರೋ (VITALS+)
+- ಪ್ರೋಟೀನ್, ಕಾರ್ಬ್ಸ್ ಮತ್ತು ಫ್ಯಾಟ್ ನಿಮ್ಮ ಕ್ಯಾಲೊರಿಗಳ ಪಕ್ಕದಲ್ಲಿ, ಆಹಾರವನ್ನು ಈಗಾಗಲೇ Apple Health ಗೆ ಬರೆಯುವ ಆ್ಯಪ್‌ನಿಂದ ಓದಲಾಗುತ್ತದೆ.
+- ಏನನ್ನೂ ಎರಡು ಬಾರಿ ನಮೂದಿಸಬೇಕಿಲ್ಲ. Health ನಲ್ಲಿ ಇರುವುದು ಇಲ್ಲಿಯೂ ಇದೆ.
+- ಮೂರನ್ನೂ ಟ್ರ್ಯಾಕ್ ಮಾಡಿ, ಅಥವಾ ನೀವು ನಿಜವಾಗಿ ಎಣಿಸುವ ಮ್ಯಾಕ್ರೋವನ್ನಷ್ಟೇ.
+- ಐಚ್ಛಿಕ ಗ್ರಾಂ ಗುರಿಗಳು, ಜೊತೆಗೆ ಸರಾಸರಿ, ಚಾರ್ಟ್, CSV ಕಾಲಮ್ ಮತ್ತು PDF ವರದಿ.
+
 HISTORY (ಉಚಿತ)
 - 7 / 30 / 90 / 365‑ದಿನದ view ಗಳು ಮತ್ತು ಯಾವುದೇ custom date range.
 - Trend arrows, peak days ಮತ್ತು ಸ್ವಚ್ಛ bar charts.
@@ -32,6 +38,7 @@ HISTORY (ಉಚಿತ)
 
 Vitals+ (ಐಚ್ಛಿಕ)
 ಸಣ್ಣ monthly, yearly ಅಥವಾ lifetime upgrade unlock ಮಾಡುತ್ತದೆ:
+- ಮ್ಯಾಕ್ರೋ: Apple Health ನಲ್ಲಿ ದಾಖಲಾದ ಆಹಾರದಿಂದ ಪ್ರೋಟೀನ್, ಕಾರ್ಬ್ಸ್ ಮತ್ತು ಫ್ಯಾಟ್
 - Active vs resting ಕ್ಯಾಲೊರಿ breakdown
 - Net Deficit: Apple Health ನಿಂದ ತೆಗೆದುಕೊಂಡ ಆಹಾರ energy ನಂತರ ಉಳಿದ ಸುಟ್ಟ ಕ್ಯಾಲೊರಿಗಳು
 - Share ಮಾಡಲು ready Monthly Summary PDF

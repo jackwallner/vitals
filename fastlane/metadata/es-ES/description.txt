@@ -20,6 +20,12 @@ EL PANEL (GRATIS)
 - Indicador de ritmo: ¿vas por delante o por detrás de tu día habitual a esta hora?
 - Desliza hacia abajo para actualizar. Toca el engranaje para los ajustes.
 
+MACROS (VITALS+)
+- Proteínas, carbohidratos y grasas junto a tus calorías, leídos de la app que ya registra tu comida en Apple Health.
+- Nada que apuntar dos veces. Lo que está en Health, está aquí.
+- Sigue los tres, o solo el macro que de verdad cuentas.
+- Objetivos en gramos opcionales, medias, gráficos, columnas CSV e informes PDF.
+
 HISTORIAL (GRATIS)
 - Vistas de 7 / 30 / 90 / 365 días y cualquier intervalo de fechas personalizado.
 - Flechas de tendencia, días pico y gráficos de barras claros.
@@ -32,6 +38,7 @@ OBJETIVOS ADAPTADOS A TI
 
 Vitals+ (OPCIONAL)
 Una pequeña mejora mensual, anual o de por vida desbloquea:
+- Macros: proteínas, carbohidratos y grasas desde Apple Health
 - Desglose de calorías activas y en reposo
 - Déficit neto: calorías quemadas menos energía de alimentos de Apple Health
 - Resúmenes mensuales en PDF listos para compartir

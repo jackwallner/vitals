@@ -1,3 +1,5 @@
-Přehlednější obrazovka předplatného: u každého tarifu je nyní měsíční ekvivalent a roční tarif uvádí, kolik ušetříte.
+Makra jsou tady. Bílkoviny, sacharidy a tuky stojí vedle tvých kalorií, načtené z aplikace, která tvé jídlo stejně zapisuje do Apple Health. Nic nezadáváš dvakrát.
 
-Plus drobné opravy.
+Sleduj všechna tři nebo jen to jedno, které počítáš, nastav volitelné cíle v gramech a prohlížej průměry, trendy a nejsilnější dny v Historii, v exportu CSV i v PDF přehledech. Makra jsou součástí Vitals+.
+
+Nastavení je nově rozdělené na Spalování kalorií a Příjem kalorií, s jasným vysvětlením u každého přepínače.

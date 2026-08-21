@@ -20,6 +20,12 @@ DASHBOARD (ఉచితం)
 - Pacing indicator: ఈ సమయంలో usual day కంటే ahead లేదా behind?
 - Pull to refresh. Gear icon tap for settings.
 
+మాక్రో (VITALS+)
+- ప్రోటీన్, కార్బ్స్, ఫ్యాట్ మీ కేలరీల పక్కన; ఆహారాన్ని ఇప్పటికే Apple Health కు రాసే యాప్ నుంచి చదవబడతాయి.
+- దేన్నీ రెండుసార్లు నమోదు చేయనక్కర్లేదు. Health లో ఉన్నది ఇక్కడా ఉంటుంది.
+- మూడింటినీ ట్రాక్ చేయండి, లేదా మీరు నిజంగా లెక్కించే మాక్రోను మాత్రమే.
+- ఐచ్ఛిక గ్రాము లక్ష్యాలు, సగటులు, చార్టులు, CSV కాలమ్‌లు, PDF నివేదికలు.
+
 HISTORY (ఉచితం)
 - 7 / 30 / 90 / 365‑day views, custom date range.
 - Trend arrows, peak days, bar charts.
@@ -32,6 +38,7 @@ HISTORY (ఉచితం)
 
 Vitals+ (optional)
 చిన్న monthly, yearly, lifetime upgrade unlock:
+- మాక్రో: Apple Health లో నమోదైన ఆహారం నుంచి ప్రోటీన్, కార్బ్స్, ఫ్యాట్
 - Active vs resting calorie breakdown
 - Net Deficit: Apple Health food energy తగ్గించిన burned calories
 - Share-ready Monthly Summary PDF

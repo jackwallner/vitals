@@ -1,3 +1,5 @@
-Schermata di abbonamento più chiara: ogni piano mostra ora il costo mensile e il piano annuale indica quanto fa risparmiare.
+Arrivano i macro. Proteine, carboidrati e grassi compaiono accanto alle tue calorie, letti dall'app che registra già i tuoi pasti in Apple Health. Niente da inserire due volte.
 
-In più, piccole correzioni.
+Seguili tutti e tre o solo quello che conti davvero, imposta obiettivi in grammi facoltativi e consulta medie, tendenze e giorni di picco nella Cronologia, nell'esportazione CSV e nei tuoi report PDF. I macro fanno parte di Vitals+.
+
+Le impostazioni sono ora raggruppate in Calorie bruciate e Calorie assunte, con una spiegazione chiara per ogni opzione.

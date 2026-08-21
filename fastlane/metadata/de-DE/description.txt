@@ -20,6 +20,12 @@ DAS DASHBOARD (KOSTENLOS)
 - Tempomesser: Liegst du vor oder hinter einem üblichen Tag zu dieser Zeit?
 - Zum Aktualisieren nach unten ziehen. Zahnradsymbol für Einstellungen tippen.
 
+MAKROS (VITALS+)
+- Protein, Kohlenhydrate und Fett neben deinen Kalorien, gelesen aus der App, die dein Essen ohnehin in Apple Health schreibt.
+- Nichts doppelt eintragen. Was in Health steht, steht hier.
+- Verfolge alle drei oder nur den Makro, den du wirklich zählst.
+- Optionale Gramm-Ziele, dazu Makro-Durchschnitte, Diagramme, CSV-Spalten und PDF-Berichte.
+
 VERLAUF (KOSTENLOS)
 - Ansichten für 7 / 30 / 90 / 365 Tage und beliebige benutzerdefinierte Zeiträume.
 - Trendpfeile, Spitzentage und klare Balkendiagramme.
@@ -32,6 +38,7 @@ ZIELE, DIE ZU DIR PASSEN
 
 Vitals+ (OPTIONAL)
 Ein kleines monatliches, jährliches oder lebenslanges Upgrade schaltet frei:
+- Makros: Protein, Kohlenhydrate und Fett aus dem Essen, das du ohnehin in Apple Health protokollierst
 - Aufschlüsselung in aktive vs. Ruhekalorien
 - Nettodefizit: verbrannte Kalorien minus Nahrungsenergie aus Apple Health
 - Monatliche Zusammenfassungen als PDFs, bereit zum Teilen

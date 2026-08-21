@@ -1,3 +1,5 @@
-Tydeligere oppgraderingsside: hver plan viser nå hva den tilsvarer per måned, og årsplanen viser hvor mye du sparer.
+Makroer er her. Protein, karbohydrater og fett står nå ved siden av kaloriene dine, lest fra appen som allerede skriver maten din til Apple Health. Ingenting å føre to ganger.
 
-I tillegg små rettelser.
+Følg alle tre eller bare den ene du teller, sett valgfrie grammål, og se makrosnitt, trender og toppdager i Historikk, i CSV-eksporten og i PDF-rapportene dine. Makroer er en del av Vitals+.
+
+Innstillinger er nå delt i Kaloriforbrenning og Kaloriinntak, med en tydelig forklaring ved hver bryter.
