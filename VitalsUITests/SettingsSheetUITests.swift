@@ -18,8 +18,10 @@ final class SettingsSheetUITests: XCTestCase {
             "Net Deficit", "Fasting Mode", "Show Macros",
             "Protein", "Carbs", "Fat",
             "Calorie Split", "Macro Goals",
-            // Macro Goals on means a gram field per visible macro.
-            "Protein goal", "Carbs goal", "Fat goal"
+            // Macro Goals on means a switch plus a gram field per visible
+            // macro, each macro deciding for itself whether it has a target.
+            "Protein Goal", "Carbs Goal", "Fat Goal",
+            "Daily protein", "Daily carbs", "Daily fat"
         ]
         let found = walk(app, prefix: "settings-pro", labels: expected)
 
@@ -36,7 +38,7 @@ final class SettingsSheetUITests: XCTestCase {
         let parents = ["Net Deficit", "Show Macros"]
         // The regression this build fixes: these used to render greyed out for
         // every user with the parents off, which is most of them.
-        let children = ["Fasting Mode", "Calorie Split", "Macro Goals", "Protein goal"]
+        let children = ["Fasting Mode", "Calorie Split", "Macro Goals", "Protein Goal"]
         let found = walk(app, prefix: "settings-free", labels: parents + children)
 
         for label in parents {

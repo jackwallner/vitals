@@ -145,6 +145,7 @@
 		DC24AE05CDB72AFF52FE97A2 /* GoalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6804EF421C3725E70674D40 /* GoalSettings.swift */; };
 		DC70232ABC8F8424A8F1C444 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C7498718A96BB0C7A0B880 /* App.swift */; };
 		DFEC7CED445526DD11F88757 /* MacroTotals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E59FD786F13C21C0F91701C /* MacroTotals.swift */; };
+		E05F8EF1DEF21E25F3E7D9F6 /* MacroGoalSelectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EDD6A929AC5CB3DFDD1844 /* MacroGoalSelectionTests.swift */; };
 		E1550A6559100C2DEE281115 /* SettingsSheetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FB7AAE4A4403268B8E315F /* SettingsSheetUITests.swift */; };
 		E423A6BC1D2F4FB0E197829B /* MilestoneCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604A7C1098FB8101FE9A3365 /* MilestoneCalculator.swift */; };
 		E48D5DCE8E5EA92DBEA311A3 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
@@ -300,6 +301,7 @@
 		D48CEA73D52946D26CCE86AF /* BodyProfileCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyProfileCalculator.swift; sourceTree = "<group>"; };
 		DBA965A83D5BA425B01A46BC /* WeeklyRecapBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyRecapBuilderTests.swift; sourceTree = "<group>"; };
 		DE8F114B3CE1940662993978 /* VitalsWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VitalsWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2EDD6A929AC5CB3DFDD1844 /* MacroGoalSelectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroGoalSelectionTests.swift; sourceTree = "<group>"; };
 		EA172BB16DF599334E29D1F6 /* WatchComplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchComplication.swift; sourceTree = "<group>"; };
 		EA4AA93605DC7A1B0929C002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		EA75A0BD07845E85F69ED5F7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -441,6 +443,7 @@
 				3AA5743BEFB90AAF6BA7EB81 /* CalorieTrendSummaryTests.swift */,
 				29693CF9343830E2D9DE2029 /* EnergyAveragesCacheReaderTests.swift */,
 				7800BEFF745F92FF35F9DD7D /* EnergyAveragesCalculatorTests.swift */,
+				E2EDD6A929AC5CB3DFDD1844 /* MacroGoalSelectionTests.swift */,
 				BB4287B137F6F3AD1263CD07 /* MacroTotalsTests.swift */,
 				34A3B62274436A07B3C3554E /* MilestoneCalculatorTests.swift */,
 				7896892E56FE0D79E979DEE7 /* ProjectionCalculatorTests.swift */,
@@ -884,6 +887,7 @@
 				D15647977ED29C1C239288F9 /* EnergyAveragesCalculator.swift in Sources */,
 				1052DC50C654497AF753CBA9 /* EnergyAveragesCalculatorTests.swift in Sources */,
 				C0ED7A3AC0364B181E667DC1 /* HealthRecord.swift in Sources */,
+				E05F8EF1DEF21E25F3E7D9F6 /* MacroGoalSelectionTests.swift in Sources */,
 				602FAE5FA1371FA6A1510FB9 /* MacroTotals.swift in Sources */,
 				325DBD71E731E9F9B0ECB322 /* MacroTotalsTests.swift in Sources */,
 				E423A6BC1D2F4FB0E197829B /* MilestoneCalculator.swift in Sources */,
@@ -1064,7 +1068,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 158;
+				CURRENT_PROJECT_VERSION = 159;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1209,7 +1213,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 158;
+				CURRENT_PROJECT_VERSION = 159;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

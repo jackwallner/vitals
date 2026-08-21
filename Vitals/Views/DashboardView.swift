@@ -1132,25 +1132,22 @@ struct DashboardView: View {
         } else if macros.hasData(in: goals.visibleMacroSet) {
             // Two presentations for two different jobs, the same split the app
             // already makes for calories: with a goal you get a progress bar,
-            // without one you get the number. Goal-less macros are a reference
-            // readout, so they use the same pill row as TDEE / BMR.
-            if goals.macroGoalsEnabled {
-                VStack(spacing: 10) {
-                    ForEach(goals.visibleMacros) { kind in
-                        MacroBarRow(
-                            kind: kind,
-                            grams: macros.grams(kind),
-                            goal: goals.macroGoal(for: kind) ?? kind.defaultGoal
-                        )
-                    }
+            // without one you get the number. The two mix freely, because a
+            // protein target alongside carbs and fat as a reference readout is a
+            // normal way to eat. Goal-less macros use the same pill row as
+            // TDEE / BMR.
+            let barred = goals.goaledMacros
+            let pilled = goals.ungoaledMacros
+            VStack(spacing: 10) {
+                ForEach(barred) { kind in
+                    MacroBarRow(
+                        kind: kind,
+                        grams: macros.grams(kind),
+                        goal: goals.macroGoal(for: kind) ?? kind.defaultGoal
+                    )
                 }
-            } else {
-                let visible = goals.visibleMacros
-                HStack(spacing: 8) {
-                    ForEach(visible) { kind in
-                        MacroPill(kind: kind, grams: macros.grams(kind), stretch: visible.count > 1)
-                    }
-                    if visible.count == 1 { Spacer(minLength: 0) }
+                if !pilled.isEmpty {
+                    macroPillRow(pilled, centered: barred.isEmpty)
                 }
             }
             macroSplitCaption
@@ -1172,6 +1169,21 @@ struct DashboardView: View {
                 .font(.system(.caption2, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
                 .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    /// The goal-less macros as capsules. Two or three divide the row evenly; a
+    /// lone pill keeps its natural width and is centred when it's the whole card
+    /// (a capsule pinned to the left edge of an otherwise empty row reads as a
+    /// layout bug), or left-aligned under progress bars so it lines up with the
+    /// macro labels above it.
+    private func macroPillRow(_ kinds: [MacroKind], centered: Bool) -> some View {
+        HStack(spacing: 8) {
+            if centered && kinds.count == 1 { Spacer(minLength: 0) }
+            ForEach(kinds) { kind in
+                MacroPill(kind: kind, grams: macros.grams(kind), stretch: kinds.count > 1)
+            }
+            if kinds.count == 1 { Spacer(minLength: 0) }
         }
     }
 
@@ -2041,7 +2053,7 @@ private enum SettingsInfoTopic: Identifiable {
     var detail: String? {
         switch self {
         case .macros:
-            "Show only the ones you track: carbs alone for carb counting, protein alone for training. Macro Goals tracks each against a daily gram target.\n\nIf your calories sync but macros stay empty, your food app is sharing Energy without the Nutrition categories. In MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing."
+            "Show only the ones you track: carbs alone for carb counting, protein alone for training. Macro Goals adds a daily gram target, one macro at a time: hit a protein number while carbs and fat stay a plain readout.\n\nIf your calories sync but macros stay empty, your food app is sharing Energy without the Nutrition categories. In MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing."
         case .calorieSplit:
             "The percentages come from grams the way food labels do it (4 per gram of protein and carbs, 9 for fat), so they won't match the logged figure exactly. Hiding a macro hides its row but keeps its share in the split, so visible percentages may not total 100%."
         case .energyAverages:
@@ -2874,6 +2886,13 @@ private struct SettingsSheet: View {
         )
     }
 
+    private func macroGoalEnabledBinding(_ kind: MacroKind) -> Binding<Bool> {
+        Binding(
+            get: { goals.isMacroGoalEnabled(kind) },
+            set: { goals.setMacroGoalEnabled($0, for: kind) }
+        )
+    }
+
     private func macroGoalBinding(_ kind: MacroKind) -> Binding<String> {
         Binding(
             get: { macroGoalText[kind] ?? String(kind.defaultGoal) },
@@ -2882,7 +2901,7 @@ private struct SettingsSheet: View {
     }
 
     private func macroGoalValid(_ kind: MacroKind) -> Bool {
-        guard goals.macroGoalsEnabled, goals.isMacroVisible(kind) else { return true }
+        guard goals.isMacroGoalEnabled(kind), goals.isMacroVisible(kind) else { return true }
         return Int(macroGoalText[kind] ?? "").map { kind.goalRange.contains($0) } ?? false
     }
 
@@ -3286,22 +3305,36 @@ private struct SettingsSheet: View {
                         }
                     }
                     if store.isPro && goals.showMacros && goals.macroGoalsEnabled {
+                        // Each macro decides for itself whether it has a target:
+                        // a protein number to hit while carbs and fat stay a
+                        // plain readout is a normal way to eat.
                         ForEach(goals.visibleMacros) { kind in
-                            HStack {
-                                Text("\(kind.label) goal")
-                                    .foregroundStyle(Theme.textSecondary)
-                                Spacer()
-                                TextField(String(kind.defaultGoal), text: macroGoalBinding(kind))
-                                    .keyboardType(.numberPad)
-                                    .multilineTextAlignment(.trailing)
-                                    .focused($focusedGoalField, equals: .macro(kind))
-                                Text("g")
-                                    .foregroundStyle(Theme.textTertiary)
-                            }
-                            if !macroGoalValid(kind) {
-                                Text("Enter \(kind.goalRange.lowerBound.formatted(.number))–\(kind.goalRange.upperBound.formatted(.number)) g.")
-                                    .font(.caption)
-                                    .foregroundStyle(.red)
+                            Toggle("\(kind.label) Goal", isOn: macroGoalEnabledBinding(kind))
+                                // The last goal on can't be switched off; Macro
+                                // Goals above is the way to drop all of them.
+                                .disabled(goals.isMacroGoalEnabled(kind) && goals.goaledMacros.count == 1)
+                            if goals.isMacroGoalEnabled(kind) {
+                                HStack {
+                                    // "Daily protein" rather than a second
+                                    // "Protein Goal": the toggle right above
+                                    // already names the setting, and three rows
+                                    // reading "Daily target" would be
+                                    // indistinguishable to VoiceOver.
+                                    Text("Daily \(kind.label.lowercased())")
+                                        .foregroundStyle(Theme.textSecondary)
+                                    Spacer()
+                                    TextField(String(kind.defaultGoal), text: macroGoalBinding(kind))
+                                        .keyboardType(.numberPad)
+                                        .multilineTextAlignment(.trailing)
+                                        .focused($focusedGoalField, equals: .macro(kind))
+                                    Text("g")
+                                        .foregroundStyle(Theme.textTertiary)
+                                }
+                                if !macroGoalValid(kind) {
+                                    Text("Enter \(kind.goalRange.lowerBound.formatted(.number))–\(kind.goalRange.upperBound.formatted(.number)) g.")
+                                        .font(.caption)
+                                        .foregroundStyle(.red)
+                                }
                             }
                         }
                     }
@@ -3504,7 +3537,7 @@ private struct SettingsSheet: View {
                 stepEnabled = goals.stepGoal != nil
                 stepText = goals.stepGoal.map { String($0) } ?? "10000"
                 macroGoalText = Dictionary(
-                    uniqueKeysWithValues: MacroKind.allCases.map { ($0, String(goals.macroGoal(for: $0) ?? $0.defaultGoal)) }
+                    uniqueKeysWithValues: MacroKind.allCases.map { ($0, String(goals.storedMacroGoal(for: $0))) }
                 )
                 Task { await store.updateCustomerProductStatus() }
             }
