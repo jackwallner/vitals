@@ -3155,12 +3155,13 @@ private struct SettingsSheet: View {
                         isOn: showNetCaloriesBinding,
                         topic: .netDeficit
                     )
-                    settingsToggleRow(
-                        "Fasting Mode",
-                        isOn: netDeficitFastingBinding,
-                        topic: .fastingMode,
-                        toggleDisabled: !store.isPro || !goals.showNetCalories
-                    )
+                    if store.isPro && goals.showNetCalories {
+                        settingsToggleRow(
+                            "Fasting Mode",
+                            isOn: netDeficitFastingBinding,
+                            topic: .fastingMode
+                        )
+                    }
                     settingsToggleRow(
                         "Show Macros",
                         isOn: showMacrosBinding,
@@ -3182,15 +3183,16 @@ private struct SettingsSheet: View {
                             // above is the way to hide the card.
                             .disabled(goals.isMacroVisible(kind) && goals.visibleMacroSet.count == 1)
                         }
+                        // Sub-options of Show Macros, so they appear under it
+                        // rather than sitting greyed out above the fold for
+                        // everyone who doesn't track food at all.
+                        Toggle(isOn: macroSplitBinding) {
+                            plusToggleLabel("Calorie Split")
+                        }
+                        Toggle(isOn: macroGoalsBinding) {
+                            plusToggleLabel("Macro Goals")
+                        }
                     }
-                    Toggle(isOn: macroSplitBinding) {
-                        plusToggleLabel("Calorie Split")
-                    }
-                    .disabled(!store.isPro || !goals.showMacros)
-                    Toggle(isOn: macroGoalsBinding) {
-                        plusToggleLabel("Macro Goals")
-                    }
-                    .disabled(!store.isPro || !goals.showMacros)
                     if store.isPro && goals.showMacros && goals.macroGoalsEnabled {
                         ForEach(goals.visibleMacros) { kind in
                             HStack {
@@ -3214,7 +3216,7 @@ private struct SettingsSheet: View {
                 } header: {
                     Text("Calorie Intake")
                 } footer: {
-                    Text("Read from the food you log in Apple Health — Vitals+ extras, off until you turn them on. Calorie Split adds what you logged today and each macro's share of it.")
+                    Text("Read from the food you log in Apple Health. Vitals+ extras, off until you turn them on. Calorie Split adds what you logged today and each macro's share of it.")
                 }
 
 
