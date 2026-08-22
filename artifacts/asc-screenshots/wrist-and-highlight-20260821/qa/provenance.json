@@ -1,0 +1,35 @@
+{
+  "canvas": [
+    1284,
+    2778
+  ],
+  "color_mode": "RGB",
+  "style_source": "/Users/jackwallner/vitals/artifacts/asc-screenshots/total-calories-refresh-20260820/compose_total_calories_asc.py",
+  "frames": {
+    "02-on-your-wrist.png": {
+      "headline": "Keep it on your wrist",
+      "literal_sources": [
+        "raw/watch-app.png",
+        "raw/watch-face-complications.png"
+      ],
+      "proof": "Watch app screen plus the real watch face carrying the calorie and step complications."
+    },
+    "03-calorie-intake": {
+      "headline": "See your calorie intake",
+      "literal_sources": [
+        "raw/calorie-intake.png"
+      ],
+      "treatment": "Net Deficit and Macros cards lifted with a tinted glow and stroke; no pixels of the capture altered inside the cards."
+    }
+  },
+  "raw_sha256": {
+    "calorie-intake.png": "0c98007a850462aff91151c187070102c617e3e2d5cd26039afb129121db9b64",
+    "watch-app.png": "cbaa829f4289828ea9a069d17915f0d7ece7ab3a10c8e91a230c7b396ca155d6",
+    "watch-face-complications.png": "d7262232a6c95b2d7e9412348ac65dd2c5042e08b8783b69e22f4564b320b73a"
+  },
+  "final_sha256": {
+    "02-on-your-wrist.png": "e2ee2d73c652137e4631e181d0e81f09bce79aee48a5aac3b96f2a15a7cdc140",
+    "03-calorie-intake-halo.png": "487e38aebb0b14728a5857d280a305b71583781e0da59e057dc7a47b3cf8be97",
+    "03-calorie-intake-halo-scrim.png": "b111aee966e2028f7ae5b27eff2a5e40978064199b7622369f5b0eed7b6867d7"
+  }
+}

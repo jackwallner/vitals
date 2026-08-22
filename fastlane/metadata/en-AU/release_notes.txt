@@ -1,5 +1,5 @@
 Macros are here. Protein, carbs and fat sit beside your calories, read from whatever app already logs your food to Apple Health. Nothing to enter twice.
 
-Track all three or just the one you count, set optional gram goals, and follow macro averages, trends and peak days in History, CSV export and your PDF reports. Macros are part of Vitals+.
+Track all three or just the one you count, set a gram goal on one macro or all three, and follow macro averages, trends and peak days in History, CSV export and your PDF reports. Macros are part of Vitals+.
 
 Settings is now grouped into Calorie Burn and Calorie Intake, with a plain-English explainer on every switch.
