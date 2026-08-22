@@ -1,1 +1,1 @@
-skridttæller,bmr,komplikation,underskud,hvile,aktiv,takt,faste,gang,bevægelse,healthkit,bmi,kcal
+skridttæller,bmr,komplikation,underskud,hvile,aktiv,faste,gang,bevægelse,healthkit,bmi,kcal,makroer

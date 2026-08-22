@@ -1,1 +1,1 @@
-adımsayar,bmr,komplikasyon,açık,dinlenme,aktif,tempo,oruç,yürüyüş,hareket,healthkit,kcal,bmi,yakılan
+adımsayar,bmr,komplikasyon,açık,dinlenme,aktif,oruç,yürüyüş,healthkit,kcal,bmi,yakılan,protein

@@ -1,1 +1,1 @@
-askelmittari,bmr,komplikaatio,alijäämä,lepo,aktiivinen,tahti,paasto,kävely,liike,kcal,bmi,poltettu
+askelmittari,bmr,komplikaatio,alijäämä,lepo,aktiivinen,paasto,kävely,liike,kcal,bmi,poltettu,makrot

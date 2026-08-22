@@ -1,1 +1,1 @@
-krokoměr,bmr,komplikace,deficit,klid,aktivní,tempo,půst,chůze,pohyb,healthkit,aktivita,bmi,spálené
+krokoměr,bmr,komplikace,deficit,klid,aktivní,půst,chůze,pohyb,healthkit,aktivita,bmi,spálené,makra

@@ -1,1 +1,1 @@
-bmr,complication,resting,active,ring,calculator,deficit,net,energy,steps,metabolic,pacing,bmi,burned
+bmr,complication,resting,active,ring,calculator,deficit,net,energy,steps,metabolic,bmi,burned,macro

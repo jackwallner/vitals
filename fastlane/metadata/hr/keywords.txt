@@ -1,1 +1,1 @@
-pedometar,bmr,komplikacija,deficit,odmor,aktivan,ritam,post,hodanje,pokret,healthkit,bmi,sagorjeno
+pedometar,bmr,komplikacija,deficit,odmor,aktivan,post,pokret,healthkit,bmi,sagorjeno,proteini
