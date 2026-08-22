@@ -2714,6 +2714,12 @@ private struct OnboardingSheet: View {
                         detail: "Burned minus food logged in Apple Health"
                     )
                     TrialSellingPoint(
+                        icon: "chart.pie.fill",
+                        color: Theme.macrosBrand,
+                        title: "Macros",
+                        detail: "Protein, carbs, and fat from the food you log"
+                    )
+                    TrialSellingPoint(
                         icon: "flame.fill",
                         color: Theme.streakPrimary,
                         title: "Streaks & projections",

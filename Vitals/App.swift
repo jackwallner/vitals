@@ -426,6 +426,15 @@ struct MainTabView: View {
             ?? store.products.first
     }
 
+    /// The package the open trial sheet is pitching. `trialOfferPackage` is a
+    /// snapshot taken when the sheet was presented, and a passive nudge can open
+    /// before StoreKit has answered: without the live fallback the sheet framed a
+    /// generic "Go further with Vitals+" pitch, with no trial badge, under a
+    /// button that said "Start 7-day free trial".
+    private var activeTrialOfferPackage: Package? {
+        trialOfferPackage ?? directConversionPackage
+    }
+
     /// Hybrid one-tap purchase applies when a yearly (or any) package is loaded;
     /// otherwise fall back to the full plan picker paywall.
     private var trialOfferIsDirect: Bool {
@@ -977,8 +986,8 @@ struct MainTabView: View {
                 focus: trialOfferFocus,
                 // Only pass a trial label when this Apple ID is still eligible —
                 // otherwise the sheet frames a straight yearly purchase.
-                offerLabel: trialOfferPackage.flatMap { store.eligibleIntroLabel(for: $0) },
-                priceLabel: trialOfferPackage?.vitalsPriceLabel,
+                offerLabel: activeTrialOfferPackage.flatMap { store.eligibleIntroLabel(for: $0) },
+                priceLabel: activeTrialOfferPackage?.vitalsPriceLabel,
                 ctaTitle: store.onboardingTrialCTALabel,
                 disclosureText: store.yearlySheetDisclosureText,
                 directPurchase: trialOfferIsDirect,
@@ -1596,6 +1605,8 @@ struct TrialOfferSheet: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var animateGlow = false
     @State private var shimmerPhase: CGFloat = -1
+    /// Height the sheet gives the pitch, measured by `CenteredScrollContainer`.
+    @State private var sheetContentHeight: CGFloat = 0
 
     /// Headline copy. Trial language only when `offerLabel` is set (eligible).
     private var headline: String {
@@ -1747,15 +1758,24 @@ struct TrialOfferSheet: View {
                                 detail: feature.detail
                             ),
                             highlighted: feature == focus,
-                            compact: focus != nil ? feature != focus : true
+                            // Companions of a focused feature stay title-only so
+                            // the highlighted row keeps the eye. With no focus
+                            // there is nothing to contrast against, and three
+                            // one-word pills waste the space they sit in, so the
+                            // generic pitch shows what each feature actually does.
+                            compact: focus != nil && feature != focus
                         )
                     }
                 }
 
-                Spacer(minLength: 0)
             }
             .padding(.horizontal, 24)
-            .padding(.top, 6)
+            .padding(.vertical, 6)
+            // Centred in whatever height the detent gives it, scrolling only when
+            // the content is taller than that. The old fixed Spacer pushed the
+            // pitch to the top and left a band of dead white above the button.
+            .frame(minHeight: sheetContentHeight, alignment: .center)
+            .modifier(CenteredScrollContainer(height: $sheetContentHeight))
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 VStack(spacing: 8) {
                     // Error replaces disclosure in the same slot — never stack both
@@ -1994,6 +2014,26 @@ private struct TrialBullet: Identifiable {
     let tint: Color
     let title: String
     let detail: String
+}
+
+/// Wraps content in a scroll view that reports its own height, so the content
+/// can be centred while it fits and scroll once it does not. Sheets with a fixed
+/// detent need both: short pitches should sit centred rather than stranded above
+/// a band of white, and long ones (large Dynamic Type, a focused feature with a
+/// three-line subheadline) must not clip.
+private struct CenteredScrollContainer: ViewModifier {
+    @Binding var height: CGFloat
+
+    func body(content: Content) -> some View {
+        GeometryReader { proxy in
+            ScrollView(showsIndicators: false) {
+                content
+            }
+            .scrollBounceBehavior(.basedOnSize)
+            .onAppear { height = proxy.size.height }
+            .onChange(of: proxy.size.height) { _, new in height = new }
+        }
+    }
 }
 
 private struct TrialBulletRow: View {

@@ -329,12 +329,16 @@ struct PaywallView: View {
                         planCards
                     }
                     .padding(.horizontal, 22)
-                    .padding(.top, displayCloseButton ? 44 : 20)
+                    .padding(.top, displayCloseButton ? 44 : 12)
                     .padding(.bottom, 8)
                 }
                 .scrollBounceBehavior(.basedOnSize)
             } else {
+                // A focused pitch is short: three benefits and the plans. Space
+                // is split above and below so it sits centred, instead of all of
+                // it pooling into one dead band above the button.
                 VStack(spacing: 12) {
+                    Spacer(minLength: 0)
                     header(compact: true)
                     paywallFeatureList
                     planCards
@@ -409,7 +413,21 @@ struct PaywallView: View {
         .padding(.horizontal, 22)
         .padding(.top, 8)
         .padding(.bottom, displayCloseButton ? 10 : 22)
-        .background(Theme.background)
+        .background(alignment: .top) {
+            // A hard edge across the plan list read as a broken card: the third
+            // plan was sliced in half by an opaque bar. The scrim fades the list
+            // out instead, which also says "there is more below".
+            Theme.background
+                .overlay(alignment: .top) {
+                    LinearGradient(
+                        colors: [Theme.background.opacity(0), Theme.background],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .frame(height: 22)
+                    .offset(y: -22)
+                }
+        }
     }
 
     private var legalFooter: some View {
@@ -433,14 +451,17 @@ struct PaywallView: View {
     }
 
     private var paywallFeatureList: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        // Ten benefits and three plans on one screen: the list gives up a little
+        // rhythm so the cheapest and the one-off plan are visible without a
+        // scroll, rather than the third card being a sliver under the button.
+        VStack(alignment: .leading, spacing: 6) {
             ForEach(paywallBullets, id: \.self) { feature in
                 let highlighted = feature == focus
                 HStack(alignment: .top, spacing: 12) {
                     Image(systemName: feature.icon)
                         .font(.system(size: 15, weight: .semibold))
                         .foregroundStyle(feature.tint)
-                        .frame(width: 24)
+                        .frame(width: 22)
                     Text(feature.featureListTitle)
                         .font(.system(.subheadline, design: .rounded, weight: highlighted ? .semibold : .regular))
                         .foregroundStyle(Theme.textPrimary)
@@ -462,14 +483,14 @@ struct PaywallView: View {
     }
 
     private func header(compact: Bool) -> some View {
-        VStack(spacing: compact ? 6 : 10) {
+        VStack(spacing: compact ? 4 : 10) {
             ZStack {
                 Circle()
                     .fill(Theme.caloriesGradient)
-                    .frame(width: compact ? 52 : 64, height: compact ? 52 : 64)
+                    .frame(width: compact ? 46 : 64, height: compact ? 46 : 64)
                     .shadow(color: Theme.caloriesPrimary.opacity(0.35), radius: 12, x: 0, y: 4)
                 Image(systemName: "sparkles")
-                    .font(.system(size: compact ? 22 : 26, weight: .bold))
+                    .font(.system(size: compact ? 20 : 26, weight: .bold))
                     .foregroundStyle(.white)
             }
             Text(focus?.intentHeadline ?? "Vitals+")
