@@ -135,13 +135,14 @@ struct HistoryView: View {
     @State private var inflightLoads: Int = 0
     @State private var isCalculatingTrends = false
     @State private var animateContent = false
-    @State private var showExportSheet = false
     @State private var showExportWarning = false
     @State private var showExportError = false
     @State private var csvFile: CSVFile?
     @State private var pdfFile: PDFFile?
     @State private var pdfShareText = SummaryReportShareText.appStoreURL
-    @State private var showPDFShareSheet = false
+    /// URL of the temp export currently being shared, kept so the sheet's
+    /// `onDismiss` can delete it after the item binding has been cleared.
+    @State private var tempFileToDelete: URL?
     @State private var isGeneratingPDF = false
     @State private var pdfErrorMessage: String?
     @State private var selectedCalorieDate: Date?
@@ -771,30 +772,28 @@ struct HistoryView: View {
         } message: {
             Text("This export contains sensitive health data including your daily calorie and step counts. Only share it with people and services you trust.")
         }
-        .sheet(isPresented: $showExportSheet, onDismiss: {
-            if let csvFile {
-                try? FileManager.default.removeItem(at: csvFile.url)
-                self.csvFile = nil
+        .sheet(item: $csvFile, onDismiss: {
+            // The item binding is already nil here, so the URL to clean up is
+            // held separately.
+            if let url = tempFileToDelete {
+                try? FileManager.default.removeItem(at: url)
+                tempFileToDelete = nil
             }
-        }) {
-            if let csvFile {
-                ShareSheet(items: [csvFile.url])
-            }
+        }) { file in
+            ShareSheet(items: [file.url])
         }
         .alert("Export Failed", isPresented: $showExportError) {
             Button("OK", role: .cancel) {}
         } message: {
             Text("Could not save the export file. Please try again.")
         }
-        .sheet(isPresented: $showPDFShareSheet, onDismiss: {
-            if let pdfFile {
-                try? FileManager.default.removeItem(at: pdfFile.url)
-                self.pdfFile = nil
+        .sheet(item: $pdfFile, onDismiss: {
+            if let url = tempFileToDelete {
+                try? FileManager.default.removeItem(at: url)
+                tempFileToDelete = nil
             }
-        }) {
-            if let pdfFile {
-                PDFPreviewSheet(title: reportTitle, url: pdfFile.url, shareText: pdfShareText)
-            }
+        }) { file in
+            PDFPreviewSheet(title: reportTitle, url: file.url, shareText: pdfShareText)
         }
         .alert("Report Failed", isPresented: Binding(get: { pdfErrorMessage != nil }, set: { if !$0 { pdfErrorMessage = nil } })) {
             Button("OK", role: .cancel) {}
@@ -904,9 +903,9 @@ struct HistoryView: View {
 
         do {
             let url = try SummaryReportPDF.render(report)
-            pdfFile = PDFFile(url: url)
             pdfShareText = SummaryReportShareText.make(report: report)
-            showPDFShareSheet = true
+            tempFileToDelete = url
+            pdfFile = PDFFile(url: url)
         } catch {
             pdfErrorMessage = "Could not generate the PDF report. Please try again."
         }
@@ -979,11 +978,11 @@ struct HistoryView: View {
                 macroKinds: goals.visibleMacros
             )
             let url = try SummaryReportPDF.render(report)
-            pdfFile = PDFFile(url: url)
             pdfShareText = SummaryReportShareText.make(report: report)
             HistoryPrefs.saveGeneratedMonthlySummaryMonth()
             generatedMonthlySummaryMonth = currentMonthKey
-            showPDFShareSheet = true
+            tempFileToDelete = url
+            pdfFile = PDFFile(url: url)
         } catch {
             pdfErrorMessage = "Could not generate the PDF report. Please try again."
         }
@@ -2047,8 +2046,8 @@ struct HistoryView: View {
         let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("vitals_export_\(timestamp).csv")
         do {
             try csv.write(to: tempURL, atomically: true, encoding: .utf8)
+            tempFileToDelete = tempURL
             csvFile = CSVFile(url: tempURL)
-            showExportSheet = true
         } catch {
             historyLogger.error("CSV export failed: \(String(describing: error), privacy: .public)")
             showExportError = true
@@ -2094,11 +2093,17 @@ struct ChartSelection {
 
 // MARK: - CSV File
 
-struct CSVFile {
+/// `Identifiable` so a share sheet can be driven by the file itself. Presenting
+/// one with a separate `isPresented` bool let SwiftUI build the sheet body
+/// before it had seen the file, and `if let` over a not-yet-visible payload
+/// renders an empty sheet — a blank white card with nothing in it.
+struct CSVFile: Identifiable {
+    let id = UUID()
     let url: URL
 }
 
-struct PDFFile {
+struct PDFFile: Identifiable {
+    let id = UUID()
     let url: URL
 }
 

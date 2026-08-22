@@ -18,7 +18,7 @@ struct MilestoneDay: Sendable {
     }
 }
 
-enum MilestoneEvent: Equatable, Sendable {
+enum MilestoneEvent: Equatable, Sendable, Identifiable {
     /// User has a current goal streak of N consecutive completed days. `n` is
     /// the celebrated milestone value (7, 14, 30, …), not necessarily the
     /// exact current streak — the caller may pick the largest unfired tier the

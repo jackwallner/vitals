@@ -220,15 +220,25 @@ struct PaywallView: View {
     @State private var errorMessage: String?
     @State private var restoreMessage: String?
     @State private var isRestoring = false
+    /// Height the tab gives the pitch, measured by `CenteredScrollContainer`.
+    @State private var fullListHeight: CGFloat = 0
 
     /// Outcome bullets. Intent taps lead with the feature they asked for plus
-    /// two related companions; the Upgrade tab lists every Vitals+ benefit.
+    /// two related companions.
+    ///
+    /// The Upgrade tab used to list all ten benefits, which read as a spec sheet
+    /// and pushed the plans off the first screen. It now leads with the five
+    /// people actually come for; `remainingBenefitsLine` carries the rest in one
+    /// sentence so nothing is hidden.
     private var paywallBullets: [PlusFeature] {
         if let focus { return [focus] + focus.companionFeatures }
-        return [
-            .netDeficit, .macros, .activeResting, .energyAverages, .projections,
-            .streaks, .deepTrends, .customRangesPDF, .weeklyRecap, .bodyProfile
-        ]
+        return [.macros, .netDeficit, .energyAverages, .deepTrends, .customRangesPDF]
+    }
+
+    /// The benefits the shortened list doesn't spell out, as one line.
+    private var remainingBenefitsLine: String? {
+        guard focus == nil else { return nil }
+        return "Plus projections, streaks, weekly recap, active/resting split, and body profile."
     }
 
     private var showsFullBenefitList: Bool { focus == nil }
@@ -312,17 +322,16 @@ struct PaywallView: View {
     private var paywallContent: some View {
         Group {
             if showsFullBenefitList {
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 12) {
-                        header(compact: true)
-                        paywallFeatureList
-                        planCards
-                    }
-                    .padding(.horizontal, 22)
-                    .padding(.top, displayCloseButton ? 44 : 12)
-                    .padding(.bottom, 8)
+                VStack(spacing: 12) {
+                    header(compact: true)
+                    paywallFeatureList
+                    planCards
                 }
-                .scrollBounceBehavior(.basedOnSize)
+                .padding(.horizontal, 22)
+                .padding(.top, displayCloseButton ? 44 : 12)
+                .padding(.bottom, 8)
+                .frame(minHeight: fullListHeight, alignment: .center)
+                .modifier(CenteredScrollContainer(height: $fullListHeight))
             } else {
                 // A focused pitch is short: three benefits and the plans. Space
                 // is split above and below so it sits centred, instead of all of
@@ -345,8 +354,12 @@ struct PaywallView: View {
         }
     }
 
-    /// CTA + required 3.1.2 copy. Disclosure/legal sit in a fixed-height slot so the
-    /// button never jumps when the selected plan changes (lifetime vs trial copy).
+    /// CTA + required 3.1.2 copy.
+    ///
+    /// The copy below the button sits in a slot of *fixed* height. It used to be
+    /// a `minHeight`, so picking Lifetime — whose disclosure is two lines rather
+    /// than three — shrank the footer and slid the button down under the user's
+    /// thumb, mid-decision.
     private var pinnedCheckoutFooter: some View {
         VStack(spacing: 6) {
             Button(action: startPurchase) {
@@ -364,6 +377,7 @@ struct PaywallView: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: 50)
                 .background(Theme.caloriesGradient, in: Capsule())
+                .overlay(CTASheen(shape: Capsule()))
             }
             .buttonStyle(.plain)
             .disabled(isPurchasing || selectedPackage == nil)
@@ -398,7 +412,7 @@ struct PaywallView: View {
 
                 legalFooter
             }
-            .frame(minHeight: 68, alignment: .top)
+            .frame(height: 62, alignment: .top)
         }
         .padding(.horizontal, 22)
         .padding(.top, 8)
@@ -420,31 +434,29 @@ struct PaywallView: View {
         }
     }
 
+    /// Restore, Terms and Privacy on one line. Restore had a line to itself,
+    /// which cost a row of the pitch above it to say something almost nobody
+    /// taps; it stays the most prominent of the three.
     private var legalFooter: some View {
-        VStack(spacing: 4) {
+        HStack(spacing: 6) {
             Button(action: startRestore) {
-                Text(isRestoring ? "Restoring…" : "Restore Purchases")
-                    .font(.system(.caption, design: .rounded, weight: .semibold))
+                Text(isRestoring ? "Restoring…" : "Restore")
+                    .font(.system(.caption2, design: .rounded, weight: .semibold))
                     .foregroundStyle(Theme.textSecondary)
             }
             .buttonStyle(.plain)
             .disabled(isRestoring || isPurchasing)
-
-            HStack(spacing: 4) {
-                Link("Terms", destination: PaywallLinks.standardEULA)
-                Text("·")
-                Link("Privacy Policy", destination: PaywallLinks.privacyPolicy)
-            }
-            .font(.system(.caption2, design: .rounded))
-            .foregroundStyle(Theme.textTertiary)
+            Text("·").foregroundStyle(Theme.textTertiary)
+            Link("Terms", destination: PaywallLinks.standardEULA)
+            Text("·").foregroundStyle(Theme.textTertiary)
+            Link("Privacy Policy", destination: PaywallLinks.privacyPolicy)
         }
+        .font(.system(.caption2, design: .rounded))
+        .foregroundStyle(Theme.textTertiary)
     }
 
     private var paywallFeatureList: some View {
-        // Ten benefits and three plans on one screen: the list gives up a little
-        // rhythm so the cheapest and the one-off plan are visible without a
-        // scroll, rather than the third card being a sliver under the button.
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 7) {
             ForEach(paywallBullets, id: \.self) { feature in
                 let highlighted = feature == focus
                 HStack(alignment: .top, spacing: 12) {
@@ -467,6 +479,13 @@ struct PaywallView: View {
                             .fill(feature.tint.opacity(0.1))
                     }
                 }
+            }
+            if let remainingBenefitsLine {
+                Text(remainingBenefitsLine)
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 2)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -499,7 +518,7 @@ struct PaywallView: View {
     }
 
     private var planCards: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 6) {
             ForEach(store.products, id: \.identifier) { package in
                 let isYearly = package.vitalsPackageKind == .yearly
                 PlanCard(
@@ -627,6 +646,14 @@ private struct PlanCard: View {
     var perWeekLabel: String? = nil
     let onTap: () -> Void
 
+    /// The one line worth saying under the plan name: the trial when it applies,
+    /// otherwise the per-week equivalent. nil when neither is known.
+    private var subline: String? {
+        if showsTrialBadge, let trial = package.vitalsIntroOfferLabel { return trial.capitalized }
+        if let perWeekLabel { return "Just \(perWeekLabel)/week" }
+        return nil
+    }
+
     var body: some View {
         Button(action: onTap) {
             HStack(spacing: 14) {
@@ -662,19 +689,15 @@ private struct PlanCard: View {
                                 .background(Theme.caloriesPrimary, in: Capsule())
                         }
                     }
-                    Group {
-                        if showsTrialBadge, let trial = package.vitalsIntroOfferLabel {
-                            Text(trial.capitalized)
-                        } else if let perWeekLabel {
-                            Text("Just \(perWeekLabel)/week")
-                        } else {
-                            Text(" ")
-                        }
+                    // Only rendered when there is something to say. It used to
+                    // reserve a blank line on every card, which is most of the
+                    // dead space between the three of them.
+                    if let subline {
+                        Text(subline)
+                            .font(.system(.caption2, design: .rounded, weight: .semibold))
+                            .foregroundStyle(Theme.stepsPrimary)
+                            .lineLimit(1)
                     }
-                    .font(.system(.caption2, design: .rounded, weight: .semibold))
-                    .foregroundStyle(Theme.stepsPrimary)
-                    .lineLimit(1)
-                    .frame(height: 14, alignment: .leading)
                 }
 
                 Spacer(minLength: 8)
@@ -683,16 +706,17 @@ private struct PlanCard: View {
                     Text(package.vitalsPriceLabel)
                         .font(.system(.subheadline, design: .rounded, weight: .semibold).monospacedDigit())
                         .foregroundStyle(Theme.textSecondary)
-                    Text(showsTrialBadge ? (perWeekLabel.map { "\($0)/wk" } ?? " ") : " ")
-                        .font(.system(.caption2, design: .rounded).monospacedDigit())
-                        .foregroundStyle(Theme.textTertiary)
-                        .lineLimit(1)
-                        .frame(height: 14, alignment: .trailing)
+                    if showsTrialBadge, let perWeekLabel {
+                        Text("\(perWeekLabel)/wk")
+                            .font(.system(.caption2, design: .rounded).monospacedDigit())
+                            .foregroundStyle(Theme.textTertiary)
+                            .lineLimit(1)
+                    }
                 }
             }
-            .frame(minHeight: 56)
+            .frame(minHeight: 44)
             .padding(.horizontal, 16)
-            .padding(.vertical, 12)
+            .padding(.vertical, 10)
             .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
             .overlay {
                 RoundedRectangle(cornerRadius: Theme.cardRadius)
