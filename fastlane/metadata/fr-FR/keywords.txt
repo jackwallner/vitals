@@ -1,1 +1,1 @@
-bmr,complication,actif,actives,besoin,calorique,nettes,métabolisme,base,repos,bmi,brûlées,kcal
+bmr,complication,actif,actives,besoin,calorique,nettes,métabolisme,base,repos,bmi,brûlées,kcal,macro
