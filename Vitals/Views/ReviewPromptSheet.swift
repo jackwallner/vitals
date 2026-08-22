@@ -33,14 +33,11 @@ enum ReviewPromptDismissOutcome: Sendable {
     case notNow
     case feedbackSubmitted
     case openedWriteReview
-    /// User chose "Yes" but dismissed the pitch without opening the store — host may call `requestReview()` once in `onDismiss`.
-    case enjoyedMaybeLater
 }
 
 struct ReviewPromptSheet: View {
     enum Step {
         case enjoyment
-        case reviewPitch
         case feedback
     }
 
@@ -64,8 +61,6 @@ struct ReviewPromptSheet: View {
                 switch step {
                 case .enjoyment:
                     enjoymentContent
-                case .reviewPitch:
-                    reviewPitchContent
                 case .feedback:
                     feedbackContent
                 }
@@ -87,12 +82,21 @@ struct ReviewPromptSheet: View {
     private var navigationTitle: String {
         switch step {
         case .enjoyment: "Enjoying the app?"
-        case .reviewPitch: "Support an indie dev"
         case .feedback: "Help us improve"
         }
     }
 
     private var enjoymentContent: some View {
+        // Scrolls only when it has to: the pitch and both buttons fit a medium
+        // detent at default type, and merging the old second screen into this
+        // one means large accessibility sizes need somewhere to go.
+        ScrollView {
+            enjoymentBody
+        }
+        .scrollBounceBehavior(.basedOnSize)
+    }
+
+    private var enjoymentBody: some View {
         VStack(spacing: 20) {
             ZStack {
                 Circle()
@@ -104,47 +108,22 @@ struct ReviewPromptSheet: View {
             }
             .padding(.top, 8)
 
-            Text("If Total Calories is helping you stay on track, a quick rating on the App Store makes a real difference.")
+            Text("If Total Calories is helping you stay on track, a quick rating makes a real difference.")
                 .font(.system(.subheadline, design: .rounded))
                 .foregroundStyle(Theme.textSecondary)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal, 8)
 
-            VStack(spacing: 10) {
-                Button {
-                    step = .reviewPitch
-                } label: {
-                    primaryButtonLabel("Yes, I’m enjoying it")
-                }
-                .buttonStyle(.plain)
-
-                Button {
-                    step = .feedback
-                } label: {
-                    secondaryButtonLabel("Not really")
-                }
-                .buttonStyle(.plain)
-            }
-        }
-        .padding(.horizontal, 24)
-        .padding(.bottom, 24)
-    }
-
-    private var reviewPitchContent: some View {
-        VStack(spacing: 18) {
-            Text("Total Calories is built by one indie developer, with no ads, no accounts, and your health data never leaves your phone.")
-                .font(.system(.subheadline, design: .rounded))
-                .foregroundStyle(Theme.textSecondary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 8)
-
-            Text("An honest App Store review takes seconds and helps more people find a simple, private calorie tracker.")
+            // The indie line used to be a second screen between "yes" and the
+            // App Store. It earns its place as context here; it does not earn a
+            // tap, and every tap between intent and the store loses ratings.
+            Text("Built by one indie developer. No ads, no accounts, and your health data never leaves your phone.")
                 .font(.system(.footnote, design: .rounded))
-                .foregroundStyle(Theme.textSecondary)
+                .foregroundStyle(Theme.textTertiary)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 8)
 
             VStack(spacing: 10) {
                 Button {
@@ -152,15 +131,14 @@ struct ReviewPromptSheet: View {
                     UIApplication.shared.open(AppStoreReviewLinks.writeReviewURL)
                     finish(.openedWriteReview)
                 } label: {
-                    primaryButtonLabel("Rate on the App Store")
+                    primaryButtonLabel("Yes, rate on the App Store")
                 }
                 .buttonStyle(.plain)
 
                 Button {
-                    ReviewPromptTracker.markSoftDeferred()
-                    finish(.enjoyedMaybeLater)
+                    step = .feedback
                 } label: {
-                    secondaryButtonLabel("Maybe later")
+                    secondaryButtonLabel("Not really")
                 }
                 .buttonStyle(.plain)
             }
