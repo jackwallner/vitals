@@ -15,6 +15,12 @@ final class PaywallUIVariantTests: XCTestCase {
     func testUnknownValueFallsBackToTimeline() {
         XCTAssertEqual(PaywallUIVariant.from(metadata: ["upgrade_tab": "hosted"]), .timeline)
     }
+
+    func testDebugLaunchOverrideIsOffByDefault() {
+        XCTAssertNil(DebugLaunchConfig.upgradeTabOverride)
+        XCTAssertFalse(DebugLaunchConfig.seedHealth)
+        XCTAssertFalse(DebugLaunchConfig.forceSetupComplete)
+    }
 }
 
 final class SupportMailTests: XCTestCase {
