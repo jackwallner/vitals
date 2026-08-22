@@ -2085,12 +2085,21 @@ private struct SettingsInfoDot: View {
     var body: some View {
         Image(systemName: isOpen ? "info.circle.fill" : "info.circle")
             .foregroundStyle(isOpen ? Theme.textSecondary : Theme.textTertiary)
-            // The glyph is ~17pt; the padding gives it a finger-sized target
-            // without pushing the row's title and switch apart.
-            .padding(.vertical, 8)
-            .padding(.horizontal, 6)
-            .contentShape(Rectangle())
-            .onTapGesture(perform: toggle)
+            // Fixed 32pt box rather than padding around a ~17pt glyph: padding
+            // made every ⓘ row ~10pt taller than a plain toggle row, which read
+            // as ragged spacing down the section. 32pt still clears the switch
+            // beside it, so the row height is set by the switch either way.
+            // 22pt matches the label text's line height, so the ⓘ never makes
+            // its row taller than a plain toggle row. The tap target is grown
+            // back past the glyph with a negative-inset content shape, which
+            // hit-tests wider without taking up any layout height.
+            .frame(width: 22, height: 22)
+            .contentShape(Rectangle().inset(by: -11))
+            // The dot lives inside the Toggle's label, so a plain tap gesture
+            // loses to the label's own "flip the switch" tap. High priority wins
+            // it back without the row having to be hand-built (which is what
+            // made these rows taller than every plain toggle beside them).
+            .highPriorityGesture(TapGesture().onEnded { toggle() })
             .accessibilityElement()
             .accessibilityLabel("About \(topic.title)")
             .accessibilityAddTraits(.isButton)
@@ -2357,6 +2366,13 @@ private struct OnboardingSheet: View {
                         .padding(.horizontal, 24)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .onAppear {
+                            // A returning subscriber (reinstall, restored
+                            // entitlement) reaches this step already Pro. Pitch
+                            // them nothing: set their goals, then let them in.
+                            guard !store.isPro else {
+                                finishOnboarding()
+                                return
+                            }
                             store.trackPaywallImpression(id: "vitals_onboarding_trial", oncePerSession: true)
                         }
                 } else {
@@ -2383,9 +2399,13 @@ private struct OnboardingSheet: View {
         .task {
             if store.products.isEmpty { await store.fetchProducts() }
         }
-        // A direct purchase (or restore) that flips Pro on finishes onboarding.
+        // A purchase or restore *made on the trial step* finishes onboarding.
+        // Deliberately not any flip to Pro: on a reinstall, StoreKit resolves an
+        // existing subscription a second or two after launch, and finishing here
+        // would yank a returning subscriber out of the goal step they were still
+        // filling in.
         .onChange(of: store.isPro) { _, isPro in
-            if isPro { finishOnboarding() }
+            if isPro, step == .trial { finishOnboarding() }
         }
         .sheet(isPresented: $showPaywallFallback) {
             PaywallView()
@@ -3085,19 +3105,23 @@ private struct SettingsSheet: View {
         toggleDisabled: Bool = false
     ) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 0) {
-                plusToggleLabel(title)
-                SettingsInfoDot(topic: topic, isOpen: expandedInfoTopic == topic) {
-                    withAnimation(.snappy(duration: 0.22)) {
-                        expandedInfoTopic = expandedInfoTopic == topic ? nil : topic
+            // A real labelled Toggle, not a hand-built row: the Form gives its
+            // own controls tighter insets than arbitrary content, which is why
+            // the ⓘ rows used to stand ~10pt taller than the plain toggles
+            // above them.
+            Toggle(isOn: isOn) {
+                HStack(spacing: 0) {
+                    plusToggleLabel(title)
+                    SettingsInfoDot(topic: topic, isOpen: expandedInfoTopic == topic) {
+                        withAnimation(.snappy(duration: 0.22)) {
+                            expandedInfoTopic = expandedInfoTopic == topic ? nil : topic
+                        }
                     }
+                    Spacer(minLength: 8)
                 }
-                Spacer(minLength: 8)
-                Toggle("", isOn: isOn)
-                    .labelsHidden()
-                    .accessibilityLabel(title)
-                    .disabled(toggleDisabled)
             }
+            .accessibilityLabel(title)
+            .disabled(toggleDisabled)
             if expandedInfoTopic == topic {
                 SettingsInfoCallout(topic: topic)
                     .transition(.opacity.combined(with: .move(edge: .top)))
@@ -3552,12 +3576,13 @@ private struct SettingsSheet: View {
     @ViewBuilder
     private var vitalsPlusActionRow: some View {
         HStack(spacing: 0) {
+            // Tapping "Rate App" is the intent already. It used to open the
+            // enjoyment sheet, which asked people who had just said yes whether
+            // they meant it; every tap between intent and the store loses
+            // ratings. Unhappy users have Get Help right beside this.
             Button("Rate App") {
-                dismiss()
-                Task { @MainActor in
-                    try? await Task.sleep(nanoseconds: 350_000_000)
-                    ReviewPromptCoordinator.shared.requestEnjoymentPrompt()
-                }
+                ReviewPromptTracker.markOpenedWriteReview()
+                UIApplication.shared.open(AppStoreReviewLinks.writeReviewURL)
             }
             .buttonStyle(.borderless)
             Text("·")

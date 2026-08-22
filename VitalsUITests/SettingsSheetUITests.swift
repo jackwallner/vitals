@@ -54,10 +54,12 @@ final class SettingsSheetUITests: XCTestCase {
 
     /// The ⓘ beside a setting expands its explanation under the row, and tapping
     /// it again collapses it. Covers both halves of the pattern that replaced the
-    /// footer prose: the dot's hit target actually fires (it is a tap gesture on
-    /// a content shape, not a Button, precisely because the Button form did not),
+    /// footer prose: the dot's hit target actually fires (a high-priority tap
+    /// gesture, not a Button, precisely because the Button form did not),
     /// and the explanation is real text in the tree rather than a presentation
-    /// that silently failed to appear.
+    /// that silently failed to appear. The dot now sits inside the Toggle's own
+    /// label (so its row measures the same as every plain toggle row), which
+    /// means its tap has to outrank the label's "flip the switch" tap.
     func testInfoDotRevealsExplanation() {
         let app = launchSettings(scene: "settingsPro")
 
@@ -185,7 +187,7 @@ final class SettingsSheetUITests: XCTestCase {
         _ app: XCUIApplication,
         prefix: String,
         labels: [String],
-        frames: Int = 7
+        frames: Int = 10
     ) -> Set<String> {
         let form = app.collectionViews.firstMatch.exists
             ? app.collectionViews.firstMatch
@@ -199,9 +201,19 @@ final class SettingsSheetUITests: XCTestCase {
                     found.insert(label)
                 }
             }
-            if index < frames { form.swipeUp(velocity: .slow) }
+            if index < frames { scrollStep(form) }
         }
         return found
+    }
+
+    /// A fixed drag rather than `swipeUp`, which carries momentum: a flick can
+    /// travel more than a screen and skip a block of rows entirely between two
+    /// captured frames, so the walk's result depended on how tall the rows
+    /// happened to be. Two thirds of the form per step always overlaps.
+    private func scrollStep(_ form: XCUIElement) {
+        let start = form.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.85))
+        let end = form.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.2))
+        start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.1)
     }
 
     /// Polls rather than `expectation(for:evaluatedWith:)`, which Swift 6 rejects

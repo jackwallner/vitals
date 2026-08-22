@@ -383,11 +383,9 @@ struct MainTabView: View {
     @State private var showReviewPrompt = false
     @State private var reviewPromptInitialStep: ReviewPromptSheet.Step = .enjoyment
     @State private var reviewPromptShownThisSession = false
-    @State private var pendingNativeReviewAfterDismiss = false
     /// If a goal-hit review ask was blocked by an open trial/paywall sheet, retry
     /// once those sheets clear instead of burning the positive moment.
     @State private var pendingReviewAfterSheetsClear = false
-    @Environment(\.requestReview) private var requestReview
     /// The feature an intent tap reached for, so the trial sheet (and the plan
     /// picker it can chain into) lead with it. `nil` for passive offers.
     @State private var trialOfferFocus: PlusFeature?
@@ -627,9 +625,6 @@ struct MainTabView: View {
 
     private func handleReviewPromptFinish(_ outcome: ReviewPromptDismissOutcome) {
         showReviewPrompt = false
-        if outcome == .enjoyedMaybeLater {
-            pendingNativeReviewAfterDismiss = true
-        }
     }
 
     private func presentReviewPrompt(step: ReviewPromptSheet.Step) {
@@ -793,6 +788,13 @@ struct MainTabView: View {
                             // dietary HealthKit auth once the window is clear.
                             NotificationCenter.default.post(
                                 name: .vitalsEnableNetDeficitWithDietaryAuth,
+                                object: nil
+                            )
+                            selectedTab = 0
+                        },
+                        onOpenMacros: {
+                            NotificationCenter.default.post(
+                                name: .vitalsEnableMacrosWithHealthAuth,
                                 object: nil
                             )
                             selectedTab = 0
@@ -1031,12 +1033,9 @@ struct MainTabView: View {
             }
         }
         .sheet(isPresented: $showReviewPrompt, onDismiss: {
-            // "Maybe later" already recorded a 30-day soft defer. Calling
-            // markShown() here would clear that flag and jail the ask for 120 days.
-            if pendingNativeReviewAfterDismiss {
-                pendingNativeReviewAfterDismiss = false
-                requestReview()
-            } else if !ReviewPromptTracker.isSoftDeferred {
+            // A soft defer recorded on an older build is still a 30-day promise.
+            // Calling markShown() over it would jail the ask for 120 days.
+            if !ReviewPromptTracker.isSoftDeferred {
                 ReviewPromptTracker.markShown()
             }
         }) {
@@ -1067,6 +1066,7 @@ private struct PremiumFeaturesView: View {
     @State private var customEnd = Date.now
 
     let onOpenNetDeficit: () -> Void
+    let onOpenMacros: () -> Void
 
     @State private var deepTrendInsights: [DeepTrendInsight] = []
     @State private var deepTrendHighlights: [String] = []
@@ -1093,6 +1093,17 @@ private struct PremiumFeaturesView: View {
                                 buttonTitle: "Enable",
                                 action: onOpenNetDeficit,
                                 isEnabled: goals.showNetCalories
+                            )
+                            // Macros is the other half of Calorie Intake, so it
+                            // sits beside Net Deficit rather than being the one
+                            // Vitals+ feature you can only find in Settings.
+                            PremiumActionRow(
+                                icon: "chart.pie.fill",
+                                title: "Macros",
+                                detail: "Protein, carbs, and fat from the food you already log.",
+                                buttonTitle: "Enable",
+                                action: onOpenMacros,
+                                isEnabled: goals.showMacros
                             )
                             PremiumActionRow(
                                 icon: "doc.richtext.fill",

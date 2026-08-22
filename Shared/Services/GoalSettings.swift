@@ -622,6 +622,10 @@ final class GoalSettings: ObservableObject {
             showMacros = true
             macroSplitEnabled = true
             macroGoalsEnabled = true
+            // Pin both macro sets: a capture run inherits whatever the device's
+            // defaults were left at, and a scene that renders a different number
+            // of rows than it claims to is a broken screenshot.
+            visibleMacroSet = Set(MacroKind.allCases)
             goaledMacroSet = Set(MacroKind.allCases)
             showPacing = true
             calorieGoal = 2500
@@ -640,6 +644,7 @@ final class GoalSettings: ObservableObject {
             showMacros = true
             macroSplitEnabled = true
             macroGoalsEnabled = false
+            visibleMacroSet = Set(MacroKind.allCases)
             showActiveRestingBreakdown = false
             showEnergyAverages = false
             calorieGoal = 2500
@@ -656,6 +661,7 @@ final class GoalSettings: ObservableObject {
             showActiveRestingBreakdown = false
             macroSplitEnabled = true
             macroGoalsEnabled = ScreenshotConfig.scene == .macroGoals
+            visibleMacroSet = Set(MacroKind.allCases)
             goaledMacroSet = Set(MacroKind.allCases)
             showEnergyAverages = false
             hasCompletedSetup = true
