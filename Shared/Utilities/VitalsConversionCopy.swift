@@ -97,4 +97,52 @@ enum VitalsConversionCopy {
             ? "Couldn't start your trial. Please try again."
             : "Couldn't complete the purchase. Please try again."
     }
+
+    /// Hold the purchase button quiet until StoreKit has named the action.
+    /// Returning nil means show a spinner, never "Continue" flipping into
+    /// "Start Free Trial".
+    static func paywallCTATitle(
+        packageSelected: Bool,
+        isLifetime: Bool,
+        hasIntroOffer: Bool,
+        eligibilityResolved: Bool,
+        eligibleForTrial: Bool
+    ) -> String? {
+        guard packageSelected else { return nil }
+        if isLifetime { return "Unlock Lifetime" }
+        if hasIntroOffer && !eligibilityResolved { return nil }
+        if eligibleForTrial { return "Start Free Trial" }
+        return "Subscribe"
+    }
+
+    /// Blinkist-style three-step trial, with an honest middle beat: the last
+    /// day you can cancel (Apple requires 24 hours before billing). Does not
+    /// claim Apple will send a reminder.
+    struct TrialTimelineCopy: Equatable {
+        let trialDays: Int
+        let cancelByDay: Int
+        let todayTitle: String
+        let todayDetail: String
+        let cancelTitle: String
+        let cancelDetail: String
+        let chargeTitle: String
+        let chargeDetail: String
+
+        static func make(trialDays: Int, priceLabel: String?) -> TrialTimelineCopy {
+            let days = max(trialDays, 2)
+            let cancelBy = days - 1
+            let charge = priceLabel.map { "Billed \($0) unless you cancel." }
+                ?? "You're only billed if you keep it."
+            return TrialTimelineCopy(
+                trialDays: days,
+                cancelByDay: cancelBy,
+                todayTitle: "Today: trial starts",
+                todayDetail: "Vitals+ unlocks now. No charge today.",
+                cancelTitle: "Day \(cancelBy): last day to cancel",
+                cancelDetail: "Cancel in Settings → Apple ID at least 24 hours before billing.",
+                chargeTitle: "Day \(days): first charge",
+                chargeDetail: charge
+            )
+        }
+    }
 }

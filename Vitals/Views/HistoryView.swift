@@ -461,6 +461,7 @@ struct HistoryView: View {
             NavigationStack {
                 fullBody
                     .toolbar(.hidden, for: .navigationBar)
+                    .background(InteractivePopGestureEnabler())
                     .navigationDestination(for: HistoryMetric.self) { metric in
                         HistoryView(focusMetric: metric)
                             .environmentObject(store)
@@ -692,13 +693,10 @@ struct HistoryView: View {
                             DeepTrendsCard(
                                 isPro: store.isPro,
                                 isCalculating: isCalculatingTrends && previousRecords.isEmpty,
-                                insights: store.isPro ? deepTrendInsights : DeepTrendsBuilder.teaserInsights(currentRecords: records),
-                                highlights: store.isPro ? deepTrendHighlights : DeepTrendsBuilder.teaserHighlights(records: records),
-                                periodLabel: deepTrendsPeriodLabel,
-                                onUpgrade: { TrialOfferCoordinator.shared.request(.deepTrendsUpgrade) }
+                                insights: deepTrendInsights,
+                                highlights: store.isPro ? deepTrendHighlights : [],
+                                periodLabel: deepTrendsPeriodLabel
                             )
-
-                            CoachPromoCard()
 
                         }
                         .padding(.horizontal, 24)
@@ -1498,6 +1496,7 @@ struct HistoryView: View {
         }
         .navigationTitle(metric.title)
         .navigationBarTitleDisplayMode(.inline)
+        .background(InteractivePopGestureEnabler())
         .task { await loadHistory() }
         .onChange(of: selectedPeriod) { _, _ in
             if selectedPeriod != .custom {
@@ -2258,7 +2257,10 @@ struct DeepTrendsCard: View {
     let insights: [DeepTrendInsight]
     let highlights: [String]
     let periodLabel: String
-    let onUpgrade: () -> Void
+
+    @EnvironmentObject private var store: StoreService
+    @State private var isPurchasing = false
+    @State private var errorMessage: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -2302,18 +2304,23 @@ struct DeepTrendsCard: View {
                     insightsContent
                 }
             } else {
-                lockedTeaser
+                lockedPurchaseSurface
             }
         }
         .padding(Theme.cardPadding)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .onAppear {
+            if !isPro {
+                store.trackPaywallImpression(id: "vitals_history_deep_trends", oncePerSession: true)
+            }
+        }
     }
 
     private var insightsContent: some View {
         VStack(alignment: .leading, spacing: 12) {
             VStack(spacing: 12) {
                 ForEach(insights) { insight in
-                    DeepTrendInsightRow(insight: insight)
+                    DeepTrendInsightRow(insight: insight, blurComparisons: false)
                 }
             }
             if !highlights.isEmpty {
@@ -2335,112 +2342,96 @@ struct DeepTrendsCard: View {
         }
     }
 
-    /// Non-pro view: render the actual insight rows so the user sees the shape of what
-    /// they'd get, then crush them with a heavy blur and stamp an Unlock CTA on top.
-    /// The blurred content stays interactive-free (`allowsHitTesting(false)`) so taps
-    /// only ever land on the upgrade button.
-    private var lockedTeaser: some View {
-        ZStack {
-            VStack(alignment: .leading, spacing: 12) {
-                if insights.isEmpty {
-                    placeholderTeaserRows
-                } else {
-                    VStack(spacing: 12) {
-                        ForEach(insights) { insight in
-                            DeepTrendInsightRow(insight: insight)
-                        }
-                    }
-                }
-                VStack(alignment: .leading, spacing: 8) {
-                    ForEach(highlights, id: \.self) { highlight in
-                        HStack(alignment: .top, spacing: 8) {
-                            Image(systemName: "checkmark.circle.fill")
-                                .font(.system(size: 12, weight: .semibold))
-                                .foregroundStyle(Theme.caloriesPrimary)
-                                .padding(.top, 2)
-                            Text(highlight)
-                                .font(.system(.caption, design: .rounded))
-                                .foregroundStyle(Theme.textSecondary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
+    /// This period's numbers stay sharp. Previous / change / % are the paid
+    /// comparison, so those are the only bits under blur. The CTA buys yearly
+    /// through StoreKit — Apple's sheet, not a second Vitals half-sheet.
+    private var lockedPurchaseSurface: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            if insights.isEmpty {
+                Text("This period compared to the last: averages, percent movement, and peak days.")
+                    .font(.system(.subheadline, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            } else {
+                VStack(spacing: 12) {
+                    ForEach(insights) { insight in
+                        DeepTrendInsightRow(insight: insight, blurComparisons: true)
                     }
                 }
             }
-            .blur(radius: 14)
-            .allowsHitTesting(false)
-            .accessibilityHidden(true)
-            .overlay(
-                LinearGradient(
-                    colors: [
-                        Theme.cardSurface.opacity(0.35),
-                        Theme.cardSurface.opacity(0.55),
-                        Theme.cardSurface.opacity(0.8)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
 
-            VStack(spacing: 10) {
-                Image(systemName: "lock.fill")
-                    .font(.system(size: 22, weight: .semibold))
-                    .foregroundStyle(Theme.caloriesPrimary)
-                Text("Unlock Deep Trends")
-                    .font(.system(.headline, design: .rounded, weight: .bold))
-                    .foregroundStyle(Theme.textPrimary)
-                Text("Compare this period against the matching previous range: averages, deltas, percent movement, and peak days.")
+            Text("Also in Vitals+: custom date ranges and PDF reports from this History tab.")
+                .font(.system(.caption, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            if store.canPitchFreeTrial, let days = store.yearlyPackage?.vitalsTrialDayCount {
+                TrialTimeline(trialDays: days, priceLabel: store.yearlyPackage?.vitalsPriceLabel)
+            }
+
+            if let errorMessage {
+                Text(errorMessage)
                     .font(.system(.caption, design: .rounded))
-                    .foregroundStyle(Theme.textSecondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 8)
+                    .foregroundStyle(.red)
                     .fixedSize(horizontal: false, vertical: true)
-                Button(action: onUpgrade) {
-                    Text("Try Vitals+ Free")
+            } else if let disclosure = store.yearlySheetDisclosureText {
+                Text(disclosure)
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Button(action: startPurchase) {
+                ZStack {
+                    Text(lockedCTATitle)
                         .font(.system(.subheadline, design: .rounded, weight: .semibold))
                         .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                        .background(Theme.caloriesGradient, in: Capsule())
+                        .opacity(isPurchasing || !store.conversionCTAReady ? 0 : 1)
+                    if isPurchasing || !store.conversionCTAReady {
+                        ProgressView().tint(.white)
+                    }
                 }
-                .buttonStyle(.plain)
-                .padding(.top, 4)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(Theme.caloriesGradient, in: Capsule())
             }
-            .padding(14)
+            .buttonStyle(.plain)
+            .disabled(isPurchasing || !store.conversionCTAReady)
+            .accessibilityLabel(lockedCTATitle)
         }
     }
 
-    /// Synthetic rows used only when the user has no records yet — keeps the locked card
-    /// looking like the unlocked card instead of collapsing to a tiny block above the CTA.
-    private var placeholderTeaserRows: some View {
-        VStack(spacing: 12) {
-            DeepTrendInsightRow(insight: DeepTrendInsight(
-                title: "Calories",
-                icon: "flame.fill",
-                current: "2,480",
-                previous: "2,310",
-                change: "+170",
-                percent: "+7%",
-                narrative: "Compare current vs prior averages.",
-                color: Theme.caloriesPrimary,
-                isUp: true
-            ))
-            DeepTrendInsightRow(insight: DeepTrendInsight(
-                title: "Steps",
-                icon: "figure.walk",
-                current: "9,420",
-                previous: "8,860",
-                change: "+560",
-                percent: "+6%",
-                narrative: "Track momentum across periods.",
-                color: Theme.stepsPrimary,
-                isUp: true
-            ))
+    private var lockedCTATitle: String {
+        VitalsConversionCopy.shortCTALabel(eligibleForTrial: store.canPitchFreeTrial)
+    }
+
+    private func startPurchase() {
+        guard let package = store.conversionPackage else {
+            TrialOfferCoordinator.shared.request(.deepTrendsUpgrade)
+            return
+        }
+        errorMessage = nil
+        isPurchasing = true
+        Task { @MainActor in
+            defer { isPurchasing = false }
+            await store.refreshIntroEligibility()
+            do {
+                switch try await store.purchase(package) {
+                case .purchased, .pending:
+                    break
+                case .cancelled:
+                    errorMessage = store.purchaseCancelledMessage(for: package)
+                }
+            } catch {
+                errorMessage = store.purchaseFailedMessage(for: package)
+            }
         }
     }
 }
 
 struct DeepTrendInsightRow: View {
     let insight: DeepTrendInsight
+    var blurComparisons: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -2466,12 +2457,18 @@ struct DeepTrendInsightRow: View {
                 }
                 .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
                 .foregroundStyle(insight.isUp ? Theme.netDeficitPositive : Theme.netDeficitNegative)
+                .blur(radius: blurComparisons ? 8 : 0)
+                .accessibilityHidden(blurComparisons)
             }
 
             HStack(spacing: 8) {
                 DeepTrendMiniStat(label: "Current", value: insight.current)
                 DeepTrendMiniStat(label: "Previous", value: insight.previous)
+                    .blur(radius: blurComparisons ? 8 : 0)
+                    .accessibilityHidden(blurComparisons)
                 DeepTrendMiniStat(label: "Change", value: insight.change)
+                    .blur(radius: blurComparisons ? 8 : 0)
+                    .accessibilityHidden(blurComparisons)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

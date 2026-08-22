@@ -222,6 +222,9 @@ struct PaywallView: View {
     @State private var isRestoring = false
     /// Height the tab gives the pitch, measured by `CenteredScrollContainer`.
     @State private var fullListHeight: CGFloat = 0
+    /// Last honest CTA title. The button never falls back to a spinner-only
+    /// control (that made the label flicker and hid it from UI tests).
+    @State private var displayedCTATitle: String = "Start Free Trial"
 
     /// Outcome bullets. Intent taps lead with the feature they asked for plus
     /// two related companions.
@@ -252,6 +255,18 @@ struct PaywallView: View {
     private var selectedHasTrial: Bool {
         guard let package = selectedPackage else { return false }
         return store.isEligibleForIntroOffer(package)
+    }
+
+    /// Catalog vs timeline, from offering metadata. Focused (intent) paywalls
+    /// stay on the short three-bullet layout and ignore the experiment, except
+    /// they still show the trial steps when eligible.
+    private var upgradeTabVariant: PaywallUIVariant {
+        focus == nil ? store.upgradeTabVariant : .catalog
+    }
+
+    private var selectedTrialDays: Int? {
+        guard selectedHasTrial, let package = selectedPackage else { return nil }
+        return package.vitalsTrialDayCount
     }
 
     var body: some View {
@@ -325,6 +340,9 @@ struct PaywallView: View {
                 VStack(spacing: 12) {
                     header(compact: true)
                     paywallFeatureList
+                    if upgradeTabVariant == .timeline, let days = selectedTrialDays {
+                        TrialTimeline(trialDays: days, priceLabel: selectedPackage?.vitalsPriceLabel)
+                    }
                     planCards
                 }
                 .padding(.horizontal, 22)
@@ -340,6 +358,9 @@ struct PaywallView: View {
                     Spacer(minLength: 0)
                     header(compact: true)
                     paywallFeatureList
+                    if let days = selectedTrialDays {
+                        TrialTimeline(trialDays: days, priceLabel: selectedPackage?.vitalsPriceLabel)
+                    }
                     planCards
                     Spacer(minLength: 0)
                 }
@@ -364,14 +385,17 @@ struct PaywallView: View {
         VStack(spacing: 6) {
             Button(action: startPurchase) {
                 ZStack {
-                    Text(ctaTitle)
+                    Text(displayedCTATitle)
                         .font(.system(.headline, design: .rounded, weight: .bold))
                         .foregroundStyle(.white)
                         .lineLimit(1)
                         .minimumScaleFactor(0.72)
-                        .opacity(isPurchasing ? 0 : 1)
-                    if isPurchasing {
-                        ProgressView().tint(.white)
+                        .opacity(isPurchasing || ctaTitle == nil ? 0 : 1)
+                        .animation(nil, value: displayedCTATitle)
+                    if isPurchasing || ctaTitle == nil {
+                        ProgressView()
+                            .tint(.white)
+                            .accessibilityHidden(true)
                     }
                 }
                 .frame(maxWidth: .infinity)
@@ -380,7 +404,15 @@ struct PaywallView: View {
                 .ctaGlow()
             }
             .buttonStyle(.plain)
-            .disabled(isPurchasing || selectedPackage == nil)
+            .accessibilityIdentifier("paywall-purchase")
+            .accessibilityLabel(displayedCTATitle)
+            .disabled(isPurchasing || ctaTitle == nil)
+            .onChange(of: ctaTitle) { _, new in
+                if let new { displayedCTATitle = new }
+            }
+            .onAppear {
+                if let ctaTitle { displayedCTATitle = ctaTitle }
+            }
 
             VStack(spacing: 4) {
                 // Error replaces disclosure in the same slot — never ZStack both
@@ -480,7 +512,7 @@ struct PaywallView: View {
                     }
                 }
             }
-            if let remainingBenefitsLine {
+            if upgradeTabVariant == .catalog, let remainingBenefitsLine {
                 Text(remainingBenefitsLine)
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
@@ -508,7 +540,7 @@ struct PaywallView: View {
                 .multilineTextAlignment(.center)
                 .lineLimit(focus == nil ? 1 : 2)
                 .minimumScaleFactor(0.85)
-            Text(focus?.intentSubheadline ?? "Calories, steps, and trends in one dashboard.")
+            Text(focus?.intentSubheadline ?? upgradeTabHeaderSubheadline)
                 .font(.system(compact ? .footnote : .subheadline, design: .rounded))
                 .foregroundStyle(Theme.textSecondary)
                 .multilineTextAlignment(.center)
@@ -555,11 +587,24 @@ struct PaywallView: View {
 
     // MARK: - Copy
 
-    private var ctaTitle: String {
-        guard let package = selectedPackage else { return "Continue" }
-        if package.vitalsPackageKind == .lifetime { return "Unlock Lifetime" }
-        if store.isEligibleForIntroOffer(package) { return "Start Free Trial" }
-        return "Subscribe"
+    private var upgradeTabHeaderSubheadline: String {
+        if upgradeTabVariant == .timeline {
+            return "Macros, Net Deficit, TDEE & BMR, Deep Trends, custom ranges."
+        }
+        return "Calories, steps, and trends in one dashboard."
+    }
+
+    /// nil while eligibility is still resolving, so the button never flashes
+    /// Continue → Subscribe → Start Free Trial.
+    private var ctaTitle: String? {
+        guard let package = selectedPackage else { return nil }
+        return VitalsConversionCopy.paywallCTATitle(
+            packageSelected: true,
+            isLifetime: package.vitalsPackageKind == .lifetime,
+            hasIntroOffer: package.vitalsIntroOfferLabel != nil,
+            eligibilityResolved: store.introEligibilityResolved,
+            eligibleForTrial: store.isEligibleForIntroOffer(package)
+        )
     }
 
     /// Apple 3.1.2 disclosure: must state price, that it auto-renews, and how to
@@ -726,86 +771,5 @@ private struct PlanCard: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(isSelected ? [.isSelected, .isButton] : .isButton)
-    }
-}
-
-/// "How your free trial works" — a three-step timeline that removes the #1
-/// reason people decline a trial: not knowing when (or whether) they'll be
-/// charged. Modeled on the Blinkist trial-timeline pattern; every claim here is
-/// truthful (instant access now, an App Store reminder before billing, and the
-/// exact price on the final day, cancellable anytime).
-private struct TrialTimeline: View {
-    let trialDays: Int
-    let priceLabel: String?
-
-    private var reminderDay: Int { max(trialDays - 1, 1) }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("How your free trial works")
-                .font(.system(.subheadline, design: .rounded, weight: .bold))
-                .foregroundStyle(Theme.textPrimary)
-                .padding(.bottom, 12)
-
-            step(
-                icon: "lock.open.fill",
-                tint: Theme.stepsPrimary,
-                title: "Today: full access",
-                detail: "Every Vitals+ feature unlocks right away.",
-                isLast: false
-            )
-            step(
-                icon: "bell.fill",
-                tint: Theme.caloriesPrimary,
-                title: "Day \(reminderDay): heads-up",
-                detail: "The App Store reminds you before your trial ends.",
-                isLast: false
-            )
-            step(
-                icon: "checkmark.seal.fill",
-                tint: Theme.netDeficitBrand,
-                title: "Day \(trialDays): trial ends",
-                detail: priceLabel.map { "Billed \($0) unless you cancel. Cancel anytime." }
-                    ?? "You're only billed if you keep it. Cancel anytime.",
-                isLast: true
-            )
-        }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("How your free trial works. Today, full access unlocks. Day \(reminderDay), the App Store reminds you. Day \(trialDays), the trial ends and you're billed unless you cancel.")
-    }
-
-    private func step(icon: String, tint: Color, title: String, detail: String, isLast: Bool) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            VStack(spacing: 0) {
-                ZStack {
-                    Circle().fill(tint.opacity(0.15)).frame(width: 28, height: 28)
-                    Image(systemName: icon)
-                        .font(.system(size: 13, weight: .bold))
-                        .foregroundStyle(tint)
-                }
-                if !isLast {
-                    Rectangle()
-                        .fill(Theme.textTertiary.opacity(0.25))
-                        .frame(width: 2)
-                        .frame(maxHeight: .infinity)
-                }
-            }
-            .frame(minHeight: isLast ? 28 : 44)
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
-                    .foregroundStyle(Theme.textPrimary)
-                Text(detail)
-                    .font(.system(.caption, design: .rounded))
-                    .foregroundStyle(Theme.textSecondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .padding(.bottom, isLast ? 0 : 10)
-            Spacer(minLength: 0)
-        }
     }
 }

@@ -118,6 +118,35 @@ final class SettingsSheetUITests: XCTestCase {
         )
     }
 
+    /// Rate App, Get Help, and Feature Request sit on one row under the Vitals+
+    /// status card in both the free and Pro sheets. They used to live in the
+    /// section header (Pro only), which left free users without an equivalent.
+    func testSettingsSupportRowShowsRateHelpAndFeatureRequest() {
+        for scene in ["settings", "settingsPro"] {
+            let app = launchSettings(scene: scene)
+            let form = app.collectionViews.firstMatch.exists
+                ? app.collectionViews.firstMatch
+                : app.tables.firstMatch
+            let rate = app.buttons["Rate App"]
+            for _ in 0..<12 where !rate.exists {
+                scrollStep(form)
+            }
+            XCTAssertTrue(
+                rate.waitForExistence(timeout: 2),
+                "Rate App missing in \(scene)"
+            )
+            XCTAssertTrue(
+                app.buttons["Get Help"].exists,
+                "Get Help missing in \(scene)"
+            )
+            XCTAssertTrue(
+                app.buttons["Feature Request"].exists,
+                "Feature Request missing in \(scene)"
+            )
+            attach(app.screenshot(), name: "support-row-\(scene)")
+        }
+    }
+
     /// Body Profile lives behind a NavigationLink, so its ⓘ shares a row with a
     /// link that wants the whole row's tap. Covers both halves: the dot opens the
     /// explanation, and the row still navigates rather than the dot swallowing it.

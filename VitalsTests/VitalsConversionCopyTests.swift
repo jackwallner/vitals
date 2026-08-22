@@ -169,4 +169,69 @@ final class VitalsConversionCopyTests: XCTestCase {
             "VITALS+"
         )
     }
+
+    func testPaywallCTAWaitsUntilEligibilityResolves() {
+        XCTAssertNil(
+            VitalsConversionCopy.paywallCTATitle(
+                packageSelected: false,
+                isLifetime: false,
+                hasIntroOffer: true,
+                eligibilityResolved: false,
+                eligibleForTrial: false
+            )
+        )
+        XCTAssertNil(
+            VitalsConversionCopy.paywallCTATitle(
+                packageSelected: true,
+                isLifetime: false,
+                hasIntroOffer: true,
+                eligibilityResolved: false,
+                eligibleForTrial: false
+            )
+        )
+        XCTAssertEqual(
+            VitalsConversionCopy.paywallCTATitle(
+                packageSelected: true,
+                isLifetime: false,
+                hasIntroOffer: true,
+                eligibilityResolved: true,
+                eligibleForTrial: true
+            ),
+            "Start Free Trial"
+        )
+        XCTAssertEqual(
+            VitalsConversionCopy.paywallCTATitle(
+                packageSelected: true,
+                isLifetime: false,
+                hasIntroOffer: true,
+                eligibilityResolved: true,
+                eligibleForTrial: false
+            ),
+            "Subscribe"
+        )
+        XCTAssertEqual(
+            VitalsConversionCopy.paywallCTATitle(
+                packageSelected: true,
+                isLifetime: true,
+                hasIntroOffer: false,
+                eligibilityResolved: false,
+                eligibleForTrial: false
+            ),
+            "Unlock Lifetime"
+        )
+    }
+
+    func testTrialTimelineDoesNotClaimAppleSendsAReminder() {
+        let copy = VitalsConversionCopy.TrialTimelineCopy.make(
+            trialDays: 7,
+            priceLabel: "$14.99 / year"
+        )
+        XCTAssertEqual(copy.cancelByDay, 6)
+        XCTAssertEqual(copy.todayTitle, "Today: trial starts")
+        XCTAssertEqual(copy.cancelTitle, "Day 6: last day to cancel")
+        XCTAssertEqual(copy.chargeTitle, "Day 7: first charge")
+        XCTAssertTrue(copy.chargeDetail.contains("$14.99 / year"))
+        XCTAssertFalse(copy.cancelDetail.lowercased().contains("remind"))
+        XCTAssertFalse(copy.cancelDetail.lowercased().contains("app store reminds"))
+    }
 }
