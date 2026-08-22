@@ -159,6 +159,30 @@ enum ReviewPromptTracker {
         return true
     }
 
+    /// A positive moment that must only ever count once, keyed by what caused it
+    /// (`streak_30`, `report_exported`, …). Returns whether it fired.
+    ///
+    /// The repeatable moment is hitting a daily goal. Everything else here is a
+    /// milestone — counting it twice would inflate `positiveMomentCount` past
+    /// the threshold on behaviour the user only did once.
+    @discardableResult
+    static func recordOneShotPositiveMoment(key: String) -> Bool {
+        let storageKey = "reviewPrompt.oneShot.\(key)"
+        guard !defaults.bool(forKey: storageKey) else { return false }
+        defaults.set(true, forKey: storageKey)
+        recordPositiveMoment()
+        return true
+    }
+
+    /// One-shot moment recorded from somewhere that can't present the funnel
+    /// itself (a report generated on History, say). Posts so whichever host owns
+    /// the tabs can decide; if it can't ask right now the moment stays pending
+    /// and is picked up on the next visit to Today.
+    static func recordOneShotPositiveMomentAndNotify(key: String) {
+        guard recordOneShotPositiveMoment(key: key) else { return }
+        NotificationCenter.default.post(name: .vitalsPositiveMomentForReview, object: nil)
+    }
+
     static func consumePendingPositiveMoment() {
         hasPendingPositiveMoment = false
     }

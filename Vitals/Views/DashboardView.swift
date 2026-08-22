@@ -2539,14 +2539,24 @@ private struct OnboardingSheet: View {
     /// Terms/Privacy/Restore on the trial page, an invisible placeholder of
     /// identical height elsewhere), so the CTA frame is pixel-identical on
     /// Welcome, Goals, and the trial page (Rev A zero-shift requirement).
-    /// Page-specific content (trust line, soft exit, disclosure) sits ABOVE the
-    /// button, where variable height is fine because it never moves the
-    /// bottom-pinned button.
+    /// Page-specific content (trust line, disclosure) sits ABOVE the button,
+    /// where variable height is fine because it never moves the bottom-pinned
+    /// button. The soft exit sits below it, quieter than the trial CTA.
     private var bottomBar: some View {
         VStack(spacing: 12) {
             aboveButtonContent
 
             primaryButton
+
+            // Free exit, below the trial button rather than above it. It stays a
+            // plain, labelled, reachable control — it just stops competing with
+            // the trial for the eye, which is the whole point of the page.
+            // Reserved on every page (invisible off trial) so the button above
+            // it keeps its pixel-identical frame.
+            softExitSlot
+                .opacity(step == .trial ? 1 : 0)
+                .allowsHitTesting(step == .trial)
+                .accessibilityHidden(step != .trial)
 
             // Fixed legal-footer slot. Identical view on every page so its height
             // never changes; only visible + interactive on the trial page.
@@ -2606,7 +2616,7 @@ private struct OnboardingSheet: View {
                 startTrial()
             } label: {
                 ZStack {
-                    primaryLabel(store.onboardingTrialCTALabel)
+                    primaryLabel(store.onboardingTrialCTALabel, glowing: true)
                         .opacity(isStartingTrial ? 0 : 1)
                     if isStartingTrial {
                         ProgressView().tint(.white)
@@ -2633,25 +2643,11 @@ private struct OnboardingSheet: View {
         .accessibilityElement(children: .combine)
     }
 
-    /// Trial-page content that lives ABOVE the primary button: the secondary
-    /// "Get Started" soft exit (StatScout label), the billing disclosure, and
-    /// any purchase error. Kept above the CTA so none of it can shift the button.
+    /// Trial-page content that lives ABOVE the primary button: the billing
+    /// disclosure (Apple 3.1.2 wants it adjacent to the purchase) and any
+    /// purchase error. Kept above the CTA so neither can shift the button.
     private var trialSoftExitAndDisclosure: some View {
         VStack(spacing: 12) {
-            // Soft free exit sits ABOVE and de-emphasized so the primary trial
-            // button lands in the exact coral slot the user has been tapping.
-            Button {
-                finishOnboarding()
-            } label: {
-                Text("Get Started")
-                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
-                    .foregroundStyle(Theme.textSecondary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 8)
-            }
-            .buttonStyle(.plain)
-            .padding(.horizontal, 24)
-
             // Render no disclosure until the package loads — never a phantom price.
             // Error replaces disclosure in the same slot (no overlap).
             if let trialError {
@@ -2669,6 +2665,23 @@ private struct OnboardingSheet: View {
                     .padding(.horizontal, 24)
             }
         }
+    }
+
+    /// The free way out of onboarding. Quieter than it was and below the trial
+    /// button now, but never hidden: same tap target, same plain label, and it
+    /// reads as a real choice to anyone looking for one.
+    private var softExitSlot: some View {
+        Button {
+            finishOnboarding()
+        } label: {
+            Text("Continue without Vitals+")
+                .font(.system(.footnote, design: .rounded, weight: .medium))
+                .foregroundStyle(Theme.textTertiary)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 6)
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, 24)
     }
 
     /// Terms / Privacy / Restore beside the purchase point. Rendered on every
@@ -2778,13 +2791,16 @@ private struct OnboardingSheet: View {
         }
     }
 
-    private func primaryLabel(_ title: String) -> some View {
+    /// `glowing` is the trial page only: on Welcome and Goals the button is the
+    /// only thing to do, so it needs no help drawing the eye.
+    private func primaryLabel(_ title: String, glowing: Bool = false) -> some View {
         Text(title)
             .font(.system(.headline, design: .rounded))
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
             .background(Theme.caloriesPrimary, in: RoundedRectangle(cornerRadius: 14))
             .foregroundStyle(.white)
+            .modifier(OptionalCTAGlow(active: glowing))
     }
 }
 
