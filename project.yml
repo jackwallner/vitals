@@ -151,6 +151,7 @@ targets:
       - path: Shared/Utilities/MilestoneCalculator.swift
       - path: Shared/Utilities/VitalsConversionCopy.swift
       - path: Shared/Utilities/PaywallUIVariant.swift
+      - path: Shared/Utilities/DebugLaunchConfig.swift
       - path: Shared/Utilities/SupportMail.swift
       - path: Shared/Services/ConversionDiagnostics.swift
       - path: Shared/Utilities/BodyProfileCalculator.swift

@@ -594,6 +594,11 @@ final class GoalSettings: ObservableObject {
         }
 
         applyScreenshotOverridesIfNeeded()
+        #if DEBUG
+        if DebugLaunchConfig.forceSetupComplete {
+            hasCompletedSetup = true
+        }
+        #endif
     }
 
     /// Clamps a stored macro goal into its accepted range, falling back to the

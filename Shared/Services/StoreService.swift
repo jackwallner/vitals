@@ -430,7 +430,10 @@ final class StoreService: NSObject, ObservableObject {
 
     /// Native Upgrade-tab layout from offering metadata. Missing key → timeline.
     var upgradeTabVariant: PaywallUIVariant {
-        currentOffering?.vitalsUpgradeTabVariant ?? .timeline
+        #if DEBUG
+        if let override = DebugLaunchConfig.upgradeTabOverride { return override }
+        #endif
+        return currentOffering?.vitalsUpgradeTabVariant ?? .timeline
     }
 
     /// True once the purchase button can name the action without flashing

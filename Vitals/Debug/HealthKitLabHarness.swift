@@ -283,11 +283,13 @@ final class HealthKitLabModel: ObservableObject {
     }
 
     private func deleteLabSamples() async throws {
-        let predicate = HKQuery.predicateForObjects(
+        let marked = HKQuery.predicateForObjects(
             withMetadataKey: labMarkerKey, operatorType: .equalTo, value: true
         )
+        let ours = HKQuery.predicateForObjects(from: HKSource.default())
         for type in [basalType, activeType] {
-            _ = try? await deleteObjects(of: type, predicate: predicate)
+            _ = try? await deleteObjects(of: type, predicate: marked)
+            _ = try? await deleteObjects(of: type, predicate: ours)
         }
     }
 
