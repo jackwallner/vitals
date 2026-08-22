@@ -71,6 +71,7 @@
 		617825BD1AA2773359640926 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76684FF138F58C3A58A97320 /* StoreService.swift */; };
 		63853133C6016FE36B9CCF57 /* ProjectionCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE9370DC12BAC7716DA62A5 /* ProjectionCalculator.swift */; };
 		64DF4D70D8C01EF659F6FC1B /* BodyProfileCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48CEA73D52946D26CCE86AF /* BodyProfileCalculator.swift */; };
+		680EEA54600ED587A84C9812 /* CTASheen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A81D3F2498A0114C6FBB330 /* CTASheen.swift */; };
 		6B88B53A4076BB378D0F2087 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
 		6BD5AEA6B71B870CC53605AF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
 		6CBFC060DEDD8AB1E6C1B2A7 /* VitalsConversionCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1FB17511E85720FB3545D /* VitalsConversionCopy.swift */; };
@@ -270,6 +271,7 @@
 		7896892E56FE0D79E979DEE7 /* ProjectionCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectionCalculatorTests.swift; sourceTree = "<group>"; };
 		78C7498718A96BB0C7A0B880 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		78CED5DB5D409A61047420A0 /* BodyProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyProfileView.swift; sourceTree = "<group>"; };
+		7A81D3F2498A0114C6FBB330 /* CTASheen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTASheen.swift; sourceTree = "<group>"; };
 		7E59FD786F13C21C0F91701C /* MacroTotals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroTotals.swift; sourceTree = "<group>"; };
 		8287269CC5CE093BEF6CBB25 /* PaywallScreenshotHarness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallScreenshotHarness.swift; sourceTree = "<group>"; };
 		82E152DC23E11DAD83864E5A /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
@@ -409,6 +411,7 @@
 			isa = PBXGroup;
 			children = (
 				78CED5DB5D409A61047420A0 /* BodyProfileView.swift */,
+				7A81D3F2498A0114C6FBB330 /* CTASheen.swift */,
 				BFEC52C3FC9793813DF64549 /* DashboardView.swift */,
 				82E152DC23E11DAD83864E5A /* HistoryView.swift */,
 				8287269CC5CE093BEF6CBB25 /* PaywallScreenshotHarness.swift */,
@@ -927,6 +930,7 @@
 				64DF4D70D8C01EF659F6FC1B /* BodyProfileCalculator.swift in Sources */,
 				E9C1C6F2822D7E58043F9D18 /* BodyProfileStore.swift in Sources */,
 				C592AE3EC57D7CE6DBF0E017 /* BodyProfileView.swift in Sources */,
+				680EEA54600ED587A84C9812 /* CTASheen.swift in Sources */,
 				5A19413C5A9673172FC29C82 /* CalorieTrendSummary.swift in Sources */,
 				97B3284F672341E171AA3828 /* DashboardView.swift in Sources */,
 				08B27B65AD2FC365D0988CE6 /* DataService.swift in Sources */,
@@ -1076,7 +1080,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 162;
+				CURRENT_PROJECT_VERSION = 163;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1221,7 +1225,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 162;
+				CURRENT_PROJECT_VERSION = 163;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

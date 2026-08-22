@@ -352,9 +352,7 @@ struct MainTabView: View {
     /// Set when a subscriber taps "Choose in Settings"; opens the dashboard's
     /// Settings sheet after the announcement dismisses.
     @State private var pendingSettingsAfterWhatsNewDismiss = false
-    @State private var showTrialOffer = false
     @State private var showTrialPaywall = false
-    @State private var showMilestone = false
     @State private var showWeeklyRecap = false
     @State private var pendingMilestone: MilestoneEvent?
     /// Set when the user taps the CTA inside a milestone sheet. Chains a direct
@@ -383,6 +381,11 @@ struct MainTabView: View {
     @State private var dashboardShowedRealData = false
     /// The pitch currently on screen, or nil. Owns its own package snapshot and
     /// purchase — see `TrialOfferPitchSheet`.
+    ///
+    /// Drives the sheet through `.sheet(item:)`, never a parallel `isPresented`
+    /// bool: setting the flag and the payload in one tick let SwiftUI build the
+    /// sheet body against a payload it hadn't seen yet, and `if let` over a nil
+    /// payload renders an empty sheet — the blank white card.
     @State private var trialPitch: TrialPitchRequest?
     @State private var showReviewPrompt = false
     @State private var reviewPromptInitialStep: ReviewPromptSheet.Step = .enjoyment
@@ -432,7 +435,6 @@ struct MainTabView: View {
         trialOfferSource = source
         trialOfferFocus = request.focus
         trialPitch = request
-        showTrialOffer = true
     }
 
     /// Passive nudges keep the surface-level impression id they have always
@@ -482,7 +484,7 @@ struct MainTabView: View {
               // Wait for the dashboard's first real paint so the announcement
               // lands over the user's data, not a launch spinner.
               dashboardDataLoaded,
-              !showTrialOffer, !showTrialPaywall, !showMilestone,
+              trialPitch == nil, !showTrialPaywall, pendingMilestone == nil,
               !showReviewPrompt, !showWeeklyRecap
         else { return false }
         whatsNewEvaluated = true
@@ -521,7 +523,7 @@ struct MainTabView: View {
             try? await Task.sleep(nanoseconds: 1_800_000_000)
             if directConversionPackage == nil { await store.fetchProducts() }
             guard !skipPassiveTrialThisSession else { return }
-            guard !showTrialOffer, !showTrialPaywall, !showWhatsNew else { return }
+            guard trialPitch == nil, !showTrialPaywall, !showWhatsNew else { return }
             guard selectedTab == 0, !trialCoordinator.coveringSheetIsPresented else { return }
             if canPitchFreeTrial && !store.isPro {
                 launchOfferShownThisSession = true
@@ -550,12 +552,12 @@ struct MainTabView: View {
         guard ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup),
               !reviewPromptShownThisSession,
               selectedTab == 0,
-              !showMilestone,
+              pendingMilestone == nil,
               !showReviewPrompt
         else { return }
 
         // Don't lose the ask to a trial/paywall sheet — retry when those clear.
-        if showTrialOffer || showTrialPaywall {
+        if trialPitch != nil || showTrialPaywall {
             pendingReviewAfterSheetsClear = true
             return
         }
@@ -564,13 +566,13 @@ struct MainTabView: View {
             // Let the goal celebration toast finish (~2.5s) before asking.
             try? await Task.sleep(nanoseconds: 3_500_000_000)
             guard selectedTab == 0,
-                  !showTrialOffer,
+                  trialPitch == nil,
                   !showTrialPaywall,
-                  !showMilestone,
+                  pendingMilestone == nil,
                   !showReviewPrompt,
                   ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup)
             else {
-                if showTrialOffer || showTrialPaywall {
+                if trialPitch != nil || showTrialPaywall {
                     pendingReviewAfterSheetsClear = true
                 }
                 return
@@ -585,9 +587,9 @@ struct MainTabView: View {
     private func presentPendingReviewIfNeeded() {
         guard pendingReviewAfterSheetsClear,
               !reviewPromptShownThisSession,
-              !showTrialOffer,
+              trialPitch == nil,
               !showTrialPaywall,
-              !showMilestone,
+              pendingMilestone == nil,
               !showReviewPrompt,
               ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup)
         else { return }
@@ -616,7 +618,7 @@ struct MainTabView: View {
               !launchOfferShownThisSession,
               canPitchFreeTrial,
               selectedTab == 1,
-              !showTrialOffer,
+              trialPitch == nil,
               !showTrialPaywall
         else { return }
         presentPassiveTrialOffer(source: .historyLoad)
@@ -641,7 +643,7 @@ struct MainTabView: View {
     private func handleIntentTap(_ intent: TrialOfferCoordinator.Intent) {
         defer { trialCoordinator.clear() }
         guard !store.isPro else { return }
-        guard !showTrialOffer, !showTrialPaywall else { return }
+        guard trialPitch == nil, !showTrialPaywall else { return }
         let request = TrialPitchRequest(intent: intent, impressionID: "vitals_trial_offer_intent")
         trialOfferFocus = request.focus
         // Only toggle-gated features get auto-enabled on upgrade; Deep Trends /
@@ -669,10 +671,10 @@ struct MainTabView: View {
             Task { @MainActor in
                 // Wait for sheet dismiss animation + any StoreKit UI to clear.
                 try? await Task.sleep(nanoseconds: 700_000_000)
-                guard !showTrialOffer, !showTrialPaywall, !showMilestone else {
+                guard trialPitch == nil, !showTrialPaywall, pendingMilestone == nil else {
                     // Sheet re-appeared; retry once shortly after.
                     try? await Task.sleep(nanoseconds: 700_000_000)
-                    guard !showTrialOffer, !showTrialPaywall, !showMilestone else { return }
+                    guard trialPitch == nil, !showTrialPaywall, pendingMilestone == nil else { return }
                     NotificationCenter.default.post(name: .vitalsEnableNetDeficitWithDietaryAuth, object: nil)
                     return
                 }
@@ -683,9 +685,9 @@ struct MainTabView: View {
             // is suppressed while any conversion sheet is still on screen.
             Task { @MainActor in
                 try? await Task.sleep(nanoseconds: 700_000_000)
-                guard !showTrialOffer, !showTrialPaywall, !showMilestone else {
+                guard trialPitch == nil, !showTrialPaywall, pendingMilestone == nil else {
                     try? await Task.sleep(nanoseconds: 700_000_000)
-                    guard !showTrialOffer, !showTrialPaywall, !showMilestone else { return }
+                    guard trialPitch == nil, !showTrialPaywall, pendingMilestone == nil else { return }
                     NotificationCenter.default.post(name: .vitalsEnableMacrosWithHealthAuth, object: nil)
                     return
                 }
@@ -715,12 +717,11 @@ struct MainTabView: View {
         guard !store.isPro,
               !milestoneShownThisSession,
               !goals.firedMilestoneIds.contains(event.id),
-              !showTrialOffer, !showTrialPaywall, !showMilestone
+              trialPitch == nil, !showTrialPaywall, pendingMilestone == nil
         else { return }
         goals.firedMilestoneIds.insert(event.id)
         milestoneShownThisSession = true
         pendingMilestone = event
-        showMilestone = true
     }
 
     var body: some View {
@@ -833,9 +834,9 @@ struct MainTabView: View {
                 // If a trial/milestone sheet is up, wait for its onDismiss to apply
                 // the pending feature. Requesting dietary HealthKit auth while that
                 // sheet is still visible (or dismissing) suppresses the system prompt.
-                let conversionSheetUp = showTrialOffer || showTrialPaywall || showMilestone
-                showTrialOffer = false
-                showMilestone = false
+                let conversionSheetUp = trialPitch != nil || showTrialPaywall || pendingMilestone != nil
+                trialPitch = nil
+                pendingMilestone = nil
                 if !conversionSheetUp {
                     applyPendingFeatureEnable()
                 }
@@ -872,14 +873,14 @@ struct MainTabView: View {
             guard present else { return }
             recapCoordinator.clear()
             // Land on Today, then present the recap once no other sheet is up.
-            guard !showTrialOffer, !showTrialPaywall, !showMilestone, !showReviewPrompt else { return }
+            guard trialPitch == nil, !showTrialPaywall, pendingMilestone == nil, !showReviewPrompt else { return }
             selectedTab = 0
             showWeeklyRecap = true
         }
         .onChange(of: reviewPromptCoordinator.pendingPresentation) { _, presentation in
             guard let presentation else { return }
             defer { reviewPromptCoordinator.clear() }
-            guard !showTrialOffer, !showTrialPaywall, !showMilestone else { return }
+            guard trialPitch == nil, !showTrialPaywall, pendingMilestone == nil else { return }
             switch presentation {
             case .enjoymentPrompt:
                 presentReviewPrompt(step: .enjoyment)
@@ -923,9 +924,8 @@ struct MainTabView: View {
             .presentationDetents([.large])
             .presentationDragIndicator(.visible)
         }
-        .sheet(isPresented: $showTrialOffer, onDismiss: {
+        .sheet(item: $trialPitch, onDismiss: {
             markTrialOfferSeen()
-            trialPitch = nil
             if store.isPro {
                 // Sheet is fully gone - safe to enable Net Deficit + request dietary auth.
                 applyPendingFeatureEnable()
@@ -935,23 +935,21 @@ struct MainTabView: View {
                 pendingFeatureEnable = nil
                 presentPendingReviewIfNeeded()
             }
-        }) {
-            if let trialPitch {
-                // The sheet that actually sells the trial. It reports its own
-                // impression: it was the one surface never reported, which is
-                // why encounters and trials came out nearly equal and the
-                // encounter rate read as 13%.
-                TrialOfferPitchSheet(
-                    request: trialPitch,
-                    onDismiss: { showTrialOffer = false },
-                    onNeedsPlanPicker: {
-                        // Products failed to load - Upgrade tab is the plan browser.
-                        showTrialOffer = false
-                        selectedTab = 2
-                    }
-                )
-                .environmentObject(store)
-            }
+        }) { pitch in
+            // The sheet that actually sells the trial. It reports its own
+            // impression: it was the one surface never reported, which is
+            // why encounters and trials came out nearly equal and the
+            // encounter rate read as 13%.
+            TrialOfferPitchSheet(
+                request: pitch,
+                onDismiss: { trialPitch = nil },
+                onNeedsPlanPicker: {
+                    // Products failed to load - Upgrade tab is the plan browser.
+                    trialPitch = nil
+                    selectedTab = 2
+                }
+            )
+            .environmentObject(store)
         }
         .sheet(isPresented: $showTrialPaywall, onDismiss: {
             trialOfferFocus = nil
@@ -962,29 +960,26 @@ struct MainTabView: View {
                 .environmentObject(store)
                 .task { store.trackPaywallImpression(id: "vitals_trial_sheet") }
         }
-        .sheet(isPresented: $showMilestone, onDismiss: {
+        .sheet(item: $pendingMilestone, onDismiss: {
             let startTrial = pendingDirectTrialAfterMilestoneDismiss
             pendingDirectTrialAfterMilestoneDismiss = false
-            pendingMilestone = nil
             if startTrial {
                 startMilestoneDirectTrial()
             } else {
                 presentPendingReviewIfNeeded()
             }
-        }) {
-            if let pendingMilestone {
-                MilestoneCelebrationSheet(
-                    event: pendingMilestone,
-                    ctaTitle: store.shortConversionCTALabel,
-                    onContinue: {
-                        pendingDirectTrialAfterMilestoneDismiss = true
-                        showMilestone = false
-                    },
-                    onDismiss: { showMilestone = false }
-                )
-                .presentationDetents([.fraction(0.7), .large])
-                .presentationDragIndicator(.visible)
-            }
+        }) { event in
+            MilestoneCelebrationSheet(
+                event: event,
+                ctaTitle: store.shortConversionCTALabel,
+                onContinue: {
+                    pendingDirectTrialAfterMilestoneDismiss = true
+                    pendingMilestone = nil
+                },
+                onDismiss: { pendingMilestone = nil }
+            )
+            .presentationDetents([.fraction(0.7), .large])
+            .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $showReviewPrompt, onDismiss: {
             // A soft defer recorded on an older build is still a 30-day promise.
@@ -1012,7 +1007,9 @@ private struct PremiumFeaturesView: View {
     @State private var pdfFile: PDFFile?
     @State private var pdfTitle = "Vitals+ Report"
     @State private var pdfShareText = SummaryReportShareText.appStoreURL
-    @State private var showPDFPreviewSheet = false
+    /// URL of the temp report being previewed, kept so the sheet's
+    /// `onDismiss` can delete it after the item binding has been cleared.
+    @State private var tempFileToDelete: URL?
     @State private var isGeneratingReport = false
     @State private var reportErrorMessage: String?
     @State private var showCustomReportSheet = false
@@ -1121,15 +1118,15 @@ private struct PremiumFeaturesView: View {
                 }
                 .presentationDetents([.medium])
             }
-            .sheet(isPresented: $showPDFPreviewSheet, onDismiss: {
-                if let pdfFile {
-                    try? FileManager.default.removeItem(at: pdfFile.url)
-                    self.pdfFile = nil
+            .sheet(item: $pdfFile, onDismiss: {
+                // The item binding is already nil here, so the URL to clean up
+                // is held separately.
+                if let url = tempFileToDelete {
+                    try? FileManager.default.removeItem(at: url)
+                    tempFileToDelete = nil
                 }
-            }) {
-                if let pdfFile {
-                    PDFPreviewSheet(title: pdfTitle, url: pdfFile.url, shareText: pdfShareText)
-                }
+            }) { file in
+                PDFPreviewSheet(title: pdfTitle, url: file.url, shareText: pdfShareText)
             }
             .alert("Vitals+", isPresented: Binding(get: { restoreMessage != nil }, set: { if !$0 { restoreMessage = nil } })) {
                 Button("OK", role: .cancel) {}
@@ -1333,8 +1330,8 @@ private struct PremiumFeaturesView: View {
             let url = try SummaryReportPDF.render(report)
             pdfTitle = title
             pdfShareText = SummaryReportShareText.make(report: report)
+            tempFileToDelete = url
             pdfFile = PDFFile(url: url)
-            showPDFPreviewSheet = true
         } catch {
             reportErrorMessage = "Could not generate the PDF report. Please try again."
         }
@@ -1798,6 +1795,7 @@ struct TrialOfferSheet: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 13)
                         .background(Theme.caloriesGradient, in: Capsule())
+                        .overlay(CTASheen(shape: Capsule()))
                     }
                     .buttonStyle(.plain)
                     .disabled(isPurchasing)
@@ -2006,7 +2004,11 @@ private struct TrialBullet: Identifiable {
 /// detent need both: short pitches should sit centred rather than stranded above
 /// a band of white, and long ones (large Dynamic Type, a focused feature with a
 /// three-line subheadline) must not clip.
-private struct CenteredScrollContainer: ViewModifier {
+/// Centres content in whatever height it is given, scrolling only when the
+/// content is taller than that. Shared by the trial sheet and the Upgrade tab,
+/// both of which otherwise pool their spare height into one dead band above the
+/// pinned button.
+struct CenteredScrollContainer: ViewModifier {
     @Binding var height: CGFloat
 
     func body(content: Content) -> some View {

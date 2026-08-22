@@ -119,7 +119,84 @@ final class TrialOfferPresentationUITests: XCTestCase {
         attach(app.screenshot(), name: "used-trial-monthly-selected")
     }
 
+
+    /// The dashboard-owned pitch, which is a different presentation path from the
+    /// Settings one and is the path that shipped broken in build 163: the sheet
+    /// flag and the payload were set in the same tick, so SwiftUI built the sheet
+    /// body against a payload it had not seen and rendered an empty card.
+    ///
+    /// Asserts on the sheet's *contents*, not on the sheet existing — a blank
+    /// white sheet is still a presented sheet, which is exactly why nothing
+    /// caught this.
+    func testHistoryUpgradeTapRendersARealPitchNotABlankSheet() {
+        let app = XCUIApplication()
+        app.launchEnvironment["VITALS_SCREENSHOT_MODE"] = "1"
+        app.launchEnvironment["VITALS_SCREENSHOT_SCENE"] = "history"
+        app.launch()
+
+        let custom = app.buttons["Custom"]
+        XCTAssertTrue(custom.waitForExistence(timeout: 180), "History never rendered its period selector")
+        custom.tap()
+
+        let cta = app.buttons["Not now"]
+        XCTAssertTrue(cta.waitForExistence(timeout: 20), "Locked Custom range raised no pitch at all")
+        attach(app.screenshot(), name: "history-pitch")
+
+        // A blank sheet has a purchase button and a headline missing, so check
+        // for both halves of the pitch rather than any one element.
+        let purchase = app.buttons.containing(
+            NSPredicate(format: "label CONTAINS 'Vitals+' OR label CONTAINS 'free trial'")
+        ).firstMatch
+        XCTAssertTrue(purchase.exists, "Pitch rendered with no purchase button — blank sheet")
+        XCTAssertTrue(
+            app.staticTexts["Export any date range"].exists,
+            "Pitch rendered without the headline for the feature that was tapped — blank sheet"
+        )
+    }
+
+
+    /// The Upgrade tab's buy button must not move when the plan changes. The
+    /// disclosure under it is shorter for Lifetime (no auto-renew clause), which
+    /// used to shrink the footer and slide the button down mid-decision.
+    func testUpgradeTabCTAStaysPutWhenSwitchingPlans() {
+        let app = XCUIApplication()
+        app.launchEnvironment["VITALS_SCREENSHOT_MODE"] = "1"
+        app.launchEnvironment["VITALS_SCREENSHOT_SCENE"] = "premium"
+        app.launch()
+
+        let purchase = purchaseButton(app)
+        XCTAssertTrue(purchase.waitForExistence(timeout: 180), "Upgrade tab never rendered a buy button")
+        attach(app.screenshot(), name: "upgrade-tab-yearly")
+        let restingY = purchase.frame.minY
+
+        let lifetime = app.buttons.containing(NSPredicate(format: "label CONTAINS 'Lifetime'")).firstMatch
+        guard lifetime.waitForExistence(timeout: 10) else {
+            XCTFail("No Lifetime plan card to select")
+            return
+        }
+        lifetime.tap()
+
+        let after = purchaseButton(app)
+        XCTAssertTrue(after.waitForExistence(timeout: 5))
+        attach(app.screenshot(), name: "upgrade-tab-lifetime")
+        XCTAssertEqual(
+            after.frame.minY, restingY, accuracy: 1,
+            "Buy button moved \(abs(after.frame.minY - restingY))pt when Lifetime was selected"
+        )
+
+        // Restore now shares the legal line rather than owning one.
+        XCTAssertTrue(app.buttons["Restore"].exists, "Restore is missing from the legal line")
+        XCTAssertFalse(app.buttons["Restore Purchases"].exists, "Restore still has a line of its own")
+    }
+
     // MARK: - Helpers
+
+    /// The Upgrade tab's buy button, whose label changes with the plan.
+    private func purchaseButton(_ app: XCUIApplication) -> XCUIElement {
+        app.buttons.matching(
+            NSPredicate(format: "label IN {'Start Free Trial', 'Subscribe', 'Unlock Lifetime', 'Continue'}")
+        ).firstMatch
+    }
 
     /// The ⓘ lives inside the toggle's own label and outranks it for taps, so a
     /// plain `.tap()` on the switch element opens the explanation instead of
