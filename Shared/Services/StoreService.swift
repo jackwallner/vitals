@@ -297,21 +297,23 @@ final class StoreService: NSObject, ObservableObject {
     /// resolved with an empty map so callers hide trial framing rather than
     /// over-promising.
     func refreshIntroEligibility() async {
+        #if DEBUG
+        // Checked before the simulator shortcut below: an explicit "pretend the
+        // trial is spent" override has to win, or the used-trial copy can't be
+        // exercised on the same simulator that fakes eligibility for everyone.
+        if ScreenshotConfig.forceIntroIneligible {
+            introEligibility = Dictionary(
+                uniqueKeysWithValues: products.map { ($0.storeProduct.productIdentifier, false) }
+            )
+            introEligibilityResolved = true
+            return
+        }
+        #endif
         #if DEBUG && targetEnvironment(simulator)
         if RevenueCatConfig.apiKey.hasPrefix("test_") {
             introEligibility = Dictionary(uniqueKeysWithValues: products.compactMap { package in
                 package.vitalsIntroOfferLabel == nil ? nil : (package.storeProduct.productIdentifier, true)
             })
-            introEligibilityResolved = true
-            return
-        }
-        #endif
-        #if DEBUG
-        if ScreenshotConfig.forceIntroIneligible {
-            let ids = products
-                .filter { $0.storeProduct.introductoryDiscount != nil }
-                .map(\.storeProduct.productIdentifier)
-            introEligibility = Dictionary(uniqueKeysWithValues: ids.map { ($0, false) })
             introEligibilityResolved = true
             return
         }
@@ -358,6 +360,27 @@ final class StoreService: NSObject, ObservableObject {
     /// price on the same product. nil until `fetchProducts` completes.
     var yearlyPackage: Package? {
         products.first { $0.vitalsPackageKind == .yearly }
+    }
+
+    /// The package a one-tap pitch buys. Yearly when it's loaded; otherwise
+    /// whatever carries an intro offer, then whatever loaded at all, so the
+    /// trial sheet never renders a dead button. nil until products load.
+    var conversionPackage: Package? {
+        yearlyPackage
+            ?? products.first { $0.vitalsIntroOfferLabel != nil }
+            ?? products.first
+    }
+
+    /// Annual saving vs. paying monthly for a year, as a whole percent. nil
+    /// unless both plans are loaded and annual is actually cheaper — the badge
+    /// it drives must never quote a number we can't stand behind.
+    var annualSavingsPercent: Int? {
+        guard let yearly = yearlyPackage, let monthly = monthlyPackage else { return nil }
+        let annualized = (monthly.vitalsPriceAmount as NSDecimalNumber).doubleValue * 12
+        let yearlyPrice = (yearly.vitalsPriceAmount as NSDecimalNumber).doubleValue
+        guard annualized > 0, yearlyPrice > 0 else { return nil }
+        let pct = Int(((annualized - yearlyPrice) / annualized * 100).rounded())
+        return pct > 0 ? pct : nil
     }
 
     /// The lower-commitment onboarding target. The full paywall still leads

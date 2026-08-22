@@ -233,19 +233,9 @@ struct PaywallView: View {
 
     private var showsFullBenefitList: Bool { focus == nil }
 
-    /// Annual savings vs. paying monthly for a year, as a whole percent. Drives
-    /// the "SAVE X%" badge — loss-aversion anchoring against the monthly price.
-    /// Nil unless both plans are loaded and annual is actually cheaper.
-    private var annualSavingsPercent: Int? {
-        guard let yearly = store.products.first(where: { $0.vitalsPackageKind == .yearly }),
-              let monthly = store.products.first(where: { $0.vitalsPackageKind == .monthly })
-        else { return nil }
-        let annualized = (monthly.vitalsPriceAmount as NSDecimalNumber).doubleValue * 12
-        let yearlyPrice = (yearly.vitalsPriceAmount as NSDecimalNumber).doubleValue
-        guard annualized > 0, yearlyPrice > 0 else { return nil }
-        let pct = Int(((annualized - yearlyPrice) / annualized * 100).rounded())
-        return pct > 0 ? pct : nil
-    }
+    /// Annual savings vs. paying monthly for a year — loss-aversion anchoring
+    /// against the monthly price. Shared with the trial sheet's deal badge.
+    private var annualSavingsPercent: Int? { store.annualSavingsPercent }
 
     /// True when the currently selected plan will start a free trial — gates the
     /// trial-timeline section so it only shows when there's a trial to explain.
