@@ -74,7 +74,6 @@
 		63853133C6016FE36B9CCF57 /* ProjectionCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE9370DC12BAC7716DA62A5 /* ProjectionCalculator.swift */; };
 		64DF4D70D8C01EF659F6FC1B /* BodyProfileCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48CEA73D52946D26CCE86AF /* BodyProfileCalculator.swift */; };
 		65F07978671AC0C2BC761A1C /* ConversionDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC6717A33895256B9C16964 /* ConversionDiagnostics.swift */; };
-		680EEA54600ED587A84C9812 /* CTASheen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A81D3F2498A0114C6FBB330 /* CTASheen.swift */; };
 		684E03FD344AB904C87B3B54 /* ConversionDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC6717A33895256B9C16964 /* ConversionDiagnostics.swift */; };
 		6B88B53A4076BB378D0F2087 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
 		6BD5AEA6B71B870CC53605AF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
@@ -139,6 +138,7 @@
 		C742B4921F953970DAA96F52 /* ReviewPromptTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6AECE7D2FEB86748EA85D /* ReviewPromptTracker.swift */; };
 		C865D662C3A396B328E3D126 /* CalorieTrendSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5743BEFB90AAF6BA7EB81 /* CalorieTrendSummaryTests.swift */; };
 		C8E17F91A696720D76A3AE1B /* WhatsNewSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925043FF9DEE6C7E11D17C4D /* WhatsNewSheet.swift */; };
+		CAD2537BFC765BACA3F56D73 /* CTAGlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208A2706128ED69211B77282 /* CTAGlow.swift */; };
 		CCD0C2EB0256EBD67EF1CB51 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		CD98234BC44E9975E67D3D92 /* AppStoreReviewLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46F96D18B8385758A31EFC6 /* AppStoreReviewLinks.swift */; };
 		CE2B191318B310C9FEDDD2CF /* MacroTotals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E59FD786F13C21C0F91701C /* MacroTotals.swift */; };
@@ -252,6 +252,7 @@
 		13B9D5B798B90EA3B5158572 /* EnergyAveragesCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyAveragesCalculator.swift; sourceTree = "<group>"; };
 		1CFAFB48ADD8CF9B4DBB796A /* HealthKitLabHarness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitLabHarness.swift; sourceTree = "<group>"; };
 		207ADC8FCC7E1328298839A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		208A2706128ED69211B77282 /* CTAGlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTAGlow.swift; sourceTree = "<group>"; };
 		28B688A25476BF08977C9AB3 /* VitalsTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = VitalsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		29693CF9343830E2D9DE2029 /* EnergyAveragesCacheReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyAveragesCacheReaderTests.swift; sourceTree = "<group>"; };
 		2E891A2F146A996DD48C13CD /* VitalsWatchWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VitalsWatchWidget.entitlements; sourceTree = "<group>"; };
@@ -278,7 +279,6 @@
 		7896892E56FE0D79E979DEE7 /* ProjectionCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectionCalculatorTests.swift; sourceTree = "<group>"; };
 		78C7498718A96BB0C7A0B880 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		78CED5DB5D409A61047420A0 /* BodyProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyProfileView.swift; sourceTree = "<group>"; };
-		7A81D3F2498A0114C6FBB330 /* CTASheen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTASheen.swift; sourceTree = "<group>"; };
 		7E59FD786F13C21C0F91701C /* MacroTotals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroTotals.swift; sourceTree = "<group>"; };
 		8287269CC5CE093BEF6CBB25 /* PaywallScreenshotHarness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallScreenshotHarness.swift; sourceTree = "<group>"; };
 		82E152DC23E11DAD83864E5A /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
@@ -419,7 +419,7 @@
 			isa = PBXGroup;
 			children = (
 				78CED5DB5D409A61047420A0 /* BodyProfileView.swift */,
-				7A81D3F2498A0114C6FBB330 /* CTASheen.swift */,
+				208A2706128ED69211B77282 /* CTAGlow.swift */,
 				BFEC52C3FC9793813DF64549 /* DashboardView.swift */,
 				82E152DC23E11DAD83864E5A /* HistoryView.swift */,
 				8287269CC5CE093BEF6CBB25 /* PaywallScreenshotHarness.swift */,
@@ -945,7 +945,7 @@
 				64DF4D70D8C01EF659F6FC1B /* BodyProfileCalculator.swift in Sources */,
 				E9C1C6F2822D7E58043F9D18 /* BodyProfileStore.swift in Sources */,
 				C592AE3EC57D7CE6DBF0E017 /* BodyProfileView.swift in Sources */,
-				680EEA54600ED587A84C9812 /* CTASheen.swift in Sources */,
+				CAD2537BFC765BACA3F56D73 /* CTAGlow.swift in Sources */,
 				5A19413C5A9673172FC29C82 /* CalorieTrendSummary.swift in Sources */,
 				684E03FD344AB904C87B3B54 /* ConversionDiagnostics.swift in Sources */,
 				97B3284F672341E171AA3828 /* DashboardView.swift in Sources */,
@@ -1096,7 +1096,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 164;
+				CURRENT_PROJECT_VERSION = 165;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1241,7 +1241,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 164;
+				CURRENT_PROJECT_VERSION = 165;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

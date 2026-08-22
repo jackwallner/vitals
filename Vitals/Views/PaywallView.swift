@@ -377,7 +377,7 @@ struct PaywallView: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: 50)
                 .background(Theme.caloriesGradient, in: Capsule())
-                .overlay(CTASheen(shape: Capsule()))
+                .ctaGlow()
             }
             .buttonStyle(.plain)
             .disabled(isPurchasing || selectedPackage == nil)

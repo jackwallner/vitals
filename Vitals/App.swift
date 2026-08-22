@@ -3,6 +3,7 @@ import SwiftData
 import BackgroundTasks
 import StoreKit
 import UserNotifications
+import WidgetKit
 import os
 @preconcurrency import RevenueCat
 #if canImport(WatchConnectivity)
@@ -393,6 +394,8 @@ struct MainTabView: View {
     /// If a goal-hit review ask was blocked by an open trial/paywall sheet, retry
     /// once those sheets clear instead of burning the positive moment.
     @State private var pendingReviewAfterSheetsClear = false
+    /// One WidgetKit query per session is plenty; the moment itself is one-shot.
+    @State private var widgetMomentEvaluated = false
     /// The feature an intent tap reached for, so the trial sheet (and the plan
     /// picker it can chain into) lead with it. `nil` for passive offers.
     @State private var trialOfferFocus: PlusFeature?
@@ -532,22 +535,49 @@ struct MainTabView: View {
         }
     }
 
-    /// Second-touch trial nudge: fires when History finishes loading. Subject to
-    /// the same 14-day passive cooldown, and additionally gated so it never
-    /// fires back-to-back with the launch offer in the same session.
-    /// Passive review ask after a positive moment (e.g. daily goal). Waits for the
-    /// on-dashboard celebration toast to clear; never fires on cold launch.
-    /// Two positive moments that don't depend on clearing a goal: a week of
-    /// actually using the app, and a subscriber who has kept Vitals+ for a month.
+    /// Positive moments that don't depend on clearing a goal: a week of actually
+    /// using the app, and a subscriber who has kept Vitals+ for a month.
     /// Evaluated once real numbers are on screen so the ask never lands on an
     /// empty dashboard. Each fires at most once ever.
     private func evaluateHabitMilestones() {
         let habit = ReviewPromptTracker.recordTrackedDay()
         let subscriber = ReviewPromptTracker.recordProStatus(isPro: store.isPro)
-        guard habit || subscriber else { return }
+        evaluateWidgetInstallMoment()
+        // A moment recorded away from Today (a report generated on History, a
+        // recap read as the app went to background) has nowhere to surface at
+        // the time. Pick it up here instead of losing the ask entirely.
+        guard habit || subscriber || ReviewPromptTracker.hasPendingPositiveMoment else { return }
         scheduleReviewPromptAfterPositiveMoment()
     }
 
+    /// Someone who put Vitals on their Home Screen or a watch face has already
+    /// voted for it with the most contested real estate they own. That's a
+    /// stronger signal than any in-app tap, and it was going unread.
+    private func evaluateWidgetInstallMoment() {
+        guard !widgetMomentEvaluated else { return }
+        widgetMomentEvaluated = true
+        Task { @MainActor in
+            guard await hasInstalledWidget else { return }
+            guard ReviewPromptTracker.recordOneShotPositiveMoment(key: "widget_installed") else { return }
+            scheduleReviewPromptAfterPositiveMoment()
+        }
+    }
+
+    /// `getCurrentConfigurations` throws when the user has never granted the
+    /// extension a slot, which we read the same as "no widget".
+    private var hasInstalledWidget: Bool {
+        get async {
+            await withCheckedContinuation { continuation in
+                WidgetCenter.shared.getCurrentConfigurations { result in
+                    let installed = (try? result.get())?.isEmpty == false
+                    continuation.resume(returning: installed)
+                }
+            }
+        }
+    }
+
+    /// Passive review ask after a positive moment (e.g. a daily goal). Waits for
+    /// the on-dashboard celebration toast to clear; never fires on cold launch.
     private func scheduleReviewPromptAfterPositiveMoment() {
         guard ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup),
               !reviewPromptShownThisSession,
@@ -610,6 +640,9 @@ struct MainTabView: View {
         showReviewPrompt = true
     }
 
+    /// Second-touch trial nudge: fires when History finishes loading. Subject to
+    /// the same 14-day passive cooldown, and additionally gated so it never
+    /// fires back-to-back with the launch offer in the same session.
     private func evaluateHistoryTrialOffer() {
         guard goals.hasCompletedSetup,
               !store.isPro,
@@ -714,6 +747,14 @@ struct MainTabView: View {
     /// milestone id immediately so the same achievement never re-fires.
     private func handleMilestone(_ event: MilestoneEvent) {
         defer { milestoneCoordinator.clear() }
+        // Reaching a streak or finishing a reviewable month is a good day
+        // whether or not there is anything to sell — subscribers never see the
+        // celebration sheet below, and were losing the signal entirely.
+        if case .goalStreak = event {
+            if ReviewPromptTracker.recordOneShotPositiveMoment(key: "milestone_\(event.id)") {
+                scheduleReviewPromptAfterPositiveMoment()
+            }
+        }
         guard !store.isPro,
               !milestoneShownThisSession,
               !goals.firedMilestoneIds.contains(event.id),
@@ -990,7 +1031,13 @@ struct MainTabView: View {
         }) {
             ReviewPromptSheet(initialStep: reviewPromptInitialStep, onFinish: handleReviewPromptFinish)
         }
-        .sheet(isPresented: $showWeeklyRecap) {
+        .sheet(isPresented: $showWeeklyRecap, onDismiss: {
+            // They opened their week and read it. One of the better-disposed
+            // moments the app gets, and it was going unused.
+            if ReviewPromptTracker.recordOneShotPositiveMoment(key: "weekly_recap_read") {
+                scheduleReviewPromptAfterPositiveMoment()
+            }
+        }) {
             WeeklyRecapView(goals: goals)
         }
     }
@@ -1332,6 +1379,10 @@ private struct PremiumFeaturesView: View {
             pdfShareText = SummaryReportShareText.make(report: report)
             tempFileToDelete = url
             pdfFile = PDFFile(url: url)
+            // Building a report of your own data is about as deliberate as this
+            // app gets, and it ends with something the user is proud enough of
+            // to share. Counts once, however many reports they make.
+            ReviewPromptTracker.recordOneShotPositiveMomentAndNotify(key: "report_generated")
         } catch {
             reportErrorMessage = "Could not generate the PDF report. Please try again."
         }
@@ -1795,7 +1846,7 @@ struct TrialOfferSheet: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 13)
                         .background(Theme.caloriesGradient, in: Capsule())
-                        .overlay(CTASheen(shape: Capsule()))
+                        .ctaGlow()
                     }
                     .buttonStyle(.plain)
                     .disabled(isPurchasing)
