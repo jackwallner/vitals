@@ -1,1 +1,1 @@
-pedometer,bmr,komplikasi,defisit,istirahat,aktif,ritme,puasa,jalan,gerak,healthkit,kcal,bmi,terbakar
+pedometer,bmr,komplikasi,defisit,istirahat,aktif,puasa,jalan,healthkit,kcal,bmi,terbakar,protein

@@ -1,1 +1,1 @@
-podòmetre,bmr,complicació,dèficit,repòs,actiu,ritme,dejuni,caminar,moure,healthkit,passos,bmi,kcal
+podòmetre,bmr,complicació,dèficit,repòs,actiu,dejuni,caminar,moure,healthkit,passos,bmi,kcal,macros

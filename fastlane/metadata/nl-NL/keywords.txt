@@ -1,1 +1,1 @@
-bmr,complicatie,tekort,rust,actief,kcal,caloriebehoefte,basaalmetabolisme,stofwisseling,netto,bmi
+bmr,complicatie,tekort,rust,actief,kcal,caloriebehoefte,basaalmetabolisme,netto,bmi,macros

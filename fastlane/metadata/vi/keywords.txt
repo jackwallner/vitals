@@ -1,1 +1,1 @@
-đếmbước,bmr,phứctạp,thiếu,nghỉ,hoạt,nhịp,nhịn,đibộ,dichuyen,healthkit,hoạtđộng,bước,kcal,bmi,đốt
+đếmbước,bmr,phứctạp,thiếu,nghỉ,hoạt,nhịn,đibộ,dichuyen,healthkit,hoạtđộng,bước,kcal,bmi,đốt,protein
