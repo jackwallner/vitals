@@ -150,6 +150,7 @@ targets:
       - path: Shared/Utilities/WeeklyRecap.swift
       - path: Shared/Utilities/MilestoneCalculator.swift
       - path: Shared/Utilities/VitalsConversionCopy.swift
+      - path: Shared/Services/ConversionDiagnostics.swift
       - path: Shared/Utilities/BodyProfileCalculator.swift
       - path: Shared/Models/BodyProfile.swift
     settings:

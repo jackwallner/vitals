@@ -440,6 +440,23 @@ final class StoreService: NSObject, ObservableObject {
         )
     }
 
+    /// Mirrors the on-device conversion record onto the RevenueCat customer.
+    ///
+    /// Attributes rather than extra impressions: RevenueCat treats every
+    /// impression id as a paywall encounter, so funnel steps sent that way would
+    /// drive the encounter rate to 100% and destroy the one server-side number
+    /// that currently works. Attributes stay off the charts and are readable per
+    /// customer.
+    func syncConversionAttributes() {
+        guard isConfigured else { return }
+        #if DEBUG
+        if ScreenshotConfig.isEnabled { return }
+        #endif
+        let attributes = ConversionDiagnostics.subscriberAttributes
+        guard !attributes.isEmpty else { return }
+        Purchases.shared.attribution.setAttributes(attributes)
+    }
+
     func purchaseCancelledMessage(for package: Package) -> String {
         VitalsConversionCopy.purchaseCancelledMessage(eligibleForTrial: isEligibleForIntroOffer(package))
     }
@@ -463,11 +480,16 @@ final class StoreService: NSObject, ObservableObject {
         #if DEBUG
         if ScreenshotConfig.isEnabled { return }
         #endif
-        guard isConfigured else { return }
         if oncePerSession {
             guard !paywallImpressionsThisSession.contains(id) else { return }
             paywallImpressionsThisSession.insert(id)
         }
+        // Counted whether or not RevenueCat is configured: the on-device tally
+        // is the thing that answers "how many pitches before they bought", and
+        // it has to survive a launch where configuration failed.
+        ConversionDiagnostics.recordPitchView(impressionID: id)
+        syncConversionAttributes()
+        guard isConfigured else { return }
         Purchases.shared.trackCustomPaywallImpression(
             CustomPaywallImpressionParams(paywallId: id)
         )
@@ -481,11 +503,20 @@ final class StoreService: NSObject, ObservableObject {
         purchaseInFlight = true
         defer { purchaseInFlight = false }
 
+        let startedTrial = isEligibleForIntroOffer(product)
         let result = try await Purchases.shared.purchase(package: product)
         apply(customerInfo: result.customerInfo)
         if result.userCancelled {
             return .cancelled
-        } else if result.customerInfo.hasVitalsProEntitlement {
+        }
+        // Freeze what the funnel looked like at the moment of sale: which
+        // surface was last on screen, and how many pitches came before it.
+        ConversionDiagnostics.recordConversion(
+            plan: String(describing: product.vitalsPackageKind),
+            startedTrial: startedTrial
+        )
+        syncConversionAttributes()
+        if result.customerInfo.hasVitalsProEntitlement {
             return .purchased
         } else {
             return .pending
