@@ -1229,8 +1229,7 @@ private struct PremiumFeaturesView: View {
             isCalculating: !deepTrendsLoaded,
             insights: deepTrendInsights,
             highlights: deepTrendHighlights,
-            periodLabel: "vs. previous 30 days",
-            onUpgrade: {}
+            periodLabel: "vs. previous 30 days"
         )
     }
 

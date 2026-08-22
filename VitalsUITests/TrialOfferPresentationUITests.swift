@@ -193,9 +193,7 @@ final class TrialOfferPresentationUITests: XCTestCase {
 
     /// The Upgrade tab's buy button, whose label changes with the plan.
     private func purchaseButton(_ app: XCUIApplication) -> XCUIElement {
-        app.buttons.matching(
-            NSPredicate(format: "label IN {'Start Free Trial', 'Subscribe', 'Unlock Lifetime', 'Continue'}")
-        ).firstMatch
+        app.buttons["paywall-purchase"]
     }
 
     /// The ⓘ lives inside the toggle's own label and outranks it for taps, so a

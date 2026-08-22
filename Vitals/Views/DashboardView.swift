@@ -1,5 +1,6 @@
 import SwiftUI
 import HealthKit
+import UIKit
 import os
 
 private let dashboardLogger = Logger(subsystem: "com.jackwallner.vitals", category: "Dashboard")
@@ -307,6 +308,7 @@ struct DashboardView: View {
                 }
             }
             .toolbar(.hidden, for: .navigationBar)
+            .background(InteractivePopGestureEnabler())
             .navigationDestination(for: HistoryMetric.self) { metric in
                 HistoryView(focusMetric: metric)
                     .environmentObject(store)
@@ -2617,13 +2619,13 @@ private struct OnboardingSheet: View {
             } label: {
                 ZStack {
                     primaryLabel(store.onboardingTrialCTALabel, glowing: true)
-                        .opacity(isStartingTrial ? 0 : 1)
-                    if isStartingTrial {
+                        .opacity(isStartingTrial || !store.conversionCTAReady ? 0 : 1)
+                    if isStartingTrial || !store.conversionCTAReady {
                         ProgressView().tint(.white)
                     }
                 }
             }
-            .disabled(isStartingTrial)
+            .disabled(isStartingTrial || !store.conversionCTAReady)
             .padding(.horizontal, 24)
         }
     }
@@ -2674,11 +2676,11 @@ private struct OnboardingSheet: View {
         Button {
             finishOnboarding()
         } label: {
-            Text("Continue without Vitals+")
-                .font(.system(.footnote, design: .rounded, weight: .medium))
-                .foregroundStyle(Theme.textTertiary)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 6)
+                Text("Get Started")
+                    .font(.system(.footnote, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 6)
         }
         .buttonStyle(.plain)
         .padding(.horizontal, 24)
@@ -3576,6 +3578,7 @@ private struct SettingsSheet: View {
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
+            .background(InteractivePopGestureEnabler())
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
@@ -3646,10 +3649,6 @@ private struct SettingsSheet: View {
     @ViewBuilder
     private var vitalsPlusActionRow: some View {
         HStack(spacing: 0) {
-            // Tapping "Rate App" is the intent already. It used to open the
-            // enjoyment sheet, which asked people who had just said yes whether
-            // they meant it; every tap between intent and the store loses
-            // ratings. Unhappy users have Get Help right beside this.
             Button("Rate App") {
                 ReviewPromptTracker.markOpenedWriteReview()
                 UIApplication.shared.open(AppStoreReviewLinks.writeReviewURL)
@@ -3658,11 +3657,40 @@ private struct SettingsSheet: View {
             Text("·")
                 .foregroundStyle(Theme.textTertiary)
                 .padding(.horizontal, 8)
-            Link("Get Help", destination: VitalsLinks.supportEmail)
-                .buttonStyle(.borderless)
+            Button("Get Help") {
+                openSupportMail(.getHelp)
+            }
+            .buttonStyle(.borderless)
+            Text("·")
+                .foregroundStyle(Theme.textTertiary)
+                .padding(.horizontal, 8)
+            Button("Feature Request") {
+                openSupportMail(.featureRequest)
+            }
+            .buttonStyle(.borderless)
             Spacer(minLength: 0)
         }
         .font(.system(.footnote, design: .rounded, weight: .semibold))
+    }
+
+    private func supportSnapshot() -> SupportMail.Snapshot {
+        let info = Bundle.main.infoDictionary
+        return SupportMail.Snapshot(
+            appVersion: info?["CFBundleShortVersionString"] as? String ?? "",
+            build: info?["CFBundleVersion"] as? String ?? "",
+            systemVersion: UIDevice.current.systemVersion,
+            deviceModel: SupportMail.deviceModelIdentifier(),
+            localeIdentifier: Locale.current.identifier,
+            timeZone: TimeZone.current.identifier,
+            isPro: store.isPro,
+            appUserID: store.customerInfo?.originalAppUserId,
+            healthAuthorized: HealthKitService.shared.isAuthorized
+        )
+    }
+
+    private func openSupportMail(_ kind: SupportMail.Kind) {
+        guard let url = SupportMail.url(kind: kind, snapshot: supportSnapshot()) else { return }
+        UIApplication.shared.open(url)
     }
 
     @ViewBuilder

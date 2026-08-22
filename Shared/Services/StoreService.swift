@@ -211,8 +211,16 @@ extension Offering {
 }
 
 extension Offerings {
+    /// Experiments and Targeting assign `current`. Pinning `"default"` by name
+    /// threw those assignments away, so the native paywall could never A/B.
     var vitalsPaywallOffering: Offering? {
-        offering(identifier: "default") ?? current
+        current ?? offering(identifier: "default")
+    }
+}
+
+extension Offering {
+    var vitalsUpgradeTabVariant: PaywallUIVariant {
+        PaywallUIVariant.from(metadata: metadata)
     }
 }
 
@@ -418,6 +426,19 @@ final class StoreService: NSObject, ObservableObject {
     /// Short CTA for milestone / What's New capsules.
     var shortConversionCTALabel: String {
         VitalsConversionCopy.shortCTALabel(eligibleForTrial: canPitchFreeTrial)
+    }
+
+    /// Native Upgrade-tab layout from offering metadata. Missing key → timeline.
+    var upgradeTabVariant: PaywallUIVariant {
+        currentOffering?.vitalsUpgradeTabVariant ?? .timeline
+    }
+
+    /// True once the purchase button can name the action without flashing
+    /// "Continue" into "Start Free Trial".
+    var conversionCTAReady: Bool {
+        guard let package = conversionPackage else { return false }
+        if package.vitalsIntroOfferLabel != nil { return introEligibilityResolved }
+        return true
     }
 
     /// Full Apple-3.1.2 auto-renew disclosure for the yearly plan.

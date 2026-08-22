@@ -128,6 +128,7 @@ struct TrialOfferPitchSheet: View {
         )
         .presentationDetents([TrialOfferSheet.pitchDetent])
         .presentationDragIndicator(.visible)
+        .presentationContentInteraction(.resizes)
         .interactiveDismissDisabled(isPurchasing)
         .task {
             if store.products.isEmpty { await store.fetchProducts() }
