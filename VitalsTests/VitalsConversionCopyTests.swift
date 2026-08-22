@@ -78,4 +78,95 @@ final class VitalsConversionCopyTests: XCTestCase {
         XCTAssertEqual(VitalsConversionCopy.shortCTALabel(eligibleForTrial: true), "Start Free Trial")
         XCTAssertEqual(VitalsConversionCopy.shortCTALabel(eligibleForTrial: false), "Continue with Vitals+")
     }
+
+    // MARK: - Used-trial pitch
+
+    func testUsedTrialHeadlineDropsTrialFraming() {
+        let text = VitalsConversionCopy.headline(
+            focusHeadline: nil,
+            trialLabel: "7-day free trial",
+            eligibleForTrial: false
+        )
+        XCTAssertEqual(text, "Pick up where your trial left off.")
+        XCTAssertFalse(text.lowercased().contains("free"))
+    }
+
+    func testEligibleHeadlineLeadsWithTheTrial() {
+        XCTAssertEqual(
+            VitalsConversionCopy.headline(
+                focusHeadline: nil,
+                trialLabel: "7-day free trial",
+                eligibleForTrial: true
+            ),
+            "7-Day Free Trial, on us."
+        )
+    }
+
+    func testFocusHeadlineWinsOverBothStates() {
+        for eligible in [true, false] {
+            XCTAssertEqual(
+                VitalsConversionCopy.headline(
+                    focusHeadline: "See your macros here too",
+                    trialLabel: "7-day free trial",
+                    eligibleForTrial: eligible
+                ),
+                "See your macros here too"
+            )
+        }
+    }
+
+    func testUsedTrialSubheadlineAnchorsOnThePerWeekPrice() {
+        let text = VitalsConversionCopy.subheadline(
+            focusSubheadline: nil,
+            eligibleForTrial: false,
+            perWeekLabel: "$0.58"
+        )
+        XCTAssertTrue(text.contains("$0.58"))
+        XCTAssertFalse(text.lowercased().contains("trial ends"))
+    }
+
+    /// Price anchoring is dropped rather than faked when StoreKit hasn't
+    /// answered — the sheet must never render "about  a week".
+    func testUsedTrialSubheadlineSurvivesAMissingPrice() {
+        let text = VitalsConversionCopy.subheadline(
+            focusSubheadline: nil,
+            eligibleForTrial: false,
+            perWeekLabel: nil
+        )
+        XCTAssertEqual(text, "You've already seen what Vitals+ adds. Keep it on.")
+    }
+
+    func testBadgeUsesTrialDaysWhenEligible() {
+        XCTAssertEqual(
+            VitalsConversionCopy.badgeText(
+                trialLabel: "7-day free trial",
+                eligibleForTrial: true,
+                annualSavingsPercent: 64
+            ),
+            "7 DAYS FREE"
+        )
+    }
+
+    func testBadgeFallsBackToAnnualSavingWhenTrialIsSpent() {
+        XCTAssertEqual(
+            VitalsConversionCopy.badgeText(
+                trialLabel: "7-day free trial",
+                eligibleForTrial: false,
+                annualSavingsPercent: 64
+            ),
+            "SAVE 64%"
+        )
+    }
+
+    /// Both numbers unknown: say nothing quantitative at all.
+    func testBadgeInventsNothing() {
+        XCTAssertEqual(
+            VitalsConversionCopy.badgeText(trialLabel: nil, eligibleForTrial: false, annualSavingsPercent: nil),
+            "VITALS+"
+        )
+        XCTAssertEqual(
+            VitalsConversionCopy.badgeText(trialLabel: nil, eligibleForTrial: false, annualSavingsPercent: 0),
+            "VITALS+"
+        )
+    }
 }

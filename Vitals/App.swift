@@ -232,6 +232,12 @@ struct VitalsApp: App {
 final class TrialOfferCoordinator: ObservableObject {
     static let shared = TrialOfferCoordinator()
 
+    /// True while a sheet the dashboard owns (Settings, onboarding) is covering
+    /// the window. A passive pitch raised from `MainTabView` cannot rise above
+    /// one: SwiftUI keeps the flag true and shows the sheet later, when the user
+    /// closes Settings — a pitch arriving out of nowhere, out of context.
+    @Published var coveringSheetIsPresented = false
+
     enum Intent: String {
         case lockedCustomRange
         case lockedSummaryReport
@@ -375,11 +381,9 @@ struct MainTabView: View {
     /// the strategic value moment. The passive launch trial nudge waits for this
     /// instead of a blind timer, so it never pitches over zeros/spinner.
     @State private var dashboardShowedRealData = false
-    @State private var trialPurchaseInFlight = false
-    @State private var trialPurchaseError: String?
-    @State private var trialOfferPackage: Package?
-    @State private var trialOfferUsesDirectPurchase = false
-    @State private var trialOfferDetent: PresentationDetent = .fraction(0.68)
+    /// The pitch currently on screen, or nil. Owns its own package snapshot and
+    /// purchase — see `TrialOfferPitchSheet`.
+    @State private var trialPitch: TrialPitchRequest?
     @State private var showReviewPrompt = false
     @State private var reviewPromptInitialStep: ReviewPromptSheet.Step = .enjoyment
     @State private var reviewPromptShownThisSession = false
@@ -421,62 +425,23 @@ struct MainTabView: View {
     /// used-trial accounts pay the yearly price on the same product — no separate
     /// SKU and no nested plan picker required.
     private var directConversionPackage: Package? {
-        store.yearlyPackage
-            ?? store.products.first { $0.vitalsIntroOfferLabel != nil }
-            ?? store.products.first
+        store.conversionPackage
     }
 
-    /// The package the open trial sheet is pitching. `trialOfferPackage` is a
-    /// snapshot taken when the sheet was presented, and a passive nudge can open
-    /// before StoreKit has answered: without the live fallback the sheet framed a
-    /// generic "Go further with Vitals+" pitch, with no trial badge, under a
-    /// button that said "Start 7-day free trial".
-    private var activeTrialOfferPackage: Package? {
-        trialOfferPackage ?? directConversionPackage
-    }
-
-    /// Hybrid one-tap purchase applies when a yearly (or any) package is loaded;
-    /// otherwise fall back to the full plan picker paywall.
-    private var trialOfferIsDirect: Bool {
-        trialOfferUsesDirectPurchase
-    }
-
-    private func presentTrialOffer(source: TrialOfferSource, focus: PlusFeature? = nil) {
+    private func presentTrialOffer(source: TrialOfferSource, request: TrialPitchRequest) {
         trialOfferSource = source
-        trialOfferFocus = focus
-        trialOfferPackage = directConversionPackage
-        trialOfferUsesDirectPurchase = trialOfferPackage != nil
-        trialOfferDetent = .fraction(0.68)
+        trialOfferFocus = request.focus
+        trialPitch = request
         showTrialOffer = true
     }
 
-    private func startDirectTrialPurchase() {
-        guard let package = trialOfferPackage ?? directConversionPackage else {
-            // Products failed to load - Upgrade tab is the plan browser.
-            showTrialOffer = false
-            selectedTab = 2
-            return
-        }
-        trialPurchaseError = nil
-        trialPurchaseInFlight = true
-        Task { @MainActor in
-            defer { trialPurchaseInFlight = false }
-            // Re-check eligibility so a used-trial account that was mis-cached
-            // as eligible flips to paid copy before/after the attempt.
-            await store.refreshIntroEligibility()
-            do {
-                switch try await store.purchase(package) {
-                case .purchased, .pending:
-                    markTrialOfferSeen()
-                    showTrialOffer = false
-                case .cancelled:
-                    trialPurchaseError = store.purchaseCancelledMessage(for: package)
-                }
-            } catch {
-                await store.refreshIntroEligibility()
-                trialPurchaseError = store.purchaseFailedMessage(for: package)
-            }
-        }
+    /// Passive nudges keep the surface-level impression id they have always
+    /// reported, so their conversion series doesn't restart on this build.
+    private func presentPassiveTrialOffer(source: TrialOfferSource) {
+        presentTrialOffer(
+            source: source,
+            request: TrialPitchRequest(passiveImpressionID: "vitals_trial_offer_\(source.rawValue)")
+        )
     }
 
     /// Milestone CTA: buy yearly in place (Apple confirm). Trial applies only
@@ -545,6 +510,7 @@ struct MainTabView: View {
               goals.passiveTrialOfferAllowed(),
               canPitchFreeTrial,
               selectedTab == 0,
+              !trialCoordinator.coveringSheetIsPresented,
               // Strategic value moment: only pitch after the dashboard has shown
               // real, non-zero data — never over a spinner or a row of zeros.
               dashboardShowedRealData
@@ -556,10 +522,10 @@ struct MainTabView: View {
             if directConversionPackage == nil { await store.fetchProducts() }
             guard !skipPassiveTrialThisSession else { return }
             guard !showTrialOffer, !showTrialPaywall, !showWhatsNew else { return }
-            guard selectedTab == 0 else { return }
+            guard selectedTab == 0, !trialCoordinator.coveringSheetIsPresented else { return }
             if canPitchFreeTrial && !store.isPro {
                 launchOfferShownThisSession = true
-                presentTrialOffer(source: .launch)
+                presentPassiveTrialOffer(source: .launch)
             }
         }
     }
@@ -653,7 +619,7 @@ struct MainTabView: View {
               !showTrialOffer,
               !showTrialPaywall
         else { return }
-        presentTrialOffer(source: .historyLoad)
+        presentPassiveTrialOffer(source: .historyLoad)
     }
 
     /// Records the last-shown timestamp for whichever trigger opened the offer.
@@ -676,22 +642,13 @@ struct MainTabView: View {
         defer { trialCoordinator.clear() }
         guard !store.isPro else { return }
         guard !showTrialOffer, !showTrialPaywall else { return }
-        let focus = intent.focusFeature
-        trialOfferFocus = focus
+        let request = TrialPitchRequest(intent: intent, impressionID: "vitals_trial_offer_intent")
+        trialOfferFocus = request.focus
         // Only toggle-gated features get auto-enabled on upgrade; Deep Trends /
         // PDF unlock implicitly with Pro and need no stored setting.
-        switch intent {
-        case .netDeficitToggle: pendingFeatureEnable = .netDeficit
-        case .macrosToggle: pendingFeatureEnable = .macros
-        case .activeRestingToggle: pendingFeatureEnable = .activeResting
-        case .energyAveragesToggle: pendingFeatureEnable = .energyAverages
-        case .projectionsToggle: pendingFeatureEnable = .projections
-        case .streaksToggle: pendingFeatureEnable = .streaks
-        case .weeklyRecapToggle: pendingFeatureEnable = .weeklyRecap
-        default: pendingFeatureEnable = nil
-        }
+        pendingFeatureEnable = request.featureToEnable
         if directConversionPackage != nil {
-            presentTrialOffer(source: .intent, focus: focus)
+            presentTrialOffer(source: .intent, request: request)
         } else {
             // No products loaded - Upgrade tab is the plan browser.
             selectedTab = 2
@@ -968,10 +925,7 @@ struct MainTabView: View {
         }
         .sheet(isPresented: $showTrialOffer, onDismiss: {
             markTrialOfferSeen()
-            trialPurchaseInFlight = false
-            trialPurchaseError = nil
-            trialOfferPackage = nil
-            trialOfferUsesDirectPurchase = false
+            trialPitch = nil
             if store.isPro {
                 // Sheet is fully gone - safe to enable Net Deficit + request dietary auth.
                 applyPendingFeatureEnable()
@@ -982,31 +936,22 @@ struct MainTabView: View {
                 presentPendingReviewIfNeeded()
             }
         }) {
-            TrialOfferSheet(
-                focus: trialOfferFocus,
-                // Only pass a trial label when this Apple ID is still eligible —
-                // otherwise the sheet frames a straight yearly purchase.
-                offerLabel: activeTrialOfferPackage.flatMap { store.eligibleIntroLabel(for: $0) },
-                priceLabel: activeTrialOfferPackage?.vitalsPriceLabel,
-                ctaTitle: store.onboardingTrialCTALabel,
-                disclosureText: store.yearlySheetDisclosureText,
-                directPurchase: trialOfferIsDirect,
-                isPurchasing: trialPurchaseInFlight,
-                errorMessage: trialPurchaseError,
-                onStartTrial: {
-                    startDirectTrialPurchase()
-                },
-                onDismiss: {
-                    showTrialOffer = false
-                }
-            )
-            .presentationDetents([.fraction(0.68), .large], selection: $trialOfferDetent)
-            .presentationDragIndicator(.visible)
-            .interactiveDismissDisabled(trialPurchaseInFlight)
-            // The sheet that actually sells the trial. It was the one surface
-            // never reported, which is why encounters and trials came out
-            // nearly equal and the encounter rate read as 13%.
-            .task { store.trackPaywallImpression(id: "vitals_trial_offer_\(trialOfferSource.rawValue)") }
+            if let trialPitch {
+                // The sheet that actually sells the trial. It reports its own
+                // impression: it was the one surface never reported, which is
+                // why encounters and trials came out nearly equal and the
+                // encounter rate read as 13%.
+                TrialOfferPitchSheet(
+                    request: trialPitch,
+                    onDismiss: { showTrialOffer = false },
+                    onNeedsPlanPicker: {
+                        // Products failed to load - Upgrade tab is the plan browser.
+                        showTrialOffer = false
+                        selectedTab = 2
+                    }
+                )
+                .environmentObject(store)
+            }
         }
         .sheet(isPresented: $showTrialPaywall, onDismiss: {
             trialOfferFocus = nil
@@ -1581,6 +1526,18 @@ private struct PremiumAccountRow: View {
     }
 }
 
+/// One plan on the used-trial pitch. A free trial is not a choice, so this list
+/// is empty whenever the trial is still on the table.
+struct TrialPlanOption: Identifiable, Equatable {
+    let id: String
+    let title: String
+    let price: String
+    /// Smallest honest unit of the same price, e.g. "about $0.58 / week".
+    let detail: String?
+    /// "SAVE 64%" / "BEST VALUE" — only when it's computed from real prices.
+    let badge: String?
+}
+
 struct TrialOfferSheet: View {
     /// When set, the sheet leads with and highlights this feature instead of the
     /// generic toolkit pitch. `nil` for passive launch/history nudges.
@@ -1602,6 +1559,23 @@ struct TrialOfferSheet: View {
     let errorMessage: String?
     let onStartTrial: () -> Void
     let onDismiss: () -> Void
+
+    /// Per-week equivalent of the yearly price. Only used when there is no trial
+    /// left to pitch, where price framing is the whole argument.
+    var perWeekLabel: String?
+    /// Annual saving vs. twelve monthly payments, for the deal badge.
+    var annualSavingsPercent: Int?
+    /// Plans to choose between. Empty for the trial pitch — see `TrialPlanOption`.
+    var planOptions: [TrialPlanOption] = []
+    var selectedPlanID: String?
+    var onSelectPlan: (String) -> Void = { _ in }
+
+    /// One detent, sized to hold the whole pitch. It used to open at 0.68 with
+    /// a `.large` companion: the third benefit was clipped by the footer, so the
+    /// sheet scrolled, and the first flick both scrolled the hero and promoted
+    /// the sheet to full height — the pitch appeared to leap off the top.
+    static let pitchDetent: PresentationDetent = .fraction(0.78)
+
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var animateGlow = false
     @State private var shimmerPhase: CGFloat = -1
@@ -1610,41 +1584,38 @@ struct TrialOfferSheet: View {
 
     /// Headline copy. Trial language only when `offerLabel` is set (eligible).
     private var headline: String {
-        if let focus { return focus.intentHeadline }
-        if let offerLabel {
-            return "\(offerLabel.capitalized), on us."
-        }
-        return "Go further with Vitals+"
+        VitalsConversionCopy.headline(
+            focusHeadline: focus?.intentHeadline,
+            trialLabel: offerLabel,
+            eligibleForTrial: offerLabel != nil
+        )
     }
 
     private var subheadline: String {
-        if let focus {
-            if offerLabel != nil {
-                return "\(focus.intentSubheadline) Free for 7 days. Cancel anytime."
-            }
-            return focus.intentSubheadline
-        }
-        return offerLabel != nil
-            ? "Calories, steps, and trends in one place. No charge until your trial ends."
-            : "Calories, steps, and trends in one place."
+        VitalsConversionCopy.subheadline(
+            focusSubheadline: focus?.intentSubheadline,
+            eligibleForTrial: offerLabel != nil,
+            perWeekLabel: perWeekLabel
+        )
     }
 
-    /// Focused feature first with two related companions; generic trio when passive.
+    /// Focused feature first with two related companions; generic trio when
+    /// passive. A three-plan ladder needs the height of one bullet, and the
+    /// benefit list is the part that repeats itself — the plans don't.
     private var bulletFeatures: [PlusFeature] {
-        if let focus { return [focus] + focus.companionFeatures }
-        return [.netDeficit, .deepTrends, .customRangesPDF]
+        let all = focus.map { [$0] + $0.companionFeatures } ?? [.netDeficit, .deepTrends, .customRangesPDF]
+        return planOptions.count >= 3 ? Array(all.prefix(2)) : all
     }
 
     /// Deal badge text derived from the real offer, e.g. "7-day free trial" →
-    /// "7 DAYS FREE". Falls back to a generic label if the day count can't be
-    /// parsed. Never invents a number — only reflects the loaded offer.
+    /// "7 DAYS FREE"; the annual saving once the trial is spent. Never invents a
+    /// number — only reflects what the store actually returned.
     private var trialBadgeText: String {
-        guard let offerLabel,
-              let days = offerLabel.split(whereSeparator: { !$0.isNumber }).first,
-              !days.isEmpty else {
-            return "VITALS+"
-        }
-        return "\(days) DAYS FREE"
+        VitalsConversionCopy.badgeText(
+            trialLabel: offerLabel,
+            eligibleForTrial: offerLabel != nil,
+            annualSavingsPercent: annualSavingsPercent
+        )
     }
 
     /// Repeat-forever animation timing for the ambient glow. Scoped to the
@@ -1686,27 +1657,28 @@ struct TrialOfferSheet: View {
                     .animation(glowAnimation, value: animateGlow)
             }
 
-            VStack(spacing: 12) {
+            VStack(spacing: 10) {
                 ZStack {
                     Circle()
                         .fill(Theme.caloriesGradient)
-                        .frame(width: 60, height: 60)
+                        .frame(width: 52, height: 52)
                         .shadow(color: Theme.caloriesPrimary.opacity(0.45), radius: 14, x: 0, y: 4)
                         .scaleEffect(animateGlow ? 1.06 : 0.96)
                     Circle()
                         .stroke(.white.opacity(0.35), lineWidth: 1)
-                        .frame(width: 50, height: 50)
+                        .frame(width: 43, height: 43)
                         .scaleEffect(animateGlow ? 1.03 : 0.98)
                     Image(systemName: "sparkles")
-                        .font(.system(size: 24, weight: .bold))
+                        .font(.system(size: 21, weight: .bold))
                         .foregroundStyle(.white)
                         .rotationEffect(.degrees(animateGlow ? 6 : -6))
                 }
-                .padding(.top, 4)
+                .padding(.top, 2)
                 .animation(glowAnimation, value: animateGlow)
 
-                // Deal badge only when pitching an eligible free trial.
-                if offerLabel != nil {
+                // Deal badge: the trial when there is one, the annual saving
+                // when there isn't. Suppressed only when neither is knowable.
+                if trialBadgeText != "VITALS+" {
                     Text(trialBadgeText)
                         .font(.system(.caption, design: .rounded, weight: .heavy))
                         .tracking(1.5)
@@ -1758,19 +1730,32 @@ struct TrialOfferSheet: View {
                                 detail: feature.detail
                             ),
                             highlighted: feature == focus,
+                            // A plan chooser needs the room the descriptions
+                            // were using; the titles still carry the pitch.
                             // Companions of a focused feature stay title-only so
                             // the highlighted row keeps the eye. With no focus
                             // there is nothing to contrast against, and three
                             // one-word pills waste the space they sit in, so the
                             // generic pitch shows what each feature actually does.
-                            compact: focus != nil && feature != focus
+                            compact: !planOptions.isEmpty || (focus != nil && feature != focus)
                         )
                     }
                 }
 
+                if !planOptions.isEmpty {
+                    VStack(spacing: 6) {
+                        ForEach(planOptions) { option in
+                            TrialPlanRow(
+                                option: option,
+                                isSelected: option.id == selectedPlanID,
+                                onSelect: { onSelectPlan(option.id) }
+                            )
+                        }
+                    }
+                }
             }
             .padding(.horizontal, 24)
-            .padding(.vertical, 6)
+            .padding(.vertical, 2)
             // Centred in whatever height the detent gives it, scrolling only when
             // the content is taller than that. The old fixed Spacer pushed the
             // pitch to the top and left a band of dead white above the button.
@@ -2033,6 +2018,65 @@ private struct CenteredScrollContainer: ViewModifier {
             .onAppear { height = proxy.size.height }
             .onChange(of: proxy.size.height) { _, new in height = new }
         }
+    }
+}
+
+/// One selectable plan on the used-trial pitch. Deliberately flatter than the
+/// Upgrade tab's `PlanCard`: two or three of these have to sit inside a sheet
+/// that is still mostly pitch.
+private struct TrialPlanRow: View {
+    let option: TrialPlanOption
+    let isSelected: Bool
+    let onSelect: () -> Void
+
+    var body: some View {
+        Button(action: onSelect) {
+            HStack(spacing: 10) {
+                Image(systemName: isSelected ? "largecircle.fill.circle" : "circle")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(isSelected ? Theme.caloriesPrimary : Theme.textTertiary)
+                VStack(alignment: .leading, spacing: 1) {
+                    HStack(spacing: 6) {
+                        Text(option.title)
+                            .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                            .foregroundStyle(Theme.textPrimary)
+                        if let badge = option.badge {
+                            Text(badge)
+                                .font(.system(size: 10, design: .rounded).weight(.heavy))
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Theme.caloriesGradient, in: Capsule())
+                        }
+                    }
+                    if let detail = option.detail {
+                        Text(detail)
+                            .font(.system(.caption2, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                    }
+                }
+                Spacer(minLength: 0)
+                Text(option.price)
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textPrimary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(isSelected ? Theme.caloriesPrimary.opacity(0.10) : Theme.cardSurface)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(isSelected ? Theme.caloriesPrimary.opacity(0.55) : Theme.textTertiary.opacity(0.20),
+                            lineWidth: isSelected ? 1.5 : 1)
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
 }
 

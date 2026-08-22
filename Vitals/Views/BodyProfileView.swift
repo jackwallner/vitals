@@ -19,6 +19,11 @@ struct BodyProfileView: View {
     @State private var kgText = ""
     @State private var bodyFatText = ""
 
+    /// The Vitals+ pitch, presented right here. Body Profile is pushed inside
+    /// the Settings sheet, so handing the tap to MainTabView meant asking it to
+    /// present a sheet over a sheet — which SwiftUI drops silently.
+    @State private var trialPitch: TrialPitchRequest?
+
     @State private var heightError = false
     @State private var weightError = false
     @State private var bodyFatError = false
@@ -64,6 +69,10 @@ struct BodyProfileView: View {
         .background(Theme.background.ignoresSafeArea())
         .navigationTitle("Body Profile")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $trialPitch) { pitch in
+            TrialOfferPitchSheet(request: pitch, onDismiss: { trialPitch = nil })
+                .environmentObject(store)
+        }
         .task {
             seedManualDrafts()
             // Settled-auth silent read: populates from Health when already
@@ -471,7 +480,10 @@ struct BodyProfileView: View {
 
     private var lockedBodyContextRow: some View {
         Button {
-            TrialOfferCoordinator.shared.request(.bodyProfileDetails)
+            trialPitch = TrialPitchRequest(
+                intent: .bodyProfileDetails,
+                impressionID: "vitals_trial_offer_settings"
+            )
         } label: {
             HStack(spacing: 12) {
                 ZStack {

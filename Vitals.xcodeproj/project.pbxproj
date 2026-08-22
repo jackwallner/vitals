@@ -103,11 +103,13 @@
 		97B3284F672341E171AA3828 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEC52C3FC9793813DF64549 /* DashboardView.swift */; };
 		9880A24EDD14087BBC276BBE /* EnergyAveragesCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B9D5B798B90EA3B5158572 /* EnergyAveragesCalculator.swift */; };
 		9D87A125DF44027A99B6F95C /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = B90E4BEF66FC94CCEA5F5D95 /* RevenueCat */; };
+		9DA14BC972DC45C3EC7073C4 /* TrialOfferPitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7DCA825A17AEC469980F76 /* TrialOfferPitch.swift */; };
 		9DBD04B252D8A3D651BF2F8C /* EnergyAveragesWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB235A6D847F3D1830DA435E /* EnergyAveragesWidget.swift */; };
 		9F43DA0F666C0671FD71FD2D /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEC9E7DED1B1E70BAA8F0E1 /* TodayView.swift */; };
 		A0599F43FA61D1DE21C89711 /* EnergyAveragesCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B9D5B798B90EA3B5158572 /* EnergyAveragesCalculator.swift */; };
 		A18836B7544E3EA896EE185D /* StepTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9515296920AC1C61887CCD1C /* StepTrendSummary.swift */; };
 		A1E13E3675001BC71870A7DA /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76684FF138F58C3A58A97320 /* StoreService.swift */; };
+		A87DBA6B86019B893F54C2BD /* TrialOfferPresentationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4714F56490C3965B087F3D69 /* TrialOfferPresentationUITests.swift */; };
 		AC4CC88A6ACE68D5ED34C6FE /* HealthKitLabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A524F44F2C81B258D1BBE67 /* HealthKitLabUITests.swift */; };
 		AC9FF372460EE54FE7F7183D /* ScreenshotConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4334C2CE63928C06983EA7 /* ScreenshotConfig.swift */; };
 		ACEC9933380F15560FFFD8F2 /* VitalsConversionCopyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32F8EB584C5A7B0BD4CA64 /* VitalsConversionCopyTests.swift */; };
@@ -252,8 +254,10 @@
 		3A32F8EB584C5A7B0BD4CA64 /* VitalsConversionCopyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalsConversionCopyTests.swift; sourceTree = "<group>"; };
 		3AA5743BEFB90AAF6BA7EB81 /* CalorieTrendSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieTrendSummaryTests.swift; sourceTree = "<group>"; };
 		4333D6087FE92C563858EF31 /* MetricNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricNavigation.swift; sourceTree = "<group>"; };
+		4714F56490C3965B087F3D69 /* TrialOfferPresentationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialOfferPresentationUITests.swift; sourceTree = "<group>"; };
 		47E5A948D4ECA79121753114 /* VitalsWatchWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VitalsWatchWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetDeficitTrendSummary.swift; sourceTree = "<group>"; };
+		4E7DCA825A17AEC469980F76 /* TrialOfferPitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialOfferPitch.swift; sourceTree = "<group>"; };
 		5067457F6627E7ABFE38988A /* Vitals.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Vitals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A524F44F2C81B258D1BBE67 /* HealthKitLabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitLabUITests.swift; sourceTree = "<group>"; };
 		604A7C1098FB8101FE9A3365 /* MilestoneCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneCalculator.swift; sourceTree = "<group>"; };
@@ -385,6 +389,7 @@
 			children = (
 				5A524F44F2C81B258D1BBE67 /* HealthKitLabUITests.swift */,
 				A4FB7AAE4A4403268B8E315F /* SettingsSheetUITests.swift */,
+				4714F56490C3965B087F3D69 /* TrialOfferPresentationUITests.swift */,
 			);
 			path = VitalsUITests;
 			sourceTree = "<group>";
@@ -410,6 +415,7 @@
 				C395EAE504DCAD8464C29AC9 /* PaywallView.swift */,
 				91B6F4FE3966882D8D2A9287 /* ReviewPromptSheet.swift */,
 				FFAF11B005DB797877D60FDA /* SummaryReportView.swift */,
+				4E7DCA825A17AEC469980F76 /* TrialOfferPitch.swift */,
 				C9B9F018B1D8859226963C63 /* WeeklyRecapView.swift */,
 				925043FF9DEE6C7E11D17C4D /* WhatsNewSheet.swift */,
 				0AB84DC73288E61173AF16FD /* Components */,
@@ -907,6 +913,7 @@
 			files = (
 				AC4CC88A6ACE68D5ED34C6FE /* HealthKitLabUITests.swift in Sources */,
 				E1550A6559100C2DEE281115 /* SettingsSheetUITests.swift in Sources */,
+				A87DBA6B86019B893F54C2BD /* TrialOfferPresentationUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -949,6 +956,7 @@
 				EC12F9254ED351B2169E84CD /* SummaryReportGenerator.swift in Sources */,
 				5201256403AA11E4AF00E922 /* SummaryReportView.swift in Sources */,
 				505A5802FE54E602AA80A146 /* Theme.swift in Sources */,
+				9DA14BC972DC45C3EC7073C4 /* TrialOfferPitch.swift in Sources */,
 				30D1E4810035E3B88CD813A8 /* VitalsConversionCopy.swift in Sources */,
 				8D267B9C3DAEEDBBDF04937F /* WeeklyRecap.swift in Sources */,
 				23736FF4975A768767A22434 /* WeeklyRecapView.swift in Sources */,

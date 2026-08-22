@@ -393,6 +393,12 @@ struct DashboardView: View {
                 await refresh()
             }
         }
+        .onChange(of: showSettings) { _, isUp in
+            TrialOfferCoordinator.shared.coveringSheetIsPresented = isUp || showOnboarding
+        }
+        .onChange(of: showOnboarding) { _, isUp in
+            TrialOfferCoordinator.shared.coveringSheetIsPresented = isUp || showSettings
+        }
         .sheet(isPresented: $showSettings, onDismiss: {
             if pendingNetDeficitDietaryAuth {
                 Task { await finishEnableNetDeficitWithDietaryAuth() }
@@ -2893,6 +2899,17 @@ private struct SettingsSheet: View {
     /// Only one explainer is open at a time; two expanded callouts turn the
     /// section into a wall of prose, which is what this replaced.
     @State private var expandedInfoTopic: SettingsInfoTopic?
+    /// The Vitals+ pitch a locked row asked for, presented over this sheet.
+    @State private var trialPitch: TrialPitchRequest?
+    /// The same request, kept past dismissal: `.sheet(item:)` has already
+    /// cleared the binding by the time `onDismiss` runs, and that's exactly when
+    /// we need to know which row the user reached for.
+    @State private var lastPitch: TrialPitchRequest?
+    /// Products never loaded, so the pitch had nothing to sell in one tap.
+    @State private var showPlanPicker = false
+    /// Chains the plan picker after the pitch is fully gone — a second sheet
+    /// raised in the same tick as the first one closes is dropped.
+    @State private var wantsPlanPicker = false
     @FocusState private var focusedGoalField: GoalField?
 
     private enum GoalField: Hashable { case calories, steps, macro(MacroKind) }
@@ -3156,15 +3173,17 @@ private struct SettingsSheet: View {
         )
     }
 
-    /// Dismiss the settings sheet first so the MainTabView-owned trial sheet
-    /// presents cleanly — stacking two sheets from sibling-ish hierarchies is
-    /// flaky in SwiftUI and the second sometimes drops silently.
+    /// Answer the tap where it happened: the pitch opens over Settings, and
+    /// closing it puts the user back on the row they tapped.
+    ///
+    /// This used to `dismiss()` Settings and hand the intent to MainTabView on a
+    /// 350ms delay, which flashed the Today dashboard between the two and threw
+    /// the tapped feature away whenever a passive offer had already claimed the
+    /// slot — so a tap on Macros could answer with the generic pitch.
     private func requestTrialOffer(_ intent: TrialOfferCoordinator.Intent) {
-        dismiss()
-        Task { @MainActor in
-            try? await Task.sleep(nanoseconds: 350_000_000)
-            TrialOfferCoordinator.shared.request(intent)
-        }
+        let request = TrialPitchRequest(intent: intent, impressionID: "vitals_trial_offer_settings")
+        lastPitch = request
+        trialPitch = request
     }
 
     private var showPacingBinding: Binding<Bool> {
@@ -3560,6 +3579,35 @@ private struct SettingsSheet: View {
                 applyGoalDrafts()
             }
             .preferredColorScheme(goals.appearance.colorScheme)
+            .sheet(item: $trialPitch, onDismiss: {
+                if store.isPro {
+                    // Bought it: switch on the row they reached for. Net Deficit
+                    // and Macros route through DashboardView, which closes
+                    // Settings first so HealthKit's permission sheet can appear.
+                    PlusFeatureActivation.apply(lastPitch?.featureToEnable, goals: goals)
+                }
+                if wantsPlanPicker {
+                    wantsPlanPicker = false
+                    showPlanPicker = true
+                } else {
+                    lastPitch = nil
+                }
+            }) { pitch in
+                TrialOfferPitchSheet(
+                    request: pitch,
+                    onDismiss: { trialPitch = nil },
+                    onNeedsPlanPicker: {
+                        wantsPlanPicker = true
+                        trialPitch = nil
+                    }
+                )
+                .environmentObject(store)
+            }
+            .sheet(isPresented: $showPlanPicker, onDismiss: { lastPitch = nil }) {
+                PaywallView(focus: lastPitch?.focus)
+                    .environmentObject(store)
+                    .task { store.trackPaywallImpression(id: "vitals_trial_sheet_settings") }
+            }
             .onAppear {
                 appliedGoalDrafts = false
                 calEnabled = goals.calorieGoal != nil
