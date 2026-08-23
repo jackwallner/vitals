@@ -235,6 +235,16 @@ struct PaywallView: View {
     /// sentence so nothing is hidden.
     private var paywallBullets: [PlusFeature] {
         if let focus { return [focus] + focus.companionFeatures }
+        // `full_list` is the 1.8.2 pitch: every feature, spelled out. The
+        // catalog arm cut it to five and moved the rest to one summary line.
+        // Which of those sells better is the whole point of running them
+        // against each other, so both have to exist in the same binary.
+        if upgradeTabVariant == .fullList {
+            return [
+                .netDeficit, .macros, .activeResting, .energyAverages, .deepTrends,
+                .projections, .streaks, .customRangesPDF, .weeklyRecap, .bodyProfile,
+            ]
+        }
         return [.macros, .netDeficit, .energyAverages, .deepTrends, .customRangesPDF]
     }
 
@@ -326,9 +336,15 @@ struct PaywallView: View {
         Group {
             if showsFullBenefitList {
                 VStack(spacing: 12) {
-                    if upgradeTabVariant == .featureLed {
+                    switch upgradeTabVariant {
+                    case .featureLed:
                         featureLedHero
-                    } else {
+                    case .maintenanceLed:
+                        maintenanceLedHero
+                    case .fullList:
+                        header(compact: true)
+                        paywallFeatureList
+                    case .catalog:
                         header(compact: true)
                         paywallFeatureList
                     }
@@ -473,8 +489,15 @@ struct PaywallView: View {
         .foregroundStyle(Theme.textTertiary)
     }
 
+    /// Ten rows have to fit the same space five did, without pushing a plan off
+    /// the screen. 1.8.2 did not manage that and hid Lifetime; tightening the
+    /// row rhythm is what buys the space back.
+    private var featureListSpacing: CGFloat {
+        upgradeTabVariant == .fullList ? 3 : 7
+    }
+
     private var paywallFeatureList: some View {
-        VStack(alignment: .leading, spacing: 7) {
+        VStack(alignment: .leading, spacing: featureListSpacing) {
             ForEach(paywallBullets, id: \.self) { feature in
                 let highlighted = feature == focus
                 HStack(alignment: .top, spacing: 12) {
@@ -572,6 +595,68 @@ struct PaywallView: View {
     /// a single-feature purchase.
     private var featureLedSupportingPoints: [PlusFeature] {
         [.netDeficit, .energyAverages, .deepTrends]
+    }
+
+    /// The `maintenance_led` arm.
+    ///
+    /// The free app already answers "what did I burn today", on the Home Screen
+    /// and the watch face. That is the wedge, and a paywall cannot sell it back
+    /// to someone who already has it. The paid half of the same question is
+    /// "so what can I eat" — maintenance and BMR, averaged over 30 days of
+    /// Apple Health energy.
+    ///
+    /// It is here because it is the only strong Vitals+ feature that asks
+    /// nothing of the user: no food logging, no second app, no setup. Macros
+    /// and Net Deficit both render blank for someone who logs nothing, which is
+    /// most people. This arm is what `feature_led` is for food loggers.
+    private var maintenanceLedHero: some View {
+        VStack(spacing: 14) {
+            Text("VITALS+")
+                .font(.system(.caption2, design: .rounded, weight: .bold))
+                .tracking(1.4)
+                .foregroundStyle(Theme.caloriesPrimary)
+                .accessibilityAddTraits(.isHeader)
+
+            MaintenancePitchCard()
+
+            VStack(spacing: 6) {
+                Text("Know what you can eat")
+                    .font(.system(.title2, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.textPrimary)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.85)
+                Text("Your maintenance calories, worked out from 30 days of your own Apple Health data. On your Home Screen. Nothing to log.")
+                    .font(.system(.footnote, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            VStack(alignment: .leading, spacing: 7) {
+                ForEach(maintenanceLedSupportingPoints, id: \.self) { feature in
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: feature.icon)
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(feature.tint)
+                            .frame(width: 20)
+                        Text(feature.featureListTitle)
+                            .font(.system(.subheadline, design: .rounded))
+                            .foregroundStyle(Theme.textPrimary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Spacer(minLength: 0)
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    /// Three that also work with an empty food log, so the whole arm keeps its
+    /// promise to someone who logs nothing. Macros and Net Deficit are
+    /// deliberately absent.
+    private var maintenanceLedSupportingPoints: [PlusFeature] {
+        [.activeResting, .projections, .deepTrends]
     }
 
     private func header(compact: Bool) -> some View {
@@ -838,6 +923,51 @@ private struct PlanCard: View {
 /// pitch that draws their empty state is an argument against buying. These are
 /// illustrative rather than personal, which is why the card is labelled as an
 /// example rather than presented as their data.
+/// The Maintenance widget as it actually draws, not a description of it.
+///
+/// Static numbers, labelled as an example: a free user has no 30-day average
+/// yet, and a pitch that renders their empty state argues against itself. Same
+/// reasoning as `MacroPitchCard`.
+private struct MaintenancePitchCard: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("MAINTENANCE")
+                    .font(.system(.caption, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textSecondary)
+                    .tracking(0.8)
+                Spacer(minLength: 0)
+                Text("30-day average")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+            }
+
+            HStack(spacing: 8) {
+                figure(value: "2,450", label: "TDEE", tint: Theme.caloriesPrimary)
+                figure(value: "1,780", label: "BMR", tint: Theme.restingPrimary)
+            }
+        }
+        .padding(14)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Example maintenance card. 2,450 calorie TDEE and 1,780 calorie BMR, from a 30-day average.")
+    }
+
+    private func figure(value: String, label: String, tint: Color) -> some View {
+        VStack(spacing: 1) {
+            Text(value)
+                .font(.system(.title3, design: .rounded, weight: .bold))
+                .foregroundStyle(tint)
+            Text(label)
+                .font(.system(.caption2, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 8)
+        .background(Theme.background, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+    }
+}
+
 private struct MacroPitchCard: View {
     private struct Macro {
         let grams: Int
