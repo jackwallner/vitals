@@ -6,7 +6,7 @@ import Foundation
 enum DebugLaunchConfig {
 #if DEBUG
     /// Force the Upgrade-tab layout regardless of offering metadata.
-    /// `VITALS_UPGRADE_TAB=catalog` or `timeline`.
+    /// `VITALS_UPGRADE_TAB=catalog` or `feature_led`.
     static var upgradeTabOverride: PaywallUIVariant? {
         PaywallUIVariant(rawValue: ProcessInfo.processInfo.environment["VITALS_UPGRADE_TAB"] ?? "")
     }

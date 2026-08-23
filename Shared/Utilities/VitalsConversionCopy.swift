@@ -114,35 +114,4 @@ enum VitalsConversionCopy {
         if eligibleForTrial { return "Start Free Trial" }
         return "Subscribe"
     }
-
-    /// Two-step trial: it starts today, it bills on day N.
-    ///
-    /// There used to be a middle beat, "Day N-1: last day to cancel", spelling
-    /// out the 24-hour rule. It came out deliberately: putting a cancellation
-    /// deadline in the pitch makes the trial read as a thing you have to defuse
-    /// rather than a thing you get, and the step only existed because the app
-    /// does not send its own "your trial is ending" notification and never will.
-    /// The auto-renewal terms and the cancel-in-Settings instruction are still
-    /// on the paywall, in the 3.1.2 disclosure under the button, which is where
-    /// App Review looks for them.
-    struct TrialTimelineCopy: Equatable {
-        let trialDays: Int
-        let todayTitle: String
-        let todayDetail: String
-        let chargeTitle: String
-        let chargeDetail: String
-
-        static func make(trialDays: Int, priceLabel: String?) -> TrialTimelineCopy {
-            let days = max(trialDays, 2)
-            let charge = priceLabel.map { "Billed \($0) unless you cancel." }
-                ?? "You're only billed if you keep it."
-            return TrialTimelineCopy(
-                trialDays: days,
-                todayTitle: "Today: trial starts",
-                todayDetail: "Vitals+ unlocks now. No charge today.",
-                chargeTitle: "Day \(days): first charge",
-                chargeDetail: charge
-            )
-        }
-    }
 }

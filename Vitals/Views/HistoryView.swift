@@ -2365,10 +2365,6 @@ struct DeepTrendsCard: View {
                 .foregroundStyle(Theme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
 
-            if store.canPitchFreeTrial, let days = store.yearlyPackage?.vitalsTrialDayCount {
-                TrialTimeline(trialDays: days, priceLabel: store.yearlyPackage?.vitalsPriceLabel)
-            }
-
             if let errorMessage {
                 Text(errorMessage)
                     .font(.system(.caption, design: .rounded))

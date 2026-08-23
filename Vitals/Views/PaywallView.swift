@@ -250,23 +250,11 @@ struct PaywallView: View {
     /// against the monthly price. Shared with the trial sheet's deal badge.
     private var annualSavingsPercent: Int? { store.annualSavingsPercent }
 
-    /// True when the currently selected plan will start a free trial — gates the
-    /// trial-timeline section so it only shows when there's a trial to explain.
-    private var selectedHasTrial: Bool {
-        guard let package = selectedPackage else { return false }
-        return store.isEligibleForIntroOffer(package)
-    }
-
-    /// Catalog vs timeline, from offering metadata. Focused (intent) paywalls
-    /// stay on the short three-bullet layout and ignore the experiment, except
-    /// they still show the trial steps when eligible.
+    /// Which native layout to draw, from offering metadata. Focused (intent)
+    /// paywalls stay on the short three-bullet layout and ignore the experiment:
+    /// they are answering a specific tap, not pitching the tier.
     private var upgradeTabVariant: PaywallUIVariant {
         focus == nil ? store.upgradeTabVariant : .catalog
-    }
-
-    private var selectedTrialDays: Int? {
-        guard selectedHasTrial, let package = selectedPackage else { return nil }
-        return package.vitalsTrialDayCount
     }
 
     var body: some View {
@@ -338,10 +326,11 @@ struct PaywallView: View {
         Group {
             if showsFullBenefitList {
                 VStack(spacing: 12) {
-                    header(compact: true)
-                    paywallFeatureList
-                    if upgradeTabVariant == .timeline, let days = selectedTrialDays {
-                        TrialTimeline(trialDays: days, priceLabel: selectedPackage?.vitalsPriceLabel)
+                    if upgradeTabVariant == .featureLed {
+                        featureLedHero
+                    } else {
+                        header(compact: true)
+                        paywallFeatureList
                     }
                     planCards
                 }
@@ -358,9 +347,6 @@ struct PaywallView: View {
                     Spacer(minLength: 0)
                     header(compact: true)
                     paywallFeatureList
-                    if let days = selectedTrialDays {
-                        TrialTimeline(trialDays: days, priceLabel: selectedPackage?.vitalsPriceLabel)
-                    }
                     planCards
                     Spacer(minLength: 0)
                 }
@@ -523,6 +509,58 @@ struct PaywallView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
+    /// The `feature_led` arm: show the thing, then name it.
+    ///
+    /// The catalog arm answers "what do I get" with a list, which asks the
+    /// reader to imagine ten features. This one renders the single strongest
+    /// one as the artifact it actually is, on the theory that a picture of the
+    /// macro card does more work than the word "Macros" in a row of nine
+    /// siblings. Which is true is the question the experiment exists to answer,
+    /// so the two arms deliberately share products, prices, CTA and disclosure:
+    /// the pitch is the only variable.
+    private var featureLedHero: some View {
+        VStack(spacing: 14) {
+            MacroPitchCard()
+
+            VStack(spacing: 6) {
+                Text("Your macros, every day")
+                    .font(.system(.title2, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.textPrimary)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.85)
+                Text("Protein, carbs, and fat read straight from the food app you already use. Nothing to enter twice.")
+                    .font(.system(.footnote, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            VStack(alignment: .leading, spacing: 7) {
+                ForEach(featureLedSupportingPoints, id: \.self) { feature in
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: feature.icon)
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(feature.tint)
+                            .frame(width: 20)
+                        Text(feature.featureListTitle)
+                            .font(.system(.subheadline, design: .rounded))
+                            .foregroundStyle(Theme.textPrimary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Spacer(minLength: 0)
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    /// Deliberately short. The hero is the pitch; these stop the tier reading as
+    /// a single-feature purchase.
+    private var featureLedSupportingPoints: [PlusFeature] {
+        [.netDeficit, .energyAverages, .deepTrends]
+    }
+
     private func header(compact: Bool) -> some View {
         VStack(spacing: compact ? 4 : 10) {
             ZStack {
@@ -588,10 +626,7 @@ struct PaywallView: View {
     // MARK: - Copy
 
     private var upgradeTabHeaderSubheadline: String {
-        if upgradeTabVariant == .timeline {
-            return "Macros, Net Deficit, TDEE & BMR, Deep Trends, custom ranges."
-        }
-        return "Calories, steps, and trends in one dashboard."
+        "Calories, steps, and trends in one dashboard."
     }
 
     /// nil while eligibility is still resolving, so the button never flashes
@@ -771,5 +806,63 @@ private struct PlanCard: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(isSelected ? [.isSelected, .isButton] : .isButton)
+    }
+}
+
+/// The macro card as the paywall shows it: the real dashboard component's
+/// shape and colours, with representative numbers.
+///
+/// Static values on purpose. A free user has no macro history to render, and a
+/// pitch that draws their empty state is an argument against buying. These are
+/// illustrative rather than personal, which is why the card is labelled as an
+/// example rather than presented as their data.
+private struct MacroPitchCard: View {
+    private struct Macro {
+        let grams: Int
+        let name: String
+        let tint: Color
+    }
+
+    private let macros = [
+        Macro(grams: 142, name: "protein", tint: Theme.macrosBrand),
+        Macro(grams: 186, name: "carbs", tint: Theme.streakPrimary),
+        Macro(grams: 61, name: "fat", tint: Theme.netDeficitBrand),
+    ]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("MACROS")
+                    .font(.system(.caption, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textSecondary)
+                    .tracking(0.8)
+                Spacer(minLength: 0)
+                Text("1,950 cal logged")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+            }
+
+            HStack(spacing: 8) {
+                ForEach(macros, id: \.name) { macro in
+                    VStack(spacing: 1) {
+                        Text("\(macro.grams)")
+                            .font(.system(.title3, design: .rounded, weight: .bold))
+                            .foregroundStyle(macro.tint)
+                        Text("g \(macro.name)")
+                            .font(.system(.caption2, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 8)
+                    .background(Theme.background, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                }
+            }
+        }
+        .padding(14)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        // One element, one sentence: VoiceOver should not read six loose numbers,
+        // and it must not imply these are the listener's own figures.
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Example macros card. 142 grams protein, 186 grams carbs, 61 grams fat, from 1,950 calories logged.")
     }
 }

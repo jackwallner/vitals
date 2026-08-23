@@ -271,6 +271,30 @@ final class GoalSettings: ObservableObject {
         }
     }
 
+    /// Whether this user logs food somewhere that reaches Apple Health, asked
+    /// once during onboarding.
+    ///
+    /// This exists because HealthKit will not tell us. Read authorization is
+    /// deliberately unreadable (saying "they denied food access" would itself
+    /// leak health information), and an empty dietary query is indistinguishable
+    /// between "denied" and "authorized but logs nothing". Asking is the only
+    /// way to know the difference *before* pitching a feature.
+    ///
+    /// It gates which Vitals+ features lead the pitch: Net Deficit and Macros
+    /// are worth nothing to someone with no food data, and showing them a
+    /// permanently blank readout is a worse first impression than any layout
+    /// choice. `nil` means never asked (every install before this shipped), and
+    /// callers must treat that as "unknown", not as "no".
+    @Published var logsFoodInHealth: Bool? {
+        didSet {
+            if let logsFoodInHealth {
+                defaults.set(logsFoodInHealth, forKey: "logsFoodInHealth")
+            } else {
+                defaults.removeObject(forKey: "logsFoodInHealth")
+            }
+        }
+    }
+
     /// iOS dashboard: net deficit (burned − dietary energy from Health), e.g. food from MyFitnessPal via Health.
     @Published var showNetCalories: Bool {
         didSet {
@@ -544,6 +568,9 @@ final class GoalSettings: ObservableObject {
         }
         self.showCalories = defaults.object(forKey: "showCalories") as? Bool ?? true
         self.showSteps = defaults.object(forKey: "showSteps") as? Bool ?? true
+        // Absent key stays nil: an install that predates the onboarding question
+        // has not answered it, which is different from answering "no".
+        self.logsFoodInHealth = defaults.object(forKey: "logsFoodInHealth") as? Bool
         self.showNetCalories = defaults.object(forKey: "showNetCalories") as? Bool ?? false
         self.netDeficitFastingMode = defaults.object(forKey: "netDeficitFastingMode") as? Bool ?? false
         self.showMacros = defaults.object(forKey: "showMacros") as? Bool ?? false

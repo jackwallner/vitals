@@ -2337,6 +2337,7 @@ private struct OnboardingSheet: View {
     private enum Step {
         case welcome
         case goals
+        case food
         case trial
     }
 
@@ -2350,6 +2351,9 @@ private struct OnboardingSheet: View {
     @State private var wantStepGoal = true
     @State private var stepText = "10000"
     @State private var hasRequestedHealthAccess = false
+    /// Answer to the food question, held locally until Continue commits it.
+    @State private var logsFoodChoice: Bool?
+    @State private var isRequestingFoodAccess = false
     @State private var isStartingTrial = false
     @State private var trialError: String?
     /// Emergency fallback: presented only when the onboarding package failed to load,
@@ -2389,6 +2393,7 @@ private struct OnboardingSheet: View {
                             switch step {
                             case .welcome: welcomePage
                             case .goals: goalsPage
+                            case .food: foodPage
                             case .trial: EmptyView()
                             }
                         }
@@ -2546,7 +2551,7 @@ private struct OnboardingSheet: View {
     /// button. The soft exit sits below it, quieter than the trial CTA.
     private var bottomBar: some View {
         VStack(spacing: 12) {
-            aboveButtonContent
+            aboveButtonSlot
 
             primaryButton
 
@@ -2572,11 +2577,21 @@ private struct OnboardingSheet: View {
         .background(Theme.background)
     }
 
+    /// Reserved so the primary button sits at the same y on every page. Each
+    /// page puts something different here (a trust line, nothing, the billing
+    /// disclosure), and letting the slot size to its content is what walked the
+    /// button up and down the screen as the user advanced.
+    private var aboveButtonSlot: some View {
+        aboveButtonContent
+            .frame(minHeight: 46, alignment: .bottom)
+    }
+
     @ViewBuilder
     private var aboveButtonContent: some View {
         switch step {
         case .welcome: welcomeTrustLine
         case .goals: EmptyView()
+        case .food: foodPrivacyLine
         case .trial: trialSoftExitAndDisclosure
         }
     }
@@ -2604,21 +2619,36 @@ private struct OnboardingSheet: View {
                 } else {
                     goals.stepGoal = nil
                 }
-                // Goals are saved, but onboarding continues to the trial step —
-                // don't finish here. The primary stays in the same coral slot.
-                withAnimation(.easeInOut(duration: 0.25)) { step = .trial }
+                // Goals are saved, but onboarding continues. The primary stays
+                // in the same coral slot on every page.
+                withAnimation(.easeInOut(duration: 0.25)) { step = .food }
             } label: {
-                primaryLabel("Continue")
+                primaryLabel("Continue", enabled: calValid && stepValid)
             }
             .disabled(!calValid || !stepValid)
             .opacity(calValid && stepValid ? 1 : 0.5)
+            .padding(.horizontal, 24)
+        case .food:
+            Button {
+                Task { await commitFoodAnswerAndContinue() }
+            } label: {
+                ZStack {
+                    primaryLabel("Continue", enabled: logsFoodChoice != nil && !isRequestingFoodAccess)
+                        .opacity(isRequestingFoodAccess ? 0 : 1)
+                    if isRequestingFoodAccess {
+                        ProgressView().tint(.white)
+                    }
+                }
+            }
+            .disabled(logsFoodChoice == nil || isRequestingFoodAccess)
+            .opacity(logsFoodChoice == nil ? 0.5 : 1)
             .padding(.horizontal, 24)
         case .trial:
             Button {
                 startTrial()
             } label: {
                 ZStack {
-                    primaryLabel(store.onboardingTrialCTALabel, glowing: true)
+                    primaryLabel(store.onboardingTrialCTALabel, enabled: !isStartingTrial && store.conversionCTAReady)
                         .opacity(isStartingTrial || !store.conversionCTAReady ? 0 : 1)
                     if isStartingTrial || !store.conversionCTAReady {
                         ProgressView().tint(.white)
@@ -2628,6 +2658,95 @@ private struct OnboardingSheet: View {
             .disabled(isStartingTrial || !store.conversionCTAReady)
             .padding(.horizontal, 24)
         }
+    }
+
+    // MARK: Food step
+
+    /// Asks the one thing HealthKit will not answer: does this person log food
+    /// anywhere that reaches Apple Health?
+    ///
+    /// Net Deficit and Macros both read dietary data. Pitching them to someone
+    /// who logs nothing sells a permanently empty screen, and the app cannot
+    /// detect that case on its own: read authorization is unreadable by design,
+    /// and an empty dietary query means "denied" and "logs nothing" equally.
+    /// A yes also earns the right to ask for the food types, in a separate sheet
+    /// from the one that carries calories and steps, so a decline here can never
+    /// cost the core app its permissions.
+    private var foodPage: some View {
+        VStack(spacing: 28) {
+            VStack(spacing: 12) {
+                Image(systemName: "fork.knife")
+                    .font(.system(size: 56))
+                    .foregroundStyle(Theme.macrosBrand)
+                Text("Do you log your food?")
+                    .font(.system(.largeTitle, design: .rounded, weight: .bold))
+                    .multilineTextAlignment(.center)
+                Text("In MyFitnessPal, Lose It!, Cronometer, or anything else that saves to Apple Health.")
+                    .font(.system(.subheadline, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            VStack(spacing: 12) {
+                FoodAnswerCard(
+                    title: "Yes, I log my food",
+                    detail: "We'll show your net calories and macros",
+                    icon: "checkmark.circle.fill",
+                    tint: Theme.macrosBrand,
+                    isSelected: logsFoodChoice == true
+                ) {
+                    logsFoodChoice = true
+                }
+                FoodAnswerCard(
+                    title: "No, just track my burn",
+                    detail: "Calories and steps only. You can change this later.",
+                    icon: "flame.fill",
+                    tint: Theme.caloriesPrimary,
+                    isSelected: logsFoodChoice == false
+                ) {
+                    logsFoodChoice = false
+                }
+            }
+        }
+    }
+
+    /// Sits in the same slot as the welcome page's trust line, so the primary
+    /// button does not move between pages.
+    private var foodPrivacyLine: some View {
+        HStack(spacing: 5) {
+            Image(systemName: "lock.fill")
+                .font(.system(size: 10, weight: .semibold))
+                .foregroundStyle(Theme.stepsPrimary)
+            Text("Read-only, and only if you say yes.")
+                .font(.system(.caption2, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(.horizontal, 24)
+        .accessibilityElement(children: .combine)
+    }
+
+    /// Saves the answer, then asks HealthKit for the food types only on a yes.
+    /// The request is deliberately a second, separate sheet: a decline cannot
+    /// touch the calories and steps permission the free app depends on.
+    private func commitFoodAnswerAndContinue() async {
+        guard let choice = logsFoodChoice else { return }
+        goals.logsFoodInHealth = choice
+        if choice {
+            isRequestingFoodAccess = true
+            do {
+                try await HealthKitService.shared.requestDietaryAuthorization()
+            } catch {
+                // A failed or dismissed sheet is not a dead end: the user keeps
+                // the answer they gave, and every food feature re-asks at the
+                // point it is switched on.
+                dashboardLogger.error("Onboarding dietary auth failed: \(String(describing: error), privacy: .public)")
+            }
+            isRequestingFoodAccess = false
+        }
+        withAnimation(.easeInOut(duration: 0.25)) { step = .trial }
     }
 
     private var welcomeTrustLine: some View {
@@ -2704,6 +2823,62 @@ private struct OnboardingSheet: View {
 
     // MARK: Trial step
 
+    /// What the onboarding pitch leads with, decided by the food question.
+    ///
+    /// Net Deficit and Macros are the two strongest features in the tier and the
+    /// two that read as an empty screen to anyone who logs no food. Selling them
+    /// to that person is not a weaker pitch, it is a promise the app cannot keep,
+    /// so they get the three features that work off burn data alone. `nil`
+    /// (installs that predate the question) keeps the old mixed list.
+    private var trialSellingPoints: [TrialPoint] {
+        let netDeficit = TrialPoint(
+            icon: "plus.forwardslash.minus",
+            color: Theme.caloriesPrimary,
+            title: "Net deficit",
+            detail: "Burned minus the food you log"
+        )
+        let macros = TrialPoint(
+            icon: "chart.pie.fill",
+            color: Theme.macrosBrand,
+            title: "Macros",
+            detail: "Protein, carbs, and fat, every day"
+        )
+        let trends = TrialPoint(
+            icon: "chart.line.uptrend.xyaxis",
+            color: Theme.stepsPrimary,
+            title: "Deeper trends",
+            detail: "TDEE, BMR, and period comparisons"
+        )
+        let streaks = TrialPoint(
+            icon: "flame.fill",
+            color: Theme.streakPrimary,
+            title: "Streaks & projections",
+            detail: "Keep the chain and see end-of-day pace"
+        )
+        let reports = TrialPoint(
+            icon: "doc.richtext.fill",
+            color: Theme.netDeficitBrand,
+            title: "Summary reports",
+            detail: "Export a PDF for any date range"
+        )
+
+        switch goals.logsFoodInHealth {
+        case true: return [macros, netDeficit, trends]
+        case false: return [trends, streaks, reports]
+        case nil: return [netDeficit, macros, trends]
+        }
+    }
+
+    private var trialHeadline: String {
+        goals.logsFoodInHealth == false ? "Go further with Vitals+" : "Your food, in the picture"
+    }
+
+    private var trialSubheadline: String {
+        goals.logsFoodInHealth == false
+            ? "Deeper numbers on top of your daily calories and steps."
+            : "Everything you log already, sitting next to what you burn."
+    }
+
     /// Final onboarding step: compact pitch with icon chips + short lines.
     /// Content is vertically centered in the scroll area so the zero-shift CTA
     /// bar below doesn't leave a dead band under the last selling point.
@@ -2717,10 +2892,10 @@ private struct OnboardingSheet: View {
                     .foregroundStyle(Theme.caloriesGradient)
 
                 VStack(spacing: 6) {
-                    Text("Go further with Vitals+")
+                    Text(trialHeadline)
                         .font(.system(.title, design: .rounded, weight: .bold))
                         .multilineTextAlignment(.center)
-                    Text("Extras that sit on top of your daily calories and steps.")
+                    Text(trialSubheadline)
                         .font(.system(.subheadline, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
                         .multilineTextAlignment(.center)
@@ -2728,36 +2903,14 @@ private struct OnboardingSheet: View {
                 }
 
                 VStack(alignment: .leading, spacing: 12) {
-                    TrialSellingPoint(
-                        icon: "plus.forwardslash.minus",
-                        color: Theme.caloriesPrimary,
-                        title: "Net deficit",
-                        detail: "Burned minus food logged in Apple Health"
-                    )
-                    TrialSellingPoint(
-                        icon: "chart.pie.fill",
-                        color: Theme.macrosBrand,
-                        title: "Macros",
-                        detail: "Protein, carbs, and fat from the food you log"
-                    )
-                    TrialSellingPoint(
-                        icon: "flame.fill",
-                        color: Theme.streakPrimary,
-                        title: "Streaks & projections",
-                        detail: "Keep the chain and see end-of-day pace"
-                    )
-                    TrialSellingPoint(
-                        icon: "chart.line.uptrend.xyaxis",
-                        color: Theme.stepsPrimary,
-                        title: "Deeper trends",
-                        detail: "TDEE, BMR, and period comparisons"
-                    )
-                    TrialSellingPoint(
-                        icon: "doc.richtext.fill",
-                        color: Theme.netDeficitBrand,
-                        title: "Summary reports",
-                        detail: "Export a PDF for any date range"
-                    )
+                    ForEach(trialSellingPoints, id: \.title) { point in
+                        TrialSellingPoint(
+                            icon: point.icon,
+                            color: point.color,
+                            title: point.title,
+                            detail: point.detail
+                        )
+                    }
                 }
             }
 
@@ -2793,16 +2946,75 @@ private struct OnboardingSheet: View {
         }
     }
 
-    /// `glowing` is the trial page only: on Welcome and Goals the button is the
-    /// only thing to do, so it needs no help drawing the eye.
-    private func primaryLabel(_ title: String, glowing: Bool = false) -> some View {
+    /// Every onboarding primary carries the same halo. It used to be the trial
+    /// page only, which made the last button look like a different, louder kind
+    /// of thing than the two the user had already pressed. Identical treatment
+    /// on every page is what makes the purchase read as the next step in
+    /// onboarding rather than a sales interruption.
+    private func primaryLabel(_ title: String, enabled: Bool = true) -> some View {
         Text(title)
             .font(.system(.headline, design: .rounded))
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
             .background(Theme.caloriesPrimary, in: RoundedRectangle(cornerRadius: 14))
             .foregroundStyle(.white)
-            .modifier(OptionalCTAGlow(active: glowing))
+            // A halo around a button that cannot be pressed reads as a bug.
+            .modifier(OptionalCTAGlow(active: enabled))
+    }
+}
+
+/// One answer on the food question. A card rather than a radio row: there are
+/// two of them, they are the only thing to do on the page, and they should read
+/// as a choice being offered rather than a form being filled in.
+/// One row of the onboarding pitch. A value type so the list can be chosen by
+/// the food answer instead of hard-coded into the view.
+private struct TrialPoint {
+    let icon: String
+    let color: Color
+    let title: String
+    let detail: String
+}
+
+private struct FoodAnswerCard: View {
+    let title: String
+    let detail: String
+    let icon: String
+    let tint: Color
+    let isSelected: Bool
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            HStack(spacing: 14) {
+                Image(systemName: icon)
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundStyle(isSelected ? tint : Theme.textTertiary)
+                    .frame(width: 28)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(title)
+                        .font(.system(.headline, design: .rounded))
+                        .foregroundStyle(Theme.textPrimary)
+                        .multilineTextAlignment(.leading)
+                    Text(detail)
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 0)
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .strokeBorder(isSelected ? tint : Color.clear, lineWidth: 2)
+            }
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
+        .accessibilityHint(isSelected ? "" : "Double tap to choose")
     }
 }
 
