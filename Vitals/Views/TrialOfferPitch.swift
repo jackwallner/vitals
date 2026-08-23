@@ -64,6 +64,8 @@ struct TrialOfferPitchSheet: View {
     @State private var snapshot: Package?
     @State private var isPurchasing = false
     @State private var errorMessage: String?
+    @State private var isRestoring = false
+    @State private var restoreMessage: String?
     /// Set only on the used-trial pitch, where the user picks a plan. nil means
     /// "the one-tap trial target", which is always yearly.
     @State private var selectedPlanID: String?
@@ -118,6 +120,9 @@ struct TrialOfferPitchSheet: View {
             errorMessage: errorMessage,
             onStartTrial: startPurchase,
             onDismiss: onDismiss,
+            onRestore: startRestore,
+            isRestoring: isRestoring,
+            restoreMessage: restoreMessage,
             // The ladder prints a per-week figure on every row; saying it in the
             // subhead too is the same number twice in one glance.
             perWeekLabel: planOptions.isEmpty ? store.yearlyPackage?.vitalsPricePerWeekLabel : nil,
@@ -160,6 +165,23 @@ struct TrialOfferPitchSheet: View {
             priceLabel: package.vitalsPriceLabel,
             eligibleForTrial: store.isEligibleForIntroOffer(package)
         )
+    }
+
+    /// A restore that says nothing is barely a restore. `restorePurchases`
+    /// already distinguishes "nothing on this Apple ID" from a network failure
+    /// in `store.lastError`; this puts that answer where the user can read it.
+    /// A successful one flips `isPro`, which dismisses the sheet on its own.
+    private func startRestore() {
+        errorMessage = nil
+        restoreMessage = nil
+        isRestoring = true
+        Task { @MainActor in
+            defer { isRestoring = false }
+            await store.restorePurchases()
+            guard !store.isPro else { return }
+            restoreMessage = store.lastError
+                ?? "No active Vitals+ purchase was found for this Apple ID."
+        }
     }
 
     private func startPurchase() {

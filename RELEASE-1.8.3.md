@@ -55,6 +55,14 @@ Added in this staging pass:
   arm; it now carries a VITALS+ eyebrow above the macro card.
 - **Privacy claims match the binary** in all 50 App Store localizations, on the
   marketing site, on the support page, and in the review notes. See below.
+- **Restore reaches every surface that asks for money.** The focused feature
+  pitch had Terms and Privacy but no Restore, so a returning subscriber who
+  reinstalled and met a feature pitch could pay again or leave. Onboarding's
+  Restore was an unobserved `Task` with no visible outcome: a tap did nothing
+  visible unless the entitlement happened to flip. Both report their result now.
+- **Three accessibility fixes on the conversion path.** The paywall close button
+  read as "xmark circle fill" to VoiceOver and is the only way off the paywall;
+  the tab bar never announced which tab was selected.
 - **The conversion record has a timestamp.** `converted_on` held a surface name
   under a key that reads as a date, so a customer record answered "when did they
   convert" with "settings". It is `converted_surface` now, alongside a real
@@ -111,14 +119,23 @@ records them as done-in-source, needing production validation. Its three new
 P0-labelled items, assessed:
 
 - **V-P0-01, `converted_on` is a surface not a timestamp.** Correct. Fixed here.
-- **V-P0-02, "Save 38%" contradicts $6.99 x 12 versus $29.99 (~64%).** Real, but
-  it is not user-facing. The app does not link RevenueCatUI and draws its own
-  paywall; `StoreService.annualSavingsPercent` computes the badge from the live
-  localized prices. The stale 38% lives in the RevenueCat dashboard's hosted
-  paywall template, left from the $1.99 / $14.99 era. Worth cleaning so nobody
-  is misled by the dashboard, not a submission blocker.
-- **V-P0-03, the prior experiment had zero conversions.** Agreed, and see below:
-  it ran for 1h45m.
+- **V-P0-02, "Save 38%" contradicts $6.99 x 12 versus $29.99 (~64%), and the RC
+  paywall shows Lifetime at $29.99 against the repo's $59.99.** Both are real
+  and both are dashboard-only. Checked directly: the ASC price point for
+  `com.jackwallner.vitals.plus.lifetime` in USA is **$59.99**, so the repo, the
+  site and the live listing are right and the RevenueCat paywall template is
+  stale from the $1.99 / $14.99 era. The app does not link RevenueCatUI and
+  draws its own paywall, and `StoreService.annualSavingsPercent` computes the
+  badge from live localized prices, so no customer sees either number. Clean up
+  the dashboard so it stops misleading whoever reads it. Not a blocker.
+- **V-P0-03, the prior experiment had zero conversions.** Disregard. Jack
+  confirms that experiment was an erroneous update, not a real test. It is not
+  evidence of anything and nothing should be indexed on it.
+
+Also checked and cleared: RevenueCat lists six products, three with `*_aug2026`
+identifiers that do not exist in ASC. Those are the Test Store twins on
+`app6302e748f4`, which is what DEBUG builds resolve against. Each package
+carries both the test-store and App Store product. Correct as configured.
 
 ## Do not start the experiment yet
 
@@ -129,8 +146,9 @@ The `feature_led` arm does not exist in RevenueCat. Current state:
 | Vitals+ | `default` | `{"upgrade_tab": "timeline"}` | yes |
 | Upgrade tab · catalog (A/B control) | `upgrade_catalog` | `{"upgrade_tab": "catalog"}` | no |
 
-The previous experiment, "Upgrade tab: timeline vs catalog", ran for 1h45m and
-was stopped with no result.
+The previous experiment, "Upgrade tab: timeline vs catalog", was an erroneous
+update rather than a real test. Ignore its report entirely; it is not a signal
+about either layout.
 
 Two facts decide the sequencing:
 
@@ -175,6 +193,53 @@ not weeks. Options, in order of preference:
 
 Whichever is chosen, `AUDIT823.md`'s conclusion still holds: fix funnel
 integrity first, then measure. The integrity fixes are in this build.
+
+## The rest of AUDIT823, triaged
+
+Worth doing, in this order, after 1.8.3 ships:
+
+1. **First-value timing.** The main onboarding path asks for a subscription
+   before the user has seen a single number of their own, while the passive
+   offer waits for real dashboard data. The product already contains both
+   philosophies; comparing them is the highest-information test available and
+   it runs on onboarding traffic, which is every new customer.
+2. **A placement dimension on impressions.** `trackPaywallImpression(id:)`
+   distinguishes entry points, but conversions do not carry placement, so
+   Upgrade-tab results can be mixed with onboarding, History and Settings
+   pitches. Cheap, and every experiment after this needs it.
+3. **HealthKit state disambiguation.** `.unnecessary` authorization maps to
+   `.accessBlocked`, so a new user with no samples yet can be sent to Settings
+   instead of being told the data has not arrived. A one-second fail-safe also
+   paints literal zeroes on a cold launch with no cache. The core promise of the
+   app is that the number is true.
+4. **Eligible versus exposed for the passive offer.** Setup complete, non-Pro,
+   14-day cooldown, yearly eligibility, Today tab, no covering sheet, real
+   nonzero data, then 1.8s. Record who qualified before changing any of it,
+   otherwise a low trial rate reads as a weak paywall.
+5. **Widget and watch activation as funnel events.** The differentiator is
+   persistent data on the wrist and Home Screen, and nothing records whether a
+   customer ever got there.
+
+Deliberately not doing now:
+
+- **Runtime localization.** No `.xcstrings` anywhere and hardcoded `MMM d` date
+  formats; 50 localized store listings sell an English-only app. Real, large,
+  and not a 1.8.3 item.
+- **Pricing changes.** The audit is right that this is the wrong first move.
+  Yearly at $29.99 sits near the market mode; lifetime at 2x annual is low
+  against the usual 2.5-4x. Revisit once the funnel is measurable.
+- **Onboarding progress indicator and Back.** A usability hypothesis, not a
+  defect. Worth testing, not worth adding blind.
+- **Watch refresh cost and stale watch goals.** Bounded: the watch corrects
+  itself the next time the phone app runs, and the 8-second cancellation guard
+  against the CAROUSEL watchdog is deliberate. Needs telemetry, not a patch.
+- **Crash and hang reporting.** There is no MetricKit or crash provider wired
+  up, so the release-window monitoring contract in the audit has nothing to
+  consume. That is a fleet-level decision, not a Vitals release task.
+- **Agent-docs restructure.** One concrete pointer is broken:
+  `archive/README.md` sends agents to a top-level `README.md` that does not
+  exist, and `docs/localization-aso.md` reads as current while describing a
+  1.5.3 draft from May. Worth a dated status header pass; not now.
 
 ## Before submitting
 

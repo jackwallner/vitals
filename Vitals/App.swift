@@ -1618,6 +1618,14 @@ struct TrialOfferSheet: View {
     let errorMessage: String?
     let onStartTrial: () -> Void
     let onDismiss: () -> Void
+    /// Restore belongs on every surface that asks for money. A returning
+    /// subscriber who reinstalls meets this sheet before they ever reach the
+    /// Upgrade tab, and without it their only options were to pay again or
+    /// leave. Terms and Privacy were already here; Restore was the one missing.
+    var onRestore: () -> Void = {}
+    var isRestoring: Bool = false
+    /// Outcome of the last restore. Nil until one runs.
+    var restoreMessage: String?
 
     /// Per-week equivalent of the yearly price. Only used when there is no trial
     /// left to pitch, where price framing is the whole argument.
@@ -1870,7 +1878,21 @@ struct TrialOfferSheet: View {
                     .buttonStyle(.plain)
                     .disabled(isPurchasing)
 
+                    if let restoreMessage {
+                        Text(restoreMessage)
+                            .font(.system(.caption2, design: .rounded))
+                            .foregroundStyle(Theme.textSecondary)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+
                     HStack(spacing: 4) {
+                        Button(action: onRestore) {
+                            Text(isRestoring ? "Restoring…" : "Restore")
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(isRestoring || isPurchasing)
+                        Text("·")
                         Link("Terms", destination: PaywallLinks.standardEULA)
                         Text("·")
                         Link("Privacy Policy", destination: PaywallLinks.privacyPolicy)
@@ -2265,6 +2287,9 @@ private struct TabButton: View {
             )
         }
         .buttonStyle(.plain)
+        // The tint and the capsule say which tab is current to anyone who can
+        // see them. VoiceOver was told nothing.
+        .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
         .animation(.easeInOut(duration: 0.2), value: isSelected)
     }
 }

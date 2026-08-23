@@ -631,6 +631,9 @@ struct PaywallView: View {
                         .padding(16)
                 }
                 .buttonStyle(.plain)
+                // Unlabelled, VoiceOver read this as "xmark circle fill", which
+                // is the only way off the paywall for a nonvisual user.
+                .accessibilityLabel("Close")
             }
             Spacer()
         }
