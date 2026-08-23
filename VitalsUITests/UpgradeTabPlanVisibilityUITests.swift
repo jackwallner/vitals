@@ -21,6 +21,17 @@ final class UpgradeTabPlanVisibilityUITests: XCTestCase {
         assertEveryPlanIsClearOfTheCTA(variant: "feature_led")
     }
 
+    func testMaintenanceLedVariantShowsEveryPlanAboveTheButton() {
+        assertEveryPlanIsClearOfTheCTA(variant: "maintenance_led")
+    }
+
+    /// The ten-feature arm is the 1.8.2 pitch minus its defect. 1.8.2 pushed
+    /// Lifetime below the fold with this list; if that happens again the arm is
+    /// not testing list length, it is re-testing the bug.
+    func testFullListVariantStillShowsEveryPlanAboveTheButton() {
+        assertEveryPlanIsClearOfTheCTA(variant: "full_list")
+    }
+
     /// A value the dashboard can send that this binary does not know must still
     /// produce a complete, buyable paywall rather than a broken one.
     func testUnknownVariantFallsBackToACompletePaywall() {
