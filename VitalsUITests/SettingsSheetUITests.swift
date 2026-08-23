@@ -212,11 +212,16 @@ final class SettingsSheetUITests: XCTestCase {
     /// subscript lookups rather than a tree-text search, because the section
     /// footer prose mentions "Calorie Split" and would match a substring test
     /// even when the toggle is correctly hidden.
+    /// Scrolls until every label has been seen, rather than a fixed number of
+    /// times. A drag is a real gesture and the simulator drops one occasionally
+    /// under machine load; with a fixed count that lands as "the last two rows
+    /// of the longest sheet are missing", which reads as a product bug and is
+    /// not one. Stopping early on success also keeps the common case fast.
     private func walk(
         _ app: XCUIApplication,
         prefix: String,
         labels: [String],
-        frames: Int = 10
+        frames: Int = 20
     ) -> Set<String> {
         let form = app.collectionViews.firstMatch.exists
             ? app.collectionViews.firstMatch
@@ -230,6 +235,7 @@ final class SettingsSheetUITests: XCTestCase {
                     found.insert(label)
                 }
             }
+            if found.count == labels.count { break }
             if index < frames { scrollStep(form) }
         }
         return found

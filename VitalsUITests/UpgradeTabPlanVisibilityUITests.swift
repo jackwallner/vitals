@@ -2,22 +2,29 @@ import XCTest
 
 /// Every plan the Upgrade tab sells has to be on screen when the tab opens.
 ///
-/// Both A/B layouts pin the purchase button below a scrolling pitch, and the
-/// timeline variant spends ~190pt explaining the trial before it gets to the
-/// plans. On an iPhone 17 Pro that pushed the Lifetime row 59pt past the
-/// viewport: it rendered, it was in the accessibility tree, and it was only
-/// reachable if the user guessed the pitch scrolled. A one-off plan nobody can
-/// see is a plan nobody buys, so the geometry is asserted rather than eyeballed.
+/// Every layout pins the purchase button below a scrolling pitch, and a pitch
+/// that grows past the viewport pushes the last plan under the fold. That is
+/// how the Lifetime row came to sit 59pt below the viewport on an iPhone 17 Pro:
+/// rendered, in the accessibility tree, and reachable only by guessing that the
+/// pitch scrolled. A one-off plan nobody can see is a plan nobody buys, so the
+/// geometry is asserted rather than eyeballed, for every arm the dashboard can
+/// select and for values it might send that this build does not know.
 final class UpgradeTabPlanVisibilityUITests: XCTestCase {
 
     private static let plans = ["Yearly", "Monthly", "Lifetime"]
 
-    func testTimelineVariantShowsEveryPlanAboveTheButton() {
-        assertEveryPlanIsClearOfTheCTA(variant: "timeline")
-    }
-
     func testCatalogVariantShowsEveryPlanAboveTheButton() {
         assertEveryPlanIsClearOfTheCTA(variant: "catalog")
+    }
+
+    func testFeatureLedVariantShowsEveryPlanAboveTheButton() {
+        assertEveryPlanIsClearOfTheCTA(variant: "feature_led")
+    }
+
+    /// A value the dashboard can send that this binary does not know must still
+    /// produce a complete, buyable paywall rather than a broken one.
+    func testUnknownVariantFallsBackToACompletePaywall() {
+        assertEveryPlanIsClearOfTheCTA(variant: "some_unshipped_layout")
     }
 
     private func assertEveryPlanIsClearOfTheCTA(

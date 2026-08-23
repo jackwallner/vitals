@@ -823,10 +823,13 @@ private struct MacroPitchCard: View {
         let tint: Color
     }
 
+    // Theme.macroColor, not hand-picked tints: the pitch shows the dashboard
+    // component, so protein/carbs/fat have to be the same blue/amber/orchid the
+    // real card uses. Picking colours by eye here had carbs coming out green.
     private let macros = [
-        Macro(grams: 142, name: "protein", tint: Theme.macrosBrand),
-        Macro(grams: 186, name: "carbs", tint: Theme.streakPrimary),
-        Macro(grams: 61, name: "fat", tint: Theme.netDeficitBrand),
+        Macro(grams: 142, name: "protein", tint: Theme.macroColor(.protein)),
+        Macro(grams: 186, name: "carbs", tint: Theme.macroColor(.carbs)),
+        Macro(grams: 61, name: "fat", tint: Theme.macroColor(.fat)),
     ]
 
     var body: some View {
