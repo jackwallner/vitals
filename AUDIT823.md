@@ -1042,3 +1042,44 @@ Every non-current document should begin with `Status`, `Last verified`, `Owner`,
 ## Vitals addendum conclusion
 
 The free Watch, widget, and total-burn wedge is strong enough to support more downloads, but Vitals needs commercial truth and funnel truth before optimizing harder. The most urgent implementation items are the `converted_on` schema defect, the live versus local price and savings reconciliation, the invalid zero-data experiment, and a joined install-to-entitlement measurement contract. Once those are fixed, test first value timing and intent-specific paywalls, then use ASC acquisition and mature RevenueCat cohorts to decide which surface actually improves revenue without degrading the free product experience.
+
+## Activity and success context, 2026-08-23
+
+Classification: **growing acquisition, monetizing, conversion softening**. Confidence: **high**. Trend: **acquisition growing, conversion softening**.
+
+ASC release state: `iOS 1.8.2 Ready for Distribution`. ASC evidence: [Analytics Overview](https://appstoreconnect.apple.com/apps/6761743504/analytics/overview?dateSpec=d90), selected range `dateSpec=d90`.
+RevenueCat evidence: [Project Overview](https://app.revenuecat.com/projects/d0d314f5/overview), production mode, selected range `Last 28 days, 2026-07-27 through 2026-08-23`.
+
+### Observed activity
+
+| Source | Metric | Value | Window or comparison |
+| --- | --- | ---: | --- |
+| ASC | First-time downloads | 1140 | 90-day Analytics Overview |
+| ASC | Redownloads | 142 | 90-day Analytics Overview |
+| ASC | Conversion rate | 5.88% | comparison -23.4% |
+| ASC | Proceeds | $834 | 90-day Analytics Overview |
+| ASC | In-app purchases | 228 | 90-day Analytics Overview |
+| RevenueCat | New customers | 588 | last 28 days |
+| RevenueCat | Active customers | 1092 | last 28 days |
+| RevenueCat | Active trials | 22 | current total |
+| RevenueCat | Active subscriptions | 56 | current total |
+| RevenueCat | MRR | $87 | current total |
+| RevenueCat | Revenue | $551 | last 28 days |
+
+A missing value above means the source did not expose that metric in this read-only snapshot. It is not a zero.
+
+### Interpretation and implementation focus
+
+Vitals is the strongest current commercial engine in the fleet snapshot. ASC shows 1,140 first-time downloads, +330% versus the comparison, 5.88% conversion with a -23.4% comparison, $834 proceeds with +760%, and 228 in-app purchases. RevenueCat shows 588 new customers, 1,092 active customers, 22 active trials, 56 active subscriptions, $87 MRR, and $551 revenue in the last 28 days. The correct priority is conversion and cohort truth: keep the acquisition wedge, repair the known commercial and experiment instrumentation issues, and use mature trial cohorts to improve trial starts without damaging the free Watch and widget experience.
+
+The deterministic classifier recommends: Prioritize first-value and trial-start instrumentation, then test the paywall or native purchase surface with mature conversion cohorts.
+
+- Join ASC first-time download, first launch, first value, paywall shown, offer loaded, trial started, trial canceled, trial converted, entitlement active, restore, and purchase failure events with the app version and build.
+- Keep ASC's 90-day acquisition and proceeds window separate from RevenueCat's 28-day customer and revenue window. Do not calculate a conversion rate by dividing values from different windows.
+- Use a mature trial cohort and a minimum sample before choosing a native paywall or onboarding A/B winner. Record the offering identifier, package, placement, experiment variant, and build.
+- Put the app's classification and the next baseline date in the release handoff so Cursor, Claude, and Codex do not optimize from an old qualitative audit.
+
+### Boundary on success or death
+
+This snapshot supports the label **growing acquisition, monetizing, conversion softening**, not a lifetime verdict. Acquisition or paid conversion is rising, while ASC conversion rate is moving down. A later decision should include a clean 28-day RevenueCat trend, ASC acquisition and conversion trend, ratings and review count, crash and hang evidence, and a release-specific cohort.
+This dated section supersedes earlier statements in this file that per-app ASC or RevenueCat activity was unavailable as of 2026-08-23. Earlier statements remain historical evidence boundaries for their original audit pass.
