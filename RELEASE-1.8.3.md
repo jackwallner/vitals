@@ -55,13 +55,24 @@ Added in this staging pass:
   arm; it now carries a VITALS+ eyebrow above the macro card.
 - **Privacy claims match the binary** in all 50 App Store localizations, on the
   marketing site, on the support page, and in the review notes. See below.
+- **The conversion record has a timestamp.** `converted_on` held a surface name
+  under a key that reads as a date, so a customer record answered "when did they
+  convert" with "settings". It is `converted_surface` now, alongside a real
+  ISO 8601 `converted_at`.
 
 ## Test state
 
-- `Vitals` scheme: **105 unit tests, 0 failures.**
-- `VitalsUITests` scheme: 24 tests. The one failure across two full runs was
-  `testFeatureLedVariantShowsEveryPlanAboveTheButton`, which was correct: the
-  feature-led arm never rendered the string "Vitals+". Fixed, not silenced.
+- `Vitals` scheme: **106 unit tests, 0 failures.**
+- `VitalsUITests` scheme: **24 tests, 0 failures**, on a freshly rebooted
+  simulator with nothing else running.
+
+The one real failure found along the way was
+`testFeatureLedVariantShowsEveryPlanAboveTheButton`, reproducing across two full
+runs: the feature-led arm never rendered the string "Vitals+". Fixed, not
+silenced. Every other intermittent failure traced to machine load, and one run
+was invalidated outright by the simulator dying ("Invalid device state",
+`(ipc/mig) server died`) after a second test process was pointed at the same
+device. Do not run two xcodebuild test invocations against one leased UDID.
 
 New coverage added here:
 
@@ -90,6 +101,24 @@ notes. Every localized description is still under the 4,000-character limit.
 answers say "Data Not Collected". RevenueCat receives an anonymous app user ID
 plus purchase and entitlement data, so that questionnaire needs updating before
 submission.
+
+## A second audit pass landed mid-session
+
+Another session appended a Vitals addendum to `AUDIT823.md` (it is 1,044 lines
+now, not the 429 this work started from) and committed it as `89c4096`. It
+reviewed the purchase-state and CTA fixes while they were in progress and
+records them as done-in-source, needing production validation. Its three new
+P0-labelled items, assessed:
+
+- **V-P0-01, `converted_on` is a surface not a timestamp.** Correct. Fixed here.
+- **V-P0-02, "Save 38%" contradicts $6.99 x 12 versus $29.99 (~64%).** Real, but
+  it is not user-facing. The app does not link RevenueCatUI and draws its own
+  paywall; `StoreService.annualSavingsPercent` computes the badge from the live
+  localized prices. The stale 38% lives in the RevenueCat dashboard's hosted
+  paywall template, left from the $1.99 / $14.99 era. Worth cleaning so nobody
+  is misled by the dashboard, not a submission blocker.
+- **V-P0-03, the prior experiment had zero conversions.** Agreed, and see below:
+  it ran for 1h45m.
 
 ## Do not start the experiment yet
 

@@ -54,7 +54,7 @@ final class ConversionDiagnosticsTests: XCTestCase {
         ConversionDiagnostics.recordPitchView(impressionID: "vitals_trial_sheet")
 
         let attributes = ConversionDiagnostics.subscriberAttributes
-        XCTAssertEqual(attributes["converted_on"], "trial_offer_settings")
+        XCTAssertEqual(attributes["converted_surface"], "trial_offer_settings")
         XCTAssertEqual(attributes["pitch_views_at_convert"], "2")
         XCTAssertEqual(attributes["converted_plan"], "yearly")
         XCTAssertEqual(attributes["converted_with_trial"], "true")
@@ -69,7 +69,7 @@ final class ConversionDiagnosticsTests: XCTestCase {
         ConversionDiagnostics.recordConversion(plan: "lifetime", startedTrial: false)
 
         let attributes = ConversionDiagnostics.subscriberAttributes
-        XCTAssertEqual(attributes["converted_on"], "onboarding_trial")
+        XCTAssertEqual(attributes["converted_surface"], "onboarding_trial")
         XCTAssertEqual(attributes["converted_plan"], "yearly")
     }
 
@@ -133,6 +133,23 @@ final class ConversionDiagnosticsTests: XCTestCase {
         let attributes = ConversionDiagnostics.subscriberAttributes
         XCTAssertEqual(attributes["converted_variant"], "catalog")
         XCTAssertEqual(attributes["converted_offering"], "default")
+    }
+
+    /// `converted_on` was a surface name under a key that reads as a date, so a
+    /// customer record answered "when did they convert" with "settings". The
+    /// surface keeps its own name now and the timestamp is a real one.
+    func testConversionRecordsWhenItHappenedAndNotJustWhere() {
+        ConversionDiagnostics.recordPitchView(impressionID: "vitals_upgrade_tab")
+        ConversionDiagnostics.recordConversion(plan: "yearly", startedTrial: true)
+
+        let attributes = ConversionDiagnostics.subscriberAttributes
+        XCTAssertEqual(attributes["converted_surface"], "upgrade_tab")
+        XCTAssertNil(attributes["converted_on"], "the misleading key is gone, not aliased")
+
+        let stamp = try? XCTUnwrap(attributes["converted_at"])
+        let parsed = ISO8601DateFormatter().date(from: stamp ?? "")
+        XCTAssertNotNil(parsed, "converted_at is not an ISO 8601 date")
+        XCTAssertEqual(parsed?.timeIntervalSinceNow ?? -999, 0, accuracy: 60)
     }
 
     func testDaysToConvertIsZeroOnTheSameDay() {
