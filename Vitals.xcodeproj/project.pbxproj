@@ -122,6 +122,7 @@
 		93B99EBF212EE7E85A345BFB /* VitalsConversionCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1FB17511E85720FB3545D /* VitalsConversionCopy.swift */; };
 		97B3284F672341E171AA3828 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEC52C3FC9793813DF64549 /* DashboardView.swift */; };
 		9880A24EDD14087BBC276BBE /* EnergyAveragesCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B9D5B798B90EA3B5158572 /* EnergyAveragesCalculator.swift */; };
+		9BA0D25F3528A301256B8E60 /* OnboardingCTARecoveryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBA801C032B8DF467FA454C /* OnboardingCTARecoveryUITests.swift */; };
 		9D87A125DF44027A99B6F95C /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = B90E4BEF66FC94CCEA5F5D95 /* RevenueCat */; };
 		9DA14BC972DC45C3EC7073C4 /* TrialOfferPitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7DCA825A17AEC469980F76 /* TrialOfferPitch.swift */; };
 		9DBD04B252D8A3D651BF2F8C /* EnergyAveragesWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB235A6D847F3D1830DA435E /* EnergyAveragesWidget.swift */; };
@@ -297,6 +298,7 @@
 		68D384451ACF54F71FE10F85 /* ConversionDiagnosticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionDiagnosticsTests.swift; sourceTree = "<group>"; };
 		6AD1F7952BC07A36A06B012B /* VitalsUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = VitalsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D5166BB647E86A840CBAEF3 /* HealthKitSeeder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitSeeder.swift; sourceTree = "<group>"; };
+		6DBA801C032B8DF467FA454C /* OnboardingCTARecoveryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCTARecoveryUITests.swift; sourceTree = "<group>"; };
 		70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthRecord.swift; sourceTree = "<group>"; };
 		76684FF138F58C3A58A97320 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		76B5DAB758DDA2F38199CF3E /* SupportMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportMail.swift; sourceTree = "<group>"; };
@@ -428,6 +430,7 @@
 			isa = PBXGroup;
 			children = (
 				5A524F44F2C81B258D1BBE67 /* HealthKitLabUITests.swift */,
+				6DBA801C032B8DF467FA454C /* OnboardingCTARecoveryUITests.swift */,
 				9D69AA5CE048C7FF360D80A3 /* OnboardingFlowUITests.swift */,
 				2B294CC1AD718FCB854BF56D /* SeededHealthFlowUITests.swift */,
 				A4FB7AAE4A4403268B8E315F /* SettingsSheetUITests.swift */,
@@ -982,6 +985,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC4CC88A6ACE68D5ED34C6FE /* HealthKitLabUITests.swift in Sources */,
+				9BA0D25F3528A301256B8E60 /* OnboardingCTARecoveryUITests.swift in Sources */,
 				E301042E1AFB8011E2FD493C /* OnboardingFlowUITests.swift in Sources */,
 				00AB9266458E4142789A8A77 /* SeededHealthFlowUITests.swift in Sources */,
 				E1550A6559100C2DEE281115 /* SettingsSheetUITests.swift in Sources */,

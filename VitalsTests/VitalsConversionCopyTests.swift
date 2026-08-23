@@ -220,4 +220,23 @@ final class VitalsConversionCopyTests: XCTestCase {
             "Unlock Lifetime"
         )
     }
+
+    /// A deferred transaction is neither a success nor a failure, and the copy
+    /// has to say so without promising access that is not there yet, and
+    /// without naming a trial the customer was never eligible for.
+    func testPendingCopyPromisesNothingItCannotDeliver() {
+        let eligible = VitalsConversionCopy.purchasePendingMessage(eligibleForTrial: true)
+        XCTAssertTrue(eligible.contains("trial"))
+        XCTAssertTrue(eligible.contains("Waiting"))
+
+        let ineligible = VitalsConversionCopy.purchasePendingMessage(eligibleForTrial: false)
+        XCTAssertFalse(ineligible.lowercased().contains("trial"),
+                       "promised a trial to someone who has already used theirs")
+    }
+
+    /// The unavailable message is about reachability, not about the customer
+    /// having done something wrong.
+    func testUnavailableCopyPointsAtTheConnection() {
+        XCTAssertTrue(VitalsConversionCopy.purchaseUnavailableMessage.contains("connection"))
+    }
 }

@@ -37,10 +37,25 @@ enum RevenueCatConfig {
     static let proEntitlementIdentifier = "Total Calories - Daily Tracker Vitals+"
 }
 
+/// What actually happened when the customer tapped buy.
+///
+/// `pending` and `unavailable` are deliberately not folded into `purchased`.
+/// A deferred transaction (Ask to Buy, SCA challenge, a StoreKit queue that has
+/// not settled) is not an entitlement, and a build that cannot reach RevenueCat
+/// never presented a purchase at all. Treating either as success dismisses the
+/// pitch on someone who has no access, and counts a conversion that did not
+/// happen — which corrupts the numerator of every paywall experiment.
 enum PurchaseState {
+    /// The expected entitlement is active right now.
     case purchased
+    /// The user backed out of Apple's confirm sheet.
     case cancelled
+    /// StoreKit accepted the transaction but the entitlement is not active yet.
+    /// The purchase surface must stay up and say so.
     case pending
+    /// Purchases cannot run in this process (RevenueCat is not configured).
+    /// Callers should route to a surface that can recover, not report success.
+    case unavailable
 }
 
 enum RevenueCatPackageKind: Int {
@@ -307,6 +322,14 @@ final class StoreService: NSObject, ObservableObject {
         configureIfNeeded()
         isLoadingProducts = true
         defer { isLoadingProducts = false }
+        #if DEBUG
+        if DebugLaunchConfig.failProductLoad {
+            currentOffering = nil
+            products = []
+            lastError = "Couldn't load subscription options. Check your connection and try again."
+            return
+        }
+        #endif
         guard isConfigured else { return }
         do {
             let offerings = try await Purchases.shared.offerings()
@@ -504,8 +527,17 @@ final class StoreService: NSObject, ObservableObject {
         #if DEBUG
         if ScreenshotConfig.isEnabled { return }
         #endif
-        let attributes = ConversionDiagnostics.subscriberAttributes
+        var attributes = ConversionDiagnostics.subscriberAttributes
         guard !attributes.isEmpty else { return }
+        // Which arm this customer is actually rendering. RevenueCat splits the
+        // experiment by offering on its own, but that says which offering they
+        // were assigned, not which layout this binary knew how to draw: a build
+        // older than the arm falls back to catalog and would otherwise be
+        // counted as having seen the treatment.
+        attributes["paywall_variant"] = upgradeTabVariant.rawValue
+        if let offering = currentOffering?.identifier {
+            attributes["offering_id"] = offering
+        }
         Purchases.shared.attribution.setAttributes(attributes)
     }
 
@@ -515,6 +547,10 @@ final class StoreService: NSObject, ObservableObject {
 
     func purchaseFailedMessage(for package: Package) -> String {
         VitalsConversionCopy.purchaseFailedMessage(eligibleForTrial: isEligibleForIntroOffer(package))
+    }
+
+    func purchasePendingMessage(for package: Package) -> String {
+        VitalsConversionCopy.purchasePendingMessage(eligibleForTrial: isEligibleForIntroOffer(package))
     }
 
     /// Reports a custom-paywall impression to RevenueCat so the native paywall
@@ -551,7 +587,7 @@ final class StoreService: NSObject, ObservableObject {
     @discardableResult
     func purchase(_ product: Package) async throws -> PurchaseState {
         configureIfNeeded()
-        guard isConfigured else { return .pending }
+        guard isConfigured else { return .unavailable }
         purchaseInFlight = true
         defer { purchaseInFlight = false }
 
@@ -561,18 +597,24 @@ final class StoreService: NSObject, ObservableObject {
         if result.userCancelled {
             return .cancelled
         }
+        // The entitlement check gates the conversion record, not the other way
+        // round. A deferred transaction that later fails would otherwise be
+        // frozen into the funnel as a sale, and there is no second write to
+        // take it back: recordConversion only ever records the first one.
+        guard result.customerInfo.hasVitalsProEntitlement else {
+            syncConversionAttributes()
+            return .pending
+        }
         // Freeze what the funnel looked like at the moment of sale: which
         // surface was last on screen, and how many pitches came before it.
         ConversionDiagnostics.recordConversion(
             plan: String(describing: product.vitalsPackageKind),
-            startedTrial: startedTrial
+            startedTrial: startedTrial,
+            variant: upgradeTabVariant.rawValue,
+            offeringID: currentOffering?.identifier
         )
         syncConversionAttributes()
-        if result.customerInfo.hasVitalsProEntitlement {
-            return .purchased
-        } else {
-            return .pending
-        }
+        return .purchased
     }
 
     /// Re-checks RevenueCat customer info so cancellations / billing failures flip `isPro` off promptly.

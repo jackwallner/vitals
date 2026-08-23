@@ -37,7 +37,13 @@ final class SeededHealthFlowUITests: XCTestCase {
 
         app.buttons["Today"].tap()
         openSettings(in: app)
-        XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 10))
+        // 10s was too tight for a sheet presentation at the end of a long walk:
+        // this is the slowest path in the suite and a loaded simulator spends
+        // most of that budget on the transition alone.
+        XCTAssertTrue(
+            app.navigationBars["Settings"].waitForExistence(timeout: 30),
+            "Settings sheet never presented"
+        )
         let form = app.collectionViews.firstMatch.exists
             ? app.collectionViews.firstMatch
             : app.tables.firstMatch

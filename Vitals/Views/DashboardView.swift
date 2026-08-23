@@ -2356,6 +2356,9 @@ private struct OnboardingSheet: View {
     @State private var isRequestingFoodAccess = false
     @State private var isStartingTrial = false
     @State private var trialError: String?
+    /// Set when the trial CTA has waited long enough for RevenueCat that a
+    /// spinner is no longer an honest answer. See `trialCTAWaitLimit`.
+    @State private var trialCTAWaitExpired = false
     /// Emergency fallback: presented only when the onboarding package failed to load,
     /// so the primary CTA is never a dead disabled button.
     @State private var showPaywallFallback = false
@@ -2386,6 +2389,17 @@ private struct OnboardingSheet: View {
                                 return
                             }
                             store.trackPaywallImpression(id: "vitals_onboarding_trial", oncePerSession: true)
+                        }
+                        .task(id: store.conversionCTAReady) {
+                            guard !store.conversionCTAReady else { return }
+                            // One more fetch before giving up: the warm-up in
+                            // the parent `.task` may have run while the device
+                            // was still offline.
+                            if store.products.isEmpty { await store.fetchProducts() }
+                            guard !store.conversionCTAReady else { return }
+                            try? await Task.sleep(for: Self.trialCTAWaitLimit)
+                            guard !Task.isCancelled else { return }
+                            trialCTAWaitExpired = true
                         }
                 } else {
                     ScrollView {
@@ -2648,14 +2662,14 @@ private struct OnboardingSheet: View {
                 startTrial()
             } label: {
                 ZStack {
-                    primaryLabel(store.onboardingTrialCTALabel, enabled: !isStartingTrial && store.conversionCTAReady)
-                        .opacity(isStartingTrial || !store.conversionCTAReady ? 0 : 1)
-                    if isStartingTrial || !store.conversionCTAReady {
+                    primaryLabel(trialCTALabel, enabled: !isStartingTrial && trialCTAEnabled)
+                        .opacity(isStartingTrial || !trialCTAEnabled ? 0 : 1)
+                    if isStartingTrial || !trialCTAEnabled {
                         ProgressView().tint(.white)
                     }
                 }
             }
-            .disabled(isStartingTrial || !store.conversionCTAReady)
+            .disabled(isStartingTrial || !trialCTAEnabled)
             .padding(.horizontal, 24)
         }
     }
@@ -2923,6 +2937,9 @@ private struct OnboardingSheet: View {
     /// PaywallView only when products failed to load, never a dead button.
     private func startTrial() {
         guard let package = store.onboardingTrialPackage else {
+            // No package means products never loaded. The full paywall owns the
+            // retry and error UI, so hand the user to it rather than leaving
+            // them on a button that cannot do anything.
             showPaywallFallback = true
             return
         }
@@ -2934,16 +2951,44 @@ private struct OnboardingSheet: View {
             do {
                 // StoreKit grants the trial only when this customer is eligible.
                 switch try await store.purchase(package) {
-                case .purchased, .pending:
+                case .purchased:
                     finishOnboarding()
+                case .pending:
+                    // Not an entitlement. Keep the pitch on screen and say what
+                    // is happening; `onChange(of: store.isPro)` finishes
+                    // onboarding by itself if the transaction later clears.
+                    trialError = store.purchasePendingMessage(for: package)
                 case .cancelled:
                     trialError = store.purchaseCancelledMessage(for: package)
+                case .unavailable:
+                    showPaywallFallback = true
                 }
             } catch {
                 await store.refreshIntroEligibility()
                 trialError = store.lastError ?? store.purchaseFailedMessage(for: package)
             }
         }
+    }
+
+    /// How long the trial CTA will show a spinner before it admits that products
+    /// are not coming. Long enough to cover an ordinary cold StoreKit fetch,
+    /// short enough that a RevenueCat or network failure does not read as a
+    /// hung app on the highest-intent screen in onboarding.
+    private static let trialCTAWaitLimit = Duration.seconds(6)
+
+    /// The CTA is live once RevenueCat has named the action, and live *anyway*
+    /// once the wait limit passes. A disabled spinner with no timeout turns a
+    /// transient product-load failure into a dead end: the fallback route in
+    /// `startTrial()` is behind this button, so the button has to be pressable
+    /// for the user to ever reach it.
+    private var trialCTAEnabled: Bool {
+        store.conversionCTAReady || trialCTAWaitExpired
+    }
+
+    /// Never promises a trial the store has not confirmed. Once the wait expires
+    /// without products, the button stops naming a price it does not know.
+    private var trialCTALabel: String {
+        store.conversionCTAReady ? store.onboardingTrialCTALabel : "See Vitals+ Plans"
     }
 
     /// Every onboarding primary carries the same halo. It used to be the trial

@@ -22,9 +22,21 @@ enum DebugLaunchConfig {
     static var forceSetupComplete: Bool {
         ProcessInfo.processInfo.environment["VITALS_FORCE_SETUP_COMPLETE"] == "1"
     }
+
+    /// Make the offerings fetch fail the way a dead network or a RevenueCat
+    /// outage makes it fail. `VITALS_FAIL_PRODUCT_LOAD=1`.
+    ///
+    /// The dead end this reproduces is not hypothetical: with no packages the
+    /// onboarding CTA had no label, no enabled state and no route out, so the
+    /// only recovery path in the app sat behind a button nobody could press.
+    /// A switch is the only way to assert the recovery in a test.
+    static var failProductLoad: Bool {
+        ProcessInfo.processInfo.environment["VITALS_FAIL_PRODUCT_LOAD"] == "1"
+    }
 #else
     static var upgradeTabOverride: PaywallUIVariant? { nil }
     static var seedHealth: Bool { false }
     static var forceSetupComplete: Bool { false }
+    static var failProductLoad: Bool { false }
 #endif
 }

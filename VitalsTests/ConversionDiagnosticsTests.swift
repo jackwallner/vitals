@@ -88,6 +88,53 @@ final class ConversionDiagnosticsTests: XCTestCase {
         }
     }
 
+    /// Which arm produced the sale has to be frozen alongside it. RevenueCat
+    /// reports the offering a customer was *assigned*; this records the layout
+    /// the binary actually drew, and those differ whenever a build predates the
+    /// arm and falls back to catalog.
+    func testConversionRecordsTheVariantAndOfferingThatProducedIt() {
+        ConversionDiagnostics.recordPitchView(impressionID: "vitals_upgrade_tab")
+        ConversionDiagnostics.recordConversion(
+            plan: "yearly",
+            startedTrial: true,
+            variant: "feature_led",
+            offeringID: "upgrade_feature_led"
+        )
+
+        let attributes = ConversionDiagnostics.subscriberAttributes
+        XCTAssertEqual(attributes["converted_variant"], "feature_led")
+        XCTAssertEqual(attributes["converted_offering"], "upgrade_feature_led")
+    }
+
+    /// The arm is optional so every existing call site keeps compiling and
+    /// keeps recording. A conversion with no arm must not invent one.
+    func testConversionWithoutAVariantReportsNoVariant() {
+        ConversionDiagnostics.recordPitchView(impressionID: "vitals_trial_sheet")
+        ConversionDiagnostics.recordConversion(plan: "monthly", startedTrial: false)
+
+        let attributes = ConversionDiagnostics.subscriberAttributes
+        XCTAssertNil(attributes["converted_variant"])
+        XCTAssertNil(attributes["converted_offering"])
+        XCTAssertEqual(attributes["converted_plan"], "monthly")
+    }
+
+    /// Only the first conversion is ever written, and that rule has to hold for
+    /// the arm too: a plan change months later must not relabel the sale as
+    /// having come from whatever offering is current then.
+    func testASecondConversionDoesNotRewriteTheVariant() {
+        ConversionDiagnostics.recordPitchView(impressionID: "vitals_upgrade_tab")
+        ConversionDiagnostics.recordConversion(
+            plan: "yearly", startedTrial: true, variant: "catalog", offeringID: "default"
+        )
+        ConversionDiagnostics.recordConversion(
+            plan: "lifetime", startedTrial: false, variant: "feature_led", offeringID: "other"
+        )
+
+        let attributes = ConversionDiagnostics.subscriberAttributes
+        XCTAssertEqual(attributes["converted_variant"], "catalog")
+        XCTAssertEqual(attributes["converted_offering"], "default")
+    }
+
     func testDaysToConvertIsZeroOnTheSameDay() {
         ConversionDiagnostics.recordPitchView(impressionID: "vitals_trial_offer_launch")
         ConversionDiagnostics.recordConversion(plan: "monthly", startedTrial: false)

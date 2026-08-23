@@ -41,6 +41,8 @@ enum ConversionDiagnostics {
         static let daysToConvert = "conv.daysToConvert"
         static let convertedPlan = "conv.convertedPlan"
         static let convertedWithTrial = "conv.convertedWithTrial"
+        static let convertedVariant = "conv.convertedVariant"
+        static let convertedOffering = "conv.convertedOffering"
     }
 
     /// Impression ids all carry an app prefix that says nothing once they are
@@ -71,13 +73,27 @@ enum ConversionDiagnostics {
     ///
     /// Only the *first* conversion is recorded: a renewal or a plan change is
     /// not a new answer to "what sold this person".
-    static func recordConversion(plan: String, startedTrial: Bool) {
+    /// - Parameters:
+    ///   - variant: the Upgrade-tab layout this binary was rendering, which is
+    ///     not the same fact as the offering RevenueCat assigned: a build that
+    ///     does not know an arm falls back to catalog while still counting as
+    ///     enrolled in it.
+    ///   - offeringID: the offering the arm came from, so a result can be tied
+    ///     back to the experiment that produced it.
+    static func recordConversion(
+        plan: String,
+        startedTrial: Bool,
+        variant: String? = nil,
+        offeringID: String? = nil
+    ) {
         let d = defaults
         guard d.string(forKey: Key.convertedOn) == nil else { return }
         d.set(d.string(forKey: Key.lastSurface) ?? "unknown", forKey: Key.convertedOn)
         d.set(d.integer(forKey: Key.totalViews), forKey: Key.viewsAtConvert)
         d.set(plan, forKey: Key.convertedPlan)
         d.set(startedTrial, forKey: Key.convertedWithTrial)
+        if let variant { d.set(variant, forKey: Key.convertedVariant) }
+        if let offeringID { d.set(offeringID, forKey: Key.convertedOffering) }
         if let first = firstSeenDate {
             let days = Calendar.current.dateComponents([.day], from: first, to: .now).day ?? 0
             d.set(max(0, days), forKey: Key.daysToConvert)
@@ -133,6 +149,12 @@ enum ConversionDiagnostics {
             attributes["days_to_convert"] = String(d.integer(forKey: Key.daysToConvert))
             attributes["converted_plan"] = d.string(forKey: Key.convertedPlan) ?? "unknown"
             attributes["converted_with_trial"] = d.bool(forKey: Key.convertedWithTrial) ? "true" : "false"
+            if let variant = d.string(forKey: Key.convertedVariant) {
+                attributes["converted_variant"] = variant
+            }
+            if let offering = d.string(forKey: Key.convertedOffering) {
+                attributes["converted_offering"] = offering
+            }
         }
         return attributes
     }
