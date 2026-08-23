@@ -220,28 +220,4 @@ final class VitalsConversionCopyTests: XCTestCase {
             "Unlock Lifetime"
         )
     }
-
-    /// The timeline is two beats: it starts, it bills. It must not tell the user
-    /// a reminder is coming (nothing sends one) and must not turn the pitch into
-    /// a cancellation deadline. The auto-renewal terms live in the 3.1.2
-    /// disclosure under the button, not here.
-    func testTrialTimelineIsTwoStepsAndPromisesNoReminder() {
-        let copy = VitalsConversionCopy.TrialTimelineCopy.make(
-            trialDays: 7,
-            priceLabel: "$14.99 / year"
-        )
-        XCTAssertEqual(copy.todayTitle, "Today: trial starts")
-        XCTAssertEqual(copy.chargeTitle, "Day 7: first charge")
-        XCTAssertTrue(copy.chargeDetail.contains("$14.99 / year"))
-
-        let everything = [copy.todayTitle, copy.todayDetail, copy.chargeTitle, copy.chargeDetail]
-            .joined(separator: " ")
-            .lowercased()
-        for banned in ["remind", "we'll tell you", "last day to cancel", "notification"] {
-            XCTAssertFalse(
-                everything.contains(banned),
-                "trial timeline should not say \"\(banned)\": \(everything)"
-            )
-        }
-    }
 }

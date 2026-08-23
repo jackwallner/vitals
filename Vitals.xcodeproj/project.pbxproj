@@ -147,7 +147,6 @@
 		BF6A35F2E475EDE2216D9122 /* ConversionDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC6717A33895256B9C16964 /* ConversionDiagnostics.swift */; };
 		C032E25CC69C248AA23158D0 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2600C40B77EF3FF5126EAFE /* NotificationService.swift */; };
 		C06DBD3348B87E3E121DBB5C /* ConversionDiagnosticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D384451ACF54F71FE10F85 /* ConversionDiagnosticsTests.swift */; };
-		C0A77F0478C747EBDF678A6B /* TrialTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA273589A0AE2F1C77C335D /* TrialTimeline.swift */; };
 		C0ED7A3AC0364B181E667DC1 /* HealthRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */; };
 		C1C931DDB19D68BBBA2FEF0A /* BodyProfileCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48CEA73D52946D26CCE86AF /* BodyProfileCalculator.swift */; };
 		C1E2EC8ECDAB52F888E0DF67 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
@@ -177,6 +176,7 @@
 		E05F8EF1DEF21E25F3E7D9F6 /* MacroGoalSelectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EDD6A929AC5CB3DFDD1844 /* MacroGoalSelectionTests.swift */; };
 		E0AB34071857A374FB32E3DC /* SupportMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5DAB758DDA2F38199CF3E /* SupportMail.swift */; };
 		E1550A6559100C2DEE281115 /* SettingsSheetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FB7AAE4A4403268B8E315F /* SettingsSheetUITests.swift */; };
+		E301042E1AFB8011E2FD493C /* OnboardingFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D69AA5CE048C7FF360D80A3 /* OnboardingFlowUITests.swift */; };
 		E423A6BC1D2F4FB0E197829B /* MilestoneCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604A7C1098FB8101FE9A3365 /* MilestoneCalculator.swift */; };
 		E48D5DCE8E5EA92DBEA311A3 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		E6E4E983389A2641C8483300 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E24C6F7550EC4501A69FE /* DateHelpers.swift */; };
@@ -289,7 +289,6 @@
 		47E5A948D4ECA79121753114 /* VitalsWatchWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VitalsWatchWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetDeficitTrendSummary.swift; sourceTree = "<group>"; };
 		4E7DCA825A17AEC469980F76 /* TrialOfferPitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialOfferPitch.swift; sourceTree = "<group>"; };
-		4FA273589A0AE2F1C77C335D /* TrialTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialTimeline.swift; sourceTree = "<group>"; };
 		5067457F6627E7ABFE38988A /* Vitals.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Vitals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A524F44F2C81B258D1BBE67 /* HealthKitLabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitLabUITests.swift; sourceTree = "<group>"; };
 		604A7C1098FB8101FE9A3365 /* MilestoneCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneCalculator.swift; sourceTree = "<group>"; };
@@ -318,6 +317,7 @@
 		971064F5F952A25427D7F46B /* ProgressRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRing.swift; sourceTree = "<group>"; };
 		9783FF0AFACBDEAB6F094A00 /* PaywallUIVariantTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallUIVariantTests.swift; sourceTree = "<group>"; };
 		97EA07C9EE670921AD6405A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		9D69AA5CE048C7FF360D80A3 /* OnboardingFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowUITests.swift; sourceTree = "<group>"; };
 		9EEC9E7DED1B1E70BAA8F0E1 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		A2306ABF7BBFD87A49291EE7 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
@@ -428,6 +428,7 @@
 			isa = PBXGroup;
 			children = (
 				5A524F44F2C81B258D1BBE67 /* HealthKitLabUITests.swift */,
+				9D69AA5CE048C7FF360D80A3 /* OnboardingFlowUITests.swift */,
 				2B294CC1AD718FCB854BF56D /* SeededHealthFlowUITests.swift */,
 				A4FB7AAE4A4403268B8E315F /* SettingsSheetUITests.swift */,
 				4714F56490C3965B087F3D69 /* TrialOfferPresentationUITests.swift */,
@@ -459,7 +460,6 @@
 				91B6F4FE3966882D8D2A9287 /* ReviewPromptSheet.swift */,
 				FFAF11B005DB797877D60FDA /* SummaryReportView.swift */,
 				4E7DCA825A17AEC469980F76 /* TrialOfferPitch.swift */,
-				4FA273589A0AE2F1C77C335D /* TrialTimeline.swift */,
 				C9B9F018B1D8859226963C63 /* WeeklyRecapView.swift */,
 				925043FF9DEE6C7E11D17C4D /* WhatsNewSheet.swift */,
 				0AB84DC73288E61173AF16FD /* Components */,
@@ -982,6 +982,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC4CC88A6ACE68D5ED34C6FE /* HealthKitLabUITests.swift in Sources */,
+				E301042E1AFB8011E2FD493C /* OnboardingFlowUITests.swift in Sources */,
 				00AB9266458E4142789A8A77 /* SeededHealthFlowUITests.swift in Sources */,
 				E1550A6559100C2DEE281115 /* SettingsSheetUITests.swift in Sources */,
 				A87DBA6B86019B893F54C2BD /* TrialOfferPresentationUITests.swift in Sources */,
@@ -1036,7 +1037,6 @@
 				E0AB34071857A374FB32E3DC /* SupportMail.swift in Sources */,
 				505A5802FE54E602AA80A146 /* Theme.swift in Sources */,
 				9DA14BC972DC45C3EC7073C4 /* TrialOfferPitch.swift in Sources */,
-				C0A77F0478C747EBDF678A6B /* TrialTimeline.swift in Sources */,
 				30D1E4810035E3B88CD813A8 /* VitalsConversionCopy.swift in Sources */,
 				8D267B9C3DAEEDBBDF04937F /* WeeklyRecap.swift in Sources */,
 				23736FF4975A768767A22434 /* WeeklyRecapView.swift in Sources */,
@@ -1171,7 +1171,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.8.2;
+				MARKETING_VERSION = 1.8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1322,7 +1322,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.8.2;
+				MARKETING_VERSION = 1.8.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;

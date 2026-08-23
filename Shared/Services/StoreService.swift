@@ -141,7 +141,7 @@ extension Package {
     }
 
     /// Number of free-trial days this package grants (P1W → 7), or nil if it
-    /// carries no free trial. Used to label the trial timeline steps.
+    /// carries no free trial. Used by the trial badge and CTA copy.
     var vitalsTrialDayCount: Int? {
         #if DEBUG && targetEnvironment(simulator)
         if RevenueCatConfig.apiKey.hasPrefix("test_"),
@@ -434,13 +434,19 @@ final class StoreService: NSObject, ObservableObject {
         )
     }
 
-    /// Full Apple 3.1.2 disclosure for the onboarding purchase.
+    /// Apple 3.1.2 disclosure for the onboarding purchase.
+    ///
+    /// Uses the shorter renewal clause: the full one ran to three dense grey
+    /// lines directly above the button, which is the single busiest thing on the
+    /// page and pushed the CTA down. This still names the trial, the price, that
+    /// it auto-renews, and where to cancel, which is what 3.1.2 asks for.
     var onboardingTrialDisclosureText: String? {
         guard let package = onboardingTrialPackage else { return nil }
         return VitalsConversionCopy.disclosure(
             trialLabel: package.vitalsIntroOfferLabel,
             priceLabel: package.vitalsPriceLabel,
-            eligibleForTrial: isEligibleForIntroOffer(package)
+            eligibleForTrial: isEligibleForIntroOffer(package),
+            renewClause: "Auto-renews unless cancelled 24h before it ends. Cancel in Settings."
         )
     }
 
@@ -449,12 +455,13 @@ final class StoreService: NSObject, ObservableObject {
         VitalsConversionCopy.shortCTALabel(eligibleForTrial: canPitchFreeTrial)
     }
 
-    /// Native Upgrade-tab layout from offering metadata. Missing key → timeline.
+    /// Native Upgrade-tab layout from offering metadata. Missing key → catalog,
+    /// the layout that ships as the default. See `PaywallUIVariant`.
     var upgradeTabVariant: PaywallUIVariant {
         #if DEBUG
         if let override = DebugLaunchConfig.upgradeTabOverride { return override }
         #endif
-        return currentOffering?.vitalsUpgradeTabVariant ?? .timeline
+        return currentOffering?.vitalsUpgradeTabVariant ?? .catalog
     }
 
     /// True once the purchase button can name the action without flashing

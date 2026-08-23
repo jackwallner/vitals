@@ -1,19 +1,32 @@
 import XCTest
 
 final class PaywallUIVariantTests: XCTestCase {
-    func testMissingMetadataDefaultsToTimeline() {
-        XCTAssertEqual(PaywallUIVariant.from(metadata: nil), .timeline)
-        XCTAssertEqual(PaywallUIVariant.from(metadata: [:]), .timeline)
-        XCTAssertEqual(PaywallUIVariant.from(metadata: ["other": "x"]), .timeline)
+    /// The dashboard drives this key, so anything it can send has to land on a
+    /// layout that exists. Absent, empty, wrong key, wrong value: all catalog.
+    func testAnythingUnrecognisedFallsBackToCatalog() {
+        XCTAssertEqual(PaywallUIVariant.from(metadata: nil), .catalog)
+        XCTAssertEqual(PaywallUIVariant.from(metadata: [:]), .catalog)
+        XCTAssertEqual(PaywallUIVariant.from(metadata: ["other": "x"]), .catalog)
+        XCTAssertEqual(PaywallUIVariant.from(metadata: ["upgrade_tab": "hosted"]), .catalog)
+        // A variant added for a build that is not live yet, and the old value
+        // this release retired: neither may blank the screen.
+        XCTAssertEqual(PaywallUIVariant.from(metadata: ["upgrade_tab": "some_future_layout"]), .catalog)
+        XCTAssertEqual(PaywallUIVariant.from(metadata: ["upgrade_tab": "timeline"]), .catalog)
+        // Wrong type for the value, not just a wrong string.
+        XCTAssertEqual(PaywallUIVariant.from(metadata: ["upgrade_tab": 7]), .catalog)
     }
 
     func testKnownKeys() {
         XCTAssertEqual(PaywallUIVariant.from(metadata: ["upgrade_tab": "catalog"]), .catalog)
-        XCTAssertEqual(PaywallUIVariant.from(metadata: ["upgrade_tab": "timeline"]), .timeline)
+        XCTAssertEqual(PaywallUIVariant.from(metadata: ["upgrade_tab": "feature_led"]), .featureLed)
     }
 
-    func testUnknownValueFallsBackToTimeline() {
-        XCTAssertEqual(PaywallUIVariant.from(metadata: ["upgrade_tab": "hosted"]), .timeline)
+    /// The raw values are a dashboard contract: renaming one silently retires a
+    /// live experiment arm.
+    func testRawValuesMatchTheDashboardContract() {
+        XCTAssertEqual(PaywallUIVariant.catalog.rawValue, "catalog")
+        XCTAssertEqual(PaywallUIVariant.featureLed.rawValue, "feature_led")
+        XCTAssertEqual(PaywallUIVariant.metadataKey, "upgrade_tab")
     }
 
     func testDebugLaunchOverrideIsOffByDefault() {
