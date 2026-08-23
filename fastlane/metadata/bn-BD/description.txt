@@ -1,4 +1,4 @@
-Total Calories আপনার দৈনিক পোড়া ক্যালোরি (সক্রিয় + বিশ্রাম) এবং পদক্ষেপ গণনা ঠিক যেখানে দরকার সেখানেই দেখায় — iPhone Home Screen, Lock Screen এবং Apple Watch face-এ — সম্পূর্ণ বিনামূল্যে। মৌলিক বৈশিষ্ট্যের জন্য কোনো সাবস্ক্রিপশন লাগে না। কোনো অ্যাকাউন্ট নেই। কোনো ডেটা ফোন থেকে বের হয় না।
+Total Calories আপনার দৈনিক পোড়া ক্যালোরি (সক্রিয় + বিশ্রাম) এবং পদক্ষেপ গণনা ঠিক যেখানে দরকার সেখানেই দেখায় — iPhone Home Screen, Lock Screen এবং Apple Watch face-এ — সম্পূর্ণ বিনামূল্যে। মৌলিক বৈশিষ্ট্যের জন্য কোনো সাবস্ক্রিপশন লাগে না। কোনো অ্যাকাউন্ট নেই। স্বাস্থ্য ডেটা ফোন থেকে বের হয় না।
 
 আপনি যদি কখনো চেয়েছিলেন Apple Watch face আজকের মোট পোড়া ক্যালোরি স্পষ্টভাবে দেখাক, তাহলে এটাই সেই app।
 
@@ -48,9 +48,10 @@ Vitals+ (optional)
 
 Privacy-first design
 - Read-only Apple Health। App health records-এ লেখে না।
-- Data locally device-এ store।
-- Analytics, ads, servers, accounts, tracking নেই।
+- আপনার স্বাস্থ্য ডেটা আপনার ডিভাইসেই থাকে, কখনও আপলোড হয় না।
 - Reports on-device generate।
+- কোনো বিজ্ঞাপন নেই। কোনো ট্র্যাকিং নেই। কোনো অ্যাকাউন্ট নেই।
+- কেনাকাটা Apple ও RevenueCat প্রক্রিয়া করে, যারা কখনও আপনার স্বাস্থ্য ডেটা পায় না।
 
 Total Calories medical device নয়; diagnose, treat, prevent-এর জন্য intended নয়। Medical advice-এর জন্য healthcare professional-এর পরামর্শ নিন।
 

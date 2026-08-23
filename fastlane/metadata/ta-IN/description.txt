@@ -1,4 +1,4 @@
-Total Calories உங்கள் தினசரி எரிக்கப்பட்ட கலோரிகள் (சுறுசுறுப்பு + ஓய்வு) மற்றும் அடி எண்ணிக்கையைத் தேவையான இடத்தில் காட்டுகிறது — iPhone Home Screen, Lock Screen மற்றும் Apple Watch face-ல் — முற்றிலும் இலவசம். அடிப்படை அம்சங்களுக்கு சந்தா தேவையில்லை. கணக்கு இல்லை. தரவு உங்கள் போனில் இருந்து வெளியே செல்லாது.
+Total Calories உங்கள் தினசரி எரிக்கப்பட்ட கலோரிகள் (சுறுசுறுப்பு + ஓய்வு) மற்றும் அடி எண்ணிக்கையைத் தேவையான இடத்தில் காட்டுகிறது — iPhone Home Screen, Lock Screen மற்றும் Apple Watch face-ல் — முற்றிலும் இலவசம். அடிப்படை அம்சங்களுக்கு சந்தா தேவையில்லை. கணக்கு இல்லை. உடல்நல தரவு உங்கள் போனில் இருந்து வெளியே செல்லாது.
 
 Apple Watch face இன்றைய மொத்த எரிக்கப்பட்ட கலோரியை தெளிவாக காட்ட வேண்டும் என்று நீங்கள் விரும்பினால், இதுவே அந்த app.
 
@@ -48,9 +48,10 @@ Vitals+ (optional)
 
 Privacy-first design
 - Read-only Apple Health. App health records-ல் எழுதாது.
-- Data locally device-ல் store.
-- Analytics, ads, servers, accounts, tracking இல்லை.
+- உங்கள் உடல்நல தரவு உங்கள் சாதனத்திலேயே இருக்கும், ஒருபோதும் பதிவேற்றப்படாது.
 - Reports on-device generate.
+- விளம்பரம் இல்லை. கண்காணிப்பு இல்லை. கணக்கு இல்லை.
+- கொள்முதல்களை Apple மற்றும் RevenueCat கையாளுகின்றன; இரண்டும் உங்கள் உடல்நல தரவைப் பெறுவதில்லை.
 
 Total Calories medical device அல்ல; diagnose, treat, prevent செய்ய intended அல்ல. Medical advice-க்கு healthcare professional ஆலோசனை.
 

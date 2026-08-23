@@ -1,4 +1,4 @@
-Total Calories prikazuje vaše dnevno porabo kalorij (aktivne + mirovanje) in število korakov tam, kjer jih potrebujete — na iPhone Home Screen, Lock Screen in Apple Watch face — brezplačno. Za osnovne funkcije ni naročnine. Brez računa. Podatki ne zapustijo telefona.
+Total Calories prikazuje vaše dnevno porabo kalorij (aktivne + mirovanje) in število korakov tam, kjer jih potrebujete — na iPhone Home Screen, Lock Screen in Apple Watch face — brezplačno. Za osnovne funkcije ni naročnine. Brez računa. Zdravstveni podatki ne zapustijo telefona.
 
 Če ste si kdaj želeli, da bi Apple Watch face jasno prikazal današnje skupno porabo kalorij, je to ta aplikacija.
 
@@ -48,9 +48,10 @@ Brezplačen trial za nove naročnike.
 
 ZASEBNOST NA PRVEM MESTU
 - Read-only Apple Health. Aplikacija ne piše v health records.
-- Vsi podatki lokalno na napravi.
-- Brez analytics, ads, servers, accounts, tracking.
+- Tvoji zdravstveni podatki ostanejo v napravi in se nikoli ne pošiljajo.
 - Reports se generirajo on-device.
+- Brez oglasov. Brez sledenja. Brez računov.
+- Nakupe obdelujeta Apple in RevenueCat, ki nikoli ne prejmeta tvojih zdravstvenih podatkov.
 
 Total Calories ni medicinska naprava in ni namenjen diagnosticiranju, zdravljenju ali preprečevanju bolezni. Za medicinski nasvet se posvetujte s strokovnjakom.
 

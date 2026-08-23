@@ -1,4 +1,4 @@
-Total Calories तुमच्या दैनिक जळलेल्या कॅलरी (सक्रिय + विश्राम) आणि पाऊल मोजणी अगदी जिथे हवे तिथे दाखवते — iPhone Home Screen, Lock Screen आणि Apple Watch face वर — पूर्णपणे मोफत. मूलभूत वैशिष्ट्यांसाठी subscription नको. खाते नाही. डेटा फोन बाहेर जात नाही.
+Total Calories तुमच्या दैनिक जळलेल्या कॅलरी (सक्रिय + विश्राम) आणि पाऊल मोजणी अगदी जिथे हवे तिथे दाखवते — iPhone Home Screen, Lock Screen आणि Apple Watch face वर — पूर्णपणे मोफत. मूलभूत वैशिष्ट्यांसाठी subscription नको. खाते नाही. आरोग्य डेटा फोन बाहेर जात नाही.
 
 जर तुम्हाला Apple Watch face आजच्या एकूण जळलेल्या कॅलरी स्पष्ट दाखवायच्या असतील, तर हा तो app आहे.
 
@@ -48,9 +48,10 @@ Vitals+ (optional)
 
 Privacy-first design
 - Read-only Apple Health. App health records मध्ये लिहित नाही.
-- Data locally device वर store.
-- Analytics, ads, servers, accounts, tracking नाही.
+- तुमचा आरोग्य डेटा तुमच्या डिव्हाइसवरच राहतो, कधीही अपलोड होत नाही.
 - Reports on-device generate.
+- जाहिराती नाहीत. ट्रॅकिंग नाही. खाती नाहीत.
+- खरेदी Apple आणि RevenueCat हाताळतात; त्यांना तुमचा आरोग्य डेटा कधीही मिळत नाही.
 
 Total Calories medical device नाही; diagnose, treat, prevent साठी intended नाही. Medical advice साठी healthcare professional सल्ला घ्या.
 

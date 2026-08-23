@@ -1,4 +1,4 @@
-Total Calories آپ کی روزانہ جلی ہوئی کیلوریز (فعال + آرام) اور قدموں کی گنتی جہاں ضرورت ہو وہیں دکھاتا ہے — iPhone Home Screen، Lock Screen اور Apple Watch face پر — مکمل مفت۔ بنیادی features کے لیے subscription نہیں۔ کوئی account نہیں۔ ڈیٹا فون سے باہر نہیں جاتا۔
+Total Calories آپ کی روزانہ جلی ہوئی کیلوریز (فعال + آرام) اور قدموں کی گنتی جہاں ضرورت ہو وہیں دکھاتا ہے — iPhone Home Screen، Lock Screen اور Apple Watch face پر — مکمل مفت۔ بنیادی features کے لیے subscription نہیں۔ کوئی account نہیں۔ صحت کا ڈیٹا فون سے باہر نہیں جاتا۔
 
 اگر آپ نے کبھی چاہا کہ Apple Watch face آج کی کل جلی ہوئی کیلوریز واضح دکھائے، تو یہی وہ app ہے۔
 
@@ -48,9 +48,10 @@ Vitals+ (optional)
 
 Privacy-first design
 - Read-only Apple Health۔ App health records میں نہیں لکھتا۔
-- Data locally device پر store۔
-- Analytics، ads، servers، accounts، tracking نہیں۔
+- آپ کا صحت کا ڈیٹا آپ کے آلے پر ہی رہتا ہے اور کبھی اپ لوڈ نہیں ہوتا۔
 - Reports on-device generate۔
+- کوئی اشتہار نہیں۔ کوئی ٹریکنگ نہیں۔ کوئی اکاؤنٹ نہیں۔
+- خریداری Apple اور RevenueCat کے ذریعے ہوتی ہے، جنہیں آپ کا صحت کا ڈیٹا کبھی نہیں ملتا۔
 
 Total Calories medical device نہیں؛ diagnose، treat، prevent کے لیے intended نہیں۔ Medical advice کے لیے healthcare professional سے مشورہ کریں۔
 

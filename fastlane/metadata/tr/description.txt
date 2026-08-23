@@ -1,4 +1,4 @@
-Total Calories, günlük yakılan toplam kalorilerinizi (aktif + dinlenme) ve adım sayınızı tam ihtiyacınız olan yere getirir: iPhone Ana Ekranınız, Kilit Ekranınız ve Apple Watch yüzünüz — üstelik ücretsiz. Temel özellikler için abonelik yok. Hesap yok. Verileriniz telefonunuzdan çıkmaz.
+Total Calories, günlük yakılan toplam kalorilerinizi (aktif + dinlenme) ve adım sayınızı tam ihtiyacınız olan yere getirir: iPhone Ana Ekranınız, Kilit Ekranınız ve Apple Watch yüzünüz — üstelik ücretsiz. Temel özellikler için abonelik yok. Hesap yok. Sağlık verileriniz telefonunuzdan çıkmaz.
 
 Apple Watch yüzünüzün gün boyunca sadece toplam yaktığınız kaloriyi göstermesini hiç dilediyseniz, aradığınız uygulama bu.
 
@@ -48,9 +48,10 @@ Yeni abonelere ücretsiz deneme sunulur.
 
 GİZLİLİK ODAKLI TASARIM
 - Yalnızca okuma amaçlı Apple Health erişimi. Uygulama sağlık kayıtlarınıza hiçbir şey yazmaz.
-- Tüm veriler yalnızca cihazınızda saklanır.
-- Analitik yok. Reklam yok. Sunucu yok. Hesap yok. Takip yok.
+- Sağlık verilerin cihazında kalır ve hiçbir zaman yüklenmez.
 - Raporlar cihaz üzerinde oluşturulur.
+- Reklam yok. Takip yok. Hesap yok.
+- Satın alımlar, sağlık verilerini asla almayan Apple ve RevenueCat tarafından işlenir.
 
 Total Calories bir tıbbi cihaz değildir ve hiçbir tıbbi durumu teşhis etme, tedavi etme veya önleme amacı taşımaz. Tıbbi tavsiye için her zaman bir sağlık uzmanına danışın.
 

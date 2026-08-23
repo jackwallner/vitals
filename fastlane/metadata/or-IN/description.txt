@@ -1,4 +1,4 @@
-Total Calories ଆପଣଙ୍କ ଦୈନିକ ଜଳିଥିବା କ୍ୟାଲୋରି (ସକ୍ରିୟ + ବିଶ୍ରାମ) ଏବଂ ପାଦକ୍ଷେପ ଗଣନା ଯେଉଁଠାରେ ଦରକାର ସେଠାରେ ଦେଖାଏ — iPhone Home Screen, Lock Screen ଏବଂ Apple Watch face — ସମ୍ପୂର୍ଣ୍ଣ ମାଗଣା। ମୂଳ features ପାଇଁ subscription ଲାଗେ ନାହିଁ। account ନାହିଁ। data phone ବାହାରକୁ ଯାଏ ନାହିଁ।
+Total Calories ଆପଣଙ୍କ ଦୈନିକ ଜଳିଥିବା କ୍ୟାଲୋରି (ସକ୍ରିୟ + ବିଶ୍ରାମ) ଏବଂ ପାଦକ୍ଷେପ ଗଣନା ଯେଉଁଠାରେ ଦରକାର ସେଠାରେ ଦେଖାଏ — iPhone Home Screen, Lock Screen ଏବଂ Apple Watch face — ସମ୍ପୂର୍ଣ୍ଣ ମାଗଣା। ମୂଳ features ପାଇଁ subscription ଲାଗେ ନାହିଁ। account ନାହିଁ। ସ୍ୱାସ୍ଥ୍ୟ data phone ବାହାରକୁ ଯାଏ ନାହିଁ।
 
 Apple Watch face ଆଜିର ମୋଟ ଜଳିଥିବା କ୍ୟାଲୋରି ସ୍ପଷ୍ଟ ଦେଖାଇବାକୁ ଚାହିଁଥିଲେ, ଏହା ସେହି app।
 
@@ -48,9 +48,10 @@ Vitals+ (optional)
 
 Privacy-first design
 - Read-only Apple Health. App health records ରେ write କରେ ନାହିଁ।
-- Data locally device ରେ store।
-- Analytics, ads, servers, accounts, tracking ନାହିଁ।
+- ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ଡାଟା ଆପଣଙ୍କ ଡିଭାଇସରେ ରହେ, କେବେ ଅପଲୋଡ ହୁଏ ନାହିଁ।
 - Reports on-device generate।
+- କୌଣସି ବିଜ୍ଞାପନ ନାହିଁ। କୌଣସି ଟ୍ରାକିଂ ନାହିଁ। କୌଣସି ଆକାଉଣ୍ଟ ନାହିଁ।
+- କ୍ରୟ Apple ଏବଂ RevenueCat ପରିଚାଳନା କରନ୍ତି; ସେମାନେ କେବେ ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ଡାଟା ପାଆନ୍ତି ନାହିଁ।
 
 Total Calories medical device ନୁହେଁ; diagnose, treat, prevent ପାଇଁ intended ନୁହେଁ। Medical advice ପାଇଁ healthcare professional consult।
 

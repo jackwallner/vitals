@@ -1,4 +1,4 @@
-Total Calories ਤੁਹਾਡੀਆਂ ਰੋਜ਼ਾਨਾ ਸੜੀਆਂ ਕੈਲੋਰੀਆਂ (ਸਰਗਰਮ + ਆਰਾਮ) ਅਤੇ ਕਦਮਾਂ ਦੀ ਗਿਣਤੀ ਠੀਕ ਉੱਥੇ ਦਿਖਾਉਂਦਾ ਹੈ ਜਿੱਥੇ ਚਾਹੀਦਾ ਹੈ — iPhone Home Screen, Lock Screen ਅਤੇ Apple Watch face — ਪੂਰੀ ਤਰ੍ਹਾਂ ਮੁਫ਼ਤ। ਬੁਨਿਆਦੀ features ਲਈ subscription ਨਹੀਂ ਚਾਹੀਦਾ। account ਨਹੀਂ। data ਫੋਨ ਤੋਂ ਬਾਹਰ ਨਹੀਂ ਜਾਂਦਾ।
+Total Calories ਤੁਹਾਡੀਆਂ ਰੋਜ਼ਾਨਾ ਸੜੀਆਂ ਕੈਲੋਰੀਆਂ (ਸਰਗਰਮ + ਆਰਾਮ) ਅਤੇ ਕਦਮਾਂ ਦੀ ਗਿਣਤੀ ਠੀਕ ਉੱਥੇ ਦਿਖਾਉਂਦਾ ਹੈ ਜਿੱਥੇ ਚਾਹੀਦਾ ਹੈ — iPhone Home Screen, Lock Screen ਅਤੇ Apple Watch face — ਪੂਰੀ ਤਰ੍ਹਾਂ ਮੁਫ਼ਤ। ਬੁਨਿਆਦੀ features ਲਈ subscription ਨਹੀਂ ਚਾਹੀਦਾ। account ਨਹੀਂ। ਸਿਹਤ data ਫੋਨ ਤੋਂ ਬਾਹਰ ਨਹੀਂ ਜਾਂਦਾ।
 
 ਜੇ ਤੁਸੀਂ ਚਾਹਿਆ ਹੈ Apple Watch face ਅੱਜ ਦੀ ਕੁੱਲ ਸੜੀ ਕੈਲੋਰੀ ਸਾਫ਼ ਦਿਖਾਵੇ, ਤਾਂ ਇਹ ਉਹ app ਹੈ।
 
@@ -48,9 +48,10 @@ Vitals+ (optional)
 
 Privacy-first design
 - Read-only Apple Health. App health records ਵਿੱਚ ਨਹੀਂ ਲਿਖਦਾ।
-- Data locally device ਤੇ store।
-- Analytics, ads, servers, accounts, tracking ਨਹੀਂ।
+- ਤੁਹਾਡਾ ਸਿਹਤ ਡਾਟਾ ਤੁਹਾਡੇ ਡਿਵਾਈਸ 'ਤੇ ਹੀ ਰਹਿੰਦਾ ਹੈ, ਕਦੇ ਅੱਪਲੋਡ ਨਹੀਂ ਹੁੰਦਾ।
 - Reports on-device generate।
+- ਕੋਈ ਇਸ਼ਤਿਹਾਰ ਨਹੀਂ। ਕੋਈ ਟਰੈਕਿੰਗ ਨਹੀਂ। ਕੋਈ ਖਾਤਾ ਨਹੀਂ।
+- ਖਰੀਦਦਾਰੀ Apple ਅਤੇ RevenueCat ਸੰਭਾਲਦੇ ਹਨ; ਉਹਨਾਂ ਨੂੰ ਤੁਹਾਡਾ ਸਿਹਤ ਡਾਟਾ ਕਦੇ ਨਹੀਂ ਮਿਲਦਾ।
 
 Total Calories medical device ਨਹੀਂ; diagnose, treat, prevent ਲਈ intended ਨਹੀਂ। Medical advice ਲਈ healthcare professional consult ਕਰੋ।
 
