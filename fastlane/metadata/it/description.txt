@@ -1,4 +1,4 @@
-Total Calories mostra le calorie bruciate al giorno (attive + a riposo) e il conteggio dei passi dove ti servono di più: schermata Home e Schermata di blocco di iPhone e quadrante Apple Watch, gratis. Nessun abbonamento per le funzioni base. Nessun account. Nessun dato lascia il tuo telefono.
+Total Calories mostra le calorie bruciate al giorno (attive + a riposo) e il conteggio dei passi dove ti servono di più: schermata Home e Schermata di blocco di iPhone e quadrante Apple Watch, gratis. Nessun abbonamento per le funzioni base. Nessun account. I tuoi dati sanitari non lasciano il telefono.
 
 Se hai mai desiderato che il quadrante Apple Watch mostrasse solo le calorie totali bruciate nella giornata, questa è l’app che fa per te.
 
@@ -48,9 +48,10 @@ Una prova gratuita è offerta ai nuovi abbonati.
 
 PRIVATA PER PROGETTAZIONE
 - Accesso in sola lettura a Apple Health. L’app non scrive mai nei tuoi dati sanitari.
-- Tutti i dati sono archiviati localmente sul dispositivo.
-- Niente analisi. Niente pubblicità. Niente server. Nessun account. Nessun tracciamento.
+- I tuoi dati sanitari restano sul dispositivo e non vengono mai caricati.
 - I report sono generati sul dispositivo.
+- Niente pubblicità. Nessun tracciamento. Nessun account.
+- Gli acquisti sono gestiti da Apple e RevenueCat, che non ricevono mai i tuoi dati sanitari.
 
 Total Calories non è un dispositivo medico e non è destinata a diagnosticare, trattare o prevenire alcuna condizione medica. Consulta sempre un professionista sanitario per consigli medici.
 

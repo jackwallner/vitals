@@ -1,3 +1,11 @@
+> **Superseded, 2026-08-23.** This handoff is kept as a record of the original
+> RevenueCat paywall build and its prices are no longer current: it quotes
+> $14.99 / $1.99 / $29.99 and the product IDs of the time. The live catalog is
+> `com.jackwallner.vitals.yearly` $29.99, `com.jackwallner.vitals.monthly` $6.99,
+> and `com.jackwallner.vitals.plus.lifetime` $59.99. See
+> `docs/app-store-metadata.md` for the current table, which is the source of
+> truth. Do not price anything from this file.
+
 # Handoff — Vitals+ RevenueCat-Hosted Paywall (v3)
 
 For: RevenueCat AI paywall builder (Dashboard → Paywalls → AI draft).

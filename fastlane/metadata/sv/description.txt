@@ -1,4 +1,4 @@
-Total Calories visar dina dagliga förbrända kalorier (aktiva + vilande) och steg direkt där du behöver dem – på din iPhone-hemskärm, låsskärm och Apple Watch-urtavla – gratis. Inga abonnemang krävs för grunderna. Inget konto. Ingen data lämnar din iPhone.
+Total Calories visar dina dagliga förbrända kalorier (aktiva + vilande) och steg direkt där du behöver dem – på din iPhone-hemskärm, låsskärm och Apple Watch-urtavla – gratis. Inga abonnemang krävs för grunderna. Inget konto. Dina hälsodata lämnar aldrig din iPhone.
 
 Om du någonsin önskat att din Apple Watch-urtavla bara visade dagens totala förbrända kalorier, är detta appen.
 
@@ -48,9 +48,10 @@ En kostnadsfri provperiod erbjuds nya prenumeranter.
 
 INBYGGT SKYDD AV INTEGRITETEN
 - Endast läsåtkomst till Apple Health. Appen skriver aldrig till dina hälsodata.
-- All data lagras lokalt på din enhet.
-- Ingen spårning. Inga annonser. Inga servrar. Inga konton.
+- Dina hälsodata stannar på din enhet och laddas aldrig upp.
 - Rapporter skapas på enheten.
+- Inga annonser. Ingen spårning. Inga konton.
+- Köp hanteras av Apple och RevenueCat, som aldrig får dina hälsodata.
 
 Total Calories är inte en medicinteknisk produkt och är inte avsedd att diagnostisera, behandla eller förebygga någon medicinsk åkomma. Kontakta alltid vårdpersonal för medicinsk rådgivning.
 

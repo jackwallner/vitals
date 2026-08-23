@@ -1,4 +1,4 @@
-Total Calories നിങ്ങളുടെ ദൈനംദിനം കത്തിച്ച കലോറി (സജീവ + വിശ്രമം) ഉം ചുവടുകളും ആവശ്യമുള്ളിടത്ത് തന്നെ കാണിക്കുന്നു — iPhone Home Screen, Lock Screen, Apple Watch face എന്നിവയിൽ — പൂർണ്ണമായും സൗജന്യം. അടിസ്ഥാന സവിശേഷതകൾക്ക് സബ്‌സ്ക്രിപ്ഷൻ ആവശ്യമില്ല. അക്കൗണ്ട് ഇല്ല. ഡാറ്റ ഫോണിൽ നിന്ന് പുറത്തുപോകില്ല.
+Total Calories നിങ്ങളുടെ ദൈനംദിനം കത്തിച്ച കലോറി (സജീവ + വിശ്രമം) ഉം ചുവടുകളും ആവശ്യമുള്ളിടത്ത് തന്നെ കാണിക്കുന്നു — iPhone Home Screen, Lock Screen, Apple Watch face എന്നിവയിൽ — പൂർണ്ണമായും സൗജന്യം. അടിസ്ഥാന സവിശേഷതകൾക്ക് സബ്‌സ്ക്രിപ്ഷൻ ആവശ്യമില്ല. അക്കൗണ്ട് ഇല്ല. ആരോഗ്യ ഡാറ്റ ഫോണിൽ നിന്ന് പുറത്തുപോകില്ല.
 
 Apple Watch face-ൽ ഇന്നത്തെ മൊത്തം കത്തിച്ച കലോറി വ്യക്തമായി കാണണമെന്ന് നിങ്ങൾ ആഗ്രഹിച്ചിട്ടുണ്ടെങ്കിൽ, ഇതാണ് ആ app.
 
@@ -48,9 +48,10 @@ Vitals+ (optional)
 
 Privacy‑first design
 - Read‑only Apple Health. App health records‑ൽ എഴുതില്ല.
-- Data locally device‑ൽ store.
-- Analytics, ads, servers, accounts, tracking ഇല്ല.
+- നിങ്ങളുടെ ആരോഗ്യ ഡാറ്റ ഉപകരണത്തിൽ തന്നെ ഇരിക്കും, ഒരിക്കലും അപ്‌ലോഡ് ചെയ്യില്ല.
 - Reports on‑device generate.
+- പരസ്യങ്ങളില്ല. ട്രാക്കിംഗ് ഇല്ല. അക്കൗണ്ടുകളില്ല.
+- വാങ്ങലുകൾ Apple, RevenueCat എന്നിവ കൈകാര്യം ചെയ്യുന്നു; ഇവ ഒരിക്കലും നിങ്ങളുടെ ആരോഗ്യ ഡാറ്റ സ്വീകരിക്കുന്നില്ല.
 
 Total Calories medical device അല്ല; diagnose, treat, prevent ചെയ്യാൻ intended അല്ല. Medical advice‑ക്ക് healthcare professional സമ്പർക്കം.
 

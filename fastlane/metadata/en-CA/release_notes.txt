@@ -1,5 +1,7 @@
-Macros are here. Protein, carbs, and fat sit beside your calories, read from whatever app already logs your food to Apple Health. Nothing to enter twice.
+Onboarding now asks whether you log food anywhere. If you don't, it stops pitching the two Vitals+ features that would only ever show you an empty screen.
 
-Track all three or just the one you count, set a gram goal on one macro or all three, and follow macro averages, trends, and peak days in History, CSV export, and your PDF reports. Macros are part of Vitals+.
+The Upgrade tab shows all three plans at once. Lifetime used to sit just below the fold on most iPhones.
 
-Settings is now grouped into Calorie Burn and Calorie Intake, with a plain-English explainer on every switch.
+A purchase Apple hasn't finished approving no longer looks like it went through, and a slow connection can no longer leave the trial button spinning with no way past it.
+
+Net Deficit now disappears from Home Screen widgets as soon as a subscription lapses, instead of lingering until you next open the app.

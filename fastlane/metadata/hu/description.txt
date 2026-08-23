@@ -1,4 +1,4 @@
-A Total Calories az elégetett napi kalóriáidat (aktív + nyugalmi) és a napi lépésszámodat pontosan oda teszi, ahol szükséged van rájuk – az iPhone Főképernyődre, a Zárolt képernyőre és az Apple Watch számlapodra – ingyen. Az alapfunkciókhoz nincs szükség előfizetésre. Nincs fiók. Az adatok nem hagyják el a telefonod.
+A Total Calories az elégetett napi kalóriáidat (aktív + nyugalmi) és a napi lépésszámodat pontosan oda teszi, ahol szükséged van rájuk – az iPhone Főképernyődre, a Zárolt képernyőre és az Apple Watch számlapodra – ingyen. Az alapfunkciókhoz nincs szükség előfizetésre. Nincs fiók. Az egészségügyi adataid nem hagyják el a telefonod.
 
 Ha valaha szeretted volna, hogy az Apple Watch számlapod csak az aznapi összes elégetett kalóriát mutassa, ez az az app.
 
@@ -48,9 +48,10 @@ Ingyenes próbaidő áll rendelkezésre az új előfizetőknek.
 
 ADATVÉDELEMRE TERVEZVE
 - Csak olvasási jogosultság az Apple Health adataihoz. Az app soha nem ír az egészségügyi adataidhoz.
-- Minden adat helyben, az eszközödön tárolódik.
-- Nincs analitika. Nincs reklám. Nincsenek szerverek. Nincs fiók. Nincs követés.
+- Az egészségügyi adataid a készülékeden maradnak, és soha nem töltődnek fel.
 - A jelentések helyben, az eszközön készülnek.
+- Nincs hirdetés. Nincs követés. Nincs fiók.
+- A vásárlásokat az Apple és a RevenueCat kezeli, amelyek soha nem kapják meg az egészségügyi adataidat.
 
 A Total Calories nem minősül orvostechnikai eszköznek, és nem alkalmas betegségek diagnosztizálására, kezelésére vagy megelőzésére. Egészségügyi kérdésekben mindig kérd ki egészségügyi szakember tanácsát.
 

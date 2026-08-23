@@ -1,4 +1,4 @@
-Total Calories మీ రోజువారీ కాలరీలు (active + resting) మరియు step count ను మీకు కావాల్సిన చోటే చూపిస్తుంది — iPhone Home Screen, Lock Screen, Apple Watch face — పూర్తిగా ఉచితం. ప్రాథమిక features కు subscription అవసరం లేదు. account లేదు. data phone నుండి బయటకు రాదు.
+Total Calories మీ రోజువారీ కాలరీలు (active + resting) మరియు step count ను మీకు కావాల్సిన చోటే చూపిస్తుంది — iPhone Home Screen, Lock Screen, Apple Watch face — పూర్తిగా ఉచితం. ప్రాథమిక features కు subscription అవసరం లేదు. account లేదు. ఆరోగ్య data phone నుండి బయటకు రాదు.
 
 Apple Watch face ఈ రోజు total calories burned స్పష్టంగా చూపించాలని మీరు కోరుకుంటే, ఇదే ఆ app.
 
@@ -48,9 +48,10 @@ Vitals+ (optional)
 
 Privacy-first design
 - Read-only Apple Health. App health records లో write చేయదు.
-- Data locally device లో store.
-- Analytics, ads, servers, accounts, tracking లేవు.
+- మీ ఆరోగ్య డేటా మీ పరికరంలోనే ఉంటుంది, ఎప్పుడూ అప్‌లోడ్ కాదు.
 - Reports on-device generate.
+- ప్రకటనలు లేవు. ట్రాకింగ్ లేదు. ఖాతాలు లేవు.
+- కొనుగోళ్లను Apple, RevenueCat ప్రాసెస్ చేస్తాయి; రెండూ మీ ఆరోగ్య డేటాను ఎప్పుడూ అందుకోవు.
 
 Total Calories medical device కాదు; diagnose, treat, prevent కోసం intended కాదు. Medical advice కు healthcare professional consult.
 

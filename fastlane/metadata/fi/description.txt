@@ -1,4 +1,4 @@
-Total Calories näyttää päivän aikana poltetut kalorit (aktiivinen + lepotila) ja askelmäärän juuri siellä missä tarvitset ne – iPhonen Koti-näytössä, Lukitusnäytössä ja Apple Watch -kellotaulussa – ilmaiseksi. Ei tilausta perustoimintoihin. Ei tiliä. Mitään dataa ei lähetetä puhelimestasi.
+Total Calories näyttää päivän aikana poltetut kalorit (aktiivinen + lepotila) ja askelmäärän juuri siellä missä tarvitset ne – iPhonen Koti-näytössä, Lukitusnäytössä ja Apple Watch -kellotaulussa – ilmaiseksi. Ei tilausta perustoimintoihin. Ei tiliä. Terveystietosi eivät poistu puhelimestasi.
 
 Jos olet koskaan toivonut, että Apple Watch -kellotaulusi näyttäisi vain päivän kokonaiskulutuksen, tämä on se appi.
 
@@ -48,9 +48,10 @@ Uusille tilaajille tarjotaan ilmainen kokeilujakso.
 
 SUUNNITELTU YKSITYISEKSI
 - Vain luku -oikeus Apple Health -tietoihin. App ei koskaan kirjoita terveystietoihisi.
-- Kaikki data tallennetaan vain laitteellesi.
-- Ei analytiikkaa. Ei mainoksia. Ei palvelimia. Ei tilejä. Ei seurantaa.
+- Terveystietosi pysyvät laitteellasi eikä niitä koskaan ladata verkkoon.
 - Raportit luodaan täysin laitteessa.
+- Ei mainoksia. Ei seurantaa. Ei tilejä.
+- Ostot käsittelevät Apple ja RevenueCat, jotka eivät koskaan saa terveystietojasi.
 
 Total Calories ei ole lääkinnällinen laite, eikä sitä ole tarkoitettu minkään sairauden diagnosointiin, hoitoon tai ehkäisyyn. Käänny aina terveydenhuollon ammattilaisen puoleen lääkinnällisissä kysymyksissä.
 

@@ -382,10 +382,10 @@ Optional: complication shown on a watch face.
 
 ## Vitals+ Subscription (App Store Connect Setup)
 
-The app ships with StoreKit 2 code expecting two products in a subscription
-group named **Vitals+**. Until these exist in App Store Connect, the paywall
-will show "Subscriptions unavailable." Local Simulator testing works against
-`Vitals.storekit` without ASC configuration.
+Purchases run through RevenueCat. The live catalog is three products: two
+auto-renewing subscriptions in a group named **Vitals+**, plus a non-consumable
+Lifetime unlock. Until these exist in App Store Connect, the paywall shows its
+"Couldn't Load Plans" state.
 
 ### One-time Setup
 
@@ -402,10 +402,15 @@ will show "Subscriptions unavailable." Local Simulator testing works against
 
 3. **Create products in the group**
 
-| Product ID | Reference Name | Duration | Price |
-|------------|----------------|----------|-------|
-| `com.jackwallner.vitals.plus.monthly` | Vitals+ Monthly | 1 Month | $1.99 |
-| `com.jackwallner.vitals.plus.yearly` | Vitals+ Yearly | 1 Year | $14.99 |
+These are the identifiers and US prices the binary actually asks for. They are
+the source of truth; `Shared/Services/StoreService.swift` and `Vitals.storekit`
+must agree with this table.
+
+| Product ID | Reference Name | Duration | Price (US) |
+|------------|----------------|----------|------------|
+| `com.jackwallner.vitals.monthly` | Vitals+ Monthly | 1 Month | $6.99 |
+| `com.jackwallner.vitals.yearly` | Vitals+ Yearly | 1 Year | $29.99 |
+| `com.jackwallner.vitals.plus.lifetime` | Vitals+ Lifetime | Non-consumable | $59.99 |
 
    For each product:
    - Localized display name (e.g. "Vitals+ Monthly")
@@ -443,7 +448,18 @@ The paywall must show — and does — the following before purchase:
 
 ### Local Testing
 
-- **Simulator**: `Vitals.storekit` is wired to the Vitals scheme. Run the app, open Settings → Vitals+, hit Unlock. Purchases auto-clear via Debug → StoreKit → Manage Transactions in Xcode.
+- **Simulator**: DEBUG builds configure RevenueCat with the `test_` store key, so
+  simulator purchases go through RevenueCat's test store, not StoreKit. That is
+  deliberate: the production `appl_` key must never be configured on a simulator
+  run, because it creates fake customers in the live charts.
+- **`Vitals.storekit`**: bundled as a resource but *not* referenced by any shared
+  scheme, and wiring it in would not help while RevenueCat owns the purchase
+  path — the test store bypasses StoreKit entirely. Keep the fixture's prices in
+  sync with the table above anyway; it is the reference for what the catalog is
+  supposed to cost.
+- **Deferred / pending transactions** (Ask to Buy, SCA) cannot be exercised on the
+  simulator through the test store. Verify `PurchaseState.pending` in Sandbox
+  with an Ask to Buy tester account before trusting it.
 - **TestFlight**: subs work in Sandbox once products are in Ready to Submit state in ASC. Use a Sandbox tester account from ASC → Users and Access → Sandbox.
 
 ### Pre-Submission Checklist (Vitals+)

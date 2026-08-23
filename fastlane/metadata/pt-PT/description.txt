@@ -1,4 +1,4 @@
-Total Calories mostra as calorias diárias queimadas (ativas + em repouso) e o número de passos exatamente onde precisa delas — no ecrã principal do iPhone, ecrã bloqueado e mostrador do Apple Watch — gratuitamente. Sem subscrição para o básico. Sem conta. Nenhum dado sai do seu telefone.
+Total Calories mostra as calorias diárias queimadas (ativas + em repouso) e o número de passos exatamente onde precisa delas — no ecrã principal do iPhone, ecrã bloqueado e mostrador do Apple Watch — gratuitamente. Sem subscrição para o básico. Sem conta. Os seus dados de saúde não saem do telefone.
 
 Se alguma vez desejou que o mostrador do Apple Watch mostrasse apenas as calorias totais queimadas do dia, esta é a app.
 
@@ -48,9 +48,10 @@ Um pequeno upgrade mensal, anual ou vitalício desbloqueia:
 
 PRIVACIDADE EM PRIMEIRO LUGAR
 - Acesso de leitura ao Apple Health. A app nunca escreve nos seus registos de saúde.
-- Todos os dados são armazenados localmente no seu dispositivo.
-- Sem análises. Sem anúncios. Sem servidores. Sem contas. Sem rastreio.
+- Os seus dados de saúde ficam no seu dispositivo e nunca são enviados.
 - Os relatórios são gerados no próprio dispositivo.
+- Sem anúncios. Sem rastreio. Sem contas.
+- As compras são processadas pela Apple e pela RevenueCat, que nunca recebem os seus dados de saúde.
 
 Total Calories não é um dispositivo médico e não se destina a diagnosticar, tratar ou prevenir qualquer condição médica. Consulte sempre um profissional de saúde para aconselhamento médico.
 

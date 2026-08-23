@@ -1,4 +1,4 @@
-Total Calories pokazuje Twoje dzienne spalone kalorie (aktywne + spoczynkowe) oraz liczbę kroków dokładnie tam, gdzie ich potrzebujesz — na ekranie początkowym iPhone’a, Ekranie blokady oraz na tarczy Apple Watch — za darmo. Podstawy bez subskrypcji. Bez konta. Żadne dane nie opuszczają Twojego telefonu.
+Total Calories pokazuje Twoje dzienne spalone kalorie (aktywne + spoczynkowe) oraz liczbę kroków dokładnie tam, gdzie ich potrzebujesz — na ekranie początkowym iPhone’a, Ekranie blokady oraz na tarczy Apple Watch — za darmo. Podstawy bez subskrypcji. Bez konta. Dane zdrowotne nie opuszczają Twojego telefonu.
 
 Jeśli kiedykolwiek chciałeś, aby tarcza Apple Watch pokazywała po prostu całkowitą liczbę spalonych dziennie kalorii, to jest ta aplikacja.
 
@@ -48,9 +48,10 @@ Nowi subskrybenci otrzymują bezpłatny okres próbny.
 
 PRYWATNOŚĆ OD PODSTAW
 - Tylko odczyt danych Apple Health. Aplikacja nigdy nie zapisuje nic do Twoich danych zdrowotnych.
-- Wszystkie dane są przechowywane lokalnie na Twoim urządzeniu.
-- Bez analityki. Bez reklam. Bez serwerów. Bez kont. Bez śledzenia.
+- Twoje dane zdrowotne pozostają na urządzeniu i nigdy nie są wysyłane.
 - Raporty są generowane na urządzeniu.
+- Bez reklam. Bez śledzenia. Bez kont.
+- Zakupy obsługują Apple i RevenueCat, które nigdy nie otrzymują Twoich danych zdrowotnych.
 
 Total Calories nie jest wyrobem medycznym i nie służy do diagnozowania, leczenia ani zapobiegania jakimkolwiek chorobom. W sprawach medycznych zawsze konsultuj się z profesjonalnym pracownikiem ochrony zdrowia.
 

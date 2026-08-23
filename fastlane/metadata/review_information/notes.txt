@@ -1,6 +1,6 @@
 Vitals+ subscription details and EULA link are included in the App Description. The in-app paywall displays subscription title, length, price, Privacy Policy, and Terms of Use prior to purchase, per Guideline 3.1.2.
 
-Total Calories reads calorie and step data from Apple Health (HealthKit) in read-only mode. It does not write to HealthKit. All data is stored locally — no server, no accounts, no data collection.
+Total Calories reads calorie and step data from Apple Health (HealthKit) in read-only mode. It does not write to HealthKit. Health data is stored locally on the device and is never uploaded; there is no account and no backend of ours. Subscriptions are processed by Apple and by RevenueCat, which receives an anonymous app user ID plus purchase and entitlement status only. RevenueCat never receives HealthKit data.
 
 HEALTHKIT SETUP — PLEASE GRANT ACCESS WHEN PROMPTED
 

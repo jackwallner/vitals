@@ -1,4 +1,4 @@
-Total Calories meletakkan jumlah kalori harian yang anda bakar (aktif + rehat) dan kiraan langkah tepat di tempat yang anda perlukan — pada Skrin Utama iPhone, Skrin Kunci, dan muka jam Apple Watch anda — secara percuma. Tiada langganan diperlukan untuk ciri asas. Tiada akaun. Tiada data meninggalkan telefon anda.
+Total Calories meletakkan jumlah kalori harian yang anda bakar (aktif + rehat) dan kiraan langkah tepat di tempat yang anda perlukan — pada Skrin Utama iPhone, Skrin Kunci, dan muka jam Apple Watch anda — secara percuma. Tiada langganan diperlukan untuk ciri asas. Tiada akaun. Data kesihatan anda tidak meninggalkan telefon.
 
 Jika anda pernah berharap muka jam Apple Watch anda hanya memaparkan jumlah kalori dibakar untuk hari ini, inilah aplikasinya.
 
@@ -48,9 +48,10 @@ Percubaan percuma ditawarkan kepada pelanggan baharu.
 
 PRIVASI DIUTAMAKAN
 - Akses Apple Health hanya baca. Apl tidak pernah menulis ke rekod kesihatan anda.
-- Semua data disimpan secara setempat pada peranti anda.
-- Tiada analitis. Tiada iklan. Tiada pelayan. Tiada akaun. Tiada penjejakan.
+- Data kesihatan anda kekal pada peranti dan tidak pernah dimuat naik.
 - Laporan dijana pada peranti.
+- Tiada iklan. Tiada penjejakan. Tiada akaun.
+- Pembelian diproses oleh Apple dan RevenueCat, yang tidak pernah menerima data kesihatan anda.
 
 Total Calories bukan peranti perubatan dan tidak bertujuan untuk mendiagnos, merawat, atau mencegah sebarang keadaan perubatan. Sentiasa dapatkan nasihat profesional penjagaan kesihatan untuk nasihat perubatan.
 

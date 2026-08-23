@@ -1,4 +1,4 @@
-Total Calories toont je totale verbrande calorieën (actief + rust) en je aantal stappen precies waar je ze nodig hebt — op je iPhone-beginscherm, vergrendelscherm en Apple Watch-wijzerplaat — gratis. Geen abonnement nodig voor de basis. Geen account. Geen gegevens verlaten je telefoon.
+Total Calories toont je totale verbrande calorieën (actief + rust) en je aantal stappen precies waar je ze nodig hebt — op je iPhone-beginscherm, vergrendelscherm en Apple Watch-wijzerplaat — gratis. Geen abonnement nodig voor de basis. Geen account. Je gezondheidsgegevens verlaten je telefoon niet.
 
 Als je ooit hebt gewenst dat je Apple Watch-wijzerplaat gewoon je totale verbrande calorieën van de dag toont, dan is dit de app.
 
@@ -48,9 +48,10 @@ Een gratis proefperiode is beschikbaar voor nieuwe abonnees.
 
 PRIVACY ALS UITGANGSPUNT
 - Alleen-lezen-toegang tot Apple Health. De app schrijft nooit naar je gezondheidsgegevens.
-- Alle gegevens worden lokaal op je apparaat opgeslagen.
-- Geen analytics. Geen advertenties. Geen servers. Geen accounts. Geen tracking.
+- Je gezondheidsgegevens blijven op je apparaat en worden nooit geüpload.
 - Rapporten worden op het apparaat zelf gegenereerd.
+- Geen advertenties. Geen tracking. Geen accounts.
+- Aankopen worden verwerkt door Apple en RevenueCat, die je gezondheidsgegevens nooit ontvangen.
 
 Total Calories is geen medisch hulpmiddel en is niet bedoeld om een medische aandoening te diagnosticeren, behandelen of voorkomen. Raadpleeg altijd een zorgprofessional voor medisch advies.
 

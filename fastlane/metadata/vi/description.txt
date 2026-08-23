@@ -1,4 +1,4 @@
-Total Calories hiển thị calo đốt mỗi ngày (hoạt động + nghỉ ngơi) và số bước chân ngay trên Màn hình chính, Màn hình khóa iPhone và mặt Apple Watch của bạn – hoàn toàn miễn phí. Không cần đăng ký gói cơ bản. Không tài khoản. Không dữ liệu nào rời khỏi điện thoại.
+Total Calories hiển thị calo đốt mỗi ngày (hoạt động + nghỉ ngơi) và số bước chân ngay trên Màn hình chính, Màn hình khóa iPhone và mặt Apple Watch của bạn – hoàn toàn miễn phí. Không cần đăng ký gói cơ bản. Không tài khoản. Dữ liệu sức khỏe không rời khỏi điện thoại.
 
 Nếu bạn từng ước mặt Apple Watch chỉ hiển thị tổng calo đã đốt trong ngày, thì đây chính là ứng dụng đó.
 
@@ -48,9 +48,10 @@ Người đăng ký mới được dùng thử miễn phí.
 
 RIÊNG TƯ NGAY TỪ THIẾT KẾ
 - Quyền truy cập Apple Health chỉ đọc. Ứng dụng không bao giờ ghi vào hồ sơ sức khỏe của bạn.
-- Mọi dữ liệu được lưu cục bộ trên thiết bị.
-- Không phân tích hành vi. Không quảng cáo. Không máy chủ. Không tài khoản. Không theo dõi.
+- Dữ liệu sức khỏe của bạn nằm trên thiết bị và không bao giờ được tải lên.
 - Báo cáo được xử lý ngay trên thiết bị.
+- Không quảng cáo. Không theo dõi. Không cần tài khoản.
+- Giao dịch mua do Apple và RevenueCat xử lý, cả hai đều không nhận dữ liệu sức khỏe của bạn.
 
 Total Calories không phải là thiết bị y tế và không nhằm mục đích chẩn đoán, điều trị hay phòng ngừa bất kỳ tình trạng y khoa nào. Luôn hỏi ý kiến chuyên gia y tế để được tư vấn.
 

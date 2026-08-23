@@ -1,4 +1,4 @@
-Total Calories menampilkan kalori harian yang terbakar (aktif + istirahat) dan jumlah langkah tepat di tempat yang Anda butuhkan — Layar Utama iPhone, Layar Kunci, dan tampilan Apple Watch — gratis. Tanpa langganan untuk fitur dasar. Tanpa akun. Tidak ada data yang keluar dari ponsel Anda.
+Total Calories menampilkan kalori harian yang terbakar (aktif + istirahat) dan jumlah langkah tepat di tempat yang Anda butuhkan — Layar Utama iPhone, Layar Kunci, dan tampilan Apple Watch — gratis. Tanpa langganan untuk fitur dasar. Tanpa akun. Data kesehatan Anda tidak keluar dari ponsel.
 
 Jika Anda pernah berharap tampilan Apple Watch hanya menampilkan total kalori harian yang terbakar, inilah aplikasinya.
 
@@ -48,9 +48,10 @@ Uji coba gratis tersedia untuk pelanggan baru.
 
 PRIVASI SEJAK DESAIN
 - Akses Apple Health hanya-baca. Aplikasi tidak pernah menulis ke data kesehatan Anda.
-- Semua data disimpan lokal di perangkat Anda.
-- Tanpa analitik. Tanpa iklan. Tanpa server. Tanpa akun. Tanpa pelacakan.
+- Data kesehatanmu tersimpan di perangkat dan tidak pernah diunggah.
 - Laporan dibuat di perangkat.
+- Tanpa iklan. Tanpa pelacakan. Tanpa akun.
+- Pembelian diproses oleh Apple dan RevenueCat, yang tidak pernah menerima data kesehatanmu.
 
 Total Calories bukan perangkat medis dan tidak dimaksudkan untuk mendiagnosis, mengobati, atau mencegah kondisi medis apa pun. Selalu konsultasikan dengan tenaga kesehatan profesional untuk nasihat medis.
 

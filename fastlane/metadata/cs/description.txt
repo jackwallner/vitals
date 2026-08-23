@@ -1,4 +1,4 @@
-Total Calories zobrazuje vaše denní spálené kalorie (aktivní + klidové) a počet kroků přesně tam, kde je potřebujete – na ploše iPhonu, Zamčené obrazovce a ciferníku Apple Watch – zdarma. Základní funkce bez předplatného. Bez účtu. Žádná data neopouštějí váš telefon.
+Total Calories zobrazuje vaše denní spálené kalorie (aktivní + klidové) a počet kroků přesně tam, kde je potřebujete – na ploše iPhonu, Zamčené obrazovce a ciferníku Apple Watch – zdarma. Základní funkce bez předplatného. Bez účtu. Zdravotní data neopouštějí váš telefon.
 
 Pokud jste si někdy přáli, aby ciferník Apple Watch ukazoval jen celkové kalorie za den, tohle je ta aplikace.
 
@@ -48,9 +48,10 @@ Noví předplatitelé mají k dispozici bezplatné zkušební období.
 
 SOUKROMÍ NA PRVNÍM MÍSTĚ
 - Pouze čtení dat z Apple Health. Aplikace nikdy nezapisuje do vašich zdravotních záznamů.
-- Všechna data jsou uložena lokálně na vašem zařízení.
-- Bez analytiky. Bez reklam. Bez serverů. Bez účtů. Bez sledování.
+- Tvoje zdravotní data zůstávají v zařízení a nikdy se nikam neodesílají.
 - Reporty se vytvářejí přímo v zařízení.
+- Žádné reklamy. Žádné sledování. Žádné účty.
+- Nákupy zpracovávají Apple a RevenueCat, které tvoje zdravotní data nikdy nedostanou.
 
 Total Calories není zdravotnický prostředek a není určena k diagnostice, léčbě ani prevenci žádného onemocnění. Vždy se ohledně zdravotních otázek poraďte se zdravotnickým odborníkem.
 

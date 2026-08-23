@@ -1,4 +1,4 @@
-Total Calories affiche vos calories brûlées chaque jour (actives + au repos) et votre nombre de pas exactement où vous en avez besoin — sur l’écran d’accueil et l’écran verrouillé de votre iPhone, ainsi que sur le cadran de votre Apple Watch — gratuitement. Aucune inscription nécessaire pour les fonctions de base. Aucun compte. Aucune donnée ne quitte votre téléphone.
+Total Calories affiche vos calories brûlées chaque jour (actives + au repos) et votre nombre de pas exactement où vous en avez besoin — sur l’écran d’accueil et l’écran verrouillé de votre iPhone, ainsi que sur le cadran de votre Apple Watch — gratuitement. Aucune inscription nécessaire pour les fonctions de base. Aucun compte. Vos données de santé ne quittent pas votre téléphone.
 
 Si vous avez déjà souhaité que votre cadran Apple Watch affiche simplement vos calories totales brûlées dans la journée, c’est l’app qu’il vous faut.
 
@@ -48,9 +48,10 @@ Un essai gratuit est offert aux nouveaux abonnés.
 
 CONFIDENTIALITÉ AVANT TOUT
 - Accès Apple Health en lecture seule. L’app n’écrit jamais dans vos données de santé.
-- Toutes les données sont stockées localement sur votre appareil.
-- Aucune analyse. Aucune pub. Aucun serveur. Aucun compte. Aucun suivi.
+- Vos données de santé restent sur votre appareil.
 - Les rapports sont générés sur l’appareil.
+- Aucune publicité. Aucun pistage. Aucun compte.
+- Achats traités par Apple et RevenueCat, qui ne reçoivent jamais vos données de santé.
 
 Total Calories n’est pas un dispositif médical et n’est pas destiné à diagnostiquer, traiter ou prévenir une maladie. Demandez toujours l’avis d’un professionnel de la santé pour toute question médicale.
 

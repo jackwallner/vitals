@@ -1,4 +1,4 @@
-Total Calories mostra les calories cremades al dia (actives + en repòs) i el recompte de passos just on les necessites: a la pantalla d'inici i de bloqueig de l'iPhone i a la esfera d'Apple Watch, gratuïtament. No cal cap subscripció per a les funcions bàsiques. Sense compte. Cap dada surt del teu telèfon.
+Total Calories mostra les calories cremades al dia (actives + en repòs) i el recompte de passos just on les necessites: a la pantalla d'inici i de bloqueig de l'iPhone i a la esfera d'Apple Watch, gratuïtament. No cal cap subscripció per a les funcions bàsiques. Sense compte. Les teves dades de salut no surten del telèfon.
 
 Si mai has volgut que la teva esfera d'Apple Watch mostri només les calories totals cremades del dia, aquesta és l'app que busques.
 
@@ -48,9 +48,10 @@ S'ofereix una prova gratuïta per a nous subscriptors.
 
 PRIVACITAT PER DISSENY
 - Accés només de lectura a Apple Health. L'app mai escriu al teu registre de salut.
-- Totes les dades s'emmagatzemen localment al dispositiu.
-- Sense analítiques. Sense anuncis. Sense servidors. Sense comptes. Sense seguiment.
+- Les teves dades de salut es queden al dispositiu.
 - Els informes es generen al mateix dispositiu.
+- Sense anuncis. Sense rastreig. Sense comptes.
+- Compres processades per Apple i RevenueCat, que mai reben les teves dades de salut.
 
 Total Calories no és un dispositiu mèdic i no està pensada per diagnosticar, tractar o prevenir cap malaltia. Consulta sempre un professional sanitari per obtenir assessorament mèdic.
 

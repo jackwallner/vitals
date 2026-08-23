@@ -1,4 +1,4 @@
-Total Calories zeigt dir deine täglich verbrannten Kalorien (aktiv + Ruhe) und deine Schritte genau dort, wo du sie brauchst – auf dem iPhone Home-Bildschirm, Sperrbildschirm und dem Apple Watch Zifferblatt – kostenlos. Kein Abo für die Grundlagen. Kein Konto. Keine Daten verlassen dein iPhone.
+Total Calories zeigt dir deine täglich verbrannten Kalorien (aktiv + Ruhe) und deine Schritte genau dort, wo du sie brauchst – auf dem iPhone Home-Bildschirm, Sperrbildschirm und dem Apple Watch Zifferblatt – kostenlos. Kein Abo für die Grundlagen. Kein Konto. Deine Gesundheitsdaten verlassen dein iPhone nie.
 
 Wenn du dir je gewünscht hast, dass dein Apple Watch Zifferblatt einfach nur deine gesamten Tageskalorien anzeigt, ist dies die passende App.
 
@@ -48,9 +48,10 @@ Ein kostenloses Probeabo ist für neue Abonnenten verfügbar.
 
 DATENSCHUTZ VON ANFANG AN
 - Nur-Lesen-Zugriff auf Apple Health. Die App schreibt niemals in deine Gesundheitsdaten.
-- Alle Daten werden lokal auf deinem Gerät gespeichert.
-- Keine Analysen. Keine Werbung. Keine Server. Keine Konten. Kein Tracking.
+- Deine Gesundheitsdaten bleiben auf deinem Gerät und werden nie hochgeladen.
 - Berichte werden direkt auf dem Gerät erzeugt.
+- Keine Werbung. Kein Tracking. Keine Konten.
+- Käufe werden von Apple und RevenueCat abgewickelt, die deine Gesundheitsdaten nie erhalten.
 
 Total Calories ist kein Medizinprodukt und nicht dazu bestimmt, Krankheiten zu diagnostizieren, zu behandeln oder zu verhindern. Hole dir immer medizinischen Rat bei Fachpersonal.
 
