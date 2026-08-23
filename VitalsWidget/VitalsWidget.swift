@@ -12,7 +12,14 @@ private func loadGoals() -> (calories: Double, steps: Int, calEnabled: Bool, ste
     let stepOn = defaults.object(forKey: "stepGoalEnabled") as? Bool ?? true
     let showCal = defaults.object(forKey: "showCalories") as? Bool ?? true
     let showStep = defaults.object(forKey: "showSteps") as? Bool ?? true
-    let showNet = defaults.object(forKey: "showNetCalories") as? Bool ?? false
+    // Net Deficit is Vitals+. The app clears `showNetCalories` when the
+    // entitlement goes away, but only while it is running. A lapsed customer
+    // who never reopens it would otherwise keep a premium readout on the Home
+    // Screen indefinitely. `EnergyAveragesWidget` already decides this for
+    // itself; every extension has to, because the preference alone is not the
+    // entitlement. See `StoreService.cachedProKey`.
+    let isPro = defaults.bool(forKey: StoreService.cachedProKey)
+    let showNet = (defaults.object(forKey: "showNetCalories") as? Bool ?? false) && isPro
     return (cal > 0 ? cal : 2500, step > 0 ? step : 10000, calOn, stepOn, showCal, showStep, showNet)
 }
 
