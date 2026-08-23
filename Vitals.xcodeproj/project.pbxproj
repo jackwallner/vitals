@@ -61,6 +61,7 @@
 		48F4FF8659D0098D595B8343 /* ConversionDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC6717A33895256B9C16964 /* ConversionDiagnostics.swift */; };
 		48F82FDD56F577609761DC28 /* NetDeficitTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */; };
 		492F9B46F206FF3E148EF4BF /* SupportMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5DAB758DDA2F38199CF3E /* SupportMail.swift */; };
+		4A747E605EB45D285A3469A7 /* PaywallVariantOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD96649F6BF18899C0A6326 /* PaywallVariantOverride.swift */; };
 		4BBF51A0779D25AD5E4D59A4 /* SupportMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5DAB758DDA2F38199CF3E /* SupportMail.swift */; };
 		4BE509D428F57F520F085EB8 /* ReviewPromptTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6AECE7D2FEB86748EA85D /* ReviewPromptTracker.swift */; };
 		4C334A91CF82A9FBAA312C1A /* WhatsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDEB69876935A084FB689CF /* WhatsNew.swift */; };
@@ -120,6 +121,7 @@
 		906DF508C80FAF1F80DCF0FC /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A2306ABF7BBFD87A49291EE7 /* PrivacyInfo.xcprivacy */; };
 		919AF5A699922C5CF56DEC03 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C395EAE504DCAD8464C29AC9 /* PaywallView.swift */; };
 		93B99EBF212EE7E85A345BFB /* VitalsConversionCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1FB17511E85720FB3545D /* VitalsConversionCopy.swift */; };
+		9725925E13483C3B2F385962 /* PaywallVariantOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD96649F6BF18899C0A6326 /* PaywallVariantOverride.swift */; };
 		97B3284F672341E171AA3828 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEC52C3FC9793813DF64549 /* DashboardView.swift */; };
 		9880A24EDD14087BBC276BBE /* EnergyAveragesCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B9D5B798B90EA3B5158572 /* EnergyAveragesCalculator.swift */; };
 		9BA0D25F3528A301256B8E60 /* OnboardingCTARecoveryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBA801C032B8DF467FA454C /* OnboardingCTARecoveryUITests.swift */; };
@@ -145,6 +147,7 @@
 		B9BF75C576EB39B0BBA7D1C6 /* ProjectionCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7896892E56FE0D79E979DEE7 /* ProjectionCalculatorTests.swift */; };
 		BAAF27492ADCF82BF62686CA /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
 		BE538F50FDD4AC5E8444AD9E /* ScreenshotConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4334C2CE63928C06983EA7 /* ScreenshotConfig.swift */; };
+		BE8BD338FD86C8441F97D51F /* PaywallVariantOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD96649F6BF18899C0A6326 /* PaywallVariantOverride.swift */; };
 		BF6A35F2E475EDE2216D9122 /* ConversionDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC6717A33895256B9C16964 /* ConversionDiagnostics.swift */; };
 		C032E25CC69C248AA23158D0 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2600C40B77EF3FF5126EAFE /* NotificationService.swift */; };
 		C06DBD3348B87E3E121DBB5C /* ConversionDiagnosticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D384451ACF54F71FE10F85 /* ConversionDiagnosticsTests.swift */; };
@@ -180,6 +183,7 @@
 		E301042E1AFB8011E2FD493C /* OnboardingFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D69AA5CE048C7FF360D80A3 /* OnboardingFlowUITests.swift */; };
 		E423A6BC1D2F4FB0E197829B /* MilestoneCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604A7C1098FB8101FE9A3365 /* MilestoneCalculator.swift */; };
 		E48D5DCE8E5EA92DBEA311A3 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
+		E64B441E3127F6495D506CF1 /* PaywallVariantOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD96649F6BF18899C0A6326 /* PaywallVariantOverride.swift */; };
 		E6E4E983389A2641C8483300 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E24C6F7550EC4501A69FE /* DateHelpers.swift */; };
 		E8752619ACD6DEB73E035A30 /* ReviewPromptTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6AECE7D2FEB86748EA85D /* ReviewPromptTracker.swift */; };
 		E89AE59CE020B0D8425D241B /* MilestoneCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604A7C1098FB8101FE9A3365 /* MilestoneCalculator.swift */; };
@@ -356,6 +360,7 @@
 		F86EC13F0E2855F9288631D7 /* VitalsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalsWidget.swift; sourceTree = "<group>"; };
 		FA098EAFC93DFDA55DE72ED4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FB79EE935FF815B366FB6D27 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		FDD96649F6BF18899C0A6326 /* PaywallVariantOverride.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallVariantOverride.swift; sourceTree = "<group>"; };
 		FEDFD029845EFE870D5493E8 /* Vitals.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vitals.entitlements; sourceTree = "<group>"; };
 		FFAF11B005DB797877D60FDA /* SummaryReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryReportView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -481,6 +486,7 @@
 				13B9D5B798B90EA3B5158572 /* EnergyAveragesCalculator.swift */,
 				604A7C1098FB8101FE9A3365 /* MilestoneCalculator.swift */,
 				A92A4096A4EFCD26122F1D62 /* PaywallUIVariant.swift */,
+				FDD96649F6BF18899C0A6326 /* PaywallVariantOverride.swift */,
 				CEE9370DC12BAC7716DA62A5 /* ProjectionCalculator.swift */,
 				BA4334C2CE63928C06983EA7 /* ScreenshotConfig.swift */,
 				76B5DAB758DDA2F38199CF3E /* SupportMail.swift */,
@@ -853,6 +859,7 @@
 				F31C7C2C587EAEDF9B70C692 /* NetDeficitTrendSummary.swift in Sources */,
 				162F6C3B386295BF2B5DE297 /* NotificationService.swift in Sources */,
 				D57B87503EE8D3080DF1944C /* PaywallUIVariant.swift in Sources */,
+				BE8BD338FD86C8441F97D51F /* PaywallVariantOverride.swift in Sources */,
 				0EA5DC155C32F07931E96361 /* ProjectionCalculator.swift in Sources */,
 				4BE509D428F57F520F085EB8 /* ReviewPromptTracker.swift in Sources */,
 				BE538F50FDD4AC5E8444AD9E /* ScreenshotConfig.swift in Sources */,
@@ -891,6 +898,7 @@
 				09743D7BE9223C40B5B56D88 /* NetDeficitTrendSummary.swift in Sources */,
 				0300E24894022A49E65EC41C /* NotificationService.swift in Sources */,
 				1CE9B5C66CB288E0ABDDACCF /* PaywallUIVariant.swift in Sources */,
+				4A747E605EB45D285A3469A7 /* PaywallVariantOverride.swift in Sources */,
 				F93415C3586901C55415E5C6 /* ProjectionCalculator.swift in Sources */,
 				C742B4921F953970DAA96F52 /* ReviewPromptTracker.swift in Sources */,
 				AC9FF372460EE54FE7F7183D /* ScreenshotConfig.swift in Sources */,
@@ -930,6 +938,7 @@
 				48F82FDD56F577609761DC28 /* NetDeficitTrendSummary.swift in Sources */,
 				C032E25CC69C248AA23158D0 /* NotificationService.swift in Sources */,
 				B923EA6CC78A7551381174E3 /* PaywallUIVariant.swift in Sources */,
+				9725925E13483C3B2F385962 /* PaywallVariantOverride.swift in Sources */,
 				138D52C1CFAA32B0216DD8B9 /* ProjectionCalculator.swift in Sources */,
 				2E1443936EFA4C5DC1329871 /* ReviewPromptTracker.swift in Sources */,
 				33A7D4611A50027B3C977301 /* ScreenshotConfig.swift in Sources */,
@@ -1028,6 +1037,7 @@
 				0E0201FB0EAAC755B25E719B /* PaywallScreenshotHarness.swift in Sources */,
 				D152617AC81B1E8BB49B521C /* PaywallScreenshotMode.swift in Sources */,
 				0ABF71410170EF6C0DF7D63D /* PaywallUIVariant.swift in Sources */,
+				E64B441E3127F6495D506CF1 /* PaywallVariantOverride.swift in Sources */,
 				919AF5A699922C5CF56DEC03 /* PaywallView.swift in Sources */,
 				FDC255EDF9FC897146209356 /* ProgressRing.swift in Sources */,
 				63853133C6016FE36B9CCF57 /* ProjectionCalculator.swift in Sources */,

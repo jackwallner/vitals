@@ -484,6 +484,9 @@ final class StoreService: NSObject, ObservableObject {
         #if DEBUG
         if let override = DebugLaunchConfig.upgradeTabOverride { return override }
         #endif
+        // Set by the hidden gesture on the Upgrade tab, so an arm can be walked
+        // on a real phone from a TestFlight build. Nil for every real user.
+        if let manual = PaywallVariantOverride.current { return manual }
         return currentOffering?.vitalsUpgradeTabVariant ?? .catalog
     }
 

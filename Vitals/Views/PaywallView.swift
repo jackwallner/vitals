@@ -355,6 +355,8 @@ struct PaywallView: View {
                 .padding(.bottom, 8)
                 .frame(minHeight: fullListHeight, alignment: .center)
                 .modifier(CenteredScrollContainer(height: $fullListHeight))
+                .overlay(alignment: .top) { variantRotatorTapTarget }
+                .overlay(alignment: .top) { variantToast }
             } else {
                 // A focused pitch is short: three benefits and the plans. Space
                 // is split above and below so it sits centred, instead of all of
@@ -492,8 +494,63 @@ struct PaywallView: View {
     /// Ten rows have to fit the same space five did, without pushing a plan off
     /// the screen. 1.8.2 did not manage that and hid Lifetime; tightening the
     /// row rhythm is what buys the space back.
+    /// Taps counted toward the hidden variant rotator. Resets on its own.
+    @State private var secretTapCount = 0
+    @State private var secretTapResetAt = Date.distantPast
+    /// Shown for a moment after the rotator fires, so a tester can see which
+    /// arm they landed on without a debug build or a console.
+    @State private var variantToastLabel: String?
+
     private var featureListSpacing: CGFloat {
         upgradeTabVariant == .fullList ? 3 : 7
+    }
+
+    /// Ten taps on a small strip at the top of the Upgrade tab rotates the
+    /// layout: full list, short list, macro card, maintenance, then back to
+    /// whatever RevenueCat says.
+    ///
+    /// Ten, and inside three seconds, because this ships in the Release binary
+    /// that goes to TestFlight and the App Store. A debug-only switch cannot
+    /// walk the arms on a real phone, which is the only place worth walking
+    /// them. The strip is invisible and takes no hits it is not given: it sits
+    /// above the header text and below the close button, so nothing real is
+    /// underneath it to steal.
+    private var variantRotatorTapTarget: some View {
+        Color.clear
+            .frame(height: 34)
+            .contentShape(Rectangle())
+            .accessibilityHidden(true)
+            .onTapGesture {
+                let now = Date.now
+                if now > secretTapResetAt {
+                    secretTapCount = 0
+                    secretTapResetAt = now.addingTimeInterval(3)
+                }
+                secretTapCount += 1
+                guard secretTapCount >= 10 else { return }
+                secretTapCount = 0
+                let next = PaywallVariantOverride.advance()
+                variantToastLabel = PaywallVariantOverride.label(for: next)
+                Task {
+                    try? await Task.sleep(for: .seconds(2))
+                    variantToastLabel = nil
+                }
+            }
+    }
+
+    @ViewBuilder
+    private var variantToast: some View {
+        if let variantToastLabel {
+            Text(variantToastLabel)
+                .font(.system(.caption, design: .monospaced, weight: .semibold))
+                .foregroundStyle(.white)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 7)
+                .background(.black.opacity(0.78), in: Capsule())
+                .padding(.top, 6)
+                .transition(.opacity)
+                .allowsHitTesting(false)
+        }
     }
 
     private var paywallFeatureList: some View {
@@ -626,7 +683,7 @@ struct PaywallView: View {
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
                     .minimumScaleFactor(0.85)
-                Text("Your maintenance calories, worked out from 30 days of your own Apple Health data. On your Home Screen. Nothing to log.")
+                Text("Unlock your maintenance calories and BMR, worked out from 30 days of your own Apple Health data. On your Home Screen. Nothing to log.")
                     .font(.system(.footnote, design: .rounded))
                     .foregroundStyle(Theme.textSecondary)
                     .multilineTextAlignment(.center)
@@ -946,11 +1003,18 @@ private struct MaintenancePitchCard: View {
                 figure(value: "2,450", label: "TDEE", tint: Theme.caloriesPrimary)
                 figure(value: "1,780", label: "BMR", tint: Theme.restingPrimary)
             }
+            .overlay(alignment: .center) {
+                Image(systemName: "lock.fill")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(Theme.textSecondary)
+                    .padding(9)
+                    .background(Theme.cardSurface, in: Circle())
+            }
         }
         .padding(14)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Example maintenance card. 2,450 calorie TDEE and 1,780 calorie BMR, from a 30-day average.")
+        .accessibilityLabel("Locked maintenance card. Your TDEE and BMR, worked out from a 30-day average, are a Vitals+ feature. The numbers shown are blurred placeholders, not your own.")
     }
 
     private func figure(value: String, label: String, tint: Color) -> some View {
@@ -958,6 +1022,11 @@ private struct MaintenancePitchCard: View {
             Text(value)
                 .font(.system(.title3, design: .rounded, weight: .bold))
                 .foregroundStyle(tint)
+                // Blurred on purpose. Sharp numbers on a paywall read as a
+                // claim about the reader's own body, and these are invented.
+                // Out of focus they read as what they are: the shape of the
+                // thing, locked. It also stops anyone treating 2,450 as advice.
+                .blur(radius: 7)
             Text(label)
                 .font(.system(.caption2, design: .rounded))
                 .foregroundStyle(Theme.textSecondary)
