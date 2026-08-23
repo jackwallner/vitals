@@ -9,8 +9,8 @@ final class SeededHealthFlowUITests: XCTestCase {
         continueAfterFailure = false
     }
 
-    func testSeededTodayHistorySettingsAndTimelinePaywall() {
-        let app = launchSeeded(upgradeTab: "timeline")
+    func testSeededTodayHistorySettingsAndFeatureLedPaywall() {
+        let app = launchSeeded(upgradeTab: "feature_led")
         grantHealthKitAccess(in: app)
         dismissBlockingSheets(in: app)
 
@@ -55,14 +55,23 @@ final class SeededHealthFlowUITests: XCTestCase {
 
         app.buttons["Upgrade"].tap()
         XCTAssertTrue(
-            app.staticTexts["How your free trial works"].waitForExistence(timeout: 20),
-            "timeline layout never appeared on Upgrade"
+            app.staticTexts["Your macros, every day"].waitForExistence(timeout: 20),
+            "feature-led layout never appeared on Upgrade"
+        )
+        // The hero is the pitch, so the card carrying it has to be there too.
+        XCTAssertTrue(
+            app.staticTexts["g protein"].exists || app.otherElements
+                .matching(NSPredicate(format: "label CONTAINS 'Example macros card'")).firstMatch.exists,
+            "feature-led hero rendered without its macro card"
         )
         XCTAssertTrue(app.buttons["paywall-purchase"].waitForExistence(timeout: 10))
-        attach(app.screenshot(), name: "seeded-upgrade-timeline")
+        attach(app.screenshot(), name: "seeded-upgrade-feature-led")
     }
 
-    func testSeededUpgradeTabCatalogHidesTimeline() {
+    /// Catalog is the control arm and the fallback for anything the dashboard
+    /// sends that this binary does not know. It must be the benefit list, and it
+    /// must not leak the treatment's hero.
+    func testSeededUpgradeTabCatalogShowsTheBenefitList() {
         let app = launchSeeded(upgradeTab: "catalog")
         grantHealthKitAccess(in: app)
         dismissBlockingSheets(in: app)
@@ -77,8 +86,12 @@ final class SeededHealthFlowUITests: XCTestCase {
             "catalog leftover line missing"
         )
         XCTAssertFalse(
+            app.staticTexts["Your macros, every day"].exists,
+            "catalog layout leaked the feature-led hero"
+        )
+        XCTAssertFalse(
             app.staticTexts["How your free trial works"].exists,
-            "catalog layout still showed the trial timeline"
+            "the trial timeline is deleted and must not render anywhere"
         )
         attach(app.screenshot(), name: "seeded-upgrade-catalog")
     }
