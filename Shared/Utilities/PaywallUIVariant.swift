@@ -13,7 +13,7 @@ import Foundation
 /// 2. **Only builds that contain a layout can draw it.** Older versions never
 ///    read this key at all, so nothing here can change what they show. That is
 ///    what keeps an experiment scoped to the release that understands it.
-enum PaywallUIVariant: String, Equatable {
+enum PaywallUIVariant: String, Equatable, CaseIterable {
     static let metadataKey = "upgrade_tab"
 
     /// The shipping layout: hero, short benefit list, plans. Control arm.
