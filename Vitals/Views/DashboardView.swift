@@ -2359,6 +2359,7 @@ private struct OnboardingSheet: View {
     /// Set when the trial CTA has waited long enough for RevenueCat that a
     /// spinner is no longer an honest answer. See `trialCTAWaitLimit`.
     @State private var trialCTAWaitExpired = false
+    @State private var isRestoring = false
     /// Emergency fallback: presented only when the onboarding package failed to load,
     /// so the primary CTA is never a dead disabled button.
     @State private var showPaywallFallback = false
@@ -2826,10 +2827,23 @@ private struct OnboardingSheet: View {
         HStack(spacing: 14) {
             Link("Terms", destination: VitalsLinks.standardEULA)
             Link("Privacy", destination: VitalsLinks.privacyPolicy)
-            Button("Restore") {
-                Task { await store.restorePurchases() }
+            Button(isRestoring ? "Restoring…" : "Restore") {
+                // Fire-and-forget before: the task was unobserved, so a
+                // returning subscriber with nothing to restore tapped it and
+                // watched nothing happen. A success flips `isPro`, which
+                // finishes onboarding through the existing onChange.
+                isRestoring = true
+                Task { @MainActor in
+                    defer { isRestoring = false }
+                    trialError = nil
+                    await store.restorePurchases()
+                    guard !store.isPro else { return }
+                    trialError = store.lastError
+                        ?? "No active Vitals+ purchase was found for this Apple ID."
+                }
             }
             .buttonStyle(.plain)
+            .disabled(isRestoring)
         }
         .font(.system(.caption2, design: .rounded))
         .foregroundStyle(Theme.textTertiary)

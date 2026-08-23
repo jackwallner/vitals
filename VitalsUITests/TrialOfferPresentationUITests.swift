@@ -47,6 +47,27 @@ final class TrialOfferPresentationUITests: XCTestCase {
         attach(app.screenshot(), name: "pitch-dismissed-back-in-settings")
     }
 
+    /// Every surface that asks for money has to offer a way back in. This one
+    /// carried Terms and Privacy but no Restore, so a returning subscriber who
+    /// reinstalled and met a feature pitch could pay again or leave.
+    func testFocusedPitchOffersRestoreBesideTheLegalLinks() {
+        let app = launchSettings()
+
+        tapMacrosSwitch(app)
+
+        XCTAssertTrue(
+            app.buttons["Not now"].waitForExistence(timeout: 20),
+            "Trial pitch never appeared"
+        )
+        XCTAssertTrue(
+            app.buttons["Restore"].exists,
+            "focused pitch asks for a purchase with no way to restore one"
+        )
+        XCTAssertTrue(app.links["Terms"].exists || app.buttons["Terms"].exists,
+                      "Terms missing from the pitch footer")
+        attach(app.screenshot(), name: "pitch-footer-has-restore")
+    }
+
     /// The hero must survive an aggressive drag: it may give a little, but the
     /// badge and headline stay on screen rather than being flung out of view.
     func testTrialPitchHeroStaysOnScreenUnderDrag() {
