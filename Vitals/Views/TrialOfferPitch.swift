@@ -176,10 +176,18 @@ struct TrialOfferPitchSheet: View {
             await store.refreshIntroEligibility()
             do {
                 switch try await store.purchase(package) {
-                case .purchased, .pending:
+                case .purchased:
                     onDismiss()
+                case .pending:
+                    // A deferred transaction is not access. Leave the sheet up
+                    // saying so rather than dismissing someone into an app that
+                    // still has the feature locked.
+                    errorMessage = store.purchasePendingMessage(for: package)
                 case .cancelled:
                     errorMessage = store.purchaseCancelledMessage(for: package)
+                case .unavailable:
+                    // Purchases cannot run here; the full paywall owns retry.
+                    onNeedsPlanPicker()
                 }
             } catch {
                 await store.refreshIntroEligibility()

@@ -38,9 +38,13 @@ final class UpgradeTabPlanVisibilityUITests: XCTestCase {
         app.launchEnvironment["VITALS_UPGRADE_TAB"] = variant
         app.launch()
 
+        // Doubles as the 3.1.2 check: every arm has to name the subscription it
+        // is selling. The feature_led arm replaces the header that carried this
+        // text, and shipped once without it.
         XCTAssertTrue(
-            app.staticTexts["Vitals+"].waitForExistence(timeout: 30),
-            "\(variant): Upgrade tab never rendered",
+            app.staticTexts["Vitals+"].waitForExistence(timeout: 30)
+                || app.staticTexts["VITALS+"].waitForExistence(timeout: 5),
+            "\(variant): Upgrade tab never rendered, or never named Vitals+",
             file: file, line: line
         )
 

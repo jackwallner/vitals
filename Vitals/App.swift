@@ -465,10 +465,17 @@ struct MainTabView: View {
             await store.refreshIntroEligibility()
             do {
                 switch try await store.purchase(package) {
-                case .purchased, .pending:
+                case .purchased:
                     markTrialOfferSeen()
+                case .pending:
+                    // Not a trial yet. Do not burn the offer cooldown on a
+                    // transaction that may never settle: the passive pitch is
+                    // the only thing that would re-offer it.
+                    break
                 case .cancelled:
                     break
+                case .unavailable:
+                    selectedTab = 2
                 }
             } catch {
                 await store.refreshIntroEligibility()

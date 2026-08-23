@@ -520,6 +520,19 @@ struct PaywallView: View {
     /// the pitch is the only variable.
     private var featureLedHero: some View {
         VStack(spacing: 14) {
+            // The tier has to be named on the surface that sells it. This arm
+            // replaces `header(compact:)`, which was the only place the words
+            // "Vitals+" appeared, and neither the plan rows nor the 3.1.2
+            // disclosure say it either: the treatment paywall was asking for a
+            // subscription it never named. Guideline 3.1.2 wants the title of
+            // the subscription visible before purchase, and a reader deserves
+            // to know what the macro card is an advert for.
+            Text("VITALS+")
+                .font(.system(.caption2, design: .rounded, weight: .bold))
+                .tracking(1.4)
+                .foregroundStyle(Theme.caloriesPrimary)
+                .accessibilityAddTraits(.isHeader)
+
             MacroPitchCard()
 
             VStack(spacing: 6) {
@@ -688,11 +701,17 @@ struct PaywallView: View {
             defer { isPurchasing = false }
             do {
                 switch try await store.purchase(package) {
-                case .purchased, .pending:
+                case .purchased:
                     // isPro flips via apply(); the onChange dismisses the sheet.
                     break
+                case .pending:
+                    // Previously a silent no-op: the spinner stopped and nothing
+                    // else changed, which reads as a button that does not work.
+                    errorMessage = store.purchasePendingMessage(for: package)
                 case .cancelled:
                     errorMessage = store.purchaseCancelledMessage(for: package)
+                case .unavailable:
+                    errorMessage = VitalsConversionCopy.purchaseUnavailableMessage
                 }
             } catch {
                 await store.refreshIntroEligibility()

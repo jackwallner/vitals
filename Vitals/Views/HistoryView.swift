@@ -2413,10 +2413,14 @@ struct DeepTrendsCard: View {
             await store.refreshIntroEligibility()
             do {
                 switch try await store.purchase(package) {
-                case .purchased, .pending:
+                case .purchased:
                     break
+                case .pending:
+                    errorMessage = store.purchasePendingMessage(for: package)
                 case .cancelled:
                     errorMessage = store.purchaseCancelledMessage(for: package)
+                case .unavailable:
+                    TrialOfferCoordinator.shared.request(.deepTrendsUpgrade)
                 }
             } catch {
                 errorMessage = store.purchaseFailedMessage(for: package)

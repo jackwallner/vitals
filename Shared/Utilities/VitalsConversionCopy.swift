@@ -98,6 +98,20 @@ enum VitalsConversionCopy {
             : "Couldn't complete the purchase. Please try again."
     }
 
+    /// A transaction StoreKit accepted but has not settled: Ask to Buy waiting on
+    /// a parent, an SCA challenge, or a queue that has not drained. It is neither
+    /// a success nor a failure, and the surface has to stay up and say which.
+    static func purchasePendingMessage(eligibleForTrial: Bool) -> String {
+        eligibleForTrial
+            ? "Waiting on Apple to approve this. Your trial starts as soon as it clears."
+            : "Waiting on Apple to approve this. Vitals+ unlocks as soon as it clears."
+    }
+
+    /// Purchases cannot run at all in this process. Route the user somewhere
+    /// that can recover rather than telling them nothing happened.
+    static let purchaseUnavailableMessage =
+        "Couldn't reach the App Store. Check your connection and try again."
+
     /// Hold the purchase button quiet until StoreKit has named the action.
     /// Returning nil means show a spinner, never "Continue" flipping into
     /// "Start Free Trial".
