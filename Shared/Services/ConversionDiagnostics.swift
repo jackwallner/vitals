@@ -43,6 +43,7 @@ enum ConversionDiagnostics {
         static let convertedWithTrial = "conv.convertedWithTrial"
         static let convertedVariant = "conv.convertedVariant"
         static let convertedOffering = "conv.convertedOffering"
+        static let convertedAt = "conv.convertedAt"
     }
 
     /// Impression ids all carry an app prefix that says nothing once they are
@@ -94,6 +95,7 @@ enum ConversionDiagnostics {
         d.set(startedTrial, forKey: Key.convertedWithTrial)
         if let variant { d.set(variant, forKey: Key.convertedVariant) }
         if let offeringID { d.set(offeringID, forKey: Key.convertedOffering) }
+        d.set(Date.now.timeIntervalSince1970, forKey: Key.convertedAt)
         if let first = firstSeenDate {
             let days = Calendar.current.dateComponents([.day], from: first, to: .now).day ?? 0
             d.set(max(0, days), forKey: Key.daysToConvert)
@@ -144,7 +146,16 @@ enum ConversionDiagnostics {
             attributes["days_since_first_pitch"] = String(max(0, days))
         }
         if let convertedOn = d.string(forKey: Key.convertedOn) {
-            attributes["converted_on"] = convertedOn
+            // `converted_on` used to carry this and reads as a date to anyone
+            // looking at a customer record; it is a surface name. The storage
+            // key keeps its old spelling so the "first conversion only" guard
+            // still recognises existing installs.
+            attributes["converted_surface"] = convertedOn
+            let stamp = d.double(forKey: Key.convertedAt)
+            if stamp > 0 {
+                attributes["converted_at"] = ISO8601DateFormatter()
+                    .string(from: Date(timeIntervalSince1970: stamp))
+            }
             attributes["pitch_views_at_convert"] = String(d.integer(forKey: Key.viewsAtConvert))
             attributes["days_to_convert"] = String(d.integer(forKey: Key.daysToConvert))
             attributes["converted_plan"] = d.string(forKey: Key.convertedPlan) ?? "unknown"
