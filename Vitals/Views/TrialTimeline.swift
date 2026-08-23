@@ -1,7 +1,8 @@
 import SwiftUI
 
-/// Blinkist-style three-step trial. Middle step is the last day to cancel
-/// (Apple's 24-hour rule), not a claim that Apple will send a reminder.
+/// Two-step trial: unlocks today, bills on day N. The cancellation deadline is
+/// deliberately not a step here; it lives in the 3.1.2 disclosure under the
+/// purchase button. See `VitalsConversionCopy.TrialTimelineCopy`.
 struct TrialTimeline: View {
     let trialDays: Int
     let priceLabel: String?
@@ -26,13 +27,6 @@ struct TrialTimeline: View {
                 isLast: false
             )
             step(
-                icon: "hand.raised.fill",
-                tint: Theme.caloriesPrimary,
-                title: copy.cancelTitle,
-                detail: copy.cancelDetail,
-                isLast: false
-            )
-            step(
                 icon: "checkmark.seal.fill",
                 tint: Theme.netDeficitBrand,
                 title: copy.chargeTitle,
@@ -45,7 +39,7 @@ struct TrialTimeline: View {
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
-            "How your free trial works. \(copy.todayTitle). \(copy.todayDetail) \(copy.cancelTitle). \(copy.cancelDetail) \(copy.chargeTitle). \(copy.chargeDetail)"
+            "How your free trial works. \(copy.todayTitle). \(copy.todayDetail) \(copy.chargeTitle). \(copy.chargeDetail)"
         )
     }
 

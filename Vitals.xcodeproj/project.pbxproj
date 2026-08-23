@@ -115,6 +115,7 @@
 		8A78DE17AF752A889D4CBEDF /* AppStoreReviewLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46F96D18B8385758A31EFC6 /* AppStoreReviewLinks.swift */; };
 		8BA4236445D489D8CCF15852 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
 		8D267B9C3DAEEDBBDF04937F /* WeeklyRecap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029E0F56D793DA022CCA3D3F /* WeeklyRecap.swift */; };
+		8F0F8D62F6B51452CC9A0381 /* UpgradeTabPlanVisibilityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAB502382929384BAE3B729 /* UpgradeTabPlanVisibilityUITests.swift */; };
 		9032987B70D7BDD245847674 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = B25E8EC0600130AD108B5EED /* RevenueCat */; };
 		906DF508C80FAF1F80DCF0FC /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A2306ABF7BBFD87A49291EE7 /* PrivacyInfo.xcprivacy */; };
 		919AF5A699922C5CF56DEC03 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C395EAE504DCAD8464C29AC9 /* PaywallView.swift */; };
@@ -308,6 +309,7 @@
 		8287269CC5CE093BEF6CBB25 /* PaywallScreenshotHarness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallScreenshotHarness.swift; sourceTree = "<group>"; };
 		82E152DC23E11DAD83864E5A /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		8BA6AECE7D2FEB86748EA85D /* ReviewPromptTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewPromptTracker.swift; sourceTree = "<group>"; };
+		8EAB502382929384BAE3B729 /* UpgradeTabPlanVisibilityUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeTabPlanVisibilityUITests.swift; sourceTree = "<group>"; };
 		91B6F4FE3966882D8D2A9287 /* ReviewPromptSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewPromptSheet.swift; sourceTree = "<group>"; };
 		91C056000F5C8A4A19422218 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		925043FF9DEE6C7E11D17C4D /* WhatsNewSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewSheet.swift; sourceTree = "<group>"; };
@@ -429,6 +431,7 @@
 				2B294CC1AD718FCB854BF56D /* SeededHealthFlowUITests.swift */,
 				A4FB7AAE4A4403268B8E315F /* SettingsSheetUITests.swift */,
 				4714F56490C3965B087F3D69 /* TrialOfferPresentationUITests.swift */,
+				8EAB502382929384BAE3B729 /* UpgradeTabPlanVisibilityUITests.swift */,
 			);
 			path = VitalsUITests;
 			sourceTree = "<group>";
@@ -982,6 +985,7 @@
 				00AB9266458E4142789A8A77 /* SeededHealthFlowUITests.swift in Sources */,
 				E1550A6559100C2DEE281115 /* SettingsSheetUITests.swift in Sources */,
 				A87DBA6B86019B893F54C2BD /* TrialOfferPresentationUITests.swift in Sources */,
+				8F0F8D62F6B51452CC9A0381 /* UpgradeTabPlanVisibilityUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

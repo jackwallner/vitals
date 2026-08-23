@@ -24,8 +24,17 @@ enum RevenueCatConfig {
     #else
     static let apiKey = "appl_uiELZiyBHXCKzJyjqwaCbVkZRXB"
     #endif
-    static let proEntitlement = "Vitals+"
-    static let fallbackEntitlement = "pro"
+    /// The entitlement identifier RevenueCat actually ships in `CustomerInfo`.
+    /// It is the dashboard *lookup key*, not the display name: every paying
+    /// customer on this project holds `entl05bb1ab663`, whose lookup key is the
+    /// string below and whose display name is the much shorter "Vitals+".
+    ///
+    /// This constant is documentation, not a gate. See `hasVitalsProEntitlement`
+    /// for why the check stays permissive. It replaces two unused constants,
+    /// `proEntitlement = "Vitals+"` and `fallbackEntitlement = "pro"`, that named
+    /// no entitlement this project has ever had. Gating on either would have
+    /// revoked Vitals+ from every subscriber.
+    static let proEntitlementIdentifier = "Total Calories - Daily Tracker Vitals+"
 }
 
 enum PurchaseState {
@@ -183,7 +192,17 @@ extension Package {
 extension CustomerInfo {
     /// Vitals only ships a single premium tier, so any active entitlement unlocks
     /// Vitals+. This is intentionally permissive: it survives renames or casing
-    /// drift in the RevenueCat dashboard (e.g. `Vitals+` vs `vitals+` vs `pro`).
+    /// drift in the RevenueCat dashboard.
+    ///
+    /// Deliberately *not* narrowed to `RevenueCatConfig.proEntitlementIdentifier`.
+    /// The project has exactly one active entitlement, and all six products
+    /// (three App Store, three Test Store) grant it, so "any active entitlement"
+    /// and "Vitals+ is active" are the same set today. Narrowing buys nothing and
+    /// risks everything: the identifier is a long lookup key that is easy to get
+    /// wrong, and one wrong string here silently revokes Pro for every paying
+    /// customer, on a path no test exercises because tests run against the Test
+    /// Store. If a second entitlement is ever added to the project, narrow this
+    /// then, and verify against a real subscriber's `CustomerInfo` first.
     var hasVitalsProEntitlement: Bool {
         !entitlements.active.isEmpty
     }
@@ -243,7 +262,9 @@ final class StoreService: NSObject, ObservableObject {
     }
 
     /// App Group key mirroring the live `isPro` entitlement for widget gating.
-    static let cachedProKey = "isProCached"
+    /// `nonisolated` because the widget and complication timeline providers read
+    /// it off the main actor, and an immutable String has nothing to isolate.
+    nonisolated static let cachedProKey = "isProCached"
     private static let cachedProDefaults = UserDefaults(suiteName: vitalsAppGroupID)
     @Published private(set) var purchaseInFlight: Bool = false
     @Published private(set) var isLoadingProducts: Bool = false
