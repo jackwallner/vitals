@@ -91,7 +91,11 @@ final class VariantRotatorUITests: XCTestCase {
         for arm in PaywallVariantNames.cycle {
             let reported = rotate(upgradeTab, in: app)
             XCTAssertEqual(reported, arm, "the cycle did not visit \(arm) in order")
-            let rendered = app.otherElements["paywall-arm-\(arm)"]
+            // descendants(matching: .any), not otherElements: SwiftUI decides
+            // what element type an identified container becomes, and pinning
+            // the query to one type makes the test fail for a reason that has
+            // nothing to do with which arm is drawn.
+            let rendered = app.descendants(matching: .any)["paywall-arm-\(arm)"]
             // Short on purpose. The old code did eventually land on the right
             // arm, minutes later, when something else invalidated the view; a
             // generous timeout would have passed against the bug.
