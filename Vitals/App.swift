@@ -491,7 +491,10 @@ struct MainTabView: View {
         rotatorTapCount += 1
         guard rotatorTapCount >= 10 else { return }
         rotatorTapCount = 0
-        let next = PaywallVariantOverride.advance()
+        // Through the store, not PaywallVariantOverride directly: the store's
+        // published mirror is what makes SwiftUI redraw the tab. Writing the
+        // UserDefaults key alone changed the arm without repainting it.
+        let next = store.advanceVariantOverride()
         variantToastLabel = PaywallVariantOverride.label(for: next)
         Task {
             try? await Task.sleep(for: .seconds(2))
