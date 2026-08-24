@@ -114,14 +114,24 @@ final class SeededHealthFlowUITests: XCTestCase {
     }
 
     private func openSettings(in app: XCUIApplication) {
+        // Existence is not enough. The tab views stay in the hierarchy rather
+        // than being torn down, so a "Settings" button can be present and not
+        // yet hittable while the tab transition settles, and tapping it then
+        // fails as "not hittable" rather than waiting. Ask for hittable.
         let labeled = app.buttons["Settings"]
         if labeled.waitForExistence(timeout: 5) {
-            labeled.tap()
-            return
+            let deadline = Date.now.addingTimeInterval(15)
+            while Date.now < deadline, !labeled.isHittable {
+                _ = app.buttons["nonexistent"].waitForExistence(timeout: 0.3)
+            }
+            if labeled.isHittable {
+                labeled.tap()
+                return
+            }
         }
         // Gear is the first toolbar button on Today when VoiceOver uses a symbol.
         let gear = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'setting' OR identifier CONTAINS[c] 'setting' OR label CONTAINS[c] 'gear'")).firstMatch
-        if gear.waitForExistence(timeout: 3) {
+        if gear.waitForExistence(timeout: 3), gear.isHittable {
             gear.tap()
             return
         }

@@ -355,8 +355,6 @@ struct PaywallView: View {
                 .padding(.bottom, 8)
                 .frame(minHeight: fullListHeight, alignment: .center)
                 .modifier(CenteredScrollContainer(height: $fullListHeight))
-                .overlay(alignment: .top) { variantRotatorTapTarget }
-                .overlay(alignment: .top) { variantToast }
             } else {
                 // A focused pitch is short: three benefits and the plans. Space
                 // is split above and below so it sits centred, instead of all of
@@ -494,63 +492,8 @@ struct PaywallView: View {
     /// Ten rows have to fit the same space five did, without pushing a plan off
     /// the screen. 1.8.2 did not manage that and hid Lifetime; tightening the
     /// row rhythm is what buys the space back.
-    /// Taps counted toward the hidden variant rotator. Resets on its own.
-    @State private var secretTapCount = 0
-    @State private var secretTapResetAt = Date.distantPast
-    /// Shown for a moment after the rotator fires, so a tester can see which
-    /// arm they landed on without a debug build or a console.
-    @State private var variantToastLabel: String?
-
     private var featureListSpacing: CGFloat {
         upgradeTabVariant == .fullList ? 3 : 7
-    }
-
-    /// Ten taps on a small strip at the top of the Upgrade tab rotates the
-    /// layout: full list, short list, macro card, maintenance, then back to
-    /// whatever RevenueCat says.
-    ///
-    /// Ten, and inside three seconds, because this ships in the Release binary
-    /// that goes to TestFlight and the App Store. A debug-only switch cannot
-    /// walk the arms on a real phone, which is the only place worth walking
-    /// them. The strip is invisible and takes no hits it is not given: it sits
-    /// above the header text and below the close button, so nothing real is
-    /// underneath it to steal.
-    private var variantRotatorTapTarget: some View {
-        Color.clear
-            .frame(height: 34)
-            .contentShape(Rectangle())
-            .accessibilityHidden(true)
-            .onTapGesture {
-                let now = Date.now
-                if now > secretTapResetAt {
-                    secretTapCount = 0
-                    secretTapResetAt = now.addingTimeInterval(3)
-                }
-                secretTapCount += 1
-                guard secretTapCount >= 10 else { return }
-                secretTapCount = 0
-                let next = PaywallVariantOverride.advance()
-                variantToastLabel = PaywallVariantOverride.label(for: next)
-                Task {
-                    try? await Task.sleep(for: .seconds(2))
-                    variantToastLabel = nil
-                }
-            }
-    }
-
-    @ViewBuilder
-    private var variantToast: some View {
-        if let variantToastLabel {
-            Text(variantToastLabel)
-                .font(.system(.caption, design: .monospaced, weight: .semibold))
-                .foregroundStyle(.white)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 7)
-                .background(.black.opacity(0.78), in: Capsule())
-                .padding(.top, 6)
-                .transition(.opacity)
-                .allowsHitTesting(false)
-        }
     }
 
     private var paywallFeatureList: some View {
