@@ -355,6 +355,13 @@ struct PaywallView: View {
                 .padding(.bottom, 8)
                 .frame(minHeight: fullListHeight, alignment: .center)
                 .modifier(CenteredScrollContainer(height: $fullListHeight))
+                // Names the arm that is actually on screen, so a test can
+                // assert the rendered layout instead of the rotator's toast.
+                // The toast reports what was *stored*; those two disagreed for
+                // two builds. `.contain` keeps every child individually
+                // reachable by VoiceOver and only adds the grouping element.
+                .accessibilityElement(children: .contain)
+                .accessibilityIdentifier("paywall-arm-\(upgradeTabVariant.rawValue)")
             } else {
                 // A focused pitch is short: three benefits and the plans. Space
                 // is split above and below so it sits centred, instead of all of

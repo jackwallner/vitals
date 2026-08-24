@@ -295,6 +295,20 @@ final class StoreService: NSObject, ObservableObject {
     /// then, trial copy stays off so we never promise a used-trial user a free week.
     @Published private(set) var introEligibilityResolved: Bool = false
 
+    /// Mirror of `PaywallVariantOverride.current`, published so the Upgrade tab
+    /// actually redraws when the hidden rotator advances an arm.
+    ///
+    /// The rotator used to write UserDefaults and nothing else, and
+    /// `upgradeTabVariant` read that store directly. UserDefaults is not an
+    /// observation source: SwiftUI had no reason to re-evaluate the paywall, so
+    /// the arm changed in storage, the toast reported the new name, and the
+    /// screen kept drawing the old layout until some unrelated `@Published`
+    /// (an entitlement refresh, intro eligibility landing) happened to
+    /// invalidate the view. That is the "it says feature_led but I'm still
+    /// looking at catalog" report, and why an arm sometimes appeared minutes
+    /// later. Seeded from storage so an override survives a relaunch.
+    @Published private(set) var manualVariantOverride: PaywallUIVariant? = PaywallVariantOverride.current
+
     private let logger = Logger(subsystem: "com.jackwallner.vitals", category: "Store")
     private var isConfigured = false
     /// Dedupes session-scoped paywall impressions (e.g. the Vitals+ tab, which
@@ -486,8 +500,22 @@ final class StoreService: NSObject, ObservableObject {
         #endif
         // Set by the hidden gesture on the Upgrade tab, so an arm can be walked
         // on a real phone from a TestFlight build. Nil for every real user.
-        if let manual = PaywallVariantOverride.current { return manual }
+        // Read the published mirror, not UserDefaults — see the property.
+        if let manual = manualVariantOverride { return manual }
         return currentOffering?.vitalsUpgradeTabVariant ?? .catalog
+    }
+
+    /// Advance the hidden rotator one arm and publish the change.
+    ///
+    /// Persistence still lives in `PaywallVariantOverride`; this only makes the
+    /// result observable. Assigning the mirror is the part that repaints the
+    /// tab, so the rotator must go through here rather than calling
+    /// `PaywallVariantOverride.advance()` directly.
+    @discardableResult
+    func advanceVariantOverride() -> PaywallUIVariant? {
+        let next = PaywallVariantOverride.advance()
+        manualVariantOverride = next
+        return next
     }
 
     /// True once the purchase button can name the action without flashing

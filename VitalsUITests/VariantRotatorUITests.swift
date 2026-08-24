@@ -67,6 +67,43 @@ final class VariantRotatorUITests: XCTestCase {
                        "the cycle never returned to RevenueCat control")
     }
 
+    /// The bug the toast could not catch: the rotator wrote the new arm to the
+    /// App Group, the toast read it back and reported it, and the paywall kept
+    /// drawing the old layout. `upgradeTabVariant` read UserDefaults, which is
+    /// not an observation source, so SwiftUI had no reason to redraw until some
+    /// unrelated `@Published` fired. Assert the arm that is *rendered*.
+    func testRotatingRedrawsThePaywallNotJustTheToast() {
+        let app = XCUIApplication()
+        app.launchEnvironment["VITALS_SCREENSHOT_MODE"] = "1"
+        app.launchEnvironment["VITALS_SCREENSHOT_SCENE"] = "premium"
+        app.launch()
+
+        let upgradeTab = app.buttons["Upgrade"]
+        XCTAssertTrue(upgradeTab.waitForExistence(timeout: 30), "Upgrade tab button missing")
+
+        // Start from the normal stop so the lap below is deterministic.
+        var guardRail = 0
+        while rotate(upgradeTab, in: app) != Self.normalLabel {
+            guardRail += 1
+            XCTAssertLessThan(guardRail, 8, "never reached the normal stop")
+        }
+
+        for arm in PaywallVariantNames.cycle {
+            let reported = rotate(upgradeTab, in: app)
+            XCTAssertEqual(reported, arm, "the cycle did not visit \(arm) in order")
+            let rendered = app.otherElements["paywall-arm-\(arm)"]
+            // Short on purpose. The old code did eventually land on the right
+            // arm, minutes later, when something else invalidated the view; a
+            // generous timeout would have passed against the bug.
+            XCTAssertTrue(rendered.waitForExistence(timeout: 3),
+                          "toast said \(arm) but the paywall did not redraw as \(arm)")
+            attach(app.screenshot(), name: "rendered-\(arm)")
+        }
+
+        XCTAssertEqual(rotate(upgradeTab, in: app), Self.normalLabel,
+                       "the cycle never returned to RevenueCat control")
+    }
+
     private static let normalLabel = "RevenueCat decides (normal)"
 
     /// The override is stored in the App Group and survives the app, so a test
