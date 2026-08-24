@@ -348,6 +348,11 @@ struct MainTabView: View {
     @StateObject private var recapCoordinator = WeeklyRecapCoordinator.shared
     @StateObject private var reviewPromptCoordinator = ReviewPromptCoordinator.shared
     @State private var selectedTab = 0
+    /// Taps on the Upgrade tab while already on it, counted toward the hidden
+    /// arm rotator. Resets itself after three seconds of no tapping.
+    @State private var rotatorTapCount = 0
+    @State private var rotatorLastTapAt = Date.distantPast
+    @State private var variantToastLabel: String?
     @State private var historyHasAppeared = false
     @State private var showWhatsNew = false
     /// Guards the What's New announcement to one evaluation per app session.
@@ -456,6 +461,59 @@ struct MainTabView: View {
 
     /// Milestone CTA: buy yearly in place (Apple confirm). Trial applies only
     /// when eligible; otherwise it's a straight yearly purchase.
+    /// Ten taps on the Upgrade tab, while already on the Upgrade tab, rotates
+    /// the paywall layout: full list, short list, macro card, maintenance, then
+    /// back to whatever RevenueCat says.
+    ///
+    /// It lives on the tab button because the first attempt did not. That was
+    /// an invisible strip at the top of the paywall, and a UI test tapping
+    /// where it was supposed to be never triggered it: the strip sat inside the
+    /// scroll container's centred frame, not where a thumb would land. A hidden
+    /// gesture nobody can find is worse than no gesture, so this one is on a
+    /// control that is always in the same place, always hittable, and does
+    /// nothing when you are already on the tab.
+    ///
+    /// Deliberately not `#if DEBUG`: the arms are only worth judging on a real
+    /// phone, and TestFlight ships a Release build. It picks between layouts
+    /// already in the binary that RevenueCat could serve anyone, and cannot
+    /// touch a price, a product, an entitlement, or what a purchase does.
+    private func countRotatorTap() {
+        // A gap rule, not a stopwatch. The first version gave the whole run
+        // three seconds, which a UI test tapping the button ten times could not
+        // meet, and neither could an unhurried thumb. What actually
+        // distinguishes a deliberate sequence from a stray tap is that the taps
+        // keep coming, so the count survives as long as no gap exceeds 1.5s.
+        let now = Date.now
+        if now.timeIntervalSince(rotatorLastTapAt) > 1.5 {
+            rotatorTapCount = 0
+        }
+        rotatorLastTapAt = now
+        rotatorTapCount += 1
+        guard rotatorTapCount >= 10 else { return }
+        rotatorTapCount = 0
+        let next = PaywallVariantOverride.advance()
+        variantToastLabel = PaywallVariantOverride.label(for: next)
+        Task {
+            try? await Task.sleep(for: .seconds(2))
+            variantToastLabel = nil
+        }
+    }
+
+    @ViewBuilder
+    private var variantToast: some View {
+        if let variantToastLabel {
+            Text(variantToastLabel)
+                .font(.system(.caption, design: .monospaced, weight: .semibold))
+                .foregroundStyle(.white)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 7)
+                .background(.black.opacity(0.82), in: Capsule())
+                .offset(y: -46)
+                .allowsHitTesting(false)
+                .accessibilityIdentifier("variant-toast")
+        }
+    }
+
     private func startMilestoneDirectTrial() {
         guard let package = directConversionPackage else {
             selectedTab = 2
@@ -857,13 +915,17 @@ struct MainTabView: View {
                     icon: store.isPro ? "sparkles" : "lock.fill",
                     label: store.isPro ? "Vitals+" : "Upgrade",
                     isSelected: selectedTab == 2
-                ) { selectedTab = 2 }
+                ) {
+                    if selectedTab == 2 { countRotatorTap() }
+                    selectedTab = 2
+                }
             }
             .padding(.horizontal, 8)
             .padding(.vertical, 6)
             .background(.ultraThinMaterial.opacity(0.8), in: Capsule())
             .overlay(Capsule().stroke(Color(.separator).opacity(0.3), lineWidth: 0.5))
             .padding(.bottom, 12)
+            .overlay(alignment: .top) { variantToast }
         }
         .ignoresSafeArea(edges: .bottom)
         .task {
