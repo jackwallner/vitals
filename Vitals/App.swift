@@ -947,7 +947,16 @@ struct MainTabView: View {
         // only when the paywall (not the Pro features view) is what renders.
         .onChange(of: selectedTab) { _, tab in
             if tab == 2, !store.isPro {
-                store.trackPaywallImpression(id: "vitals_upgrade_tab", oncePerSession: true)
+                // The arm is part of the id, not a footnote on it. One shared
+                // id would pool four different screens into a single
+                // impression count, and impression-to-purchase per arm is the
+                // number the experiment is for. Distinct ids also make the tap
+                // rotator visible: swapping arms and reopening the tab fires a
+                // new impression instead of being swallowed by oncePerSession.
+                store.trackPaywallImpression(
+                    id: "vitals_upgrade_tab_\(store.upgradeTabVariant.rawValue)",
+                    oncePerSession: true
+                )
             }
         }
         .sheet(isPresented: $showWhatsNew, onDismiss: {
