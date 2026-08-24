@@ -354,14 +354,19 @@ struct PaywallView: View {
                 .padding(.top, displayCloseButton ? 44 : 12)
                 .padding(.bottom, 8)
                 .frame(minHeight: fullListHeight, alignment: .center)
-                .modifier(CenteredScrollContainer(height: $fullListHeight))
                 // Names the arm that is actually on screen, so a test can
                 // assert the rendered layout instead of the rotator's toast.
                 // The toast reports what was *stored*; those two disagreed for
                 // two builds. `.contain` keeps every child individually
                 // reachable by VoiceOver and only adds the grouping element.
+                //
+                // Must sit *above* CenteredScrollContainer: that modifier wraps
+                // its content in GeometryReader + ScrollView, so an identifier
+                // applied after it lands on the scroll view instead of on this
+                // stack, and the arm stops being findable as a plain element.
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier("paywall-arm-\(upgradeTabVariant.rawValue)")
+                .modifier(CenteredScrollContainer(height: $fullListHeight))
             } else {
                 // A focused pitch is short: three benefits and the plans. Space
                 // is split above and below so it sits centred, instead of all of
