@@ -42,9 +42,6 @@ final class OnboardingCTARecoveryUITests: XCTestCase {
         app.launch()
 
         advance(app, from: "welcome")
-        sleep(3)
-        dismissSystemSheetIfPresent()
-        advance(app, from: "goals")
         sleep(2)
 
         let card = app.buttons
@@ -53,6 +50,9 @@ final class OnboardingCTARecoveryUITests: XCTestCase {
         XCTAssertTrue(card.waitForExistence(timeout: 20), "food card missing")
         card.tap()
         advance(app, from: "food")
+        sleep(3)
+        dismissSystemSheetIfPresent()
+        advance(app, from: "goals")
         sleep(2)
         return app
     }

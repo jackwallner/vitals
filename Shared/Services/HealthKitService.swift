@@ -67,17 +67,26 @@ final class HealthKitService: ObservableObject {
 
     // MARK: - Authorization
 
-    func requestAuthorization(includeDietaryEnergy: Bool = false) async throws {
+    /// The first and, for most people, only HealthKit prompt.
+    ///
+    /// `includeFood` folds dietary energy and the three macronutrients into the
+    /// same sheet, which onboarding uses when the user has said they log food.
+    /// One sheet is safe here specifically because nothing is authorized yet:
+    /// the quirk that suppresses a prompt needs an already-determined type in
+    /// the request, and at first launch there are none. Everywhere else in the
+    /// app the food types must still be asked for on their own — see
+    /// `requestDietaryAuthorization` and `requestMacroAuthorization`.
+    func requestAuthorization(includeFood: Bool = false) async throws {
         if ScreenshotConfig.isEnabled {
             isAuthorized = true
             return
         }
         guard HKHealthStore.isHealthDataAvailable() else { return }
-        let readTypes = includeDietaryEnergy
-            ? baseReadTypes.union([dietaryReadType])
+        let readTypes = includeFood
+            ? baseReadTypes.union(macroReadTypes).union([dietaryReadType])
             : baseReadTypes
         healthKitLogger.info(
-            "Requesting HealthKit authorization for \(readTypes.count, privacy: .public) read types includeDietary=\(includeDietaryEnergy, privacy: .public)"
+            "Requesting HealthKit authorization for \(readTypes.count, privacy: .public) read types includeFood=\(includeFood, privacy: .public)"
         )
         do {
             try await store.requestAuthorization(toShare: [], read: readTypes)
@@ -196,7 +205,7 @@ final class HealthKitService: ObservableObject {
         switch status {
         case .shouldRequest:
             do {
-                try await requestAuthorization(includeDietaryEnergy: false)
+                try await requestAuthorization(includeFood: false)
             } catch {
                 healthKitLogger.error("synchronizeAuthorizationStateForFetching: requestAuthorization failed: \(String(describing: error), privacy: .public)")
             }

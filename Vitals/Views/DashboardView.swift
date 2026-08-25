@@ -2336,8 +2336,8 @@ private struct MacroBarRow: View {
 private struct OnboardingSheet: View {
     private enum Step {
         case welcome
-        case goals
         case food
+        case goals
         case trial
     }
 
@@ -2353,7 +2353,6 @@ private struct OnboardingSheet: View {
     @State private var hasRequestedHealthAccess = false
     /// Answer to the food question, held locally until Continue commits it.
     @State private var logsFoodChoice: Bool?
-    @State private var isRequestingFoodAccess = false
     @State private var isStartingTrial = false
     @State private var trialError: String?
     /// Set when the trial CTA has waited long enough for RevenueCat that a
@@ -2407,8 +2406,8 @@ private struct OnboardingSheet: View {
                         Group {
                             switch step {
                             case .welcome: welcomePage
-                            case .goals: goalsPage
                             case .food: foodPage
+                            case .goals: goalsPage
                             case .trial: EmptyView()
                             }
                         }
@@ -2450,14 +2449,24 @@ private struct OnboardingSheet: View {
         dismiss()
     }
 
-    /// Fire the HealthKit prompt once, when the user leaves the welcome screen —
+    /// Fire the HealthKit prompt once, when the user leaves the food question —
     /// never on appear, so the first thing they see is our heads-up rather than
     /// the system permission sheet.
-    private func requestHealthAccessIfNeeded() async {
+    ///
+    /// One sheet, carrying the food types too when the answer was yes. Asking
+    /// twice was the old shape, and it only existed because the second request
+    /// would have mixed already-determined types with new ones. Asking after
+    /// the question instead of before it means nothing is determined yet, so
+    /// the whole set can go in one prompt.
+    ///
+    /// The trade this makes: a blanket Don't Allow now costs calories and steps
+    /// as well as food. Per-type toggles are unaffected, and the alternative was
+    /// a second system sheet in the middle of setup.
+    private func requestHealthAccessIfNeeded(includeFood: Bool) async {
         guard !hasRequestedHealthAccess else { return }
         hasRequestedHealthAccess = true
         do {
-            try await HealthKitService.shared.requestAuthorization()
+            try await HealthKitService.shared.requestAuthorization(includeFood: includeFood)
             // Warm the SwiftData cache in the background while the user finishes
             // picking goals, so the dashboard can paint from cache the instant
             // onboarding dismisses instead of waiting on a cold HealthKit read.
@@ -2488,7 +2497,7 @@ private struct OnboardingSheet: View {
                     icon: "heart.fill",
                     color: Theme.caloriesPrimary,
                     title: "Reads from Apple Health",
-                    detail: "Next we’ll ask permission to read your active and resting calories and steps. The app only reads; it never writes anything back."
+                    detail: "We’ll ask permission to read your active and resting calories and steps. The app only reads; it never writes anything back."
                 )
                 WelcomePoint(
                     icon: "lock.fill",
@@ -2561,24 +2570,14 @@ private struct OnboardingSheet: View {
     /// Terms/Privacy/Restore on the trial page, an invisible placeholder of
     /// identical height elsewhere), so the CTA frame is pixel-identical on
     /// Welcome, Goals, and the trial page (Rev A zero-shift requirement).
-    /// Page-specific content (trust line, disclosure) sits ABOVE the button,
-    /// where variable height is fine because it never moves the bottom-pinned
-    /// button. The soft exit sits below it, quieter than the trial CTA.
+    /// Page-specific content (trust line, soft exit, disclosure) sits ABOVE the
+    /// button, where variable height is fine because it never moves the
+    /// bottom-pinned button.
     private var bottomBar: some View {
         VStack(spacing: 12) {
             aboveButtonSlot
 
             primaryButton
-
-            // Free exit, below the trial button rather than above it. It stays a
-            // plain, labelled, reachable control — it just stops competing with
-            // the trial for the eye, which is the whole point of the page.
-            // Reserved on every page (invisible off trial) so the button above
-            // it keeps its pixel-identical frame.
-            softExitSlot
-                .opacity(step == .trial ? 1 : 0)
-                .allowsHitTesting(step == .trial)
-                .accessibilityHidden(step != .trial)
 
             // Fixed legal-footer slot. Identical view on every page so its height
             // never changes; only visible + interactive on the trial page.
@@ -2605,8 +2604,8 @@ private struct OnboardingSheet: View {
     private var aboveButtonContent: some View {
         switch step {
         case .welcome: welcomeTrustLine
-        case .goals: EmptyView()
         case .food: foodPrivacyLine
+        case .goals: EmptyView()
         case .trial: trialSoftExitAndDisclosure
         }
     }
@@ -2616,11 +2615,19 @@ private struct OnboardingSheet: View {
         switch step {
         case .welcome:
             Button {
-                Task { await requestHealthAccessIfNeeded() }
-                withAnimation(.easeInOut(duration: 0.25)) { step = .goals }
+                withAnimation(.easeInOut(duration: 0.25)) { step = .food }
             } label: {
                 primaryLabel("Continue")
             }
+            .padding(.horizontal, 24)
+        case .food:
+            Button {
+                commitFoodAnswerAndContinue()
+            } label: {
+                primaryLabel("Continue", enabled: logsFoodChoice != nil)
+            }
+            .disabled(logsFoodChoice == nil)
+            .opacity(logsFoodChoice == nil ? 0.5 : 1)
             .padding(.horizontal, 24)
         case .goals:
             Button {
@@ -2636,27 +2643,12 @@ private struct OnboardingSheet: View {
                 }
                 // Goals are saved, but onboarding continues. The primary stays
                 // in the same coral slot on every page.
-                withAnimation(.easeInOut(duration: 0.25)) { step = .food }
+                withAnimation(.easeInOut(duration: 0.25)) { step = .trial }
             } label: {
                 primaryLabel("Continue", enabled: calValid && stepValid)
             }
             .disabled(!calValid || !stepValid)
             .opacity(calValid && stepValid ? 1 : 0.5)
-            .padding(.horizontal, 24)
-        case .food:
-            Button {
-                Task { await commitFoodAnswerAndContinue() }
-            } label: {
-                ZStack {
-                    primaryLabel("Continue", enabled: logsFoodChoice != nil && !isRequestingFoodAccess)
-                        .opacity(isRequestingFoodAccess ? 0 : 1)
-                    if isRequestingFoodAccess {
-                        ProgressView().tint(.white)
-                    }
-                }
-            }
-            .disabled(logsFoodChoice == nil || isRequestingFoodAccess)
-            .opacity(logsFoodChoice == nil ? 0.5 : 1)
             .padding(.horizontal, 24)
         case .trial:
             Button {
@@ -2684,9 +2676,11 @@ private struct OnboardingSheet: View {
     /// who logs nothing sells a permanently empty screen, and the app cannot
     /// detect that case on its own: read authorization is unreadable by design,
     /// and an empty dietary query means "denied" and "logs nothing" equally.
-    /// A yes also earns the right to ask for the food types, in a separate sheet
-    /// from the one that carries calories and steps, so a decline here can never
-    /// cost the core app its permissions.
+    ///
+    /// It sits before goals so the answer is known while HealthKit is still
+    /// untouched, which is what lets a yes fold dietary energy and the three
+    /// macronutrients into the same permission sheet as calories and steps
+    /// instead of earning a second one.
     private var foodPage: some View {
         VStack(spacing: 28) {
             VStack(spacing: 12) {
@@ -2743,25 +2737,15 @@ private struct OnboardingSheet: View {
         .accessibilityElement(children: .combine)
     }
 
-    /// Saves the answer, then asks HealthKit for the food types only on a yes.
-    /// The request is deliberately a second, separate sheet: a decline cannot
-    /// touch the calories and steps permission the free app depends on.
-    private func commitFoodAnswerAndContinue() async {
+    /// Saves the answer and moves to goals, with the one HealthKit prompt firing
+    /// over that page. Not awaited: the system sheet is what the user should be
+    /// looking at, and holding them on the food question behind a spinner just
+    /// puts a blank step between the answer and the permission it earned.
+    private func commitFoodAnswerAndContinue() {
         guard let choice = logsFoodChoice else { return }
         goals.logsFoodInHealth = choice
-        if choice {
-            isRequestingFoodAccess = true
-            do {
-                try await HealthKitService.shared.requestDietaryAuthorization()
-            } catch {
-                // A failed or dismissed sheet is not a dead end: the user keeps
-                // the answer they gave, and every food feature re-asks at the
-                // point it is switched on.
-                dashboardLogger.error("Onboarding dietary auth failed: \(String(describing: error), privacy: .public)")
-            }
-            isRequestingFoodAccess = false
-        }
-        withAnimation(.easeInOut(duration: 0.25)) { step = .trial }
+        Task { await requestHealthAccessIfNeeded(includeFood: choice) }
+        withAnimation(.easeInOut(duration: 0.25)) { step = .goals }
     }
 
     private var welcomeTrustLine: some View {
@@ -2779,11 +2763,14 @@ private struct OnboardingSheet: View {
         .accessibilityElement(children: .combine)
     }
 
-    /// Trial-page content that lives ABOVE the primary button: the billing
-    /// disclosure (Apple 3.1.2 wants it adjacent to the purchase) and any
-    /// purchase error. Kept above the CTA so neither can shift the button.
+    /// Trial-page content that lives ABOVE the primary button: the secondary
+    /// "Get Started" soft exit, the billing disclosure (Apple 3.1.2 wants it
+    /// adjacent to the purchase), and any purchase error. Kept above the CTA so
+    /// none of it can shift the button.
     private var trialSoftExitAndDisclosure: some View {
         VStack(spacing: 12) {
+            softExitSlot
+
             // Render no disclosure until the package loads — never a phantom price.
             // Error replaces disclosure in the same slot (no overlap).
             if let trialError {
@@ -2803,18 +2790,19 @@ private struct OnboardingSheet: View {
         }
     }
 
-    /// The free way out of onboarding. Quieter than it was and below the trial
-    /// button now, but never hidden: same tap target, same plain label, and it
-    /// reads as a real choice to anyone looking for one.
+    /// The free way out of onboarding. De-emphasized and above the trial button
+    /// so the primary lands in the exact coral slot the user has been tapping,
+    /// but never hidden: same tap target, same plain label, and it reads as a
+    /// real choice to anyone looking for one.
     private var softExitSlot: some View {
         Button {
             finishOnboarding()
         } label: {
-                Text("Get Started")
-                    .font(.system(.footnote, design: .rounded))
-                    .foregroundStyle(Theme.textTertiary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 6)
+            Text("Get Started")
+                .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                .foregroundStyle(Theme.textSecondary)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 8)
         }
         .buttonStyle(.plain)
         .padding(.horizontal, 24)
