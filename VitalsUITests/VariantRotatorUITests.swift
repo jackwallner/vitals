@@ -48,8 +48,16 @@ final class VariantRotatorUITests: XCTestCase {
         app.launchEnvironment["VITALS_SCREENSHOT_SCENE"] = "premium"
         app.launch()
 
+        // Wait for the paywall, not just for the tab button. Taps land 1.3-2.3s
+        // apart while a cold Upgrade tab is still loading products, which is
+        // slow enough to keep resetting the rotator's gap counter — this test
+        // failed in a suite run for exactly that reason while
+        // testTenTapsAtTheTopRotatesTheArm, which waits for the paywall first,
+        // passed alongside it.
+        XCTAssertTrue(app.buttons["paywall-purchase"].waitForExistence(timeout: 30),
+                      "Upgrade tab never rendered")
         let upgradeTab = app.buttons["Upgrade"]
-        XCTAssertTrue(upgradeTab.waitForExistence(timeout: 30), "Upgrade tab button missing")
+        XCTAssertTrue(upgradeTab.waitForExistence(timeout: 10), "Upgrade tab button missing")
 
         // The override is stored, on purpose, so it survives a relaunch and an
         // earlier test in this class can leave one set. Walk to the "normal"
@@ -78,8 +86,12 @@ final class VariantRotatorUITests: XCTestCase {
         app.launchEnvironment["VITALS_SCREENSHOT_SCENE"] = "premium"
         app.launch()
 
+        // See the note in testCyclingAllTheWayRoundReturnsToRevenueCatControl:
+        // the paywall has to be on screen before the first batch of taps.
+        XCTAssertTrue(app.buttons["paywall-purchase"].waitForExistence(timeout: 30),
+                      "Upgrade tab never rendered")
         let upgradeTab = app.buttons["Upgrade"]
-        XCTAssertTrue(upgradeTab.waitForExistence(timeout: 30), "Upgrade tab button missing")
+        XCTAssertTrue(upgradeTab.waitForExistence(timeout: 10), "Upgrade tab button missing")
 
         // Start from the normal stop so the lap below is deterministic.
         var guardRail = 0
@@ -118,6 +130,7 @@ final class VariantRotatorUITests: XCTestCase {
         app.launchEnvironment["VITALS_SCREENSHOT_MODE"] = "1"
         app.launchEnvironment["VITALS_SCREENSHOT_SCENE"] = "premium"
         app.launch()
+        _ = app.buttons["paywall-purchase"].waitForExistence(timeout: 30)
         let upgradeTab = app.buttons["Upgrade"]
         if upgradeTab.waitForExistence(timeout: 20) {
             var laps = 0
