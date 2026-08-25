@@ -1,5 +1,7 @@
-Megjöttek a makrók. A fehérje, a szénhidrát és a zsír mostantól a kalóriáid mellett áll, abból az appból beolvasva, amely az ételeidet amúgy is az Apple Healthbe írja. Semmit nem kell kétszer bevinni.
+A bevezető most megkérdezi, hogy vezetsz-e valahol étkezési naplót. Ha nem, többé nem ajánlja fel azt a két Vitals+ funkciót, amelyek úgyis csak üres képernyőt mutatnának.
 
-Kövesd mind a hármat, vagy csak azt az egyet, amit számolsz, állíts be opcionális grammcélokat, és nézd meg az átlagokat, a trendeket és a csúcsnapokat az Előzményekben, a CSV-exportban és a PDF-jelentéseidben. A makrók a Vitals+ része.
+Az Upgrade lap egyszerre mutatja mind a három csomagot. A legtöbb iPhone-on a Lifetime épp a képernyő széle alatt maradt.
 
-A beállítások mostantól Kalóriaégetés és Kalóriabevitel szerint csoportosulnak, minden kapcsolónál érthető magyarázattal.
+Az Apple által még jóvá nem hagyott vásárlás többé nem tűnik befejezettnek, és lassú kapcsolat mellett a próbaidőszak gombja sem pörög tovább kiút nélkül.
+
+A Net Deficit mostantól azonnal eltűnik a kezdőképernyő widgetjeiből, amint az előfizetés lejár, ahelyett hogy az app következő megnyitásáig ott maradna.

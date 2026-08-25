@@ -1,5 +1,7 @@
-Au sosit macro. Proteinele, carbohidrații și grăsimile stau acum lângă caloriile tale, citite din aplicația care oricum îți scrie mâncarea în Apple Health. Nimic de introdus de două ori.
+Configurarea inițială te întreabă acum dacă îți notezi mesele undeva. Dacă nu, cele două funcții Vitals+ care ți-ar arăta oricum doar un ecran gol nu mai sunt propuse.
 
-Urmărește-le pe toate trei sau doar pe cea pe care o numeri, setează obiective opționale în grame și vezi mediile, tendințele și zilele de vârf în Istoric, în exportul CSV și în rapoartele PDF. Macro fac parte din Vitals+.
+Fila Upgrade afișează toate cele trei planuri deodată. Pe majoritatea iPhone-urilor, Lifetime rămânea chiar sub marginea ecranului.
 
-Setările sunt acum grupate în Calorii arse și Calorii consumate, cu o explicație clară la fiecare comutator.
+O achiziție pe care Apple nu a terminat de aprobat nu mai pare finalizată, iar o conexiune lentă nu mai poate lăsa butonul perioadei de probă să se învârtă fără ieșire.
+
+Net Deficit dispare acum din widgeturile de pe ecranul principal imediat ce abonamentul expiră, în loc să rămână până la următoarea deschidere a aplicației.

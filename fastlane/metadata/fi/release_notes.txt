@@ -1,5 +1,7 @@
-Makrot ovat täällä. Proteiini, hiilihydraatit ja rasva näkyvät nyt kalorien rinnalla, luettuina sovelluksesta, joka jo kirjaa ruokasi Apple Healthiin. Mitään ei tarvitse syöttää kahdesti.
+Käyttöönotto kysyy nyt, kirjaatko ruokaa jonnekin. Jos et, se lakkaa tarjoamasta niitä kahta Vitals+-ominaisuutta, jotka näyttäisivät sinulle vain tyhjän näkymän.
 
-Seuraa kaikkia kolmea tai vain sitä yhtä, jota lasket, aseta valinnaiset grammatavoitteet ja katso makrojen keskiarvot, trendit ja huippupäivät Historiassa, CSV-viennissä ja PDF-raporteissa. Makrot kuuluvat Vitals+:aan.
+Upgrade-välilehti näyttää kaikki kolme tilausta kerralla. Useimmissa iPhoneissa Lifetime jäi juuri näytön alareunan taakse.
 
-Asetukset on nyt jaettu Kalorinkulutukseen ja Kalorinsaantiin, ja jokaisella kytkimellä on selkokielinen selitys.
+Osto, jota Apple ei ole vielä ehtinyt hyväksyä, ei enää näytä menneen läpi, eikä hidas yhteys voi enää jättää kokeilupainiketta pyörimään ilman ulospääsyä.
+
+Net Deficit katoaa nyt Koti-valikon widgeteistä heti tilauksen päätyttyä sen sijaan, että se jäisi näkyviin seuraavaan sovelluksen avaukseen asti.

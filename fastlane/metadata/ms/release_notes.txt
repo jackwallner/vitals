@@ -1,5 +1,7 @@
-Makro kini ada. Protein, karbohidrat dan lemak kini berada di sebelah kalori anda, dibaca daripada aplikasi yang memang sudah merekod makanan anda ke Apple Health. Tiada apa perlu dimasukkan dua kali.
+Proses permulaan kini bertanya sama ada anda merekod makanan di mana-mana. Jika tidak, dua ciri Vitals+ yang hanya akan memaparkan skrin kosong tidak lagi ditawarkan.
 
-Jejaki ketiga-tiganya atau hanya satu yang anda kira, tetapkan sasaran gram pilihan, dan lihat purata, arah aliran serta hari puncak dalam Sejarah, eksport CSV dan laporan PDF anda. Makro ialah sebahagian daripada Vitals+.
+Tab Upgrade memaparkan ketiga-tiga pelan sekali gus. Pada kebanyakan iPhone, Lifetime sebelum ini berada tepat di bawah tepi skrin.
 
-Tetapan kini dikumpulkan kepada Pembakaran Kalori dan Pengambilan Kalori, dengan penjelasan mudah pada setiap suis.
+Pembelian yang belum selesai diluluskan Apple tidak lagi kelihatan seperti berjaya, dan sambungan perlahan tidak lagi membiarkan butang percubaan berpusing tanpa jalan keluar.
+
+Net Deficit kini hilang daripada widget Skrin Utama sebaik sahaja langganan tamat, bukannya kekal sehingga anda membuka app itu semula.
