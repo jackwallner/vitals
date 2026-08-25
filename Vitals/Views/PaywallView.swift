@@ -1016,9 +1016,16 @@ private struct MacroPitchCard: View {
                     .foregroundStyle(Theme.textSecondary)
                     .tracking(0.8)
                 Spacer(minLength: 0)
-                Text("1,950 cal logged")
-                    .font(.system(.caption, design: .rounded))
-                    .foregroundStyle(Theme.textTertiary)
+                HStack(spacing: 3) {
+                    // Blurred for the same reason as the grams, at a radius
+                    // scaled to the smaller type. "cal logged" stays legible so
+                    // the card still says what the smudge is.
+                    Text("1,950")
+                        .blur(radius: 4)
+                    Text("cal logged")
+                }
+                .font(.system(.caption, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
             }
 
             HStack(spacing: 8) {
@@ -1046,6 +1053,6 @@ private struct MacroPitchCard: View {
         // One element, one sentence: VoiceOver should not read six loose numbers,
         // and it must not imply these are the listener's own figures.
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Example macros card. Protein, carbs, and fat from a day of logged food. The gram figures shown are blurred placeholders, not your own.")
+        .accessibilityLabel("Example macros card. Protein, carbs, and fat from a day of logged food. The figures shown are blurred placeholders, not your own.")
     }
 }
