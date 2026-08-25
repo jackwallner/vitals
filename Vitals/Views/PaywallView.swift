@@ -1027,6 +1027,10 @@ private struct MacroPitchCard: View {
                         Text("\(macro.grams)")
                             .font(.system(.title3, design: .rounded, weight: .bold))
                             .foregroundStyle(macro.tint)
+                            // Same treatment as the TDEE/BMR figures: sharp
+                            // numbers on a paywall read as a claim about the
+                            // reader's own intake, and these are invented.
+                            .blur(radius: 7)
                         Text("g \(macro.name)")
                             .font(.system(.caption2, design: .rounded))
                             .foregroundStyle(Theme.textSecondary)
@@ -1042,6 +1046,6 @@ private struct MacroPitchCard: View {
         // One element, one sentence: VoiceOver should not read six loose numbers,
         // and it must not imply these are the listener's own figures.
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Example macros card. 142 grams protein, 186 grams carbs, 61 grams fat, from 1,950 calories logged.")
+        .accessibilityLabel("Example macros card. Protein, carbs, and fat from a day of logged food. The gram figures shown are blurred placeholders, not your own.")
     }
 }
