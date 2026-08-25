@@ -2604,6 +2604,12 @@ private struct OnboardingSheet: View {
     private var aboveButtonSlot: some View {
         aboveButtonContent
             .frame(minHeight: 46, alignment: .bottom)
+            // Distance between the soft exit and the CTA, bought here rather
+            // than by moving the billing disclosure back above the button (the
+            // arrangement aa41446 deliberately undid). Applied on every page,
+            // so the CTA's y moves by the same 10pt everywhere and the
+            // zero-shift invariant survives.
+            .padding(.bottom, 10)
     }
 
     @ViewBuilder
@@ -2750,6 +2756,11 @@ private struct OnboardingSheet: View {
     private func commitFoodAnswerAndContinue() {
         guard let choice = logsFoodChoice else { return }
         goals.logsFoodInHealth = choice
+        // Straight to RevenueCat as well as to defaults: this answer is the
+        // audience key the Upgrade-tab experiment splits on, and it has to be
+        // on the customer before offerings are assigned. See
+        // `StoreService.recordLogsFood`.
+        store.recordLogsFood(choice)
         Task { await requestHealthAccessIfNeeded(includeFood: choice) }
         withAnimation(.easeInOut(duration: 0.25)) { step = .goals }
     }
@@ -2818,21 +2829,29 @@ private struct OnboardingSheet: View {
     )
 
     /// The free way out of onboarding. Above the trial button so the primary
-    /// lands in the exact coral slot the user has been tapping, and unweighted
-    /// so it does not read as a second call to action, but never hidden: same
-    /// tap target, same plain label, still a real choice to anyone looking.
+    /// lands in the exact coral slot the user has been tapping, and never
+    /// hidden: same plain label, a full 44pt tap target, still a real choice to
+    /// anyone looking.
+    ///
+    /// Sized against the two fleet apps that convert trials best. Mahj Trainer
+    /// (31.5% trial starts, 55.4% trial-to-paid) draws this at 15pt medium,
+    /// intrinsic width, with the disclosure slot holding it ~46pt off the CTA;
+    /// StatScout (19.4% / 51.9%) uses a wider label but pushes it ~130pt away
+    /// behind four intervening rows. Neither puts a full-width secondary
+    /// immediately above the button. This one used to do exactly that, which
+    /// read as the second half of a two-button stack. It now hugs its text and
+    /// keeps its distance instead.
     private var softExitSlot: some View {
         Button {
             finishOnboarding()
         } label: {
             Text("Get Started")
-                .font(.system(.subheadline, design: .rounded))
+                .font(.system(.footnote, design: .rounded).weight(.medium))
                 .foregroundStyle(Theme.textSecondary)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 13)
         }
         .buttonStyle(.plain)
-        .padding(.horizontal, 24)
     }
 
     /// Terms / Privacy / Restore beside the purchase point. Rendered on every

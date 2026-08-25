@@ -348,11 +348,13 @@ struct MainTabView: View {
     @StateObject private var recapCoordinator = WeeklyRecapCoordinator.shared
     @StateObject private var reviewPromptCoordinator = ReviewPromptCoordinator.shared
     @State private var selectedTab = 0
+    #if DEBUG
     /// Taps on the Upgrade tab while already on it, counted toward the hidden
     /// arm rotator. Resets itself after three seconds of no tapping.
     @State private var rotatorTapCount = 0
     @State private var rotatorLastTapAt = Date.distantPast
     @State private var variantToastLabel: String?
+    #endif
     @State private var historyHasAppeared = false
     @State private var showWhatsNew = false
     /// Guards the What's New announcement to one evaluation per app session.
@@ -459,8 +461,7 @@ struct MainTabView: View {
         )
     }
 
-    /// Milestone CTA: buy yearly in place (Apple confirm). Trial applies only
-    /// when eligible; otherwise it's a straight yearly purchase.
+    #if DEBUG
     /// Ten taps on the Upgrade tab, while already on the Upgrade tab, rotates
     /// the paywall layout: full list, short list, macro card, maintenance, then
     /// back to whatever RevenueCat says.
@@ -473,10 +474,11 @@ struct MainTabView: View {
     /// control that is always in the same place, always hittable, and does
     /// nothing when you are already on the tab.
     ///
-    /// Deliberately not `#if DEBUG`: the arms are only worth judging on a real
-    /// phone, and TestFlight ships a Release build. It picks between layouts
-    /// already in the binary that RevenueCat could serve anyone, and cannot
-    /// touch a price, a product, an entitlement, or what a purchase does.
+    /// `#if DEBUG`, so it is absent from TestFlight and App Store builds. It
+    /// shipped in Release for a while, on the argument that the arms are only
+    /// worth judging on a real phone: a hidden switch in a store binary is not
+    /// worth that convenience, however narrow its powers. Judging an arm on a
+    /// device now means installing a debug build on one.
     private func countRotatorTap() {
         // A gap rule, not a stopwatch. The first version gave the whole run
         // three seconds, which a UI test tapping the button ten times could not
@@ -526,7 +528,10 @@ struct MainTabView: View {
                 .accessibilityIdentifier("variant-toast")
         }
     }
+    #endif
 
+    /// Milestone CTA: buy yearly in place (Apple confirm). Trial applies only
+    /// when eligible; otherwise it's a straight yearly purchase.
     private func startMilestoneDirectTrial() {
         guard let package = directConversionPackage else {
             selectedTab = 2
@@ -929,7 +934,9 @@ struct MainTabView: View {
                     label: store.isPro ? "Vitals+" : "Upgrade",
                     isSelected: selectedTab == 2
                 ) {
+                    #if DEBUG
                     if selectedTab == 2 { countRotatorTap() }
+                    #endif
                     selectedTab = 2
                 }
             }
@@ -938,7 +945,9 @@ struct MainTabView: View {
             .background(.ultraThinMaterial.opacity(0.8), in: Capsule())
             .overlay(Capsule().stroke(Color(.separator).opacity(0.3), lineWidth: 0.5))
             .padding(.bottom, 12)
+            #if DEBUG
             .overlay(alignment: .top) { variantToast }
+            #endif
         }
         .ignoresSafeArea(edges: .bottom)
         .task {

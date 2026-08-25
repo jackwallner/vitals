@@ -295,8 +295,11 @@ final class StoreService: NSObject, ObservableObject {
     /// then, trial copy stays off so we never promise a used-trial user a free week.
     @Published private(set) var introEligibilityResolved: Bool = false
 
+    #if DEBUG
     /// Mirror of `PaywallVariantOverride.current`, published so the Upgrade tab
-    /// actually redraws when the hidden rotator advances an arm.
+    /// actually redraws when the hidden rotator advances an arm. DEBUG only,
+    /// with the rotator itself: a Release build draws the arm RevenueCat
+    /// assigned and has no way to be talked out of it.
     ///
     /// The rotator used to write UserDefaults and nothing else, and
     /// `upgradeTabVariant` read that store directly. UserDefaults is not an
@@ -308,6 +311,7 @@ final class StoreService: NSObject, ObservableObject {
     /// looking at catalog" report, and why an arm sometimes appeared minutes
     /// later. Seeded from storage so an override survives a relaunch.
     @Published private(set) var manualVariantOverride: PaywallUIVariant? = PaywallVariantOverride.current
+    #endif
 
     private let logger = Logger(subsystem: "com.jackwallner.vitals", category: "Store")
     private var isConfigured = false
@@ -497,14 +501,15 @@ final class StoreService: NSObject, ObservableObject {
     var upgradeTabVariant: PaywallUIVariant {
         #if DEBUG
         if let override = DebugLaunchConfig.upgradeTabOverride { return override }
-        #endif
-        // Set by the hidden gesture on the Upgrade tab, so an arm can be walked
-        // on a real phone from a TestFlight build. Nil for every real user.
-        // Read the published mirror, not UserDefaults — see the property.
+        // Set by the hidden gesture on the Upgrade tab. Read the published
+        // mirror, not UserDefaults, see the property. Neither exists in a
+        // Release build, so nothing but RevenueCat picks the arm in the wild.
         if let manual = manualVariantOverride { return manual }
+        #endif
         return currentOffering?.vitalsUpgradeTabVariant ?? .catalog
     }
 
+    #if DEBUG
     /// Advance the hidden rotator one arm and publish the change.
     ///
     /// Persistence still lives in `PaywallVariantOverride`; this only makes the
@@ -517,6 +522,7 @@ final class StoreService: NSObject, ObservableObject {
         manualVariantOverride = next
         return next
     }
+    #endif
 
     /// True once the purchase button can name the action without flashing
     /// "Continue" into "Start Free Trial".
@@ -544,6 +550,30 @@ final class StoreService: NSObject, ObservableObject {
             priceLabel: yearly.vitalsPriceLabel,
             eligibleForTrial: isEligibleForIntroOffer(yearly)
         )
+    }
+
+    /// Puts the one attribute RevenueCat needs *before* it assigns an offering
+    /// onto the customer: whether this person logs food anywhere Health can see.
+    ///
+    /// `syncConversionAttributes()` already carries `logs_food`, but it stays
+    /// silent until at least one pitch has been counted, which is after the
+    /// assignment this answer is supposed to steer. Audience targeting is
+    /// evaluated when offerings are fetched, so an experiment split by food
+    /// logging needs the attribute on the customer at the moment they answer
+    /// the onboarding question, not at the moment they first see a paywall.
+    ///
+    /// The refetch afterwards re-asks with the attribute in place. RevenueCat
+    /// caches offerings for a few minutes, so a customer who reaches the
+    /// Upgrade tab inside that window can still be served the assignment made
+    /// before the answer landed; the next cold launch corrects it.
+    func recordLogsFood(_ logsFood: Bool) {
+        configureIfNeeded()
+        guard isConfigured else { return }
+        #if DEBUG
+        if ScreenshotConfig.isEnabled { return }
+        #endif
+        Purchases.shared.attribution.setAttributes(["logs_food": logsFood ? "true" : "false"])
+        Task { await fetchProducts() }
     }
 
     /// Mirrors the on-device conversion record onto the RevenueCat customer.
