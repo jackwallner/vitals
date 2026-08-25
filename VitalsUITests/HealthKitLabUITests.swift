@@ -9,7 +9,20 @@ final class HealthKitLabUITests: XCTestCase {
         continueAfterFailure = false
     }
 
-    func testBasalSampleSpanningNowIsNotCountedInFull() {
+    func testBasalSampleSpanningNowIsNotCountedInFull() throws {
+        // The scenario needs a day that has been running a while: the harness
+        // lays its closed samples between midnight and an hour ago, and the
+        // spanning one starts an hour ago. Run this between 00:00 and 01:00 and
+        // that window has negative width, so no closed samples get written and
+        // the strict total is 0 for a reason that says nothing about the code.
+        let sinceMidnight = Date.now.timeIntervalSince(
+            Calendar.current.startOfDay(for: .now)
+        )
+        try XCTSkipIf(
+            sinceMidnight < 4_500,
+            "less than 75 minutes into the local day; the overcount scenario cannot be staged"
+        )
+
         let app = XCUIApplication()
         app.launchEnvironment["VITALS_HK_LAB"] = "1"
         app.launch()
