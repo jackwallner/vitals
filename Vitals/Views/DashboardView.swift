@@ -2333,6 +2333,15 @@ private struct MacroBarRow: View {
 
 // MARK: - Onboarding Sheet (first launch only)
 
+/// The two onboarding goal fields, used both as `@FocusState` values and as
+/// scroll anchors so a focused field can be brought above the keyboard. At file
+/// scope because `GoalRow` needs to name it; `SettingsSheet` keeps its own
+/// nested `GoalField`, which also carries macro cases onboarding never asks for.
+private enum OnboardingGoalField: Hashable {
+    case calories
+    case steps
+}
+
 private struct OnboardingSheet: View {
     private enum Step {
         case welcome
@@ -2346,6 +2355,7 @@ private struct OnboardingSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var step: Step = .welcome
+    @FocusState private var focusedGoal: OnboardingGoalField?
     @State private var wantCalGoal = true
     @State private var calText = "2500"
     @State private var wantStepGoal = true
@@ -2402,23 +2412,56 @@ private struct OnboardingSheet: View {
                             trialCTAWaitExpired = true
                         }
                 } else {
-                    ScrollView {
-                        Group {
-                            switch step {
-                            case .welcome: welcomePage
-                            case .food: foodPage
-                            case .goals: goalsPage
-                            case .trial: EmptyView()
+                    ScrollViewReader { proxy in
+                        ScrollView {
+                            Group {
+                                switch step {
+                                case .welcome: welcomePage
+                                case .food: foodPage
+                                case .goals: goalsPage
+                                case .trial: EmptyView()
+                                }
+                            }
+                            .padding(.top, 48)
+                            .padding(.bottom, 24)
+                            .padding(.horizontal, 24)
+                        }
+                        .scrollBounceBehavior(.basedOnSize)
+                        // A drag puts the keyboard away, so the way out is the
+                        // gesture people already make when a keyboard is in
+                        // their way.
+                        .scrollDismissesKeyboard(.interactively)
+                        // The bar below no longer moves for the keyboard, so
+                        // nothing scrolls a focused field into view on its own.
+                        // On this phone both goal rows already sit well clear of
+                        // the number pad; on a small screen or at large Dynamic
+                        // Type they do not, and typing into a field you cannot
+                        // see is the worst version of this screen.
+                        .onChange(of: focusedGoal) { _, field in
+                            guard let field else { return }
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                proxy.scrollTo(field, anchor: .center)
                             }
                         }
-                        .padding(.top, 48)
-                        .padding(.bottom, 24)
-                        .padding(.horizontal, 24)
                     }
-                    .scrollBounceBehavior(.basedOnSize)
                 }
 
                 bottomBar
+            }
+            // The whole reason this screen was worth fixing: the primary CTA
+            // must sit at the same y on every onboarding page, and SwiftUI's
+            // keyboard avoidance was moving it 274pt up the moment a goal field
+            // took focus. Nothing here yields to the keyboard now. The number
+            // pad covers the button while you type and uncovers it, in the same
+            // place it has been all along, the moment you are done.
+            .ignoresSafeArea(.keyboard, edges: .bottom)
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") { focusedGoal = nil }
+                        .font(.system(.body, design: .rounded, weight: .semibold))
+                        .accessibilityIdentifier("goal-keyboard-done")
+                }
             }
         }
         // Warm the products early so the trial step has live price/trial copy by
@@ -2523,6 +2566,14 @@ private struct OnboardingSheet: View {
                     .foregroundStyle(Theme.textSecondary)
                     .multilineTextAlignment(.center)
             }
+            // Tapping the page to put a keyboard away is an instinct worth
+            // honouring, but only from here. Hung on an ancestor of the goal
+            // rows it competed with the fields for the same tap and cleared
+            // focus in the frame the field claimed it, which ate a keyboard
+            // every few taps. This block is the top third of the screen and
+            // holds no controls, so there is nothing for it to steal from.
+            .contentShape(Rectangle())
+            .onTapGesture { focusedGoal = nil }
 
             VStack(spacing: 16) {
                 GoalRow(
@@ -2531,16 +2582,22 @@ private struct OnboardingSheet: View {
                     title: "Calorie Goal",
                     enabled: $wantCalGoal,
                     text: $calText,
-                    isValid: calValid
+                    isValid: calValid,
+                    field: .calories,
+                    focus: $focusedGoal
                 )
+                .id(OnboardingGoalField.calories)
                 GoalRow(
                     icon: "figure.walk",
                     color: Theme.stepsPrimary,
                     title: "Step Goal",
                     enabled: $wantStepGoal,
                     text: $stepText,
-                    isValid: stepValid
+                    isValid: stepValid,
+                    field: .steps,
+                    focus: $focusedGoal
                 )
+                .id(OnboardingGoalField.steps)
 
                 if !wantCalGoal && !wantStepGoal {
                     HStack(alignment: .top, spacing: 8) {
@@ -2657,7 +2714,17 @@ private struct OnboardingSheet: View {
                 // in the same coral slot on every page.
                 withAnimation(.easeInOut(duration: 0.25)) { step = .trial }
             } label: {
-                primaryLabel("Continue", enabled: calValid && stepValid)
+                // Glow off while the number pad is up. The keyboard is
+                // translucent, and a breathing halo behind it read as a stray
+                // pink highlight on the 7/8/9 row. Same rule the disabled state
+                // already follows: no halo around a button nobody can press.
+                //
+                // The button itself stays fully opaque. Fading it out cleaned
+                // up the last of the bleed, but a transparent live button is
+                // not an interaction model worth having: XCUITest stopped
+                // calling it hittable, which is the same signal assistive tech
+                // would get.
+                primaryLabel("Continue", enabled: calValid && stepValid && focusedGoal == nil)
             }
             .disabled(!calValid || !stepValid)
             .opacity(calValid && stepValid ? 1 : 0.5)
@@ -3178,6 +3245,8 @@ private struct GoalRow: View {
     @Binding var enabled: Bool
     @Binding var text: String
     var isValid: Bool = true
+    let field: OnboardingGoalField
+    @FocusState.Binding var focus: OnboardingGoalField?
 
     var body: some View {
         VStack(spacing: 10) {
@@ -3189,10 +3258,17 @@ private struct GoalRow: View {
                 Spacer()
                 Toggle("", isOn: $enabled)
                     .labelsHidden()
+                    .onChange(of: enabled) { _, isOn in
+                        // The field this keyboard belongs to is about to
+                        // disappear; a number pad left hanging over nothing is
+                        // the kind of thing people have to shake off.
+                        if !isOn, focus == field { focus = nil }
+                    }
             }
             if enabled {
                 TextField("Target", text: $text)
                     .keyboardType(.numberPad)
+                    .focused($focus, equals: field)
                     .font(.system(.body, design: .rounded))
                     .padding(12)
                     .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 10))
