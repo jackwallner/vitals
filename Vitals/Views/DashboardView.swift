@@ -2566,18 +2566,24 @@ private struct OnboardingSheet: View {
 
     @ViewBuilder
     /// Unified bottom bar across every onboarding page. The primary button is
-    /// pinned from the bottom by a fixed-height legal-footer slot (real
-    /// Terms/Privacy/Restore on the trial page, an invisible placeholder of
-    /// identical height elsewhere), so the CTA frame is pixel-identical on
-    /// Welcome, Goals, and the trial page (Rev A zero-shift requirement).
-    /// Page-specific content (trust line, soft exit, disclosure) sits ABOVE the
-    /// button, where variable height is fine because it never moves the
-    /// bottom-pinned button.
+    /// pinned from the bottom by two fixed-height slots (the billing disclosure
+    /// and the Terms/Privacy/Restore row, both real on the trial page and
+    /// invisible placeholders of identical height elsewhere), so the CTA frame
+    /// is pixel-identical on every page (Rev A zero-shift requirement).
+    /// Page-specific content (trust line, soft exit) sits ABOVE the button,
+    /// where variable height is fine because it never moves the bottom-pinned
+    /// button.
     private var bottomBar: some View {
         VStack(spacing: 12) {
             aboveButtonSlot
 
             primaryButton
+
+            // Terms of the charge, then the links, both under the button they
+            // describe. This is the order the Upgrade tab already reads in;
+            // onboarding was the one purchase point that put the disclosure
+            // above the button, which made the CTA look like a footnote to it.
+            billingDisclosureSlot
 
             // Fixed legal-footer slot. Identical view on every page so its height
             // never changes; only visible + interactive on the trial page.
@@ -2592,8 +2598,8 @@ private struct OnboardingSheet: View {
     }
 
     /// Reserved so the primary button sits at the same y on every page. Each
-    /// page puts something different here (a trust line, nothing, the billing
-    /// disclosure), and letting the slot size to its content is what walked the
+    /// page puts something different here (a trust line, nothing, the soft
+    /// exit), and letting the slot size to its content is what walked the
     /// button up and down the screen as the user advanced.
     private var aboveButtonSlot: some View {
         aboveButtonContent
@@ -2606,7 +2612,7 @@ private struct OnboardingSheet: View {
         case .welcome: welcomeTrustLine
         case .food: foodPrivacyLine
         case .goals: EmptyView()
-        case .trial: trialSoftExitAndDisclosure
+        case .trial: trialSoftExitAndError
         }
     }
 
@@ -2764,42 +2770,63 @@ private struct OnboardingSheet: View {
     }
 
     /// Trial-page content that lives ABOVE the primary button: the secondary
-    /// "Get Started" soft exit, the billing disclosure (Apple 3.1.2 wants it
-    /// adjacent to the purchase), and any purchase error. Kept above the CTA so
-    /// none of it can shift the button.
-    private var trialSoftExitAndDisclosure: some View {
+    /// "Get Started" soft exit and any purchase error. Kept above the CTA so
+    /// neither can shift it, and so an error lands where the eye already is
+    /// after a failed tap.
+    private var trialSoftExitAndError: some View {
         VStack(spacing: 12) {
             softExitSlot
 
-            // Render no disclosure until the package loads — never a phantom price.
-            // Error replaces disclosure in the same slot (no overlap).
             if let trialError {
                 Text(trialError)
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(Theme.caloriesPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 24)
-            } else if let disclosure = store.onboardingTrialDisclosureText {
-                Text(disclosure)
-                    .font(.system(.caption2, design: .rounded))
-                    .foregroundStyle(Theme.textTertiary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 24)
             }
         }
     }
 
-    /// The free way out of onboarding. De-emphasized and above the trial button
-    /// so the primary lands in the exact coral slot the user has been tapping,
-    /// but never hidden: same tap target, same plain label, and it reads as a
-    /// real choice to anyone looking for one.
+    /// The Apple 3.1.2 disclosure, under the button it describes.
+    ///
+    /// Always laid out, on every page and whether or not StoreKit has answered,
+    /// and only made visible on the trial step. Reserving the space
+    /// unconditionally is what lets it sit below the CTA at all: anything below
+    /// the button decides the button's y, so a slot that appeared when products
+    /// loaded would walk the CTA up mid-onboarding.
+    private var billingDisclosureSlot: some View {
+        let isReal = step == .trial && store.onboardingTrialDisclosureText != nil
+        return Text(store.onboardingTrialDisclosureText ?? Self.disclosureHeightPlaceholder)
+            .font(.system(.caption2, design: .rounded))
+            .foregroundStyle(Theme.textTertiary)
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.horizontal, 24)
+            .opacity(isReal ? 1 : 0)
+            .accessibilityHidden(!isReal)
+    }
+
+    /// Built by the same generator as the real disclosure, with the same renew
+    /// clause, so the space reserved for it cannot drift out of step with the
+    /// copy. Never read: the slot that uses it is invisible and hidden from
+    /// VoiceOver whenever this is what it holds.
+    private static let disclosureHeightPlaceholder = VitalsConversionCopy.disclosure(
+        trialLabel: "7-day free trial",
+        priceLabel: "$00.00 / year",
+        eligibleForTrial: true,
+        renewClause: "Auto-renews unless cancelled 24h before it ends. Cancel in Settings."
+    )
+
+    /// The free way out of onboarding. Above the trial button so the primary
+    /// lands in the exact coral slot the user has been tapping, and unweighted
+    /// so it does not read as a second call to action, but never hidden: same
+    /// tap target, same plain label, still a real choice to anyone looking.
     private var softExitSlot: some View {
         Button {
             finishOnboarding()
         } label: {
             Text("Get Started")
-                .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                .font(.system(.subheadline, design: .rounded))
                 .foregroundStyle(Theme.textSecondary)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
