@@ -106,10 +106,21 @@ final class OnboardingFlowUITests: XCTestCase {
         XCTAssertEqual(idle.minY, app.buttons["Continue"].frame.minY, accuracy: 1,
                        "CTA moved when the keyboard came up")
 
-        // Way out 1: the Done button over the number pad.
-        let done = app.buttons["goal-keyboard-done"]
-        XCTAssertTrue(done.waitForExistence(timeout: 5), "no Done above the keyboard")
+        // Way out 1: the Done beside the focused field.
+        //
+        // Existence and `isHittable` are not enough, and asserting only those
+        // is how the first version of this shipped broken: a keyboard-toolbar
+        // Done satisfied both on two simulators and then rendered nowhere at
+        // all on a real phone. So this pins it to the screen: on top of the
+        // keyboard, and inside the window.
+        let done = app.buttons["goal-done-calories"]
+        XCTAssertTrue(done.waitForExistence(timeout: 5), "no Done beside the focused field")
         XCTAssertTrue(done.isHittable, "Done is not reachable")
+        let keyboardTop = app.keyboards.firstMatch.frame.minY
+        XCTAssertTrue(done.frame.maxY <= keyboardTop,
+                      "Done (\(done.frame)) is under the keyboard (top \(keyboardTop))")
+        XCTAssertTrue(app.frame.contains(done.frame),
+                      "Done (\(done.frame)) is outside the app window (\(app.frame))")
         done.tap()
         sleep(2)
         XCTAssertEqual(app.keyboards.count, 0, "Done left the keyboard up")

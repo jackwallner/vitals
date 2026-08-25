@@ -2455,14 +2455,6 @@ private struct OnboardingSheet: View {
             // pad covers the button while you type and uncovers it, in the same
             // place it has been all along, the moment you are done.
             .ignoresSafeArea(.keyboard, edges: .bottom)
-            .toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-                    Button("Done") { focusedGoal = nil }
-                        .font(.system(.body, design: .rounded, weight: .semibold))
-                        .accessibilityIdentifier("goal-keyboard-done")
-                }
-            }
         }
         // Warm the products early so the trial step has live price/trial copy by
         // the time the user reaches it (StatScout pattern).
@@ -3266,12 +3258,38 @@ private struct GoalRow: View {
                     }
             }
             if enabled {
-                TextField("Target", text: $text)
-                    .keyboardType(.numberPad)
-                    .focused($focus, equals: field)
-                    .font(.system(.body, design: .rounded))
-                    .padding(12)
-                    .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 10))
+                // Done sits inside the card, next to the field it closes, and
+                // not in a `ToolbarItemGroup(placement: .keyboard)`.
+                //
+                // The toolbar version rendered on both the iOS 26.5 and iOS
+                // 27.0 simulators and passed a UI test asserting it was
+                // hittable, then shipped to a real phone with no Done anywhere
+                // on screen and no other way out of a number pad. Whatever
+                // decides where a keyboard accessory lands, it is not something
+                // this screen can hold still, and the page deliberately ignores
+                // the keyboard safe area, which is exactly the geometry an
+                // accessory is positioned against.
+                //
+                // This one is ordinary view content in a card that is always
+                // above the keyboard. Nothing outside the app gets a vote on
+                // whether it appears.
+                HStack(spacing: 10) {
+                    TextField("Target", text: $text)
+                        .keyboardType(.numberPad)
+                        .focused($focus, equals: field)
+                        .font(.system(.body, design: .rounded))
+                    if focus == field {
+                        Button("Done") { focus = nil }
+                            .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                            .foregroundStyle(color)
+                            .buttonStyle(.plain)
+                            .transition(.opacity)
+                            .accessibilityIdentifier("goal-done-\(title == "Calorie Goal" ? "calories" : "steps")")
+                    }
+                }
+                .padding(12)
+                .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 10))
+                .animation(.easeInOut(duration: 0.15), value: focus == field)
                 if !isValid {
                     Text(title == "Calorie Goal" ? "Enter 500–50,000 calories." : "Enter 100–500,000 steps.")
                         .font(.caption)
