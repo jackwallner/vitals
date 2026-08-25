@@ -1,20 +1,17 @@
 import Foundation
 
+#if DEBUG
 /// A local override for the Upgrade-tab layout, set by a hidden gesture rather
 /// than by RevenueCat.
 ///
-/// This is deliberately **not** `#if DEBUG`. The whole point is to walk the
-/// arms on a real phone from a TestFlight build, which is a Release build, and
-/// a debug-only switch cannot do that. The launch-environment override in
-/// `DebugLaunchConfig` still exists and still wins; it is how the test suite
-/// and the screenshot runs pick an arm, and it never survives a relaunch.
-///
-/// Shipping a hidden switch in a Release binary is only acceptable because of
-/// what it can and cannot do. It picks between layouts that are already in the
-/// binary and that every user can already be served by RevenueCat. It cannot
-/// change a price, a product, an entitlement, or what a purchase does. A
-/// customer who somehow discovers it sees a different arrangement of the same
-/// paywall, which is a thing RevenueCat could have shown them anyway.
+/// **DEBUG only.** This used to ship in Release so an arm could be walked on a
+/// real phone from TestFlight, which is a Release build. That is a hidden
+/// feature flag in a shipping binary, and App Review is entitled to find it, so
+/// it is gone from the store build: a Release binary now draws whatever
+/// RevenueCat assigns and nothing else. Walking the arms by hand means a debug
+/// build; walking them in a test or a screenshot run means
+/// `DebugLaunchConfig.upgradeTabOverride`, which is also DEBUG-only and still
+/// wins over this.
 enum PaywallVariantOverride {
     private static let key = "debug.upgradeTabOverride"
 
@@ -39,7 +36,7 @@ enum PaywallVariantOverride {
     }
 
     /// The cycle the hidden gesture walks: every arm in turn, then back to
-    /// RevenueCat control. Ending on nil matters — it is the only way back to
+    /// RevenueCat control. Ending on nil matters: it is the only way back to
     /// normal without reinstalling.
     static func advance() -> PaywallUIVariant? {
         let cycle = PaywallUIVariant.allCases
@@ -67,3 +64,4 @@ enum PaywallVariantOverride {
         return variant.rawValue
     }
 }
+#endif
