@@ -77,6 +77,25 @@ final class ConversionDiagnosticsTests: XCTestCase {
         XCTAssertTrue(ConversionDiagnostics.subscriberAttributes.isEmpty)
     }
 
+    /// The onboarding food answer is the one segment worth having: Net Deficit
+    /// and Macros are half the tier and both render blank for someone who logs
+    /// nothing, so a conversion rate that mixes the two groups says little.
+    func testTheFoodAnswerIsReportedAsASegment() {
+        suite.set(true, forKey: "logsFoodInHealth")
+        ConversionDiagnostics.recordPitchView(impressionID: "vitals_onboarding_trial")
+        XCTAssertEqual(ConversionDiagnostics.subscriberAttributes["logs_food"], "true")
+
+        suite.set(false, forKey: "logsFoodInHealth")
+        XCTAssertEqual(ConversionDiagnostics.subscriberAttributes["logs_food"], "false")
+    }
+
+    /// Installs that predate the question were never asked, and inventing a
+    /// "false" for them would put them in the non-logger cohort by accident.
+    func testAnInstallThatWasNeverAskedReportsNoFoodAnswer() {
+        ConversionDiagnostics.recordPitchView(impressionID: "vitals_onboarding_trial")
+        XCTAssertNil(ConversionDiagnostics.subscriberAttributes["logs_food"])
+    }
+
     /// RevenueCat rejects attribute keys over 40 characters, and a surface name
     /// is not under our control once an impression id gets long.
     func testAttributeKeysStayInsideRevenueCatsLimit() {

@@ -44,6 +44,12 @@ enum ConversionDiagnostics {
         static let convertedVariant = "conv.convertedVariant"
         static let convertedOffering = "conv.convertedOffering"
         static let convertedAt = "conv.convertedAt"
+
+        /// Owned by `GoalSettings`, not by this file, but it lives in the same
+        /// App Group suite and it is the single strongest way to segment this
+        /// funnel: Net Deficit and Macros are half the tier and both render
+        /// blank for someone who logs nothing.
+        static let logsFood = "logsFoodInHealth"
     }
 
     /// Impression ids all carry an app prefix that says nothing once they are
@@ -140,6 +146,11 @@ enum ConversionDiagnostics {
             attributes[String(key.prefix(40))] = String(count)
         }
         if let last = lastSurface { attributes["pitch_last"] = last }
+        // Absent on installs that predate the onboarding food question, which
+        // is the honest answer: they were never asked.
+        if let logsFood = d.object(forKey: Key.logsFood) as? Bool {
+            attributes["logs_food"] = logsFood ? "true" : "false"
+        }
         if let first = firstSeenDate {
             attributes["pitch_first_seen"] = ISO8601DateFormatter().string(from: first)
             let days = Calendar.current.dateComponents([.day], from: first, to: .now).day ?? 0
