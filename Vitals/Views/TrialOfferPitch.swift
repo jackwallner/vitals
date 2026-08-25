@@ -59,6 +59,7 @@ struct TrialOfferPitchSheet: View {
     var onNeedsPlanPicker: () -> Void = {}
 
     @EnvironmentObject private var store: StoreService
+    @ObservedObject private var goals = GoalSettings.shared
     /// Snapshot taken when the sheet opened, with a live fallback for the case
     /// where StoreKit had not answered yet.
     @State private var snapshot: Package?
@@ -109,6 +110,7 @@ struct TrialOfferPitchSheet: View {
     var body: some View {
         TrialOfferSheet(
             focus: request.focus,
+            logsFood: goals.logsFoodInHealth,
             // Trial language only when this Apple ID is still eligible —
             // otherwise the sheet frames a straight yearly purchase.
             offerLabel: package.flatMap { store.eligibleIntroLabel(for: $0) },

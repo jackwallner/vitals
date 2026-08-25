@@ -1694,6 +1694,10 @@ struct TrialOfferSheet: View {
     /// When set, the sheet leads with and highlights this feature instead of the
     /// generic toolkit pitch. `nil` for passive launch/history nudges.
     let focus: PlusFeature?
+    /// The onboarding food answer. `false` means Net Deficit and Macros are
+    /// blank screens for this person and must not be pitched at them; `nil`
+    /// (installs predating the question) keeps the old mixed list.
+    var logsFood: Bool?
     /// Free-trial label only when the user is eligible; nil frames a paid yearly buy.
     let offerLabel: String?
     /// Recurring price, e.g. "$29.99 / year". Required in directPurchase mode.
@@ -1761,11 +1765,36 @@ struct TrialOfferSheet: View {
 
     /// Focused feature first with two related companions; generic trio when
     /// passive. A three-plan ladder needs the height of one bullet, and the
-    /// benefit list is the part that repeats itself — the plans don't.
+    /// benefit list is the part that repeats itself; the plans don't.
+    ///
+    /// Filtered by the onboarding food answer, the same rule the onboarding
+    /// pitch already followed and this sheet did not: a non-logger was being
+    /// led with Net Deficit on every passive nudge, which is the one feature
+    /// guaranteed to show them nothing.
     private var bulletFeatures: [PlusFeature] {
-        let all = focus.map { [$0] + $0.companionFeatures } ?? [.netDeficit, .deepTrends, .customRangesPDF]
-        return planOptions.count >= 3 ? Array(all.prefix(2)) : all
+        let wanted = focus.map { [$0] + $0.companionFeatures }
+            ?? [.netDeficit, .deepTrends, .customRangesPDF]
+        var chosen: [PlusFeature] = []
+        for (index, feature) in wanted.enumerated() {
+            // Index 0 with a focus is the feature they tapped. Answer the tap.
+            let isTheirOwnTap = index == 0 && focus != nil
+            guard isTheirOwnTap || logsFood != false || !feature.needsFoodLogging else { continue }
+            chosen.append(feature)
+        }
+        // Filtering a companion must not leave a shorter pitch than everyone
+        // else gets, so backfill from the features that need no food at all.
+        for fallback in Self.foodFreeFeatures where chosen.count < wanted.count {
+            guard !chosen.contains(fallback) else { continue }
+            chosen.append(fallback)
+        }
+        return planOptions.count >= 3 ? Array(chosen.prefix(2)) : chosen
     }
+
+    /// Backfill order for a non-logger, strongest first. Every one of these
+    /// works off burn and step data alone.
+    private static let foodFreeFeatures: [PlusFeature] = [
+        .deepTrends, .projections, .streaks, .customRangesPDF, .energyAverages, .activeResting,
+    ]
 
     /// Deal badge text derived from the real offer, e.g. "7-day free trial" →
     /// "7 DAYS FREE"; the annual saving once the trial is spent. Never invents a

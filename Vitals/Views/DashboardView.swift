@@ -2361,6 +2361,10 @@ private struct OnboardingSheet: View {
     @State private var wantStepGoal = true
     @State private var stepText = "10000"
     @State private var hasRequestedHealthAccess = false
+    /// The in-flight HealthKit permission request, kept so the goals step can
+    /// wait for it rather than letting the system sheet chase the user onto the
+    /// paywall. See `commitFoodAnswerAndContinue`.
+    @State private var healthRequest: Task<Void, Never>?
     /// Answer to the food question, held locally until Continue commits it.
     @State private var logsFoodChoice: Bool?
     @State private var isStartingTrial = false
@@ -2383,78 +2387,127 @@ private struct OnboardingSheet: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                if step == .trial {
-                    // Trial must NOT live in a ScrollView: Spacers need a bounded
-                    // height to center the pitch above the zero-shift CTA bar.
-                    trialPage
-                        .padding(.horizontal, 24)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .onAppear {
-                            // A returning subscriber (reinstall, restored
-                            // entitlement) reaches this step already Pro. Pitch
-                            // them nothing: set their goals, then let them in.
-                            guard !store.isPro else {
-                                finishOnboarding()
-                                return
-                            }
-                            store.trackPaywallImpression(id: "vitals_onboarding_trial", oncePerSession: true)
-                        }
-                        .task(id: store.conversionCTAReady) {
-                            guard !store.conversionCTAReady else { return }
-                            // One more fetch before giving up: the warm-up in
-                            // the parent `.task` may have run while the device
-                            // was still offline.
-                            if store.products.isEmpty { await store.fetchProducts() }
-                            guard !store.conversionCTAReady else { return }
-                            try? await Task.sleep(for: Self.trialCTAWaitLimit)
-                            guard !Task.isCancelled else { return }
-                            trialCTAWaitExpired = true
-                        }
-                } else {
-                    ScrollViewReader { proxy in
-                        ScrollView {
-                            Group {
-                                switch step {
-                                case .welcome: welcomePage
-                                case .food: foodPage
-                                case .goals: goalsPage
-                                case .trial: EmptyView()
-                                }
-                            }
-                            .padding(.top, 48)
-                            .padding(.bottom, 24)
+            // Two layers with different opinions about the keyboard, which is
+            // the whole trick. The page ignores it, so the primary CTA never
+            // moves. The Done bar respects it, so SwiftUI parks it directly on
+            // top of the keyboard with no geometry math on our side.
+            //
+            // A previous version did the math, off `keyboardWillShowNotification`
+            // and a `.padding(.bottom, keyboardHeight + 12)`, and put Done at
+            // y=210 on a screen whose keyboard started at y=589. Layout knows
+            // where the keyboard is; asking it is more reliable than measuring.
+            ZStack(alignment: .bottom) {
+                VStack(spacing: 0) {
+                    if step == .trial {
+                        // Trial must NOT live in a ScrollView: Spacers need a bounded
+                        // height to center the pitch above the zero-shift CTA bar.
+                        trialPage
                             .padding(.horizontal, 24)
-                        }
-                        .scrollBounceBehavior(.basedOnSize)
-                        // A drag puts the keyboard away, so the way out is the
-                        // gesture people already make when a keyboard is in
-                        // their way.
-                        .scrollDismissesKeyboard(.interactively)
-                        // The bar below no longer moves for the keyboard, so
-                        // nothing scrolls a focused field into view on its own.
-                        // On this phone both goal rows already sit well clear of
-                        // the number pad; on a small screen or at large Dynamic
-                        // Type they do not, and typing into a field you cannot
-                        // see is the worst version of this screen.
-                        .onChange(of: focusedGoal) { _, field in
-                            guard let field else { return }
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                proxy.scrollTo(field, anchor: .center)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .onAppear {
+                                // A returning subscriber (reinstall, restored
+                                // entitlement) reaches this step already Pro. Pitch
+                                // them nothing: set their goals, then let them in.
+                                guard !store.isPro else {
+                                    finishOnboarding()
+                                    return
+                                }
+                                store.trackPaywallImpression(id: "vitals_onboarding_trial", oncePerSession: true)
+                            }
+                            .task(id: store.conversionCTAReady) {
+                                guard !store.conversionCTAReady else { return }
+                                // One more fetch before giving up: the warm-up in
+                                // the parent `.task` may have run while the device
+                                // was still offline.
+                                if store.products.isEmpty { await store.fetchProducts() }
+                                guard !store.conversionCTAReady else { return }
+                                try? await Task.sleep(for: Self.trialCTAWaitLimit)
+                                guard !Task.isCancelled else { return }
+                                trialCTAWaitExpired = true
+                            }
+                    } else {
+                        ScrollViewReader { proxy in
+                            ScrollView {
+                                Group {
+                                    switch step {
+                                    case .welcome: welcomePage
+                                    case .food: foodPage
+                                    case .goals: goalsPage
+                                    case .trial: EmptyView()
+                                    }
+                                }
+                                .padding(.top, 48)
+                                // Room to scroll a focused field clear of the
+                                // Done bar. This layer ignores the keyboard, so
+                                // without the extra inset the content has
+                                // nowhere to go and the reader below has
+                                // nothing to scroll.
+                                .padding(.bottom, focusedGoal != nil ? 300 : 24)
+                                .padding(.horizontal, 24)
+                            }
+                            .scrollBounceBehavior(.basedOnSize)
+                            // A drag puts the keyboard away, so the way out is the
+                            // gesture people already make when a keyboard is in
+                            // their way.
+                            .scrollDismissesKeyboard(.interactively)
+                            // The bar below no longer moves for the keyboard, so
+                            // nothing scrolls a focused field into view on its own.
+                            // On this phone both goal rows already sit well clear of
+                            // the number pad; on a small screen or at large Dynamic
+                            // Type they do not, and typing into a field you cannot
+                            // see is the worst version of this screen.
+                            .onChange(of: focusedGoal) { _, field in
+                                guard let field else { return }
+                                withAnimation(.easeInOut(duration: 0.25)) {
+                                    proxy.scrollTo(field, anchor: .center)
+                                }
                             }
                         }
                     }
-                }
 
-                bottomBar
+                    bottomBar
+                }
+                // The whole reason this screen was worth fixing: the primary
+                // CTA must sit at the same y on every onboarding page, and
+                // SwiftUI's keyboard avoidance was moving it 274pt up the
+                // moment a goal field took focus. This layer never yields. The
+                // number pad covers the button while you type and uncovers it,
+                // in the same place it has been all along, the moment you are
+                // done.
+                .ignoresSafeArea(.keyboard, edges: .bottom)
+
+                // Full width, 44pt tall, in the thumb zone: the same kind of
+                // target the rest of onboarding trains you to reach for, rather
+                // than a text link tucked into the form.
+                //
+                // Full-bleed and opaque, so it reads as part of the keyboard's
+                // furniture. Floating it as a bare capsule over the page put it
+                // halfway inside the Step Goal card, which looked like a
+                // rendering fault rather than a control.
+                if focusedGoal != nil {
+                    VStack(spacing: 0) {
+                        Rectangle()
+                            .fill(Color(.separator).opacity(0.3))
+                            .frame(height: 0.5)
+                        Button {
+                            focusedGoal = nil
+                        } label: {
+                            Text("Done")
+                                .font(.system(.headline, design: .rounded))
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 13)
+                                .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 12))
+                                .foregroundStyle(Theme.caloriesPrimary)
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 10)
+                        .accessibilityIdentifier("goal-keyboard-done")
+                    }
+                    .background(Theme.background)
+                    .transition(.opacity)
+                }
             }
-            // The whole reason this screen was worth fixing: the primary CTA
-            // must sit at the same y on every onboarding page, and SwiftUI's
-            // keyboard avoidance was moving it 274pt up the moment a goal field
-            // took focus. Nothing here yields to the keyboard now. The number
-            // pad covers the button while you type and uncovers it, in the same
-            // place it has been all along, the moment you are done.
-            .ignoresSafeArea(.keyboard, edges: .bottom)
+            .animation(.easeInOut(duration: 0.2), value: focusedGoal)
         }
         // Warm the products early so the trial step has live price/trial copy by
         // the time the user reaches it (StatScout pattern).
@@ -2704,7 +2757,24 @@ private struct OnboardingSheet: View {
                 }
                 // Goals are saved, but onboarding continues. The primary stays
                 // in the same coral slot on every page.
-                withAnimation(.easeInOut(duration: 0.25)) { step = .trial }
+                //
+                // If the HealthKit sheet has not resolved yet, wait for it here
+                // rather than advancing and letting it appear over the paywall,
+                // which is where it was turning up. Waiting on this page is the
+                // honest place to wait: it is the page the prompt belongs to.
+                // Bounded, so a permission request that never answers cannot
+                // strand anyone in onboarding.
+                Task { @MainActor in
+                    if let healthRequest, !healthRequest.isCancelled {
+                        _ = await withTaskGroup(of: Void.self) { group in
+                            group.addTask { await healthRequest.value }
+                            group.addTask { try? await Task.sleep(for: .seconds(10)) }
+                            await group.next()
+                            group.cancelAll()
+                        }
+                    }
+                    withAnimation(.easeInOut(duration: 0.25)) { step = .trial }
+                }
             } label: {
                 // Glow off while the number pad is up. The keyboard is
                 // translucent, and a breathing halo behind it read as a stray
@@ -2815,12 +2885,16 @@ private struct OnboardingSheet: View {
     private func commitFoodAnswerAndContinue() {
         guard let choice = logsFoodChoice else { return }
         goals.logsFoodInHealth = choice
-        // Straight to RevenueCat as well as to defaults: this answer is the
-        // audience key the Upgrade-tab experiment splits on, and it has to be
-        // on the customer before offerings are assigned. See
-        // `StoreService.recordLogsFood`.
-        store.recordLogsFood(choice)
-        Task { await requestHealthAccessIfNeeded(includeFood: choice) }
+        // The permission request goes first and nothing is allowed in front of
+        // it. It used to sit behind a RevenueCat call on the main actor, and on
+        // a real device the system sheet turned up late enough to land on the
+        // paywall instead of here.
+        healthRequest = Task { await requestHealthAccessIfNeeded(includeFood: choice) }
+        // RevenueCat second, and off the main actor's critical path. This answer
+        // is the audience key the Upgrade-tab experiment splits on and has to be
+        // on the customer before offerings are assigned, but it is in no hurry.
+        // See `StoreService.recordLogsFood`.
+        Task { store.recordLogsFood(choice) }
         withAnimation(.easeInOut(duration: 0.25)) { step = .goals }
     }
 
@@ -2973,8 +3047,8 @@ private struct OnboardingSheet: View {
         let streaks = TrialPoint(
             icon: "flame.fill",
             color: Theme.streakPrimary,
-            title: "Streaks & projections",
-            detail: "Keep the chain and see end-of-day pace"
+            title: "Goal streaks",
+            detail: "Every day in a row you hit your goal"
         )
         let reports = TrialPoint(
             icon: "doc.richtext.fill",
@@ -2982,11 +3056,26 @@ private struct OnboardingSheet: View {
             title: "Summary reports",
             detail: "Export a PDF for any date range"
         )
+        let projections = TrialPoint(
+            icon: "chart.xyaxis.line",
+            color: Theme.stepsSecondary,
+            title: "End-of-day projections",
+            detail: "Where today lands at your current pace"
+        )
+        let activeResting = TrialPoint(
+            icon: "bolt.heart.fill",
+            color: Theme.caloriesSecondary,
+            title: "Active vs. resting",
+            detail: "How much of the burn you actually moved for"
+        )
 
+        // Five, not three. Three left a dead band of empty page between the
+        // last line and the CTA on a modern phone, which sells the tier short
+        // on the one screen built to sell it.
         switch goals.logsFoodInHealth {
-        case true: return [macros, netDeficit, trends]
-        case false: return [trends, streaks, reports]
-        case nil: return [netDeficit, macros, trends]
+        case true: return [macros, netDeficit, trends, streaks, reports]
+        case false: return [trends, projections, streaks, activeResting, reports]
+        case nil: return [netDeficit, macros, trends, streaks, reports]
         }
     }
 
@@ -3258,38 +3347,12 @@ private struct GoalRow: View {
                     }
             }
             if enabled {
-                // Done sits inside the card, next to the field it closes, and
-                // not in a `ToolbarItemGroup(placement: .keyboard)`.
-                //
-                // The toolbar version rendered on both the iOS 26.5 and iOS
-                // 27.0 simulators and passed a UI test asserting it was
-                // hittable, then shipped to a real phone with no Done anywhere
-                // on screen and no other way out of a number pad. Whatever
-                // decides where a keyboard accessory lands, it is not something
-                // this screen can hold still, and the page deliberately ignores
-                // the keyboard safe area, which is exactly the geometry an
-                // accessory is positioned against.
-                //
-                // This one is ordinary view content in a card that is always
-                // above the keyboard. Nothing outside the app gets a vote on
-                // whether it appears.
-                HStack(spacing: 10) {
-                    TextField("Target", text: $text)
-                        .keyboardType(.numberPad)
-                        .focused($focus, equals: field)
-                        .font(.system(.body, design: .rounded))
-                    if focus == field {
-                        Button("Done") { focus = nil }
-                            .font(.system(.subheadline, design: .rounded, weight: .semibold))
-                            .foregroundStyle(color)
-                            .buttonStyle(.plain)
-                            .transition(.opacity)
-                            .accessibilityIdentifier("goal-done-\(title == "Calorie Goal" ? "calories" : "steps")")
-                    }
-                }
-                .padding(12)
-                .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 10))
-                .animation(.easeInOut(duration: 0.15), value: focus == field)
+                TextField("Target", text: $text)
+                    .keyboardType(.numberPad)
+                    .focused($focus, equals: field)
+                    .font(.system(.body, design: .rounded))
+                    .padding(12)
+                    .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 10))
                 if !isValid {
                     Text(title == "Calorie Goal" ? "Enter 500–50,000 calories." : "Enter 100–500,000 steps.")
                         .font(.caption)
