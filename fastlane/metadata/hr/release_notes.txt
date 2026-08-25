@@ -1,5 +1,7 @@
-Stigli su makronutrijenti. Proteini, ugljikohidrati i masti sada stoje uz tvoje kalorije, očitani iz aplikacije koja tvoju hranu ionako zapisuje u Apple Health. Ništa se ne unosi dvaput.
+Početno postavljanje sada pita bilježite li hranu igdje. Ako ne, prestaje nuditi dvije Vitals+ značajke koje bi vam ionako prikazale samo prazan zaslon.
 
-Prati sva tri ili samo onaj koji brojiš, postavi neobavezne ciljeve u gramima i pogledaj prosjeke, trendove i najjače dane u Povijesti, u CSV izvozu i u PDF izvješćima. Makronutrijenti su dio Vitals+.
+Kartica Upgrade prikazuje sva tri plana odjednom. Na većini iPhone uređaja Lifetime je bio tik ispod ruba zaslona.
 
-Postavke su sada podijeljene na Potrošnju kalorija i Unos kalorija, uz jasno objašnjenje uz svaki prekidač.
+Kupnja koju Apple još nije odobrio više ne izgleda kao dovršena, a spora veza više ne može ostaviti gumb probnog razdoblja da se vrti bez izlaza.
+
+Net Deficit sada nestaje iz widgeta na početnom zaslonu čim pretplata istekne, umjesto da ostane do sljedećeg otvaranja aplikacije.

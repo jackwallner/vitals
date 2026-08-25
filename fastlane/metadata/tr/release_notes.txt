@@ -1,5 +1,7 @@
-Makrolar geldi. Protein, karbonhidrat ve yağ artık kalorilerinin yanında duruyor; yemeğini zaten Apple Health'e yazan uygulamadan okunuyor. Hiçbir şeyi iki kez girmiyorsun.
+Başlangıç adımları artık yemeklerinizi bir yere kaydedip kaydetmediğinizi soruyor. Kaydetmiyorsanız, size yalnızca boş bir ekran gösterecek iki Vitals+ özelliği artık önerilmiyor.
 
-Üçünü birden ya da yalnızca saydığın tek makroyu takip et, isteğe bağlı gram hedefleri koy, ortalamaları, eğilimleri ve zirve günleri Geçmiş'te, CSV dışa aktarımında ve PDF raporlarında gör. Makrolar Vitals+ kapsamındadır.
+Upgrade sekmesi üç planı da bir arada gösteriyor. Çoğu iPhone'da Lifetime, ekranın kenarının hemen altında kalıyordu.
 
-Ayarlar artık Kalori Yakımı ve Kalori Alımı olarak gruplanıyor, her anahtarın yanında anlaşılır bir açıklama var.
+Apple'ın onayını henüz tamamlamadığı bir satın alma artık tamamlanmış gibi görünmüyor ve yavaş bağlantı, deneme düğmesini çıkışı olmayan bir dönüşte bırakamıyor.
+
+Abonelik sona erer ermez Net Deficit artık Ana Ekran araçlarından kayboluyor; uygulamayı bir sonraki açışınıza kadar orada kalmıyor.

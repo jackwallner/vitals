@@ -1,5 +1,7 @@
-Ya llegaron los macros. Proteínas, carbohidratos y grasas aparecen junto a tus calorías, leídos de la app que ya registra tu comida en Apple Health. Nada que anotar dos veces.
+La configuración inicial ahora pregunta si registras tu comida en alguna app. Si no lo haces, deja de ofrecerte las dos funciones de Vitals+ que solo te mostrarían una pantalla vacía.
 
-Sigue los tres o solo el que cuentas, ponte metas en gramos opcionales y revisa promedios, tendencias y días pico en el Historial, en la exportación CSV y en tus reportes PDF. Los macros son parte de Vitals+.
+La pestaña Upgrade muestra los tres planes a la vez. En la mayoría de los iPhone, Lifetime quedaba justo debajo del borde de la pantalla.
 
-Los ajustes ahora se agrupan en Calorías quemadas y Calorías consumidas, con una explicación clara en cada opción.
+Una compra que Apple aún no termina de aprobar ya no parece completada, y una conexión lenta ya no deja el botón de la prueba girando sin salida.
+
+Net Deficit desaparece de los widgets de la pantalla de inicio en cuanto vence la suscripción, en vez de quedarse hasta que vuelvas a abrir la app.

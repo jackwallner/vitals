@@ -1,5 +1,7 @@
-Makrá sú tu. Bielkoviny, sacharidy a tuky stoja vedľa tvojich kalórií, načítané z aplikácie, ktorá tvoje jedlo aj tak zapisuje do Apple Health. Nič nezadávaš dvakrát.
+Úvodné nastavenie sa teraz pýta, či si niekde zapisujete jedlo. Ak nie, prestane ponúkať dve funkcie Vitals+, ktoré by vám aj tak ukázali len prázdnu obrazovku.
 
-Sleduj všetky tri alebo len to jedno, ktoré počítaš, nastav voliteľné ciele v gramoch a pozri si priemery, trendy a najsilnejšie dni v Histórii, v exporte CSV aj v PDF prehľadoch. Makrá sú súčasťou Vitals+.
+Karta Upgrade zobrazuje všetky tri plány naraz. Na väčšine iPhonov bol Lifetime tesne pod okrajom obrazovky.
 
-Nastavenia sú teraz rozdelené na Spaľovanie kalórií a Príjem kalórií, s jasným vysvetlením pri každom prepínači.
+Nákup, ktorý Apple ešte nestihol schváliť, už nevyzerá ako dokončený a pomalé pripojenie už nenechá tlačidlo skúšobnej verzie donekonečna točiť bez východiska.
+
+Net Deficit teraz zmizne z widgetov na ploche hneď po vypršaní predplatného namiesto toho, aby tam zostal až do ďalšieho spustenia aplikácie.

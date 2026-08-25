@@ -1,5 +1,7 @@
-Makroer er her. Protein, karbohydrater og fett står nå ved siden av kaloriene dine, lest fra appen som allerede skriver maten din til Apple Health. Ingenting å føre to ganger.
+Introduksjonen spør nå om du fører matlogg et sted. Hvis ikke, slutter den å fremheve de to Vitals+-funksjonene som uansett bare ville vist deg en tom skjerm.
 
-Følg alle tre eller bare den ene du teller, sett valgfrie grammål, og se makrosnitt, trender og toppdager i Historikk, i CSV-eksporten og i PDF-rapportene dine. Makroer er en del av Vitals+.
+Fanen Upgrade viser alle tre abonnementene samtidig. På de fleste iPhone-modeller lå Lifetime like under skjermkanten.
 
-Innstillinger er nå delt i Kaloriforbrenning og Kaloriinntak, med en tydelig forklaring ved hver bryter.
+Et kjøp som Apple ikke er ferdig med å godkjenne, ser ikke lenger ut som om det gikk gjennom, og en treg forbindelse kan ikke lenger la prøveknappen snurre uten vei videre.
+
+Net Deficit forsvinner nå fra widgetene på Hjem-skjermen så snart et abonnement utløper, i stedet for å bli værende til neste gang du åpner appen.

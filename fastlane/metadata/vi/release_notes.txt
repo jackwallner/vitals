@@ -1,5 +1,7 @@
-Macro đã có mặt. Đạm, tinh bột và chất béo giờ nằm ngay cạnh lượng calo của bạn, được đọc từ chính ứng dụng vẫn ghi bữa ăn của bạn vào Apple Health. Không phải nhập lại lần nữa.
+Phần thiết lập ban đầu giờ hỏi bạn có ghi lại bữa ăn ở đâu không. Nếu không, hai tính năng Vitals+ vốn chỉ hiện ra màn hình trống sẽ không còn được giới thiệu nữa.
 
-Theo dõi cả ba hoặc chỉ một chỉ số bạn thật sự đếm, đặt mục tiêu gam tùy chọn, và xem trung bình, xu hướng cùng ngày cao nhất trong Lịch sử, bản xuất CSV và báo cáo PDF. Macro thuộc Vitals+.
+Thẻ Upgrade hiển thị cả ba gói cùng lúc. Trên hầu hết iPhone, Lifetime từng nằm ngay dưới mép màn hình.
 
-Cài đặt nay được chia thành Calo đốt và Calo nạp, kèm giải thích dễ hiểu ở từng công tắc.
+Giao dịch mà Apple chưa duyệt xong không còn trông như đã hoàn tất, và kết nối chậm không còn khiến nút dùng thử quay mãi mà không có lối thoát.
+
+Net Deficit giờ biến mất khỏi tiện ích trên Màn hình chính ngay khi gói đăng ký hết hạn, thay vì nán lại đến lần mở ứng dụng tiếp theo.

@@ -1,5 +1,7 @@
-Makri so tu. Beljakovine, ogljikovi hidrati in maščobe zdaj stojijo ob tvojih kalorijah, prebrani iz aplikacije, ki tvojo hrano tako ali tako zapisuje v Apple Health. Nič ni treba vnesti dvakrat.
+Uvodna nastavitev zdaj vpraša, ali si hrano kje beležiš. Če je ne, ti ne ponuja več tistih dveh funkcij Vitals+, ki bi ti tako ali tako pokazali le prazen zaslon.
 
-Spremljaj vse tri ali samo tistega, ki ga šteješ, nastavi neobvezne cilje v gramih ter poglej povprečja, trende in najmočnejše dneve v Zgodovini, v izvozu CSV in v poročilih PDF. Makri so del Vitals+.
+Zavihek Upgrade prikaže vse tri pakete hkrati. Na večini iPhonov je bil Lifetime tik pod robom zaslona.
 
-Nastavitve so zdaj razdeljene na Porabo kalorij in Vnos kalorij, z razumljivo razlago ob vsakem stikalu.
+Nakup, ki ga Apple še ni odobril, ni več videti kot dokončan, počasna povezava pa gumba za preizkus ne pusti več vrteti brez izhoda.
+
+Net Deficit zdaj izgine iz pripomočkov na začetnem zaslonu takoj, ko naročnina poteče, namesto da bi ostal do naslednjega odprtja aplikacije.

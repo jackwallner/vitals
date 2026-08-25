@@ -1,5 +1,7 @@
-Makroskładniki już są. Białko, węglowodany i tłuszcze stoją obok Twoich kalorii, odczytane z aplikacji, która i tak zapisuje jedzenie do Apple Health. Nic nie wpisujesz dwa razy.
+Konfiguracja początkowa pyta teraz, czy zapisujesz gdzieś posiłki. Jeśli nie, przestaje proponować dwie funkcje Vitals+, które i tak pokazałyby ci tylko pusty ekran.
 
-Śledź wszystkie trzy albo tylko ten jeden, który liczysz, ustaw opcjonalne cele w gramach i sprawdzaj średnie, trendy i dni szczytowe w Historii, w eksporcie CSV i w raportach PDF. Makro jest częścią Vitals+.
+Karta Upgrade pokazuje wszystkie trzy plany naraz. W większości iPhone'ów Lifetime znajdował się tuż poniżej krawędzi ekranu.
 
-Ustawienia są teraz podzielone na Spalanie kalorii i Spożycie kalorii, z prostym wyjaśnieniem przy każdym przełączniku.
+Zakup, którego Apple jeszcze nie zatwierdziło, nie wygląda już na zakończony, a wolne połączenie nie zostawi już przycisku okresu próbnego w nieskończonym ładowaniu bez wyjścia.
+
+Net Deficit znika teraz z widżetów na ekranie początkowym, gdy tylko subskrypcja wygaśnie, zamiast pozostawać do następnego uruchomienia aplikacji.

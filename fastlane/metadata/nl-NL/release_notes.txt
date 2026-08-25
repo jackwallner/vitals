@@ -1,5 +1,7 @@
-Macro's zijn er. Eiwit, koolhydraten en vet staan nu naast je calorieën, gelezen uit de app die je eten toch al naar Apple Health schrijft. Niets dubbel invoeren.
+De introductie vraagt nu of je je eten ergens bijhoudt. Zo niet, dan worden de twee Vitals+-functies die je toch alleen een leeg scherm zouden laten zien niet meer aangeboden.
 
-Volg alle drie of alleen de macro die jij telt, stel optionele gramdoelen in en bekijk macrogemiddelden, trends en piekdagen in Geschiedenis, in de CSV-export en in je pdf-rapporten. Macro's horen bij Vitals+.
+Het tabblad Upgrade toont alle drie de abonnementen tegelijk. Op de meeste iPhones viel Lifetime net onder de rand van het scherm.
 
-Instellingen is nu ingedeeld in Calorieverbranding en Calorie-inname, met een begrijpelijke uitleg bij elke schakelaar.
+Een aankoop die Apple nog niet heeft goedgekeurd, lijkt niet langer voltooid, en een trage verbinding kan de proefknop niet meer eindeloos laten draaien zonder uitweg.
+
+Net Deficit verdwijnt nu uit de widgets op het beginscherm zodra een abonnement afloopt, in plaats van te blijven staan tot je de app weer opent.
