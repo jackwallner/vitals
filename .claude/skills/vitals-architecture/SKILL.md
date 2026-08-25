@@ -72,6 +72,7 @@ GoalSettings  →  UserDefaults (App Group)  →  Widgets read goals directly
 | Key | Type | Default | Notes |
 |-----|------|---------|-------|
 | `hasCompletedSetup` | Bool | false | First-launch onboarding gate |
+| `logsFoodInHealth` | Bool? | nil | Onboarding food answer. Absent = never asked. Decides whether the one HealthKit prompt carries the dietary/macro types, which trial pitch is shown, and the `logs_food` RevenueCat attribute |
 | `calorieGoalEnabled` | Bool | true | Whether calorie goal is active |
 | `calorieGoal` | Double | 2500 | Daily calorie target |
 | `stepGoalEnabled` | Bool | true | Whether step goal is active |

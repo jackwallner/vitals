@@ -1,8 +1,10 @@
 import XCTest
 
-/// Onboarding is welcome → goals → food → pitch, and the primary button is the
-/// same control moving through it. Two things are asserted here because both
-/// were regressions rather than theories:
+/// Onboarding is welcome → food → goals → pitch, and the primary button is the
+/// same control moving through it. Food comes before goals so the one HealthKit
+/// prompt, fired on the way to goals, already knows whether to carry the dietary
+/// and macro types. Two things are asserted here because both were regressions
+/// rather than theories:
 ///
 /// 1. The button must not move between pages. Each page puts something
 ///    different above it (a trust line, nothing, a billing disclosure), and
@@ -50,6 +52,14 @@ final class OnboardingFlowUITests: XCTestCase {
         let welcomeFrame = welcomeCTA.frame
 
         advance(app, from: "welcome")
+        sleep(2)
+
+        let foodCTA = app.buttons["Continue"]
+        XCTAssertTrue(foodCTA.waitForExistence(timeout: 20), "food step never rendered")
+        let foodFrame = foodCTA.frame
+
+        selectFoodAnswer(app, logsFood: false)
+        advance(app, from: "food")
         sleep(3)
         dismissSystemSheetIfPresent()
 
@@ -57,19 +67,12 @@ final class OnboardingFlowUITests: XCTestCase {
         XCTAssertTrue(goalsCTA.waitForExistence(timeout: 20), "goals never rendered")
         let goalsFrame = goalsCTA.frame
 
-        advance(app, from: "goals")
-        sleep(2)
-
-        let foodCTA = app.buttons["Continue"]
-        XCTAssertTrue(foodCTA.waitForExistence(timeout: 20), "food step never rendered")
-        let foodFrame = foodCTA.frame
-
         // One point of tolerance for rounding, not for layout drift.
-        XCTAssertEqual(welcomeFrame.minY, goalsFrame.minY, accuracy: 1,
-                       "CTA moved between welcome (\(welcomeFrame.minY)) and goals (\(goalsFrame.minY))")
-        XCTAssertEqual(goalsFrame.minY, foodFrame.minY, accuracy: 1,
-                       "CTA moved between goals (\(goalsFrame.minY)) and food (\(foodFrame.minY))")
-        XCTAssertEqual(welcomeFrame.height, foodFrame.height, accuracy: 1, "CTA changed height")
+        XCTAssertEqual(welcomeFrame.minY, foodFrame.minY, accuracy: 1,
+                       "CTA moved between welcome (\(welcomeFrame.minY)) and food (\(foodFrame.minY))")
+        XCTAssertEqual(foodFrame.minY, goalsFrame.minY, accuracy: 1,
+                       "CTA moved between food (\(foodFrame.minY)) and goals (\(goalsFrame.minY))")
+        XCTAssertEqual(welcomeFrame.height, goalsFrame.height, accuracy: 1, "CTA changed height")
     }
 
     func testFoodAnswerYesLeadsThePitchWithFoodFeatures() {
@@ -92,22 +95,24 @@ final class OnboardingFlowUITests: XCTestCase {
                        "pitched Net deficit to someone who logs no food")
     }
 
-    private func onboardingAtPitch(logsFood: Bool) -> XCUIApplication {
-        let app = launchOnboarding()
-        advance(app, from: "welcome")
-        sleep(3)
-        dismissSystemSheetIfPresent()
-        advance(app, from: "goals")
-        sleep(2)
-
+    private func selectFoodAnswer(_ app: XCUIApplication, logsFood: Bool) {
         let wanted = logsFood ? "Yes, I log" : "No, just track"
         let card = app.buttons.containing(NSPredicate(format: "label CONTAINS %@", wanted)).firstMatch
         XCTAssertTrue(card.waitForExistence(timeout: 20), "food card '\(wanted)' missing")
         card.tap()
+    }
 
+    private func onboardingAtPitch(logsFood: Bool) -> XCUIApplication {
+        let app = launchOnboarding()
+        advance(app, from: "welcome")
+        sleep(2)
+
+        selectFoodAnswer(app, logsFood: logsFood)
         advance(app, from: "food")
         sleep(3)
         dismissSystemSheetIfPresent()
+
+        advance(app, from: "goals")
         sleep(2)
         return app
     }
