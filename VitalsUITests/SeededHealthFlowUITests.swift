@@ -25,6 +25,7 @@ final class SeededHealthFlowUITests: XCTestCase {
         )
         attach(app.screenshot(), name: "seeded-today")
 
+        dismissTrialPitch(in: app)
         app.buttons["History"].tap()
         XCTAssertTrue(
             app.staticTexts["Deep Trends"].waitForExistence(timeout: 20),
@@ -35,7 +36,9 @@ final class SeededHealthFlowUITests: XCTestCase {
         )
         attach(app.screenshot(), name: "seeded-history-deep-trends")
 
+        dismissTrialPitch(in: app)
         app.buttons["Today"].tap()
+        dismissTrialPitch(in: app)
         openSettings(in: app)
         // 10s was too tight for a sheet presentation at the end of a long walk:
         // this is the slowest path in the suite and a loaded simulator spends
@@ -59,6 +62,7 @@ final class SeededHealthFlowUITests: XCTestCase {
         attach(app.screenshot(), name: "seeded-settings-support")
         app.swipeDown(velocity: .fast)
 
+        dismissTrialPitch(in: app)
         app.buttons["Upgrade"].tap()
         XCTAssertTrue(
             app.staticTexts["Your macros, every day"].waitForExistence(timeout: 20),
@@ -82,6 +86,7 @@ final class SeededHealthFlowUITests: XCTestCase {
         grantHealthKitAccess(in: app)
         dismissBlockingSheets(in: app)
 
+        dismissTrialPitch(in: app)
         app.buttons["Upgrade"].tap()
         XCTAssertTrue(
             app.buttons["paywall-purchase"].waitForExistence(timeout: 20),
@@ -119,23 +124,36 @@ final class SeededHealthFlowUITests: XCTestCase {
         // yet hittable while the tab transition settles, and tapping it then
         // fails as "not hittable" rather than waiting. Ask for hittable.
         let labeled = app.buttons["Settings"]
-        if labeled.waitForExistence(timeout: 5) {
-            let deadline = Date.now.addingTimeInterval(15)
-            while Date.now < deadline, !labeled.isHittable {
-                _ = app.buttons["nonexistent"].waitForExistence(timeout: 0.3)
-            }
-            if labeled.isHittable {
-                labeled.tap()
-                return
-            }
+        if labeled.waitForExistence(timeout: 5), waitForHittable(labeled, timeout: 15) {
+            labeled.tap()
+            return
         }
         // Gear is the first toolbar button on Today when VoiceOver uses a symbol.
         let gear = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'setting' OR identifier CONTAINS[c] 'setting' OR label CONTAINS[c] 'gear'")).firstMatch
-        if gear.waitForExistence(timeout: 3), gear.isHittable {
+        if gear.waitForExistence(timeout: 3), waitForHittable(gear, timeout: 5) {
             gear.tap()
             return
         }
         XCTFail("Settings control missing. hierarchy:\n\(app.debugDescription)")
+    }
+
+    /// The trial pitch is on a timer, not on a tap: `TrialOfferCoordinator`
+    /// holds it back while a sheet is up and presents it as soon as the app is
+    /// idle. That means it can land on any tab, at any point in a long walk,
+    /// and it covers the whole screen behind a `PopoverDismissRegion` — a tab
+    /// tap underneath it is swallowed rather than failed, so the next assertion
+    /// fails somewhere unrelated. Clear it right before anything that has to
+    /// reach the app's own chrome.
+    private func dismissTrialPitch(in app: XCUIApplication) {
+        let deadline = Date.now.addingTimeInterval(10)
+        while Date.now < deadline {
+            let dismiss = app.buttons.matching(
+                NSPredicate(format: "label IN {'Not now', 'Maybe later', 'Close'}")
+            ).firstMatch
+            guard dismiss.exists else { return }
+            if dismiss.isHittable { dismiss.tap() }
+            _ = app.buttons["nonexistent"].waitForExistence(timeout: 0.5)
+        }
     }
 
     private func dismissBlockingSheets(in app: XCUIApplication) {
@@ -156,21 +174,32 @@ final class SeededHealthFlowUITests: XCTestCase {
             if !anyAllowButton(in: app).exists { return }
             tapTurnOnAll(in: app)
             tapFirstMatch(in: app, label: "Full History")
-            let deadline = Date.now.addingTimeInterval(12)
-            var ready = false
-            while Date.now < deadline {
-                let current = anyAllowButton(in: app)
-                if current.exists, current.isEnabled, current.isHittable {
-                    ready = true
-                    break
-                }
-                _ = app.buttons["nonexistent"].waitForExistence(timeout: 0.4)
-            }
-            guard ready else { return }
-            anyAllowButton(in: app).tap()
+            // Poll through an expectation rather than reading isEnabled and
+            // isHittable in a loop. Those two throw "failed to get matching
+            // snapshot" when the element goes away between the `exists` check
+            // and the property read, which is exactly what a Health sheet
+            // mid-transition does on a loaded machine. A predicate expectation
+            // treats a missing element as "not matching yet" and keeps waiting.
+            guard waitForHittable(anyAllowButton(in: app), timeout: 12) else { return }
+            // Re-check immediately before the tap: the wait above only proves
+            // the button was hittable a moment ago.
+            let allow = anyAllowButton(in: app)
+            guard allow.exists else { return }
+            allow.tap()
             _ = app.buttons["nonexistent"].waitForExistence(timeout: 2)
             _ = page
         }
+    }
+
+    /// True once `element` is present and hittable, false if the timeout passes.
+    /// Never fails the test: a Health page that auto-advances is a reason to
+    /// stop tapping, not a reason to fail.
+    private func waitForHittable(_ element: XCUIElement, timeout: TimeInterval) -> Bool {
+        let expectation = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "exists == true AND isHittable == true"),
+            object: element
+        )
+        return XCTWaiter().wait(for: [expectation], timeout: timeout) == .completed
     }
 
     private func anyAllowButton(in app: XCUIApplication) -> XCUIElement {
