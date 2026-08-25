@@ -137,6 +137,18 @@ enum PlusFeature: CaseIterable {
     }
 
     /// Two related features shown under an intent-driven pitch (not random extras).
+    /// True for the two features that read as an empty screen to someone who
+    /// logs no food. Selling either to that person is not a weaker pitch, it is
+    /// a promise the app cannot keep, so every surface that picks features on
+    /// its own filters on this. An explicit tap is different: if they reached
+    /// for Macros, answer the tap.
+    var needsFoodLogging: Bool {
+        switch self {
+        case .netDeficit, .macros: true
+        default: false
+        }
+    }
+
     var companionFeatures: [PlusFeature] {
         switch self {
         case .netDeficit: [.macros, .projections]
