@@ -482,9 +482,19 @@ struct MainTabView: View {
         // three seconds, which a UI test tapping the button ten times could not
         // meet, and neither could an unhurried thumb. What actually
         // distinguishes a deliberate sequence from a stray tap is that the taps
-        // keep coming, so the count survives as long as no gap exceeds 1.5s.
+        // keep coming, so the count survives as long as no gap exceeds the
+        // window below.
+        //
+        // 3s, not the 1.5s this shipped with. A cold Upgrade tab is still
+        // loading products and laying out the paywall, and taps land 1.3-2.3s
+        // apart while that settles — measured, in a suite run where the first
+        // ten taps took 11s and the counter reset four times, so the rotator
+        // never fired. Whoever is tapping gives up long before the app is ready
+        // to notice. Nothing distinguishes a stray tap at 3s that did not
+        // already distinguish it at 1.5s: ten of them still have to arrive in a
+        // row on the same control.
         let now = Date.now
-        if now.timeIntervalSince(rotatorLastTapAt) > 1.5 {
+        if now.timeIntervalSince(rotatorLastTapAt) > 3.0 {
             rotatorTapCount = 0
         }
         rotatorLastTapAt = now
