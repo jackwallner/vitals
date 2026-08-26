@@ -2368,10 +2368,6 @@ private struct OnboardingSheet: View {
     @State private var wantStepGoal = true
     @State private var stepText = "10000"
     @State private var hasRequestedHealthAccess = false
-    /// The in-flight HealthKit permission request, kept so the goals step can
-    /// wait for it rather than letting the system sheet chase the user onto the
-    /// paywall. See `commitFoodAnswerAndContinue`.
-    @State private var healthRequest: Task<Void, Never>?
     /// Answer to the food question, held locally until Continue commits it.
     @State private var logsFoodChoice: Bool?
     @State private var isStartingTrial = false
@@ -2767,23 +2763,7 @@ private struct OnboardingSheet: View {
                 // Goals are saved, but onboarding continues. The primary stays
                 // in the same coral slot on every page.
                 //
-                // If the HealthKit sheet has not resolved yet, wait for it here
-                // rather than advancing and letting it appear over the paywall,
-                // which is where it was turning up. Waiting on this page is the
-                // honest place to wait: it is the page the prompt belongs to.
-                // Bounded, so a permission request that never answers cannot
-                // strand anyone in onboarding.
-                Task { @MainActor in
-                    if let healthRequest, !healthRequest.isCancelled {
-                        _ = await withTaskGroup(of: Void.self) { group in
-                            group.addTask { await healthRequest.value }
-                            group.addTask { try? await Task.sleep(for: .seconds(10)) }
-                            await group.next()
-                            group.cancelAll()
-                        }
-                    }
-                    withAnimation(.easeInOut(duration: 0.25)) { step = .trial }
-                }
+                withAnimation(.easeInOut(duration: 0.25)) { step = .trial }
             } label: {
                 // Glow off while the number pad is up. The keyboard is
                 // translucent, and a breathing halo behind it read as a stray
@@ -2898,7 +2878,7 @@ private struct OnboardingSheet: View {
         // it. It used to sit behind a RevenueCat call on the main actor, and on
         // a real device the system sheet turned up late enough to land on the
         // paywall instead of here.
-        healthRequest = Task { await requestHealthAccessIfNeeded(includeFood: choice) }
+        Task { await requestHealthAccessIfNeeded(includeFood: choice) }
         // RevenueCat second, and off the main actor's critical path. This answer
         // is the audience key the Upgrade-tab experiment splits on and has to be
         // on the customer before offerings are assigned, but it is in no hurry.
