@@ -380,10 +380,17 @@ struct DashboardView: View {
             beginEnableMacrosWithHealthAuth()
         }
         .task {
+            // No slide-up on either path. Onboarding is the first thing anyone
+            // sees on a fresh install, and animating it in from the bottom made
+            // the app look like it had opened to the dashboard and then thought
+            // better of it. Presented without a transaction animation, it is
+            // simply what the app opened to.
+            var launch = Transaction()
+            launch.disablesAnimations = true
             if ScreenshotConfig.wantsOnboarding {
-                showOnboarding = true
+                withTransaction(launch) { showOnboarding = true }
             } else if !goals.hasCompletedSetup {
-                showOnboarding = true
+                withTransaction(launch) { showOnboarding = true }
             } else {
                 // Capture runs present Settings before the first refresh: the
                 // sheet is what the run exists to photograph, and a loaded
@@ -2489,21 +2496,23 @@ private struct OnboardingSheet: View {
                         Rectangle()
                             .fill(Color(.separator).opacity(0.3))
                             .frame(height: 0.5)
+                        // Same coral fill, same corner radius, same halo as
+                        // every other primary in onboarding. It is the only
+                        // thing to do while the keyboard is up, so it should
+                        // look like the thing to do.
                         Button {
                             focusedGoal = nil
                         } label: {
-                            Text("Done")
-                                .font(.system(.headline, design: .rounded))
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 13)
-                                .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 12))
-                                .foregroundStyle(Theme.caloriesPrimary)
+                            primaryLabel("Done")
                         }
                         .padding(.horizontal, 24)
                         .padding(.vertical, 10)
                         .accessibilityIdentifier("goal-keyboard-done")
                     }
                     .background(Theme.background)
+                    // A little lift, so content passing under the bar reads as
+                    // scrolled-behind rather than cut off.
+                    .shadow(color: .black.opacity(0.10), radius: 6, y: -2)
                     .transition(.opacity)
                 }
             }
