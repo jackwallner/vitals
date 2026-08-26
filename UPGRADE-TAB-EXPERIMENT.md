@@ -27,54 +27,94 @@ builds containing a layout can draw it, so this experiment cannot reach anyone o
 
 ## Offerings
 
-Create four offerings, one per arm, each carrying its `upgrade_tab` metadata.
+These already exist (verified 2026-08-26):
+
+| Offering | `upgrade_tab` | Note |
+|---|---|---|
+| `default` | `timeline` | current; unknown to 1.8.3, falls back to `catalog` |
+| `pw_full_list` | `full_list` | |
+| `pw_short_list` | `catalog` | duplicate of `upgrade_catalog` |
+| `upgrade_catalog` | `catalog` | duplicate of `pw_short_list` |
+| `pw_macro` | `feature_led` | |
+| `pw_maintenance` | `maintenance_led` | |
+
+Two catalog offerings exist where one is needed. Retire one before wiring an
+experiment, so the control arm has a single unambiguous identifier.
 
 **Every arm must contain the identical set of packages.** The arms are layout
 only. The onboarding trial page reads its yearly package off the same
 `offerings.current`, so an arm with a different product, price, or trial length
 would silently change what onboarding sells, not just how the Upgrade tab looks.
 
-## Audiences
+## Audiences: RevenueCat cannot branch on the food answer
 
-The split is conditioned on the onboarding food question, which reaches
-RevenueCat as the subscriber attribute `logs_food`, value `"true"` or `"false"`.
+**Corrected 2026-08-26.** An earlier version of this document split the test into
+a food-logger audience and a non-logger audience. RevenueCat will not do that.
 
-- **Food loggers**: `logs_food` is `"true"`
-- **Non-loggers**: `logs_food` is `"false"`
+`logs_food` does reach RevenueCat, as a subscriber attribute with value `"true"`
+or `"false"` (`StoreService.recordLogsFood`, `ConversionDiagnostics`). But a
+subscriber attribute is readable, not routable. The audience builder rejects it:
 
-Customers with no value at all (installs predating the food question, anyone who
-never finished onboarding) match neither. Leave them on the default offering
-serving `catalog`; do not write the second audience as "not true", or every
-unanswered install lands in the non-logger test and dilutes it.
+```
+POST /internal/v1/developers/me/projects/{pid}/audiences/actions/preview
+{"rules":{"groups":[{"conditions":[{"field":"logs_food", ...}]}]}}
+-> 400  Field "logs_food" is not a valid audience rule field.
+```
+
+Audiences and experiment targeting accept RevenueCat's own built-in fields (app,
+app version, platform, SDK version, country), not custom attributes. Verified
+against the live project, not inferred from the docs.
+
+So the attribute keeps its full value for **analysis**: every result below can be
+sliced by `logs_food` after the fact. It just cannot decide who sees what. Any
+branch on the food answer has to live in the app.
 
 ## Experiments
 
-RevenueCat supports up to four variants in one experiment, split evenly, so both
-of these are a single experiment each rather than a stack of A/B tests.
+RevenueCat supports up to four variants in one experiment, split evenly.
 
-**Experiment 1, scoped to the food-logger audience, 4 variants:**
-`full_list` / `catalog` / `feature_led` / `maintenance_led`
-
-**Experiment 2, scoped to the non-logger audience, 3 variants:**
+**Option A, no code change, can run as soon as 1.8.3 has adoption.**
+One experiment, everyone, 3 variants:
 `full_list` / `catalog` / `maintenance_led`
 
-The macro arm is deliberately absent from experiment 2: the macro card renders
-blank for someone who logs no food, so it is not a paywall, it is a bug with a
-price on it.
+None of these three need food logging, so nobody is sold a blank screen. The
+macro arm simply is not tested yet.
 
-## Timing caveat, read this one
+**Option B, needs one more build.** One 4-arm experiment including `feature_led`,
+with the app substituting at draw time: if the assigned arm is the macro card and
+`goals.logsFoodInHealth == false`, draw the maintenance card instead. Loggers get
+a clean 4-way test; non-loggers get 3 arms with maintenance at double weight.
+`paywall_variant` already records what was actually drawn, so the substitution
+appears in the data rather than hiding in it.
 
-Audience membership is evaluated when offerings are fetched. `logs_food` is now
-pushed to RevenueCat the moment the food question is answered
-(`StoreService.recordLogsFood`), followed by a refetch, which is as early as the
-answer exists. But RevenueCat caches offerings for a few minutes, so a customer
-who answers the question and reaches the Upgrade tab inside that window can still
-be served the assignment made while the answer was unknown. The next cold launch
-corrects it.
+The macro arm cannot ship unsubstituted to everyone: the macro card renders blank
+for someone who logs no food, so it is not a paywall, it is a bug with a price on
+it. That constraint is what Option B buys its way around.
 
-Before this build, `logs_food` only reached RevenueCat once a paywall had already
-been seen, which was always after the assignment it is supposed to steer. That
-was the blocker; it is fixed.
+Recommended: A first, fold B into whatever ships after 1.8.3.
+
+## Timing: this is gated on 1.8.3 adoption, not on the build being ready
+
+Do not start any experiment while 1.8.2 is the version most customers run. See
+`RELEASE-1.8.3.md`, "Do not start the experiment yet", for the full reasoning.
+The short version: live 1.8.2 falls back to `timeline`, not `catalog`, so both
+arms render the same screen on that population and the signal dilutes to nothing.
+
+Two live changes belong to the 1.8.3 rollout, in this order, and neither is
+housekeeping that can be done early:
+
+1. **Delete the targeting rule "1.8.3 tester (Jack) - macro card"**
+   (`app_version = 1.8.3` -> `pw_macro`). Harmless while 1.8.3 is TestFlight
+   only, because it matches one tester. The moment 1.8.3 is public it pins every
+   customer on that version to the macro card, non-loggers included. This must be
+   gone before the release goes live.
+2. **Change `default` metadata from `timeline` to `catalog`.** Not a typo fix.
+   `timeline` is a real layout in the live 1.8.2 binary, so this immediately
+   changes what every current customer sees. Do it deliberately, as part of the
+   rollout, once 1.8.3 is the version that matters.
+
+Scope the experiment itself with an app-version condition so older builds are
+never enrolled.
 
 ## What is already being collected
 
