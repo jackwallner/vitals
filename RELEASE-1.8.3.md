@@ -253,11 +253,15 @@ Deliberately not doing now:
 - [ ] Update the App Store Connect App Privacy answers (see above).
 - [ ] `./scripts/testflight.sh`, then stage the pbxproj on the release commit
       (`testflight.sh` commits only `project.yml`).
-- [ ] **Delete the RevenueCat targeting rule "1.8.3 tester (Jack) - macro card"**
-      (`app_version = 1.8.3` -> `pw_macro`, rule id `5ZvsDB5PUJ`). It matches on
-      marketing version, so it isolates a TestFlight tester only until 1.8.3 is
-      public. Left in place at release it pins every 1.8.3 customer to the macro
-      card, which renders blank for anyone who does not log food.
+- [x] **RevenueCat targeting rule "1.8.3 tester (Jack) - macro card" is off.**
+      Moved from `live` to `inactive` on 2026-08-26 (rule id `5ZvsDB5PUJ`,
+      `app_version = 1.8.3` -> `pw_macro`). Zero live targeting rules now.
+      It matched on marketing version, so it isolated a TestFlight tester only
+      until 1.8.3 went public; left live at release it would have pinned every
+      1.8.3 customer to the macro card, which renders blank for anyone who does
+      not log food. Parked rather than deleted so it can be switched back on by
+      API for another TestFlight preview. **Do not reactivate it after 1.8.3 is
+      submitted.**
 
 ## Known and accepted
 
