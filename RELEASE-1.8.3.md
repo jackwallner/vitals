@@ -253,6 +253,10 @@ Deliberately not doing now:
 - [ ] Update the App Store Connect App Privacy answers (see above).
 - [ ] `./scripts/testflight.sh`, then stage the pbxproj on the release commit
       (`testflight.sh` commits only `project.yml`).
+- [x] **The Upgrade-tab experiment is drafted, not started.** `expb03a6c2204`,
+      3 arms (`upgrade_catalog` control / `pw_full_list` / `pw_maintenance`),
+      new customers, 100%, App version >= 1.8.3. Press Start only once 1.8.3 has
+      adoption; see `UPGRADE-TAB-EXPERIMENT.md`. The macro arm is not in it.
 - [x] **RevenueCat targeting rule "1.8.3 tester (Jack) - macro card" is off.**
       Moved from `live` to `inactive` on 2026-08-26 (rule id `5ZvsDB5PUJ`,
       `app_version = 1.8.3` -> `pw_macro`). Zero live targeting rules now.

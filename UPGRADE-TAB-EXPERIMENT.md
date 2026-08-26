@@ -106,7 +106,30 @@ The macro arm cannot ship unsubstituted to a non-logger: that card renders blank
 without food data, so it is not a paywall, it is a bug with a price on it. B and
 C are two different ways of buying around that.
 
-## Timing: draft it now, start it on 1.8.3 adoption
+## Status: the draft exists
+
+Created 2026-08-26 as **`expb03a6c2204`**, state `draft`, nothing enrolled.
+Verified against the API, not just the dashboard: `state: draft`,
+`enrollment: only_new`, three variants.
+
+| Slot | Offering | id | `upgrade_tab` |
+|---|---|---|---|
+| A (control) | `upgrade_catalog` | `ofrngaee4be4d1b` | `catalog` |
+| B | `pw_full_list` | `ofrngdcc3b9ac40` | `full_list` |
+| C | `pw_maintenance` | `ofrngaa17b94b43` | `maintenance_led` |
+
+Design experiment. Primary metric initial conversion rate; secondary realized LTV
+per customer, paywall viewers, trials started. Enrollment: new customers, 100%,
+condition **App version >= 1.8.3** on the App Store app (not Test Store, so
+sandbox traffic cannot enrol).
+
+The operator is `>=`, deliberately, not `=`. Every build after 1.8.3 still
+contains these layouts, and an exact match would silently stop enrolling the day
+1.8.4 ships.
+
+**All that remains is pressing Start**, and that waits on 1.8.3 adoption.
+
+## Timing: start it on 1.8.3 adoption
 
 The form has **Save as draft** and **Start experiment** as separate buttons, so
 the setup can be staged in advance and started later. Draft it whenever; do not
