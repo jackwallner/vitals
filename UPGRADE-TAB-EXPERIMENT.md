@@ -106,11 +106,10 @@ The macro arm cannot ship unsubstituted to a non-logger: that card renders blank
 without food data, so it is not a paywall, it is a bug with a price on it. B and
 C are two different ways of buying around that.
 
-## Status: the draft exists
+## Status: RUNNING since 2026-08-26
 
-Created 2026-08-26 as **`expb03a6c2204`**, state `draft`, nothing enrolled.
-Verified against the API, not just the dashboard: `state: draft`,
-`enrollment: only_new`, three variants.
+**`expb03a6c2204`**, started 2026-08-26T21:21:32Z. Confirmed against the API,
+not just the dashboard: `enrollment: new_and_existing`, three variants.
 
 | Slot | Offering | id | `upgrade_tab` |
 |---|---|---|---|
@@ -119,15 +118,33 @@ Verified against the API, not just the dashboard: `state: draft`,
 | C | `pw_maintenance` | `ofrngaa17b94b43` | `maintenance_led` |
 
 Design experiment. Primary metric initial conversion rate; secondary realized LTV
-per customer, paywall viewers, trials started. Enrollment: new customers, 100%,
-condition **App version >= 1.8.3** on the App Store app (not Test Store, so
-sandbox traffic cannot enrol).
+per customer, paywall viewers, trials started. Enrollment: **new and existing
+customers**, 100%, condition **App version >= 1.8.3** on the App Store app.
+
+**Why new-and-existing, not new-only.** New-only was the first setting and the
+reasoning behind it was weak: existing customers have seen the paywall before,
+which was called a "dirtier population". Assignment is random, so prior exposure
+lands evenly across arms; it costs precision, not validity. Meanwhile power is
+the binding constraint on this whole test, and excluding everyone who updates to
+1.8.3 throws away the largest available source of traffic. The `>= 1.8.3`
+condition means "existing" can only mean customers who have updated, so nobody on
+1.8.2 enrols either way.
+
+Two costs, accepted: a non-editable SDK floor (iOS 5.66.0+; the build ships
+5.71.0), and already-paying customers who enrol but can never convert, balanced
+across arms but wasted sample.
 
 The operator is `>=`, deliberately, not `=`. Every build after 1.8.3 still
 contains these layouts, and an exact match would silently stop enrolling the day
 1.8.4 ships.
 
-**All that remains is pressing Start**, and that waits on 1.8.3 adoption.
+**Verify on the Upgrade tab, not the onboarding pitch.** `PaywallView`'s
+`upgradeTabVariant` returns `.catalog` whenever `focus != nil`
+(`Vitals/Views/PaywallView.swift:278`), so the onboarding trial pitch
+(`App.swift:1105`) and the passive offer (`DashboardView.swift:4083`) always draw
+catalog regardless of the assigned arm. Only the plain Upgrade tab
+(`DashboardView.swift:2537`) reflects the real assignment. Checking the wrong
+surface reads as "the experiment is broken".
 
 ## Timing: start it on 1.8.3 adoption
 
