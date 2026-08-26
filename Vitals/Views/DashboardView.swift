@@ -380,17 +380,19 @@ struct DashboardView: View {
             beginEnableMacrosWithHealthAuth()
         }
         .task {
-            // No slide-up on either path. Onboarding is the first thing anyone
-            // sees on a fresh install, and animating it in from the bottom made
-            // the app look like it had opened to the dashboard and then thought
-            // better of it. Presented without a transaction animation, it is
-            // simply what the app opened to.
-            var launch = Transaction()
-            launch.disablesAnimations = true
+            // Presented plainly. Suppressing the slide-up by setting this
+            // inside a `disablesAnimations` transaction is what onboarding
+            // looked like when the Continue button started drifting around the
+            // welcome page: the sheet comes up through a presentation
+            // controller, and taking the animation away from that transaction
+            // destabilised the first layout pass. Losing the transition is not
+            // worth a CTA that moves. Doing this properly means rendering
+            // onboarding as the root view instead of presenting it, which is a
+            // change of its own.
             if ScreenshotConfig.wantsOnboarding {
-                withTransaction(launch) { showOnboarding = true }
+                showOnboarding = true
             } else if !goals.hasCompletedSetup {
-                withTransaction(launch) { showOnboarding = true }
+                showOnboarding = true
             } else {
                 // Capture runs present Settings before the first refresh: the
                 // sheet is what the run exists to photograph, and a loaded
@@ -2510,9 +2512,13 @@ private struct OnboardingSheet: View {
                     // scrolled-behind rather than cut off.
                     .shadow(color: .black.opacity(0.10), radius: 6, y: -2)
                     .transition(.opacity)
+                    // On the bar alone. Hung on the ZStack it covered the whole
+                    // onboarding tree, including the CTA and its repeatForever
+                    // halo, and an ancestor animation over a repeating one is
+                    // exactly the context leak `CTAGlow` already warns about.
+                    .animation(.easeInOut(duration: 0.2), value: focusedGoal)
                 }
             }
-            .animation(.easeInOut(duration: 0.2), value: focusedGoal)
         }
         // Warm the products early so the trial step has live price/trial copy by
         // the time the user reaches it (StatScout pattern).

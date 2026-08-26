@@ -75,6 +75,21 @@ final class OnboardingFlowUITests: XCTestCase {
         XCTAssertEqual(foodFrame.minY, goalsFrame.minY, accuracy: 1,
                        "CTA moved between food (\(foodFrame.minY)) and goals (\(goalsFrame.minY))")
         XCTAssertEqual(welcomeFrame.height, goalsFrame.height, accuracy: 1, "CTA changed height")
+
+        // x and width too. Comparing only minY and height is how a build
+        // shipped with the welcome CTA drawn at half width and hanging off the
+        // left edge: every assertion above passed on it, because the break was
+        // horizontal and nothing here was looking sideways.
+        for (page, frame) in [("welcome", welcomeFrame), ("food", foodFrame), ("goals", goalsFrame)] {
+            XCTAssertEqual(frame.minX, welcomeFrame.minX, accuracy: 1,
+                           "CTA x moved on \(page) (\(frame.minX) vs \(welcomeFrame.minX))")
+            XCTAssertEqual(frame.width, welcomeFrame.width, accuracy: 1,
+                           "CTA width changed on \(page) (\(frame.width) vs \(welcomeFrame.width))")
+            XCTAssertTrue(app.frame.contains(frame),
+                          "CTA on \(page) (\(frame)) is not inside the window (\(app.frame))")
+            XCTAssertTrue(frame.width > app.frame.width * 0.7,
+                          "CTA on \(page) is \(frame.width)pt wide, not the full-width primary")
+        }
     }
 
     /// The goals page is the one onboarding step with a keyboard, and it used to
