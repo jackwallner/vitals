@@ -580,8 +580,6 @@ struct PaywallView: View {
                 .foregroundStyle(Theme.caloriesPrimary)
                 .accessibilityAddTraits(.isHeader)
 
-            MacroPitchCard()
-
             VStack(spacing: 6) {
                 Text("Your macros, every day")
                     .font(.system(.title2, design: .rounded, weight: .bold))
@@ -595,6 +593,12 @@ struct PaywallView: View {
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }
+
+            // The blurred preview sits under the copy that explains it, not
+            // above it. Leading with the blur showed people an obscured card
+            // before anything had said what it was, which reads as something
+            // failing to load rather than something worth paying for.
+            MacroPitchCard()
 
             VStack(alignment: .leading, spacing: 7) {
                 ForEach(featureLedSupportingPoints, id: \.self) { feature in
@@ -641,8 +645,6 @@ struct PaywallView: View {
                 .foregroundStyle(Theme.caloriesPrimary)
                 .accessibilityAddTraits(.isHeader)
 
-            MaintenancePitchCard()
-
             VStack(spacing: 6) {
                 Text("Know what you can eat")
                     .font(.system(.title2, design: .rounded, weight: .bold))
@@ -656,6 +658,9 @@ struct PaywallView: View {
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }
+
+            // Same order as `feature_led`: name the thing, then show it.
+            MaintenancePitchCard()
 
             VStack(alignment: .leading, spacing: 7) {
                 ForEach(maintenanceLedSupportingPoints, id: \.self) { feature in
