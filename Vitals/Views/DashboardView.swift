@@ -2417,7 +2417,13 @@ private struct OnboardingSheet: View {
                                     finishOnboarding()
                                     return
                                 }
-                                store.trackPaywallImpression(id: "vitals_onboarding_trial", oncePerSession: true)
+                                // The arm is part of the id. One shared id would pool five
+                                // different screens into a single impression count, and
+                                // impression-to-trial per arm is what the test is for.
+                                store.trackPaywallImpression(
+                                    id: "vitals_onboarding_trial_\(onboardingArm.rawValue)",
+                                    oncePerSession: true
+                                )
                             }
                             .task(id: store.conversionCTAReady) {
                                 guard !store.conversionCTAReady else { return }
@@ -3084,43 +3090,315 @@ private struct OnboardingSheet: View {
             : "Everything you log already, sitting next to what you burn."
     }
 
-    /// Final onboarding step: compact pitch with icon chips + short lines.
-    /// Content is vertically centered in the scroll area so the zero-shift CTA
-    /// bar below doesn't leave a dead band under the last selling point.
+    /// Which pitch this customer gets. Resolved from the RevenueCat routing
+    /// table against their food answer, which `commitFoodAnswerAndContinue` has
+    /// already written two steps back.
+    ///
+    /// Read once per draw rather than stored: the offering can still be in
+    /// flight at `welcome`, and by this step it has landed. If it has not, the
+    /// table parses as `.disabled` and this returns `.current`, which is the
+    /// shipping pitch rather than a blank screen.
+    private var onboardingArm: OnboardingPitchVariant {
+        store.onboardingPitchVariant(logsFood: goals.logsFoodInHealth)
+    }
+
+    /// Final onboarding step. Five arms, all of which keep the same header, CTA
+    /// bar and soft exit: only the body between them changes.
+    ///
+    /// Every figure shown in a hero card is an example, and says so. At this
+    /// point in onboarding HealthKit access is seconds old and the app has no
+    /// history of its own, so a card captioned as the user's own numbers would
+    /// be showing invented ones. The arms that lead with a number therefore
+    /// pitch it as a preview of what the tier draws, which is also the only
+    /// honest way to show the macro card to someone who has not logged anything
+    /// yet.
     private var trialPage: some View {
         VStack(spacing: 0) {
             Spacer(minLength: 8)
 
             VStack(spacing: 18) {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 44))
-                    .foregroundStyle(Theme.caloriesGradient)
+                switch onboardingArm {
+                case .current:
+                    pitchGlyph
+                    pitchHeader(trialHeadline, trialSubheadline)
+                    pitchPoints(trialSellingPoints)
 
-                VStack(spacing: 6) {
-                    Text(trialHeadline)
-                        .font(.system(.title, design: .rounded, weight: .bold))
-                        .multilineTextAlignment(.center)
-                    Text(trialSubheadline)
-                        .font(.system(.subheadline, design: .rounded))
-                        .foregroundStyle(Theme.textSecondary)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
+                case .macroFood:
+                    pitchHeader(trialHeadline, trialSubheadline)
+                    macroPreviewCard
+                    pitchPoints(Array(trialSellingPoints.suffix(3)))
 
-                VStack(alignment: .leading, spacing: 12) {
-                    ForEach(trialSellingPoints, id: \.title) { point in
-                        TrialSellingPoint(
-                            icon: point.icon,
-                            color: point.color,
-                            title: point.title,
-                            detail: point.detail
-                        )
-                    }
+                case .lockedNumbers:
+                    pitchHeader(
+                        "We can work out your numbers",
+                        "Your own maintenance and resting burn, from your own Health data."
+                    )
+                    lockedNumbersCard
+                    pitchPoints(Array(trialSellingPoints.suffix(3)))
+
+                case .twoWeeks:
+                    pitchHeader(
+                        "In two weeks this is your page",
+                        "Where your burn actually settles, day after day."
+                    )
+                    burnHistoryCard
+                    pitchPoints(Array(trialSellingPoints.suffix(2)))
+
+                case .twoWeeksFood:
+                    pitchHeader(
+                        "In two weeks this is your page",
+                        "Everything you burn, against everything you log."
+                    )
+                    burnHistoryCard
+                    netDeficitStrip
+                    pitchPoints(Array(trialSellingPoints.suffix(2)))
                 }
             }
 
             Spacer(minLength: 8)
         }
+    }
+
+    private var pitchGlyph: some View {
+        Image(systemName: "sparkles")
+            .font(.system(size: 44))
+            .foregroundStyle(Theme.caloriesGradient)
+            .accessibilityHidden(true)
+    }
+
+    private func pitchHeader(_ title: String, _ subtitle: String) -> some View {
+        VStack(spacing: 6) {
+            Text(title)
+                .font(.system(.title, design: .rounded, weight: .bold))
+                .multilineTextAlignment(.center)
+            Text(subtitle)
+                .font(.system(.subheadline, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    private func pitchPoints(_ points: [TrialPoint]) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            ForEach(points, id: \.title) { point in
+                TrialSellingPoint(
+                    icon: point.icon,
+                    color: point.color,
+                    title: point.title,
+                    detail: point.detail
+                )
+            }
+        }
+    }
+
+    /// Caption every hero card carries. The word "example" is not decoration:
+    /// these are not this user's numbers and must never read as if they were.
+    private func pitchCardLabel(_ text: String) -> some View {
+        Text(text)
+            .font(.system(.caption2, design: .rounded, weight: .bold))
+            .foregroundStyle(Theme.textTertiary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var macroPreviewCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            pitchCardLabel("EXAMPLE · ONCE YOU LOG A DAY")
+            HStack(spacing: 16) {
+                ZStack {
+                    Circle().stroke(Theme.ringTrack, lineWidth: 11)
+                    Circle()
+                        .trim(from: 0, to: 0.34)
+                        .stroke(Theme.proteinPrimary, style: StrokeStyle(lineWidth: 11, lineCap: .round))
+                        .rotationEffect(.degrees(-90))
+                    Circle()
+                        .trim(from: 0.36, to: 0.78)
+                        .stroke(Theme.carbsPrimary, style: StrokeStyle(lineWidth: 11, lineCap: .round))
+                        .rotationEffect(.degrees(-90))
+                    Circle()
+                        .trim(from: 0.80, to: 0.98)
+                        .stroke(Theme.fatPrimary, style: StrokeStyle(lineWidth: 11, lineCap: .round))
+                        .rotationEffect(.degrees(-90))
+                    VStack(spacing: 0) {
+                        Text("1,840")
+                            .font(.system(.subheadline, design: .rounded, weight: .bold))
+                            .monospacedDigit()
+                        Text("kcal in")
+                            .font(.system(.caption2, design: .rounded, weight: .bold))
+                            .foregroundStyle(Theme.textTertiary)
+                    }
+                }
+                .frame(width: 84, height: 84)
+
+                VStack(alignment: .leading, spacing: 7) {
+                    macroLegendRow("Protein", "156 g", Theme.proteinPrimary)
+                    macroLegendRow("Carbs", "202 g", Theme.carbsPrimary)
+                    macroLegendRow("Fat", "45 g", Theme.fatPrimary)
+                }
+            }
+
+            // Deliberately outside the legend: net deficit is not a slice of
+            // the ring, and a swatch beside it read as one that had gone
+            // missing.
+            HStack {
+                Text("Net deficit")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                Spacer()
+                Text("−480")
+                    .font(.system(.subheadline, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.netDeficitBrand)
+                    .monospacedDigit()
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 9)
+            .background(Theme.cardSurfaceLight, in: RoundedRectangle(cornerRadius: 12))
+        }
+        .padding(Theme.cardPadding)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Example macro split once you log a day: protein 156 grams, carbs 202 grams, fat 45 grams, net deficit 480 calories")
+    }
+
+    private func macroLegendRow(_ name: String, _ value: String, _ color: Color) -> some View {
+        HStack(spacing: 8) {
+            RoundedRectangle(cornerRadius: 2).fill(color).frame(width: 8, height: 8)
+            Text(name)
+                .font(.system(.caption, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+            Spacer(minLength: 4)
+            Text(value)
+                .font(.system(.caption, design: .rounded, weight: .bold))
+                .monospacedDigit()
+        }
+    }
+
+    private var lockedNumbersCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            pitchCardLabel("MAINTENANCE · 14-DAY AVERAGE")
+            ZStack {
+                VStack(alignment: .leading, spacing: 9) {
+                    Text("2,340")
+                        .font(.system(size: 40, weight: .bold, design: .rounded))
+                        .foregroundStyle(Theme.caloriesPrimary)
+                        .monospacedDigit()
+                    lockedSubRow("Resting (BMR)", "1,610", Theme.restingPrimary)
+                    lockedSubRow("Active", "730", Theme.activePrimary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .blur(radius: 7)
+                .accessibilityHidden(true)
+
+                HStack(spacing: 6) {
+                    Image(systemName: "lock.fill").font(.caption)
+                    Text("Unlock your numbers")
+                        .font(.system(.footnote, design: .rounded, weight: .bold))
+                }
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .background(.ultraThinMaterial, in: Capsule())
+            }
+        }
+        .padding(Theme.cardPadding)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Your maintenance, resting and active burn, locked until you start the trial")
+    }
+
+    private func lockedSubRow(_ label: String, _ value: String, _ color: Color) -> some View {
+        HStack {
+            Text(label)
+                .font(.system(.caption, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+            Spacer()
+            Text(value)
+                .font(.system(.subheadline, design: .rounded, weight: .bold))
+                .foregroundStyle(color)
+                .monospacedDigit()
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 9)
+        .background(Theme.cardSurfaceLight, in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    /// Fourteen illustrative days of total burn. Heights are a fixed sample, not
+    /// a random draw: an unstable chart between launches would read as a bug.
+    private static let burnSample: [CGFloat] = [
+        0.42, 0.56, 0.37, 0.62, 0.51, 0.74, 0.59,
+        0.69, 0.48, 0.71, 0.64, 0.82, 0.67, 0.76
+    ]
+
+    private var burnHistoryCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            pitchCardLabel("EXAMPLE · TOTAL BURN, LAST 14 DAYS")
+            HStack(alignment: .bottom, spacing: 4) {
+                ForEach(Array(Self.burnSample.enumerated()), id: \.offset) { _, height in
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(Theme.caloriesGradient)
+                        .frame(height: max(4, 62 * height))
+                }
+            }
+            .frame(height: 62)
+            HStack {
+                Text("Settled maintenance")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                Spacer()
+                Text("2,340")
+                    .font(.system(.subheadline, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.caloriesPrimary)
+                    .monospacedDigit()
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 9)
+            .background(Theme.cardSurfaceLight, in: RoundedRectangle(cornerRadius: 12))
+        }
+        .padding(Theme.cardPadding)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Example of two weeks of total burn, settling at a maintenance of 2,340 calories a day")
+    }
+
+    private static let deficitSample: [CGFloat] = [
+        0.38, 0.56, 0.29, 0.71, 0.64, 0.16, 0.47,
+        0.82, 0.59, 0.44, 0.91, 0.68, 0.52, 0.76
+    ]
+
+    /// The one thing arm `e` adds over arm `d`. Kept visually separate, and
+    /// captioned with why it is there, so the pair reads as "the same page plus
+    /// your food" rather than as two unrelated screens.
+    private var netDeficitStrip: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("BECAUSE YOU LOG FOOD")
+                .font(.system(.caption2, design: .rounded, weight: .bold))
+                .foregroundStyle(Theme.macrosBrand)
+            HStack(alignment: .bottom, spacing: 4) {
+                ForEach(Array(Self.deficitSample.enumerated()), id: \.offset) { index, height in
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(index == 5 ? Theme.netDeficitNegative : Theme.netDeficitBrand)
+                        .frame(height: max(4, 44 * height))
+                }
+            }
+            .frame(height: 44)
+            HStack {
+                Text("Net deficit")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                Spacer()
+                Text("−418 avg")
+                    .font(.system(.caption, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.netDeficitBrand)
+                    .monospacedDigit()
+            }
+        }
+        .padding(14)
+        .background(Theme.macrosBrand.opacity(0.09), in: RoundedRectangle(cornerRadius: 14))
+        .overlay(
+            RoundedRectangle(cornerRadius: 14)
+                .stroke(Theme.macrosBrand.opacity(0.32), lineWidth: 1)
+        )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Because you log food: example net deficit across fourteen days, averaging 418 calories under maintenance")
     }
 
     /// One-tap conversion: buy the onboarding plan directly (trial when eligible)

@@ -256,6 +256,10 @@ extension Offering {
     var vitalsUpgradeTabVariant: PaywallUIVariant {
         PaywallUIVariant.from(metadata: metadata)
     }
+
+    var vitalsOnboardingPitchRouting: OnboardingPitchRouting {
+        OnboardingPitchRouting.from(metadata: metadata)
+    }
 }
 
 @MainActor
@@ -507,6 +511,40 @@ final class StoreService: NSObject, ObservableObject {
         if let manual = manualVariantOverride { return manual }
         #endif
         return currentOffering?.vitalsUpgradeTabVariant ?? .catalog
+    }
+
+    /// The allocation rules currently in force, straight off the offering.
+    /// `.disabled` when RevenueCat has not answered yet or carries no table,
+    /// which draws the shipping pitch rather than entering a test blind.
+    var onboardingPitchRouting: OnboardingPitchRouting {
+        currentOffering?.vitalsOnboardingPitchRouting ?? .disabled
+    }
+
+    /// Which onboarding pitch to draw for this customer, given their answer to
+    /// the food question. Stable for a given RevenueCat id and salt, so the arm
+    /// does not change if onboarding is restarted.
+    ///
+    /// The last drawn value is mirrored into `ConversionDiagnostics` rather than
+    /// returned and forgotten: what matters for reading the test is the arm that
+    /// actually rendered, which is not always the arm the table nominated.
+    func onboardingPitchVariant(logsFood: Bool?) -> OnboardingPitchVariant {
+        #if DEBUG
+        if let override = DebugLaunchConfig.onboardingPitchOverride { return override }
+        #endif
+        let resolved = onboardingPitchRouting.variant(
+            forID: onboardingAssignmentID,
+            logsFood: logsFood
+        )
+        ConversionDiagnostics.recordOnboardingVariant(resolved.rawValue)
+        return resolved
+    }
+
+    /// The id the arm is hashed from. RevenueCat's app user id is the right
+    /// choice because it survives a reinstall that restores the same customer,
+    /// so a returning user is not silently reassigned mid-test.
+    private var onboardingAssignmentID: String {
+        guard isConfigured else { return "unconfigured" }
+        return Purchases.shared.appUserID
     }
 
     #if DEBUG
