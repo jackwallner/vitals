@@ -11,6 +11,13 @@ enum DebugLaunchConfig {
         PaywallUIVariant(rawValue: ProcessInfo.processInfo.environment["VITALS_UPGRADE_TAB"] ?? "")
     }
 
+    /// Force the onboarding pitch arm regardless of the routing table.
+    /// `VITALS_ONBOARDING_PITCH=a`..`e`. This is how the five arms are walked
+    /// on a TestFlight-equivalent debug build without editing the dashboard.
+    static var onboardingPitchOverride: OnboardingPitchVariant? {
+        OnboardingPitchVariant(rawValue: ProcessInfo.processInfo.environment["VITALS_ONBOARDING_PITCH"] ?? "")
+    }
+
     /// Write a realistic HealthKit history, then let the normal read path
     /// consume it. `VITALS_SEED_HEALTH=1`.
     static var seedHealth: Bool {
@@ -35,6 +42,7 @@ enum DebugLaunchConfig {
     }
 #else
     static var upgradeTabOverride: PaywallUIVariant? { nil }
+    static var onboardingPitchOverride: OnboardingPitchVariant? { nil }
     static var seedHealth: Bool { false }
     static var forceSetupComplete: Bool { false }
     static var failProductLoad: Bool { false }

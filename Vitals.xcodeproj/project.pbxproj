@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00AB9266458E4142789A8A77 /* SeededHealthFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B294CC1AD718FCB854BF56D /* SeededHealthFlowUITests.swift */; };
+		011F864606DDE4FC5D950FC2 /* OnboardingPitchVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37592D24F84CEE5A8FD46D8 /* OnboardingPitchVariant.swift */; };
 		0300E24894022A49E65EC41C /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2600C40B77EF3FF5126EAFE /* NotificationService.swift */; };
 		043F3422554E02BFF53D0512 /* BodyProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF63533B3E56E5C3FBE91384 /* BodyProfile.swift */; };
 		08B27B65AD2FC365D0988CE6 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
@@ -28,7 +29,9 @@
 		138D52C1CFAA32B0216DD8B9 /* ProjectionCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE9370DC12BAC7716DA62A5 /* ProjectionCalculator.swift */; };
 		14691A7E11A16B2075B40075 /* WhatsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDEB69876935A084FB689CF /* WhatsNew.swift */; };
 		162F6C3B386295BF2B5DE297 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2600C40B77EF3FF5126EAFE /* NotificationService.swift */; };
+		16EFF1A469F5FD5A3E2BA053 /* OnboardingPitchVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37592D24F84CEE5A8FD46D8 /* OnboardingPitchVariant.swift */; };
 		16F8288C5254F2E00C920180 /* EnergyAveragesCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B9D5B798B90EA3B5158572 /* EnergyAveragesCalculator.swift */; };
+		1789062997CA4FF68D1E86A7 /* OnboardingPitchVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37592D24F84CEE5A8FD46D8 /* OnboardingPitchVariant.swift */; };
 		190B62EE4C40586FB45DC78B /* DebugLaunchConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50E0376FEA7B50B4868C06F /* DebugLaunchConfig.swift */; };
 		1CE9B5C66CB288E0ABDDACCF /* PaywallUIVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92A4096A4EFCD26122F1D62 /* PaywallUIVariant.swift */; };
 		1E006B2434ECB58F1D51CB19 /* HealthRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */; };
@@ -103,6 +106,7 @@
 		764A0B6420616E3DF6CF40D9 /* VitalsConversionCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1FB17511E85720FB3545D /* VitalsConversionCopy.swift */; };
 		772DF822ECADEC7F4D23EB90 /* SupportMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5DAB758DDA2F38199CF3E /* SupportMail.swift */; };
 		7DE03846B38547D81722040A /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
+		7EAD9D04DA2E8145F7F3D54D /* OnboardingPitchRoutingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADDEC0B164F7F4AF4207D51 /* OnboardingPitchRoutingTests.swift */; };
 		7EC89CE57159173F05547146 /* SummaryReportGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B24F616BC26BFF25C64684 /* SummaryReportGenerator.swift */; };
 		7F30022BC0C97A951FCD46AD /* MilestoneCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604A7C1098FB8101FE9A3365 /* MilestoneCalculator.swift */; };
 		7F455AC1D9325C3C9C70D799 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76684FF138F58C3A58A97320 /* StoreService.swift */; };
@@ -124,6 +128,7 @@
 		93B99EBF212EE7E85A345BFB /* VitalsConversionCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1FB17511E85720FB3545D /* VitalsConversionCopy.swift */; };
 		9725925E13483C3B2F385962 /* PaywallVariantOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD96649F6BF18899C0A6326 /* PaywallVariantOverride.swift */; };
 		97B3284F672341E171AA3828 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEC52C3FC9793813DF64549 /* DashboardView.swift */; };
+		983DC14C4AAB46AECFB5F12C /* OnboardingPitchVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37592D24F84CEE5A8FD46D8 /* OnboardingPitchVariant.swift */; };
 		9880A24EDD14087BBC276BBE /* EnergyAveragesCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B9D5B798B90EA3B5158572 /* EnergyAveragesCalculator.swift */; };
 		9BA0D25F3528A301256B8E60 /* OnboardingCTARecoveryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DBA801C032B8DF467FA454C /* OnboardingCTARecoveryUITests.swift */; };
 		9D87A125DF44027A99B6F95C /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = B90E4BEF66FC94CCEA5F5D95 /* RevenueCat */; };
@@ -202,6 +207,7 @@
 		FDC255EDF9FC897146209356 /* ProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971064F5F952A25427D7F46B /* ProgressRing.swift */; };
 		FDD2B3AC4FDAD33746E92A0A /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E152DC23E11DAD83864E5A /* HistoryView.swift */; };
 		FE5CF05C3EA0D9BD231CB733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA75A0BD07845E85F69ED5F7 /* Assets.xcassets */; };
+		FEE46BCA41BFD0559077980E /* OnboardingPitchVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37592D24F84CEE5A8FD46D8 /* OnboardingPitchVariant.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -314,6 +320,7 @@
 		7E59FD786F13C21C0F91701C /* MacroTotals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroTotals.swift; sourceTree = "<group>"; };
 		8287269CC5CE093BEF6CBB25 /* PaywallScreenshotHarness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallScreenshotHarness.swift; sourceTree = "<group>"; };
 		82E152DC23E11DAD83864E5A /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		8ADDEC0B164F7F4AF4207D51 /* OnboardingPitchRoutingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPitchRoutingTests.swift; sourceTree = "<group>"; };
 		8BA6AECE7D2FEB86748EA85D /* ReviewPromptTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewPromptTracker.swift; sourceTree = "<group>"; };
 		8EAB502382929384BAE3B729 /* UpgradeTabPlanVisibilityUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeTabPlanVisibilityUITests.swift; sourceTree = "<group>"; };
 		91B6F4FE3966882D8D2A9287 /* ReviewPromptSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewPromptSheet.swift; sourceTree = "<group>"; };
@@ -343,6 +350,7 @@
 		BB4287B137F6F3AD1263CD07 /* MacroTotalsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroTotalsTests.swift; sourceTree = "<group>"; };
 		BB68B0FAC8D1E8A883919106 /* Vitals.storekit */ = {isa = PBXFileReference; path = Vitals.storekit; sourceTree = "<group>"; };
 		BFEC52C3FC9793813DF64549 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		C37592D24F84CEE5A8FD46D8 /* OnboardingPitchVariant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPitchVariant.swift; sourceTree = "<group>"; };
 		C395EAE504DCAD8464C29AC9 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		C9B9F018B1D8859226963C63 /* WeeklyRecapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyRecapView.swift; sourceTree = "<group>"; };
 		CA5FB56CFC81FAF6AF852A96 /* BodyProfileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyProfileStore.swift; sourceTree = "<group>"; };
@@ -488,6 +496,7 @@
 				139F5B0C64C45205FEFCDD22 /* EnergyAveragesCacheReader.swift */,
 				13B9D5B798B90EA3B5158572 /* EnergyAveragesCalculator.swift */,
 				604A7C1098FB8101FE9A3365 /* MilestoneCalculator.swift */,
+				C37592D24F84CEE5A8FD46D8 /* OnboardingPitchVariant.swift */,
 				A92A4096A4EFCD26122F1D62 /* PaywallUIVariant.swift */,
 				FDD96649F6BF18899C0A6326 /* PaywallVariantOverride.swift */,
 				CEE9370DC12BAC7716DA62A5 /* ProjectionCalculator.swift */,
@@ -512,6 +521,7 @@
 				E2EDD6A929AC5CB3DFDD1844 /* MacroGoalSelectionTests.swift */,
 				BB4287B137F6F3AD1263CD07 /* MacroTotalsTests.swift */,
 				34A3B62274436A07B3C3554E /* MilestoneCalculatorTests.swift */,
+				8ADDEC0B164F7F4AF4207D51 /* OnboardingPitchRoutingTests.swift */,
 				9783FF0AFACBDEAB6F094A00 /* PaywallUIVariantTests.swift */,
 				7896892E56FE0D79E979DEE7 /* ProjectionCalculatorTests.swift */,
 				3A32F8EB584C5A7B0BD4CA64 /* VitalsConversionCopyTests.swift */,
@@ -861,6 +871,7 @@
 				5254E1C16D6264C3C52BFC82 /* MilestoneCalculator.swift in Sources */,
 				F31C7C2C587EAEDF9B70C692 /* NetDeficitTrendSummary.swift in Sources */,
 				162F6C3B386295BF2B5DE297 /* NotificationService.swift in Sources */,
+				011F864606DDE4FC5D950FC2 /* OnboardingPitchVariant.swift in Sources */,
 				D57B87503EE8D3080DF1944C /* PaywallUIVariant.swift in Sources */,
 				BE8BD338FD86C8441F97D51F /* PaywallVariantOverride.swift in Sources */,
 				0EA5DC155C32F07931E96361 /* ProjectionCalculator.swift in Sources */,
@@ -900,6 +911,7 @@
 				B656BB1CBDA939A0FF8964E2 /* MilestoneCalculator.swift in Sources */,
 				09743D7BE9223C40B5B56D88 /* NetDeficitTrendSummary.swift in Sources */,
 				0300E24894022A49E65EC41C /* NotificationService.swift in Sources */,
+				983DC14C4AAB46AECFB5F12C /* OnboardingPitchVariant.swift in Sources */,
 				1CE9B5C66CB288E0ABDDACCF /* PaywallUIVariant.swift in Sources */,
 				4A747E605EB45D285A3469A7 /* PaywallVariantOverride.swift in Sources */,
 				F93415C3586901C55415E5C6 /* ProjectionCalculator.swift in Sources */,
@@ -940,6 +952,7 @@
 				E89AE59CE020B0D8425D241B /* MilestoneCalculator.swift in Sources */,
 				48F82FDD56F577609761DC28 /* NetDeficitTrendSummary.swift in Sources */,
 				C032E25CC69C248AA23158D0 /* NotificationService.swift in Sources */,
+				FEE46BCA41BFD0559077980E /* OnboardingPitchVariant.swift in Sources */,
 				B923EA6CC78A7551381174E3 /* PaywallUIVariant.swift in Sources */,
 				9725925E13483C3B2F385962 /* PaywallVariantOverride.swift in Sources */,
 				138D52C1CFAA32B0216DD8B9 /* ProjectionCalculator.swift in Sources */,
@@ -980,6 +993,8 @@
 				325DBD71E731E9F9B0ECB322 /* MacroTotalsTests.swift in Sources */,
 				E423A6BC1D2F4FB0E197829B /* MilestoneCalculator.swift in Sources */,
 				11FC596C80351285C517EBFD /* MilestoneCalculatorTests.swift in Sources */,
+				7EAD9D04DA2E8145F7F3D54D /* OnboardingPitchRoutingTests.swift in Sources */,
+				16EFF1A469F5FD5A3E2BA053 /* OnboardingPitchVariant.swift in Sources */,
 				47D6D05C25AE336642FCBDE0 /* PaywallUIVariant.swift in Sources */,
 				2DFF246FEF1D0468427BA754 /* PaywallUIVariantTests.swift in Sources */,
 				5E0DEBFC4E1BC41D4FFEA18B /* ProjectionCalculator.swift in Sources */,
@@ -1038,6 +1053,7 @@
 				7F30022BC0C97A951FCD46AD /* MilestoneCalculator.swift in Sources */,
 				60592DE2EE57591183C06DD0 /* NetDeficitTrendSummary.swift in Sources */,
 				1E8A3E8458958263B5786781 /* NotificationService.swift in Sources */,
+				1789062997CA4FF68D1E86A7 /* OnboardingPitchVariant.swift in Sources */,
 				0E0201FB0EAAC755B25E719B /* PaywallScreenshotHarness.swift in Sources */,
 				D152617AC81B1E8BB49B521C /* PaywallScreenshotMode.swift in Sources */,
 				0ABF71410170EF6C0DF7D63D /* PaywallUIVariant.swift in Sources */,
@@ -1189,7 +1205,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.8.3;
+				MARKETING_VERSION = 1.8.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1340,7 +1356,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.8.3;
+				MARKETING_VERSION = 1.8.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;

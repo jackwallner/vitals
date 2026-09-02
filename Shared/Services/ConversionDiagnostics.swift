@@ -44,6 +44,7 @@ enum ConversionDiagnostics {
         static let convertedVariant = "conv.convertedVariant"
         static let convertedOffering = "conv.convertedOffering"
         static let convertedAt = "conv.convertedAt"
+        static let onboardingVariant = "conv.onboardingVariant"
 
         /// Owned by `GoalSettings`, not by this file, but it lives in the same
         /// App Group suite and it is the single strongest way to segment this
@@ -59,6 +60,14 @@ enum ConversionDiagnostics {
     }
 
     // MARK: - Recording
+
+    /// The onboarding arm this binary actually drew. Not the same fact as the
+    /// arm the routing table nominated: an arm the table names but this build
+    /// does not contain, or cannot draw for this user's food answer, degrades to
+    /// the fallback, and the test has to be read on what was rendered.
+    static func recordOnboardingVariant(_ variant: String) {
+        defaults.set(variant, forKey: Key.onboardingVariant)
+    }
 
     /// One pitch was put in front of the user. Called from
     /// `StoreService.trackPaywallImpression` so every surface is covered without
@@ -146,6 +155,9 @@ enum ConversionDiagnostics {
             attributes[String(key.prefix(40))] = String(count)
         }
         if let last = lastSurface { attributes["pitch_last"] = last }
+        if let arm = d.string(forKey: Key.onboardingVariant) {
+            attributes["onboarding_variant"] = arm
+        }
         // Absent on installs that predate the onboarding food question, which
         // is the honest answer: they were never asked.
         if let logsFood = d.object(forKey: Key.logsFood) as? Bool {
