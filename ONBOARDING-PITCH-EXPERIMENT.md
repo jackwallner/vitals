@@ -69,19 +69,65 @@ Consequences, both non-negotiable:
 **A, control.** Today's pitch: sparkles glyph, `trialHeadline` /
 `trialSubheadline`, three `TrialSellingPoint` rows.
 
-**B, maintenance-led.** Replace the three feature rows with the user's own TDEE
-/ maintenance number rendered as the real widget, the way `maintenance_led` does
-on the Upgrade tab, with the feature rows demoted to a single line beneath it.
+**B, personal-number-led.** Replace the three feature rows with one card showing
+a number that is already the user's own, rendered as the real widget rather than
+described in a bullet. Which card is chosen by the food answer, in the app:
 
-Why B is the evidence-led arm rather than a guess: on the Upgrade tab,
-`maintenance_led` had both the only real sale and the highest tab-open rate
-(36% of instrumented enrollees vs 25% and 26%). That is weak evidence, but it is
-the only directional signal the last test produced, and it is the arm that shows
-a personal number instead of a feature list.
+| `goals.logsFoodInHealth` | Card |
+|---|---|
+| `true` | Macros (the macro ring, as `feature_led` draws it) |
+| `false` | Maintenance / TDEE (as `maintenance_led` draws it) |
+
+**The split happens in the app, not in RevenueCat.** `commitFoodAnswerAndContinue`
+writes `goals.logsFoodInHealth` at the food step
+(`Vitals/Views/DashboardView.swift:2882`), two steps before the trial step, so
+the answer is on the device by the time the pitch draws. That matters for a
+reason beyond convenience: routing on the answer inside RevenueCat would need a
+`Custom attribute` enrollment condition, which forces new-and-existing
+enrollment, which is exactly wrong for an onboarding-only surface. Branching
+locally keeps new-customers-only. This is the old `UPGRADE-TAB-EXPERIMENT.md`
+"Option C", and at this traffic level it is now clearly the right one.
+
+It also fixes the reason the macro card was excluded last time. The 1.8.3 binary
+could not substitute, so the macro card would have drawn blank for a non-logger.
+Here the substitution is the design.
+
+**B is one arm, not two.** The treatment is the strategy "show them their own
+number", and the card is how that strategy is executed for each user. Reading
+macro and TDEE as separate cells would halve each one (the instrumented split is
+roughly 44% loggers / 56% non-loggers) and push the read from four weeks to
+eight. `onboarding_variant` records which card actually drew, so the two can be
+compared afterwards for direction. That comparison is a hypothesis generator for
+the next test, not a decision this test is powered to make.
 
 Held constant across arms: packages, price, trial length, the `Get Started` soft
 exit and its geometry (tuned against the fleet benchmark, do not touch it in
 this test), and the existing `logsFoodInHealth` headline branch.
+
+## What the current data says about this test
+
+From the same 2026-08-30 pull, sandbox excluded. 126 instrumented customers, 71
+of whom answered the food question (the other 55 predate it and are existing
+users who updated).
+
+**The food answer does not predict conversion.**
+
+| Answer | Saw the pitch | Converted | Rate |
+|---|---|---|---|
+| `true` (logs food) | 31 | 2 | 6.5% |
+| `false` | 40 | 3 | 7.5% |
+
+At n=31 and n=40 that is no difference and no evidence of one either way. The
+useful reading is negative: do not expect the split itself to be the win. The
+bet is that a personal number beats a feature list, and the split is only there
+so that number is relevant to whoever is looking at it.
+
+**The macro card is genuinely untested.** Exactly one customer has ever seen
+`feature_led`, via the retired 1.8.3 targeting rule. Every prior argument for or
+against it has been reasoning, not evidence. Arm B is the first time it reaches
+real users.
+
+**Plan the cells on 44/56.** Of the 71 who answered, 31 log food and 40 do not.
 
 ## Code changes
 
@@ -91,13 +137,21 @@ this test), and the existing `logsFoodInHealth` headline branch.
    `upgrade_tab` is entangled with `PaywallView`'s `focus` logic.
 2. **Read the arm in the onboarding step.** `trialPage` in
    `Vitals/Views/DashboardView.swift:3090` branches on the new variant.
-3. **Await the offering before drawing the pitch.** This is the main risk. The
-   trial step renders seconds after first launch, and if the offering has not
-   landed the arm silently falls back to control while RevenueCat still counts
-   the customer as enrolled. That dilutes the treatment arm toward the control
-   and is invisible in the results. Gate `trialPage` on the offering the same way
-   the CTA is already gated on `conversionCTAReady`, reusing the 6s
-   `trialCTAWaitLimit` and its fallback.
+3. **Branch on the food answer in `trialPage`.** Read
+   `goals.logsFoodInHealth` and pick the card. No RevenueCat condition, no new
+   audience.
+
+   The offering-fetch race is *not* a real risk here, contrary to an earlier
+   draft of this file. The onboarding container starts `fetchProducts()` at the
+   `welcome` step, and the trial step is three steps later behind a food
+   question, two typed goal fields and the HealthKit permission sheet.
+   `fetchProducts` also assigns `currentOffering` and `products` in the same
+   call, so the existing `conversionCTAReady` gate already implies the offering
+   metadata has landed. The only residual case is the pitch body drawing before
+   the CTA is ready on a cold, slow network, which would show as a content
+   flicker rather than as arm dilution. Draw the control body until the offering
+   resolves, and let `onboarding_variant` (below) record if it ever happens.
+
 4. **Record what was drawn, not what was assigned.** New subscriber attribute
    `onboarding_variant`, written by `ConversionDiagnostics` alongside
    `paywall_variant`, so a fallback caused by (3) is visible in the data rather
@@ -120,8 +174,8 @@ this test), and the existing `logsFoodInHealth` headline branch.
 - Primary metric: initial conversion rate. Read at 4 weeks; if the arms are
   within noise, ship control and move on rather than extending.
 - New-customers-only enrollment means `Custom attribute` conditions are
-  unavailable, so there is no `logs_food` branch. Fine: the headline already
-  personalises on that answer inside both arms.
+  unavailable. That costs nothing here, because the food split is done in the
+  app rather than by RevenueCat routing. See "The arms".
 
 ## Before 1.8.4 ships
 
