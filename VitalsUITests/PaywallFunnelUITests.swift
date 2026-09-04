@@ -3,15 +3,18 @@ import XCTest
 /// Proves the `converted_*` half of the fleet paywall record actually reaches
 /// RevenueCat, not just the impression half.
 ///
-/// `rc-funnel-probe` drives an impression and reads the `pitch_views_*`
-/// attributes back, but it cannot buy anything: RevenueCat's Test Store puts up
-/// its own confirmation sheet and `simctl` has no way to tap it. This does.
+/// Every other verification in this rollout drove an impression and read the
+/// `pitch_views_*` attributes back. Nothing exercised a purchase, so the
+/// conversion attributes were only ever covered by unit tests. This closes that:
+/// the app configures against the project's Test Store, buys the first package,
+/// and RevenueCat's own confirmation sheet is tapped here.
 ///
 /// Test Store purchases are simulated. No StoreKit, no App Store, no revenue,
-/// no real transaction, and the customer it creates cannot appear in App Store
-/// charts.
+/// no real transaction, and the customer it creates is a Test Store customer
+/// that cannot appear in App Store charts.
 ///
-/// Read the result back with `rc-funnel-attributes <app> --days 1`.
+/// Read the result back with:
+///     rc-funnel-attributes baseball --days 1
 final class PaywallFunnelUITests: XCTestCase {
 
     func testTestStorePurchaseRecordsTheConversion() {
@@ -23,8 +26,8 @@ final class PaywallFunnelUITests: XCTestCase {
         app.launchEnvironment["RC_PROBE_USER"] = probeUser
         app.launch()
 
-        // Offerings have to load before the sheet can appear, so this waits
-        // rather than checking once.
+        // RevenueCat puts up its own Test Store sheet. It can take a few seconds
+        // for offerings to load first, so this waits rather than polling once.
         let confirm = app.buttons["Test valid purchase"]
         XCTAssertTrue(
             confirm.waitForExistence(timeout: 60),
