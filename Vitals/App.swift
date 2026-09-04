@@ -102,6 +102,13 @@ struct VitalsApp: App {
             // Same entry point the real paywall screens call, so what this
             // proves is the actual path and not a parallel one.
             StoreService.shared.trackPaywallImpression(id: RevenueCatProbe.impressionID)
+            if RevenueCatProbe.wantsPurchase {
+                Task {
+                    await StoreService.shared.fetchProducts()
+                    guard let package = StoreService.shared.currentOffering?.availablePackages.first else { return }
+                    _ = try? await StoreService.shared.purchase(package)
+                }
+            }
         }
         #endif
         #if canImport(WatchConnectivity)

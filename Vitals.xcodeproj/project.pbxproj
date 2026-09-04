@@ -37,6 +37,7 @@
 		1E006B2434ECB58F1D51CB19 /* HealthRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */; };
 		1E12EC24B5EB03A760A83EA7 /* VariantRotatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1AC77EA6AFEA298A24836 /* VariantRotatorUITests.swift */; };
 		1E8A3E8458958263B5786781 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2600C40B77EF3FF5126EAFE /* NotificationService.swift */; };
+		213EE773F5D27D3D1B3F3A2B /* PaywallFunnelUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D5592097926B5086A3CF36 /* PaywallFunnelUITests.swift */; };
 		23736FF4975A768767A22434 /* WeeklyRecapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B9F018B1D8859226963C63 /* WeeklyRecapView.swift */; };
 		24248C5CD47908B7188B3783 /* HealthRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */; };
 		24C428045488DE342D4E49C3 /* InteractivePopGestureEnabler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DABF18D30A514919DE529CB /* InteractivePopGestureEnabler.swift */; };
@@ -171,6 +172,7 @@
 		CCD0C2EB0256EBD67EF1CB51 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		CD98234BC44E9975E67D3D92 /* AppStoreReviewLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46F96D18B8385758A31EFC6 /* AppStoreReviewLinks.swift */; };
 		CE2B191318B310C9FEDDD2CF /* MacroTotals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E59FD786F13C21C0F91701C /* MacroTotals.swift */; };
+		CEFF1E5C1BB80F9C653CE262 /* PaywallFunnelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54C348522C2E5E849E5692A /* PaywallFunnelTests.swift */; };
 		D072FEB6B36D04967180E894 /* BodyProfileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FB56CFC81FAF6AF852A96 /* BodyProfileStore.swift */; };
 		D152617AC81B1E8BB49B521C /* PaywallScreenshotMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EBEC3933AF5D264CED0A69 /* PaywallScreenshotMode.swift */; };
 		D15647977ED29C1C239288F9 /* EnergyAveragesCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B9D5B798B90EA3B5158572 /* EnergyAveragesCalculator.swift */; };
@@ -294,6 +296,7 @@
 		2B294CC1AD718FCB854BF56D /* SeededHealthFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeededHealthFlowUITests.swift; sourceTree = "<group>"; };
 		2E891A2F146A996DD48C13CD /* VitalsWatchWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VitalsWatchWidget.entitlements; sourceTree = "<group>"; };
 		30EBEC3933AF5D264CED0A69 /* PaywallScreenshotMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallScreenshotMode.swift; sourceTree = "<group>"; };
+		33D5592097926B5086A3CF36 /* PaywallFunnelUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallFunnelUITests.swift; sourceTree = "<group>"; };
 		34A3B62274436A07B3C3554E /* MilestoneCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneCalculatorTests.swift; sourceTree = "<group>"; };
 		37181B9FB18AF45A44299F0F /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
 		3A32F8EB584C5A7B0BD4CA64 /* VitalsConversionCopyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalsConversionCopyTests.swift; sourceTree = "<group>"; };
@@ -345,6 +348,7 @@
 		AC24F002AF13CDC4C14F3E96 /* VitalsWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = VitalsWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF63533B3E56E5C3FBE91384 /* BodyProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyProfile.swift; sourceTree = "<group>"; };
 		B2600C40B77EF3FF5126EAFE /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		B54C348522C2E5E849E5692A /* PaywallFunnelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallFunnelTests.swift; sourceTree = "<group>"; };
 		B6804EF421C3725E70674D40 /* GoalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalSettings.swift; sourceTree = "<group>"; };
 		B8F1FB17511E85720FB3545D /* VitalsConversionCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalsConversionCopy.swift; sourceTree = "<group>"; };
 		B98E24C6F7550EC4501A69FE /* DateHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelpers.swift; sourceTree = "<group>"; };
@@ -450,6 +454,7 @@
 				6DBA801C032B8DF467FA454C /* OnboardingCTARecoveryUITests.swift */,
 				9D69AA5CE048C7FF360D80A3 /* OnboardingFlowUITests.swift */,
 				0048C3FF841F9AA3B3706A33 /* OnboardingPitchScreenshotUITests.swift */,
+				33D5592097926B5086A3CF36 /* PaywallFunnelUITests.swift */,
 				2B294CC1AD718FCB854BF56D /* SeededHealthFlowUITests.swift */,
 				A4FB7AAE4A4403268B8E315F /* SettingsSheetUITests.swift */,
 				4714F56490C3965B087F3D69 /* TrialOfferPresentationUITests.swift */,
@@ -525,6 +530,7 @@
 				BB4287B137F6F3AD1263CD07 /* MacroTotalsTests.swift */,
 				34A3B62274436A07B3C3554E /* MilestoneCalculatorTests.swift */,
 				8ADDEC0B164F7F4AF4207D51 /* OnboardingPitchRoutingTests.swift */,
+				B54C348522C2E5E849E5692A /* PaywallFunnelTests.swift */,
 				9783FF0AFACBDEAB6F094A00 /* PaywallUIVariantTests.swift */,
 				7896892E56FE0D79E979DEE7 /* ProjectionCalculatorTests.swift */,
 				3A32F8EB584C5A7B0BD4CA64 /* VitalsConversionCopyTests.swift */,
@@ -998,6 +1004,7 @@
 				11FC596C80351285C517EBFD /* MilestoneCalculatorTests.swift in Sources */,
 				7EAD9D04DA2E8145F7F3D54D /* OnboardingPitchRoutingTests.swift in Sources */,
 				16EFF1A469F5FD5A3E2BA053 /* OnboardingPitchVariant.swift in Sources */,
+				CEFF1E5C1BB80F9C653CE262 /* PaywallFunnelTests.swift in Sources */,
 				47D6D05C25AE336642FCBDE0 /* PaywallUIVariant.swift in Sources */,
 				2DFF246FEF1D0468427BA754 /* PaywallUIVariantTests.swift in Sources */,
 				5E0DEBFC4E1BC41D4FFEA18B /* ProjectionCalculator.swift in Sources */,
@@ -1018,6 +1025,7 @@
 				9BA0D25F3528A301256B8E60 /* OnboardingCTARecoveryUITests.swift in Sources */,
 				E301042E1AFB8011E2FD493C /* OnboardingFlowUITests.swift in Sources */,
 				C62B646AA8B8DA0FB1F1042D /* OnboardingPitchScreenshotUITests.swift in Sources */,
+				213EE773F5D27D3D1B3F3A2B /* PaywallFunnelUITests.swift in Sources */,
 				00AB9266458E4142789A8A77 /* SeededHealthFlowUITests.swift in Sources */,
 				E1550A6559100C2DEE281115 /* SettingsSheetUITests.swift in Sources */,
 				A87DBA6B86019B893F54C2BD /* TrialOfferPresentationUITests.swift in Sources */,
@@ -1194,7 +1202,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 187;
+				CURRENT_PROJECT_VERSION = 188;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1339,7 +1347,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 187;
+				CURRENT_PROJECT_VERSION = 188;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

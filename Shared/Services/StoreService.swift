@@ -828,6 +828,16 @@ enum RevenueCatProbe {
         ProcessInfo.processInfo.environment["RC_PROBE_USER"] ?? "funnel-probe-vitals"
     }
 
+    /// Also run a purchase against the Test Store, so the `converted_*` half of
+    /// the record is exercised and not just the impression half.
+    ///
+    /// Test Store purchases are simulated by RevenueCat: no StoreKit, no App
+    /// Store, no revenue, no real transaction. RevenueCat puts up its own
+    /// confirmation sheet, so this needs a UI test to tap it.
+    static var wantsPurchase: Bool {
+        ProcessInfo.processInfo.arguments.contains("-rcfunnelprobepurchase")
+    }
+
     static var impressionID: String {
         ProcessInfo.processInfo.environment["RC_PROBE_SURFACE"] ?? "vitals_trial_sheet"
     }

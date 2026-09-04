@@ -18,6 +18,17 @@ enum DebugLaunchConfig {
         OnboardingPitchVariant(rawValue: ProcessInfo.processInfo.environment["VITALS_ONBOARDING_PITCH"] ?? "")
     }
 
+    /// Force the onboarding pitch's maintenance read, so arm `c` can be walked
+    /// in both of its states without seeding HealthKit.
+    /// `VITALS_PITCH_MAINTENANCE=none` or `=2340/1610/21` (tdee/bmr/days).
+    static var pitchMaintenanceOverride: EnergyAveragesResult?? {
+        guard let raw = ProcessInfo.processInfo.environment["VITALS_PITCH_MAINTENANCE"] else { return nil }
+        if raw == "none" { return .some(nil) }
+        let parts = raw.split(separator: "/").compactMap { Double($0) }
+        guard parts.count == 3 else { return nil }
+        return .some(EnergyAveragesResult(tdee: parts[0], bmr: parts[1], sampleDays: Int(parts[2])))
+    }
+
     /// Write a realistic HealthKit history, then let the normal read path
     /// consume it. `VITALS_SEED_HEALTH=1`.
     static var seedHealth: Bool {
@@ -43,6 +54,7 @@ enum DebugLaunchConfig {
 #else
     static var upgradeTabOverride: PaywallUIVariant? { nil }
     static var onboardingPitchOverride: OnboardingPitchVariant? { nil }
+    static var pitchMaintenanceOverride: EnergyAveragesResult?? { nil }
     static var seedHealth: Bool { false }
     static var forceSetupComplete: Bool { false }
     static var failProductLoad: Bool { false }
