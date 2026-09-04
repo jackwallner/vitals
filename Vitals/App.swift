@@ -96,6 +96,14 @@ struct VitalsApp: App {
         UNUserNotificationCenter.current().delegate = VitalsNotificationDelegate.shared
         StoreService.shared.start()
         ReviewPromptTracker.recordAppLaunch()
+        ConversionDiagnostics.recordAppOpen()
+        #if DEBUG
+        if RevenueCatProbe.isEnabled {
+            // Same entry point the real paywall screens call, so what this
+            // proves is the actual path and not a parallel one.
+            StoreService.shared.trackPaywallImpression(id: RevenueCatProbe.impressionID)
+        }
+        #endif
         #if canImport(WatchConnectivity)
         PhoneGoalSyncService.shared.activate()
         #endif
