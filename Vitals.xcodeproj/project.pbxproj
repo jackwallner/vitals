@@ -163,6 +163,7 @@
 		C1FB86ACB54B9B2B1BD3F3F9 /* StepTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9515296920AC1C61887CCD1C /* StepTrendSummary.swift */; };
 		C4A7057EE61818DFBF13CF29 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E24C6F7550EC4501A69FE /* DateHelpers.swift */; };
 		C592AE3EC57D7CE6DBF0E017 /* BodyProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CED5DB5D409A61047420A0 /* BodyProfileView.swift */; };
+		C62B646AA8B8DA0FB1F1042D /* OnboardingPitchScreenshotUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0048C3FF841F9AA3B3706A33 /* OnboardingPitchScreenshotUITests.swift */; };
 		C742B4921F953970DAA96F52 /* ReviewPromptTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6AECE7D2FEB86748EA85D /* ReviewPromptTracker.swift */; };
 		C865D662C3A396B328E3D126 /* CalorieTrendSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5743BEFB90AAF6BA7EB81 /* CalorieTrendSummaryTests.swift */; };
 		C8E17F91A696720D76A3AE1B /* WhatsNewSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925043FF9DEE6C7E11D17C4D /* WhatsNewSheet.swift */; };
@@ -278,6 +279,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0048C3FF841F9AA3B3706A33 /* OnboardingPitchScreenshotUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPitchScreenshotUITests.swift; sourceTree = "<group>"; };
 		029E0F56D793DA022CCA3D3F /* WeeklyRecap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyRecap.swift; sourceTree = "<group>"; };
 		0BDBBE9238310745A59DB7C9 /* BodyProfileCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyProfileCalculatorTests.swift; sourceTree = "<group>"; };
 		12B24F616BC26BFF25C64684 /* SummaryReportGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryReportGenerator.swift; sourceTree = "<group>"; };
@@ -447,6 +449,7 @@
 				5A524F44F2C81B258D1BBE67 /* HealthKitLabUITests.swift */,
 				6DBA801C032B8DF467FA454C /* OnboardingCTARecoveryUITests.swift */,
 				9D69AA5CE048C7FF360D80A3 /* OnboardingFlowUITests.swift */,
+				0048C3FF841F9AA3B3706A33 /* OnboardingPitchScreenshotUITests.swift */,
 				2B294CC1AD718FCB854BF56D /* SeededHealthFlowUITests.swift */,
 				A4FB7AAE4A4403268B8E315F /* SettingsSheetUITests.swift */,
 				4714F56490C3965B087F3D69 /* TrialOfferPresentationUITests.swift */,
@@ -1014,6 +1017,7 @@
 				AC4CC88A6ACE68D5ED34C6FE /* HealthKitLabUITests.swift in Sources */,
 				9BA0D25F3528A301256B8E60 /* OnboardingCTARecoveryUITests.swift in Sources */,
 				E301042E1AFB8011E2FD493C /* OnboardingFlowUITests.swift in Sources */,
+				C62B646AA8B8DA0FB1F1042D /* OnboardingPitchScreenshotUITests.swift in Sources */,
 				00AB9266458E4142789A8A77 /* SeededHealthFlowUITests.swift in Sources */,
 				E1550A6559100C2DEE281115 /* SettingsSheetUITests.swift in Sources */,
 				A87DBA6B86019B893F54C2BD /* TrialOfferPresentationUITests.swift in Sources */,
@@ -1190,7 +1194,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 186;
+				CURRENT_PROJECT_VERSION = 187;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1335,7 +1339,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 186;
+				CURRENT_PROJECT_VERSION = 187;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
