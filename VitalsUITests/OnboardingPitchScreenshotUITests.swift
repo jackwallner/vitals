@@ -13,17 +13,21 @@ import XCTest
 /// walked as non-loggers, which is the larger half of the audience.
 final class OnboardingPitchScreenshotUITests: XCTestCase {
 
-    private static let arms: [(arm: String, logsFood: Bool, label: String)] = [
-        ("a", false, "current-control"),
-        ("b", true,  "macro-food"),
-        ("c", false, "locked-numbers"),
-        ("d", false, "two-weeks"),
-        ("e", true,  "two-weeks-food"),
+    /// Arm `c` is walked twice. It has two honest states, one for the customer
+    /// whose Health history already yields a maintenance figure and one for the
+    /// customer who has too little, and both ship.
+    private static let arms: [(arm: String, logsFood: Bool, label: String, maintenance: String?)] = [
+        ("a", false, "current-control", nil),
+        ("b", true,  "macro-food", nil),
+        ("c", false, "locked-numbers", "2340/1610/21"),
+        ("c", false, "locked-numbers-no-history", "none"),
+        ("d", false, "two-weeks", nil),
+        ("e", true,  "two-weeks-food", nil),
     ]
 
     func testCaptureEveryPitchArm() {
-        for (arm, logsFood, label) in Self.arms {
-            let app = launchOnboarding(forcing: arm)
+        for (arm, logsFood, label, maintenance) in Self.arms {
+            let app = launchOnboarding(forcing: arm, maintenance: maintenance)
             advance(app, from: "welcome (\(arm))")
             sleep(2)
 
@@ -43,11 +47,12 @@ final class OnboardingPitchScreenshotUITests: XCTestCase {
         }
     }
 
-    private func launchOnboarding(forcing arm: String) -> XCUIApplication {
+    private func launchOnboarding(forcing arm: String, maintenance: String?) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchEnvironment["VITALS_SCREENSHOT_MODE"] = "1"
         app.launchEnvironment["VITALS_SCREENSHOT_SCENE"] = "onboarding"
         app.launchEnvironment["VITALS_ONBOARDING_PITCH"] = arm
+        if let maintenance { app.launchEnvironment["VITALS_PITCH_MAINTENANCE"] = maintenance }
         app.launch()
         return app
     }
