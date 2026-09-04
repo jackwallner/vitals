@@ -781,6 +781,20 @@ final class StoreService: NSObject, ObservableObject {
         #endif
         #if DEBUG
         Purchases.logLevel = .debug
+        // A fixed app user id under the probe flag, so a probe run can be read
+        // back by name. Without it the Test Store customer is anonymous and the
+        // only way to check the attributes landed is to guess which of the
+        // project's anonymous customers was this run.
+        if RevenueCatProbe.isEnabled {
+            Purchases.configure(
+                with: Configuration.Builder(withAPIKey: RevenueCatConfig.apiKey)
+                    .with(appUserID: RevenueCatProbe.appUserID)
+                    .build()
+            )
+            Purchases.shared.delegate = self
+            isConfigured = true
+            return
+        }
         #endif
         Purchases.configure(withAPIKey: RevenueCatConfig.apiKey)
         Purchases.shared.delegate = self
@@ -795,3 +809,27 @@ extension StoreService: PurchasesDelegate {
         }
     }
 }
+
+#if DEBUG
+/// Names a probe run so its Test Store customer can be read back by id.
+///
+/// Vitals differs from the rest of the fleet here: its DEBUG key is already the
+/// project's Test Store key, so a plain simulator run does configure RevenueCat
+/// and does send the funnel attributes. What it lacks is a stable app user id,
+/// which is all this adds.
+///
+/// DEBUG only, and only with the launch argument.
+enum RevenueCatProbe {
+    static var isEnabled: Bool {
+        ProcessInfo.processInfo.arguments.contains("-rcfunnelprobe")
+    }
+
+    static var appUserID: String {
+        ProcessInfo.processInfo.environment["RC_PROBE_USER"] ?? "funnel-probe-vitals"
+    }
+
+    static var impressionID: String {
+        ProcessInfo.processInfo.environment["RC_PROBE_SURFACE"] ?? "vitals_trial_sheet"
+    }
+}
+#endif

@@ -36,6 +36,11 @@ enum ConversionDiagnostics {
         static let lastSurface = "conv.pitchLastSurface"
         static func views(_ surface: String) -> String { "conv.pitchViews.\(surface)" }
 
+        static let installedAt = "conv.installedAt"
+        static let appOpens = "conv.appOpens"
+        static let opensBeforeFirstPitch = "conv.opensBeforeFirstPitch"
+        static let daysSinceInstallAtFirstPitch = "conv.daysToFirstPitch"
+
         static let convertedOn = "conv.convertedOn"
         static let viewsAtConvert = "conv.viewsAtConvert"
         static let daysToConvert = "conv.daysToConvert"
@@ -80,6 +85,15 @@ enum ConversionDiagnostics {
         d.set(surface, forKey: Key.lastSurface)
         if d.object(forKey: Key.firstSeen) == nil {
             d.set(Date.now.timeIntervalSince1970, forKey: Key.firstSeen)
+            // Frozen on the first pitch only: someone who sees a paywall on day
+            // 30 was not retroactively asked on day 30 if the first ask was on
+            // day one. Added later than the rest of this file, so installs that
+            // predate it report neither value rather than a wrong zero.
+            d.set(d.integer(forKey: Key.appOpens), forKey: Key.opensBeforeFirstPitch)
+            if let installed = installDate {
+                let days = Calendar.current.dateComponents([.day], from: installed, to: .now).day ?? 0
+                d.set(max(0, days), forKey: Key.daysSinceInstallAtFirstPitch)
+            }
         }
         logger.info("Pitch view: \(surface, privacy: .public) (total \(d.integer(forKey: Key.totalViews)))")
     }
@@ -119,6 +133,23 @@ enum ConversionDiagnostics {
     }
 
     // MARK: - Reading
+
+    /// One app launch. Stamps the install date on the very first call, which is
+    /// the closest thing to an install timestamp available without a server.
+    static func recordAppOpen() {
+        let d = defaults
+        if d.object(forKey: Key.installedAt) == nil {
+            d.set(Date.now.timeIntervalSince1970, forKey: Key.installedAt)
+        }
+        d.set(d.integer(forKey: Key.appOpens) + 1, forKey: Key.appOpens)
+    }
+
+    static var appOpens: Int { defaults.integer(forKey: Key.appOpens) }
+
+    static var installDate: Date? {
+        let stamp = defaults.double(forKey: Key.installedAt)
+        return stamp > 0 ? Date(timeIntervalSince1970: stamp) : nil
+    }
 
     static var totalPitchViews: Int { defaults.integer(forKey: Key.totalViews) }
     static var lastSurface: String? { defaults.string(forKey: Key.lastSurface) }
@@ -167,6 +198,14 @@ enum ConversionDiagnostics {
             attributes["pitch_first_seen"] = ISO8601DateFormatter().string(from: first)
             let days = Calendar.current.dateComponents([.day], from: first, to: .now).day ?? 0
             attributes["days_since_first_pitch"] = String(max(0, days))
+        }
+        // Absent on installs that predate these two, which is the honest answer:
+        // their real install date is unknown, not zero.
+        if d.object(forKey: Key.daysSinceInstallAtFirstPitch) != nil {
+            attributes["days_since_install"] = String(d.integer(forKey: Key.daysSinceInstallAtFirstPitch))
+        }
+        if d.object(forKey: Key.opensBeforeFirstPitch) != nil {
+            attributes["opens_before_first_pitch"] = String(d.integer(forKey: Key.opensBeforeFirstPitch))
         }
         if let convertedOn = d.string(forKey: Key.convertedOn) {
             // `converted_on` used to carry this and reads as a date to anyone
