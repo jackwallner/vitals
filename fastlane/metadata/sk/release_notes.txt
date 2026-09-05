@@ -1,7 +1,3 @@
-Úvodné nastavenie sa teraz pýta, či si niekde zapisujete jedlo. Ak nie, prestane ponúkať dve funkcie Vitals+, ktoré by vám aj tak ukázali len prázdnu obrazovku.
+Obrazovka Vitals+ počas úvodného nastavenia teraz ukazuje vypočítaný príklad čísel, ktoré vznikajú, namiesto zoznamu názvov funkcií.
 
-Karta Upgrade zobrazuje všetky tri plány naraz. Na väčšine iPhonov bol Lifetime tesne pod okrajom obrazovky.
-
-Nákup, ktorý Apple ešte nestihol schváliť, už nevyzerá ako dokončený a pomalé pripojenie už nenechá tlačidlo skúšobnej verzie donekonečna točiť bez východiska.
-
-Net Deficit teraz zmizne z widgetov na ploche hneď po vypršaní predplatného namiesto toho, aby tam zostal až do ďalšieho spustenia aplikácie.
+Ak má Apple Health už dosť histórie, obrazovka pracuje s vašimi vlastnými údajmi namiesto zástupného čísla. Ak nie, povie to, namiesto toho aby si nejaké vymyslela.

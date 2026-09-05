@@ -1,7 +1,3 @@
-Proses permulaan kini bertanya sama ada anda merekod makanan di mana-mana. Jika tidak, dua ciri Vitals+ yang hanya akan memaparkan skrin kosong tidak lagi ditawarkan.
+Skrin Vitals+ yang anda lihat semasa persediaan kini menunjukkan contoh angka yang benar-benar dihasilkan, bukan senarai nama ciri.
 
-Tab Upgrade memaparkan ketiga-tiga pelan sekali gus. Pada kebanyakan iPhone, Lifetime sebelum ini berada tepat di bawah tepi skrin.
-
-Pembelian yang belum selesai diluluskan Apple tidak lagi kelihatan seperti berjaya, dan sambungan perlahan tidak lagi membiarkan butang percubaan berpusing tanpa jalan keluar.
-
-Net Deficit kini hilang daripada widget Skrin Utama sebaik sahaja langganan tamat, bukannya kekal sehingga anda membuka app itu semula.
+Jika Apple Health sudah mempunyai cukup sejarah, skrin itu bekerja daripada data anda sendiri, bukan angka ganti. Jika belum, skrin itu menyatakannya dan bukan mereka-reka angka.

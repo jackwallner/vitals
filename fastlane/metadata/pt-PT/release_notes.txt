@@ -1,7 +1,3 @@
-A configuração inicial pergunta agora se registas as refeições nalguma app. Se não registas, as duas funcionalidades do Vitals+ que só te mostrariam um ecrã vazio deixam de ser propostas.
+O ecrã do Vitals+ que aparece durante a configuração mostra agora um exemplo resolvido dos números que produz, em vez de uma lista de nomes de funcionalidades.
 
-O separador Upgrade mostra os três planos ao mesmo tempo. Na maioria dos iPhone, o Lifetime ficava mesmo abaixo da margem do ecrã.
-
-Uma compra que a Apple ainda não acabou de aprovar já não parece concluída, e uma ligação lenta já não deixa o botão do período experimental a rodar sem saída.
-
-O Net Deficit desaparece agora dos widgets do ecrã principal assim que a subscrição termina, em vez de ficar até abrires a app da próxima vez.
+Quando o Apple Health já tem histórico suficiente, esse ecrã trabalha com os seus próprios dados em vez de um valor de exemplo. Quando não tem, di-lo em vez de inventar um.
