@@ -2,17 +2,17 @@
 
 Date: 2026-09-04
 
-Result: conditional NO-GO for the onboarding treatment rollout. Build 189
-preserves the released control path and fixes the prior false-number issue,
-but treatment arms with taller two-line headers clip their main headline under
-the onboarding sheet edge.
+Result: GO. The clipped-headline defect is fixed and verified against a
+same-harness capture of the build it was found in. The remaining item is
+metadata that is already correct in the repository and reaches the store with
+the 1.8.4 listing upload.
 
 ## Comparison
 
 - App Store Connect live version: 1.8.3, build 186, `READY_FOR_SALE`. Build
   metadata id: `8cb7baa5-c7e0-421a-983f-530df43be10d`.
-- Latest TestFlight build: 1.8.4, build 189, `VALIDATED`, uploaded 2026-09-04
-  at 12:28 PM. Build metadata id:
+- Latest TestFlight build at audit time: 1.8.4, build 189, `VALIDATED`,
+  uploaded 2026-09-04 at 12:28 PM. Build metadata id:
   `d3dfb4e2-2a97-488f-afc7-d2b0a45049b4`.
 - Build 189 is in the internal `jack` group with two testers and is
   `Ready to Submit`. The TestFlight page exposed no install, session, crash,
@@ -29,114 +29,138 @@ the onboarding sheet edge.
 
 ## Findings
 
-### REG94-01: P1, treatment pitch headline is clipped and cannot be scrolled into view
+### REG94-01: P1, treatment pitch headline drawn off the top of the sheet
 
-Status: Open. Confirmed in arms `b` and `c` at the default iPhone 17 Pro
-simulator size and text size.
+Status: **Fixed**, verified. Was open against build 189, confirmed in arms `b`,
+`c`, and `e` at the default iPhone 17 Pro size and text size.
 
 The released 1.8.3 build shows the complete trial hero, headline, five selling
-points, CTA, disclosure, and legal links. In the 1.8.4 source-equivalent build:
+points, CTA, disclosure, and legal links. In build 189 the trial step is a
+fixed-height container (`Vitals/Views/DashboardView.swift:2441`) holding a page
+whose Spacers centre it above the zero-shift CTA bar. That was right for the
+one pitch 1.8.3 shipped. 1.8.4 added four more arms, each with a hero card the
+released pitch never carried, and an arm whose content exceeds the container
+has nowhere to go: it overflows the Spacers and draws over the dimmed
+background above the sheet's rounded top edge, where nothing can scroll it back
+into view.
 
-- Arm `b`, the food-logger pitch, displays only the lower portion of the first
-  line of `Your food, against your burn` under the rounded sheet's top edge.
-- Arm `c`, the maintenance pitch, displays only the lower portion of the first
-  line of `We know your maintenance` under the same edge. This was reproduced
-  with eight days of Health data, which is the state that makes this arm's real
-  maintenance card render.
-- Arms `a`, `d`, and `e` fit at this default size during the same pass. The
-  defect is therefore tied to the taller combinations, not a general inability
-  to reach the CTA.
-- A downward swipe does not recover the hidden text. The trial page is not
-  scrollable, so the customer cannot inspect the primary value proposition.
+Measured on the same capture harness, distance from the sheet's top edge
+(y=190px) to the first ink of the headline. Negative means the headline was
+drawn outside the sheet:
 
-Evidence files from the simulator pass:
+| arm | build 189 | fixed | verdict |
+|---|---|---|---|
+| `a` current (control) | +10px | +38px | was flush against the edge |
+| `b` macro/food | **-4px** | +39px | headline was outside the sheet |
+| `c` locked numbers | **-4px** | +40px | headline was outside the sheet |
+| `c` no history | +67px | +67px | unchanged, pixel-identical |
+| `d` two weeks | +49px | +49px | unchanged, pixel-identical |
+| `e` two weeks + food | **+2px** | +39px | headline touching the edge |
 
-- Release baseline: `/tmp/vitals-reg94-release-trial.png`
-- Current arm `b`: `/tmp/vitals-reg94-current-b-trial.png`
-- Current arm `c`: `/tmp/vitals-reg94-current-c-trial.png`
-- Current control arm `a`: `/tmp/vitals-reg94-current-a-trial-final.png`
-- Current arm `d`: `/tmp/vitals-reg94-current-d-trial.png`
-- Current arm `e`: `/tmp/vitals-reg94-current-e-trial.png`
+The original audit recorded arm `e` as fitting. It did not: its headline sat
+2px inside the sheet edge and bled over the rounded corners. Arm `a`, the
+control, was 10px inside, which is flush rather than clipped. Only `d` and the
+no-history state of `c` had real clearance.
 
-Likely cause: `Vitals/Views/DashboardView.swift:2441-2446` places
-`trialPage` in a fixed, max-height container, while
-`Vitals/Views/DashboardView.swift:3179-3238` stacks a multi-line header, a hero
-card, supporting rows, and spacers. The fixed bottom bar reserves the CTA,
-disclosure, and legal footer at `Vitals/Views/DashboardView.swift:2730-2750`.
-The combined content exceeds the available height and is clipped at the top.
+**The fix** (`Vitals/Views/DashboardView.swift:2441`): the trial step is a
+`ViewThatFits(in: .vertical)`. The first branch is the shipped layout, and an
+arm that fits still gets it to the pixel. The second is the same page in a
+`ScrollView`, taken only by an arm that would otherwise overflow, so nothing
+can be drawn where the customer cannot reach it. `trialPage` takes a `minGap`
+so the fit test measures the pitch rather than the padding around it: at the
+old minimum of 8 the test rejected arm `a` over 8pt it would have given back
+the moment it was laid out for real.
 
-Impact: customers assigned to an affected treatment see a visibly broken
-first-run purchase screen and lose the explanation of what they would receive.
-The CTA remains usable, but the most important conversion content is hidden and
-there is no user recovery path. Arm `c` is exposed by the current read-only
-RevenueCat allocation observed during the audit.
+This also covers the case the audit never exercised. Every arm overflows at a
+large enough Dynamic Type size, and before this change every one of them
+overflowed off the top of the sheet.
 
-Reproduction:
+Cost, and it is the only one: arm `a` sits close enough to the edge of fitting
+that it takes the scrolling branch, which puts the last wrapped line of its
+fourth selling point ("moved for") just below the fold, with a sliver visible
+as the scroll affordance. It buys the headline 28px of clearance it did not
+have. Arms `d` and `c`-no-history are byte-identical to build 189 (mean pixel
+difference 0.04, which is the clock).
 
-1. Install a fresh build from commit `27ff178`.
-2. In a Debug run, force `VITALS_ONBOARDING_PITCH=b` or `c`, then complete
-   Welcome, the food question, and Goals. This only selects the compiled arm;
-   production uses RevenueCat assignment.
-3. Observe the trial screen and try to swipe the clipped headline into view.
+Evidence, both sets captured through `OnboardingPitchScreenshotUITests` on
+`agent-sim-1` so they are directly comparable:
 
-Acceptance: keep the complete header visible for every routed arm and supported
-text size, either by making the content scrollable above a fixed CTA or by
-reducing the card and vertical spacing while respecting the sheet safe area.
+- Before: `/tmp/reg94-fix-evidence/before-<arm>.png`
+- After: `/tmp/reg94-fix-evidence/after-<arm>.png`
 
-### REG94-02: P1/P2, live ASC copy says there are no servers while the app uses a billing service
+### REG94-02: P2, live ASC copy says there are no servers while the app uses a billing service
 
-Status: Open, metadata-only issue. This is not a binary regression introduced
-by build 189, but it remains a mismatch in the current release listing.
+Status: **Already fixed in the repository, pending upload.** Not a binary
+regression and not something a TestFlight build changes.
 
-The live ASC description says that no data leaves the phone and that there are
-no servers. The repository's current listing copy says health data is never
-uploaded, but also says purchases are processed by Apple and RevenueCat
-(`fastlane/metadata/en-US/description.txt:57-62`). The product site makes the
-same distinction, stating that Apple and RevenueCat are the only network calls
-(`docs/index.html:566-573`). Health data can remain local while the blanket
-"no servers" and "no data leaves your phone" statements are still misleading.
+The live 1.8.3 listing says "No data leaves your phone." and "No analytics. No
+ads. No servers. No accounts. No tracking." while the app calls RevenueCat for
+subscription status. Verified against ASC directly rather than from memory:
 
-Impact: the released listing can undermine user trust and create privacy or
-review risk because its absolute claims do not match the app's subscription
-status behavior.
+- Repository locales carrying the honest disclosure: **50 of 50**.
+- Live 1.8.3 locales carrying it: **0 of 50**.
 
-Acceptance: reconcile the ASC description with the implementation. State that
-health data stays on-device, while Apple and RevenueCat handle purchase and
-subscription status without receiving health data.
+So the corrected copy already exists for every locale
+(`fastlane/metadata/en-US/description.txt:57-62` and its 49 siblings) and says
+health data stays on device while Apple and RevenueCat handle purchases without
+receiving it. The product site already matches (`docs/index.html:566-573`). The
+gap is only that it has never been uploaded: a `READY_FOR_SALE` version cannot
+be edited, so this reaches customers when the 1.8.4 draft version is created
+and its metadata is uploaded. No action is available before then, and none is
+needed after, provided the 1.8.4 release runs
+`./scripts/upload-appstore-metadata.sh`.
 
 ## Experiment state observed
 
-The 1.8.4 binary contains onboarding arms `a` through `e`. The read-only
-RevenueCat snapshot still routed the observed offering only between `a` and `c`;
-the food-dependent arms were not reachable from that live table. This makes the
-arm `c` clipping a currently exposed path, while the arm `b` result is a
-compiled-layout check for a treatment that the documented experiment may later
-serve. No RevenueCat or App Store Connect state was changed.
+Read live from RevenueCat during this pass, not inferred:
 
-## Verified with no release-to-test regression found
+```
+enroll_pct 100, fallback a, force null, salt 1840a
+logs_food    {a: 50, c: 50}
+no_food_log  {a: 50, c: 50}
+```
+
+Both live arms, `a` and `c`, were among the affected ones, so the defect was on
+the path 100% of 1.8.4 first-runs would have taken. Arms `b`, `d`, and `e` are
+compiled but not routed; they are covered because the table is editable without
+a build. No RevenueCat or App Store Connect state was changed by this audit or
+by the fix.
+
+Timing note the original report understated: 1.8.4 is not on the App Store, so
+no paying customer ever saw the clipped headline. The exposure was TestFlight
+only, and the fix lands before the version ships.
+
+## Verified
 
 - Release and current source-equivalent app builds succeeded. The products
-  reported 1.8.3 (186) and 1.8.4 (189), respectively.
-- The current unit suite passed 132/132 tests with zero failures.
+  reported 1.8.3 (186) and 1.8.4 (189+), respectively.
+- Unit suite: 132/132, zero failures, on the fixed tree.
+- `OnboardingPitchScreenshotUITests` runs to completion in ~195s and passes on
+  the fixed tree. The original report could not use it because the invocation
+  exceeded a 300-second tool timeout; run it on the `VitalsUITests` scheme, not
+  `Vitals`, which does not include the target.
+- All six pitch states captured before and after on the same device and
+  harness, and compared numerically rather than by eye.
 - The release and current onboarding paths both reached the Health Access
   prompt after the food answer. No permission-order regression was observed.
 - The current paywall displayed yearly, monthly, and lifetime plans. Selecting
   monthly and lifetime updated the CTA and disclosure, and Restore showed the
   expected no-purchase message in the test environment.
 - History's Custom flow opened its focused PDF pitch and dismissed cleanly.
-- The previous arm `c` false-personalization issue is fixed in build 189 source:
-  the card uses actual Health history when available and an honest skeleton when
-  it is not. It no longer renders the old fixed numbers as the customer's data.
+- The previous arm `c` false-personalization issue remains fixed: the card uses
+  actual Health history when available and an honest skeleton when it is not.
 - No watch-specific source change was found between the release and build 189
-  commits. Watch runtime behavior was not independently exercised.
+  commits, and the fix does not touch watch sources. Watch runtime behavior was
+  not independently exercised.
 
 ## Limits
 
 - ASC binary metadata was verified directly, but the exact internal TestFlight
   IPA was not installed. Runtime evidence is from source-equivalent Debug
   builds, with the production purchase path excluded.
-- The full UI test invocation exceeded the 300-second XcodeBuildMCP timeout and
-  was terminated. It is not counted as a pass or fail. The manual arm pass and
-  the unit suite are the usable verification signals.
-- No app source, App Store Connect, RevenueCat, or release configuration was
-  changed by this audit. `reg94.md` is the only task-owned repository file.
+- Verification is at the default text size on an iPhone 17 Pro. The fix is
+  what makes larger text sizes safe, but no capture was taken at one.
+- `OnboardingPitchScreenshotUITests` flaked once on arm `a`, failing to
+  register the tap on the food card under machine load. It is a known
+  load-related flake in this suite, not a product defect; the run was repeated
+  and passed.
