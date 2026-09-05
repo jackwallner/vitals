@@ -2439,10 +2439,51 @@ private struct OnboardingSheet: View {
             ZStack(alignment: .bottom) {
                 VStack(spacing: 0) {
                     if step == .trial {
-                        // Trial must NOT live in a ScrollView: Spacers need a bounded
-                        // height to center the pitch above the zero-shift CTA bar.
-                        trialPage
-                            .padding(.horizontal, 24)
+                        // Trial must NOT live in a ScrollView while it fits:
+                        // the Spacers inside `trialPage` need a bounded height
+                        // to centre the pitch above the zero-shift CTA bar,
+                        // and an unbounded scroll collapses them to their
+                        // minLength. That is why this branch is not a
+                        // ScrollView, and it was the right call for the one
+                        // arm 1.8.3 had.
+                        //
+                        // 1.8.4 added four more, with hero cards the released
+                        // pitch never carried, and an arm that does not fit
+                        // has nowhere to go: `b`, `c`, and `e` drew their
+                        // headline off the top of the sheet, over the dimmed
+                        // background, unreachable by any gesture.
+                        //
+                        // ViewThatFits asks the question instead of assuming
+                        // an answer. First branch is the shipped layout and
+                        // every arm that fits still gets it, to the pixel.
+                        // Second is the same page in a reader, taken only by
+                        // an arm that would otherwise overflow: a tall
+                        // treatment here, or any arm at a large text size.
+                        //
+                        // The `minGap` is what makes that split exact. The fit
+                        // test is on the branch's *ideal* height, so a spacer
+                        // minimum is height ViewThatFits believes the page
+                        // needs: at 8 it sent arm `a` to the reader over 8pt
+                        // of padding it would have given back the moment it
+                        // was measured for real. At 0 it asks the question
+                        // worth asking, which is whether the pitch itself
+                        // fits, and the Spacers still centre it exactly as they
+                        // did before. The reader branch keeps its 8, where
+                        // that minimum is a real gap under the sheet's rounded
+                        // top edge rather than a fiction in a measurement.
+                        ViewThatFits(in: .vertical) {
+                            trialPage(minGap: 0)
+                                .padding(.horizontal, 24)
+
+                            ScrollView {
+                                trialPage(minGap: 8)
+                                    .padding(.horizontal, 24)
+                            }
+                            // Nothing to bounce against: this branch is only
+                            // ever chosen because the content is taller than
+                            // the reader.
+                            .scrollBounceBehavior(.basedOnSize)
+                        }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .onAppear {
                                 // A returning subscriber (reinstall, restored
@@ -3176,9 +3217,15 @@ private struct OnboardingSheet: View {
     /// own. HealthKit access is seconds old here and the app has computed
     /// nothing, so every arm that shows a number either captions it as an
     /// example or, in arm `c`, refuses to draw a number at all.
-    private var trialPage: some View {
+    ///
+    /// `minGap` is the floor on the two Spacers that centre this page. It is 0
+    /// on the branch that has to fit, so the fit test measures the pitch and
+    /// not the padding around it, and 8 on the scrolling branch, where the
+    /// Spacers never centre anything and the top one is simply the gap under
+    /// the sheet's rounded edge. Either way the centring below is unchanged.
+    private func trialPage(minGap: CGFloat) -> some View {
         VStack(spacing: 0) {
-            Spacer(minLength: 8)
+            Spacer(minLength: minGap)
 
             VStack(spacing: onboardingArm == .current ? 18 : 14) {
                 switch onboardingArm {
@@ -3234,7 +3281,7 @@ private struct OnboardingSheet: View {
                 }
             }
 
-            Spacer(minLength: 8)
+            Spacer(minLength: minGap)
         }
         .task(id: onboardingArm) {
             guard onboardingArm == .lockedNumbers, pitchMaintenance == nil else { return }
