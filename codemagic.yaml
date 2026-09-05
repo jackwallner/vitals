@@ -1,0 +1,27 @@
+workflows:
+  simulator-build:
+    name: Vitals simulator build only
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    environment:
+      xcode: latest
+    scripts:
+      - name: Build unsigned iOS simulator app
+        script: |
+          set -euo pipefail
+          mkdir -p /tmp/xcodebuild_logs
+          xcodebuild build \
+            -project "Vitals.xcodeproj" \
+            -scheme "Vitals" \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -configuration Debug \
+            -derivedDataPath "$CM_BUILD_DIR/build" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            2>&1 | tee /tmp/xcodebuild_logs/vitals.log
+    artifacts:
+      - /tmp/xcodebuild_logs/*.log
+      - $CM_BUILD_DIR/build/Build/Products/**/*.app
+      - $CM_BUILD_DIR/build/Build/Products/**/*.dSYM
