@@ -3,9 +3,10 @@
 Date: 2026-09-04
 
 Result: GO. The clipped-headline defect is fixed and verified against a
-same-harness capture of the build it was found in. The remaining item is
-metadata that is already correct in the repository and reaches the store with
-the 1.8.4 listing upload.
+same-harness capture of the build it was found in. Both metadata findings are
+uploaded to the 1.8.4 draft and verified. Build 190 is attached; the version is
+staged at `PREPARE_FOR_SUBMISSION` and needs only a device check and the
+submit.
 
 ## Comparison
 
@@ -90,25 +91,38 @@ Evidence, both sets captured through `OnboardingPitchScreenshotUITests` on
 
 ### REG94-02: P2, live ASC copy says there are no servers while the app uses a billing service
 
-Status: **Already fixed in the repository, pending upload.** Not a binary
-regression and not something a TestFlight build changes.
+Status: **Fixed and staged on the 1.8.4 draft.** Not a binary regression.
 
 The live 1.8.3 listing says "No data leaves your phone." and "No analytics. No
 ads. No servers. No accounts. No tracking." while the app calls RevenueCat for
 subscription status. Verified against ASC directly rather than from memory:
 
-- Repository locales carrying the honest disclosure: **50 of 50**.
-- Live 1.8.3 locales carrying it: **0 of 50**.
+- Repository locales carrying the honest disclosure: 50 of 50.
+- Live 1.8.3 locales carrying it: 0 of 50.
 
-So the corrected copy already exists for every locale
-(`fastlane/metadata/en-US/description.txt:57-62` and its 49 siblings) and says
-health data stays on device while Apple and RevenueCat handle purchases without
-receiving it. The product site already matches (`docs/index.html:566-573`). The
-gap is only that it has never been uploaded: a `READY_FOR_SALE` version cannot
-be edited, so this reaches customers when the 1.8.4 draft version is created
-and its metadata is uploaded. No action is available before then, and none is
-needed after, provided the 1.8.4 release runs
-`./scripts/upload-appstore-metadata.sh`.
+The corrected copy already existed for every locale and had simply never been
+uploaded, because a `READY_FOR_SALE` version cannot be edited. The 1.8.4 draft
+now carries it in all 50 locales, verified field by field against the repo
+after upload, along with promotional text that had been blank on every live
+locale.
+
+### REG94-03: P2, App Review notes made the same false claim, to the reviewer
+
+Status: **Fixed**, found while preparing the submission and not part of the
+original audit.
+
+`fastlane/metadata/review_information/notes.txt` opened by correctly telling
+the reviewer that subscriptions are processed by Apple and RevenueCat, then
+closed with a PRIVACY section claiming "No analytics, ads, tracking, or
+third-party SDKs" and "No network requests of any kind". The binary embeds the
+RevenueCat SDK and calls their API, so both lines were false, and unlike the
+store description these are addressed directly to a human at Apple who can
+check them against the binary.
+
+The section now states that health data stays on device, that there are no
+analytics, ads, tracking, or accounts, and that the only network calls are to
+Apple and RevenueCat, neither of which receives HealthKit data. Uploaded and
+verified on the 1.8.4 draft.
 
 ## Experiment state observed
 
@@ -152,6 +166,14 @@ only, and the fix lands before the version ships.
 - No watch-specific source change was found between the release and build 189
   commits, and the fix does not touch watch sources. Watch runtime behavior was
   not independently exercised.
+- Release readiness, checked against ASC after staging: 1.8.4 draft exists at
+  `PREPARE_FOR_SUBMISSION` with build 190 (`VALID`, export compliance answered)
+  attached; 50 of 50 locales match the repo on description, keywords,
+  promotional text, and release notes; every locale carries the EULA link and
+  none quotes a price; all three IAPs read `APPROVED`, so no product needs
+  attaching; every prior review submission reads `COMPLETE`, so the version is
+  not locked to one; the inherited screenshot set is 9 iPhone plus 2 Watch with
+  no duplicate checksums.
 
 ## Limits
 
