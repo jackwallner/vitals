@@ -1,1 +1,1 @@
-stegräknare,bmr,komplikation,underskott,vila,aktiv,fasta,gång,rörelse,healthkit,steg,bmi,kcal,makros
+stegräknare,bmr,komplikation,underskott,vila,aktiv,förbrända,gång,healthkit,steg,bmi,kcal,makros

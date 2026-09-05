@@ -1,1 +1,1 @@
-grundumsatz,kalorienrechner,komplikation,defizit,bmr,aktiv,kalorienbedarf,kalorien,bmi,makros
+grundumsatz,kalorienrechner,komplikation,defizit,bmr,aktiv,kalorienbedarf,verbrannt,bmi,makros

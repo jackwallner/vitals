@@ -1,1 +1,1 @@
-pedometer,bmr,komplikacija,primanjkljaj,mirenje,aktivno,post,hoja,healthkit,koraki,bmi,kcal,proteini
+pedometer,bmr,komplikacija,primanjkljaj,mirenje,aktivno,pokurjene,healthkit,koraki,bmi,kcal,proteini
