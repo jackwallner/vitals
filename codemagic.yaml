@@ -6,11 +6,21 @@ workflows:
     environment:
       xcode: latest
     scripts:
-      - name: Generate Xcode project
+      - name: Generate iOS-only Xcode project
         script: |
           set -euo pipefail
           if ! command -v xcodegen >/dev/null 2>&1; then brew install xcodegen; fi
-          xcodegen generate
+          ruby <<'RUBY'
+          require "yaml"
+
+          spec = YAML.load_file("project.yml")
+          spec.fetch("schemes").fetch("Vitals").fetch("build").fetch("targets").delete("VitalsWatch")
+          spec.fetch("targets").fetch("Vitals").fetch("dependencies").reject! do |dependency|
+            dependency.is_a?(Hash) && dependency["target"] == "VitalsWatch"
+          end
+          File.write("project.ci.yml", YAML.dump(spec))
+          RUBY
+          xcodegen generate --spec project.ci.yml
       - name: Build unsigned iOS simulator app
         script: |
           set -euo pipefail
