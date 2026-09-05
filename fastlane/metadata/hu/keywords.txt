@@ -1,1 +1,1 @@
-lépésszámláló,bmr,komplikáció,hiány,pihenő,aktív,böjt,séta,mozgás,healthkit,lépések,bmi,kcal,makrók
+lépésszámláló,bmr,komplikáció,hiány,pihenő,aktív,elégetett,séta,healthkit,lépések,bmi,kcal,makrók
