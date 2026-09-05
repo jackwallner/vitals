@@ -1,1 +1,1 @@
-bmr,metabolismobasal,gastocalórico,déficit,complicación,reposo,activas,netas,bmi,kcal,macros
+bmr,metabolismobasal,gastocalórico,déficit,complicación,reposo,activas,quemadas,bmi,kcal,macros
