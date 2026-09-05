@@ -1,7 +1,3 @@
-De introductie vraagt nu of je je eten ergens bijhoudt. Zo niet, dan worden de twee Vitals+-functies die je toch alleen een leeg scherm zouden laten zien niet meer aangeboden.
+Het Vitals+-scherm tijdens het instellen laat nu een uitgewerkt voorbeeld zien van de cijfers die het oplevert, in plaats van een lijst met functienamen.
 
-Het tabblad Upgrade toont alle drie de abonnementen tegelijk. Op de meeste iPhones viel Lifetime net onder de rand van het scherm.
-
-Een aankoop die Apple nog niet heeft goedgekeurd, lijkt niet langer voltooid, en een trage verbinding kan de proefknop niet meer eindeloos laten draaien zonder uitweg.
-
-Net Deficit verdwijnt nu uit de widgets op het beginscherm zodra een abonnement afloopt, in plaats van te blijven staan tot je de app weer opent.
+Als Apple Health al genoeg geschiedenis bevat, werkt dat scherm met je eigen gegevens in plaats van met een tijdelijk cijfer. Zo niet, dan zegt het dat in plaats van er een te verzinnen.

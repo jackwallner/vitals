@@ -1,7 +1,3 @@
-Onboarding now asks whether you log food anywhere. If you don't, it stops pitching the two Vitals+ features that would only ever show you an empty screen.
+The Vitals+ screen you see during setup now shows a worked example of the numbers it builds, instead of a list of feature names.
 
-The Upgrade tab shows all three plans at once. Lifetime used to sit just below the fold on most iPhones.
-
-A purchase Apple hasn't finished approving no longer looks like it went through, and a slow connection can no longer leave the trial button spinning with no way past it.
-
-Net Deficit now disappears from Home Screen widgets as soon as a subscription lapses, instead of lingering until you next open the app.
+Where Apple Health already holds enough history, that screen works from your own data rather than a stand-in figure. Where it doesn't, it says so instead of inventing one.

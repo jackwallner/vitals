@@ -1,7 +1,3 @@
-Introduktionen frågar nu om du loggar mat någonstans. Om du inte gör det slutar den lyfta fram de två Vitals+-funktioner som ändå bara skulle visa dig en tom skärm.
+Vitals+-skärmen du ser under konfigurationen visar nu ett uträknat exempel på de siffror den tar fram, i stället för en lista med funktionsnamn.
 
-Fliken Upgrade visar alla tre abonnemangen samtidigt. På de flesta iPhone låg Lifetime precis under skärmkanten.
-
-Ett köp som Apple inte hunnit godkänna ser inte längre ut att ha gått igenom, och en långsam anslutning kan inte längre lämna provknappen snurrande utan väg vidare.
-
-Net Deficit försvinner nu från widgetar på hemskärmen så snart en prenumeration löper ut, i stället för att ligga kvar tills du öppnar appen nästa gång.
+Om Apple Health redan innehåller tillräckligt med historik utgår skärmen från dina egna data i stället för en platshållarsiffra. Om inte säger den det i stället för att hitta på en.

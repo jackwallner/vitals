@@ -1,7 +1,3 @@
-Proses awal kini menanyakan apakah kamu mencatat makanan di suatu aplikasi. Jika tidak, dua fitur Vitals+ yang hanya akan menampilkan layar kosong tidak lagi ditawarkan.
+Layar Vitals+ yang muncul saat penyiapan kini menampilkan contoh angka yang benar-benar dihasilkan, bukan sekadar daftar nama fitur.
 
-Tab Upgrade menampilkan ketiga paket sekaligus. Di sebagian besar iPhone, Lifetime sebelumnya berada tepat di bawah batas layar.
-
-Pembelian yang belum selesai disetujui Apple tidak lagi terlihat seperti berhasil, dan koneksi lambat tidak lagi membuat tombol uji coba berputar tanpa jalan keluar.
-
-Net Deficit kini hilang dari widget Layar Utama begitu langganan berakhir, bukan bertahan sampai kamu membuka aplikasi lagi.
+Jika Apple Health sudah punya cukup riwayat, layar itu bekerja dari data Anda sendiri, bukan angka pengganti. Jika belum, layar itu mengatakannya alih-alih mengarang angka.

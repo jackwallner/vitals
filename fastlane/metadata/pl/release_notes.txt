@@ -1,7 +1,3 @@
-Konfiguracja początkowa pyta teraz, czy zapisujesz gdzieś posiłki. Jeśli nie, przestaje proponować dwie funkcje Vitals+, które i tak pokazałyby ci tylko pusty ekran.
+Ekran Vitals+ widoczny podczas konfiguracji pokazuje teraz wyliczony przykład liczb, które powstają, zamiast listy nazw funkcji.
 
-Karta Upgrade pokazuje wszystkie trzy plany naraz. W większości iPhone'ów Lifetime znajdował się tuż poniżej krawędzi ekranu.
-
-Zakup, którego Apple jeszcze nie zatwierdziło, nie wygląda już na zakończony, a wolne połączenie nie zostawi już przycisku okresu próbnego w nieskończonym ładowaniu bez wyjścia.
-
-Net Deficit znika teraz z widżetów na ekranie początkowym, gdy tylko subskrypcja wygaśnie, zamiast pozostawać do następnego uruchomienia aplikacji.
+Jeśli Apple Health ma już wystarczającą historię, ekran korzysta z Twoich własnych danych zamiast z wartości zastępczej. Jeśli nie, mówi o tym wprost, zamiast wymyślać liczbę.

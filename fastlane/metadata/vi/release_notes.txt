@@ -1,7 +1,3 @@
-Phần thiết lập ban đầu giờ hỏi bạn có ghi lại bữa ăn ở đâu không. Nếu không, hai tính năng Vitals+ vốn chỉ hiện ra màn hình trống sẽ không còn được giới thiệu nữa.
+Màn hình Vitals+ bạn thấy trong lúc thiết lập giờ hiển thị một ví dụ đã tính sẵn về những con số nó tạo ra, thay vì danh sách tên tính năng.
 
-Thẻ Upgrade hiển thị cả ba gói cùng lúc. Trên hầu hết iPhone, Lifetime từng nằm ngay dưới mép màn hình.
-
-Giao dịch mà Apple chưa duyệt xong không còn trông như đã hoàn tất, và kết nối chậm không còn khiến nút dùng thử quay mãi mà không có lối thoát.
-
-Net Deficit giờ biến mất khỏi tiện ích trên Màn hình chính ngay khi gói đăng ký hết hạn, thay vì nán lại đến lần mở ứng dụng tiếp theo.
+Khi Apple Health đã có đủ lịch sử, màn hình đó làm việc trên dữ liệu của chính bạn thay vì một con số thay thế. Khi chưa đủ, nó nói rõ thay vì bịa ra một con số.

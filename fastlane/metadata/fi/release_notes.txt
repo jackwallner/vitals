@@ -1,7 +1,3 @@
-Käyttöönotto kysyy nyt, kirjaatko ruokaa jonnekin. Jos et, se lakkaa tarjoamasta niitä kahta Vitals+-ominaisuutta, jotka näyttäisivät sinulle vain tyhjän näkymän.
+Käyttöönoton aikana näkyvä Vitals+-näyttö esittää nyt lasketun esimerkin tuottamistaan luvuista pelkän ominaisuuslistan sijaan.
 
-Upgrade-välilehti näyttää kaikki kolme tilausta kerralla. Useimmissa iPhoneissa Lifetime jäi juuri näytön alareunan taakse.
-
-Osto, jota Apple ei ole vielä ehtinyt hyväksyä, ei enää näytä menneen läpi, eikä hidas yhteys voi enää jättää kokeilupainiketta pyörimään ilman ulospääsyä.
-
-Net Deficit katoaa nyt Koti-valikon widgeteistä heti tilauksen päätyttyä sen sijaan, että se jäisi näkyviin seuraavaan sovelluksen avaukseen asti.
+Kun Apple Healthissa on jo tarpeeksi historiaa, näyttö käyttää omia tietojasi sijaislukeman sijaan. Kun ei ole, se kertoo sen sen sijaan että keksisi luvun.

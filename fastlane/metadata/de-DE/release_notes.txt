@@ -1,7 +1,3 @@
-Das Onboarding fragt jetzt, ob du dein Essen irgendwo protokollierst. Wenn nicht, bewirbt es die beiden Vitals+-Funktionen nicht mehr, die dir ohnehin nur einen leeren Bildschirm zeigen würden.
+Der Vitals+-Bildschirm beim Einrichten zeigt jetzt ein durchgerechnetes Beispiel der Zahlen, die dabei entstehen, statt einer Liste von Funktionsnamen.
 
-Der Tab Upgrade zeigt alle drei Tarife auf einmal. Auf den meisten iPhones lag Lifetime bisher knapp unterhalb des sichtbaren Bereichs.
-
-Ein Kauf, den Apple noch nicht freigegeben hat, sieht nicht mehr wie abgeschlossen aus, und eine langsame Verbindung kann den Test-Button nicht mehr endlos drehen lassen, ohne einen Ausweg zu bieten.
-
-Net Deficit verschwindet jetzt aus den Home-Bildschirm-Widgets, sobald ein Abo ausläuft, statt bis zum nächsten Öffnen der App stehen zu bleiben.
+Wenn Apple Health bereits genug Verlauf enthält, arbeitet dieser Bildschirm mit deinen eigenen Daten statt mit einem Platzhalter. Wenn nicht, sagt er das, anstatt eine Zahl zu erfinden.

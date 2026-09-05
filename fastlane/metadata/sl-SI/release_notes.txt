@@ -1,7 +1,3 @@
-Uvodna nastavitev zdaj vpraša, ali si hrano kje beležiš. Če je ne, ti ne ponuja več tistih dveh funkcij Vitals+, ki bi ti tako ali tako pokazali le prazen zaslon.
+Zaslon Vitals+, ki ga vidite med nastavitvijo, zdaj prikaže izračunan primer številk, ki jih ustvari, namesto seznama imen funkcij.
 
-Zavihek Upgrade prikaže vse tri pakete hkrati. Na večini iPhonov je bil Lifetime tik pod robom zaslona.
-
-Nakup, ki ga Apple še ni odobril, ni več videti kot dokončan, počasna povezava pa gumba za preizkus ne pusti več vrteti brez izhoda.
-
-Net Deficit zdaj izgine iz pripomočkov na začetnem zaslonu takoj, ko naročnina poteče, namesto da bi ostal do naslednjega odprtja aplikacije.
+Če ima Apple Health že dovolj zgodovine, zaslon dela z vašimi podatki namesto z nadomestno številko. Če je nima, to pove, namesto da bi si jo izmislil.

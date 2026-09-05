@@ -1,7 +1,3 @@
-La configuració inicial ara pregunta si registres els àpats en alguna app. Si no ho fas, deixa d'oferir-te les dues funcions de Vitals+ que només et mostrarien una pantalla buida.
+La pantalla de Vitals+ que veus durant la configuració ara mostra un exemple resolt de les xifres que genera, en lloc d'una llista de noms de funcions.
 
-La pestanya Upgrade mostra els tres plans alhora. A la majoria d'iPhone, Lifetime quedava just per sota del límit de la pantalla.
-
-Una compra que Apple encara no ha acabat d'aprovar ja no sembla completada, i una connexió lenta ja no pot deixar el botó de la prova girant sense sortida.
-
-Net Deficit desapareix dels widgets de la pantalla d'inici tan bon punt caduca la subscripció, en lloc d'esperar fins que tornis a obrir l'app.
+Quan Apple Health ja té prou historial, aquesta pantalla treballa amb les teves pròpies dades en lloc d'una xifra de mostra. Quan no en té, ho diu en comptes d'inventar-se'n una.

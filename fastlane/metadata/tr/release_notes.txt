@@ -1,7 +1,3 @@
-Başlangıç adımları artık yemeklerinizi bir yere kaydedip kaydetmediğinizi soruyor. Kaydetmiyorsanız, size yalnızca boş bir ekran gösterecek iki Vitals+ özelliği artık önerilmiyor.
+Kurulum sırasında gördüğünüz Vitals+ ekranı artık özellik adları listesi yerine, ürettiği sayıların hesaplanmış bir örneğini gösteriyor.
 
-Upgrade sekmesi üç planı da bir arada gösteriyor. Çoğu iPhone'da Lifetime, ekranın kenarının hemen altında kalıyordu.
-
-Apple'ın onayını henüz tamamlamadığı bir satın alma artık tamamlanmış gibi görünmüyor ve yavaş bağlantı, deneme düğmesini çıkışı olmayan bir dönüşte bırakamıyor.
-
-Abonelik sona erer ermez Net Deficit artık Ana Ekran araçlarından kayboluyor; uygulamayı bir sonraki açışınıza kadar orada kalmıyor.
+Apple Health'te yeterli geçmiş varsa bu ekran yer tutucu bir sayı yerine kendi verilerinizle çalışıyor. Yoksa bir sayı uydurmak yerine bunu söylüyor.

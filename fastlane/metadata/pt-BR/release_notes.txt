@@ -1,7 +1,3 @@
-A configuração inicial agora pergunta se você registra suas refeições em algum lugar. Se não registra, os dois recursos do Vitals+ que só mostrariam uma tela vazia deixam de ser oferecidos.
+A tela do Vitals+ que aparece durante a configuração agora mostra um exemplo resolvido dos números que ele produz, em vez de uma lista de nomes de recursos.
 
-A aba Upgrade mostra os três planos de uma vez. Na maioria dos iPhones, o Lifetime ficava logo abaixo da borda da tela.
-
-Uma compra que a Apple ainda não terminou de aprovar não parece mais concluída, e uma conexão lenta não deixa mais o botão do teste girando sem saída.
-
-O Net Deficit agora some dos widgets da Tela de Início assim que a assinatura expira, em vez de permanecer até você abrir o app de novo.
+Quando o Apple Health já tem histórico suficiente, essa tela trabalha com os seus próprios dados em vez de um valor de exemplo. Quando não tem, ela diz isso em vez de inventar um.

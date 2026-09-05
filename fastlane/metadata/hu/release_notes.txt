@@ -1,7 +1,3 @@
-A bevezető most megkérdezi, hogy vezetsz-e valahol étkezési naplót. Ha nem, többé nem ajánlja fel azt a két Vitals+ funkciót, amelyek úgyis csak üres képernyőt mutatnának.
+A beállítás közben látható Vitals+ képernyő mostantól kiszámolt példát mutat az általa előállított számokra, funkciónevek listája helyett.
 
-Az Upgrade lap egyszerre mutatja mind a három csomagot. A legtöbb iPhone-on a Lifetime épp a képernyő széle alatt maradt.
-
-Az Apple által még jóvá nem hagyott vásárlás többé nem tűnik befejezettnek, és lassú kapcsolat mellett a próbaidőszak gombja sem pörög tovább kiút nélkül.
-
-A Net Deficit mostantól azonnal eltűnik a kezdőképernyő widgetjeiből, amint az előfizetés lejár, ahelyett hogy az app következő megnyitásáig ott maradna.
+Ha az Apple Healthben már elég előzmény van, a képernyő a saját adataidból dolgozik, nem helykitöltő számból. Ha nincs, ezt megmondja, ahelyett hogy kitalálna egyet.

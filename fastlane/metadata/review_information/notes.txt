@@ -30,9 +30,11 @@ The watch experience is delivered primarily through watch face complications (ci
 PRIVACY
 
 - Read-only HealthKit (never writes)
-- No data leaves the device
-- No analytics, ads, tracking, or third-party SDKs
-- No network requests of any kind
+- Health data is stored on the device and is never uploaded
+- No analytics, no ads, no tracking, no accounts
+- The only network calls are to Apple and to RevenueCat, for purchase and
+  subscription status. Neither receives HealthKit data, and RevenueCat sees only
+  an anonymous app user ID with purchase and entitlement status.
 - Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 
 Privacy Policy and Support links are accessible in the iPhone Settings sheet and Apple Watch Help sheet.

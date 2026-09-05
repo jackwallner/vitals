@@ -1,7 +1,3 @@
-La configuration initiale demande désormais si vous notez vos repas quelque part. Si ce n'est pas le cas, elle cesse de mettre en avant les deux fonctions Vitals+ qui ne vous afficheraient qu'un écran vide.
+L'écran Vitals+ affiché pendant la configuration montre désormais un exemple chiffré des données qu'il produit, au lieu d'une liste de noms de fonctions.
 
-L'onglet Upgrade présente les trois formules d'un seul coup. Sur la plupart des iPhone, Lifetime se trouvait juste sous le bord de l'écran.
-
-Un achat qu'Apple n'a pas fini d'approuver ne semble plus avoir abouti, et une connexion lente ne peut plus laisser le bouton d'essai tourner sans issue.
-
-Net Deficit disparaît des widgets de l'écran d'accueil dès qu'un abonnement expire, au lieu de rester jusqu'à la prochaine ouverture de l'app.
+Lorsque Apple Health contient déjà assez d'historique, cet écran s'appuie sur vos propres données plutôt que sur un chiffre de substitution. Sinon, il le dit au lieu d'en inventer un.

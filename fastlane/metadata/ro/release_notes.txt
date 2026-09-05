@@ -1,7 +1,3 @@
-Configurarea inițială te întreabă acum dacă îți notezi mesele undeva. Dacă nu, cele două funcții Vitals+ care ți-ar arăta oricum doar un ecran gol nu mai sunt propuse.
+Ecranul Vitals+ pe care îl vezi în timpul configurării arată acum un exemplu calculat al cifrelor pe care le produce, în loc de o listă de nume de funcții.
 
-Fila Upgrade afișează toate cele trei planuri deodată. Pe majoritatea iPhone-urilor, Lifetime rămânea chiar sub marginea ecranului.
-
-O achiziție pe care Apple nu a terminat de aprobat nu mai pare finalizată, iar o conexiune lentă nu mai poate lăsa butonul perioadei de probă să se învârtă fără ieșire.
-
-Net Deficit dispare acum din widgeturile de pe ecranul principal imediat ce abonamentul expiră, în loc să rămână până la următoarea deschidere a aplicației.
+Când Apple Health are deja suficient istoric, ecranul lucrează cu datele tale, nu cu o cifră de rezervă. Când nu are, o spune în loc să inventeze una.
