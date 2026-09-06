@@ -1,3 +1,3 @@
-Màn hình Vitals+ bạn thấy trong lúc thiết lập giờ hiển thị một ví dụ đã tính sẵn về những con số nó tạo ra, thay vì danh sách tên tính năng.
+Quá trình thiết lập ngắn hơn. Câu hỏi bạn có ghi lại bữa ăn hay không đã được bỏ, và màn hình Vitals+ bạn thấy khi thiết lập trở lại là một danh sách đơn giản về những gì gói đăng ký bổ sung, thay vì một ví dụ tính sẵn.
 
-Khi Apple Health đã có đủ lịch sử, màn hình đó làm việc trên dữ liệu của chính bạn thay vì một con số thay thế. Khi chưa đủ, nó nói rõ thay vì bịa ra một con số.
+Quyền truy cập Apple Health giờ chỉ được hỏi một lần, trong một yêu cầu duy nhất gồm calo, số bước và dinh dưỡng.

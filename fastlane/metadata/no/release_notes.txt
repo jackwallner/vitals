@@ -1,3 +1,3 @@
-Vitals+-skjermen du ser under oppsettet, viser nå et gjennomregnet eksempel på tallene den lager, i stedet for en liste med funksjonsnavn.
+Oppsettet er kortere. Spørsmålet om du registrerer maten din er borte, og Vitals+-skjermen du ser under oppsettet er tilbake til en enkel liste over hva abonnementet legger til, i stedet for et gjennomregnet eksempel.
 
-Hvis Apple Health allerede har nok historikk, jobber skjermen ut fra dine egne data i stedet for et plassholdertall. Hvis ikke, sier den det i stedet for å finne på et.
+Tilgang til Apple Health blir nå bedt om én gang, i én enkelt forespørsel om kalorier, skritt og ernæring.

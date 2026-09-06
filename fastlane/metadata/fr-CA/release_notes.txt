@@ -1,3 +1,3 @@
-L'écran Vitals+ affiché pendant la configuration montre désormais un exemple chiffré des données qu'il produit, au lieu d'une liste de noms de fonctions.
+La configuration est plus courte. La question sur le suivi de vos repas a disparu, et l'écran Vitals+ affiché pendant la configuration revient à une simple liste de ce que l'abonnement ajoute, au lieu d'un exemple chiffré.
 
-Lorsque Apple Health contient déjà assez d'historique, cet écran s'appuie sur vos propres données plutôt que sur un chiffre de substitution. Sinon, il le dit au lieu d'en inventer un.
+L'accès à Apple Health est maintenant demandé une seule fois, dans une même invite couvrant les calories, les pas et la nutrition.

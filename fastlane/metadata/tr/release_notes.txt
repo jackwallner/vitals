@@ -1,3 +1,3 @@
-Kurulum sırasında gördüğünüz Vitals+ ekranı artık özellik adları listesi yerine, ürettiği sayıların hesaplanmış bir örneğini gösteriyor.
+Kurulum kısaldı. Yemeklerini kaydedip kaydetmediğini soran soru kaldırıldı ve kurulum sırasında gördüğün Vitals+ ekranı, hesaplanmış bir örnek yerine aboneliğin kattıklarının sade bir listesine döndü.
 
-Apple Health'te yeterli geçmiş varsa bu ekran yer tutucu bir sayı yerine kendi verilerinizle çalışıyor. Yoksa bir sayı uydurmak yerine bunu söylüyor.
+Apple Health erişimi artık bir kez, kaloriler, adımlar ve beslenme için tek bir istemle isteniyor.

@@ -1,3 +1,3 @@
-The Vitals+ screen you see during setup now shows a worked example of the numbers it builds, instead of a list of feature names.
+Setup is shorter. The question about whether you log food is gone, and the Vitals+ screen you see during setup is back to a plain list of what the subscription adds, instead of a worked example.
 
-Where Apple Health already holds enough history, that screen works from your own data rather than a stand-in figure. Where it doesn't, it says so instead of inventing one.
+Apple Health access is now requested once, in a single prompt covering calories, steps, and nutrition.

@@ -1,3 +1,3 @@
-Skrin Vitals+ yang anda lihat semasa persediaan kini menunjukkan contoh angka yang benar-benar dihasilkan, bukan senarai nama ciri.
+Persediaan menjadi lebih singkat. Soalan sama ada anda merekod makanan telah dibuang, dan skrin Vitals+ yang anda lihat semasa persediaan kembali menjadi senarai ringkas tentang apa yang ditambah oleh langganan, bukan contoh berkira.
 
-Jika Apple Health sudah mempunyai cukup sejarah, skrin itu bekerja daripada data anda sendiri, bukan angka ganti. Jika belum, skrin itu menyatakannya dan bukan mereka-reka angka.
+Akses Apple Health kini diminta sekali sahaja, dalam satu permintaan yang merangkumi kalori, langkah dan pemakanan.

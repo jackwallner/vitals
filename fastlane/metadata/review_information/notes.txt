@@ -2,13 +2,25 @@ Vitals+ subscription details and EULA link are included in the App Description. 
 
 Total Calories reads calorie and step data from Apple Health (HealthKit) in read-only mode. It does not write to HealthKit. Health data is stored locally on the device and is never uploaded; there is no account and no backend of ours. Subscriptions are processed by Apple and by RevenueCat, which receives an anonymous app user ID plus purchase and entitlement status only. RevenueCat never receives HealthKit data.
 
-HEALTHKIT SETUP — PLEASE GRANT ACCESS WHEN PROMPTED
+WHAT CHANGED IN THIS VERSION
 
-On first launch, the app asks you to set optional goals (you may skip this). iOS then prompts for HealthKit read access. Please allow all three types:
+1.8.5 restores the first-run experience to the design that shipped in version 1.7.5. The optional question asking whether the user logs their food has been removed, and the Vitals+ screen shown during setup is again a plain list of what the subscription adds rather than a worked numeric example. No feature was added or removed from the app itself; the change is confined to the setup flow and its subscription screen. Bug fixes made since 1.7.5 (keyboard handling, the Restore Purchases button, and purchase error handling) are retained.
+
+HEALTHKIT SETUP - PLEASE GRANT ACCESS WHEN PROMPTED
+
+First launch shows a welcome screen. Tapping Continue triggers the iOS HealthKit read-access prompt, then the app asks you to set optional goals (you may skip this), then it shows the Vitals+ subscription screen, which can be dismissed with the "Get Started" button without purchasing.
+
+Please allow all seven read types at the prompt:
 
 - Active Energy Burned
 - Basal Energy Burned
 - Step Count
+- Dietary Energy Consumed
+- Protein
+- Carbohydrates
+- Total Fat
+
+The first three power the main dashboard. The four nutrition types are read only to display food energy and macronutrients that another app has already written to Apple Health; Total Calories never writes any of them. Previous versions asked for the nutrition types in a separate second prompt; this version asks once.
 
 If access is denied or not yet granted, the app shows a banner explaining that Health access is needed (no fake or placeholder health numbers). Users can open Settings or the Health app from that banner.
 
