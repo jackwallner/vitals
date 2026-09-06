@@ -2354,7 +2354,6 @@ private enum OnboardingGoalField: Hashable {
 private struct OnboardingSheet: View {
     private enum Step {
         case welcome
-        case food
         case goals
         case trial
     }
@@ -2371,8 +2370,6 @@ private struct OnboardingSheet: View {
     @State private var wantStepGoal = true
     @State private var stepText = "10000"
     @State private var hasRequestedHealthAccess = false
-    /// Answer to the food question, held locally until Continue commits it.
-    @State private var logsFoodChoice: Bool?
     @State private var isStartingTrial = false
     @State private var trialError: String?
     /// Set when the trial CTA has waited long enough for RevenueCat that a
@@ -2382,40 +2379,6 @@ private struct OnboardingSheet: View {
     /// Emergency fallback: presented only when the onboarding package failed to load,
     /// so the primary CTA is never a dead disabled button.
     @State private var showPaywallFallback = false
-
-    /// The customer's real maintenance figure, read at the pitch step from the
-    /// history already sitting in HealthKit. Separate from `energyTDEE`, which
-    /// is gated on the paid toggle and is therefore always nil during
-    /// onboarding.
-    ///
-    /// This is what makes arm `c` honest. `fetchEnergyAverages` looks back 30
-    /// days and needs 7 completed ones, and anyone arriving with an Apple Watch
-    /// or an iPhone they have carried for a week already has them. So the
-    /// number is real, it is theirs, and it exists before they subscribe. What
-    /// Vitals+ sells is access to it, which is a thing a lock can honestly
-    /// cover. `nil` means they genuinely have too little history, and the card
-    /// falls back to saying exactly that.
-    @State private var pitchMaintenance: EnergyAveragesResult? = nil
-
-    /// The arm this customer is actually shown, fixed once by
-    /// `resolveOnboardingArm` on the way into the trial step. See
-    /// `onboardingArm`.
-    @State private var resolvedArm: OnboardingPitchVariant? = nil
-
-
-
-    /// Read the real maintenance figure for the onboarding pitch. Deliberately
-    /// not gated on `showEnergyAverages`: nobody is Pro at this point, and the
-    /// whole argument of arm `c` is that the number already exists.
-    private func loadPitchMaintenance() async {
-        #if DEBUG
-        if let override = DebugLaunchConfig.pitchMaintenanceOverride {
-            pitchMaintenance = override
-            return
-        }
-        #endif
-        pitchMaintenance = try? await healthKit.fetchEnergyAverages()
-    }
 
     private var calValid: Bool {
         !wantCalGoal || (Double(calText).map { (500...50000).contains($0) } ?? false)
@@ -2451,7 +2414,9 @@ private struct OnboardingSheet: View {
                         // pitch never carried, and an arm that does not fit
                         // has nowhere to go: `b`, `c`, and `e` drew their
                         // headline off the top of the sheet, over the dimmed
-                        // background, unreachable by any gesture.
+                        // background, unreachable by any gesture. Those arms
+                        // are gone in 1.8.5, but large Dynamic Type can still
+                        // overflow this page, so the guard stays.
                         //
                         // ViewThatFits asks the question instead of assuming
                         // an answer. First branch is the shipped layout and
@@ -2493,11 +2458,12 @@ private struct OnboardingSheet: View {
                                     finishOnboarding()
                                     return
                                 }
-                                // The arm is part of the id. One shared id would pool five
-                                // different screens into a single impression count, and
-                                // impression-to-trial per arm is what the test is for.
+                                // One pitch, one id. The arm suffix went with
+                                // the arms; this is the id the historical
+                                // `pitch_views_onboarding_trial` series is keyed
+                                // on, so the restore stays comparable to it.
                                 store.trackPaywallImpression(
-                                    id: "vitals_onboarding_trial_\(onboardingArm.rawValue)",
+                                    id: "vitals_onboarding_trial",
                                     oncePerSession: true
                                 )
                             }
@@ -2518,7 +2484,6 @@ private struct OnboardingSheet: View {
                                 Group {
                                     switch step {
                                     case .welcome: welcomePage
-                                    case .food: foodPage
                                     case .goals: goalsPage
                                     case .trial: EmptyView()
                                     }
@@ -2595,9 +2560,9 @@ private struct OnboardingSheet: View {
                     .shadow(color: .black.opacity(0.10), radius: 6, y: -2)
                     .transition(.opacity)
                     // On the bar alone. Hung on the ZStack it covered the whole
-                    // onboarding tree, including the CTA and its repeatForever
-                    // halo, and an ancestor animation over a repeating one is
-                    // exactly the context leak `CTAGlow` already warns about.
+                    // onboarding tree, including the CTA, and an ancestor
+                    // animation over the whole sheet moved things that had no
+                    // business moving.
                     .animation(.easeInOut(duration: 0.2), value: focusedGoal)
                 }
             }
@@ -2630,24 +2595,23 @@ private struct OnboardingSheet: View {
         dismiss()
     }
 
-    /// Fire the HealthKit prompt once, when the user leaves the food question —
+    /// Fire the HealthKit prompt once, when the user leaves the welcome screen —
     /// never on appear, so the first thing they see is our heads-up rather than
     /// the system permission sheet.
     ///
-    /// One sheet, carrying the food types too when the answer was yes. Asking
-    /// twice was the old shape, and it only existed because the second request
-    /// would have mixed already-determined types with new ones. Asking after
-    /// the question instead of before it means nothing is determined yet, so
-    /// the whole set can go in one prompt.
+    /// One sheet, carrying the dietary types too. The food question that used to
+    /// gate them is gone with the 1.7.5 restore, so there is no answer left to
+    /// branch on and nothing is determined yet at this point either way: the
+    /// whole set goes in a single prompt, which is the 1.7.4/1.7.5 behaviour.
     ///
-    /// The trade this makes: a blanket Don't Allow now costs calories and steps
-    /// as well as food. Per-type toggles are unaffected, and the alternative was
-    /// a second system sheet in the middle of setup.
-    private func requestHealthAccessIfNeeded(includeFood: Bool) async {
+    /// The trade this makes: a blanket Don't Allow costs calories and steps as
+    /// well as food. Per-type toggles are unaffected, and the alternative was a
+    /// second system sheet in the middle of setup.
+    private func requestHealthAccessIfNeeded() async {
         guard !hasRequestedHealthAccess else { return }
         hasRequestedHealthAccess = true
         do {
-            try await HealthKitService.shared.requestAuthorization(includeFood: includeFood)
+            try await HealthKitService.shared.requestAuthorization(includeFood: true)
             // Warm the SwiftData cache in the background while the user finishes
             // picking goals, so the dashboard can paint from cache the instant
             // onboarding dismisses instead of waiting on a cold HealthKit read.
@@ -2765,20 +2729,16 @@ private struct OnboardingSheet: View {
     /// and the Terms/Privacy/Restore row, both real on the trial page and
     /// invisible placeholders of identical height elsewhere), so the CTA frame
     /// is pixel-identical on every page (Rev A zero-shift requirement).
-    /// Page-specific content (trust line, soft exit) sits ABOVE the button,
-    /// where variable height is fine because it never moves the bottom-pinned
-    /// button.
+    /// Page-specific content (trust line, soft exit, the billing disclosure)
+    /// sits ABOVE the button, where variable height is fine because it never
+    /// moves the bottom-pinned button.
     private var bottomBar: some View {
         VStack(spacing: 12) {
             aboveButtonSlot
 
-            primaryButton
-
-            // Terms of the charge, then the links, both under the button they
-            // describe. This is the order the Upgrade tab already reads in;
-            // onboarding was the one purchase point that put the disclosure
-            // above the button, which made the CTA look like a footnote to it.
             billingDisclosureSlot
+
+            primaryButton
 
             // Fixed legal-footer slot. Identical view on every page so its height
             // never changes; only visible + interactive on the trial page.
@@ -2799,19 +2759,12 @@ private struct OnboardingSheet: View {
     private var aboveButtonSlot: some View {
         aboveButtonContent
             .frame(minHeight: 46, alignment: .bottom)
-            // Distance between the soft exit and the CTA, bought here rather
-            // than by moving the billing disclosure back above the button (the
-            // arrangement aa41446 deliberately undid). Applied on every page,
-            // so the CTA's y moves by the same 10pt everywhere and the
-            // zero-shift invariant survives.
-            .padding(.bottom, 10)
     }
 
     @ViewBuilder
     private var aboveButtonContent: some View {
         switch step {
         case .welcome: welcomeTrustLine
-        case .food: foodPrivacyLine
         case .goals: EmptyView()
         case .trial: trialSoftExitAndError
         }
@@ -2822,19 +2775,13 @@ private struct OnboardingSheet: View {
         switch step {
         case .welcome:
             Button {
-                withAnimation(.easeInOut(duration: 0.25)) { step = .food }
+                // The one permission prompt, fired on the way out of welcome so
+                // it lands over the goals page. 1.7.5 shape.
+                Task { await requestHealthAccessIfNeeded() }
+                withAnimation(.easeInOut(duration: 0.25)) { step = .goals }
             } label: {
                 primaryLabel("Continue")
             }
-            .padding(.horizontal, 24)
-        case .food:
-            Button {
-                commitFoodAnswerAndContinue()
-            } label: {
-                primaryLabel("Continue", enabled: logsFoodChoice != nil)
-            }
-            .disabled(logsFoodChoice == nil)
-            .opacity(logsFoodChoice == nil ? 0.5 : 1)
             .padding(.horizontal, 24)
         case .goals:
             Button {
@@ -2848,26 +2795,17 @@ private struct OnboardingSheet: View {
                 } else {
                     goals.stepGoal = nil
                 }
-                // The arm is chosen here rather than on the next page, so the
-                // trial step opens on one pitch and stays on it. See
-                // `resolveOnboardingArm`.
-                resolveOnboardingArm()
                 // Goals are saved, but onboarding continues. The primary stays
                 // in the same coral slot on every page.
-                //
                 withAnimation(.easeInOut(duration: 0.25)) { step = .trial }
             } label: {
-                // Glow off while the number pad is up. The keyboard is
-                // translucent, and a breathing halo behind it read as a stray
-                // pink highlight on the 7/8/9 row. Same rule the disabled state
-                // already follows: no halo around a button nobody can press.
-                //
-                // The button itself stays fully opaque. Fading it out cleaned
-                // up the last of the bleed, but a transparent live button is
-                // not an interaction model worth having: XCUITest stopped
-                // calling it hittable, which is the same signal assistive tech
-                // would get.
-                primaryLabel("Continue", enabled: calValid && stepValid && focusedGoal == nil)
+                // The button stays fully opaque while the number pad is up.
+                // Fading it out cleaned up some bleed from the old glow, but a
+                // transparent live button is not an interaction model worth
+                // having: XCUITest stopped calling it hittable, which is the
+                // same signal assistive tech would get. The glow that made the
+                // bleed is gone with the 1.7.5 restore.
+                primaryLabel("Continue")
             }
             .disabled(!calValid || !stepValid)
             .opacity(calValid && stepValid ? 1 : 0.5)
@@ -2877,7 +2815,7 @@ private struct OnboardingSheet: View {
                 startTrial()
             } label: {
                 ZStack {
-                    primaryLabel(trialCTALabel, enabled: !isStartingTrial && trialCTAEnabled)
+                    primaryLabel(trialCTALabel)
                         .opacity(isStartingTrial || !trialCTAEnabled ? 0 : 1)
                     if isStartingTrial || !trialCTAEnabled {
                         ProgressView().tint(.white)
@@ -2887,96 +2825,6 @@ private struct OnboardingSheet: View {
             .disabled(isStartingTrial || !trialCTAEnabled)
             .padding(.horizontal, 24)
         }
-    }
-
-    // MARK: Food step
-
-    /// Asks the one thing HealthKit will not answer: does this person log food
-    /// anywhere that reaches Apple Health?
-    ///
-    /// Net Deficit and Macros both read dietary data. Pitching them to someone
-    /// who logs nothing sells a permanently empty screen, and the app cannot
-    /// detect that case on its own: read authorization is unreadable by design,
-    /// and an empty dietary query means "denied" and "logs nothing" equally.
-    ///
-    /// It sits before goals so the answer is known while HealthKit is still
-    /// untouched, which is what lets a yes fold dietary energy and the three
-    /// macronutrients into the same permission sheet as calories and steps
-    /// instead of earning a second one.
-    private var foodPage: some View {
-        VStack(spacing: 28) {
-            VStack(spacing: 12) {
-                Image(systemName: "fork.knife")
-                    .font(.system(size: 56))
-                    .foregroundStyle(Theme.macrosBrand)
-                Text("Do you log your food?")
-                    .font(.system(.largeTitle, design: .rounded, weight: .bold))
-                    .multilineTextAlignment(.center)
-                Text("In MyFitnessPal, Lose It!, Cronometer, or anything else that saves to Apple Health.")
-                    .font(.system(.subheadline, design: .rounded))
-                    .foregroundStyle(Theme.textSecondary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-
-            VStack(spacing: 12) {
-                FoodAnswerCard(
-                    title: "Yes, I log my food",
-                    detail: "We'll show your net calories and macros",
-                    icon: "checkmark.circle.fill",
-                    tint: Theme.macrosBrand,
-                    isSelected: logsFoodChoice == true
-                ) {
-                    logsFoodChoice = true
-                }
-                FoodAnswerCard(
-                    title: "No, just track my burn",
-                    detail: "Calories and steps only. You can change this later.",
-                    icon: "flame.fill",
-                    tint: Theme.caloriesPrimary,
-                    isSelected: logsFoodChoice == false
-                ) {
-                    logsFoodChoice = false
-                }
-            }
-        }
-    }
-
-    /// Sits in the same slot as the welcome page's trust line, so the primary
-    /// button does not move between pages.
-    private var foodPrivacyLine: some View {
-        HStack(spacing: 5) {
-            Image(systemName: "lock.fill")
-                .font(.system(size: 10, weight: .semibold))
-                .foregroundStyle(Theme.stepsPrimary)
-            Text("Read-only, and only if you say yes.")
-                .font(.system(.caption2, design: .rounded))
-                .foregroundStyle(Theme.textTertiary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .padding(.horizontal, 24)
-        .accessibilityElement(children: .combine)
-    }
-
-    /// Saves the answer and moves to goals, with the one HealthKit prompt firing
-    /// over that page. Not awaited: the system sheet is what the user should be
-    /// looking at, and holding them on the food question behind a spinner just
-    /// puts a blank step between the answer and the permission it earned.
-    private func commitFoodAnswerAndContinue() {
-        guard let choice = logsFoodChoice else { return }
-        goals.logsFoodInHealth = choice
-        // The permission request goes first and nothing is allowed in front of
-        // it. It used to sit behind a RevenueCat call on the main actor, and on
-        // a real device the system sheet turned up late enough to land on the
-        // paywall instead of here.
-        Task { await requestHealthAccessIfNeeded(includeFood: choice) }
-        // RevenueCat second, and off the main actor's critical path. This answer
-        // is the audience key the Upgrade-tab experiment splits on and has to be
-        // on the customer before offerings are assigned, but it is in no hurry.
-        // See `StoreService.recordLogsFood`.
-        Task { store.recordLogsFood(choice) }
-        withAnimation(.easeInOut(duration: 0.25)) { step = .goals }
     }
 
     private var welcomeTrustLine: some View {
@@ -3012,13 +2860,13 @@ private struct OnboardingSheet: View {
         }
     }
 
-    /// The Apple 3.1.2 disclosure, under the button it describes.
+    /// The Apple 3.1.2 disclosure, above the button it describes (1.7.5 order).
     ///
     /// Always laid out, on every page and whether or not StoreKit has answered,
     /// and only made visible on the trial step. Reserving the space
-    /// unconditionally is what lets it sit below the CTA at all: anything below
-    /// the button decides the button's y, so a slot that appeared when products
-    /// loaded would walk the CTA up mid-onboarding.
+    /// unconditionally is what keeps the CTA's y identical across pages: a slot
+    /// that appeared only when products loaded would walk the button down
+    /// mid-onboarding.
     private var billingDisclosureSlot: some View {
         let isReal = step == .trial && store.onboardingTrialDisclosureText != nil
         return Text(store.onboardingTrialDisclosureText ?? Self.disclosureHeightPlaceholder)
@@ -3047,25 +2895,24 @@ private struct OnboardingSheet: View {
     /// hidden: same plain label, a full 44pt tap target, still a real choice to
     /// anyone looking.
     ///
-    /// Sized against the two fleet apps that convert trials best. Mahj Trainer
-    /// (31.5% trial starts, 55.4% trial-to-paid) draws this at 15pt medium,
-    /// intrinsic width, with the disclosure slot holding it ~46pt off the CTA;
-    /// StatScout (19.4% / 51.9%) uses a wider label but pushes it ~130pt away
-    /// behind four intervening rows. Neither puts a full-width secondary
-    /// immediately above the button. This one used to do exactly that, which
-    /// read as the second half of a two-button stack. It now hugs its text and
-    /// keeps its distance instead.
+    /// Restored to the 1.7.4/1.7.5 geometry: full width, subheadline semibold,
+    /// directly above the CTA. The fleet soft-exit benchmark argues against
+    /// exactly this shape (neither Mahj nor StatScout puts a full-width
+    /// secondary immediately above the button), and it is kept anyway: this is
+    /// the arrangement that ran at 21% trial starts here, measured on this app,
+    /// which outranks a cross-app heuristic.
     private var softExitSlot: some View {
         Button {
             finishOnboarding()
         } label: {
             Text("Get Started")
-                .font(.system(.footnote, design: .rounded).weight(.medium))
+                .font(.system(.subheadline, design: .rounded, weight: .semibold))
                 .foregroundStyle(Theme.textSecondary)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 13)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 8)
         }
         .buttonStyle(.plain)
+        .padding(.horizontal, 24)
     }
 
     /// Terms / Privacy / Restore beside the purchase point. Rendered on every
@@ -3099,618 +2946,77 @@ private struct OnboardingSheet: View {
 
     // MARK: Trial step
 
-    /// What the onboarding pitch leads with, decided by the food question.
+    /// The four things Vitals+ adds, in the order 1.7.4/1.7.5 shipped them.
     ///
-    /// Net Deficit and Macros are the two strongest features in the tier and the
-    /// two that read as an empty screen to anyone who logs no food. Selling them
-    /// to that person is not a weaker pitch, it is a promise the app cannot keep,
-    /// so they get the three features that work off burn data alone. `nil`
-    /// (installs that predate the question) keeps the old mixed list.
-    /// Feature rows, written as the thing the customer ends up seeing rather
-    /// than the capability's name. "Deeper trends" tells nobody anything; "your
-    /// settled maintenance burn, and how it shifts week to week" is the same
-    /// row doing work. Outcome framing over feature framing is the one paywall
-    /// finding that reproduces across every teardown of this category.
-    ///
-    /// Still segment-aware. Net deficit and macros are worth nothing to someone
-    /// who logs no food, which is why the rows fork on the answer given two
-    /// steps back rather than shipping one list to everybody.
-    /// Arm `a`'s rows: the same catalogue, trimmed to the segment. Net deficit
-    /// and macros are worth nothing to someone who logs no food, which is why
-    /// this forks on the answer given two steps back rather than shipping one
-    /// list to everybody.
-    ///
-    /// Four, not five. The fifth row was the one nobody read, and cutting it
-    /// buys the vertical space the chips need on the smallest phone.
+    /// One list for everyone. The food question is gone, so there is no segment
+    /// to fork on. This is the list that ran at 21% trial starts across 1.7.4
+    /// and 1.7.5 (29 of 138 installs) against 7.9% for the version before it
+    /// and 7.3% for 1.8.3.
     private var trialSellingPoints: [TrialPoint] {
-        switch goals.logsFoodInHealth {
-        case true:
-            return pitchRows(["Net deficit", "Macros", "Goal streaks", "End-of-day projection"])
-        case false:
-            return pitchRows(["Deeper trends", "End-of-day projection", "Goal streaks", "Active vs. resting"])
-        case nil:
-            return pitchRows(["Deeper trends", "End-of-day projection", "Goal streaks", "Summary reports"])
-        }
+        [
+            TrialPoint(icon: "plus.forwardslash.minus", color: Theme.caloriesPrimary,
+                       title: "Net deficit",
+                       detail: "Burned minus food logged in Apple Health"),
+            TrialPoint(icon: "flame.fill", color: Theme.streakPrimary,
+                       title: "Streaks & projections",
+                       detail: "Keep the chain and see end-of-day pace"),
+            TrialPoint(icon: "chart.line.uptrend.xyaxis", color: Theme.stepsPrimary,
+                       title: "Deeper trends",
+                       detail: "TDEE, BMR, and period comparisons"),
+            TrialPoint(icon: "doc.richtext.fill", color: Theme.netDeficitBrand,
+                       title: "Summary reports",
+                       detail: "Export a PDF for any date range"),
+        ]
     }
 
-    /// Rows for the arms that carry their own hero card. A card already makes
-    /// one argument in full, so the rows under it are the supporting cast and
-    /// are chosen per arm rather than sliced off the general list, which is how
-    /// arm `c` ended up advertising macros to people who log no food.
-    private func pitchRows(_ titles: [String]) -> [TrialPoint] {
-        // Looked up from the full catalogue, never filtered out of
-        // `trialSellingPoints`: that list is already segment-trimmed, so
-        // filtering it silently dropped any row the segment did not carry and
-        // shipped arm `c` with two rows instead of three.
-        titles.compactMap { title in Self.pitchCatalogue.first { $0.title == title } }
-    }
-
-    /// Every row any arm can ask for. `trialSellingPoints` picks arm `a`'s
-    /// segment-aware subset out of the same definitions.
-    private static let pitchCatalogue: [TrialPoint] = [
-        TrialPoint(icon: "plus.forwardslash.minus", color: Theme.caloriesPrimary,
-                   title: "Net deficit",
-                   detail: "Burned minus what you log in Health, so you see today's balance"),
-        TrialPoint(icon: "chart.pie.fill", color: Theme.macrosBrand,
-                   title: "Macros",
-                   detail: "Protein, carbs, and fat, from the food you already log"),
-        TrialPoint(icon: "chart.line.uptrend.xyaxis", color: Theme.stepsPrimary,
-                   title: "Deeper trends",
-                   detail: "Your settled maintenance burn, and how it shifts week to week"),
-        TrialPoint(icon: "flame.fill", color: Theme.streakPrimary,
-                   title: "Goal streaks",
-                   detail: "Every day you hit your goal keeps the streak alive"),
-        TrialPoint(icon: "doc.richtext.fill", color: Theme.netDeficitBrand,
-                   title: "Summary reports",
-                   detail: "Export any date range as a PDF, for a coach or your own records"),
-        TrialPoint(icon: "chart.xyaxis.line", color: Theme.stepsSecondary,
-                   title: "End-of-day projection",
-                   detail: "A running estimate of where today lands at your current pace"),
-        TrialPoint(icon: "bolt.heart.fill", color: Theme.caloriesSecondary,
-                   title: "Active vs. resting",
-                   detail: "How much of each day's burn you actually moved for"),
-    ]
-
-    private var trialHeadline: String {
-        goals.logsFoodInHealth == false ? "Go further with Vitals+" : "Your food, in the picture"
-    }
-
-    private var trialSubheadline: String {
-        goals.logsFoodInHealth == false
-            ? "Deeper numbers on top of your daily calories and steps."
-            : "Everything you log already, sitting next to what you burn."
-    }
-
-    /// Which pitch this customer gets. Resolved from the RevenueCat routing
-    /// table against their food answer, which `commitFoodAnswerAndContinue` has
-    /// already written two steps back.
+    /// Final onboarding step, restored to the 1.7.4/1.7.5 pitch.
     ///
-    /// Read from `resolvedArm`, which is fixed once on the way into this step.
-    /// Recomputing per draw let a slow launch draw the fallback, send the
-    /// impression for it, and then redraw as the treatment when the offering
-    /// landed: RevenueCat held an impression for one arm while the customer
-    /// read another. The stored value is what both the screen and the
-    /// impression use, so they cannot disagree. `resolveOnboardingArm` has
-    /// always run before this step draws; the recompute is a belt-and-braces
-    /// fallback, not a path anything takes.
-    private var onboardingArm: OnboardingPitchVariant {
-        resolvedArm ?? store.onboardingPitchVariant(logsFood: goals.logsFoodInHealth)
-    }
-
-    /// Fix the arm for this run of onboarding, before the trial page can draw.
+    /// Glyph, headline, subtitle, four rows. No example card, no hero, no arm
+    /// switch: every version that carried one converted at roughly half this
+    /// page's rate, and the arms are gone with the food question that segmented
+    /// them.
     ///
-    /// Called from the goals step's Continue, which is the last moment the
-    /// offering has to arrive: `recordLogsFood` kicked off a refetch a step
-    /// earlier, and the goal fields are what buys it the time. If it still has
-    /// not answered, the table parses as `.disabled` and this pins `.current`,
-    /// the shipping pitch. Pinned either way, because an arm that changes under
-    /// the reader is worse than a fallback that was chosen honestly.
-    private func resolveOnboardingArm() {
-        guard resolvedArm == nil else { return }
-        resolvedArm = store.onboardingPitchVariant(logsFood: goals.logsFoodInHealth)
-    }
-
-    /// Final onboarding step. Five arms, all of which keep the same header, CTA
-    /// bar and soft exit: only the body between them changes.
-    ///
-    /// Nothing on this screen may present an invented figure as the customer's
-    /// own. HealthKit access is seconds old here and the app has computed
-    /// nothing, so every arm that shows a number either captions it as an
-    /// example or, in arm `c`, refuses to draw a number at all.
-    ///
-    /// `minGap` is the floor on the two Spacers that centre this page. It is 0
+    /// `minGap` is the floor on the two Spacers that centre the page. It is 0
     /// on the branch that has to fit, so the fit test measures the pitch and
     /// not the padding around it, and 8 on the scrolling branch, where the
     /// Spacers never centre anything and the top one is simply the gap under
-    /// the sheet's rounded edge. Either way the centring below is unchanged.
+    /// the sheet's rounded edge. This pitch fits on every phone at default
+    /// type, so the reader branch is reached only at large Dynamic Type; it is
+    /// kept because an unreachable headline is the one failure this page had.
     private func trialPage(minGap: CGFloat) -> some View {
         VStack(spacing: 0) {
             Spacer(minLength: minGap)
 
-            VStack(spacing: onboardingArm == .current ? 18 : 14) {
-                switch onboardingArm {
-                case .current:
-                    pitchHeader(
-                        "Everything Vitals+ adds",
-                        "The deficit, streaks, and projections it builds from the calories you already track."
-                    )
-                    pitchStatChips
-                    pitchPoints(trialSellingPoints)
+            VStack(spacing: 18) {
+                Image(systemName: "sparkles")
+                    .font(.system(size: 44))
+                    .foregroundStyle(Theme.caloriesGradient)
 
-                case .macroFood:
-                    pitchHeader(
-                        "Your food, against your burn",
-                        "You log the food already. This is the number that comes out when it meets your burn."
-                    )
-                    joinedDayCard
-                    pitchPoints(pitchRows(["Net deficit", "Macros", "Goal streaks"]))
+                VStack(spacing: 6) {
+                    Text("Go further with Vitals+")
+                        .font(.system(.title, design: .rounded, weight: .bold))
+                        .multilineTextAlignment(.center)
+                    Text("Extras that sit on top of your daily calories and steps.")
+                        .font(.system(.subheadline, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
 
-                case .lockedNumbers:
-                    if let tdee = pitchMaintenance?.tdee, tdee > 0 {
-                        pitchHeader(
-                            "We know your maintenance",
-                            "Worked out from the history already in Health. Vitals+ is what shows it to you."
-                        )
-                    } else {
-                        pitchHeader(
-                            "Your numbers, still building",
-                            "Vitals+ works out your maintenance and burn split as your Health data arrives."
+                VStack(alignment: .leading, spacing: 12) {
+                    ForEach(trialSellingPoints, id: \.title) { point in
+                        TrialSellingPoint(
+                            icon: point.icon,
+                            color: point.color,
+                            title: point.title,
+                            detail: point.detail
                         )
                     }
-                    buildingNumbersCard
-                    pitchPoints(pitchRows(["Goal streaks", "End-of-day projection", "Summary reports"]))
-
-                case .twoWeeks:
-                    pitchHeader(
-                        "Your burn, week against week",
-                        "Vitals+ reads one week against the last, so you see it climb, hold, or fall."
-                    )
-                    weekOverWeekCard
-                    pitchPoints(pitchRows(["Goal streaks", "Active vs. resting", "Deeper trends"]))
-
-                case .twoWeeksFood:
-                    pitchHeader(
-                        "Your burn, minus your food",
-                        "The same week-against-week read, plus the net deficit from what you log."
-                    )
-                    VStack(spacing: 0) {
-                        weekOverWeekCard
-                        netAfterFoodStrip
-                    }
-                    pitchPoints(pitchRows(["Net deficit", "Macros"]))
                 }
             }
 
             Spacer(minLength: minGap)
         }
-        .task(id: onboardingArm) {
-            guard onboardingArm == .lockedNumbers, pitchMaintenance == nil else { return }
-            await loadPitchMaintenance()
-        }
-    }
-
-    /// Arm `a`'s hero. Three chips, not a chart: this arm is the lean one, and
-    /// what it was missing was not a graph but any evidence at all that the
-    /// tier produces numbers. A decorative glyph produced none.
-    ///
-    /// The caption is a full sentence rather than the all-caps label the cards
-    /// use, because these chips sit loose on the page with no card edge to tell
-    /// the reader where the example stops.
-    private var pitchStatChips: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            pitchCardHead("EXAMPLE · WHAT VITALS+ ADDS")
-            HStack(spacing: 10) {
-                pitchStatChip("plus.forwardslash.minus", "−412", "Net deficit", Theme.netDeficitBrand)
-                pitchStatChip("flame.fill", "6", "Day streak", Theme.streakPrimary)
-                pitchStatChip("chart.pie.fill", "156g", "Protein", Theme.proteinPrimary)
-            }
-            pitchCardFoot(nil, "Example numbers. Yours build from your own Health data.")
-        }
-        .padding(Theme.cardPadding)
-        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Example Vitals Plus numbers: net deficit 412, six day streak, 156 grams of protein. These are examples, not your numbers.")
-    }
-
-    private func pitchStatChip(_ icon: String, _ value: String, _ caption: String, _ color: Color) -> some View {
-        VStack(spacing: 3) {
-            Image(systemName: icon)
-                .font(.system(size: 13, weight: .bold))
-                .foregroundStyle(color)
-            Text(value)
-                .font(.system(.title3, design: .rounded, weight: .bold))
-                .monospacedDigit()
-            Text(caption)
-                .font(.system(.caption2, design: .rounded, weight: .semibold))
-                .foregroundStyle(Theme.textSecondary)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 11)
-        .background(color.opacity(0.10), in: RoundedRectangle(cornerRadius: 14))
-    }
-
-    private func pitchHeader(_ title: String, _ subtitle: String) -> some View {
-        VStack(spacing: 6) {
-            Text(title)
-                .font(.system(.title, design: .rounded, weight: .bold))
-                .multilineTextAlignment(.center)
-                .minimumScaleFactor(0.75)
-                .fixedSize(horizontal: false, vertical: true)
-            Text(subtitle)
-                .font(.system(.subheadline, design: .rounded))
-                .foregroundStyle(Theme.textSecondary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-    }
-
-    private func pitchPoints(_ points: [TrialPoint]) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            ForEach(points, id: \.title) { point in
-                TrialSellingPoint(
-                    icon: point.icon,
-                    color: point.color,
-                    title: point.title,
-                    detail: point.detail
-                )
-            }
-        }
-    }
-
-    /// Caption every hero card carries. The word "example" is not decoration:
-    /// these are not this user's numbers and must never read as if they were.
-    /// The head of every hero card: the caption on the left, and on the right
-    /// the single anchor this card hangs on, either the customer's own goal or
-    /// the one figure the card exists to deliver. One slot, one meaning, same
-    /// place on all five arms.
-    private func pitchCardHead(_ caption: String, badge: AnyView? = nil) -> some View {
-        HStack(alignment: .firstTextBaseline, spacing: 8) {
-            pitchCardLabel(caption)
-            if let badge { badge }
-        }
-    }
-
-    /// The foot of every hero card: one line, one weight, always present. It
-    /// says how the number above it is arrived at, which is the sentence each
-    /// arm was otherwise burying somewhere different.
-    private func pitchCardFoot(_ icon: String?, _ text: String) -> some View {
-        HStack(alignment: .firstTextBaseline, spacing: 6) {
-            if let icon {
-                Image(systemName: icon)
-                    .font(.system(size: 10, weight: .bold))
-            }
-            Text(text)
-                .font(.system(.caption2, design: .rounded, weight: .medium))
-                .fixedSize(horizontal: false, vertical: true)
-            Spacer(minLength: 0)
-        }
-        .foregroundStyle(Theme.textTertiary)
-    }
-
-    private func pitchAnchorBadge(_ text: String, _ color: Color, filled: Bool = false) -> AnyView {
-        AnyView(
-            Text(text)
-                .font(.system(.caption2, design: .rounded, weight: .bold))
-                .monospacedDigit()
-                .foregroundStyle(filled ? .white : color)
-                .padding(.horizontal, 9)
-                .padding(.vertical, 4)
-                .background(filled ? AnyShapeStyle(color) : AnyShapeStyle(color.opacity(0.13)), in: Capsule())
-                .fixedSize()
-        )
-    }
-
-    private func pitchCardLabel(_ text: String) -> some View {
-        Text(text)
-            .font(.system(.caption2, design: .rounded, weight: .bold))
-            .foregroundStyle(Theme.textTertiary)
-            .lineLimit(1)
-            .minimumScaleFactor(0.8)
-            .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    /// Arm `b`. The audience already owns a macro tracker, so a macro donut is
-    /// a worse copy of a screen they have open in another app. What no food
-    /// logger can draw is the join: their intake against a burn figure that
-    /// only HealthKit has. So the card draws both bars on one scale and makes
-    /// the gap between them the subject, with the macro grams demoted to chips.
-    private var joinedDayCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            pitchCardHead("EXAMPLE · ONE DAY, JOINED",
-                          badge: pitchAnchorBadge("GOAL −500", Theme.netDeficitBrand))
-
-            VStack(spacing: 1) {
-                Text("−480")
-                    .font(.system(size: 42, weight: .bold, design: .rounded))
-                    .foregroundStyle(Theme.netDeficitBrand)
-                    .monospacedDigit()
-                Text("NET DEFICIT")
-                    .font(.system(.caption2, design: .rounded, weight: .bold))
-                    .foregroundStyle(Theme.textTertiary)
-            }
-            .frame(maxWidth: .infinity)
-
-            // Both bars share one scale, so the difference in length is the
-            // deficit rather than a ratio the reader has to work out.
-            VStack(spacing: 9) {
-                joinedBar("flame.fill", "Burned", "2,320", 2320.0 / 2600.0, Theme.caloriesPrimary)
-                joinedBar("fork.knife", "Logged", "1,840", 1840.0 / 2600.0, Theme.macrosBrand)
-            }
-
-            HStack(spacing: 6) {
-                macroChip("P", "156g", Theme.proteinPrimary)
-                macroChip("C", "202g", Theme.carbsPrimary)
-                macroChip("F", "45g", Theme.fatPrimary)
-            }
-
-            pitchCardFoot(nil, "Burned minus what you log, worked out for you every day.")
-        }
-        .padding(Theme.cardPadding)
-        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Example of one day joined: 2,320 calories burned against 1,840 logged as food, a net deficit of 480 against a goal of 500.")
-    }
-
-    private func joinedBar(
-        _ icon: String,
-        _ label: String,
-        _ value: String,
-        _ fraction: CGFloat,
-        _ color: Color
-    ) -> some View {
-        HStack(spacing: 9) {
-            Image(systemName: icon)
-                .font(.system(size: 11, weight: .bold))
-                .foregroundStyle(color)
-                .frame(width: 16)
-            GeometryReader { geo in
-                ZStack(alignment: .leading) {
-                    Capsule().fill(Theme.ringTrack)
-                    Capsule().fill(color).frame(width: max(6, geo.size.width * fraction))
-                }
-            }
-            .frame(height: 16)
-            Text(value)
-                .font(.system(.caption, design: .rounded, weight: .bold))
-                .foregroundStyle(color)
-                .monospacedDigit()
-                .frame(width: 42, alignment: .trailing)
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(label) \(value) calories")
-    }
-
-    private func macroChip(_ letter: String, _ value: String, _ color: Color) -> some View {
-        HStack(spacing: 4) {
-            Text(letter)
-                .font(.system(.caption2, design: .rounded, weight: .bold))
-                .foregroundStyle(color)
-            Text(value)
-                .font(.system(.caption2, design: .rounded, weight: .semibold))
-                .foregroundStyle(Theme.textSecondary)
-                .monospacedDigit()
-        }
-        .padding(.horizontal, 9)
-        .padding(.vertical, 5)
-        .background(color.opacity(0.12), in: Capsule())
-    }
-
-    /// Arm `c`, rebuilt. The old version blurred an invented 2,340 under a
-    /// headline calling it "your own" number, which is a claim the app cannot
-    /// make seconds after being granted HealthKit access.
-    ///
-    /// A blur only earns a subscription when it hides something the reader
-    /// already knows exists and already wants. There was nothing behind this
-    /// one, so it is gone. What replaces it says the true thing instead: the
-    /// number does not exist yet, here is exactly which two numbers are coming,
-    /// and here is what has to happen first. The only crisp figure on the card
-    /// is the goal the customer typed one screen ago, which is real, and the
-    /// contrast between it and the placeholders is the whole argument.
-    private var buildingNumbersCard: some View {
-        let result = pitchMaintenance
-        let tdee = (result?.tdee).flatMap { $0 > 0 ? $0 : nil }
-        let bmr = (result?.bmr).flatMap { $0 > 0 ? $0 : nil }
-        let days = result?.sampleDays ?? 0
-
-        return VStack(alignment: .leading, spacing: 12) {
-            pitchCardHead(
-                tdee != nil ? "YOUR MAINTENANCE · \(days)-DAY AVERAGE" : "MAINTENANCE & BURN SPLIT",
-                badge: (goals.calorieGoal ?? 0) > 0
-                    ? pitchAnchorBadge("GOAL \(Int(goals.calorieGoal ?? 0).formatted())", Theme.caloriesPrimary)
-                    : nil
-            )
-
-            if let tdee {
-                // Blurring this is honest: the figure is real, it is computed
-                // from the customer's own Health history, and what the lock
-                // covers is access rather than existence. That is the one
-                // condition under which a locked preview is not a gimmick.
-                ZStack {
-                    Text(Int(tdee.rounded()).formatted())
-                        .font(.system(size: 42, weight: .bold, design: .rounded))
-                        .foregroundStyle(Theme.caloriesPrimary)
-                        .monospacedDigit()
-                        .blur(radius: 6)
-                        .accessibilityHidden(true)
-                    HStack(spacing: 5) {
-                        Image(systemName: "lock.fill").font(.system(size: 10, weight: .bold))
-                        Text("Unlock")
-                            .font(.system(.caption, design: .rounded, weight: .bold))
-                    }
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background(.ultraThinMaterial, in: Capsule())
-                    .offset(y: 22)
-                }
-                .frame(maxWidth: .infinity)
-            } else {
-                skeletonBlock(width: 150, height: 42, radius: 12)
-                    .frame(maxWidth: .infinity)
-            }
-
-            VStack(spacing: 0) {
-                Divider().overlay(Theme.ringTrack)
-                buildingSubRow("Resting (BMR)", Theme.restingPrimary, value: bmr)
-                buildingSubRow("Active", Theme.activePrimary,
-                               value: (tdee != nil && bmr != nil) ? max(0, tdee! - bmr!) : nil)
-            }
-
-            pitchCardFoot(
-                "lock.fill",
-                tdee != nil
-                    ? "Already worked out from \(days) days in Health. Vitals+ shows it."
-                    : "Unlocks with Vitals+ once a week of Health data is in."
-            )
-        }
-        .padding(Theme.cardPadding)
-        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(tdee != nil
-            ? "Your maintenance has already been worked out from \(days) days of Health data. Vitals Plus shows the figure."
-            : "Maintenance and burn split. Not enough Health history yet. Unlocks with Vitals Plus once a week of data is in.")
-    }
-
-    private func buildingSubRow(_ label: String, _ color: Color, value: Double?) -> some View {
-        HStack {
-            Circle().fill(color).frame(width: 7, height: 7)
-            Text(label)
-                .font(.system(.footnote, design: .rounded, weight: .medium))
-            Spacer()
-            if let value {
-                Text(Int(value.rounded()).formatted())
-                    .font(.system(.footnote, design: .rounded, weight: .bold))
-                    .monospacedDigit()
-                    .foregroundStyle(color)
-                    .blur(radius: 3.5)
-                    .accessibilityHidden(true)
-            } else {
-                skeletonBlock(width: 66, height: 14, radius: 7)
-            }
-        }
-        .padding(.vertical, 8)
-    }
-
-    private func skeletonBlock(width: CGFloat, height: CGFloat, radius: CGFloat) -> some View {
-        RoundedRectangle(cornerRadius: radius)
-            .fill(
-                LinearGradient(
-                    colors: [Theme.ringTrack, Theme.ringTrack.opacity(0.45), Theme.ringTrack],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
-            .frame(width: width, height: height)
-            .overlay(
-                RoundedRectangle(cornerRadius: radius)
-                    .stroke(Theme.textTertiary.opacity(0.18), lineWidth: 1)
-            )
-            .accessibilityHidden(true)
-    }
-
-    private static let weekOneSample: [CGFloat] = [0.62, 0.70, 0.77, 0.64, 0.74, 0.71, 0.83]
-    private static let weekTwoSample: [CGFloat] = [0.71, 0.83, 0.90, 0.76, 0.86, 0.80, 0.82]
-
-    /// Arm `d`. Fourteen bars of near-equal height under a headline promising a
-    /// trend is a chart drawn to show nothing, and a day-by-day burn chart is
-    /// roughly what the free app already draws, so the card that had to prove
-    /// the tier was worth paying for was quietly proving the opposite.
-    ///
-    /// Split into two weeks with an average line each, the drawing makes one
-    /// claim the free app never makes: the burn moved, and by how much. The
-    /// delta pill is the whole point of the card and nothing competes with it.
-    private var weekOverWeekCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            pitchCardHead("EXAMPLE · WEEK OVER WEEK",
-                          badge: pitchAnchorBadge("↗ +130/day", Theme.caloriesPrimary, filled: true))
-
-            HStack(alignment: .bottom, spacing: 16) {
-                weekCluster(Self.weekOneSample, "WEEK 1", 0.72, Theme.caloriesPrimary.opacity(0.38))
-                weekCluster(Self.weekTwoSample, "WEEK 2", 0.81, Theme.caloriesPrimary)
-            }
-
-            pitchCardFoot(nil, "Week one averaged 2,210 a day. Week two averaged 2,340.")
-        }
-        .padding(Theme.cardPadding)
-        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Example of two weeks of burn: week one averaged 2,210 calories a day, week two averaged 2,340, a rise of 130 a day.")
-    }
-
-    private func weekCluster(
-        _ sample: [CGFloat],
-        _ label: String,
-        _ average: CGFloat,
-        _ color: Color
-    ) -> some View {
-        VStack(spacing: 7) {
-            ZStack(alignment: .bottom) {
-                HStack(alignment: .bottom, spacing: 4) {
-                    ForEach(Array(sample.enumerated()), id: \.offset) { _, height in
-                        RoundedRectangle(cornerRadius: 2.5)
-                            .fill(color)
-                            .frame(height: max(4, 66 * height))
-                    }
-                }
-                .frame(height: 66, alignment: .bottom)
-
-                // The average line is what makes the step between the two
-                // clusters readable without reading either number.
-                Rectangle()
-                    .fill(Theme.textSecondary)
-                    .frame(height: 1)
-                    .padding(.bottom, 66 * average)
-            }
-            .frame(height: 66)
-
-            Text(label)
-                .font(.system(size: 9, weight: .bold, design: .rounded))
-                .foregroundStyle(Theme.textTertiary)
-        }
-    }
-
-    private static let deficitSample: [CGFloat] = [
-        0.38, 0.56, 0.29, 0.71, 0.64, 1.00, 0.47,
-        0.82, 0.59, 0.44, 0.61, 0.68, 0.52, 0.76
-    ]
-
-    /// The one thing arm `e` adds over arm `d`, and deliberately the only thing.
-    /// The card above it is byte-identical between the two arms, so the pair
-    /// isolates the food layer rather than comparing two unrelated screens.
-    ///
-    /// It is a strip, not a second card: fourteen thin ticks hanging off a zero
-    /// line, one number, one called-out day. The version this replaces was a
-    /// second full bar chart, which doubled the visual load and delivered no
-    /// second insight.
-    private var netAfterFoodStrip: some View {
-        VStack(alignment: .leading, spacing: 9) {
-            pitchCardHead("+ NET AFTER FOOD",
-                          badge: pitchAnchorBadge("−418 avg", Theme.netDeficitBrand))
-
-            VStack(spacing: 0) {
-                Rectangle().fill(Theme.ringTrack).frame(height: 1)
-                HStack(alignment: .top, spacing: 4) {
-                    ForEach(Array(Self.deficitSample.enumerated()), id: \.offset) { index, depth in
-                        VStack(spacing: 0) {
-                            Rectangle()
-                                .fill(Theme.netDeficitBrand)
-                                .frame(width: 2, height: max(5, 28 * depth))
-                            Circle()
-                                .fill(Theme.netDeficitBrand)
-                                .frame(width: index == 5 ? 6 : 4, height: index == 5 ? 6 : 4)
-                        }
-                        .frame(maxWidth: .infinity)
-                    }
-                }
-            }
-
-            pitchCardFoot(nil, "Burned minus the food you log, over the same fourteen days. Deepest day −620.")
-        }
-        .padding(14)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Theme.netDeficitBrand.opacity(0.08), in: RoundedRectangle(cornerRadius: 14))
-        .padding(.top, 8)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Net after food: example net deficit across the same fourteen days, averaging 418 calories, deepest day 620.")
     }
 
     /// One-tap conversion: buy the onboarding plan directly (trial when eligible)
@@ -3777,71 +3083,24 @@ private struct OnboardingSheet: View {
     /// of thing than the two the user had already pressed. Identical treatment
     /// on every page is what makes the purchase read as the next step in
     /// onboarding rather than a sales interruption.
-    private func primaryLabel(_ title: String, enabled: Bool = true) -> some View {
+    /// No halo. `CTAGlow` was added after 1.7.5 (`b8ed8c9`) and is part of what
+    /// 1.8.5 is reverting, so the CTA is the flat coral slab the 21% pitch used.
+    private func primaryLabel(_ title: String) -> some View {
         Text(title)
             .font(.system(.headline, design: .rounded))
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
             .background(Theme.caloriesPrimary, in: RoundedRectangle(cornerRadius: 14))
             .foregroundStyle(.white)
-            // A halo around a button that cannot be pressed reads as a bug.
-            .modifier(OptionalCTAGlow(active: enabled))
     }
 }
 
-/// One answer on the food question. A card rather than a radio row: there are
-/// two of them, they are the only thing to do on the page, and they should read
-/// as a choice being offered rather than a form being filled in.
-/// One row of the onboarding pitch. A value type so the list can be chosen by
-/// the food answer instead of hard-coded into the view.
+/// One row of the onboarding pitch.
 private struct TrialPoint {
     let icon: String
     let color: Color
     let title: String
     let detail: String
-}
-
-private struct FoodAnswerCard: View {
-    let title: String
-    let detail: String
-    let icon: String
-    let tint: Color
-    let isSelected: Bool
-    let onTap: () -> Void
-
-    var body: some View {
-        Button(action: onTap) {
-            HStack(spacing: 14) {
-                Image(systemName: icon)
-                    .font(.system(size: 22, weight: .semibold))
-                    .foregroundStyle(isSelected ? tint : Theme.textTertiary)
-                    .frame(width: 28)
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(title)
-                        .font(.system(.headline, design: .rounded))
-                        .foregroundStyle(Theme.textPrimary)
-                        .multilineTextAlignment(.leading)
-                    Text(detail)
-                        .font(.system(.caption, design: .rounded))
-                        .foregroundStyle(Theme.textSecondary)
-                        .multilineTextAlignment(.leading)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                Spacer(minLength: 0)
-            }
-            .padding(16)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-            .overlay {
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .strokeBorder(isSelected ? tint : Color.clear, lineWidth: 2)
-            }
-        }
-        .buttonStyle(.plain)
-        .accessibilityElement(children: .combine)
-        .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
-        .accessibilityHint(isSelected ? "" : "Double tap to choose")
-    }
 }
 
 private struct WelcomePoint: View {

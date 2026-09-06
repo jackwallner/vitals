@@ -42,14 +42,6 @@ final class OnboardingCTARecoveryUITests: XCTestCase {
         app.launch()
 
         advance(app, from: "welcome")
-        sleep(2)
-
-        let card = app.buttons
-            .containing(NSPredicate(format: "label CONTAINS %@", "No, just track"))
-            .firstMatch
-        XCTAssertTrue(card.waitForExistence(timeout: 20), "food card missing")
-        card.tap()
-        advance(app, from: "food")
         sleep(3)
         dismissSystemSheetIfPresent()
         advance(app, from: "goals")
