@@ -1,3 +1,3 @@
-Vitals+-skärmen du ser under konfigurationen visar nu ett uträknat exempel på de siffror den tar fram, i stället för en lista med funktionsnamn.
+Konfigurationen är kortare. Frågan om du loggar din mat är borta, och Vitals+-skärmen du ser under konfigurationen är tillbaka till en enkel lista över vad prenumerationen lägger till, i stället för ett genomräknat exempel.
 
-Om Apple Health redan innehåller tillräckligt med historik utgår skärmen från dina egna data i stället för en platshållarsiffra. Om inte säger den det i stället för att hitta på en.
+Åtkomst till Apple Hälsa efterfrågas nu en gång, i en enda förfrågan om kalorier, steg och näring.

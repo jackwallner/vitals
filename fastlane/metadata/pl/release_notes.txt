@@ -1,3 +1,3 @@
-Ekran Vitals+ widoczny podczas konfiguracji pokazuje teraz wyliczony przykład liczb, które powstają, zamiast listy nazw funkcji.
+Konfiguracja jest krótsza. Zniknęło pytanie o to, czy zapisujesz posiłki, a ekran Vitals+ widoczny podczas konfiguracji wrócił do prostej listy tego, co dodaje subskrypcja, zamiast przykładu z liczbami.
 
-Jeśli Apple Health ma już wystarczającą historię, ekran korzysta z Twoich własnych danych zamiast z wartości zastępczej. Jeśli nie, mówi o tym wprost, zamiast wymyślać liczbę.
+Dostęp do Apple Health jest teraz proszony raz, w jednym monicie obejmującym kalorie, kroki i odżywianie.

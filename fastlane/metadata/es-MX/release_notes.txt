@@ -1,3 +1,3 @@
-La pantalla de Vitals+ que ves durante la configuración ahora muestra un ejemplo resuelto de las cifras que genera, en lugar de una lista de nombres de funciones.
+La configuración es más corta. Desapareció la pregunta sobre si registras tus comidas, y la pantalla de Vitals+ que ves durante la configuración vuelve a ser una lista sencilla de lo que agrega la suscripción, en lugar de un ejemplo resuelto.
 
-Cuando Apple Health ya tiene suficiente historial, esa pantalla trabaja con tus propios datos en vez de con una cifra de relleno. Cuando no lo tiene, lo dice en lugar de inventarse una.
+El acceso a Apple Health ahora se solicita una sola vez, en un único aviso que cubre calorías, pasos y nutrición.

@@ -1,3 +1,3 @@
-Het Vitals+-scherm tijdens het instellen laat nu een uitgewerkt voorbeeld zien van de cijfers die het oplevert, in plaats van een lijst met functienamen.
+De configuratie is korter. De vraag of je je eten bijhoudt is verdwenen, en het Vitals+-scherm dat je tijdens het instellen ziet is weer een eenvoudige lijst van wat het abonnement toevoegt, in plaats van een uitgewerkt voorbeeld.
 
-Als Apple Health al genoeg geschiedenis bevat, werkt dat scherm met je eigen gegevens in plaats van met een tijdelijk cijfer. Zo niet, dan zegt het dat in plaats van er een te verzinnen.
+Toegang tot Apple Health wordt nu één keer gevraagd, in één verzoek voor calorieën, stappen en voeding.

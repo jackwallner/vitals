@@ -1,3 +1,3 @@
-Käyttöönoton aikana näkyvä Vitals+-näyttö esittää nyt lasketun esimerkin tuottamistaan luvuista pelkän ominaisuuslistan sijaan.
+Käyttöönotto on lyhyempi. Kysymys siitä, kirjaatko ruokasi, on poistettu, ja käyttöönoton aikana näkyvä Vitals+-näkymä on taas yksinkertainen lista siitä, mitä tilaus lisää, laskuesimerkin sijaan.
 
-Kun Apple Healthissa on jo tarpeeksi historiaa, näyttö käyttää omia tietojasi sijaislukeman sijaan. Kun ei ole, se kertoo sen sen sijaan että keksisi luvun.
+Apple Healthin käyttöoikeutta pyydetään nyt kerran, yhdellä pyynnöllä kaloreille, askelille ja ravinnolle.

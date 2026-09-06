@@ -1,3 +1,3 @@
-Ecranul Vitals+ pe care îl vezi în timpul configurării arată acum un exemplu calculat al cifrelor pe care le produce, în loc de o listă de nume de funcții.
+Configurarea este mai scurtă. Întrebarea dacă îți notezi mesele a dispărut, iar ecranul Vitals+ pe care îl vezi în timpul configurării revine la o listă simplă cu ce adaugă abonamentul, în locul unui exemplu calculat.
 
-Când Apple Health are deja suficient istoric, ecranul lucrează cu datele tale, nu cu o cifră de rezervă. Când nu are, o spune în loc să inventeze una.
+Accesul la Apple Health este cerut acum o singură dată, printr-o singură solicitare pentru calorii, pași și nutriție.

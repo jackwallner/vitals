@@ -1,3 +1,3 @@
-O ecrã do Vitals+ que aparece durante a configuração mostra agora um exemplo resolvido dos números que produz, em vez de uma lista de nomes de funcionalidades.
+A configuração ficou mais curta. A pergunta sobre se registas as tuas refeições foi removida, e o ecrã do Vitals+ que aparece durante a configuração voltou a ser uma lista simples do que a subscrição acrescenta, em vez de um exemplo resolvido.
 
-Quando o Apple Health já tem histórico suficiente, esse ecrã trabalha com os seus próprios dados em vez de um valor de exemplo. Quando não tem, di-lo em vez de inventar um.
+O acesso ao Apple Health é agora pedido uma única vez, num só pedido que abrange calorias, passos e nutrição.

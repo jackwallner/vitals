@@ -1,3 +1,3 @@
-Zaslon Vitals+ koji vidite tijekom postavljanja sada prikazuje izračunat primjer brojeva koje stvara, umjesto popisa naziva značajki.
+Postavljanje je kraće. Pitanje bilježiš li obroke je uklonjeno, a zaslon Vitals+ tijekom postavljanja vratio se na jednostavan popis onoga što pretplata dodaje, umjesto izračunatog primjera.
 
-Kad Apple Health već ima dovoljno povijesti, taj zaslon radi s vašim podacima umjesto s zamjenskim brojem. Kad nema, to i kaže umjesto da izmisli broj.
+Pristup Apple Healthu sada se traži jednom, jednim zahtjevom za kalorije, korake i prehranu.

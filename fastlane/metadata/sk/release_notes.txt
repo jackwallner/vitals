@@ -1,3 +1,3 @@
-Obrazovka Vitals+ počas úvodného nastavenia teraz ukazuje vypočítaný príklad čísel, ktoré vznikajú, namiesto zoznamu názvov funkcií.
+Nastavenie je kratšie. Otázka, či si zapisuješ jedlo, zmizla a obrazovka Vitals+ počas nastavenia sa vrátila k jednoduchému zoznamu toho, čo predplatné pridáva, namiesto vypočítaného príkladu.
 
-Ak má Apple Health už dosť histórie, obrazovka pracuje s vašimi vlastnými údajmi namiesto zástupného čísla. Ak nie, povie to, namiesto toho aby si nejaké vymyslela.
+Prístup k Apple Health sa teraz vyžiada raz, v jedinej výzve pre kalórie, kroky a výživu.
