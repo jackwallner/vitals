@@ -1,3 +1,1 @@
 Quá trình thiết lập ngắn hơn. Câu hỏi bạn có ghi lại bữa ăn hay không đã được bỏ, và màn hình Vitals+ bạn thấy khi thiết lập trở lại là một danh sách đơn giản về những gì gói đăng ký bổ sung, thay vì một ví dụ tính sẵn.
-
-Quyền truy cập Apple Health giờ chỉ được hỏi một lần, trong một yêu cầu duy nhất gồm calo, số bước và dinh dưỡng.

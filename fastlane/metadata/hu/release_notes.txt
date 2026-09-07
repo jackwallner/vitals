@@ -1,3 +1,1 @@
 A beállítás rövidebb lett. Eltűnt a kérdés, hogy naplózod-e az ételeidet, és a beállítás közben látható Vitals+ képernyő ismét egyszerű listát mutat arról, mit ad hozzá az előfizetés, kiszámolt példa helyett.
-
-Az Apple Health hozzáférést mostantól egyszer kérjük, egyetlen kérésben a kalóriákra, lépésekre és táplálkozásra.

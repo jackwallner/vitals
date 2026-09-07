@@ -1,3 +1,1 @@
 De configuratie is korter. De vraag of je je eten bijhoudt is verdwenen, en het Vitals+-scherm dat je tijdens het instellen ziet is weer een eenvoudige lijst van wat het abonnement toevoegt, in plaats van een uitgewerkt voorbeeld.
-
-Toegang tot Apple Health wordt nu één keer gevraagd, in één verzoek voor calorieën, stappen en voeding.

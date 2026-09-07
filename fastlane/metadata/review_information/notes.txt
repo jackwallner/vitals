@@ -10,17 +10,13 @@ HEALTHKIT SETUP - PLEASE GRANT ACCESS WHEN PROMPTED
 
 First launch shows a welcome screen. Tapping Continue triggers the iOS HealthKit read-access prompt, then the app asks you to set optional goals (you may skip this), then it shows the Vitals+ subscription screen, which can be dismissed with the "Get Started" button without purchasing.
 
-Please allow all seven read types at the prompt:
+Please allow all three read types at the prompt:
 
 - Active Energy Burned
 - Basal Energy Burned
 - Step Count
-- Dietary Energy Consumed
-- Protein
-- Carbohydrates
-- Total Fat
 
-The first three power the main dashboard. The four nutrition types are read only to display food energy and macronutrients that another app has already written to Apple Health; Total Calories never writes any of them. Previous versions asked for the nutrition types in a separate second prompt; this version asks once.
+These power the main dashboard. Nutrition types (Dietary Energy, Protein, Carbohydrates, Total Fat) are requested separately and only if you turn on the Net Deficit or Macros features in Settings, which read food data another app has already written to Apple Health. Total Calories never writes to HealthKit.
 
 If access is denied or not yet granted, the app shows a banner explaining that Health access is needed (no fake or placeholder health numbers). Users can open Settings or the Health app from that banner.
 

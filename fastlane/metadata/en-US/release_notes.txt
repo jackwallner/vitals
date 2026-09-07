@@ -1,3 +1,1 @@
 Setup is shorter. The question about whether you log food is gone, and the Vitals+ screen you see during setup is back to a plain list of what the subscription adds, instead of a worked example.
-
-Apple Health access is now requested once, in a single prompt covering calories, steps, and nutrition.

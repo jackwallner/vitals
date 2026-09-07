@@ -1,3 +1,1 @@
 Konfiguracja jest krótsza. Zniknęło pytanie o to, czy zapisujesz posiłki, a ekran Vitals+ widoczny podczas konfiguracji wrócił do prostej listy tego, co dodaje subskrypcja, zamiast przykładu z liczbami.
-
-Dostęp do Apple Health jest teraz proszony raz, w jednym monicie obejmującym kalorie, kroki i odżywianie.

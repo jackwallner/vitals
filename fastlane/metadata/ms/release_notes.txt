@@ -1,3 +1,1 @@
 Persediaan menjadi lebih singkat. Soalan sama ada anda merekod makanan telah dibuang, dan skrin Vitals+ yang anda lihat semasa persediaan kembali menjadi senarai ringkas tentang apa yang ditambah oleh langganan, bukan contoh berkira.
-
-Akses Apple Health kini diminta sekali sahaja, dalam satu permintaan yang merangkumi kalori, langkah dan pemakanan.

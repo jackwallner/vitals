@@ -1,3 +1,1 @@
 Configurarea este mai scurtă. Întrebarea dacă îți notezi mesele a dispărut, iar ecranul Vitals+ pe care îl vezi în timpul configurării revine la o listă simplă cu ce adaugă abonamentul, în locul unui exemplu calculat.
-
-Accesul la Apple Health este cerut acum o singură dată, printr-o singură solicitare pentru calorii, pași și nutriție.

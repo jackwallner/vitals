@@ -1,3 +1,1 @@
 Käyttöönotto on lyhyempi. Kysymys siitä, kirjaatko ruokasi, on poistettu, ja käyttöönoton aikana näkyvä Vitals+-näkymä on taas yksinkertainen lista siitä, mitä tilaus lisää, laskuesimerkin sijaan.
-
-Apple Healthin käyttöoikeutta pyydetään nyt kerran, yhdellä pyynnöllä kaloreille, askelille ja ravinnolle.

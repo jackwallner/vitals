@@ -1,3 +1,1 @@
 La configuració és més curta. La pregunta sobre si registres els àpats ha desaparegut, i la pantalla de Vitals+ que veus durant la configuració torna a ser una llista senzilla del que afegeix la subscripció, en lloc d'un exemple resolt.
-
-L'accés a Apple Health ara es demana una sola vegada, en una única sol·licitud que cobreix calories, passos i nutrició.
