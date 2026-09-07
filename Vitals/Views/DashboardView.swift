@@ -2599,19 +2599,22 @@ private struct OnboardingSheet: View {
     /// never on appear, so the first thing they see is our heads-up rather than
     /// the system permission sheet.
     ///
-    /// One sheet, carrying the dietary types too. The food question that used to
-    /// gate them is gone with the 1.7.5 restore, so there is no answer left to
-    /// branch on and nothing is determined yet at this point either way: the
-    /// whole set goes in a single prompt, which is the 1.7.4/1.7.5 behaviour.
+    /// The three energy and step types only, which is what 1.7.4/1.7.5 asked for
+    /// here. Dietary energy and the macros are asked for later and on demand, by
+    /// the Net Deficit and Macros toggles that actually need them
+    /// (`requestDietaryAuthorization` / `requestMacroAuthorization`).
     ///
-    /// The trade this makes: a blanket Don't Allow costs calories and steps as
-    /// well as food. Per-type toggles are unaffected, and the alternative was a
-    /// second system sheet in the middle of setup.
+    /// 1.8.4 folded all seven into this one sheet, which was correct there
+    /// because the food question ran first and only a yes reached this line. The
+    /// question is gone, so an unconditional seven-type ask would put protein,
+    /// carbs, and fat in front of every new user during setup, under a welcome
+    /// screen that promises calories and steps. It would also mean a blanket
+    /// Don't Allow costs calories and steps as well as food.
     private func requestHealthAccessIfNeeded() async {
         guard !hasRequestedHealthAccess else { return }
         hasRequestedHealthAccess = true
         do {
-            try await HealthKitService.shared.requestAuthorization(includeFood: true)
+            try await HealthKitService.shared.requestAuthorization()
             // Warm the SwiftData cache in the background while the user finishes
             // picking goals, so the dashboard can paint from cache the instant
             // onboarding dismisses instead of waiting on a cold HealthKit read.
@@ -2642,7 +2645,7 @@ private struct OnboardingSheet: View {
                     icon: "heart.fill",
                     color: Theme.caloriesPrimary,
                     title: "Reads from Apple Health",
-                    detail: "We’ll ask permission to read your active and resting calories and steps. The app only reads; it never writes anything back."
+                    detail: "Next we’ll ask permission to read your active and resting calories and steps. The app only reads; it never writes anything back."
                 )
                 WelcomePoint(
                     icon: "lock.fill",

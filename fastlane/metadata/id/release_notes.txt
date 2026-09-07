@@ -1,3 +1,1 @@
 Penyiapan jadi lebih singkat. Pertanyaan apakah kamu mencatat makanan sudah dihapus, dan layar Vitals+ yang muncul saat penyiapan kembali menjadi daftar sederhana tentang apa yang ditambahkan langganan, bukan contoh berhitung.
-
-Akses Apple Health kini diminta sekali saja, dalam satu permintaan yang mencakup kalori, langkah, dan nutrisi.

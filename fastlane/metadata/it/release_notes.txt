@@ -1,3 +1,1 @@
 La configurazione è più breve. La domanda su se registri i pasti non c'è più, e la schermata Vitals+ che vedi durante la configurazione torna a essere un semplice elenco di ciò che l'abbonamento aggiunge, invece di un esempio con numeri.
-
-L'accesso ad Apple Health ora viene chiesto una sola volta, con un'unica richiesta per calorie, passi e nutrizione.

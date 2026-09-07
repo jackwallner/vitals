@@ -1,3 +1,1 @@
 Opsætningen er kortere. Spørgsmålet om, hvorvidt du registrerer din mad, er væk, og Vitals+-skærmen under opsætningen er tilbage til en enkel liste over, hvad abonnementet tilføjer, i stedet for et gennemregnet eksempel.
-
-Adgang til Apple Health bliver nu bedt om én gang, i én enkelt anmodning om kalorier, skridt og ernæring.

@@ -1,3 +1,1 @@
 A configuração ficou mais curta. A pergunta sobre se registas as tuas refeições foi removida, e o ecrã do Vitals+ que aparece durante a configuração voltou a ser uma lista simples do que a subscrição acrescenta, em vez de um exemplo resolvido.
-
-O acesso ao Apple Health é agora pedido uma única vez, num só pedido que abrange calorias, passos e nutrição.

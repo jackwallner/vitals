@@ -1,3 +1,1 @@
 La configuración es más corta. Desapareció la pregunta sobre si registras tus comidas, y la pantalla de Vitals+ que ves durante la configuración vuelve a ser una lista sencilla de lo que agrega la suscripción, en lugar de un ejemplo resuelto.
-
-El acceso a Apple Health ahora se solicita una sola vez, en un único aviso que cubre calorías, pasos y nutrición.

@@ -1,3 +1,1 @@
 Nastavitev je krajša. Vprašanje, ali beležiš obroke, je odstranjeno, zaslon Vitals+ med nastavitvijo pa se je vrnil k preprostemu seznamu tega, kar naročnina doda, namesto izračunanega primera.
-
-Dostop do Apple Health se zdaj zahteva enkrat, z eno samo zahtevo za kalorije, korake in prehrano.

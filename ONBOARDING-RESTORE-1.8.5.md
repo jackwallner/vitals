@@ -56,8 +56,18 @@ sequence of unmeasured softenings.
 Restored to `23ca7f4` (build 137):
 
 - **Three steps**: welcome -> goals -> trial. The food question is gone.
-- **One HealthKit prompt**, fired on the way out of welcome, carrying the
-  dietary and macro types unconditionally.
+- **One HealthKit prompt**, fired on the way out of welcome, asking for the
+  three energy and step types only. This is what 1.7.4/1.7.5 asked for here;
+  dietary energy and the macros are requested later and on demand by the Net
+  Deficit and Macros toggles.
+
+  The first cut of this restore kept 1.8.4's unconditional seven-type ask. That
+  was wrong twice over: 1.8.4 only reached it after a yes to the food question,
+  and the welcome screen promises "calories and steps", so every new user would
+  have been shown protein, carbs, and fat under copy that does not mention them.
+  A blanket Don't Allow would also have cost calories and steps. Caught before
+  1.8.5 shipped; build 191 carried the seven-type ask and was pulled from review
+  for it.
 - **One pitch for everybody**: sparkles glyph, "Go further with Vitals+",
   "Extras that sit on top of your daily calories and steps.", and four rows -
   Net deficit, Streaks & projections, Deeper trends, Summary reports. No

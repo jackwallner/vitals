@@ -1,3 +1,1 @@
 Nastavení je kratší. Otázka, jestli si zapisuješ jídlo, zmizela a obrazovka Vitals+ během nastavení se vrátila k prostému seznamu toho, co předplatné přidává, místo spočítaného příkladu.
-
-Přístup k Apple Health se nyní vyžádá jednou, v jediné výzvě pro kalorie, kroky a výživu.

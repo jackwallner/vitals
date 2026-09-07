@@ -1,3 +1,1 @@
 Kurulum kısaldı. Yemeklerini kaydedip kaydetmediğini soran soru kaldırıldı ve kurulum sırasında gördüğün Vitals+ ekranı, hesaplanmış bir örnek yerine aboneliğin kattıklarının sade bir listesine döndü.
-
-Apple Health erişimi artık bir kez, kaloriler, adımlar ve beslenme için tek bir istemle isteniyor.
