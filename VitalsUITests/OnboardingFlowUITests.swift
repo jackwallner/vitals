@@ -3,8 +3,9 @@ import XCTest
 /// Onboarding is welcome → goals → pitch, and the primary button is the same
 /// control moving through it. The food question that sat between welcome and
 /// goals is gone with the 1.8.5 restore of the 1.7.4/1.7.5 onboarding, so the
-/// one HealthKit prompt fires on the way out of welcome and carries the dietary
-/// and macro types unconditionally.
+/// one HealthKit prompt fires on the way out of welcome and asks for the three
+/// energy and step types only, as 1.7.5 did. Dietary energy and the macros are
+/// requested later by the toggles that need them.
 ///
 /// Three things are asserted here because all three were regressions rather
 /// than theories:
