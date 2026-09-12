@@ -71,7 +71,8 @@ struct EnergyAveragesProvider: TimelineProvider {
             container: DataService.sharedModelContainer,
             referenceDate: .now,
             minSamples: EnergyAveragesEntry.minSamples,
-            excludedKeys: ExcludedDays.effectiveKeys(from: defaults)
+            // Same Vitals+ gate the figure itself uses: no subscription, no filter.
+            excludedKeys: isPro ? ExcludedDays.effectiveKeys(from: defaults) : []
         )
         return EnergyAveragesEntry(
             date: .now,

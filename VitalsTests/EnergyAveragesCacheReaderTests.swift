@@ -39,6 +39,35 @@ final class EnergyAveragesCacheReaderTests: XCTestCase {
         XCTAssertEqual(staleTDEE, 1_050, accuracy: 0.001)
     }
 
+    /// The widget filters on the same excluded days the app does, through this
+    /// same read path, so the Home Screen figure can't disagree with Today's.
+    func testExcludedDaysAreDroppedFromTheWidgetsFigure() throws {
+        let reference = try XCTUnwrap(
+            calendar.date(from: DateComponents(year: 2026, month: 7, day: 22, hour: 7, minute: 30))
+        )
+        let container = try makeContainer()
+        try seed(container, endingBefore: reference, days: 8, active: 500, resting: 1_600)
+        // One blow-out day inside the window.
+        try seed(container, endingBefore: reference, days: 1, active: 4_000, resting: 1_600)
+
+        let unfiltered = EnergyAveragesCacheReader.read(
+            container: container, referenceDate: reference, minSamples: 7
+        )
+        XCTAssertEqual(unfiltered.result.sampleDays, 8)
+        XCTAssertEqual(try XCTUnwrap(unfiltered.result.tdee), 2_537.5, accuracy: 0.001)
+
+        let blowOut = try XCTUnwrap(calendar.date(byAdding: .day, value: -1, to: reference))
+        let filtered = EnergyAveragesCacheReader.read(
+            container: container,
+            referenceDate: reference,
+            minSamples: 7,
+            excludedKeys: [ExcludedDays.key(for: blowOut)]
+        )
+        XCTAssertEqual(filtered.result.sampleDays, 7)
+        XCTAssertEqual(try XCTUnwrap(filtered.result.tdee), 2_100, accuracy: 0.001)
+        XCTAssertTrue(filtered.hasCache, "excluding a day is not the same as having no cache")
+    }
+
     func testEmptyCacheReportsNoData() throws {
         let reference = try XCTUnwrap(
             calendar.date(from: DateComponents(year: 2026, month: 7, day: 22, hour: 7, minute: 30))

@@ -286,6 +286,57 @@ final class ExcludedDaysTests: XCTestCase {
         XCTAssertEqual(filtered.bestCalorieValue, 2_000)
     }
 
+    // MARK: - Net deficit
+
+    func testNetDeficitTrendCountsNeitherExcludedDaysNorUnloggedOnes() throws {
+        let end = try day(2026, 4, 26)
+        let history = makeHistory(days: 10, ending: end) { _ in (active: 900, resting: 1_500) }
+        var foodByDate: [Date: Double] = [:]
+        for row in history { foodByDate[row.date] = 1_800 }
+        let excludedDay = try XCTUnwrap(calendar.date(byAdding: .day, value: -1, to: end))
+
+        let summary = try XCTUnwrap(
+            NetDeficitTrendSummary.make(
+                history: history,
+                foodByDate: foodByDate,
+                excludedKeys: [ExcludedDays.key(for: excludedDay)],
+                calendar: calendar
+            )
+        )
+
+        let point = try XCTUnwrap(summary.points.first { calendar.isDate($0.date, inSameDayAs: excludedDay) })
+        XCTAssertTrue(point.isExcluded, "the chart needs to know why this day doesn't count")
+        XCTAssertFalse(point.counts, "an excluded day must not feed the net-deficit average")
+        XCTAssertFalse(summary.points.filter(\.counts).contains { calendar.isDate($0.date, inSameDayAs: excludedDay) })
+        XCTAssertEqual(try XCTUnwrap(summary.weekly.average), 600, accuracy: 0.001)
+    }
+
+    // MARK: - Month review
+
+    func testMonthReviewIgnoresExcludedDays() throws {
+        // Day 2 of the month, so the prior month is in the review window.
+        let today = try day(2026, 5, 2)
+        let records: [MilestoneDay] = try (1...22).map { dayOfMonth in
+            MilestoneDay(date: try day(2026, 4, dayOfMonth), calories: 2_000, steps: 9_000)
+        }
+
+        XCTAssertEqual(
+            MilestoneCalculator.reviewableLastMonth(records: records, today: today, calendar: calendar),
+            .monthReview(month: "2026-04", daysWithData: 22)
+        )
+
+        // Excluding three of them drops the month under the 20-day bar.
+        let excluded = Set(try (20...22).map { ExcludedDays.key(for: try day(2026, 4, $0)) })
+        XCTAssertNil(
+            MilestoneCalculator.reviewableLastMonth(
+                records: records,
+                today: today,
+                calendar: calendar,
+                excludedKeys: excluded
+            )
+        )
+    }
+
     // MARK: - Macros
 
     func testMacroSummaryDropsExcludedDays() throws {
@@ -311,6 +362,40 @@ final class ExcludedDaysTests: XCTestCase {
         XCTAssertEqual(filtered.loggedDays, 3)
         XCTAssertEqual(filtered.average.protein, 100, accuracy: 0.001)
         XCTAssertNil(filtered.days.first { calendar.isDate($0.date, inSameDayAs: feast) })
+    }
+
+    // MARK: - Goal days in the recap
+
+    func testRecapGoalDaysOnlyCountDaysThatStillCount() throws {
+        let today = try day(2026, 9, 11)
+        // Yesterday hit the goal; the six days before it didn't.
+        let records: [MilestoneDay] = try (1...7).map { offset in
+            let date = try XCTUnwrap(calendar.date(byAdding: .day, value: -offset, to: today))
+            return MilestoneDay(date: date, calories: offset == 1 ? 3_000 : 1_500, steps: 4_000)
+        }
+
+        let plain = try XCTUnwrap(
+            WeeklyRecapBuilder.build(
+                records: records, calorieGoal: 2_500, stepGoal: nil, today: today, calendar: calendar
+            )
+        )
+        XCTAssertEqual(plain.goalDaysHit, 1)
+        XCTAssertEqual(plain.goalDaysPossible, 7)
+
+        let hitDay = try XCTUnwrap(calendar.date(byAdding: .day, value: -1, to: today))
+        let filtered = try XCTUnwrap(
+            WeeklyRecapBuilder.build(
+                records: records,
+                calorieGoal: 2_500,
+                stepGoal: nil,
+                today: today,
+                calendar: calendar,
+                excludedKeys: [ExcludedDays.key(for: hitDay)]
+            )
+        )
+        // Excluding a day takes it out of both halves of "3 of 7", never one.
+        XCTAssertEqual(filtered.goalDaysHit, 0)
+        XCTAssertEqual(filtered.goalDaysPossible, 6)
     }
 
     // MARK: - Helpers

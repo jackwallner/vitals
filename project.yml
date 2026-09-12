@@ -145,6 +145,7 @@ targets:
       - path: Shared/Utilities/EnergyAveragesCalculator.swift
       - path: Shared/Utilities/ExcludedDays.swift
       - path: Shared/Models/StepTrendSummary.swift
+      - path: Shared/Models/NetDeficitTrendSummary.swift
       - path: Shared/Utilities/EnergyAveragesCacheReader.swift
       - path: Shared/Utilities/DateHelpers.swift
       - path: Shared/Models/HealthRecord.swift

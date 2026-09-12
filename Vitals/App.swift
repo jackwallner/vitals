@@ -43,8 +43,14 @@ private final class PhoneGoalSyncService: NSObject, WCSessionDelegate {
             GoalSyncKeys.netDeficitFastingMode: goals.netDeficitFastingMode,
             GoalSyncKeys.showCalories: goals.showCalories,
             GoalSyncKeys.showSteps: goals.showSteps,
-            GoalSyncKeys.excludedDays: Array(goals.pickedExcludedDayKeys).sorted(),
-            GoalSyncKeys.averagesPausedSince: goals.averagesPausedSince?.timeIntervalSince1970 ?? 0,
+            // Gated here, like `showNetCalories`: the watch has no entitlement
+            // of its own, so what it receives is already the final answer.
+            GoalSyncKeys.excludedDays: StoreService.shared.isPro
+                ? Array(goals.pickedExcludedDayKeys).sorted()
+                : [],
+            GoalSyncKeys.averagesPausedSince: StoreService.shared.isPro
+                ? (goals.averagesPausedSince?.timeIntervalSince1970 ?? 0)
+                : 0,
         ]
 
         do {
