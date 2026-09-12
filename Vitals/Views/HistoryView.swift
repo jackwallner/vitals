@@ -2971,6 +2971,10 @@ private struct RecentDaysList: View {
                     }
                     .opacity(row.isExcluded ? 0.45 : 1)
                     .contentShape(Rectangle())
+                    // The long-press shortcut is the discoverable half of
+                    // Excluded Days, so the row is addressable by a UI test
+                    // rather than by guessing at a combined date label.
+                    .accessibilityIdentifier("recent-day-row")
                     .contextMenu {
                         Button {
                             onToggleExclusion(row)

@@ -513,8 +513,28 @@ final class GoalSettings: ObservableObject {
     /// Every day that counts toward nothing: picked days plus the running pause.
     /// Recomputed per read so a pause that rolls over midnight covers the new day
     /// without anything having to fire.
+    ///
+    /// Empty while Vitals+ is inactive, like every other paid feature: a lapsed
+    /// subscriber gets their plain averages back rather than a silent filter
+    /// they can no longer reach the screen to turn off. The days they picked are
+    /// kept, so resubscribing restores them.
     var excludedDayKeys: Set<String> {
-        pickedExcludedDayKeys.union(ExcludedDays.pausedKeys(since: averagesPausedSince))
+        guard exclusionsActive else { return [] }
+        return pickedExcludedDayKeys.union(ExcludedDays.pausedKeys(since: averagesPausedSince))
+    }
+
+    /// The phone is the only place that knows the entitlement. The watch has no
+    /// StoreService at all: it trusts what the phone syncs, exactly like
+    /// `showNetCalories`, and the phone sends an empty set when Vitals+ is
+    /// inactive. Reads the App Group mirror rather than `StoreService.shared` so
+    /// this type keeps no store dependency, and so it agrees with the widget,
+    /// which gates on the same key.
+    private var exclusionsActive: Bool {
+        #if os(watchOS)
+        return true
+        #else
+        return defaults.bool(forKey: StoreService.cachedProKey)
+        #endif
     }
 
     /// Days covered by the running pause alone, newest first.

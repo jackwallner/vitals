@@ -208,6 +208,7 @@
 		F0701FB7F0D017EF6CE88DFE /* BodyProfileCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48CEA73D52946D26CCE86AF /* BodyProfileCalculator.swift */; };
 		F24B30BF955387E9D94EB072 /* BodyProfileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5FB56CFC81FAF6AF852A96 /* BodyProfileStore.swift */; };
 		F31C7C2C587EAEDF9B70C692 /* NetDeficitTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */; };
+		F67410975DE52D10329F1479 /* NetDeficitTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */; };
 		F8CE32C95ABAE3744A30D432 /* SummaryReportGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B24F616BC26BFF25C64684 /* SummaryReportGenerator.swift */; };
 		F93415C3586901C55415E5C6 /* ProjectionCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE9370DC12BAC7716DA62A5 /* ProjectionCalculator.swift */; };
 		FDC255EDF9FC897146209356 /* ProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971064F5F952A25427D7F46B /* ProgressRing.swift */; };
@@ -1008,6 +1009,7 @@
 				325DBD71E731E9F9B0ECB322 /* MacroTotalsTests.swift in Sources */,
 				E423A6BC1D2F4FB0E197829B /* MilestoneCalculator.swift in Sources */,
 				11FC596C80351285C517EBFD /* MilestoneCalculatorTests.swift in Sources */,
+				F67410975DE52D10329F1479 /* NetDeficitTrendSummary.swift in Sources */,
 				CEFF1E5C1BB80F9C653CE262 /* PaywallFunnelTests.swift in Sources */,
 				47D6D05C25AE336642FCBDE0 /* PaywallUIVariant.swift in Sources */,
 				2DFF246FEF1D0468427BA754 /* PaywallUIVariantTests.swift in Sources */,
