@@ -43,15 +43,26 @@ enum MilestoneCalculator {
     /// is wide enough that consecutive celebrations don't feel piled-on.
     static let celebratedStreaks: [Int] = [7, 14, 30, 60, 100]
 
+    /// How far back a streak walk will go before giving up. Only reached when
+    /// every day on the way is user-excluded, which cannot loop forever anyway
+    /// (the excluded set is finite), so this is a belt-and-braces bound.
+    private static let maxStreakLookbackDays = 3650
+
     /// Counts consecutive days ending at "yesterday" satisfying `hit`. Today is
     /// excluded — it may still be in progress, so awarding a streak based on
     /// partial data would be premature. Days with no record (HK gap) break the
     /// streak. The building block for both the combined goal streak (below) and
     /// the per-metric streaks the Today view shows.
+    ///
+    /// A day in `excludedKeys` ([[ExcludedDays]]) is neutral: the walk steps
+    /// over it without counting it and without ending the streak. That is the
+    /// point of excluding a day: a week in hospital shouldn't reset a 40-day
+    /// streak any more than it should drag the 30-day average.
     static func currentStreak(
         records: [MilestoneDay],
         today: Date = .now,
         calendar: Calendar = .current,
+        excludedKeys: Set<String> = [],
         hit: (MilestoneDay) -> Bool
     ) -> Int {
         // Collapse rather than trap if two records land on the same day (timezone/DST
@@ -64,8 +75,15 @@ enum MilestoneCalculator {
             return 0
         }
         var streak = 0
-        while let day = byDay[cursor], hit(day) {
-            streak += 1
+        var daysWalked = 0
+        while daysWalked < maxStreakLookbackDays {
+            daysWalked += 1
+            if ExcludedDays.contains(cursor, in: excludedKeys) {
+                // Neither extends nor breaks: step over it.
+            } else {
+                guard let day = byDay[cursor], hit(day) else { break }
+                streak += 1
+            }
             guard let next = calendar.date(byAdding: .day, value: -1, to: cursor) else { break }
             cursor = next
         }
@@ -80,10 +98,11 @@ enum MilestoneCalculator {
         calorieGoal: Double?,
         stepGoal: Int?,
         today: Date = .now,
-        calendar: Calendar = .current
+        calendar: Calendar = .current,
+        excludedKeys: Set<String> = []
     ) -> Int {
         guard calorieGoal != nil || stepGoal != nil else { return 0 }
-        return currentStreak(records: records, today: today, calendar: calendar) { day in
+        return currentStreak(records: records, today: today, calendar: calendar, excludedKeys: excludedKeys) { day in
             let hitCal = calorieGoal.map { day.calories >= $0 } ?? false
             let hitStep = stepGoal.map { day.steps >= $0 } ?? false
             return hitCal || hitStep
@@ -124,6 +143,7 @@ enum MilestoneCalculator {
         records: [MilestoneDay],
         today: Date = .now,
         calendar: Calendar = .current,
+        excludedKeys: Set<String> = [],
         minDaysWithData: Int = 20
     ) -> MilestoneEvent? {
         let dayOfMonth = calendar.component(.day, from: today)
@@ -137,6 +157,8 @@ enum MilestoneCalculator {
         else { return nil }
         let daysWithData = records.reduce(into: 0) { acc, rec in
             guard rec.date >= monthStart, rec.date < nextMonthStart else { return }
+            // An excluded day is not month-review material.
+            guard !ExcludedDays.contains(rec.date, in: excludedKeys) else { return }
             if rec.calories > 0 || rec.steps > 0 { acc += 1 }
         }
         guard daysWithData >= minDaysWithData else { return nil }

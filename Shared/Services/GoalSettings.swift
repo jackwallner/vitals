@@ -36,6 +36,11 @@ enum GoalSyncKeys {
     static let visibleMacros = "goalSync.visibleMacros"
     static let showCalories = "goalSync.showCalories"
     static let showSteps = "goalSync.showSteps"
+    static let excludedDays = "goalSync.excludedDays"
+    /// Pause start as `timeIntervalSince1970`; 0 means "not paused". A number,
+    /// not an absent key, because `updateApplicationContext` replaces the whole
+    /// dictionary and the watch has to be able to tell "resumed" from "unsent".
+    static let averagesPausedSince = "goalSync.averagesPausedSince"
 }
 
 /// How to aggregate historical days when computing “usual” progress at this time of day.
@@ -480,6 +485,127 @@ final class GoalSettings: ObservableObject {
         didSet { defaults.set(showStreaks, forKey: "showStreaks") }
     }
 
+    /// Vitals+ feature: days the user has taken out of every computed figure
+    /// (see [[ExcludedDays]]). Stored as "yyyy-MM-dd" keys so the widgets and
+    /// the watch read the same set the app writes.
+    /// The days the user picked by hand. `excludedDayKeys` is what everything
+    /// else should read: it folds in whatever a running pause covers.
+    @Published private(set) var pickedExcludedDayKeys: Set<String> {
+        didSet {
+            guard pickedExcludedDayKeys != oldValue else { return }
+            ExcludedDays.save(pickedExcludedDayKeys, to: defaults)
+            WidgetCenter.shared.reloadAllTimelines()
+        }
+    }
+
+    /// The day averages were paused, or nil when they're counting normally.
+    /// See [[ExcludedDays]] for why this is a date and not a flag.
+    @Published private(set) var averagesPausedSince: Date? {
+        didSet {
+            guard averagesPausedSince != oldValue else { return }
+            ExcludedDays.savePausedSince(averagesPausedSince, to: defaults)
+            WidgetCenter.shared.reloadAllTimelines()
+        }
+    }
+
+    var isAveragesPaused: Bool { averagesPausedSince != nil }
+
+    /// Every day that counts toward nothing: picked days plus the running pause.
+    /// Recomputed per read so a pause that rolls over midnight covers the new day
+    /// without anything having to fire.
+    var excludedDayKeys: Set<String> {
+        pickedExcludedDayKeys.union(ExcludedDays.pausedKeys(since: averagesPausedSince))
+    }
+
+    /// Days covered by the running pause alone, newest first.
+    var pausedDates: [Date] {
+        ExcludedDays.pausedKeys(since: averagesPausedSince)
+            .compactMap(Self.date(fromDayKey:))
+            .sorted(by: >)
+    }
+
+    /// Hand-picked excluded days as dates, newest first: the order the Settings
+    /// list shows them in, since the day someone wants to undo is almost always a
+    /// recent one. Days a pause covers are listed separately.
+    var excludedDates: [Date] {
+        pickedExcludedDayKeys
+            .compactMap(Self.date(fromDayKey:))
+            .sorted(by: >)
+    }
+
+    func isDayExcluded(_ date: Date) -> Bool {
+        ExcludedDays.contains(date, in: excludedDayKeys)
+    }
+
+    func setDay(_ date: Date, excluded: Bool) {
+        let key = ExcludedDays.key(for: date)
+        if excluded {
+            pickedExcludedDayKeys.insert(key)
+        } else {
+            pickedExcludedDayKeys.remove(key)
+        }
+    }
+
+    /// Starts a pause covering today onward. Idempotent: pausing while already
+    /// paused keeps the original date, so the banner can't quietly reset the
+    /// stretch it is reporting.
+    func pauseAverages(from date: Date = .now) {
+        guard averagesPausedSince == nil else { return }
+        averagesPausedSince = DateHelpers.startOfDay(date)
+    }
+
+    /// Ends the pause, keeping every day it covered excluded. Resuming is not
+    /// undoing: those days really were the flu, and the user can drop them from
+    /// the list one at a time if they disagree.
+    func resumeAverages(now: Date = .now) {
+        guard let pausedSince = averagesPausedSince else { return }
+        let covered = ExcludedDays.pausedKeys(since: pausedSince, now: now)
+        averagesPausedSince = nil
+        pickedExcludedDayKeys.formUnion(covered)
+    }
+
+    /// Replaces the hand-picked set in one write, which is what the calendar picker hands
+    /// back. Days a pause covers aren't in that picker's range, so they're
+    /// untouched by this.
+    /// Future days are dropped: a day that hasn't happened has nothing to exclude,
+    /// and one sitting in the set would silently swallow it when it arrives.
+    func setExcludedDays(_ dates: [Date], now: Date = .now) {
+        let today = DateHelpers.startOfDay(now)
+        pickedExcludedDayKeys = Set(
+            dates
+                .map { DateHelpers.startOfDay($0) }
+                .filter { $0 <= today }
+                .map(ExcludedDays.key(for:))
+        )
+    }
+
+    /// Applies the exclusion state pushed from the phone. Watch-side only: the
+    /// phone owns this setting, and the watch mirrors it so its trends filter
+    /// the same days the phone's do.
+    func applySyncedExclusions(keys: Set<String>, pausedSince: Date?) {
+        pickedExcludedDayKeys = keys
+        averagesPausedSince = pausedSince
+    }
+
+    /// Clears the hand-picked days. A running pause is a separate decision with
+    /// its own button, so this leaves it alone.
+    func clearExcludedDays() {
+        pickedExcludedDayKeys = []
+    }
+
+    /// Parses a stored "yyyy-MM-dd" key back into a local start-of-day date.
+    /// Gregorian components, current calendar: the same round trip
+    /// `ExcludedDays.key(for:)` makes in the other direction.
+    static func date(fromDayKey key: String) -> Date? {
+        let parts = key.split(separator: "-").compactMap { Int($0) }
+        guard parts.count == 3 else { return nil }
+        var components = DateComponents()
+        components.year = parts[0]
+        components.month = parts[1]
+        components.day = parts[2]
+        return Calendar.current.date(from: components)
+    }
+
     /// Vitals+ feature: schedule a weekly local notification nudging the user to
     /// open their recap. Default off; flipping it on requests notification
     /// permission and schedules the weekly trigger (see [[NotificationService]]).
@@ -594,6 +720,8 @@ final class GoalSettings: ObservableObject {
         self.showProjections = defaults.object(forKey: "showProjections") as? Bool ?? false
         self.showStreaks = defaults.object(forKey: "showStreaks") as? Bool ?? false
         self.weeklyRecapEnabled = defaults.object(forKey: "weeklyRecapEnabled") as? Bool ?? false
+        self.pickedExcludedDayKeys = ExcludedDays.load(from: defaults)
+        self.averagesPausedSince = ExcludedDays.loadPausedSince(from: defaults)
 
         let calEnabled = defaults.object(forKey: "calorieGoalEnabled") as? Bool ?? true
         if calEnabled {
@@ -638,6 +766,10 @@ final class GoalSettings: ObservableObject {
     private func applyScreenshotOverridesIfNeeded() {
         guard ScreenshotConfig.isEnabled else { return }
 
+        // A capture run inherits whatever the device was left at, and a day the
+        // fixtures draw but no figure counts is a broken screenshot.
+        pickedExcludedDayKeys = []
+        averagesPausedSince = nil
         showCalories = true
         showSteps = true
         showNetCalories = false

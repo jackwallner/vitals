@@ -12,7 +12,7 @@ settings:
     SWIFT_VERSION: "6.0"
     DEVELOPMENT_TEAM: YXG4MP6W39
     CODE_SIGN_STYLE: Automatic
-    MARKETING_VERSION: "1.8.5"
+    MARKETING_VERSION: "1.8.6"
     CURRENT_PROJECT_VERSION: "192"
     GENERATE_INFOPLIST_FILE: NO
 
@@ -143,6 +143,8 @@ targets:
       - path: Shared/Models/CalorieTrendSummary.swift
       - path: Shared/Models/MacroTotals.swift
       - path: Shared/Utilities/EnergyAveragesCalculator.swift
+      - path: Shared/Utilities/ExcludedDays.swift
+      - path: Shared/Models/StepTrendSummary.swift
       - path: Shared/Utilities/EnergyAveragesCacheReader.swift
       - path: Shared/Utilities/DateHelpers.swift
       - path: Shared/Models/HealthRecord.swift

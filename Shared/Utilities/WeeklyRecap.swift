@@ -24,12 +24,16 @@ enum WeeklyRecapBuilder {
     /// Builds a recap from history rows. `records` should cover at least the last
     /// 14 days (today excluded — it may be partial). Returns nil when the most
     /// recent 7-day window has no data at all.
+    /// - Parameter excludedKeys: days the user took out of every computed
+    ///   figure ([[ExcludedDays]]). Dropped from both weeks, so the
+    ///   week-over-week comparison stays like for like.
     static func build(
         records: [MilestoneDay],
         calorieGoal: Double?,
         stepGoal: Int?,
         today: Date = .now,
-        calendar: Calendar = .current
+        calendar: Calendar = .current,
+        excludedKeys: Set<String> = []
     ) -> WeeklyRecap? {
         let byDay: [Date: MilestoneDay] = Dictionary(
             records.map { (calendar.startOfDay(for: $0.date), $0) },
@@ -39,8 +43,11 @@ enum WeeklyRecapBuilder {
 
         // Window: yesterday back through 7 days ago (offsets 1...7).
         func windowDays(startOffset: Int) -> [MilestoneDay] {
-            (startOffset..<(startOffset + 7)).compactMap { offset in
-                calendar.date(byAdding: .day, value: -offset, to: todayStart).flatMap { byDay[$0] }
+            (startOffset..<(startOffset + 7)).compactMap { offset -> MilestoneDay? in
+                guard let day = calendar.date(byAdding: .day, value: -offset, to: todayStart),
+                      !ExcludedDays.contains(day, in: excludedKeys)
+                else { return nil }
+                return byDay[day]
             }
         }
 

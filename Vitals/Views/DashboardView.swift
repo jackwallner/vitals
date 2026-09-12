@@ -1870,11 +1870,12 @@ struct DashboardView: View {
             MilestoneDay(date: $0.date, calories: $0.active + $0.resting, steps: $0.steps)
         }
         // Per-metric streaks drive the Vitals+ inline badges (gated at render).
+        let excluded = goals.excludedDayKeys
         calorieStreak = goals.calorieGoal.map { goal in
-            MilestoneCalculator.currentStreak(records: days) { $0.calories >= goal }
+            MilestoneCalculator.currentStreak(records: days, excludedKeys: excluded) { $0.calories >= goal }
         } ?? 0
         stepStreak = goals.stepGoal.map { goal in
-            MilestoneCalculator.currentStreak(records: days) { $0.steps >= goal }
+            MilestoneCalculator.currentStreak(records: days, excludedKeys: excluded) { $0.steps >= goal }
         } ?? 0
 
         // Celebration sheets are a non-Pro upsell, fired off the *combined* streak
@@ -1882,7 +1883,8 @@ struct DashboardView: View {
         let streak = MilestoneCalculator.currentGoalStreak(
             records: days,
             calorieGoal: goals.calorieGoal,
-            stepGoal: goals.stepGoal
+            stepGoal: goals.stepGoal,
+            excludedKeys: excluded
         )
         guard !store.isPro else { return }
 
@@ -2003,6 +2005,7 @@ private enum SettingsInfoTopic: Identifiable {
     case goalStreak
     case weeklyRecap
     case bodyProfile
+    case excludedDays
 
     var id: Self { self }
 
@@ -2018,6 +2021,7 @@ private enum SettingsInfoTopic: Identifiable {
         case .goalStreak: "Goal Streak"
         case .weeklyRecap: "Weekly Recap"
         case .bodyProfile: "Body Profile"
+        case .excludedDays: "Excluded Days"
         }
     }
 
@@ -2033,6 +2037,7 @@ private enum SettingsInfoTopic: Identifiable {
         case .goalStreak: "flame.fill"
         case .weeklyRecap: "calendar.badge.clock"
         case .bodyProfile: "figure"
+        case .excludedDays: "slash.circle"
         }
     }
 
@@ -2061,6 +2066,8 @@ private enum SettingsInfoTopic: Identifiable {
             "A Sunday evening notification summarizing your week. Turning it on asks permission to notify you."
         case .bodyProfile:
             "Your BMI, free, calculated from the height and weight already in Apple Health. No Health data? Enter them by hand instead."
+        case .excludedDays:
+            "Days you pick on a calendar stop counting toward every figure the app works out: averages, totals, best days, pacing, TDEE, and the weekly recap."
         }
     }
 
@@ -2069,6 +2076,8 @@ private enum SettingsInfoTopic: Identifiable {
     /// a divider, so the popover opens on the sentence that answers the question.
     var detail: String? {
         switch self {
+        case .excludedDays:
+            "For the days that aren't you: a flu week, a flight, a day the watch stayed on the charger. An excluded day is also neutral for streaks: it won't extend one and it won't break one.\n\nNothing is deleted. Excluded days stay in your charts, your Recent Days list, and your CSV export, drawn dimmed so you can see what you excluded and undo it."
         case .macros:
             "Show only the ones you track: carbs alone for carb counting, protein alone for training. Macro Goals adds a daily gram target, one macro at a time: hit a protein number while carbs and fat stay a plain readout.\n\nIf your calories sync but macros stay empty, your food app is sharing Energy without the Nutrition categories. In MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing."
         case .calorieSplit:
@@ -3480,6 +3489,74 @@ private struct SettingsSheet: View {
         }
     }
 
+    private var excludedDaysSubtitle: String {
+        let count = goals.excludedDayKeys.count
+        let dayWord = count == 1 ? "day" : "days"
+        if goals.isAveragesPaused {
+            return "Paused · \(count) \(dayWord) excluded"
+        }
+        return count == 0 ? "None excluded" : "\(count) \(dayWord) excluded"
+    }
+
+    private var excludedDaysFooter: String {
+        if goals.isAveragesPaused {
+            return "Averages are paused: every new day is excluded until you resume. Open this row (or the banner above the tab bar) to resume or edit the days."
+        }
+        return goals.excludedDayKeys.isEmpty
+            ? "Leave a sick day or a day off the wrist out of every average, total, and streak, or pause averages for a stretch you can't put an end date on. Nothing is deleted, and excluded days still show in your charts, dimmed."
+            : "Excluded days still show in your charts and export, dimmed. They count toward no average, total, best day, or streak."
+    }
+
+    /// Locked rows elsewhere in Settings are switches, so the lock can live on
+    /// the toggle. This one opens a screen, so the free state is a button that
+    /// answers the tap with the pitch rather than a dead-end navigation.
+    @ViewBuilder
+    private var excludedDaysRow: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 0) {
+                if store.isPro {
+                    NavigationLink {
+                        ExcludedDaysView(goals: goals)
+                    } label: {
+                        excludedDaysRowLabel
+                    }
+                } else {
+                    Button {
+                        requestTrialOffer(.excludedDaysRow)
+                    } label: {
+                        HStack(spacing: 0) {
+                            excludedDaysRowLabel
+                            Spacer(minLength: 8)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                }
+                SettingsInfoDot(
+                    topic: .excludedDays,
+                    isOpen: expandedInfoTopic == .excludedDays
+                ) {
+                    withAnimation(.snappy(duration: 0.22)) {
+                        expandedInfoTopic =
+                            expandedInfoTopic == .excludedDays ? nil : .excludedDays
+                    }
+                }
+            }
+            if expandedInfoTopic == .excludedDays {
+                SettingsInfoCallout(topic: .excludedDays)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
+    }
+
+    private var excludedDaysRowLabel: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            plusToggleLabel("Excluded Days")
+            Text(store.isPro ? excludedDaysSubtitle : "Keep odd days out of your averages")
+                .font(.caption)
+                .foregroundStyle(Theme.textSecondary)
+        }
+    }
+
     private var weeklyRecapBinding: Binding<Bool> {
         Binding(
             get: { store.isPro && goals.weeklyRecapEnabled },
@@ -3784,6 +3861,17 @@ private struct SettingsSheet: View {
                     // what's left is how pacing itself is calculated, which no
                     // single row owns.
                     Text(pacingFooter)
+                }
+
+                // Averages: one screen deciding which days the figures above are
+                // allowed to count. It sits under Pacing because that section is
+                // where a user first reads the word "average".
+                Section {
+                    excludedDaysRow
+                } header: {
+                    Text("Averages")
+                } footer: {
+                    Text(excludedDaysFooter)
                 }
 
                 // Notifications — Weekly Recap is the only push the app sends, so

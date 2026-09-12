@@ -4,10 +4,14 @@ struct NetDeficitTrendSummary {
     let points: [NetDeficitTrendPoint]
     let weekly: NetDeficitTrendMetric
 
+    /// - Parameter excludedKeys: days the user took out of every computed
+    ///   figure ([[ExcludedDays]]). They are drawn like an unlogged day (a faint
+    ///   placeholder) and counted like one: in the chart, in no aggregate.
     static func make(
         history: [(date: Date, active: Double, resting: Double, steps: Int)],
         foodByDate: [Date: Double],
         fastingMode: Bool = false,
+        excludedKeys: Set<String> = [],
         calendar: Calendar = .current
     ) -> NetDeficitTrendSummary? {
         let sorted = history
@@ -18,13 +22,15 @@ struct NetDeficitTrendSummary {
                 // A day counts toward net-deficit history only when it has burn
                 // data and (unless Fasting Mode is on) food was actually logged —
                 // an unlogged day would otherwise read as a full-burn "deficit".
-                let counts = burned > 0 && (fastingMode || food > 0)
+                let isExcluded = ExcludedDays.contains(key, in: excludedKeys)
+                let counts = burned > 0 && (fastingMode || food > 0) && !isExcluded
                 return NetDeficitTrendPoint(
                     date: key,
                     netDeficit: burned - food,
                     burned: burned,
                     food: food,
-                    counts: counts
+                    counts: counts,
+                    isExcluded: isExcluded
                 )
             }
             .sorted { $0.date < $1.date }
@@ -51,6 +57,18 @@ struct NetDeficitTrendPoint: Identifiable {
     /// Whether this day is included in net-deficit aggregates and drawn as a real
     /// bar (vs. a faint "unlogged" placeholder). See `NetDeficitTrendSummary.make`.
     let counts: Bool
+    /// Why it doesn't count, when it doesn't: the user excluded this day rather
+    /// than simply not logging food. Lets the chart label the two apart.
+    let isExcluded: Bool
+
+    init(date: Date, netDeficit: Double, burned: Double, food: Double, counts: Bool, isExcluded: Bool = false) {
+        self.date = date
+        self.netDeficit = netDeficit
+        self.burned = burned
+        self.food = food
+        self.counts = counts
+        self.isExcluded = isExcluded
+    }
 }
 
 struct NetDeficitTrendMetric {

@@ -188,22 +188,45 @@ struct HistoryView: View {
         foodByDay.values.contains { $0 > 0 }
     }
 
+    /// True when the user has taken this day out of every computed figure
+    /// (Settings → Averages → Excluded Days). See [[ExcludedDays]].
+    private func isExcluded(_ record: DayRecord) -> Bool {
+        goals.isDayExcluded(record.date)
+    }
+
+    /// The days that count. Every average, total, and peak on this screen is
+    /// built from these; `records` keeps the excluded days so the charts and
+    /// the Recent Days list can still draw them, dimmed.
+    private var countedRecords: [DayRecord] {
+        records.filter { !isExcluded($0) }
+    }
+
+    /// Same filter over the prior window, so a week-on-week comparison isn't
+    /// measured against days the user already disowned.
+    private var countedPreviousRecords: [DayRecord] {
+        previousRecords.filter { !isExcluded($0) }
+    }
+
+    private var excludedDaysInPeriod: Int {
+        records.count - countedRecords.count
+    }
+
     private var totalCalories: Double {
-        records.map(\.totalCalories).reduce(0, +)
+        countedRecords.map(\.totalCalories).reduce(0, +)
     }
 
     private var avgCalories: Double {
-        guard !records.isEmpty else { return 0 }
-        return totalCalories / Double(records.count)
+        guard !countedRecords.isEmpty else { return 0 }
+        return totalCalories / Double(countedRecords.count)
     }
 
     private var totalSteps: Int {
-        records.map(\.steps).reduce(0, +)
+        countedRecords.map(\.steps).reduce(0, +)
     }
 
     private var avgSteps: Int {
-        guard !records.isEmpty else { return 0 }
-        return Int((Double(totalSteps) / Double(records.count)).rounded())
+        guard !countedRecords.isEmpty else { return 0 }
+        return Int((Double(totalSteps) / Double(countedRecords.count)).rounded())
     }
 
     private var currentMonthKey: String {
@@ -224,34 +247,38 @@ struct HistoryView: View {
         selectedPeriod == .year
     }
 
-    private var calorieChartData: [(date: Date, value: Double, id: UUID)] {
+    /// Week and month buckets are averages, so they are built from the counted
+    /// days only. Daily bars draw every day and carry `excluded` so the bar can
+    /// be dimmed. A missing bar would read as missing data, which is the one
+    /// thing an exclusion must not look like.
+    private var calorieChartData: [(date: Date, value: Double, id: UUID, excluded: Bool)] {
         if shouldAggregateByMonth {
-            return aggregateByMonth(records: records).map { ($0.monthStart, $0.avgCalories, $0.id) }
+            return aggregateByMonth(records: countedRecords).map { ($0.monthStart, $0.avgCalories, $0.id, false) }
         } else if shouldAggregateByWeek {
-            return aggregateByWeek(records: records).map { ($0.weekStart, $0.avgCalories, $0.id) }
+            return aggregateByWeek(records: countedRecords).map { ($0.weekStart, $0.avgCalories, $0.id, false) }
         } else {
-            return records.map { ($0.date, $0.totalCalories, $0.id) }
+            return records.map { ($0.date, $0.totalCalories, $0.id, isExcluded($0)) }
         }
     }
 
-    private var stepsChartData: [(date: Date, value: Double, id: UUID)] {
+    private var stepsChartData: [(date: Date, value: Double, id: UUID, excluded: Bool)] {
         if shouldAggregateByMonth {
-            return aggregateByMonth(records: records).map { ($0.monthStart, Double($0.avgSteps), $0.id) }
+            return aggregateByMonth(records: countedRecords).map { ($0.monthStart, Double($0.avgSteps), $0.id, false) }
         } else if shouldAggregateByWeek {
-            return aggregateByWeek(records: records).map { ($0.weekStart, Double($0.avgSteps), $0.id) }
+            return aggregateByWeek(records: countedRecords).map { ($0.weekStart, Double($0.avgSteps), $0.id, false) }
         } else {
-            return records.map { ($0.date, Double($0.steps), $0.id) }
+            return records.map { ($0.date, Double($0.steps), $0.id, isExcluded($0)) }
         }
     }
 
     private var chartAvgCalories: Double {
-        let data = calorieChartData
+        let data = calorieChartData.filter { !$0.excluded }
         guard !data.isEmpty else { return 0 }
         return data.map(\.value).reduce(0, +) / Double(data.count)
     }
 
     private var chartAvgSteps: Double {
-        let data = stepsChartData
+        let data = stepsChartData.filter { !$0.excluded }
         guard !data.isEmpty else { return 0 }
         return data.map(\.value).reduce(0, +) / Double(data.count)
     }
@@ -299,11 +326,11 @@ struct HistoryView: View {
     }
 
     private var peakCalorieDay: DayRecord? {
-        records.max(by: { $0.totalCalories < $1.totalCalories })
+        countedRecords.max(by: { $0.totalCalories < $1.totalCalories })
     }
 
     private var peakStepDay: DayRecord? {
-        records.max(by: { $0.steps < $1.steps })
+        countedRecords.max(by: { $0.steps < $1.steps })
     }
 
     private func recordForDate(_ date: Date?) -> DayRecord? {
@@ -336,7 +363,7 @@ struct HistoryView: View {
     /// full-burn "deficit" and skew the chart and averages) — unless the user turns on
     /// Net Deficit Fasting Mode, which counts those unlogged days as real deficits.
     private var netRecords: [DayRecord] {
-        records.filter { $0.totalCalories > 0 && (goals.netDeficitFastingMode || hasFoodLogged($0)) }
+        countedRecords.filter { $0.totalCalories > 0 && (goals.netDeficitFastingMode || hasFoodLogged($0)) }
     }
 
     private var hasNetData: Bool {
@@ -381,7 +408,7 @@ struct HistoryView: View {
     /// macros the user is tracking, so a carb counter's history isn't padded with
     /// days that only carry protein.
     private var macroRecords: [DayRecord] {
-        records.filter { macros(for: $0.date).hasData(in: goals.visibleMacroSet) }
+        countedRecords.filter { macros(for: $0.date).hasData(in: goals.visibleMacroSet) }
     }
 
     private var hasMacroData: Bool { !macroRecords.isEmpty }
@@ -391,13 +418,19 @@ struct HistoryView: View {
     /// into calories: it's the same meals either way, and only one of the two
     /// numbers is one the user can go and check in their food app.
     private var avgLoggedFoodCalories: Double? {
-        let logged = foodByDay.values.filter { $0 > 0 }
+        let logged = foodByDay
+            .filter { $0.value > 0 && !goals.isDayExcluded($0.key) }
+            .map(\.value)
         guard !logged.isEmpty else { return nil }
         return logged.reduce(0, +) / Double(logged.count)
     }
 
     private var macroSummary: MacroSummary? {
-        MacroSummary.make(macrosByDay: macrosByDay, visible: goals.visibleMacroSet)
+        MacroSummary.make(
+            macrosByDay: macrosByDay,
+            visible: goals.visibleMacroSet,
+            excludedKeys: goals.excludedDayKeys
+        )
     }
 
     /// One stacked entry per macro per bucket. Aggregated buckets average across
@@ -662,6 +695,8 @@ struct HistoryView: View {
                                 macroAverageCards
                             }
 
+                            excludedDaysNote
+
                             // Calories chart
                             ChartCard(title: "Calories", selection: selectedCalorieRecord, metricLink: .calories) {
                                 caloriesChart
@@ -865,7 +900,7 @@ struct HistoryView: View {
         defer { isGeneratingPDF = false }
         try? await Task.sleep(nanoseconds: 100_000_000)
 
-        let reportDays: [ReportDay] = records.map { rec in
+        let reportDays: [ReportDay] = countedRecords.map { rec in
             ReportDay(
                 date: rec.date,
                 activeCalories: rec.activeCalories,
@@ -875,7 +910,7 @@ struct HistoryView: View {
                 macros: isMacrosEnabled ? macros(for: rec.date) : nil
             )
         }
-        let prevDays: [ReportDay] = previousRecords.map { rec in
+        let prevDays: [ReportDay] = countedPreviousRecords.map { rec in
             ReportDay(
                 date: rec.date,
                 activeCalories: rec.activeCalories,
@@ -884,8 +919,8 @@ struct HistoryView: View {
                 foodCalories: nil
             )
         }
-        let start = records.map(\.date).min() ?? Date.now
-        let end = records.map(\.date).max() ?? Date.now
+        let start = countedRecords.map(\.date).min() ?? Date.now
+        let end = countedRecords.map(\.date).max() ?? Date.now
 
         let report = SummaryReportGenerator.make(
             title: reportTitle,
@@ -943,7 +978,8 @@ struct HistoryView: View {
                 }
             }
 
-            let reportDays = history.map { rec in
+            let excluded = goals.excludedDayKeys
+            let reportDays = ExcludedDays.excluding(history, keys: excluded, date: \.date).map { rec in
                 ReportDay(
                     date: rec.date,
                     activeCalories: rec.active,
@@ -953,7 +989,7 @@ struct HistoryView: View {
                     macros: macroMap[calendar.startOfDay(for: rec.date)]
                 )
             }
-            let previousDays = previous.map { rec in
+            let previousDays = ExcludedDays.excluding(previous, keys: excluded, date: \.date).map { rec in
                 ReportDay(
                     date: rec.date,
                     activeCalories: rec.active,
@@ -1011,19 +1047,19 @@ struct HistoryView: View {
     }
 
     private var previousAverageCalories: Double? {
-        let prevNonZero = previousRecords.filter { $0.totalCalories > 0 }
+        let prevNonZero = countedPreviousRecords.filter { $0.totalCalories > 0 }
         guard !prevNonZero.isEmpty else { return nil }
         return prevNonZero.map(\.totalCalories).reduce(0, +) / Double(prevNonZero.count)
     }
 
     private var previousAverageSteps: Double? {
-        let prevNonZero = previousRecords.filter { $0.steps > 0 }
+        let prevNonZero = countedPreviousRecords.filter { $0.steps > 0 }
         guard !prevNonZero.isEmpty else { return nil }
         return Double(prevNonZero.map(\.steps).reduce(0, +)) / Double(prevNonZero.count)
     }
 
     private var deepTrendInsights: [DeepTrendInsight] {
-        DeepTrendsBuilder.insights(currentRecords: records, previousRecords: previousRecords)
+        DeepTrendsBuilder.insights(currentRecords: countedRecords, previousRecords: countedPreviousRecords)
     }
 
     private var deepTrendHighlights: [String] {
@@ -1033,7 +1069,8 @@ struct HistoryView: View {
     // MARK: - Chart Views
 
     private var selectedCalorieRecord: ChartSelection? {
-        guard let item = selectedChartItem(for: selectedCalorieDate, in: calorieChartData) else { return nil }
+        let data = calorieChartData.map { (date: $0.date, value: $0.value, id: $0.id) }
+        guard let item = selectedChartItem(for: selectedCalorieDate, in: data) else { return nil }
         return ChartSelection(
             date: item.date,
             primary: ("Calories", selectedChartValue(item.value.formatted(.number.precision(.fractionLength(0))))),
@@ -1042,7 +1079,8 @@ struct HistoryView: View {
     }
 
     private var selectedStepRecord: ChartSelection? {
-        guard let item = selectedChartItem(for: selectedStepDate, in: stepsChartData) else { return nil }
+        let data = stepsChartData.map { (date: $0.date, value: $0.value, id: $0.id) }
+        guard let item = selectedChartItem(for: selectedStepDate, in: data) else { return nil }
         return ChartSelection(
             date: item.date,
             primary: ("Steps", selectedChartValue(Int(item.value.rounded()).formatted(.number))),
@@ -1085,7 +1123,9 @@ struct HistoryView: View {
                     endPoint: .top
                 )
             )
-            .opacity(selectedCalorieDate == nil || Calendar.current.isDate(item.date, equalTo: selectedCalorieDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3)
+            // Excluded days stay on the chart at a quarter strength: present,
+            // clearly not part of the average line above them.
+            .opacity((selectedCalorieDate == nil || Calendar.current.isDate(item.date, equalTo: selectedCalorieDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3) * (item.excluded ? 0.25 : 1.0))
             .cornerRadius(4)
 
             if calorieChartData.count > 1 {
@@ -1140,7 +1180,7 @@ struct HistoryView: View {
                     endPoint: .top
                 )
             )
-            .opacity(selectedStepDate == nil || Calendar.current.isDate(item.date, equalTo: selectedStepDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3)
+            .opacity((selectedStepDate == nil || Calendar.current.isDate(item.date, equalTo: selectedStepDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3) * (item.excluded ? 0.25 : 1.0))
             .cornerRadius(4)
 
             if stepsChartData.count > 1 {
@@ -1481,8 +1521,14 @@ struct HistoryView: View {
                     ScrollView(showsIndicators: false) {
                         VStack(spacing: 20) {
                             focusedSummaryCards(metric)
+                            excludedDaysNote
                             focusedChartCard(metric)
-                            RecentDaysList(metric: metric, rows: recentDayRows(metric))
+                            RecentDaysList(
+                                metric: metric,
+                                rows: recentDayRows(metric),
+                                isPro: store.isPro,
+                                onToggleExclusion: toggleExclusion
+                            )
                         }
                         .padding(.horizontal, 24)
                         .padding(.top, 20)
@@ -1639,6 +1685,34 @@ struct HistoryView: View {
 
     /// Most-recent-first rows for the detail view's recent-days list. Net uses
     /// only days with food logged; calories/steps use every non-zero day.
+    /// Long-press on a day in Recent Days. The Settings screen owns the full
+    /// list; this is the shortcut for the moment the user actually notices a day
+    /// is unrepresentative, which is while they are looking at it.
+    private func toggleExclusion(_ row: RecentDayRow) {
+        guard store.isPro else {
+            TrialOfferCoordinator.shared.request(.excludedDaysRow)
+            return
+        }
+        goals.setDay(row.date, excluded: !row.isExcluded)
+    }
+
+    /// Answers "why doesn't this match what I remember" in one line, instead of
+    /// leaving the user to notice the faint bars and work it out. Absent when
+    /// nothing in the period is excluded, which is the normal case.
+    @ViewBuilder
+    private var excludedDaysNote: some View {
+        if excludedDaysInPeriod > 0 {
+            HStack(spacing: 6) {
+                Image(systemName: "slash.circle")
+                Text("\(excludedDaysInPeriod) \(excludedDaysInPeriod == 1 ? "day" : "days") excluded from these figures")
+            }
+            .font(.system(.caption, design: .rounded))
+            .foregroundStyle(Theme.textTertiary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityElement(children: .combine)
+        }
+    }
+
     private func recentDayRows(_ metric: HistoryMetric, limit: Int = 14) -> [RecentDayRow] {
         let source: [DayRecord]
         switch metric {
@@ -1677,7 +1751,7 @@ struct HistoryView: View {
                         color: Theme.macroColor(kind)
                     )
                 }
-                return RecentDayRow(date: rec.date, segments: segments, delta: delta)
+                return RecentDayRow(date: rec.date, segments: segments, delta: delta, isExcluded: isExcluded(rec))
             }
             let valueText: String
             switch metric {
@@ -1686,7 +1760,13 @@ struct HistoryView: View {
             case .net: valueText = formatSignedNet(v)
             case .macros: valueText = macroShortText(macros(for: rec.date))
             }
-            return RecentDayRow(date: rec.date, valueText: valueText, delta: delta, tint: metric.tint)
+            return RecentDayRow(
+                date: rec.date,
+                valueText: valueText,
+                delta: delta,
+                tint: metric.tint,
+                isExcluded: isExcluded(rec)
+            )
         }
     }
 
@@ -1942,7 +2022,10 @@ struct HistoryView: View {
         let days = history.map {
             MilestoneDay(date: $0.date, calories: $0.active + $0.resting, steps: $0.steps)
         }
-        guard let milestone = MilestoneCalculator.reviewableLastMonth(records: days) else { return }
+        guard let milestone = MilestoneCalculator.reviewableLastMonth(
+            records: days,
+            excludedKeys: goals.excludedDayKeys
+        ) else { return }
         MilestoneCoordinator.shared.request(milestone)
     }
 
@@ -2009,6 +2092,13 @@ struct HistoryView: View {
         if isMacrosEnabled {
             columns += goals.visibleMacros.map { "\($0.label) (g)" }
         }
+        // Excluded days are exported, flagged rather than dropped: the export is
+        // the user's own data, and a silently missing row is indistinguishable
+        // from a gap in Apple Health.
+        let hasExclusions = excludedDaysInPeriod > 0
+        if hasExclusions {
+            columns.append("Excluded")
+        }
         let header = columns.map(Self.csvEscape).joined(separator: ",") + "\n"
 
         let rows = records.map { r -> String in
@@ -2038,6 +2128,9 @@ struct HistoryView: View {
                 } else {
                     fields += goals.visibleMacros.map { _ in "" }
                 }
+            }
+            if hasExclusions {
+                fields.append(isExcluded(r) ? "yes" : "")
             }
             return fields.map(Self.csvEscape).joined(separator: ",")
         }.joined(separator: "\n")
@@ -2776,6 +2869,8 @@ struct RecentDayRow: Identifiable {
     let segments: [Segment]
     /// Change vs the next-older day in the list; nil when there's no prior day.
     let delta: Double?
+    /// Day the user took out of every figure. Still listed, drawn quieter.
+    let isExcluded: Bool
 
     struct Segment: Identifiable {
         let id = UUID()
@@ -2787,14 +2882,20 @@ struct RecentDayRow: Identifiable {
         segments.map(\.text).joined(separator: " · ")
     }
 
-    init(date: Date, valueText: String, delta: Double?, tint: Color) {
-        self.init(date: date, segments: [Segment(text: valueText, color: tint)], delta: delta)
+    init(date: Date, valueText: String, delta: Double?, tint: Color, isExcluded: Bool = false) {
+        self.init(
+            date: date,
+            segments: [Segment(text: valueText, color: tint)],
+            delta: delta,
+            isExcluded: isExcluded
+        )
     }
 
-    init(date: Date, segments: [Segment], delta: Double?) {
+    init(date: Date, segments: [Segment], delta: Double?, isExcluded: Bool = false) {
         self.date = date
         self.segments = segments
         self.delta = delta
+        self.isExcluded = isExcluded
     }
 }
 
@@ -2803,6 +2904,9 @@ struct RecentDayRow: Identifiable {
 private struct RecentDaysList: View {
     let metric: HistoryMetric
     let rows: [RecentDayRow]
+    /// Excluding a day is a Vitals+ feature; a free user's long-press pitches it.
+    let isPro: Bool
+    let onToggleExclusion: (RecentDayRow) -> Void
 
     private var recentDaysEmptyText: String {
         switch metric {
@@ -2836,6 +2940,19 @@ private struct RecentDaysList: View {
                         Text(Self.dateFormatter.string(from: row.date))
                             .font(.system(.subheadline, design: .rounded))
                             .foregroundStyle(Theme.textSecondary)
+                        if row.isExcluded {
+                            // Names the state rather than leaving a faint row to
+                            // be read as missing data.
+                            Text("EXCLUDED")
+                                .font(.system(size: 9, design: .rounded).weight(.bold))
+                                .tracking(0.5)
+                                .foregroundStyle(Theme.textTertiary)
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 2)
+                                .background(
+                                    Capsule().fill(Theme.textTertiary.opacity(0.12))
+                                )
+                        }
                         Spacer()
                         HStack(spacing: 5) {
                             ForEach(Array(row.segments.enumerated()), id: \.element.id) { segmentIndex, segment in
@@ -2852,8 +2969,24 @@ private struct RecentDaysList: View {
                         .minimumScaleFactor(0.7)
                         .frame(minWidth: 64, alignment: .trailing)
                     }
+                    .opacity(row.isExcluded ? 0.45 : 1)
+                    .contentShape(Rectangle())
+                    .contextMenu {
+                        Button {
+                            onToggleExclusion(row)
+                        } label: {
+                            Label(
+                                row.isExcluded ? "Include in Averages" : "Exclude from Averages",
+                                systemImage: row.isExcluded ? "arrow.uturn.backward" : "slash.circle"
+                            )
+                        }
+                    }
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel("\(Self.dateFormatter.string(from: row.date)): \(row.valueText)")
+                    .accessibilityLabel(
+                        row.isExcluded
+                            ? "\(Self.dateFormatter.string(from: row.date)): \(row.valueText), excluded from averages"
+                            : "\(Self.dateFormatter.string(from: row.date)): \(row.valueText)"
+                    )
                     if index < rows.count - 1 {
                         Divider().overlay(Theme.textTertiary.opacity(0.15))
                     }

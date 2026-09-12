@@ -43,6 +43,8 @@ private final class PhoneGoalSyncService: NSObject, WCSessionDelegate {
             GoalSyncKeys.netDeficitFastingMode: goals.netDeficitFastingMode,
             GoalSyncKeys.showCalories: goals.showCalories,
             GoalSyncKeys.showSteps: goals.showSteps,
+            GoalSyncKeys.excludedDays: Array(goals.pickedExcludedDayKeys).sorted(),
+            GoalSyncKeys.averagesPausedSince: goals.averagesPausedSince?.timeIntervalSince1970 ?? 0,
         ]
 
         do {
@@ -198,6 +200,16 @@ struct VitalsApp: App {
                     PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
                     #endif
                 }
+                .onChange(of: goals.pickedExcludedDayKeys) { _, _ in
+                    #if canImport(WatchConnectivity)
+                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                    #endif
+                }
+                .onChange(of: goals.averagesPausedSince) { _, _ in
+                    #if canImport(WatchConnectivity)
+                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                    #endif
+                }
     }
 
     static func scheduleAppRefresh() {
@@ -274,6 +286,7 @@ final class TrialOfferCoordinator: ObservableObject {
         case milestoneCelebration
         case whatsNewAnnouncement
         case bodyProfileDetails
+        case excludedDaysRow
 
         /// The Vitals+ feature this tap reached for, so the pitch can lead with
         /// it. `nil` for entrypoints with no single feature (the generic
@@ -290,6 +303,7 @@ final class TrialOfferCoordinator: ObservableObject {
             case .streaksToggle: .streaks
             case .weeklyRecapToggle: .weeklyRecap
             case .bodyProfileDetails: .bodyProfile
+            case .excludedDaysRow: .excludedDays
             case .settingsUpgradeRow, .milestoneCelebration, .whatsNewAnnouncement: nil
             }
         }
@@ -371,6 +385,9 @@ struct MainTabView: View {
     @State private var variantToastLabel: String?
     #endif
     @State private var historyHasAppeared = false
+    /// The Excluded Days screen, raised from the paused-averages banner rather
+    /// than through Settings, so "unpause" is two taps from anywhere in the app.
+    @State private var showExcludedDays = false
     @State private var showWhatsNew = false
     /// Guards the What's New announcement to one evaluation per app session.
     @State private var whatsNewEvaluated = false
@@ -544,6 +561,71 @@ struct MainTabView: View {
         }
     }
     #endif
+
+    /// Standing notice that the numbers are deliberately not counting today.
+    /// A pause is easy to start and easy to forget, and a forgotten pause looks
+    /// exactly like a broken app: averages that stop moving for no reason. So it
+    /// says so on every tab, names the day it started, and carries its own way
+    /// out: Resume right here, or tap through to the day list.
+    @ViewBuilder
+    private var pausedAveragesBanner: some View {
+        if store.isPro, let since = goals.averagesPausedSince {
+            HStack(spacing: 10) {
+                Button {
+                    showExcludedDays = true
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "pause.circle.fill")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundStyle(Theme.caloriesPrimary)
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text("Averages paused")
+                                .font(.system(.footnote, design: .rounded, weight: .semibold))
+                                .foregroundStyle(Theme.textPrimary)
+                            Text(Self.pausedBannerDetail(since: since, days: goals.pausedDates.count))
+                                .font(.system(.caption2, design: .rounded))
+                                .foregroundStyle(Theme.textSecondary)
+                        }
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundStyle(Theme.textTertiary)
+                    }
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Averages paused since \(Self.pausedBannerDateFormatter.string(from: since))")
+                .accessibilityHint("Opens excluded days")
+
+                Button("Resume") {
+                    withAnimation(.snappy(duration: 0.25)) {
+                        goals.resumeAverages()
+                    }
+                }
+                .font(.system(.footnote, design: .rounded, weight: .bold))
+                .foregroundStyle(Theme.caloriesPrimary)
+                .buttonStyle(.plain)
+                .accessibilityHint("Starts counting new days in your averages again")
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 9)
+            // Sized to its content, like the tab capsule under it. Full width
+            // made a standing notice look like an error bar.
+            .background(.regularMaterial, in: Capsule())
+            .overlay(Capsule().stroke(Theme.caloriesPrimary.opacity(0.35), lineWidth: 0.5))
+            .padding(.horizontal, 12)
+            .transition(.move(edge: .bottom).combined(with: .opacity))
+        }
+    }
+
+    private static let pausedBannerDateFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "MMM d"
+        return f
+    }()
+
+    private static func pausedBannerDetail(since: Date, days: Int) -> String {
+        "Since \(pausedBannerDateFormatter.string(from: since)) · \(days) \(days == 1 ? "day" : "days") excluded"
+    }
 
     /// Milestone CTA: buy yearly in place (Apple confirm). Trial applies only
     /// when eligible; otherwise it's a straight yearly purchase.
@@ -928,43 +1010,61 @@ struct MainTabView: View {
             // Custom tab bar — always visible so the user can navigate away from
             // the paywall. The native paywall scrolls its own auto-renew disclosure,
             // so the tab bar overlay doesn't break 3.1.2(a).
-            HStack(spacing: 0) {
-                TabButton(
-                    icon: "heart.fill",
-                    label: "Today",
-                    isSelected: selectedTab == 0
-                ) { selectedTab = 0 }
+            VStack(spacing: 8) {
+                // Above the tab bar rather than under each navigation title: it
+                // has to read the same on all three tabs, and this is the one
+                // strip of the screen every tab already gives to chrome.
+                pausedAveragesBanner
 
-                TabButton(
-                    icon: "chart.bar.fill",
-                    label: "History",
-                    isSelected: selectedTab == 1
-                ) {
-                    if !historyHasAppeared { historyHasAppeared = true }
-                    selectedTab = 1
-                }
+                HStack(spacing: 0) {
+                    TabButton(
+                        icon: "heart.fill",
+                        label: "Today",
+                        isSelected: selectedTab == 0
+                    ) { selectedTab = 0 }
 
-                TabButton(
-                    icon: store.isPro ? "sparkles" : "lock.fill",
-                    label: store.isPro ? "Vitals+" : "Upgrade",
-                    isSelected: selectedTab == 2
-                ) {
-                    #if DEBUG
-                    if selectedTab == 2 { countRotatorTap() }
-                    #endif
-                    selectedTab = 2
+                    TabButton(
+                        icon: "chart.bar.fill",
+                        label: "History",
+                        isSelected: selectedTab == 1
+                    ) {
+                        if !historyHasAppeared { historyHasAppeared = true }
+                        selectedTab = 1
+                    }
+
+                    TabButton(
+                        icon: store.isPro ? "sparkles" : "lock.fill",
+                        label: store.isPro ? "Vitals+" : "Upgrade",
+                        isSelected: selectedTab == 2
+                    ) {
+                        #if DEBUG
+                        if selectedTab == 2 { countRotatorTap() }
+                        #endif
+                        selectedTab = 2
+                    }
                 }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 6)
+                .background(.ultraThinMaterial.opacity(0.8), in: Capsule())
+                .overlay(Capsule().stroke(Color(.separator).opacity(0.3), lineWidth: 0.5))
+                #if DEBUG
+                .overlay(alignment: .top) { variantToast }
+                #endif
             }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 6)
-            .background(.ultraThinMaterial.opacity(0.8), in: Capsule())
-            .overlay(Capsule().stroke(Color(.separator).opacity(0.3), lineWidth: 0.5))
             .padding(.bottom, 12)
-            #if DEBUG
-            .overlay(alignment: .top) { variantToast }
-            #endif
         }
         .ignoresSafeArea(edges: .bottom)
+        .sheet(isPresented: $showExcludedDays) {
+            NavigationStack {
+                ExcludedDaysView(goals: goals)
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("Done") { showExcludedDays = false }.bold()
+                        }
+                    }
+            }
+            .preferredColorScheme(goals.appearance.colorScheme)
+        }
         .task {
             // Wait briefly for products to load, then consider the launch
             // surfaces. What's New (for users who just updated) takes priority

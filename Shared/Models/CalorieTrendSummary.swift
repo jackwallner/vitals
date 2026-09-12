@@ -5,15 +5,21 @@ struct CalorieTrendSummary {
     let weekly: CalorieTrendMetric
     let monthly: CalorieTrendMetric
 
+    /// - Parameter excludedKeys: days the user took out of every computed
+    ///   figure ([[ExcludedDays]]). They stay in `points` so the chart can draw
+    ///   them dimmed, and stay out of every average.
     static func make(
         history: [(date: Date, active: Double, resting: Double, steps: Int)],
+        excludedKeys: Set<String> = [],
         calendar: Calendar = .current
     ) -> CalorieTrendSummary? {
         let sorted = history
             .map {
-                CalorieTrendPoint(
-                    date: calendar.startOfDay(for: $0.date),
-                    totalCalories: max($0.active + $0.resting, 0)
+                let day = calendar.startOfDay(for: $0.date)
+                return CalorieTrendPoint(
+                    date: day,
+                    totalCalories: max($0.active + $0.resting, 0),
+                    isExcluded: ExcludedDays.contains(day, in: excludedKeys)
                 )
             }
             .sorted { $0.date < $1.date }
@@ -31,6 +37,14 @@ struct CalorieTrendPoint: Identifiable {
     var id: Date { date }
     let date: Date
     let totalCalories: Double
+    /// User-excluded day: drawn, but counted by nothing.
+    let isExcluded: Bool
+
+    init(date: Date, totalCalories: Double, isExcluded: Bool = false) {
+        self.date = date
+        self.totalCalories = totalCalories
+        self.isExcluded = isExcluded
+    }
 }
 
 struct CalorieTrendMetric {
@@ -78,7 +92,7 @@ struct CalorieTrendMetric {
         // for averages. We compare against `endDate` rather than the wall-clock "today" so
         // tests with synthetic dates and back-dated history both behave correctly.
         let cutoff = calendar.startOfDay(for: endDate)
-        let completedPoints = points.filter { $0.date < cutoff && $0.totalCalories > 0 }
+        let completedPoints = points.filter { $0.date < cutoff && $0.totalCalories > 0 && !$0.isExcluded }
         guard let referenceDate = completedPoints.last?.date else {
             return CalorieTrendMetric(title: title, average: nil, sampleDays: 0, expectedDays: periodDays, percentChange: nil)
         }
@@ -90,8 +104,8 @@ struct CalorieTrendMetric {
             return CalorieTrendMetric(title: title, average: nil, sampleDays: 0, expectedDays: periodDays, percentChange: nil)
         }
 
-        let currentPoints = points.filter { $0.date >= currentStart && $0.date <= referenceDate && $0.totalCalories > 0 }
-        let previousPoints = points.filter { $0.date >= previousStart && $0.date <= previousEnd && $0.totalCalories > 0 }
+        let currentPoints = points.filter { $0.date >= currentStart && $0.date <= referenceDate && $0.totalCalories > 0 && !$0.isExcluded }
+        let previousPoints = points.filter { $0.date >= previousStart && $0.date <= previousEnd && $0.totalCalories > 0 && !$0.isExcluded }
         let average = averageCalories(currentPoints)
         let previousAverage = averageCalories(previousPoints)
         let percentChange = average.flatMap { current in

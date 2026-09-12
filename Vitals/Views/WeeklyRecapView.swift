@@ -190,7 +190,8 @@ struct WeeklyRecapView: View {
         recap = WeeklyRecapBuilder.build(
             records: records,
             calorieGoal: goals.calorieGoal,
-            stepGoal: goals.stepGoal
+            stepGoal: goals.stepGoal,
+            excludedKeys: goals.excludedDayKeys
         )
     }
 }

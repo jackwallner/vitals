@@ -5,15 +5,21 @@ struct StepTrendSummary {
     let weekly: StepTrendMetric
     let monthly: StepTrendMetric
 
+    /// - Parameter excludedKeys: days the user took out of every computed
+    ///   figure ([[ExcludedDays]]). Kept in `points` for the chart, out of
+    ///   every average.
     static func make(
         history: [(date: Date, active: Double, resting: Double, steps: Int)],
+        excludedKeys: Set<String> = [],
         calendar: Calendar = .current
     ) -> StepTrendSummary? {
         let sorted = history
             .map {
-                StepTrendPoint(
-                    date: calendar.startOfDay(for: $0.date),
-                    steps: max($0.steps, 0)
+                let day = calendar.startOfDay(for: $0.date)
+                return StepTrendPoint(
+                    date: day,
+                    steps: max($0.steps, 0),
+                    isExcluded: ExcludedDays.contains(day, in: excludedKeys)
                 )
             }
             .sorted { $0.date < $1.date }
@@ -31,6 +37,14 @@ struct StepTrendPoint: Identifiable {
     var id: Date { date }
     let date: Date
     let steps: Int
+    /// User-excluded day: drawn, but counted by nothing.
+    let isExcluded: Bool
+
+    init(date: Date, steps: Int, isExcluded: Bool = false) {
+        self.date = date
+        self.steps = steps
+        self.isExcluded = isExcluded
+    }
 }
 
 struct StepTrendMetric {
@@ -74,7 +88,7 @@ struct StepTrendMetric {
         endDate: Date,
         calendar: Calendar
     ) -> StepTrendMetric {
-        let completedPoints = points.filter { !calendar.isDateInToday($0.date) && $0.steps > 0 }
+        let completedPoints = points.filter { !calendar.isDateInToday($0.date) && $0.steps > 0 && !$0.isExcluded }
         guard let referenceDate = completedPoints.last?.date else {
             return StepTrendMetric(title: title, average: nil, sampleDays: 0, expectedDays: periodDays, percentChange: nil)
         }
@@ -86,8 +100,8 @@ struct StepTrendMetric {
             return StepTrendMetric(title: title, average: nil, sampleDays: 0, expectedDays: periodDays, percentChange: nil)
         }
 
-        let currentPoints = points.filter { $0.date >= currentStart && $0.date <= referenceDate && $0.steps > 0 }
-        let previousPoints = points.filter { $0.date >= previousStart && $0.date <= previousEnd && $0.steps > 0 }
+        let currentPoints = points.filter { $0.date >= currentStart && $0.date <= referenceDate && $0.steps > 0 && !$0.isExcluded }
+        let previousPoints = points.filter { $0.date >= previousStart && $0.date <= previousEnd && $0.steps > 0 && !$0.isExcluded }
         let average = averageSteps(currentPoints)
         let previousAverage = averageSteps(previousPoints)
         let percentChange = average.flatMap { current in
