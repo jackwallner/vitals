@@ -47,6 +47,14 @@ final class HealthKitService: ObservableObject {
         bodyProfileBaseReadTypes.union([bodyFatReadType])
     }
 
+    /// Days the user took out of every computed figure ([[ExcludedDays]]).
+    /// Read fresh per query rather than cached: Settings can change the set
+    /// between two refreshes, and a stale copy would leave the dashboard
+    /// disagreeing with History until relaunch.
+    private var excludedDayKeys: Set<String> {
+        GoalSettings.shared.excludedDayKeys
+    }
+
     private init() {
         if ScreenshotConfig.isEnabled {
             isAuthorized = true
@@ -491,7 +499,8 @@ final class HealthKitService: ObservableObject {
         return EnergyAveragesCalculator.compute(
             records: records,
             referenceDate: .now,
-            minSamples: minSamples
+            minSamples: minSamples,
+            excludedKeys: excludedDayKeys
         )
     }
 
@@ -563,12 +572,15 @@ final class HealthKitService: ObservableObject {
         var calorieSampleDays = 0
         var stepSampleDays = 0
 
+        let excluded = excludedDayKeys
         for dayOffset in 1...lookbackDays {
             guard let day = calendar.date(byAdding: .day, value: -dayOffset, to: today) else { continue }
             let dayStart = calendar.startOfDay(for: day)
             if comparison == .dayOfWeek, calendar.component(.weekday, from: dayStart) != targetWeekday {
                 continue
             }
+            // A day the user excluded is not a sample of their usual day.
+            if ExcludedDays.contains(dayStart, in: excluded) { continue }
 
             let dayCal = statisticValue(active, for: dayStart) + statisticValue(resting, for: dayStart)
             let daySteps = statisticValue(steps, for: dayStart)

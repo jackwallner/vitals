@@ -22,10 +22,14 @@ enum EnergyAveragesCacheReader {
         let hasCache: Bool
     }
 
+    /// - Parameter excludedKeys: days the user took out of every figure
+    ///   ([[ExcludedDays]]). Passed in rather than read here so this stays
+    ///   callable from a widget timeline off the main actor.
     static func read(
         container: ModelContainer,
         referenceDate: Date = .now,
-        minSamples: Int
+        minSamples: Int,
+        excludedKeys: Set<String> = []
     ) -> Output {
         let todayKey = DailyHealthRecord.key(for: DateHelpers.startOfDay(referenceDate))
         let windowStartKey = DailyHealthRecord.key(
@@ -53,7 +57,8 @@ enum EnergyAveragesCacheReader {
         let result = EnergyAveragesCalculator.compute(
             records: rows.map { (date: $0.date, active: $0.activeCalories, resting: $0.restingCalories) },
             referenceDate: referenceDate,
-            minSamples: minSamples
+            minSamples: minSamples,
+            excludedKeys: excludedKeys
         )
         return Output(result: result, hasCache: true)
     }

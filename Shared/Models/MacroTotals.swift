@@ -200,17 +200,22 @@ struct MacroSummary: Equatable, Sendable {
         return (best.date, best.totals.grams(kind))
     }
 
-    /// - Parameter visible: which macros count toward "this day has data". Days
-    ///   are still summed in full so the calorie split stays honest; the filter
-    ///   only decides which days qualify.
+    /// - Parameters:
+    ///   - visible: which macros count toward "this day has data". Days are
+    ///     still summed in full so the calorie split stays honest; the filter
+    ///     only decides which days qualify.
+    ///   - excludedKeys: days the user took out of every computed figure
+    ///     ([[ExcludedDays]]). Dropped here the same way an unlogged day is.
     static func make(
         macrosByDay: [Date: MacroTotals],
         visible: Set<MacroKind> = Set(MacroKind.allCases),
+        excludedKeys: Set<String> = [],
         calendar: Calendar = .current
     ) -> MacroSummary? {
         let logged = macrosByDay
             .filter { $0.value.hasData(in: visible) }
             .map { Day(date: calendar.startOfDay(for: $0.key), totals: $0.value) }
+            .filter { !ExcludedDays.contains($0.date, in: excludedKeys) }
             .sorted { $0.date < $1.date }
         guard !logged.isEmpty else { return nil }
 

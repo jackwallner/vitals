@@ -78,6 +78,16 @@ private final class WatchGoalSyncService: NSObject, WCSessionDelegate {
             }
         }
 
+        if let excluded = applicationContext[GoalSyncKeys.excludedDays] as? [String] {
+            let pausedRaw = applicationContext[GoalSyncKeys.averagesPausedSince] as? Double ?? 0
+            let pausedSince = pausedRaw > 0 ? Date(timeIntervalSince1970: pausedRaw) : nil
+            ExcludedDays.save(Set(excluded), to: defaults)
+            ExcludedDays.savePausedSince(pausedSince, to: defaults)
+            Task { @MainActor in
+                GoalSettings.shared.applySyncedExclusions(keys: Set(excluded), pausedSince: pausedSince)
+            }
+        }
+
         WidgetCenter.shared.reloadAllTimelines()
         watchGoalSyncLogger.info("Applied synced goal settings on watch")
     }

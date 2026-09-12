@@ -81,3 +81,29 @@ GoalSettings  →  UserDefaults (App Group)  →  Widgets read goals directly
 | `showCalories` | Bool | true | Display calories section |
 | `showSteps` | Bool | true | Display steps section |
 | `appearance` | Int | 0 | 0=system, 1=light, 2=dark |
+| `excludedDays` | [String] | absent | "yyyy-MM-dd" days the user took out of every computed figure (Vitals+, 1.8.6) |
+| `averagesPausedSince` | Date | absent | Running pause: every day from here through today is excluded until the user resumes |
+
+### Excluded Days (Vitals+, 1.8.6)
+
+One rule, enforced at every calculator rather than at one screen: **an excluded
+day contributes to nothing the app computes**: averages, totals, peaks, pacing,
+TDEE/BMR, trends, macro and net-deficit aggregates, the weekly recap and the PDF
+report, and it is **neutral for streaks** (neither extends nor breaks one).
+Nothing is deleted: excluded days stay in charts (dimmed), in Recent Days
+(badged), and in the CSV export (flagged in an `Excluded` column).
+
+- `Shared/Utilities/ExcludedDays.swift`: the key format, the defaults keys, the
+  pause expansion (`pausedKeys`), and `effectiveKeys(from:)` for off-main-actor
+  readers (widgets).
+- `GoalSettings.excludedDayKeys` is the **effective** set (hand-picked ∪ pause)
+  and is what every caller should read; `pickedExcludedDayKeys` is the stored
+  half. Resuming a pause materializes its days into the picked set.
+- Every calculator takes `excludedKeys: Set<String> = []`, so an unconverted call
+  site keeps today's behaviour instead of silently half-applying the rule.
+- UI: Settings → Averages → Excluded Days (`Vitals/Views/ExcludedDaysView.swift`,
+  a `MultiDatePicker` plus the pause switch), a long-press shortcut on History's
+  Recent Days rows, and a paused banner above the tab bar on every tab
+  (`MainTabView.pausedAveragesBanner`) with inline Resume.
+- The watch mirrors both halves over `GoalSyncKeys.excludedDays` /
+  `.averagesPausedSince`; the iOS widget reads `ExcludedDays.effectiveKeys`.

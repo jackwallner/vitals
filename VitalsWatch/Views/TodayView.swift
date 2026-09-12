@@ -424,7 +424,7 @@ struct TodayView: View {
 
         do {
             let history = try await healthKit.fetchMergedHistory(days: 30)
-            calorieTrends = CalorieTrendSummary.make(history: history)
+            calorieTrends = CalorieTrendSummary.make(history: history, excludedKeys: goals.excludedDayKeys)
             trendLoadFailed = calorieTrends == nil
         } catch {
             print("Failed to fetch watch calorie trends: \(error)")
@@ -441,7 +441,7 @@ struct TodayView: View {
 
         do {
             let history = try await healthKit.fetchMergedHistory(days: 30)
-            stepTrends = StepTrendSummary.make(history: history)
+            stepTrends = StepTrendSummary.make(history: history, excludedKeys: goals.excludedDayKeys)
             stepTrendLoadFailed = stepTrends == nil
         } catch {
             print("Failed to fetch watch step trends: \(error)")
@@ -467,7 +467,8 @@ struct TodayView: View {
             let summary = NetDeficitTrendSummary.make(
                 history: history,
                 foodByDate: foodMap,
-                fastingMode: goals.netDeficitFastingMode
+                fastingMode: goals.netDeficitFastingMode,
+                excludedKeys: goals.excludedDayKeys
             )
             // Only surface the section once at least one day in the window has food
             // logged — otherwise it would just be a flat 0 chart.

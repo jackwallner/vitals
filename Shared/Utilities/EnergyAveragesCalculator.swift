@@ -22,15 +22,18 @@ enum EnergyAveragesCalculator {
     ///     before its start are eligible. Days with 0 resting energy are dropped
     ///     as non-wear so a few watch-off days can't drag the figure down.
     ///   - minSamples: minimum valid days before a figure is returned.
+    ///   - excludedKeys: days the user took out of every figure ([[ExcludedDays]]).
     static func compute(
         records: [(date: Date, active: Double, resting: Double)],
         referenceDate: Date,
-        minSamples: Int = 7
+        minSamples: Int = 7,
+        excludedKeys: Set<String> = []
     ) -> EnergyAveragesResult {
         let today = DateHelpers.startOfDay(referenceDate)
         let windowStart = DateHelpers.daysAgo(windowDays, from: referenceDate)
         let valid = records.filter {
             let day = DateHelpers.startOfDay($0.date)
+            guard !ExcludedDays.contains(day, in: excludedKeys) else { return false }
             return day >= windowStart && day < today && $0.resting > 0
         }
         guard valid.count >= minSamples else {

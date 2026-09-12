@@ -70,7 +70,8 @@ struct EnergyAveragesProvider: TimelineProvider {
         let output = EnergyAveragesCacheReader.read(
             container: DataService.sharedModelContainer,
             referenceDate: .now,
-            minSamples: EnergyAveragesEntry.minSamples
+            minSamples: EnergyAveragesEntry.minSamples,
+            excludedKeys: ExcludedDays.effectiveKeys(from: defaults)
         )
         return EnergyAveragesEntry(
             date: .now,
