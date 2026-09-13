@@ -81,6 +81,7 @@ Artifacts:
 - P1 Deep Trends: Vitals+ tab insights and highlights use counted days and reload when exclusions change; History highlights use `countedRecords`.
 - P2 visuals: iOS Net Deficit and Macros daily charts and Recent Days keep excluded days, dimmed and badged; aggregates and averages still use counted days only. Watch calorie, step, and net bars dim excluded days; net points gained `isLogged` so an excluded logged day is no longer drawn as an unlogged placeholder (unit test added).
 - P2 UI suite: the History test targets the chart card by accessibility identifier and retries a dropped push. Full `ExcludedDaysUITests` class passed 6/6 twice in a row.
-- P2 Monthly Summary gate counts `countedRecords`, and the generator refuses zero counted days.
+- P2 Monthly Summary: the gate stays on `records` (the report fetches its own 30 days, so counting the selected period's excluded days would hide a valid offer on 7D), and the generator refuses zero counted days.
+- Regression pass: Net Deficit stat cards need counted days (no fake "0" average when every logged day is excluded); chart average lines need two counted bars; a late Deep Trends load cannot overwrite a newer exclusion set; Today reloads its averages when a stale entitlement is reconciled.
 - P3: both compiler warnings removed. Release simulator build of all four targets succeeds with no warnings in project sources.
 - Unit tests: 137 passed.

@@ -1463,6 +1463,7 @@ private struct PremiumFeaturesView: View {
     }
 
     private func loadDeepTrends() async {
+        let excluded = goals.excludedDayKeys
         do {
             let history = try await healthKit.fetchHistory(days: 30)
             let calendar = Calendar.current
@@ -1470,7 +1471,9 @@ private struct PremiumFeaturesView: View {
             let priorStart = calendar.date(byAdding: .day, value: -29, to: priorEnd) ?? priorEnd
             let previous = (try? await healthKit.fetchHistory(from: priorStart, to: priorEnd)) ?? []
 
-            let excluded = goals.excludedDayKeys
+            // Each exclusion tap starts a load; a slower one finishing late must
+            // not paint figures for a set the user has already changed.
+            guard excluded == goals.excludedDayKeys else { return }
             let currentRecords = ExcludedDays.excluding(history, keys: excluded, date: \.date).map { DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps) }
             let previousRecords = ExcludedDays.excluding(previous, keys: excluded, date: \.date).map { DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps) }
 

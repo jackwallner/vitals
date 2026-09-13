@@ -751,7 +751,12 @@ final class StoreService: NSObject, ObservableObject {
         // drew with the stale value has to be told to draw again.
         GoalSettings.shared.objectWillChange.send()
         WidgetCenter.shared.reloadAllTimelines()
+        NotificationCenter.default.post(name: StoreService.cachedEntitlementDidReconcile, object: nil)
     }
+
+    /// Posted when the mirror was stale. Figures already fetched with the old
+    /// exclusion set (the Today averages) listen for it and reload.
+    nonisolated static let cachedEntitlementDidReconcile = Notification.Name("StoreService.cachedEntitlementDidReconcile")
 
     // MARK: - Private
 
