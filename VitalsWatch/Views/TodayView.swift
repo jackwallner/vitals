@@ -279,6 +279,11 @@ struct TodayView: View {
                 Task { await refresh() }
             }
         }
+        // A pick or resume synced from the phone while the app is open would
+        // otherwise leave the trend bars on the old set until the next activation.
+        .onChange(of: goals.excludedDayKeys) { _, _ in
+            Task { await refresh() }
+        }
         .sheet(isPresented: $showHelp) {
             WatchHelpView()
         }

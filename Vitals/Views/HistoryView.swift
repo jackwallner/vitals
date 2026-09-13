@@ -867,7 +867,7 @@ struct HistoryView: View {
 
     private var monthlySummaryPrompt: some View {
         HStack(alignment: .top, spacing: 12) {
-            Image(systemName: "calendar.badge.sparkles")
+            Image(systemName: "calendar.badge.checkmark")
                 .font(.system(size: 20, weight: .semibold))
                 .foregroundStyle(Theme.caloriesPrimary)
                 .frame(width: 30, height: 30)
@@ -916,14 +916,19 @@ struct HistoryView: View {
         defer { isGeneratingPDF = false }
         try? await Task.sleep(nanoseconds: 100_000_000)
 
-        let reportDays: [ReportDay] = countedRecords.map { rec in
+        guard !countedRecords.isEmpty else {
+            pdfErrorMessage = "Every day in this period is excluded from your averages, so there is nothing to summarize."
+            return
+        }
+        let reportDays: [ReportDay] = records.map { rec in
             ReportDay(
                 date: rec.date,
                 activeCalories: rec.activeCalories,
                 restingCalories: rec.restingCalories,
                 steps: rec.steps,
                 foodCalories: foodByDay[Calendar.current.startOfDay(for: rec.date)],
-                macros: isMacrosEnabled ? macros(for: rec.date) : nil
+                macros: isMacrosEnabled ? macros(for: rec.date) : nil,
+                isExcluded: isExcluded(rec)
             )
         }
         let prevDays: [ReportDay] = countedPreviousRecords.map { rec in
@@ -935,8 +940,8 @@ struct HistoryView: View {
                 foodCalories: nil
             )
         }
-        let start = countedRecords.map(\.date).min() ?? Date.now
-        let end = countedRecords.map(\.date).max() ?? Date.now
+        let start = records.map(\.date).min() ?? Date.now
+        let end = records.map(\.date).max() ?? Date.now
 
         let report = SummaryReportGenerator.make(
             title: reportTitle,
@@ -995,14 +1000,15 @@ struct HistoryView: View {
             }
 
             let excluded = goals.excludedDayKeys
-            let reportDays = ExcludedDays.excluding(history, keys: excluded, date: \.date).map { rec in
+            let reportDays = history.map { rec in
                 ReportDay(
                     date: rec.date,
                     activeCalories: rec.active,
                     restingCalories: rec.resting,
                     steps: rec.steps,
                     foodCalories: foodMap[calendar.startOfDay(for: rec.date)],
-                    macros: macroMap[calendar.startOfDay(for: rec.date)]
+                    macros: macroMap[calendar.startOfDay(for: rec.date)],
+                    isExcluded: ExcludedDays.contains(rec.date, in: excluded)
                 )
             }
             let previousDays = ExcludedDays.excluding(previous, keys: excluded, date: \.date).map { rec in
@@ -1016,7 +1022,7 @@ struct HistoryView: View {
             }
             // Only reachable when the period's counted days ran out after the
             // offer was shown; a report of zero days is not a report.
-            guard !reportDays.isEmpty else {
+            guard reportDays.contains(where: { !$0.isExcluded }) else {
                 pdfErrorMessage = "Every day in the last 30 is excluded from your averages, so there is nothing to summarize."
                 return
             }
@@ -2238,6 +2244,9 @@ struct DeepTrendInsight: Identifiable {
     let narrative: String
     let color: Color
     let isUp: Bool
+    /// Rounds to 0%: drawn level and neutral, since an arrow beside "0%"
+    /// contradicts itself.
+    var isFlat: Bool = false
 }
 
 @MainActor
@@ -2263,7 +2272,8 @@ enum DeepTrendsBuilder {
                     percent: signedPercent(percent),
                     narrative: abs(delta) < 1 ? "Calories held steady day-to-day." : "You averaged \(abs(Int(delta.rounded())).formatted(.number)) \(delta >= 0 ? "more" : "fewer") calories per day.",
                     color: Theme.caloriesPrimary,
-                    isUp: delta >= 0
+                    isUp: delta >= 0,
+                    isFlat: Int(percent.rounded()) == 0
                 )
             )
         }
@@ -2283,7 +2293,8 @@ enum DeepTrendsBuilder {
                     percent: signedPercent(percent),
                     narrative: abs(delta) < 1 ? "Steps held steady day-to-day." : "You averaged \(abs(Int(delta.rounded())).formatted(.number)) \(delta >= 0 ? "more" : "fewer") steps per day.",
                     color: Theme.stepsPrimary,
-                    isUp: delta >= 0
+                    isUp: delta >= 0,
+                    isFlat: Int(percent.rounded()) == 0
                 )
             )
         }
@@ -2317,7 +2328,8 @@ enum DeepTrendsBuilder {
 
     private static func signedPercent(_ value: Double) -> String {
         let rounded = Int(value.rounded())
-        return rounded >= 0 ? "+\(rounded)%" : "\(rounded)%"
+        if rounded == 0 { return "0%" }
+        return rounded > 0 ? "+\(rounded)%" : "\(rounded)%"
     }
 
     /// Locked-state insights for the paywall tease. Shows the user's own current-window
@@ -2569,11 +2581,11 @@ struct DeepTrendInsightRow: View {
                 }
                 Spacer(minLength: 0)
                 HStack(spacing: 4) {
-                    Image(systemName: insight.isUp ? "arrow.up.right" : "arrow.down.right")
+                    Image(systemName: insight.isFlat ? "arrow.right" : (insight.isUp ? "arrow.up.right" : "arrow.down.right"))
                     Text(insight.percent)
                 }
                 .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
-                .foregroundStyle(insight.isUp ? Theme.netDeficitPositive : Theme.netDeficitNegative)
+                .foregroundStyle(insight.isFlat ? Theme.textSecondary : (insight.isUp ? Theme.netDeficitPositive : Theme.netDeficitNegative))
                 .blur(radius: blurComparisons ? 8 : 0)
                 .accessibilityHidden(blurComparisons)
             }
