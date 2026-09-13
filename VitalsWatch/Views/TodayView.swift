@@ -558,7 +558,12 @@ private func barFill(for point: CalorieTrendPoint, isToday: Bool) -> LinearGradi
     return point.totalCalories > 0 ? Theme.caloriesGradient : LinearGradient(colors: [Theme.ringTrack], startPoint: .bottom, endPoint: .top)
 }
 
+/// Excluded days keep their bar at a quarter strength, matching the iPhone
+/// charts, so they read as excluded rather than as missing data.
+private let excludedBarOpacity = 0.25
+
 private func barOpacity(for point: CalorieTrendPoint, isToday: Bool) -> Double {
+    if point.isExcluded && point.totalCalories > 0 { return excludedBarOpacity }
     if isToday { return 1.0 }
     return point.totalCalories > 0 ? 0.86 : 0.3
 }
@@ -640,6 +645,7 @@ private func stepBarFill(for point: StepTrendPoint, isToday: Bool) -> LinearGrad
 }
 
 private func stepBarOpacity(for point: StepTrendPoint, isToday: Bool) -> Double {
+    if point.isExcluded && point.steps > 0 { return excludedBarOpacity }
     if isToday { return 1.0 }
     return point.steps > 0 ? 0.86 : 0.3
 }
@@ -697,6 +703,7 @@ private struct WatchNetDeficitPeriodSection: View {
 
 /// Center-baseline bar chart: positive deficits grow up (green), negative grow down (red).
 /// Days without food logged render as a faint placeholder so the 7-day pattern stays visible.
+/// Excluded logged days keep their bar, dimmed, so they don't look unlogged.
 private struct WatchNetDeficitBars: View {
     let points: [NetDeficitTrendPoint]
 
@@ -710,9 +717,10 @@ private struct WatchNetDeficitBars: View {
             HStack(alignment: .center, spacing: 1.5) {
                 ForEach(points) { point in
                     let isToday = Calendar.current.isDateInToday(point.date)
-                    // Days that don't count (no food logged, outside Fasting Mode)
-                    // render as a faint placeholder instead of a misleading full-burn bar.
-                    let counts = point.counts
+                    // Unlogged days (no food, outside Fasting Mode) render as a faint
+                    // placeholder instead of a misleading full-burn bar.
+                    let counts = point.isLogged
+                    let barOpacity = point.isExcluded ? excludedBarOpacity : (isToday ? 1.0 : 0.86)
                     let isPositive = point.netDeficit >= 0
                     let magnitude = max(3, halfHeight * abs(point.netDeficit) / maxAbs)
                     VStack(spacing: 0) {
@@ -722,7 +730,7 @@ private struct WatchNetDeficitBars: View {
                             RoundedRectangle(cornerRadius: 2)
                                 .fill(Theme.netDeficitPositive)
                                 .frame(height: magnitude)
-                                .opacity(isToday ? 1.0 : 0.86)
+                                .opacity(barOpacity)
                         } else {
                             Spacer(minLength: 0)
                         }
@@ -731,7 +739,7 @@ private struct WatchNetDeficitBars: View {
                             RoundedRectangle(cornerRadius: 2)
                                 .fill(Theme.netDeficitNegative)
                                 .frame(height: magnitude)
-                                .opacity(isToday ? 1.0 : 0.86)
+                                .opacity(barOpacity)
                             Spacer(minLength: 0)
                         } else if !counts {
                             RoundedRectangle(cornerRadius: 2)

@@ -1808,7 +1808,7 @@ struct DashboardView: View {
             Task(priority: .utility) {
                 do {
                     try await healthKit.refreshHistoryCache(days: 90)
-                    await checkGoalStreakMilestone(
+                    checkGoalStreakMilestone(
                         history: (try? healthKit.fetchCachedHistory(days: 90)) ?? []
                     )
                 } catch {

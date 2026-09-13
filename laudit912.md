@@ -73,3 +73,14 @@ Artifacts:
 - UI suite result: `/Users/jackwallner/Library/Developer/XcodeBuildMCP/workspaces/vitals-791acf9f00e7/result-bundles/test_sim_2026-09-13T07-04-04-983Z_pid52094_07574fe3.xcresult`
 - Isolated UI result: `/Users/jackwallner/Library/Developer/XcodeBuildMCP/workspaces/vitals-791acf9f00e7/result-bundles/test_sim_2026-09-13T07-16-30-534Z_pid52094_9fccc362.xcresult`
 - Release build log: `/Users/jackwallner/Library/Developer/XcodeBuildMCP/workspaces/vitals-791acf9f00e7/logs/build_sim_2026-09-13T07-18-44-936Z_pid52094_ce632b42.log`
+
+## Resolution (2026-09-13)
+
+- P1 stale entitlement: `StoreService.apply` now overwrites the `isProCached` mirror with every resolved customer, changed or not, then refreshes GoalSettings observers and widget timelines. Not unit-testable (StoreService is outside the standalone VitalsTests bundle).
+- P1 reports: Vitals+ tab Monthly Summary and Custom-Range reports filter excluded days from current and previous windows, and refuse an all-excluded range with a message.
+- P1 Deep Trends: Vitals+ tab insights and highlights use counted days and reload when exclusions change; History highlights use `countedRecords`.
+- P2 visuals: iOS Net Deficit and Macros daily charts and Recent Days keep excluded days, dimmed and badged; aggregates and averages still use counted days only. Watch calorie, step, and net bars dim excluded days; net points gained `isLogged` so an excluded logged day is no longer drawn as an unlogged placeholder (unit test added).
+- P2 UI suite: the History test targets the chart card by accessibility identifier and retries a dropped push. Full `ExcludedDaysUITests` class passed 6/6 twice in a row.
+- P2 Monthly Summary gate counts `countedRecords`, and the generator refuses zero counted days.
+- P3: both compiler warnings removed. Release simulator build of all four targets succeeds with no warnings in project sources.
+- Unit tests: 137 passed.

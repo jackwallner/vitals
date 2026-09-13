@@ -234,7 +234,7 @@ struct HistoryView: View {
     }
 
     private var shouldOfferMonthlySummary: Bool {
-        store.isPro && generatedMonthlySummaryMonth != currentMonthKey && records.count >= 7
+        store.isPro && generatedMonthlySummaryMonth != currentMonthKey && countedRecords.count >= 7
     }
 
     // MARK: - Chart Data (aggregated for longer periods)
@@ -283,33 +283,35 @@ struct HistoryView: View {
         return data.map(\.value).reduce(0, +) / Double(data.count)
     }
 
-    private var netDeficitChartData: [(date: Date, value: Double, id: UUID)] {
+    /// Daily bars keep excluded days (dimmed) like the calorie and step charts;
+    /// week and month buckets average the counted days only.
+    private var netDeficitChartData: [(date: Date, value: Double, id: UUID, excluded: Bool)] {
         if shouldAggregateByMonth {
             let months = aggregateByMonth(records: netRecords)
-            return months.map { month -> (Date, Double, UUID) in
+            return months.map { month -> (Date, Double, UUID, Bool) in
                 let netVals = netRecords.filter {
                     Calendar.current.isDate($0.date, equalTo: month.monthStart, toGranularity: .month)
                 }.map { netDeficit(for: $0) }
                 let avg = netVals.isEmpty ? 0.0 : netVals.reduce(0, +) / Double(netVals.count)
-                return (month.monthStart, avg, month.id)
+                return (month.monthStart, avg, month.id, false)
             }
         } else if shouldAggregateByWeek {
             let weeks = aggregateByWeek(records: netRecords)
-            return weeks.map { week -> (Date, Double, UUID) in
+            return weeks.map { week -> (Date, Double, UUID, Bool) in
                 let netVals = netRecords.filter {
                     let weekStart = DateHelpers.startOfWeek($0.date)
                     return Calendar.current.isDate(weekStart, equalTo: week.weekStart, toGranularity: .day)
                 }.map { netDeficit(for: $0) }
                 let avg = netVals.isEmpty ? 0.0 : netVals.reduce(0, +) / Double(netVals.count)
-                return (week.weekStart, avg, week.id)
+                return (week.weekStart, avg, week.id, false)
             }
         } else {
-            return netRecords.map { ($0.date, netDeficit(for: $0), $0.id) }
+            return netVisibleRecords.map { ($0.date, netDeficit(for: $0), $0.id, isExcluded($0)) }
         }
     }
 
     private var chartAvgNetDeficit: Double {
-        let data = netDeficitChartData
+        let data = netDeficitChartData.filter { !$0.excluded }
         guard !data.isEmpty else { return 0 }
         return data.map(\.value).reduce(0, +) / Double(data.count)
     }
@@ -362,12 +364,19 @@ struct HistoryView: View {
     /// Net Deficit excludes days with no food logged (an unlogged day would read as a
     /// full-burn "deficit" and skew the chart and averages) — unless the user turns on
     /// Net Deficit Fasting Mode, which counts those unlogged days as real deficits.
+    /// Excluded days stay in, for the daily chart and Recent Days, where they are
+    /// dimmed and reversible. Every figure reads `netRecords`.
+    private var netVisibleRecords: [DayRecord] {
+        records.filter { $0.totalCalories > 0 && (goals.netDeficitFastingMode || hasFoodLogged($0)) }
+    }
+
+    /// The counted half of `netVisibleRecords`.
     private var netRecords: [DayRecord] {
-        countedRecords.filter { $0.totalCalories > 0 && (goals.netDeficitFastingMode || hasFoodLogged($0)) }
+        netVisibleRecords.filter { !isExcluded($0) }
     }
 
     private var hasNetData: Bool {
-        !netRecords.isEmpty
+        !netVisibleRecords.isEmpty
     }
 
     private var totalNetDeficit: Double {
@@ -407,11 +416,16 @@ struct HistoryView: View {
     /// every average toward zero and read as a real drop in intake. Scoped to the
     /// macros the user is tracking, so a carb counter's history isn't padded with
     /// days that only carry protein.
-    private var macroRecords: [DayRecord] {
-        countedRecords.filter { macros(for: $0.date).hasData(in: goals.visibleMacroSet) }
+    private var macroVisibleRecords: [DayRecord] {
+        records.filter { macros(for: $0.date).hasData(in: goals.visibleMacroSet) }
     }
 
-    private var hasMacroData: Bool { !macroRecords.isEmpty }
+    /// The counted half of `macroVisibleRecords`: what every macro figure reads.
+    private var macroRecords: [DayRecord] {
+        macroVisibleRecords.filter { !isExcluded($0) }
+    }
+
+    private var hasMacroData: Bool { !macroVisibleRecords.isEmpty }
 
     /// Food energy the user's own app logged, averaged over the days it logged
     /// any. Shown beside the macro averages instead of converting grams back
@@ -435,29 +449,29 @@ struct HistoryView: View {
 
     /// One stacked entry per macro per bucket. Aggregated buckets average across
     /// the logged days they contain, matching how the other charts aggregate.
-    private var macroChartData: [(date: Date, kind: MacroKind, value: Double, id: String)] {
-        let buckets: [(date: Date, days: [DayRecord])]
+    private var macroChartData: [(date: Date, kind: MacroKind, value: Double, id: String, excluded: Bool)] {
+        let buckets: [(date: Date, days: [DayRecord], excluded: Bool)]
         if shouldAggregateByMonth {
             buckets = aggregateByMonth(records: macroRecords).map { month in
                 (month.monthStart, macroRecords.filter {
                     Calendar.current.isDate($0.date, equalTo: month.monthStart, toGranularity: .month)
-                })
+                }, false)
             }
         } else if shouldAggregateByWeek {
             buckets = aggregateByWeek(records: macroRecords).map { week in
                 (week.weekStart, macroRecords.filter {
                     Calendar.current.isDate(DateHelpers.startOfWeek($0.date), equalTo: week.weekStart, toGranularity: .day)
-                })
+                }, false)
             }
         } else {
-            buckets = macroRecords.map { ($0.date, [$0]) }
+            buckets = macroVisibleRecords.map { ($0.date, [$0], isExcluded($0)) }
         }
 
-        return buckets.flatMap { bucket -> [(date: Date, kind: MacroKind, value: Double, id: String)] in
+        return buckets.flatMap { bucket -> [(date: Date, kind: MacroKind, value: Double, id: String, excluded: Bool)] in
             guard !bucket.days.isEmpty else { return [] }
             let avg = bucket.days.reduce(MacroTotals.zero) { $0 + macros(for: $1.date) } / Double(bucket.days.count)
             return goals.visibleMacros.map {
-                (bucket.date, $0, avg.grams($0), "\(bucket.date.timeIntervalSince1970)-\($0.rawValue)")
+                (bucket.date, $0, avg.grams($0), "\(bucket.date.timeIntervalSince1970)-\($0.rawValue)", bucket.excluded)
             }
         }
     }
@@ -998,6 +1012,12 @@ struct HistoryView: View {
                     foodCalories: nil
                 )
             }
+            // Only reachable when the period's counted days ran out after the
+            // offer was shown; a report of zero days is not a report.
+            guard !reportDays.isEmpty else {
+                pdfErrorMessage = "Every day in the last 30 is excluded from your averages, so there is nothing to summarize."
+                return
+            }
             let start = history.map(\.date).min() ?? DateHelpers.daysAgo(29)
             let end = history.map(\.date).max() ?? Date.now
 
@@ -1063,7 +1083,7 @@ struct HistoryView: View {
     }
 
     private var deepTrendHighlights: [String] {
-        DeepTrendsBuilder.highlights(records: records)
+        DeepTrendsBuilder.highlights(records: countedRecords)
     }
 
     // MARK: - Chart Views
@@ -1089,7 +1109,8 @@ struct HistoryView: View {
     }
 
     private var selectedNetRecord: ChartSelection? {
-        guard let item = selectedChartItem(for: selectedNetDate, in: netDeficitChartData) else { return nil }
+        let data = netDeficitChartData.map { (date: $0.date, value: $0.value, id: $0.id) }
+        guard let item = selectedChartItem(for: selectedNetDate, in: data) else { return nil }
         return ChartSelection(
             date: item.date,
             primary: ("Net", selectedChartValue(formatSignedNet(item.value))),
@@ -1230,7 +1251,7 @@ struct HistoryView: View {
                 y: .value("Net", value)
             )
             .foregroundStyle(value >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
-            .opacity(selectedNetDate == nil || Calendar.current.isDate(item.date, equalTo: selectedNetDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3)
+            .opacity((selectedNetDate == nil || Calendar.current.isDate(item.date, equalTo: selectedNetDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3) * (item.excluded ? 0.25 : 1.0))
             .cornerRadius(4)
 
             // Solid zero baseline so deficit (up) vs surplus (down) reads off a
@@ -1318,7 +1339,7 @@ struct HistoryView: View {
                 y: .value("Grams", item.value)
             )
             .foregroundStyle(by: .value("Macro", item.kind.label))
-            .opacity(selectedMacroDate == nil || Calendar.current.isDate(item.date, equalTo: selectedMacroDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3)
+            .opacity((selectedMacroDate == nil || Calendar.current.isDate(item.date, equalTo: selectedMacroDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3) * (item.excluded ? 0.25 : 1.0))
             .cornerRadius(2)
         }
         .chartForegroundStyleScale(
@@ -1719,9 +1740,9 @@ struct HistoryView: View {
         case .calories, .steps:
             source = records.filter { $0.totalCalories > 0 || $0.steps > 0 }
         case .net:
-            source = netRecords
+            source = netVisibleRecords
         case .macros:
-            source = macroRecords
+            source = macroVisibleRecords
         }
         let sorted = source.sorted { $0.date > $1.date }
         let value: (DayRecord) -> Double = { rec in
@@ -2847,6 +2868,7 @@ private struct ChartCard<Content: View>: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityHint("Opens \(title) history")
+                .accessibilityIdentifier("chart-card-link-\(title)")
             } else {
                 Text(title)
                     .font(.headline)

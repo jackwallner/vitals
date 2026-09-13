@@ -23,14 +23,15 @@ struct NetDeficitTrendSummary {
                 // data and (unless Fasting Mode is on) food was actually logged —
                 // an unlogged day would otherwise read as a full-burn "deficit".
                 let isExcluded = ExcludedDays.contains(key, in: excludedKeys)
-                let counts = burned > 0 && (fastingMode || food > 0) && !isExcluded
+                let isLogged = burned > 0 && (fastingMode || food > 0)
                 return NetDeficitTrendPoint(
                     date: key,
                     netDeficit: burned - food,
                     burned: burned,
                     food: food,
-                    counts: counts,
-                    isExcluded: isExcluded
+                    counts: isLogged && !isExcluded,
+                    isExcluded: isExcluded,
+                    isLogged: isLogged
                 )
             }
             .sorted { $0.date < $1.date }
@@ -60,14 +61,18 @@ struct NetDeficitTrendPoint: Identifiable {
     /// Why it doesn't count, when it doesn't: the user excluded this day rather
     /// than simply not logging food. Lets the chart label the two apart.
     let isExcluded: Bool
+    /// Whether the day has a real bar to draw, excluded or not. An excluded
+    /// logged day is drawn dimmed; only an unlogged day is a placeholder.
+    let isLogged: Bool
 
-    init(date: Date, netDeficit: Double, burned: Double, food: Double, counts: Bool, isExcluded: Bool = false) {
+    init(date: Date, netDeficit: Double, burned: Double, food: Double, counts: Bool, isExcluded: Bool = false, isLogged: Bool? = nil) {
         self.date = date
         self.netDeficit = netDeficit
         self.burned = burned
         self.food = food
         self.counts = counts
         self.isExcluded = isExcluded
+        self.isLogged = isLogged ?? counts
     }
 }
 

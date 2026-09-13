@@ -733,6 +733,24 @@ final class StoreService: NSObject, ObservableObject {
             isPro = hasActiveSubscription
             logger.info("isPro updated to \(hasActiveSubscription, privacy: .public)")
         }
+        reconcileCachedEntitlement(with: hasActiveSubscription)
+    }
+
+    /// `isPro` starts false on every launch, so a lapsed subscriber resolving as
+    /// free never changes it and its `didSet` never clears the mirror. Left
+    /// alone, the App Group would keep claiming Vitals+ and GoalSettings would
+    /// keep filtering excluded days behind UI that is already hidden. Every
+    /// resolved customer overwrites the mirror, changed or not.
+    private func reconcileCachedEntitlement(with resolved: Bool) {
+        guard let defaults = StoreService.cachedProDefaults,
+              defaults.bool(forKey: StoreService.cachedProKey) != resolved
+        else { return }
+        defaults.set(resolved, forKey: StoreService.cachedProKey)
+        logger.info("Cached entitlement reconciled to \(resolved, privacy: .public)")
+        // `excludedDayKeys` reads the mirror on every access, so anything that
+        // drew with the stale value has to be told to draw again.
+        GoalSettings.shared.objectWillChange.send()
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     // MARK: - Private
