@@ -85,3 +85,4 @@ Artifacts:
 - Regression pass: Net Deficit stat cards need counted days (no fake "0" average when every logged day is excluded); chart average lines need two counted bars; a late Deep Trends load cannot overwrite a newer exclusion set; Today reloads its averages when a stale entitlement is reconciled.
 - P3: both compiler warnings removed. Release simulator build of all four targets succeeds with no warnings in project sources.
 - Unit tests: 137 passed.
+- Visual pass (simulator, 3 excluded days): PDF reports now chart excluded days dimmed instead of dropping them (gaps read as missing data) and say "N excluded"; the Vitals+ tab Deep Trends card shows the same "N days excluded" note as History; a change that rounds to 0% shows a grey level arrow instead of "↘ +0%" (app, PDF, share text); the monthly summary prompt's blank icon (`calendar.badge.sparkles` does not exist) is fixed; the watch reloads trends when synced exclusions change while open.

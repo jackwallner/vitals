@@ -1295,6 +1295,7 @@ private struct PremiumFeaturesView: View {
     @State private var deepTrendInsights: [DeepTrendInsight] = []
     @State private var deepTrendHighlights: [String] = []
     @State private var deepTrendsLoaded = false
+    @State private var deepTrendsExcludedCount = 0
 
     @StateObject private var bodyProfile = BodyProfileStore.shared
     @State private var resolvedBMI: Double?
@@ -1453,13 +1454,27 @@ private struct PremiumFeaturesView: View {
     }
 
     private var deepTrendsSection: some View {
-        DeepTrendsCard(
-            isPro: true,
-            isCalculating: !deepTrendsLoaded,
-            insights: deepTrendInsights,
-            highlights: deepTrendHighlights,
-            periodLabel: "vs. previous 30 days"
-        )
+        VStack(alignment: .leading, spacing: 8) {
+            DeepTrendsCard(
+                isPro: true,
+                isCalculating: !deepTrendsLoaded,
+                insights: deepTrendInsights,
+                highlights: deepTrendHighlights,
+                periodLabel: "vs. previous 30 days"
+            )
+            // Same notice History shows: without it, "28 of 28 days" in a
+            // 30-day card reads like two days of missing data.
+            if deepTrendsLoaded && deepTrendsExcludedCount > 0 {
+                HStack(spacing: 6) {
+                    Image(systemName: "slash.circle")
+                    Text("\(deepTrendsExcludedCount) \(deepTrendsExcludedCount == 1 ? "day" : "days") excluded from these figures")
+                }
+                .font(.system(.caption, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
+                .padding(.horizontal, 4)
+                .accessibilityElement(children: .combine)
+            }
+        }
     }
 
     private func loadDeepTrends() async {
@@ -1479,6 +1494,7 @@ private struct PremiumFeaturesView: View {
 
             deepTrendInsights = DeepTrendsBuilder.insights(currentRecords: currentRecords, previousRecords: previousRecords)
             deepTrendHighlights = DeepTrendsBuilder.highlights(records: currentRecords)
+            deepTrendsExcludedCount = history.count - currentRecords.count
             deepTrendsLoaded = true
         } catch {
             deepTrendsLoaded = true
@@ -1578,17 +1594,18 @@ private struct PremiumFeaturesView: View {
             let calendar = Calendar.current
             let excluded = goals.excludedDayKeys
 
-            let reportDays = ExcludedDays.excluding(history, keys: excluded, date: \.date).map { rec in
+            let reportDays = history.map { rec in
                 ReportDay(
                     date: rec.date,
                     activeCalories: rec.active,
                     restingCalories: rec.resting,
                     steps: rec.steps,
                     foodCalories: foodMap[calendar.startOfDay(for: rec.date)],
-                    macros: macrosByDay[calendar.startOfDay(for: rec.date)]
+                    macros: macrosByDay[calendar.startOfDay(for: rec.date)],
+                    isExcluded: ExcludedDays.contains(rec.date, in: excluded)
                 )
             }
-            guard !reportDays.isEmpty else {
+            guard reportDays.contains(where: { !$0.isExcluded }) else {
                 reportErrorMessage = "Every day in that range is excluded from your averages, so there is nothing to summarize."
                 return
             }

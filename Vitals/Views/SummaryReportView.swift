@@ -61,7 +61,9 @@ struct SummaryReportView: View {
                     Text(report.calendarLabel)
                         .font(.system(size: 11, weight: .medium, design: .rounded))
                         .foregroundStyle(.gray)
-                    Text("\(report.activeDayCount) active days")
+                    Text(report.excludedDayCount > 0
+                         ? "\(report.activeDayCount) active days · \(report.excludedDayCount) excluded"
+                         : "\(report.activeDayCount) active days")
                         .font(.system(size: 10, design: .rounded))
                         .foregroundStyle(.gray)
                 }
@@ -174,6 +176,7 @@ struct SummaryReportView: View {
                     y: .value("Calories", day.totalCalories)
                 )
                 .foregroundStyle(reportCalorieColor)
+                .opacity(day.isExcluded ? 0.25 : 1)
                 .cornerRadius(2)
             }
             .chartXAxis { axisMarks }
@@ -190,6 +193,7 @@ struct SummaryReportView: View {
                     y: .value("Steps", day.steps)
                 )
                 .foregroundStyle(reportStepsColor)
+                .opacity(day.isExcluded ? 0.25 : 1)
                 .cornerRadius(2)
             }
             .chartXAxis { axisMarks }
@@ -257,7 +261,7 @@ struct SummaryReportView: View {
                 label: "ACTIVE DAYS",
                 value: "\(report.activeDayCount)",
                 date: nil,
-                sub: "of \(report.days.count) tracked",
+                sub: "of \(report.countedDayCount) tracked",
                 accent: .black,
                 compact: isCompact
             )
@@ -349,9 +353,14 @@ private struct TrendBadge: View {
 
     var body: some View {
         let isUp = pct >= 0
-        let color = isUp ? Color(red: 0.20, green: 0.68, blue: 0.45) : Color(red: 0.85, green: 0.42, blue: 0.40)
+        // Rounds to 0%: level and grey, since a coloured arrow beside "0%"
+        // contradicts itself.
+        let isFlat = Int(pct.rounded()) == 0
+        let color = isFlat
+            ? Color.gray
+            : (isUp ? Color(red: 0.20, green: 0.68, blue: 0.45) : Color(red: 0.85, green: 0.42, blue: 0.40))
         HStack(spacing: 2) {
-            Image(systemName: isUp ? "arrow.up.right" : "arrow.down.right")
+            Image(systemName: isFlat ? "arrow.right" : (isUp ? "arrow.up.right" : "arrow.down.right"))
                 .font(.system(size: 8, weight: .bold))
             Text("\(abs(Int(pct.rounded())))%")
                 .font(.system(size: 9, weight: .semibold, design: .rounded))
@@ -480,12 +489,13 @@ enum SummaryReportShareText {
 
     private static func emojiLine(label: String, percent: Double?) -> String {
         guard let percent else { return "⬜️ \(label.capitalized): more data needed" }
+        if Int(percent.rounded()) == 0 { return "➡️ \(label.capitalized): steady" }
         let arrow = percent >= 0 ? "↗️" : "↘️"
         return "\(arrow) \(label.capitalized): \(abs(Int(percent.rounded())))% \(percent >= 0 ? "up" : "down")"
     }
 
     private static func goalBlockLine(report: SummaryReport) -> String {
-        let dayCount = max(report.days.count, 1)
+        let dayCount = max(report.countedDayCount, 1)
         let calorieRatio = min(Double(report.calorieGoalHitDays) / Double(dayCount), 1)
         let stepRatio = min(Double(report.stepGoalHitDays) / Double(dayCount), 1)
         let filled = Int(((calorieRatio + stepRatio) / 2 * 5).rounded())

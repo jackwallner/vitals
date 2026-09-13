@@ -10,6 +10,8 @@ struct ReportDay: Sendable, Identifiable {
     let foodCalories: Double?
     /// Macros logged that day, or nil when the user doesn't have Macros on.
     let macros: MacroTotals?
+    /// Drawn in the report's charts (dimmed) but counted in none of its figures.
+    let isExcluded: Bool
 
     init(
         date: Date,
@@ -17,7 +19,8 @@ struct ReportDay: Sendable, Identifiable {
         restingCalories: Double,
         steps: Int,
         foodCalories: Double?,
-        macros: MacroTotals? = nil
+        macros: MacroTotals? = nil,
+        isExcluded: Bool = false
     ) {
         self.date = date
         self.activeCalories = activeCalories
@@ -25,6 +28,7 @@ struct ReportDay: Sendable, Identifiable {
         self.steps = steps
         self.foodCalories = foodCalories
         self.macros = macros
+        self.isExcluded = isExcluded
     }
 
     var totalCalories: Double { activeCalories + restingCalories }
@@ -39,7 +43,11 @@ struct SummaryReport: Sendable {
     let title: String
     let periodStart: Date
     let periodEnd: Date
+    /// Every day in the period, excluded ones included, for the charts.
     let days: [ReportDay]
+    /// Days the figures are computed from.
+    let countedDayCount: Int
+    let excludedDayCount: Int
 
     let totalCalories: Double
     let avgCalories: Double
@@ -102,6 +110,11 @@ enum SummaryReportGenerator {
         netDeficitFastingMode: Bool = false,
         macroKinds: [MacroKind] = MacroKind.allCases
     ) -> SummaryReport {
+        // Every figure below reads `days`, so shadowing it with the counted days
+        // keeps excluded ones out of all of them; only the charts see `allDays`.
+        let allDays = days
+        let days = allDays.filter { !$0.isExcluded }
+        let previousDays = previousDays.filter { !$0.isExcluded }
         let nonZeroCalDays = days.filter { $0.totalCalories > 0 }
 
         let totalCalories = days.map(\.totalCalories).reduce(0, +)
@@ -152,7 +165,9 @@ enum SummaryReportGenerator {
             title: title,
             periodStart: periodStart,
             periodEnd: periodEnd,
-            days: days.sorted { $0.date < $1.date },
+            days: allDays.sorted { $0.date < $1.date },
+            countedDayCount: days.count,
+            excludedDayCount: allDays.count - days.count,
             totalCalories: totalCalories,
             avgCalories: avgCalories,
             totalActive: totalActive,
