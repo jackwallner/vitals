@@ -1382,6 +1382,9 @@ private struct PremiumFeaturesView: View {
                     Task { await loadDeepTrends() }
                 }
             }
+            .onChange(of: goals.excludedDayKeys) { _, _ in
+                Task { await loadDeepTrends() }
+            }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
                 Task { await loadDeepTrends() }
             }
@@ -1467,8 +1470,9 @@ private struct PremiumFeaturesView: View {
             let priorStart = calendar.date(byAdding: .day, value: -29, to: priorEnd) ?? priorEnd
             let previous = (try? await healthKit.fetchHistory(from: priorStart, to: priorEnd)) ?? []
 
-            let currentRecords = history.map { DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps) }
-            let previousRecords = previous.map { DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps) }
+            let excluded = goals.excludedDayKeys
+            let currentRecords = ExcludedDays.excluding(history, keys: excluded, date: \.date).map { DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps) }
+            let previousRecords = ExcludedDays.excluding(previous, keys: excluded, date: \.date).map { DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps) }
 
             deepTrendInsights = DeepTrendsBuilder.insights(currentRecords: currentRecords, previousRecords: previousRecords)
             deepTrendHighlights = DeepTrendsBuilder.highlights(records: currentRecords)
@@ -1569,8 +1573,9 @@ private struct PremiumFeaturesView: View {
             let foodMap = await dietaryMap(start: start, end: end, days: days)
             let macrosByDay = await macroMap(start: start, end: end, days: days)
             let calendar = Calendar.current
+            let excluded = goals.excludedDayKeys
 
-            let reportDays = history.map { rec in
+            let reportDays = ExcludedDays.excluding(history, keys: excluded, date: \.date).map { rec in
                 ReportDay(
                     date: rec.date,
                     activeCalories: rec.active,
@@ -1580,7 +1585,11 @@ private struct PremiumFeaturesView: View {
                     macros: macrosByDay[calendar.startOfDay(for: rec.date)]
                 )
             }
-            let previousDays = previous.map { rec in
+            guard !reportDays.isEmpty else {
+                reportErrorMessage = "Every day in that range is excluded from your averages, so there is nothing to summarize."
+                return
+            }
+            let previousDays = ExcludedDays.excluding(previous, keys: excluded, date: \.date).map { rec in
                 ReportDay(
                     date: rec.date,
                     activeCalories: rec.active,

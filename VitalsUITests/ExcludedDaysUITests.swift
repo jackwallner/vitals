@@ -143,13 +143,18 @@ final class ExcludedDaysUITests: XCTestCase {
         dismissSettings(app)
 
         app.buttons["History"].tap()
-        let caloriesCard = app.buttons.matching(
-            NSPredicate(format: "label BEGINSWITH %@", "Calories")
-        ).firstMatch
+        // By identifier, not a "Calories" label prefix: the average cards above
+        // the chart match that prefix too, and a tap on one of those goes nowhere.
+        let caloriesCard = app.buttons["chart-card-link-Calories"]
         XCTAssertTrue(caloriesCard.waitForExistence(timeout: 20), "Calories chart card missing")
-        caloriesCard.tap()
 
+        // The History tab is still settling its first load when the card appears,
+        // and a tap that lands mid-layout is dropped. Retry until the push lands.
         let recentDays = app.staticTexts["Recent Days"]
+        for _ in 0..<3 where !recentDays.waitForExistence(timeout: 5) {
+            if caloriesCard.isHittable { caloriesCard.tap() }
+        }
+        XCTAssertTrue(recentDays.waitForExistence(timeout: 10), "Calories history never opened")
         for _ in 0..<8 where !recentDays.isHittable {
             app.swipeUp()
         }

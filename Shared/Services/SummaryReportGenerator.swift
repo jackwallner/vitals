@@ -103,7 +103,6 @@ enum SummaryReportGenerator {
         macroKinds: [MacroKind] = MacroKind.allCases
     ) -> SummaryReport {
         let nonZeroCalDays = days.filter { $0.totalCalories > 0 }
-        let nonZeroStepDays = days.filter { $0.steps > 0 }
 
         let totalCalories = days.map(\.totalCalories).reduce(0, +)
         let dayCount = max(days.count, 1)

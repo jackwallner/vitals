@@ -311,6 +311,36 @@ final class ExcludedDaysTests: XCTestCase {
         XCTAssertEqual(try XCTUnwrap(summary.weekly.average), 600, accuracy: 0.001)
     }
 
+    /// The watch draws `isLogged`, not `counts`: an excluded day with food logged
+    /// keeps its (dimmed) bar, and only a day with no food is a placeholder.
+    func testNetDeficitPointSeparatesExcludedFromUnlogged() throws {
+        let end = try day(2026, 4, 26)
+        let history = makeHistory(days: 10, ending: end) { _ in (active: 900, resting: 1_500) }
+        let excludedDay = try XCTUnwrap(calendar.date(byAdding: .day, value: -1, to: end))
+        let unloggedDay = try XCTUnwrap(calendar.date(byAdding: .day, value: -2, to: end))
+        var foodByDate: [Date: Double] = [:]
+        for row in history where !calendar.isDate(row.date, inSameDayAs: unloggedDay) {
+            foodByDate[row.date] = 1_800
+        }
+
+        let summary = try XCTUnwrap(
+            NetDeficitTrendSummary.make(
+                history: history,
+                foodByDate: foodByDate,
+                excludedKeys: [ExcludedDays.key(for: excludedDay)],
+                calendar: calendar
+            )
+        )
+
+        let excluded = try XCTUnwrap(summary.points.first { calendar.isDate($0.date, inSameDayAs: excludedDay) })
+        XCTAssertTrue(excluded.isLogged, "an excluded logged day must still draw its bar")
+        XCTAssertFalse(excluded.counts)
+
+        let unlogged = try XCTUnwrap(summary.points.first { calendar.isDate($0.date, inSameDayAs: unloggedDay) })
+        XCTAssertFalse(unlogged.isLogged, "an unlogged day is the placeholder")
+        XCTAssertFalse(unlogged.isExcluded)
+    }
+
     // MARK: - Month review
 
     func testMonthReviewIgnoresExcludedDays() throws {
