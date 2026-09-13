@@ -234,7 +234,7 @@ struct HistoryView: View {
     }
 
     private var shouldOfferMonthlySummary: Bool {
-        store.isPro && generatedMonthlySummaryMonth != currentMonthKey && countedRecords.count >= 7
+        store.isPro && generatedMonthlySummaryMonth != currentMonthKey && records.count >= 7
     }
 
     // MARK: - Chart Data (aggregated for longer periods)
@@ -689,7 +689,9 @@ struct HistoryView: View {
                             }
 
                             // Net Deficit row (if enabled)
-                            if store.isPro && goals.showNetCalories && hasNetData {
+                            // Counted days, not `hasNetData`: a period whose logged days are
+                            // all excluded still draws its dimmed bars, but has no average.
+                            if store.isPro && goals.showNetCalories && !netRecords.isEmpty {
                                 HStack(spacing: 12) {
                                     AverageCard(
                                         label: "Avg Deficit",
@@ -1149,7 +1151,8 @@ struct HistoryView: View {
             .opacity((selectedCalorieDate == nil || Calendar.current.isDate(item.date, equalTo: selectedCalorieDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3) * (item.excluded ? 0.25 : 1.0))
             .cornerRadius(4)
 
-            if calorieChartData.count > 1 {
+            // Excluded bars don't feed the line, so they don't earn one either.
+            if calorieChartData.filter({ !$0.excluded }).count > 1 {
                 RuleMark(y: .value("Average", chartAvgCalories))
                     .foregroundStyle(Theme.caloriesPrimary.opacity(0.5))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [5, 3]))
@@ -1204,7 +1207,7 @@ struct HistoryView: View {
             .opacity((selectedStepDate == nil || Calendar.current.isDate(item.date, equalTo: selectedStepDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3) * (item.excluded ? 0.25 : 1.0))
             .cornerRadius(4)
 
-            if stepsChartData.count > 1 {
+            if stepsChartData.filter({ !$0.excluded }).count > 1 {
                 RuleMark(y: .value("Average", chartAvgSteps))
                     .foregroundStyle(Theme.stepsPrimary.opacity(0.5))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [5, 3]))
@@ -1260,7 +1263,7 @@ struct HistoryView: View {
                 .foregroundStyle(Theme.textTertiary.opacity(0.4))
                 .lineStyle(StrokeStyle(lineWidth: 1))
 
-            if netDeficitChartData.count > 1 {
+            if netDeficitChartData.filter({ !$0.excluded }).count > 1 {
                 RuleMark(y: .value("Average", chartAvgNetDeficit))
                     .foregroundStyle(Theme.netDeficitBrand.opacity(0.5))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [5, 3]))
@@ -1620,7 +1623,7 @@ struct HistoryView: View {
                 WideTotalCard(label: "Total Steps", value: totalSteps.formatted(.number), color: Theme.stepsPrimary)
             }
         case .net:
-            if hasNetData {
+            if !netRecords.isEmpty {
                 VStack(spacing: 12) {
                     HStack(spacing: 12) {
                         AverageCard(label: "Avg Deficit", value: formatSignedNet(avgNetDeficit), color: netColor(for: avgNetDeficit))

@@ -330,6 +330,14 @@ struct DashboardView: View {
                 await requestMacroAuthAndReload()
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: StoreService.cachedEntitlementDidReconcile)) { _ in
+            // Usually lands while the launch refresh is still reading with the
+            // stale set, and `refresh()` drops overlapping calls. Wait it out.
+            Task {
+                while isRefreshing { try? await Task.sleep(for: .milliseconds(250)) }
+                await refresh()
+            }
+        }
         .onChange(of: store.isPro) { oldValue, isPro in
             if oldValue && !isPro && goals.showNetCalories {
                 goals.showNetCalories = false
