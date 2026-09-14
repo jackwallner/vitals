@@ -13,6 +13,10 @@ struct TrialPitchRequest: Identifiable {
     /// when the user explicitly reached for it — buying from a generic row
     /// leaves every setting alone.
     let featureToEnable: PlusFeature?
+    /// Copy written about the user's own data, replacing the feature's generic
+    /// headline and subheadline. See `ExcludedDaysPitch`.
+    var headline: String?
+    var subheadline: String?
 
     /// A feature tap. `impressionID` names the surface, not the feature, so the
     /// RevenueCat series stay comparable across builds.
@@ -20,6 +24,16 @@ struct TrialPitchRequest: Identifiable {
         focus = intent.focusFeature
         self.impressionID = impressionID
         featureToEnable = TrialPitchRequest.toggleGatedFeature(for: intent)
+    }
+
+    /// The Excluded Days pitch, led by one of the user's own days when there is
+    /// enough history to name one.
+    init(excludedDays pitch: ExcludedDaysPitch?, impressionID: String) {
+        focus = .excludedDays
+        self.impressionID = impressionID
+        featureToEnable = nil
+        headline = pitch?.headline
+        subheadline = pitch?.subheadline
     }
 
     /// A passive nudge (launch, History load): no feature was asked for, so
@@ -110,6 +124,8 @@ struct TrialOfferPitchSheet: View {
     var body: some View {
         TrialOfferSheet(
             focus: request.focus,
+            headlineOverride: request.headline,
+            subheadlineOverride: request.subheadline,
             logsFood: goals.logsFoodInHealth,
             // Trial language only when this Apple ID is still eligible —
             // otherwise the sheet frames a straight yearly purchase.

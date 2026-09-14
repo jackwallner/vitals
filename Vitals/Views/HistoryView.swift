@@ -1720,7 +1720,16 @@ struct HistoryView: View {
     /// is unrepresentative, which is while they are looking at it.
     private func toggleExclusion(_ row: RecentDayRow) {
         guard store.isPro else {
-            TrialOfferCoordinator.shared.request(.excludedDaysRow)
+            // The pitch averages the last 30 days whatever period is on screen;
+            // a free 7D view alone never has enough days to quote one.
+            Task {
+                let history = (try? await healthKit.fetchHistory(days: ExcludedDaysPitch.windowDays + 1)) ?? []
+                let pitch = ExcludedDaysPitch.make(
+                    history: history.map { ($0.date, $0.active + $0.resting) },
+                    tapped: row.date
+                )
+                TrialOfferCoordinator.shared.requestExclusion(of: row.date, pitch: pitch)
+            }
             return
         }
         goals.setDay(row.date, excluded: !row.isExcluded)

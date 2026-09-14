@@ -771,10 +771,10 @@ final class StoreService: NSObject, ObservableObject {
         // back by name. Without it the Test Store customer is anonymous and the
         // only way to check the attributes landed is to guess which of the
         // project's anonymous customers was this run.
-        if RevenueCatProbe.isEnabled {
+        if let appUserID = RevenueCatProbe.isEnabled ? RevenueCatProbe.appUserID : DebugLaunchConfig.revenueCatAppUserID {
             Purchases.configure(
                 with: Configuration.Builder(withAPIKey: RevenueCatConfig.apiKey)
-                    .with(appUserID: RevenueCatProbe.appUserID)
+                    .with(appUserID: appUserID)
                     .build()
             )
             Purchases.shared.delegate = self

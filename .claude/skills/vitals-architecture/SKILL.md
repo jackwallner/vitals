@@ -105,5 +105,14 @@ Nothing is deleted: excluded days stay in charts (dimmed), in Recent Days
   a `MultiDatePicker` plus the pause switch), a long-press shortcut on History's
   Recent Days rows, and a paused banner above the tab bar on every tab
   (`MainTabView.pausedAveragesBanner`) with inline Resume.
+- Free users open the same screen locked: every control raises the trial pitch
+  written about one of their days (`Shared/Utilities/ExcludedDaysPitch.swift`:
+  the tapped day, else the lowest completed day in the last 30), and converting
+  carries out the tap (excludes that day, or starts the pause). The History
+  long-press does the same through `TrialOfferCoordinator.requestExclusion`.
+- `GoalSettings.excludedDayKeys` gates on the `isProCached` App Group mirror;
+  `StoreService.apply` rewrites that mirror on every resolved customer, since a
+  lapsed subscriber's `isPro` never changes (false to false) and its `didSet`
+  would never clear it.
 - The watch mirrors both halves over `GoalSyncKeys.excludedDays` /
   `.averagesPausedSince`; the iOS widget reads `ExcludedDays.effectiveKeys`.

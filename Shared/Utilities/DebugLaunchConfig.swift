@@ -33,10 +33,27 @@ enum DebugLaunchConfig {
     static var failProductLoad: Bool {
         ProcessInfo.processInfo.environment["VITALS_FAIL_PRODUCT_LOAD"] == "1"
     }
+
+    /// Launch as a lapsed subscriber: the App Group still says Vitals+ and two
+    /// excluded days are stored, while RevenueCat resolves a free customer.
+    /// Reproduces the stale-mirror bug from the 1.8.6 audit.
+    /// `VITALS_STALE_PRO_CACHE=1`.
+    static var staleProCache: Bool {
+        ProcessInfo.processInfo.environment["VITALS_STALE_PRO_CACHE"] == "1"
+    }
+
+    /// A named Test Store customer instead of the install's anonymous one, so a
+    /// UI test that buys cannot leave the next test subscribed.
+    /// `VITALS_RC_APP_USER_ID=<id>`.
+    static var revenueCatAppUserID: String? {
+        ProcessInfo.processInfo.environment["VITALS_RC_APP_USER_ID"]
+    }
 #else
     static var upgradeTabOverride: PaywallUIVariant? { nil }
     static var seedHealth: Bool { false }
     static var forceSetupComplete: Bool { false }
     static var failProductLoad: Bool { false }
+    static var staleProCache: Bool { false }
+    static var revenueCatAppUserID: String? { nil }
 #endif
 }
