@@ -4,7 +4,7 @@ Total Calories reads calorie and step data from Apple Health (HealthKit) in read
 
 WHAT CHANGED IN THIS VERSION
 
-1.8.5 restores the first-run experience to the design that shipped in version 1.7.5. The optional question asking whether the user logs their food has been removed, and the Vitals+ screen shown during setup is again a plain list of what the subscription adds rather than a worked numeric example. No feature was added or removed from the app itself; the change is confined to the setup flow and its subscription screen. Bug fixes made since 1.7.5 (keyboard handling, the Restore Purchases button, and purchase error handling) are retained.
+1.8.6 adds Excluded Days, part of the Vitals+ subscription. In Settings > Averages > Excluded Days a subscriber picks days on a calendar (a sick day, a flight, a day the watch stayed on the charger) or turns on Pause Averages, and those days stop counting toward averages, totals, best days, streaks, reports, and trends. Nothing is deleted: excluded days still show in charts, dimmed. Anyone can open the Excluded Days screen; without a subscription, tapping a day or the pause switch shows the Vitals+ offer, which can be dismissed with "Not now". A subscriber can also long-press a day in History > Calories > Recent Days to exclude it.
 
 HEALTHKIT SETUP - PLEASE GRANT ACCESS WHEN PROMPTED
 

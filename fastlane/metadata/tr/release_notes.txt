@@ -1,1 +1,1 @@
-Kurulum kısaldı. Yemeklerini kaydedip kaydetmediğini soran soru kaldırıldı ve kurulum sırasında gördüğün Vitals+ ekranı, hesaplanmış bir örnek yerine aboneliğin kattıklarının sade bir listesine döndü.
+Vitals+'ta yeni: Hariç tutulan günler. Hasta olduğun bir günü, bir uçuşu ya da saatin şarjda kaldığı bir günü ortalamalarının, toplamlarının ve serilerinin dışında bırak ya da dönene kadar ortalamaları duraklat. Hiçbir şey silinmez: hariç tutulan günler grafiklerde soluk olarak kalır.

@@ -1,1 +1,1 @@
-Käyttöönotto on lyhyempi. Kysymys siitä, kirjaatko ruokasi, on poistettu, ja käyttöönoton aikana näkyvä Vitals+-näkymä on taas yksinkertainen lista siitä, mitä tilaus lisää, laskuesimerkin sijaan.
+Uutta Vitals+:ssa: Pois jätetyt päivät. Jätä sairauspäivä, lentopäivä tai päivä, jona kello jäi laturiin, pois keskiarvoista, summista ja putkista, tai keskeytä keskiarvot, kunnes palaat. Mitään ei poisteta: pois jätetyt päivät näkyvät kaavioissa himmennettyinä.

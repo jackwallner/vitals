@@ -1,1 +1,1 @@
-Oppsettet er kortere. Spørsmålet om du registrerer maten din er borte, og Vitals+-skjermen du ser under oppsettet er tilbake til en enkel liste over hva abonnementet legger til, i stedet for et gjennomregnet eksempel.
+Nytt i Vitals+: Utelatte dager. Hold en sykedag, en flyreise eller en dag klokken ble liggende på laderen utenfor gjennomsnitt, totaler og rekker, eller sett gjennomsnittene på pause til du er tilbake. Ingenting slettes: utelatte dager blir liggende i grafene, nedtonet.

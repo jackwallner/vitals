@@ -1,1 +1,1 @@
-A configuração ficou mais curta. A pergunta sobre se você registra suas refeições saiu, e a tela do Vitals+ que aparece durante a configuração voltou a ser uma lista simples do que a assinatura acrescenta, em vez de um exemplo resolvido.
+Novidade no Vitals+: Dias excluídos. Deixe fora das suas médias, totais e sequências um dia doente, um voo ou um dia em que o relógio ficou no carregador, ou pause as médias até você voltar. Nada é apagado: os dias excluídos continuam nos gráficos, esmaecidos.

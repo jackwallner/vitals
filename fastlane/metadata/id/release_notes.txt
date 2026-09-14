@@ -1,1 +1,1 @@
-Penyiapan jadi lebih singkat. Pertanyaan apakah kamu mencatat makanan sudah dihapus, dan layar Vitals+ yang muncul saat penyiapan kembali menjadi daftar sederhana tentang apa yang ditambahkan langganan, bukan contoh berhitung.
+Baru di Vitals+: Hari yang Dikecualikan. Keluarkan hari sakit, hari penerbangan, atau hari jam tangan tertinggal di pengisi daya dari rata-rata, total, dan rentetan harimu, atau jeda rata-rata sampai kamu kembali. Tidak ada yang dihapus: hari yang dikecualikan tetap ada di grafik, tampil redup.

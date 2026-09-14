@@ -1,1 +1,1 @@
-La configuración es más corta. Desapareció la pregunta sobre si registras tus comidas, y la pantalla de Vitals+ que ves durante la configuración vuelve a ser una lista sencilla de lo que agrega la suscripción, en lugar de un ejemplo resuelto.
+Nuevo en Vitals+: Días excluidos. Deja fuera de tus promedios, totales y rachas un día de enfermedad, un vuelo o un día en que el reloj se quedó en el cargador, o pausa los promedios hasta que regreses. No se borra nada: los días excluidos siguen en tus gráficas, atenuados.
