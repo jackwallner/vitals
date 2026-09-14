@@ -525,6 +525,7 @@ private struct WatchTrendPeriodSection: View {
                 Text("avg")
                     .font(.system(size: 9, weight: .medium, design: .rounded))
                     .foregroundStyle(Theme.textSecondary)
+                WatchExcludedCount(count: points.filter(\.isExcluded).count)
             }
 
             WatchTrendBars(points: points)
@@ -611,6 +612,7 @@ private struct WatchStepTrendPeriodSection: View {
                 Text("avg")
                     .font(.system(size: 9, weight: .medium, design: .rounded))
                     .foregroundStyle(Theme.textSecondary)
+                WatchExcludedCount(count: points.filter(\.isExcluded).count)
             }
 
             WatchStepTrendBars(points: points)
@@ -698,6 +700,7 @@ private struct WatchNetDeficitPeriodSection: View {
                 Text("avg")
                     .font(.system(size: 9, weight: .medium, design: .rounded))
                     .foregroundStyle(Theme.textSecondary)
+                WatchExcludedCount(count: points.filter(\.isExcluded).count)
             }
 
             WatchNetDeficitBars(points: points)
@@ -760,6 +763,21 @@ private struct WatchNetDeficitBars: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+}
+
+/// Says why some bars are dim. Without it a dimmed bar reads as a low day.
+private struct WatchExcludedCount: View {
+    let count: Int
+
+    var body: some View {
+        if count > 0 {
+            Text("· \(count) excluded")
+                .font(.system(size: 9, weight: .medium, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
         }
     }
 }

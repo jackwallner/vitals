@@ -90,6 +90,16 @@ struct VitalsApp: App {
     private static let refreshTaskID = "com.jackwallner.vitals.refresh"
 
     init() {
+        #if DEBUG
+        // Before anything reads GoalSettings or starts the store.
+        if DebugLaunchConfig.staleProCache {
+            let defaults = UserDefaults(suiteName: vitalsAppGroupID)
+            defaults?.set(true, forKey: StoreService.cachedProKey)
+            let keys = [1, 2].compactMap { Calendar.current.date(byAdding: .day, value: -$0, to: .now) }
+                .map(ExcludedDays.key(for:))
+            ExcludedDays.save(Set(keys), to: defaults)
+        }
+        #endif
         // Run the launch handler on the main queue. With `using: nil` the system uses a
         // background queue; referencing MainActor-isolated `Self` / `handleAppRefresh`
         // from there trips Swift 6 executor checks (see _dispatch_assert_queue_fail).
@@ -316,11 +326,21 @@ final class TrialOfferCoordinator: ObservableObject {
     }
 
     @Published var pendingIntent: Intent?
+    /// The day a locked "Exclude from Averages" was aimed at, and the pitch
+    /// written about it. Read once by the presenter alongside the intent.
+    private(set) var exclusionRequest: (day: Date, pitch: ExcludedDaysPitch?)?
 
     private init() {}
 
     func request(_ intent: Intent) { pendingIntent = intent }
-    func clear() { pendingIntent = nil }
+    func requestExclusion(of day: Date, pitch: ExcludedDaysPitch?) {
+        exclusionRequest = (day, pitch)
+        pendingIntent = .excludedDaysRow
+    }
+    func clear() {
+        pendingIntent = nil
+        exclusionRequest = nil
+    }
 }
 
 /// App-wide coordinator for celebratory milestone sheets (goal streaks, month
@@ -455,6 +475,8 @@ struct MainTabView: View {
     /// reached for it. Buying from the generic Upgrade tab leaves it `nil`, so
     /// those features stay off until the user chooses them.
     @State private var pendingFeatureEnable: PlusFeature?
+    /// A day a free user tried to exclude, excluded once they convert.
+    @State private var pendingExcludedDay: Date?
 
     private enum TrialOfferSource: String {
         case launch
@@ -868,7 +890,11 @@ struct MainTabView: View {
         defer { trialCoordinator.clear() }
         guard !store.isPro else { return }
         guard trialPitch == nil, !showTrialPaywall else { return }
-        let request = TrialPitchRequest(intent: intent, impressionID: "vitals_trial_offer_intent")
+        var request = TrialPitchRequest(intent: intent, impressionID: "vitals_trial_offer_intent")
+        if intent == .excludedDaysRow, let exclusion = trialCoordinator.exclusionRequest {
+            request = TrialPitchRequest(excludedDays: exclusion.pitch, impressionID: "vitals_trial_offer_intent")
+            pendingExcludedDay = exclusion.day
+        }
         trialOfferFocus = request.focus
         // Only toggle-gated features get auto-enabled on upgrade; Deep Trends /
         // PDF unlock implicitly with Pro and need no stored setting.
@@ -888,6 +914,10 @@ struct MainTabView: View {
     /// gone. Requesting while a trial sheet is visible or dismissing causes
     /// HealthKit to silently suppress the system permission UI.
     private func applyPendingFeatureEnable() {
+        if let day = pendingExcludedDay {
+            pendingExcludedDay = nil
+            goals.setDay(day, excluded: true)
+        }
         guard let feature = pendingFeatureEnable else { return }
         pendingFeatureEnable = nil
         switch feature {
@@ -1063,6 +1093,7 @@ struct MainTabView: View {
         .sheet(isPresented: $showExcludedDays) {
             NavigationStack {
                 ExcludedDaysView(goals: goals)
+                    .environmentObject(store)
                     .toolbar {
                         ToolbarItem(placement: .confirmationAction) {
                             Button("Done") { showExcludedDays = false }.bold()
@@ -1200,6 +1231,7 @@ struct MainTabView: View {
                 // Dismissed without upgrading - drop the intent so a later
                 // unrelated purchase doesn't silently flip the feature on.
                 pendingFeatureEnable = nil
+                pendingExcludedDay = nil
                 presentPendingReviewIfNeeded()
             }
         }) { pitch in
@@ -1844,6 +1876,9 @@ struct TrialOfferSheet: View {
     /// When set, the sheet leads with and highlights this feature instead of the
     /// generic toolkit pitch. `nil` for passive launch/history nudges.
     let focus: PlusFeature?
+    /// Personalized copy that replaces the focus feature's generic lines.
+    var headlineOverride: String? = nil
+    var subheadlineOverride: String? = nil
     /// The onboarding food answer. `false` means Net Deficit and Macros are
     /// blank screens for this person and must not be pitched at them; `nil`
     /// (installs predating the question) keeps the old mixed list.
@@ -1899,7 +1934,7 @@ struct TrialOfferSheet: View {
     /// Headline copy. Trial language only when `offerLabel` is set (eligible).
     private var headline: String {
         VitalsConversionCopy.headline(
-            focusHeadline: focus?.intentHeadline,
+            focusHeadline: headlineOverride ?? focus?.intentHeadline,
             trialLabel: offerLabel,
             eligibleForTrial: offerLabel != nil
         )
@@ -1907,7 +1942,7 @@ struct TrialOfferSheet: View {
 
     private var subheadline: String {
         VitalsConversionCopy.subheadline(
-            focusSubheadline: focus?.intentSubheadline,
+            focusSubheadline: subheadlineOverride ?? focus?.intentSubheadline,
             eligibleForTrial: offerLabel != nil,
             perWeekLabel: perWeekLabel
         )
@@ -2141,6 +2176,7 @@ struct TrialOfferSheet: View {
                     }
                     .buttonStyle(.plain)
                     .disabled(isPurchasing)
+                    .accessibilityIdentifier("trial-pitch-cta")
 
                     Button(action: onDismiss) {
                         Text("Not now")

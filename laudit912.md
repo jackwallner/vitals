@@ -86,3 +86,13 @@ Artifacts:
 - P3: both compiler warnings removed. Release simulator build of all four targets succeeds with no warnings in project sources.
 - Unit tests: 137 passed.
 - Visual pass (simulator, 3 excluded days): PDF reports now chart excluded days dimmed instead of dropping them (gaps read as missing data) and say "N excluded"; the Vitals+ tab Deep Trends card shows the same "N days excluded" note as History; a change that rounds to 0% shows a grey level arrow instead of "↘ +0%" (app, PDF, share text); the monthly summary prompt's blank icon (`calendar.badge.sparkles` does not exist) is fixed; the watch reloads trends when synced exclusions change while open.
+
+## Release verification (2026-09-13, build 198)
+
+- Free Excluded Days reworked: the Settings row opens the screen for everyone; free, it shows the lowest completed day in the last 30 with its lift, and the calendar, pause switch, and card raise the trial pitch written about that day (or the tapped day). Buying carries out the tap. The History long-press pitches the pressed day the same way.
+- Lapsed-subscriber fix proven: `testLapsedSubscriberStopsFilteringExcludedDays` fails with the reconcile call removed and passes with it; logs show "Cached entitlement reconciled to false" then "Reloading Today".
+- Purchases verified end to end against the RevenueCat Test Store (simulated, no charge): card purchase excludes the named day; History long-press purchase excludes the pressed day. Each UI test launch uses a throwaway customer.
+- Full UI suite (38 tests) on iOS 26.5: all pass, including the `SeededHealthFlowUITests` baseline from the audit. One load flake (`testFocusedPitchOffersRestoreBesideTheLegalLinks`, load average 35) passed twice on rerun.
+- iOS 27.0: Excluded Days class, lapsed-subscriber test, and both free purchase tests pass.
+- Visual: watch trends read "avg · 3 excluded"; watch clears exclusions when the phone syncs none; PDF shows a grey flat arrow at 0%.
+- Unit tests: 143 pass. Release build of all four targets: no warnings in project sources.

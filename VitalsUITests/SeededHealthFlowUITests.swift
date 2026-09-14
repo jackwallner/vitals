@@ -107,10 +107,147 @@ final class SeededHealthFlowUITests: XCTestCase {
         attach(app.screenshot(), name: "seeded-upgrade-catalog")
     }
 
+    /// A lapsed subscriber's App Group still claims Vitals+ on launch, because
+    /// `isPro` starts false and a free customer never changes it. Once
+    /// RevenueCat resolves, the stored exclusions must stop filtering: a free
+    /// user can no longer reach the screen that turns them off.
+    func testLapsedSubscriberStopsFilteringExcludedDays() {
+        let app = launchSeeded(upgradeTab: "catalog", staleProCache: true)
+        grantHealthKitAccess(in: app)
+        dismissBlockingSheets(in: app)
+        dismissTrialPitch(in: app)
+
+        app.buttons["History"].tap()
+        XCTAssertTrue(
+            app.staticTexts["Deep Trends"].waitForExistence(timeout: 20),
+            "History never loaded"
+        )
+        let note = app.staticTexts.matching(
+            NSPredicate(format: "label ENDSWITH %@", "excluded from these figures")
+        ).firstMatch
+        let gone = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: note)
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [gone], timeout: 45), .completed,
+            "a free customer's History is still filtering stored excluded days"
+        )
+        XCTAssertFalse(
+            app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Averages paused")).firstMatch.exists
+        )
+        attach(app.screenshot(), name: "lapsed-history-unfiltered")
+    }
+
+    /// A free user opens Excluded Days, sees their own lowest day, and buying
+    /// from that card excludes it. Uses RevenueCat's Test Store: simulated, no
+    /// StoreKit, no charge. The customer is a throwaway one named per launch.
+    func testFreeExcludedDaysPitchExcludesTheDayItNamedOnPurchase() {
+        let app = launchSeeded(upgradeTab: "catalog")
+        grantHealthKitAccess(in: app)
+        dismissBlockingSheets(in: app)
+        dismissTrialPitch(in: app)
+        app.buttons["Today"].tap()
+        dismissTrialPitch(in: app)
+        openSettings(in: app)
+        XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 30), "Settings never presented")
+
+        let row = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Excluded Days")).firstMatch
+        for _ in 0..<16 where !row.isHittable { app.swipeUp() }
+        XCTAssertTrue(row.isHittable, "Excluded Days row missing")
+        row.tap()
+
+        let unlock = app.buttons["excluded-days-unlock"]
+        XCTAssertTrue(unlock.waitForExistence(timeout: 15), "locked Excluded Days screen has no unlock card")
+        // The card starts generic and names a day once HealthKit answers.
+        let named = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label BEGINSWITH 'Exclude '"), object: unlock)
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [named], timeout: 30), .completed,
+            "seeded history should name a day, got \(unlock.label)"
+        )
+        let day = unlock.label.replacingOccurrences(of: "Exclude ", with: "")
+        attach(app.screenshot(), name: "free-excluded-days-locked")
+        unlock.tap()
+
+        XCTAssertTrue(
+            app.staticTexts["Leave \(day) out of your averages"].waitForExistence(timeout: 15),
+            "the pitch did not repeat the day the card named"
+        )
+        attach(app.screenshot(), name: "free-excluded-days-pitch")
+        // By identifier: the Upgrade tab behind the sheet has its own trial button.
+        let cta = app.buttons["trial-pitch-cta"]
+        XCTAssertTrue(cta.waitForExistence(timeout: 15), "pitch CTA missing")
+        cta.tap()
+
+        let confirm = app.buttons["Test valid purchase"]
+        XCTAssertTrue(confirm.waitForExistence(timeout: 60), "Test Store sheet never appeared")
+        confirm.tap()
+
+        XCTAssertTrue(
+            app.staticTexts["1 Excluded Day"].waitForExistence(timeout: 60),
+            "buying from the card did not exclude the day it named"
+        )
+        XCTAssertFalse(app.buttons["excluded-days-unlock"].exists, "screen still locked after purchase")
+        attach(app.screenshot(), name: "free-excluded-days-after-purchase")
+    }
+
+    /// The History long-press is the other door into Excluded Days. Free, it
+    /// pitches the pressed day by date, and buying excludes that day.
+    func testFreeHistoryLongPressPitchesAndExcludesThePressedDay() {
+        let app = launchSeeded(upgradeTab: "catalog")
+        grantHealthKitAccess(in: app)
+        dismissBlockingSheets(in: app)
+        dismissTrialPitch(in: app)
+
+        app.buttons["History"].tap()
+        let calories = app.buttons["chart-card-link-Calories"]
+        XCTAssertTrue(calories.waitForExistence(timeout: 30), "Calories chart card missing")
+        dismissTrialPitch(in: app)
+        let recentDays = app.staticTexts["Recent Days"]
+        for _ in 0..<3 where !recentDays.waitForExistence(timeout: 5) {
+            if calories.isHittable { calories.tap() }
+        }
+        for _ in 0..<8 where !recentDays.isHittable { app.swipeUp() }
+
+        // Yesterday's row: today is partial, so it gets the generic pitch. The
+        // identifier also lands on each row's date and value texts, so match the
+        // date labels ("Sat, Sep 12") and take the second.
+        let dayRows = app.descendants(matching: .any)
+            .matching(identifier: "recent-day-row")
+            .matching(NSPredicate(format: "label MATCHES %@", "^[A-Z][a-z]{2}, [A-Z][a-z]{2} [0-9]{1,2}.*"))
+        let yesterday = dayRows.element(boundBy: 1)
+        XCTAssertTrue(yesterday.waitForExistence(timeout: 10), "no completed Recent Days row")
+        let dayLabel = String(yesterday.label.split(separator: ",").dropFirst().first ?? "").trimmingCharacters(in: .whitespaces)
+        yesterday.press(forDuration: 1.0)
+        let exclude = app.buttons["Exclude from Averages"]
+        XCTAssertTrue(exclude.waitForExistence(timeout: 10), "long-press menu missing")
+        exclude.tap()
+
+        XCTAssertTrue(
+            app.staticTexts["Leave \(dayLabel) out of your averages"].waitForExistence(timeout: 15),
+            "History pitch did not name the pressed day (\(dayLabel))"
+        )
+        attach(app.screenshot(), name: "free-history-exclusion-pitch")
+
+        let cta = app.buttons["trial-pitch-cta"]
+        XCTAssertTrue(cta.waitForExistence(timeout: 15), "pitch CTA missing")
+        cta.tap()
+        let confirm = app.buttons["Test valid purchase"]
+        XCTAssertTrue(confirm.waitForExistence(timeout: 60), "Test Store sheet never appeared")
+        confirm.tap()
+
+        XCTAssertTrue(
+            app.staticTexts["EXCLUDED"].waitForExistence(timeout: 60),
+            "buying from the long-press did not exclude the pressed day"
+        )
+        attach(app.screenshot(), name: "free-history-exclusion-after-purchase")
+    }
+
     // MARK: - Launch
 
-    private func launchSeeded(upgradeTab: String) -> XCUIApplication {
+    private func launchSeeded(upgradeTab: String, staleProCache: Bool = false) -> XCUIApplication {
         let app = XCUIApplication()
+        if staleProCache { app.launchEnvironment["VITALS_STALE_PRO_CACHE"] = "1" }
+        // A fresh Test Store customer per launch: one test here buys, and an
+        // install's anonymous customer would carry that into every later test.
+        app.launchEnvironment["VITALS_RC_APP_USER_ID"] = "uitest-vitals-\(UUID().uuidString)"
         app.launchEnvironment["VITALS_SEED_HEALTH"] = "1"
         app.launchEnvironment["VITALS_FORCE_SETUP_COMPLETE"] = "1"
         app.launchEnvironment["VITALS_UPGRADE_TAB"] = upgradeTab
@@ -213,12 +350,15 @@ final class SeededHealthFlowUITests: XCTestCase {
 
     private func tapTurnOnAll(in app: XCUIApplication) {
         let master = app.cells["UIA.Health.AuthSheet.AllCategoryButton"]
-        guard master.exists, master.isHittable else { return }
+        // No hittability read at all: on iOS 27 the Health sheet answers
+        // "failed to determine hittability" for this cell mid-transition, and
+        // the throw fails the test. A coordinate tap never asks.
+        guard master.waitForExistence(timeout: 1) else { return }
         let stillOff = master.staticTexts.matching(
             NSPredicate(format: "label BEGINSWITH[c] %@", "Turn On All")
         ).firstMatch.exists
         guard stillOff else { return }
-        master.tap()
+        master.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
     }
 
     private func tapFirstMatch(in app: XCUIApplication, label: String) {

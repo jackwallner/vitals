@@ -335,6 +335,7 @@ struct DashboardView: View {
             // stale set, and `refresh()` drops overlapping calls. Wait it out.
             Task {
                 while isRefreshing { try? await Task.sleep(for: .milliseconds(250)) }
+                dashboardLogger.info("Reloading Today after the cached entitlement was reconciled")
                 await refresh()
             }
         }
@@ -3515,29 +3516,19 @@ private struct SettingsSheet: View {
             : "Excluded days still show in your charts and export, dimmed. They count toward no average, total, best day, or streak."
     }
 
-    /// Locked rows elsewhere in Settings are switches, so the lock can live on
-    /// the toggle. This one opens a screen, so the free state is a button that
-    /// answers the tap with the pitch rather than a dead-end navigation.
+    /// Opens the screen for everyone. Free, the screen is the pitch: the user
+    /// sees the calendar they would get, and a tap on it raises the trial sheet
+    /// about their own day. A row that looked like navigation but raised a sheet
+    /// instead read as a glitch.
     @ViewBuilder
     private var excludedDaysRow: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 0) {
-                if store.isPro {
-                    NavigationLink {
-                        ExcludedDaysView(goals: goals)
-                    } label: {
-                        excludedDaysRowLabel
-                    }
-                } else {
-                    Button {
-                        requestTrialOffer(.excludedDaysRow)
-                    } label: {
-                        HStack(spacing: 0) {
-                            excludedDaysRowLabel
-                            Spacer(minLength: 8)
-                        }
-                    }
-                    .buttonStyle(.plain)
+                NavigationLink {
+                    ExcludedDaysView(goals: goals)
+                        .environmentObject(store)
+                } label: {
+                    excludedDaysRowLabel
                 }
                 SettingsInfoDot(
                     topic: .excludedDays,
