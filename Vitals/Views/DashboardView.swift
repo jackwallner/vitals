@@ -2014,7 +2014,6 @@ private enum SettingsInfoTopic: Identifiable {
     case goalStreak
     case weeklyRecap
     case bodyProfile
-    case excludedDays
 
     var id: Self { self }
 
@@ -2030,7 +2029,6 @@ private enum SettingsInfoTopic: Identifiable {
         case .goalStreak: "Goal Streak"
         case .weeklyRecap: "Weekly Recap"
         case .bodyProfile: "Body Profile"
-        case .excludedDays: "Excluded Days"
         }
     }
 
@@ -2046,7 +2044,6 @@ private enum SettingsInfoTopic: Identifiable {
         case .goalStreak: "flame.fill"
         case .weeklyRecap: "calendar.badge.clock"
         case .bodyProfile: "figure"
-        case .excludedDays: "slash.circle"
         }
     }
 
@@ -2075,8 +2072,6 @@ private enum SettingsInfoTopic: Identifiable {
             "A Sunday evening notification summarizing your week. Turning it on asks permission to notify you."
         case .bodyProfile:
             "Your BMI, free, calculated from the height and weight already in Apple Health. No Health data? Enter them by hand instead."
-        case .excludedDays:
-            "Days you pick on a calendar stop counting toward every figure the app works out: averages, totals, best days, pacing, TDEE, and the weekly recap."
         }
     }
 
@@ -2085,8 +2080,6 @@ private enum SettingsInfoTopic: Identifiable {
     /// a divider, so the popover opens on the sentence that answers the question.
     var detail: String? {
         switch self {
-        case .excludedDays:
-            "For the days that aren't you: a flu week, a flight, a day the watch stayed on the charger. An excluded day is also neutral for streaks: it won't extend one and it won't break one.\n\nNothing is deleted. Excluded days stay in your charts, your Recent Days list, and your CSV export, drawn dimmed so you can see what you excluded and undo it."
         case .macros:
             "Show only the ones you track: carbs alone for carb counting, protein alone for training. Macro Goals adds a daily gram target, one macro at a time: hit a protein number while carbs and fat stay a plain readout.\n\nIf your calories sync but macros stay empty, your food app is sharing Energy without the Nutrition categories. In MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing."
         case .calorieSplit:
@@ -3516,40 +3509,22 @@ private struct SettingsSheet: View {
             : "Excluded days still show in your charts and export, dimmed. They count toward no average, total, best day, or streak."
     }
 
-    /// Opens the screen for everyone. Free, the screen is the pitch: the user
-    /// sees the calendar they would get, and a tap on it raises the trial sheet
-    /// about their own day. A row that looked like navigation but raised a sheet
-    /// instead read as a glitch.
-    @ViewBuilder
+    /// A plain navigation row for everyone, with no lock: anyone can open the
+    /// screen, and the lock sits on the controls inside that need Vitals+. No ⓘ
+    /// either. The section footer already explains the feature, and a dot beside
+    /// the chevron caught taps meant for the row.
     private var excludedDaysRow: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 0) {
-                NavigationLink {
-                    ExcludedDaysView(goals: goals)
-                        .environmentObject(store)
-                } label: {
-                    excludedDaysRowLabel
-                }
-                SettingsInfoDot(
-                    topic: .excludedDays,
-                    isOpen: expandedInfoTopic == .excludedDays
-                ) {
-                    withAnimation(.snappy(duration: 0.22)) {
-                        expandedInfoTopic =
-                            expandedInfoTopic == .excludedDays ? nil : .excludedDays
-                    }
-                }
-            }
-            if expandedInfoTopic == .excludedDays {
-                SettingsInfoCallout(topic: .excludedDays)
-                    .transition(.opacity.combined(with: .move(edge: .top)))
-            }
+        NavigationLink {
+            ExcludedDaysView(goals: goals)
+                .environmentObject(store)
+        } label: {
+            excludedDaysRowLabel
         }
     }
 
     private var excludedDaysRowLabel: some View {
         VStack(alignment: .leading, spacing: 2) {
-            plusToggleLabel("Excluded Days")
+            Text("Excluded Days")
             Text(store.isPro ? excludedDaysSubtitle : "Keep odd days out of your averages")
                 .font(.caption)
                 .foregroundStyle(Theme.textSecondary)

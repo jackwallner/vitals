@@ -115,7 +115,15 @@ struct ExcludedDaysView: View {
                 .id(pickerID)
                 .frame(minHeight: 320)
             } header: {
-                Text("Pick Days")
+                HStack(spacing: 6) {
+                    Text("Pick Days")
+                    if isLocked {
+                        Image(systemName: "lock.fill")
+                            .font(.caption)
+                            .foregroundStyle(Theme.caloriesPrimary)
+                            .accessibilityLabel("Vitals+")
+                    }
+                }
             } footer: {
                 Text(
                     isLocked
@@ -192,13 +200,9 @@ struct ExcludedDaysView: View {
     private var lockedCard: some View {
         let suggestion = self.suggestion
         return VStack(alignment: .leading, spacing: 10) {
-            HStack(spacing: 4) {
-                Image(systemName: "lock.fill")
-                Text("Vitals+")
-            }
-            .font(.system(.caption, design: .rounded, weight: .bold))
-            .foregroundStyle(Theme.caloriesPrimary)
-            .accessibilityElement(children: .combine)
+            Text("Vitals+")
+                .font(.system(.caption, design: .rounded, weight: .bold))
+                .foregroundStyle(Theme.caloriesPrimary)
             VStack(alignment: .leading, spacing: 4) {
                 Text(suggestion?.headline ?? "Keep odd days out of your averages")
                     .font(.system(.headline, design: .rounded))
