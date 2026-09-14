@@ -1,1 +1,1 @@
-La configuració és més curta. La pregunta sobre si registres els àpats ha desaparegut, i la pantalla de Vitals+ que veus durant la configuració torna a ser una llista senzilla del que afegeix la subscripció, en lloc d'un exemple resolt.
+Novetat a Vitals+: Dies exclosos. Deixa fora de les mitjanes, els totals i les ratxes un dia de malaltia, un vol o un dia que el rellotge es va quedar al carregador, o posa en pausa les mitjanes fins que tornis. No s'esborra res: els dies exclosos es queden als gràfics, atenuats.

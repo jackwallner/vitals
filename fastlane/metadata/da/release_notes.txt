@@ -1,1 +1,1 @@
-Opsætningen er kortere. Spørgsmålet om, hvorvidt du registrerer din mad, er væk, og Vitals+-skærmen under opsætningen er tilbage til en enkel liste over, hvad abonnementet tilføjer, i stedet for et gennemregnet eksempel.
+Nyt i Vitals+: Udelukkede dage. Hold en sygedag, en flyrejse eller en dag, hvor uret blev på opladeren, uden for dine gennemsnit, totaler og stimer, eller sæt gennemsnit på pause, til du er tilbage. Intet slettes: udelukkede dage bliver i dine grafer, nedtonet.

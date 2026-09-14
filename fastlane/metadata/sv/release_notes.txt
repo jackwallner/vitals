@@ -1,1 +1,1 @@
-Konfigurationen är kortare. Frågan om du loggar din mat är borta, och Vitals+-skärmen du ser under konfigurationen är tillbaka till en enkel lista över vad prenumerationen lägger till, i stället för ett genomräknat exempel.
+Nytt i Vitals+: Undantagna dagar. Håll en sjukdag, en flygresa eller en dag då klockan låg kvar på laddaren utanför dina snitt, summor och sviter, eller pausa snitten tills du är tillbaka. Inget raderas: undantagna dagar ligger kvar i diagrammen, nedtonade.

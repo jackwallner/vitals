@@ -1,1 +1,1 @@
-A beállítás rövidebb lett. Eltűnt a kérdés, hogy naplózod-e az ételeidet, és a beállítás közben látható Vitals+ képernyő ismét egyszerű listát mutat arról, mit ad hozzá az előfizetés, kiszámolt példa helyett.
+Újdonság a Vitals+-ban: Kizárt napok. Hagyj ki az átlagokból, összesítésekből és sorozatokból egy betegnapot, egy repülőutat vagy egy napot, amikor az óra a töltőn maradt, vagy szüneteltesd az átlagokat, amíg vissza nem térsz. Semmi sem törlődik: a kizárt napok halványan megmaradnak a diagramokon.

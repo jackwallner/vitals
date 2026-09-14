@@ -1,1 +1,1 @@
-Konfiguracja jest krótsza. Zniknęło pytanie o to, czy zapisujesz posiłki, a ekran Vitals+ widoczny podczas konfiguracji wrócił do prostej listy tego, co dodaje subskrypcja, zamiast przykładu z liczbami.
+Nowość w Vitals+: Wykluczone dni. Pomiń w średnich, sumach i seriach dzień choroby, lot albo dzień, w którym zegarek został na ładowarce, albo wstrzymaj średnie do powrotu. Nic nie jest usuwane: wykluczone dni zostają na wykresach, przygaszone.

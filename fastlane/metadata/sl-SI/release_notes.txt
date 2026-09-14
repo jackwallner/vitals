@@ -1,1 +1,1 @@
-Nastavitev je krajša. Vprašanje, ali beležiš obroke, je odstranjeno, zaslon Vitals+ med nastavitvijo pa se je vrnil k preprostemu seznamu tega, kar naročnina doda, namesto izračunanega primera.
+Novo v Vitals+: Izključeni dnevi. Iz povprečij, seštevkov in nizov izpustite dan bolezni, let ali dan, ko je ura ostala na polnilniku, ali pa povprečja začasno ustavite, dokler se ne vrnete. Nič se ne izbriše: izključeni dnevi ostanejo v grafih, zatemnjeni.

@@ -1,1 +1,1 @@
-La configuration est plus courte. La question sur le suivi de vos repas a disparu, et l'écran Vitals+ affiché pendant la configuration revient à une simple liste de ce que l'abonnement ajoute, au lieu d'un exemple chiffré.
+Nouveau dans Vitals+ : Jours exclus. Retirez de vos moyennes, totaux et séries un jour de maladie, un vol ou un jour où votre montre est restée sur le chargeur, ou mettez les moyennes en pause jusqu'à votre retour. Rien n'est supprimé : les jours exclus restent dans vos graphiques, estompés.

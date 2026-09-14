@@ -1,1 +1,1 @@
-Configurarea este mai scurtă. Întrebarea dacă îți notezi mesele a dispărut, iar ecranul Vitals+ pe care îl vezi în timpul configurării revine la o listă simplă cu ce adaugă abonamentul, în locul unui exemplu calculat.
+Nou în Vitals+: Zile excluse. Scoate din medii, totaluri și serii o zi de boală, un zbor sau o zi în care ceasul a rămas pe încărcător, ori pune mediile pe pauză până revii. Nu se șterge nimic: zilele excluse rămân în grafice, estompate.

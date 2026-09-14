@@ -1,1 +1,1 @@
-Die Einrichtung ist kürzer. Die Frage, ob du dein Essen protokollierst, entfällt, und der Vitals+-Bildschirm bei der Einrichtung zeigt wieder eine schlichte Liste dessen, was das Abo hinzufügt, statt eines durchgerechneten Beispiels.
+Neu in Vitals+: Ausgeschlossene Tage. Nimm einen Krankheitstag, einen Flug oder einen Tag, an dem die Uhr am Ladegerät lag, aus deinen Durchschnitten, Summen und Serien heraus, oder pausiere die Durchschnitte, bis du zurück bist. Nichts wird gelöscht: Ausgeschlossene Tage bleiben abgeblendet in deinen Diagrammen.

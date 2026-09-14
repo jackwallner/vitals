@@ -1,1 +1,1 @@
-Setup is shorter. The question about whether you log food is gone, and the Vitals+ screen you see during setup is back to a plain list of what the subscription adds, instead of a worked example.
+New in Vitals+: Excluded Days. Leave a sick day, a flight, or a day your watch stayed on the charger out of your averages, totals, and streaks, or pause averages until you're back. Nothing is deleted: excluded days stay in your charts, dimmed.

@@ -1,1 +1,1 @@
-Nastavenie je kratšie. Otázka, či si zapisuješ jedlo, zmizla a obrazovka Vitals+ počas nastavenia sa vrátila k jednoduchému zoznamu toho, čo predplatné pridáva, namiesto vypočítaného príkladu.
+Novinka vo Vitals+: Vylúčené dni. Vynechajte z priemerov, súčtov a sérií deň choroby, let alebo deň, keď hodinky zostali na nabíjačke, prípadne pozastavte priemery, kým sa nevrátite. Nič sa nemaže: vylúčené dni zostávajú v grafoch, stlmené.
