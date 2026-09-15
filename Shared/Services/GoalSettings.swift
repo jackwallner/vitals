@@ -492,6 +492,7 @@ final class GoalSettings: ObservableObject {
     /// else should read: it folds in whatever a running pause covers.
     @Published private(set) var pickedExcludedDayKeys: Set<String> {
         didSet {
+            excludedKeysCache.invalidate()
             guard pickedExcludedDayKeys != oldValue else { return }
             ExcludedDays.save(pickedExcludedDayKeys, to: defaults)
             WidgetCenter.shared.reloadAllTimelines()
@@ -502,6 +503,7 @@ final class GoalSettings: ObservableObject {
     /// See [[ExcludedDays]] for why this is a date and not a flag.
     @Published private(set) var averagesPausedSince: Date? {
         didSet {
+            excludedKeysCache.invalidate()
             guard averagesPausedSince != oldValue else { return }
             ExcludedDays.savePausedSince(averagesPausedSince, to: defaults)
             WidgetCenter.shared.reloadAllTimelines()
@@ -520,8 +522,10 @@ final class GoalSettings: ObservableObject {
     /// kept, so resubscribing restores them.
     var excludedDayKeys: Set<String> {
         guard exclusionsActive else { return [] }
-        return pickedExcludedDayKeys.union(ExcludedDays.pausedKeys(since: averagesPausedSince))
+        return excludedKeysCache.keys(picked: pickedExcludedDayKeys, pausedSince: averagesPausedSince)
     }
+
+    private var excludedKeysCache = ExcludedDays.KeyCache()
 
     /// The phone is the only place that knows the entitlement. The watch has no
     /// StoreService at all: it trusts what the phone syncs, exactly like
@@ -617,13 +621,7 @@ final class GoalSettings: ObservableObject {
     /// Gregorian components, current calendar: the same round trip
     /// `ExcludedDays.key(for:)` makes in the other direction.
     static func date(fromDayKey key: String) -> Date? {
-        let parts = key.split(separator: "-").compactMap { Int($0) }
-        guard parts.count == 3 else { return nil }
-        var components = DateComponents()
-        components.year = parts[0]
-        components.month = parts[1]
-        components.day = parts[2]
-        return Calendar.current.date(from: components)
+        ExcludedDays.date(fromKey: key)
     }
 
     /// Vitals+ feature: schedule a weekly local notification nudging the user to
@@ -815,6 +813,10 @@ final class GoalSettings: ObservableObject {
             calorieGoal = 2500
             stepGoal = 10000
             hasCompletedSetup = true
+            if let days = DebugLaunchConfig.pausedDaysAgo,
+               let since = Calendar.current.date(byAdding: .day, value: -days, to: .now) {
+                averagesPausedSince = DateHelpers.startOfDay(since)
+            }
             return
         }
 

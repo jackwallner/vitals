@@ -90,6 +90,48 @@ enum ExcludedDays {
         load(from: defaults).union(pausedKeys(since: loadPausedSince(from: defaults), now: now))
     }
 
+    /// Parses a stored key back into the local start of that day. The key is
+    /// Gregorian, so it is read with a Gregorian calendar: handing the numbers to
+    /// `Calendar.current` puts a Buddhist-calendar user in 1483 and a Japanese one
+    /// in 4044.
+    static func date(fromKey key: String, timeZone: TimeZone = .current) -> Date? {
+        let parts = key.split(separator: "-").compactMap { Int($0) }
+        guard parts.count == 3 else { return nil }
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = timeZone
+        return calendar.date(from: DateComponents(year: parts[0], month: parts[1], day: parts[2]))
+    }
+
+    /// Holds the effective set between reads. History asks for it once per
+    /// record, per chart bar, and rebuilding a long pause's keys on every one of
+    /// those reads made the screen hang. Valid until the next local midnight,
+    /// when a running pause grows by a day; the owner calls `invalidate()`
+    /// whenever the picked days or the pause change.
+    struct KeyCache {
+        private var keys: Set<String> = []
+        private var validFrom: Date = .distantFuture
+        private var validUntil: Date = .distantPast
+
+        mutating func invalidate() {
+            validFrom = .distantFuture
+            validUntil = .distantPast
+        }
+
+        mutating func keys(
+            picked: Set<String>,
+            pausedSince: Date?,
+            now: Date = .now,
+            calendar: Calendar = .current
+        ) -> Set<String> {
+            if validFrom <= now && now < validUntil { return keys }
+            let today = calendar.startOfDay(for: now)
+            keys = picked.union(ExcludedDays.pausedKeys(since: pausedSince, now: now, calendar: calendar))
+            validFrom = today
+            validUntil = calendar.date(byAdding: .day, value: 1, to: today) ?? now
+            return keys
+        }
+    }
+
     static func contains(_ date: Date, in keys: Set<String>) -> Bool {
         guard !keys.isEmpty else { return false }
         return keys.contains(key(for: date))

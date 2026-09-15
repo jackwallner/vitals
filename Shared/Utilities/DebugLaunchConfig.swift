@@ -48,6 +48,13 @@ enum DebugLaunchConfig {
     static var revenueCatAppUserID: String? {
         ProcessInfo.processInfo.environment["VITALS_RC_APP_USER_ID"]
     }
+
+    /// Start the Pro settings scene with a pause that began this many days ago,
+    /// so a long-running pause can be tested without waiting weeks.
+    /// `VITALS_PAUSED_DAYS_AGO=<days>`.
+    static var pausedDaysAgo: Int? {
+        ProcessInfo.processInfo.environment["VITALS_PAUSED_DAYS_AGO"].flatMap(Int.init)
+    }
 #else
     static var upgradeTabOverride: PaywallUIVariant? { nil }
     static var seedHealth: Bool { false }
@@ -55,5 +62,6 @@ enum DebugLaunchConfig {
     static var failProductLoad: Bool { false }
     static var staleProCache: Bool { false }
     static var revenueCatAppUserID: String? { nil }
+    static var pausedDaysAgo: Int? { nil }
 #endif
 }

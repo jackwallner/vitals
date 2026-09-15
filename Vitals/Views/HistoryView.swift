@@ -1140,7 +1140,12 @@ struct HistoryView: View {
     }
 
     private var caloriesChart: some View {
-        Chart(calorieChartData, id: \.id) { item in
+        // Computed once here, not inside the mark builder: the builder runs per
+        // bar, and each of these is a full pass over the period's records.
+        let data = calorieChartData
+        let showsAverage = data.filter({ !$0.excluded }).count > 1
+        let average = showsAverage ? chartAvgCalories : 0
+        return Chart(data, id: \.id) { item in
             BarMark(
                 x: .value("Date", item.date, unit: chartDateUnit),
                 y: .value("Calories", item.value)
@@ -1158,8 +1163,8 @@ struct HistoryView: View {
             .cornerRadius(4)
 
             // Excluded bars don't feed the line, so they don't earn one either.
-            if calorieChartData.filter({ !$0.excluded }).count > 1 {
-                RuleMark(y: .value("Average", chartAvgCalories))
+            if showsAverage {
+                RuleMark(y: .value("Average", average))
                     .foregroundStyle(Theme.caloriesPrimary.opacity(0.5))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [5, 3]))
                     .annotation(position: .top, alignment: .trailing) {
@@ -1198,7 +1203,12 @@ struct HistoryView: View {
     }
 
     private var stepsChart: some View {
-        Chart(stepsChartData, id: \.id) { item in
+        // Computed once here, not inside the mark builder: the builder runs per
+        // bar, and each of these is a full pass over the period's records.
+        let data = stepsChartData
+        let showsAverage = data.filter({ !$0.excluded }).count > 1
+        let average = showsAverage ? chartAvgSteps : 0
+        return Chart(data, id: \.id) { item in
             BarMark(
                 x: .value("Date", item.date, unit: chartDateUnit),
                 y: .value("Steps", item.value)
@@ -1213,8 +1223,8 @@ struct HistoryView: View {
             .opacity((selectedStepDate == nil || Calendar.current.isDate(item.date, equalTo: selectedStepDate!, toGranularity: chartDateGranularity) ? 1.0 : 0.3) * (item.excluded ? 0.25 : 1.0))
             .cornerRadius(4)
 
-            if stepsChartData.filter({ !$0.excluded }).count > 1 {
-                RuleMark(y: .value("Average", chartAvgSteps))
+            if showsAverage {
+                RuleMark(y: .value("Average", average))
                     .foregroundStyle(Theme.stepsPrimary.opacity(0.5))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [5, 3]))
                     .annotation(position: .top, alignment: .trailing) {
@@ -1253,7 +1263,12 @@ struct HistoryView: View {
     }
 
     private var netDeficitChart: some View {
-        Chart(netDeficitChartData, id: \.id) { item in
+        // Computed once here, not inside the mark builder: the builder runs per
+        // bar, and each of these is a full pass over the period's records.
+        let data = netDeficitChartData
+        let showsAverage = data.filter({ !$0.excluded }).count > 1
+        let average = showsAverage ? chartAvgNetDeficit : 0
+        return Chart(data, id: \.id) { item in
             let value = item.value
             BarMark(
                 x: .value("Date", item.date, unit: chartDateUnit),
@@ -1269,8 +1284,8 @@ struct HistoryView: View {
                 .foregroundStyle(Theme.textTertiary.opacity(0.4))
                 .lineStyle(StrokeStyle(lineWidth: 1))
 
-            if netDeficitChartData.filter({ !$0.excluded }).count > 1 {
-                RuleMark(y: .value("Average", chartAvgNetDeficit))
+            if showsAverage {
+                RuleMark(y: .value("Average", average))
                     .foregroundStyle(Theme.netDeficitBrand.opacity(0.5))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [5, 3]))
                     .annotation(position: .top, alignment: .trailing) {

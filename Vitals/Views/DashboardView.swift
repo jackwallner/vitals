@@ -3501,7 +3501,8 @@ private struct SettingsSheet: View {
     }
 
     private var excludedDaysFooter: String {
-        if goals.isAveragesPaused {
+        // The banner this points at is Vitals+ only, and a lapsed pause filters nothing.
+        if store.isPro && goals.isAveragesPaused {
             return "Averages are paused: every new day is excluded until you resume. Open this row (or the banner above the tab bar) to resume or edit the days."
         }
         return goals.excludedDayKeys.isEmpty
