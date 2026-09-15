@@ -22,6 +22,14 @@ final class HealthKitLabUITests: XCTestCase {
             sinceMidnight < 4_500,
             "less than 75 minutes into the local day; the overcount scenario cannot be staged"
         )
+        // The other end of the day: the overcount is the spanning sample's in-day
+        // future hours, and near midnight there are too few of them to clear the
+        // margin (measured 1,006 kcal at 23:58).
+        let untilMidnight = 86_400 - sinceMidnight
+        try XCTSkipIf(
+            untilMidnight < 7_200,
+            "less than 2 hours left in the local day; too little of the sample's future falls inside today"
+        )
 
         let app = XCUIApplication()
         app.launchEnvironment["VITALS_HK_LAB"] = "1"
