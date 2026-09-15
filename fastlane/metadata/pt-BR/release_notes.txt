@@ -1,1 +1,1 @@
-Novidade no Vitals+: Dias excluídos. Deixe fora das suas médias, totais e sequências um dia doente, um voo ou um dia em que o relógio ficou no carregador, ou pause as médias até você voltar. Nada é apagado: os dias excluídos continuam nos gráficos, esmaecidos.
+Correções: o histórico continua rápido enquanto as médias estão pausadas, e a tela Dias excluídos agora mostra as datas corretas nos calendários budista, japonês, islâmico e outros não gregorianos.

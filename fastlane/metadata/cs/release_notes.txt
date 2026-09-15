@@ -1,1 +1,1 @@
-Novinka ve Vitals+: Vyloučené dny. Vynechte z průměrů, součtů a sérií den nemoci, let nebo den, kdy hodinky zůstaly na nabíječce, případně pozastavte průměry, dokud se nevrátíte. Nic se nemaže: vyloučené dny zůstávají v grafech, jen ztlumené.
+Opravy: Historie zůstává rychlá i při pozastavených průměrech a obrazovka Vyloučené dny nyní zobrazuje správná data v buddhistickém, japonském, islámském a dalších negregoriánských kalendářích.

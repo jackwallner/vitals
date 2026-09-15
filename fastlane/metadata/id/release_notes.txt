@@ -1,1 +1,1 @@
-Baru di Vitals+: Hari yang Dikecualikan. Keluarkan hari sakit, hari penerbangan, atau hari jam tangan tertinggal di pengisi daya dari rata-rata, total, dan rentetan harimu, atau jeda rata-rata sampai kamu kembali. Tidak ada yang dihapus: hari yang dikecualikan tetap ada di grafik, tampil redup.
+Perbaikan: Riwayat tetap cepat saat rata-rata dijeda, dan layar Hari yang Dikecualikan kini menampilkan tanggal yang benar pada kalender Buddha, Jepang, Islam, dan kalender non-Gregorian lainnya.

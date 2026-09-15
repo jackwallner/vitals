@@ -1,1 +1,1 @@
-Nytt i Vitals+: Undantagna dagar. Håll en sjukdag, en flygresa eller en dag då klockan låg kvar på laddaren utanför dina snitt, summor och sviter, eller pausa snitten tills du är tillbaka. Inget raderas: undantagna dagar ligger kvar i diagrammen, nedtonade.
+Korrigeringar: Historik förblir snabb medan genomsnitt är pausade, och skärmen Uteslutna dagar visar nu rätt datum i buddhistiska, japanska, islamiska och andra icke-gregorianska kalendrar.

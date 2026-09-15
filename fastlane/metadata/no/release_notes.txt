@@ -1,1 +1,1 @@
-Nytt i Vitals+: Utelatte dager. Hold en sykedag, en flyreise eller en dag klokken ble liggende på laderen utenfor gjennomsnitt, totaler og rekker, eller sett gjennomsnittene på pause til du er tilbake. Ingenting slettes: utelatte dager blir liggende i grafene, nedtonet.
+Rettelser: Historikk forblir rask mens gjennomsnitt er satt på pause, og skjermen Utelatte dager viser nå riktige datoer i buddhistiske, japanske, islamske og andre ikke-gregorianske kalendere.

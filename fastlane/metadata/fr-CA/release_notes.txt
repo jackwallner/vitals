@@ -1,1 +1,1 @@
-Nouveau dans Vitals+ : Jours exclus. Retirez de vos moyennes, totaux et séries une journée de maladie, un vol ou une journée où votre montre est restée sur le chargeur, ou mettez les moyennes en pause jusqu'à votre retour. Rien n'est supprimé : les jours exclus restent dans vos graphiques, estompés.
+Corrections : l'historique reste rapide pendant que les moyennes sont en pause, et l'écran Jours exclus affiche maintenant les bonnes dates avec les calendriers bouddhiste, japonais, islamique et autres calendriers non grégoriens.

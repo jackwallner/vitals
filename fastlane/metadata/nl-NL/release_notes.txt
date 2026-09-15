@@ -1,1 +1,1 @@
-Nieuw in Vitals+: Uitgesloten dagen. Laat een ziektedag, een vlucht of een dag dat je horloge op de lader bleef buiten je gemiddelden, totalen en reeksen, of pauzeer gemiddelden tot je terug bent. Er wordt niets verwijderd: uitgesloten dagen blijven gedimd in je grafieken staan.
+Oplossingen: Geschiedenis blijft snel terwijl gemiddelden gepauzeerd zijn, en het scherm Uitgesloten dagen toont nu de juiste datums in boeddhistische, Japanse, islamitische en andere niet-gregoriaanse kalenders.

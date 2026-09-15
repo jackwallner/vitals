@@ -1,1 +1,1 @@
-Mới trong Vitals+: Ngày loại trừ. Bỏ một ngày ốm, một chuyến bay hoặc một ngày đồng hồ nằm trên sạc ra khỏi mức trung bình, tổng và chuỗi ngày của bạn, hoặc tạm dừng tính trung bình cho đến khi bạn quay lại. Không có gì bị xóa: ngày loại trừ vẫn hiện trong biểu đồ, được làm mờ.
+Sửa lỗi: Lịch sử vẫn nhanh khi tạm dừng tính trung bình, và màn hình Ngày loại trừ giờ hiển thị đúng ngày trên lịch Phật giáo, lịch Nhật, lịch Hồi giáo và các lịch không phải Gregory khác.

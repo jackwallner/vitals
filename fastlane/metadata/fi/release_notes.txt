@@ -1,1 +1,1 @@
-Uutta Vitals+:ssa: Pois jätetyt päivät. Jätä sairauspäivä, lentopäivä tai päivä, jona kello jäi laturiin, pois keskiarvoista, summista ja putkista, tai keskeytä keskiarvot, kunnes palaat. Mitään ei poisteta: pois jätetyt päivät näkyvät kaavioissa himmennettyinä.
+Korjaukset: Historia pysyy nopeana, kun keskiarvot on keskeytetty, ja Poissuljetut päivät -näkymä näyttää nyt oikeat päivämäärät buddhalaisessa, japanilaisessa, islamilaisessa ja muissa ei-gregoriaanisissa kalentereissa.

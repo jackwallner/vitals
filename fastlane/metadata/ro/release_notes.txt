@@ -1,1 +1,1 @@
-Nou în Vitals+: Zile excluse. Scoate din medii, totaluri și serii o zi de boală, un zbor sau o zi în care ceasul a rămas pe încărcător, ori pune mediile pe pauză până revii. Nu se șterge nimic: zilele excluse rămân în grafice, estompate.
+Remedieri: Istoricul rămâne rapid cât timp mediile sunt în pauză, iar ecranul Zile excluse afișează acum datele corecte în calendarele budist, japonez, islamic și alte calendare negregoriene.
