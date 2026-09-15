@@ -178,12 +178,75 @@ final class ExcludedDaysUITests: XCTestCase {
         attach(app.screenshot(), name: "history-excluded-day")
     }
 
+    /// A long pause used to rebuild its day keys on every read, and History reads
+    /// them per record per chart bar, so the screen hung (1.8.6). With a pause
+    /// four months old, every period has to switch and History has to keep
+    /// answering.
+    func testLongPauseKeepsHistoryResponsiveAcrossPeriods() {
+        let app = launchSettings(pausedDaysAgo: 120)
+        dismissSettings(app)
+        XCTAssertTrue(pausedBanner(app).waitForExistence(timeout: 10), "Backdated pause did not start")
+
+        let started = Date()
+        app.buttons["History"].tap()
+        for period in ["30D", "90D", "1Y", "7D"] {
+            let segment = app.buttons[period]
+            XCTAssertTrue(segment.waitForExistence(timeout: 30), "History stopped answering before \(period)")
+            segment.tap()
+        }
+        XCTAssertTrue(
+            app.buttons["chart-card-link-Calories"].waitForExistence(timeout: 30),
+            "History stopped answering after switching periods"
+        )
+        let elapsed = Date().timeIntervalSince(started)
+        XCTAssertLessThan(elapsed, 90, "History took \(Int(elapsed)) s to cycle its periods with a long pause")
+        attach(app.screenshot(), name: "long-pause-history")
+    }
+
+    /// Stored keys are Gregorian. Reading them back with a Buddhist
+    /// `Calendar.current` put the day in 1483, so the list showed the wrong year,
+    /// swipe-to-delete removed nothing, and the calendar could not un-pick a day.
+    func testBuddhistCalendarDayCanBeExcludedUnpickedAndDeleted() {
+        let app = launchSettings(calendarLocale: "en_US@calendar=buddhist")
+        openExcludedDays(app)
+        XCTAssertTrue(app.staticTexts["No days excluded"].waitForExistence(timeout: 10), "Excluded Days did not start empty")
+
+        let dayCell = calendarDay(app, dayOfMonth: 1)
+        XCTAssertTrue(dayCell.exists, "No tappable day cell found in the calendar")
+        dayCell.tap()
+        XCTAssertTrue(app.staticTexts["1 Excluded Day"].waitForExistence(timeout: 10), "Tap did not exclude the day")
+        attach(app.screenshot(), name: "buddhist-day-excluded")
+
+        let row = excludedRow(app)
+        XCTAssertTrue(row.waitForExistence(timeout: 10), "Excluded day row missing")
+        let buddhistYear = Calendar.current.component(.year, from: Date()) + 543
+        XCTAssertTrue(row.label.contains(String(buddhistYear)), "Row shows the wrong year: \(row.label)")
+
+        // The calendar has to draw the stored day as selected, or this tap adds instead of removing.
+        dayCell.tap()
+        XCTAssertTrue(app.staticTexts["No days excluded"].waitForExistence(timeout: 10), "Re-tapping the day did not un-pick it")
+
+        dayCell.tap()
+        XCTAssertTrue(app.staticTexts["1 Excluded Day"].waitForExistence(timeout: 10), "Tap did not exclude the day again")
+        excludedRow(app).swipeLeft()
+        let delete = app.buttons["Delete"]
+        XCTAssertTrue(delete.waitForExistence(timeout: 10), "Swipe did not reveal Delete")
+        delete.tap()
+        XCTAssertTrue(app.staticTexts["No days excluded"].waitForExistence(timeout: 10), "Swipe-to-delete did not remove the day")
+    }
+
     // MARK: - Helpers
 
-    private func launchSettings() -> XCUIApplication {
+    private func launchSettings(pausedDaysAgo: Int? = nil, calendarLocale: String? = nil) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchEnvironment["VITALS_SCREENSHOT_MODE"] = "1"
         app.launchEnvironment["VITALS_SCREENSHOT_SCENE"] = "settingsPro"
+        if let pausedDaysAgo {
+            app.launchEnvironment["VITALS_PAUSED_DAYS_AGO"] = String(pausedDaysAgo)
+        }
+        if let calendarLocale {
+            app.launchArguments += ["-AppleLanguages", "(en)", "-AppleLocale", calendarLocale]
+        }
         app.launch()
 
         XCTAssertTrue(
@@ -206,6 +269,12 @@ final class ExcludedDaysUITests: XCTestCase {
             waitForDisappearance(of: app.navigationBars["Settings"], timeout: 10),
             "Settings sheet did not dismiss"
         )
+    }
+
+    private func excludedRow(_ app: XCUIApplication) -> XCUIElement {
+        app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label ENDSWITH %@ OR label CONTAINS %@", ", excluded", ", excluded,"))
+            .firstMatch
     }
 
     private func pausedBanner(_ app: XCUIApplication) -> XCUIElement {

@@ -52,6 +52,90 @@ final class ExcludedDaysTests: XCTestCase {
         XCTAssertEqual(keys, ["2026-08-01", "2026-09-10", "2026-09-11"])
     }
 
+    // MARK: - Parsing keys back into dates
+
+    func testKeyParsesToTheSameGregorianDayOnANonGregorianDevice() throws {
+        let date = try XCTUnwrap(ExcludedDays.date(fromKey: "2026-09-03"))
+        XCTAssertEqual(ExcludedDays.key(for: date), "2026-09-03")
+
+        // What a Thai device's Calendar.current reads that instant as: the same
+        // day, in Buddhist-era numbering. The old parse landed in 1483.
+        var buddhist = Calendar(identifier: .buddhist)
+        buddhist.timeZone = .current
+        let parts = buddhist.dateComponents([.year, .month, .day], from: date)
+        XCTAssertEqual(parts.year, 2569)
+        XCTAssertEqual(parts.month, 9)
+        XCTAssertEqual(parts.day, 3)
+        XCTAssertEqual(buddhist.startOfDay(for: date), date)
+    }
+
+    func testEveryDayOfAYearRoundTripsThroughItsKey() throws {
+        var cursor = try day(2027, 1, 1)
+        let end = try day(2028, 1, 1)
+        while cursor < end {
+            let key = ExcludedDays.key(for: cursor)
+            XCTAssertEqual(ExcludedDays.date(fromKey: key), cursor, key)
+            cursor = try XCTUnwrap(calendar.date(byAdding: .day, value: 1, to: cursor))
+        }
+    }
+
+    func testMalformedKeyParsesToNil() {
+        XCTAssertNil(ExcludedDays.date(fromKey: "2026-09"))
+        XCTAssertNil(ExcludedDays.date(fromKey: "not-a-day"))
+    }
+
+    // MARK: - Key cache
+
+    func testCacheHoldsTheSetUntilMidnightThenAddsTheNewPausedDay() throws {
+        var cache = ExcludedDays.KeyCache()
+        let pause = try day(2026, 9, 10)
+        let morning = try XCTUnwrap(calendar.date(byAdding: .hour, value: 9, to: try day(2026, 9, 11)))
+        let lateEvening = try XCTUnwrap(calendar.date(byAdding: .hour, value: 23, to: try day(2026, 9, 11)))
+        let nextMorning = try XCTUnwrap(calendar.date(byAdding: .hour, value: 1, to: try day(2026, 9, 12)))
+
+        XCTAssertEqual(cache.keys(picked: [], pausedSince: pause, now: morning, calendar: calendar), ["2026-09-10", "2026-09-11"])
+        // Still the same day: the cached set comes back even for different inputs,
+        // which is why the owner has to invalidate on every change.
+        XCTAssertEqual(cache.keys(picked: ["2026-01-01"], pausedSince: pause, now: lateEvening, calendar: calendar), ["2026-09-10", "2026-09-11"])
+        XCTAssertEqual(
+            cache.keys(picked: [], pausedSince: pause, now: nextMorning, calendar: calendar),
+            ["2026-09-10", "2026-09-11", "2026-09-12"]
+        )
+    }
+
+    func testInvalidatedCachePicksUpAChangedSet() throws {
+        var cache = ExcludedDays.KeyCache()
+        let now = try day(2026, 9, 11)
+        XCTAssertEqual(cache.keys(picked: ["2026-08-01"], pausedSince: nil, now: now, calendar: calendar), ["2026-08-01"])
+        cache.invalidate()
+        XCTAssertEqual(cache.keys(picked: ["2026-08-02"], pausedSince: nil, now: now, calendar: calendar), ["2026-08-02"])
+    }
+
+    func testCacheRecomputesWhenTheClockGoesBackADay() throws {
+        var cache = ExcludedDays.KeyCache()
+        let pause = try day(2026, 9, 1)
+        _ = cache.keys(picked: [], pausedSince: pause, now: try day(2026, 9, 11), calendar: calendar)
+        XCTAssertEqual(cache.keys(picked: [], pausedSince: pause, now: try day(2026, 9, 2), calendar: calendar), ["2026-09-01", "2026-09-02"])
+    }
+
+    /// History reads the set once per record per chart bar. Rebuilding a long
+    /// pause on each read hung the screen in 1.8.6; a cached read must be cheap
+    /// enough that a year of History costs nothing noticeable.
+    func testRepeatedReadsDuringALongPauseStayCheap() throws {
+        var cache = ExcludedDays.KeyCache()
+        let now = try day(2026, 9, 11)
+        let pause = try XCTUnwrap(calendar.date(byAdding: .day, value: -400, to: now))
+        let start = Date()
+        var total = 0
+        for _ in 0..<100_000 {
+            total += cache.keys(picked: [], pausedSince: pause, now: now, calendar: calendar).count
+        }
+        XCTAssertEqual(total, 401 * 100_000)
+        // Uncached this is 40 million key builds (minutes). Cached it is well
+        // under a second; the bound is loose for a loaded simulator host.
+        XCTAssertLessThan(Date().timeIntervalSince(start), 5)
+    }
+
     func testSavingAnEmptySetClearsTheKey() throws {
         let suite = "ExcludedDaysTests.\(UUID().uuidString)"
         let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
