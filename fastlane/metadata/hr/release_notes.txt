@@ -1,1 +1,1 @@
-Novo u Vitals+: Isključeni dani. Izostavite iz prosjeka, zbrojeva i nizova dan bolesti, let ili dan kad je sat ostao na punjaču, ili pauzirajte prosjeke dok se ne vratite. Ništa se ne briše: isključeni dani ostaju u grafikonima, prigušeni.
+Ispravci: Povijest ostaje brza dok su prosjeci pauzirani, a zaslon Isključeni dani sada prikazuje točne datume u budističkom, japanskom, islamskom i drugim negregorijanskim kalendarima.

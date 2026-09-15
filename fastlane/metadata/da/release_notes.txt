@@ -1,1 +1,1 @@
-Nyt i Vitals+: Udelukkede dage. Hold en sygedag, en flyrejse eller en dag, hvor uret blev på opladeren, uden for dine gennemsnit, totaler og stimer, eller sæt gennemsnit på pause, til du er tilbage. Intet slettes: udelukkede dage bliver i dine grafer, nedtonet.
+Rettelser: Historik forbliver hurtig, mens gennemsnit er sat på pause, og skærmen Udelukkede dage viser nu de rigtige datoer i buddhistiske, japanske, islamiske og andre ikke-gregorianske kalendere.

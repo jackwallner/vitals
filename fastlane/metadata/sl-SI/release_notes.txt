@@ -1,1 +1,1 @@
-Novo v Vitals+: Izključeni dnevi. Iz povprečij, seštevkov in nizov izpustite dan bolezni, let ali dan, ko je ura ostala na polnilniku, ali pa povprečja začasno ustavite, dokler se ne vrnete. Nič se ne izbriše: izključeni dnevi ostanejo v grafih, zatemnjeni.
+Popravki: Zgodovina ostane hitra, medtem ko so povprečja zaustavljena, zaslon Izključeni dnevi pa zdaj prikazuje pravilne datume v budističnem, japonskem, islamskem in drugih negregorijanskih koledarjih.

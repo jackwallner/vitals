@@ -1,1 +1,1 @@
-Neu in Vitals+: Ausgeschlossene Tage. Nimm einen Krankheitstag, einen Flug oder einen Tag, an dem die Uhr am Ladegerät lag, aus deinen Durchschnitten, Summen und Serien heraus, oder pausiere die Durchschnitte, bis du zurück bist. Nichts wird gelöscht: Ausgeschlossene Tage bleiben abgeblendet in deinen Diagrammen.
+Fehlerbehebungen: Der Verlauf bleibt schnell, während Durchschnitte pausiert sind, und Ausgeschlossene Tage zeigt jetzt die richtigen Daten in buddhistischen, japanischen, islamischen und anderen nicht-gregorianischen Kalendern.

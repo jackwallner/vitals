@@ -1,1 +1,1 @@
-Nowość w Vitals+: Wykluczone dni. Pomiń w średnich, sumach i seriach dzień choroby, lot albo dzień, w którym zegarek został na ładowarce, albo wstrzymaj średnie do powrotu. Nic nie jest usuwane: wykluczone dni zostają na wykresach, przygaszone.
+Poprawki: Historia działa szybko, gdy średnie są wstrzymane, a ekran Wykluczone dni pokazuje teraz prawidłowe daty w kalendarzu buddyjskim, japońskim, islamskim i innych kalendarzach niegregoriańskich.

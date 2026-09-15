@@ -4,7 +4,7 @@ Total Calories reads calorie and step data from Apple Health (HealthKit) in read
 
 WHAT CHANGED IN THIS VERSION
 
-1.8.6 adds Excluded Days, part of the Vitals+ subscription. In Settings > Averages > Excluded Days a subscriber picks days on a calendar (a sick day, a flight, a day the watch stayed on the charger) or turns on Pause Averages, and those days stop counting toward averages, totals, best days, streaks, reports, and trends. Nothing is deleted: excluded days still show in charts, dimmed. Anyone can open the Excluded Days screen; without a subscription, tapping a day or the pause switch shows the Vitals+ offer, which can be dismissed with "Not now". A subscriber can also long-press a day in History > Calories > Recent Days to exclude it.
+1.8.7 is a bug-fix release for Excluded Days, the Vitals+ feature added in 1.8.6 (Settings > Averages > Excluded Days). The History tab no longer slows down while Pause Averages is on, and the Excluded Days screen shows the correct dates when the device uses a non-Gregorian calendar (for example Buddhist or Japanese). Anyone can open the Excluded Days screen; without a subscription, tapping a day or the pause switch shows the Vitals+ offer, which can be dismissed with "Not now". No new features, permissions, or data collection.
 
 HEALTHKIT SETUP - PLEASE GRANT ACCESS WHEN PROMPTED
 

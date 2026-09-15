@@ -1,1 +1,1 @@
-Novità in Vitals+: Giorni esclusi. Lascia fuori da medie, totali e serie un giorno di malattia, un volo o un giorno in cui l'orologio è rimasto in carica, oppure metti in pausa le medie finché non torni. Non si cancella nulla: i giorni esclusi restano nei grafici, attenuati.
+Correzioni: la cronologia resta veloce mentre le medie sono in pausa, e la schermata Giorni esclusi ora mostra le date corrette con i calendari buddista, giapponese, islamico e altri calendari non gregoriani.

@@ -1,1 +1,1 @@
-New in Vitals+: Excluded Days. Leave a sick day, a flight, or a day your watch stayed on the charger out of your averages, totals, and streaks, or pause averages until you're back. Nothing is deleted: excluded days stay in your charts, dimmed.
+Fixes: History stays fast while averages are paused, and the Excluded Days screen now shows the correct dates on Buddhist, Japanese, Islamic, and other non-Gregorian calendars.

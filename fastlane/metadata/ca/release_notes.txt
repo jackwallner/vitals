@@ -1,1 +1,1 @@
-Novetat a Vitals+: Dies exclosos. Deixa fora de les mitjanes, els totals i les ratxes un dia de malaltia, un vol o un dia que el rellotge es va quedar al carregador, o posa en pausa les mitjanes fins que tornis. No s'esborra res: els dies exclosos es queden als gràfics, atenuats.
+Correccions: l'historial continua sent ràpid mentre les mitjanes estan en pausa, i la pantalla de dies exclosos ara mostra les dates correctes amb calendaris budista, japonès, islàmic i altres no gregorians.
