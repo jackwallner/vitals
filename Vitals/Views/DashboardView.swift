@@ -94,6 +94,17 @@ struct DashboardView: View {
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
     @EnvironmentObject private var store: StoreService
+
+    /// Extra bottom clearance for the paused-averages banner. It and the tab bar
+    /// are one overlay stack in `MainTabView`, ignoring the bottom safe area, so
+    /// scroll content has to reserve their height itself. The banner is two
+    /// lines of text in a capsule, so this scales with Dynamic Type; without it
+    /// the last card sits under the banner at full scroll while paused.
+    @ScaledMetric(relativeTo: .footnote) private var pausedBannerInset: CGFloat = 58
+
+    private var bottomContentInset: CGFloat {
+        90 + (store.isPro && goals.isAveragesPaused ? pausedBannerInset : 0)
+    }
     @State private var activeCalories: Double = 0
     @State private var restingCalories: Double = 0
     @State private var steps: Int = 0
@@ -822,7 +833,7 @@ struct DashboardView: View {
 
             Spacer(minLength: 16)
         }
-        .padding(.bottom, 90)
+        .padding(.bottom, bottomContentInset)
     }
 
     /// TDEE/BMR averages row (Vitals+). A steady 30-day reference figure, visually

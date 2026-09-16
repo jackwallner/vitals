@@ -136,6 +136,56 @@ final class SeededHealthFlowUITests: XCTestCase {
         attach(app.screenshot(), name: "lapsed-history-unfiltered")
     }
 
+    /// The locked Excluded Days screen must not describe the stored pause as
+    /// active. `GoalSettings.excludedDayKeys` is empty while Vitals+ is
+    /// inactive, so "Today and every day until you resume is excluded" was
+    /// copy the numbers disagreed with: the days it named were being counted.
+    func testLockedExcludedDaysDoesNotClaimAnActivePause() {
+        let app = launchSeeded(upgradeTab: "catalog", staleProCache: true)
+        grantHealthKitAccess(in: app)
+        dismissBlockingSheets(in: app)
+        dismissTrialPitch(in: app)
+        app.buttons["Today"].tap()
+        dismissTrialPitch(in: app)
+        openSettings(in: app)
+        XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 30), "Settings never presented")
+
+        let row = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Excluded Days")).firstMatch
+        for _ in 0..<16 where !row.isHittable { app.swipeUp() }
+        XCTAssertTrue(row.isHittable, "Excluded Days row missing")
+        row.tap()
+
+        XCTAssertTrue(
+            app.buttons["excluded-days-unlock"].waitForExistence(timeout: 15),
+            "locked Excluded Days screen has no unlock card"
+        )
+
+        // The active-pause footer claims exclusion is happening right now.
+        XCTAssertFalse(
+            app.staticTexts.matching(
+                NSPredicate(format: "label BEGINSWITH %@", "Today and every day until you resume is excluded")
+            ).firstMatch.exists,
+            "locked screen still claims today is excluded while nothing is filtered"
+        )
+        // And the subtitle must not report a running day count. It lives inside
+        // the Toggle's accessibility element rather than as its own static text,
+        // so it is read off the switch's label — which is also the only place
+        // VoiceOver can reach it.
+        let pause = app.switches.matching(
+            NSPredicate(format: "label BEGINSWITH %@", "Pause averages")
+        ).firstMatch
+        XCTAssertTrue(pause.waitForExistence(timeout: 10), "Pause switch missing")
+        XCTAssertTrue(
+            pause.label.contains("on hold without Vitals+"),
+            "dormant pause is not described as dormant: \(pause.label)"
+        )
+        XCTAssertFalse(
+            pause.label.hasSuffix(" days") || pause.label.hasSuffix(" day"),
+            "locked screen still counts the dormant pause's days as if it were running: \(pause.label)"
+        )
+        attach(app.screenshot(), name: "lapsed-excluded-days-dormant-pause")
+    }
+
     /// A free user opens Excluded Days, sees their own lowest day, and buying
     /// from that card excludes it. Uses RevenueCat's Test Store: simulated, no
     /// StoreKit, no charge. The customer is a throwaway one named per launch.

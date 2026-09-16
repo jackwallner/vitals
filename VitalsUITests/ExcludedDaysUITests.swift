@@ -23,7 +23,7 @@ final class ExcludedDaysUITests: XCTestCase {
         openExcludedDays(app)
 
         XCTAssertTrue(
-            app.switches["Pause averages"].waitForExistence(timeout: 10),
+            pauseSwitch(app).waitForExistence(timeout: 10),
             "Pause switch missing from Excluded Days"
         )
         attach(app.screenshot(), name: "excluded-days-screen")
@@ -33,7 +33,7 @@ final class ExcludedDaysUITests: XCTestCase {
         let app = launchSettings()
         openExcludedDays(app)
 
-        let pause = app.switches["Pause averages"]
+        let pause = pauseSwitch(app)
         XCTAssertTrue(pause.waitForExistence(timeout: 10), "Pause switch missing")
         setSwitch(pause, on: true)
         XCTAssertEqual(pause.value as? String, "1", "Pause switch did not flip on")
@@ -90,7 +90,7 @@ final class ExcludedDaysUITests: XCTestCase {
     func testBannerOpensTheExcludedDaysScreen() {
         let app = launchSettings()
         openExcludedDays(app)
-        setSwitch(app.switches["Pause averages"], on: true)
+        setSwitch(pauseSwitch(app), on: true)
         dismissSettings(app, fromExcludedDays: true)
 
         let banner = pausedBanner(app)
@@ -103,7 +103,7 @@ final class ExcludedDaysUITests: XCTestCase {
         attach(app.screenshot(), name: "banner-opens-screen")
 
         // And the pause it reports is the one the screen shows.
-        XCTAssertEqual(app.switches["Pause averages"].value as? String, "1")
+        XCTAssertEqual(pauseSwitch(app).value as? String, "1")
         app.navigationBars["Excluded Days"].buttons["Done"].tap()
         XCTAssertTrue(banner.waitForExistence(timeout: 10), "Banner gone after closing the sheet")
     }
@@ -275,6 +275,15 @@ final class ExcludedDaysUITests: XCTestCase {
         app.descendants(matching: .any)
             .matching(NSPredicate(format: "label ENDSWITH %@ OR label CONTAINS %@", ", excluded", ", excluded,"))
             .firstMatch
+    }
+
+    /// The pause switch carries its subtitle in its accessibility label, so
+    /// VoiceOver announces whether a pause is running and since when. Matched by
+    /// prefix: the tail changes with that state.
+    private func pauseSwitch(_ app: XCUIApplication) -> XCUIElement {
+        app.switches.matching(
+            NSPredicate(format: "label BEGINSWITH %@", "Pause averages")
+        ).firstMatch
     }
 
     private func pausedBanner(_ app: XCUIApplication) -> XCUIElement {
