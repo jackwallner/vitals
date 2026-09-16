@@ -119,6 +119,17 @@ struct HistoryView: View {
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
     @EnvironmentObject private var store: StoreService
+
+    /// Extra bottom clearance for the paused-averages banner. It and the tab bar
+    /// are one overlay stack in `MainTabView`, ignoring the bottom safe area, so
+    /// scroll content has to reserve their height itself. The banner is two
+    /// lines of text in a capsule, so this scales with Dynamic Type; without it
+    /// the last card sits under the banner at full scroll while paused.
+    @ScaledMetric(relativeTo: .footnote) private var pausedBannerInset: CGFloat = 58
+
+    private var bottomContentInset: CGFloat {
+        90 + (store.isPro && goals.isAveragesPaused ? pausedBannerInset : 0)
+    }
     @State private var selectedPeriod: Period = HistoryPrefs.savedPeriod()
     @State private var customStart: Date = HistoryPrefs.savedCustomStart()
     @State private var customEnd: Date = HistoryPrefs.savedCustomEnd()
@@ -129,7 +140,14 @@ struct HistoryView: View {
     /// Macro history read threw. Kept apart from "nothing logged" so a
     /// permission or HealthKit failure doesn't read as an empty diet.
     @State private var macrosLoadFailed = false
+    /// Dietary-energy read threw. Same reason as `macrosLoadFailed`: telling
+    /// someone who logs every meal to "log meals" because HealthKit failed
+    /// sends them to fix the one thing that isn't broken.
+    @State private var foodLoadFailed = false
     @State private var previousRecords: [DayRecord] = []
+    /// Handle on the detached preceding-window load. The charts don't wait for
+    /// it, but the PDF report quotes its trend pills, so that one path does.
+    @State private var previousWindowTask: Task<Void, Never>?
     @State private var isLoading = true
     @State private var loadToken: Int = 0
     @State private var inflightLoads: Int = 0
@@ -752,7 +770,7 @@ struct HistoryView: View {
                         }
                         .padding(.horizontal, 24)
                         .padding(.top, 20)
-                        .padding(.bottom, 90)
+                        .padding(.bottom, bottomContentInset)
                         .opacity(animateContent ? 1 : 0)
                         .offset(y: animateContent ? 0 : 15)
                     }
@@ -914,6 +932,10 @@ struct HistoryView: View {
         guard !isGeneratingPDF else { return }
         isGeneratingPDF = true
         defer { isGeneratingPDF = false }
+        // The charts paint without the preceding window, but the report's trend
+        // pills are computed from it. Wait for that load here so a report built
+        // straight after a period change can't come out with the pills missing.
+        await previousWindowTask?.value
         try? await Task.sleep(nanoseconds: 100_000_000)
 
         guard !countedRecords.isEmpty else {
@@ -1332,6 +1354,34 @@ struct HistoryView: View {
             SkeletonBlock()
                 .frame(minHeight: 180, maxHeight: 240)
                 .frame(maxWidth: .infinity)
+        } else if foodLoadFailed {
+            // A failed read is not an empty diet. Same two actions the macros
+            // card offers, because the fix is always one of the two.
+            VStack(spacing: 8) {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.system(size: 28))
+                    .foregroundStyle(Theme.textTertiary)
+                Text("Couldn't read food data")
+                    .font(.system(.subheadline, design: .rounded, weight: .medium))
+                    .foregroundStyle(Theme.textSecondary)
+                Text("Apple Health didn't return calories eaten for this period.")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .multilineTextAlignment(.center)
+                HStack(spacing: 16) {
+                    Button("Try Again") {
+                        Task { await loadHistory() }
+                    }
+                    Button("Health Permissions") {
+                        openHealthApp()
+                    }
+                }
+                .font(.system(.caption, design: .rounded, weight: .semibold))
+                .foregroundStyle(Theme.caloriesPrimary)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(minHeight: 180)
+            .padding(.horizontal, 8)
         } else {
             VStack(spacing: 8) {
                 Image(systemName: "fork.knife")
@@ -1577,7 +1627,7 @@ struct HistoryView: View {
                         }
                         .padding(.horizontal, 24)
                         .padding(.top, 20)
-                        .padding(.bottom, 90)
+                        .padding(.bottom, bottomContentInset)
                         .opacity(animateContent ? 1 : 0)
                         .offset(y: animateContent ? 0 : 15)
                     }
@@ -1920,6 +1970,7 @@ struct HistoryView: View {
         foodByDay = [:]
         macrosByDay = [:]
         macrosLoadFailed = false
+        foodLoadFailed = false
         selectedCalorieDate = nil
         selectedStepDate = nil
         selectedNetDate = nil
@@ -1984,6 +2035,7 @@ struct HistoryView: View {
             // figure; failure here is non-fatal — calorie/step charts still
             // render without it.
             var foodMap: [Date: Double] = [:]
+            var foodFailed = false
             if store.isPro && (goals.showNetCalories || goals.showMacros) {
                 do {
                     let dietary: [(date: Date, foodCalories: Double)]
@@ -1999,6 +2051,7 @@ struct HistoryView: View {
                     }
                 } catch {
                     historyLogger.error("Dietary history fetch failed: \(String(describing: error), privacy: .public)")
+                    foodFailed = true
                 }
             }
 
@@ -2034,21 +2087,27 @@ struct HistoryView: View {
                 foodByDay = foodMap
                 macrosByDay = macroMap
                 macrosLoadFailed = macroFailed
+                foodLoadFailed = foodFailed
             }
             // Persist the fetched history to the shared cache so the watch can read it.
             try? healthKit.saveHistoryToCache(history: history)
-
-            // Fire-and-forget: load the immediately preceding window for trend
-            // calculations. Failure here is silent — the deep trends card just
-            // shows an empty state and the report skips trend pills.
-            await loadPreviousWindow(history: history)
-            guard token == loadToken else { return }
 
             // History has fully loaded. This drives the second-touch Vitals+
             // trial nudge in MainTabView — posting on every successful load is
             // fine because the one-shot / not-Pro / second-touch gating all
             // lives in the observer.
             NotificationCenter.default.post(name: .vitalsHistoryDidFinishLoading, object: nil)
+
+            // Genuinely fire-and-forget, which the old `await` here was not: the
+            // preceding window feeds Deep Trends only, and that card carries its
+            // own `isCalculatingTrends` spinner. Awaiting it held `isLoading`
+            // true for a second window of the same length, so a cold 1Y load sat
+            // behind the full-screen spinner through two years of HealthKit
+            // before painting charts it already had in hand. Failure stays
+            // silent: the deep trends card shows an empty state and the report
+            // skips trend pills.
+            previousWindowTask?.cancel()
+            previousWindowTask = Task { await loadPreviousWindow(token: token) }
         } catch {
             guard token == loadToken else { return }
             historyLogger.error("History fetch failed: \(String(describing: error), privacy: .public)")
@@ -2085,9 +2144,15 @@ struct HistoryView: View {
 
     /// Load the window of equal length preceding the current selection, used for
     /// period-over-period trend calculations on the Deep Trends card and PDF report.
-    private func loadPreviousWindow(history: [(date: Date, active: Double, resting: Double, steps: Int)]) async {
+    ///
+    /// Runs detached from the main load, so every write back checks `token`
+    /// against `loadToken` the way `loadHistory` does: a period switch while
+    /// this is in flight must not land the old window's trends.
+    private func loadPreviousWindow(token: Int) async {
         isCalculatingTrends = true
-        defer { isCalculatingTrends = false }
+        // Only the current load may clear the spinner: a superseded task
+        // finishing late would otherwise stop the one that replaced it.
+        defer { if token == loadToken { isCalculatingTrends = false } }
         let cal = Calendar.current
         let currentStart: Date
         let lengthDays: Int
@@ -2119,6 +2184,7 @@ struct HistoryView: View {
 
         do {
             let prev = try await healthKit.fetchHistory(from: priorStart, to: priorEnd)
+            guard token == loadToken else { return }
             previousRecords = prev.map {
                 DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
             }

@@ -98,6 +98,21 @@ struct VitalsApp: App {
             let keys = [1, 2].compactMap { Calendar.current.date(byAdding: .day, value: -$0, to: .now) }
                 .map(ExcludedDays.key(for:))
             ExcludedDays.save(Set(keys), to: defaults)
+            // Also leave a pause behind. A lapsed subscriber who paused before
+            // lapsing is the state where the locked screen used to claim days
+            // were excluded while nothing was being filtered.
+            if let since = Calendar.current.date(byAdding: .day, value: -30, to: .now) {
+                ExcludedDays.savePausedSince(DateHelpers.startOfDay(since), to: defaults)
+            }
+        } else if DebugLaunchConfig.seedHealth {
+            // The seed above writes to the App Group, which outlives the app.
+            // Every seeded UI test shares one simulator, so without this a test
+            // that ran after a stale-pro one inherited its excluded days and its
+            // pause — and a pause caps `selectableRange`, which silently broke
+            // day-picking in a test that never asked for one.
+            let defaults = UserDefaults(suiteName: vitalsAppGroupID)
+            ExcludedDays.save([], to: defaults)
+            ExcludedDays.savePausedSince(nil, to: defaults)
         }
         #endif
         // Run the launch handler on the main queue. With `using: nil` the system uses a

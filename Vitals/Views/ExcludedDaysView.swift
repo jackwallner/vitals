@@ -61,7 +61,11 @@ struct ExcludedDaysView: View {
         let today = DateHelpers.startOfDay()
         let start = calendar.date(byAdding: .year, value: -3, to: today) ?? today
         let defaultEnd = calendar.date(byAdding: .day, value: 1, to: today) ?? today
-        let end = goals.averagesPausedSince.map { calendar.startOfDay(for: $0) } ?? defaultEnd
+        // The pause only caps the picker while it is actually running. Locked,
+        // it is dormant, and letting it shorten the range would leave a lapsed
+        // subscriber unable to tap the recent days the upsell is there to sell.
+        let pauseCap = isLocked ? nil : goals.averagesPausedSince
+        let end = pauseCap.map { calendar.startOfDay(for: $0) } ?? defaultEnd
         return start..<max(end, calendar.date(byAdding: .day, value: 1, to: start) ?? end)
     }
 
@@ -282,18 +286,36 @@ struct ExcludedDaysView: View {
                             .foregroundStyle(Theme.caloriesPrimary)
                     }
                 }
-                if let since = goals.averagesPausedSince {
-                    Text("Paused since \(Self.pauseDateFormatter.string(from: since)) · \(goals.pausedDates.count) \(goals.pausedDates.count == 1 ? "day" : "days")")
-                        .font(.caption)
-                        .foregroundStyle(Theme.caloriesPrimary)
-                } else {
-                    Text("Stop counting new days until you resume")
-                        .font(.caption)
-                        .foregroundStyle(Theme.textSecondary)
-                }
+                Text(pauseSubtitle)
+                    .font(.caption)
+                    .foregroundStyle(pauseSubtitleIsActive ? Theme.caloriesPrimary : Theme.textSecondary)
             }
         }
-        .accessibilityLabel("Pause averages")
+        // The subtitle carries the only statement of whether a pause exists and
+        // since when. A bare "Pause averages" label replaces the whole subtree,
+        // so VoiceOver announced the switch without ever mentioning the pause.
+        .accessibilityLabel("Pause averages. \(pauseSubtitle)")
+    }
+
+    /// Reads the row's second line. Locked, a stored pause is dormant:
+    /// `GoalSettings.excludedDayKeys` returns an empty set while Vitals+ is
+    /// inactive, so counting its days here would describe a state the numbers
+    /// don't agree with.
+    private var pauseSubtitle: String {
+        guard let since = goals.averagesPausedSince else {
+            return "Stop counting new days until you resume"
+        }
+        let date = Self.pauseDateFormatter.string(from: since)
+        if isLocked {
+            return "Paused since \(date) · on hold without Vitals+"
+        }
+        let count = goals.pausedDates.count
+        return "Paused since \(date) · \(count) \(count == 1 ? "day" : "days")"
+    }
+
+    /// Only a pause that is actually filtering gets the accent colour.
+    private var pauseSubtitleIsActive: Bool {
+        !isLocked && goals.isAveragesPaused
     }
 
     private var pauseBinding: Binding<Bool> {
@@ -314,7 +336,19 @@ struct ExcludedDaysView: View {
     }
 
     private var pauseFooter: String {
-        goals.isAveragesPaused
+        if isLocked {
+            // Nothing is being excluded while Vitals+ is inactive, so neither
+            // active-pause line is true. Say what is actually kept instead —
+            // and with nothing kept, fall through to the plain description of
+            // what the feature does.
+            if goals.isAveragesPaused {
+                return "Your pause and excluded days are saved. Every day is counting toward your averages again until Vitals+ is back."
+            }
+            if !goals.excludedDates.isEmpty {
+                return "Your excluded days are saved. Every day is counting toward your averages until Vitals+ is back."
+            }
+        }
+        return goals.isAveragesPaused
             ? "Today and every day until you resume is excluded. Resuming starts counting again and keeps the paused days excluded, and you can drop them from the list below afterwards."
             : "For a stretch you can't put an end date on yet: an injury, a trip, a spell off the wrist. Each new day is excluded automatically until you resume."
     }
