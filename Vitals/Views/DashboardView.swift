@@ -3650,7 +3650,9 @@ private struct SettingsSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                vitalsPlusSection
+                if !ScreenshotConfig.isEnabled {
+                    vitalsPlusSection
+                }
 
                 // Calorie Burn — the ring and everything that shapes the number
                 // in it. Split from intake because "2,400" and "1,950" are two
