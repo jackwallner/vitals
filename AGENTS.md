@@ -10,7 +10,7 @@ XcodeGen project/scheme: `Vitals`, sim lease owner `vitals`.
 - HealthKit (read-only: `activeEnergyBurned`, `basalEnergyBurned`, `stepCount`)
 - SwiftData (local cache so widgets can read data — HealthKit is the source of truth)
 - WidgetKit (iOS widgets + watchOS complications)
-- XcodeGen (`project.yml`). Targets: iOS 26.0, watchOS 26.0
+- XcodeGen (`project.yml`). Targets: iOS 17+, watchOS 10+
 
 ## Architecture
 
@@ -38,4 +38,4 @@ XcodeGen project/scheme: `Vitals`, sim lease owner `vitals`.
 
 ---
 Shared iOS conventions (build, simulator, release/TestFlight, ASC key, signing, review funnel, HealthKit/widget gotchas):
-always-loaded global CLAUDE.md + the `ios-dev` skill.
+the global agent rules + the `ios-dev` skill.

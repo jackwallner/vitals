@@ -52,12 +52,12 @@ GoalSettings  →  UserDefaults (App Group)  →  Widgets read goals directly
 **GoalSettings** (singleton, `@MainActor`, `ObservableObject`):
 - `calorieGoal: Double?` / `stepGoal: Int?` — nil = no goal (counter-only mode)
 - `showPacing`, `showCalories`, `showSteps` — display toggles
-- `hasCompletedSetup` — first-launch onboarding flag
-- `appearance: AppAppearance` — system/light/dark
+- `hasCompletedSetup`: first-launch onboarding flag
+- `appearance: AppAppearance`: system/light/dark
 
 **DataService** (enum):
 - `appGroupID` = `"group.com.jackwallner.vitals"`
-- `sharedModelContainer` — SwiftData container using app group URL
+- `sharedModelContainer`: SwiftData container using app group URL
 
 ### Theme System
 
