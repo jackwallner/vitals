@@ -8,7 +8,7 @@ XcodeGen project/scheme: `Vitals`, sim lease owner `vitals`.
 
 - Swift 6 / SwiftUI (strict concurrency: `@MainActor`, `@Sendable`)
 - HealthKit (read-only: `activeEnergyBurned`, `basalEnergyBurned`, `stepCount`)
-- SwiftData (local cache so widgets can read data — HealthKit is the source of truth)
+- SwiftData (local cache for widget reads; HealthKit is the source of truth)
 - WidgetKit (iOS widgets + watchOS complications)
 - XcodeGen (`project.yml`). Targets: iOS 17+, watchOS 10+
 
