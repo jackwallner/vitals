@@ -12,7 +12,7 @@ version most customers are running.** See "Do not start the experiment yet".
 ## What is in the build
 
 Three commits carried the feature work, and this staging pass added the funnel
-integrity fixes that `AUDIT823.md` flagged as P0.
+integrity fixes that `../audits/AUDIT823.md` flagged as P0.
 
 Feature work already on the branch:
 
@@ -112,7 +112,7 @@ submission.
 
 ## A second audit pass landed mid-session
 
-Another session appended a Vitals addendum to `AUDIT823.md` (it is 1,044 lines
+Another session appended a Vitals addendum to `../audits/AUDIT823.md` (it is 1,044 lines
 now, not the 429 this work started from) and committed it as `89c4096`. It
 reviewed the purchase-state and CTA fixes while they were in progress and
 records them as done-in-source, needing production validation. Its three new
@@ -191,7 +191,7 @@ not weeks. Options, in order of preference:
   expectation that it informs a ship decision, not a significance claim.
 - Run it as-is and accept a long clock.
 
-Whichever is chosen, `AUDIT823.md`'s conclusion still holds: fix funnel
+Whichever is chosen, `../audits/AUDIT823.md`'s conclusion still holds: fix funnel
 integrity first, then measure. The integrity fixes are in this build.
 
 ## The rest of AUDIT823, triaged
@@ -257,7 +257,7 @@ Deliberately not doing now:
       2026-08-26, 3 arms (`upgrade_catalog` control / `pw_full_list` /
       `pw_maintenance`), new and existing customers, 100%, App version >= 1.8.3.
       Nothing can enrol until 1.8.3 is public, so it is inert until release.
-      The macro arm is not in it. See `UPGRADE-TAB-EXPERIMENT.md`.
+      The macro arm is not in it. See `../experiments/UPGRADE-TAB-EXPERIMENT.md`.
 - [x] **RevenueCat targeting rule "1.8.3 tester (Jack) - macro card" is off.**
       Moved from `live` to `inactive` on 2026-08-26 (rule id `5ZvsDB5PUJ`,
       `app_version = 1.8.3` -> `pw_macro`). Zero live targeting rules now.

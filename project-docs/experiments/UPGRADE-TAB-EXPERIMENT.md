@@ -150,7 +150,7 @@ surface reads as "the experiment is broken".
 
 The form has **Save as draft** and **Start experiment** as separate buttons, so
 the setup can be staged in advance and started later. Draft it whenever; do not
-start it while 1.8.2 is the version most customers run. See `RELEASE-1.8.3.md`,
+start it while 1.8.2 is the version most customers run. See `../releases/RELEASE-1.8.3.md`,
 "Do not start the experiment yet": live 1.8.2 falls back to `timeline`, not
 `catalog`, so both arms render the same screen on that population and the signal
 dilutes to nothing. The `App version = 1.8.3` condition is what actually prevents
