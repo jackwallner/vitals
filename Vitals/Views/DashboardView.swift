@@ -2115,7 +2115,7 @@ private enum SettingsInfoTopic: Identifiable {
 ///
 /// A tap gesture on an enlarged content shape rather than a `Button`: a
 /// `.borderless` Button sharing a row with a Toggle has unreliable hit testing
-/// in a Form. `SettingsSheetUITests.testInfoDotRevealsExplanation` covers it.
+/// in a Form.
 private struct SettingsInfoDot: View {
     let topic: SettingsInfoTopic
     let isOpen: Bool
