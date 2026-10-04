@@ -1,1 +1,1 @@
-bmr,complication,calculator,deficit,maintenance,expenditure,energy,burned,burner,budget,steps,bmi
+bmr,complication,resting,active,calculator,deficit,net,energy,steps,maintenance,bmi,burned,rmr
