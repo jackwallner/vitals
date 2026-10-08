@@ -784,6 +784,12 @@ final class StoreService: NSObject, ObservableObject {
         #endif
         Purchases.configure(withAPIKey: RevenueCatConfig.apiKey)
         Purchases.shared.delegate = self
+        // Standard Apple Ads attribution (no ATT prompt): RevenueCat learns which
+        // campaign and keyword drove an install, so ad cohorts can be judged on
+        // trials and revenue instead of installs alone.
+        #if os(iOS)
+        Purchases.shared.attribution.enableAdServicesAttributionTokenCollection()
+        #endif
         isConfigured = true
     }
 }
