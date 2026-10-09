@@ -1,1 +1,3 @@
-Fixes: History stays fast while averages are paused, and the Excluded Days screen now shows the correct dates on Buddhist, Japanese, Islamic, and other non-Gregorian calendars.
+History loads faster on a cold start. A failed food read now says so instead of showing "No food logged". The Excluded Days screen and the Pause Averages switch describe a paused state accurately, and the paused banner leaves room for larger text sizes.
+
+Behind-the-scenes improvements and fixes to keep Total Calories running smoothly. Thank you for being here.
