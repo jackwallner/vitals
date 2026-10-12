@@ -5,11 +5,12 @@ extension Notification.Name {
     static let vitalsPositiveMomentForReview = Notification.Name("com.jackwallner.vitals.positiveMomentForReview")
 }
 
-/// How the user last resolved the in-app review / feedback prompt.
+/// What the user did about a review. Only opening the review page ends the
+/// passive asks: someone who sent feedback can still rate.
 enum ReviewPromptOutcome: String, Sendable {
-    /// Opened the App Store write-review page (explicit CTA).
+    /// Opened the App Store write-review page from Settings.
     case openedWriteReview
-    /// Opened the feedback mail composer with a message.
+    /// Sent feedback. Recorded for the cooldown; it no longer stops asks.
     case submittedFeedback
 }
 
@@ -31,13 +32,10 @@ enum ReviewPromptTracker {
     private static let proSinceKey = "reviewPrompt.proSince"
     private static let subscriberMomentFiredKey = "reviewPrompt.subscriberMomentFired"
 
-    /// Minimum cold starts before passive prompts are considered.
-    static let minimumLaunchCount = 3
-    /// Minimum days since first open.
-    static let minimumDaysSinceFirstOpen = 3
-    /// Minimum *cumulative* positive moments (goal hits) before we ask for a
-    /// rating. Two good days is enough signal they like the app.
-    static let minimumPositiveMoments = 2
+    /// Ask early. Most installs are gone within a week, and a rating from
+    /// someone who hit one goal beats no rating at all. The only tenure gate is
+    /// "not the first session": a second cold start.
+    static let minimumLaunchCount = 2
     /// Distinct days the app has been opened before the habit itself counts as a
     /// positive moment. A goal hit is the outcome; this is the behaviour, and it
     /// catches everyone using the app happily without ever clearing a goal.
@@ -48,7 +46,7 @@ enum ReviewPromptTracker {
     static let subscriberMomentDays = 30
     /// Days between rating asks. Apple's `requestReview()` often shows nothing
     /// (three a year per device), so this paces our calls, not the user's answers.
-    static let cooldownDays = 60
+    static let cooldownDays = 30
 
     static var appLaunchCount: Int {
         get { max(defaults.integer(forKey: launchCountKey), 0) }
@@ -185,26 +183,19 @@ enum ReviewPromptTracker {
     }
 
     static func passivePromptAllowed(now: Date = .now) -> Bool {
-        guard outcome == nil else { return false }
+        guard outcome != .openedWriteReview else { return false }
         guard let last = lastShownDate else { return true }
         let cooldown = TimeInterval(cooldownDays) * 86_400
         return now.timeIntervalSince(last) >= cooldown
     }
 
-    /// Base eligibility for the rating ask.
-    static func canPresentEnjoymentPrompt(
-        hasCompletedSetup: Bool,
-        now: Date = .now
-    ) -> Bool {
+    /// Base eligibility for the rating ask. The pending positive moment is
+    /// checked by the caller; any one moment is enough.
+    static func canRequestReview(hasCompletedSetup: Bool, now: Date = .now) -> Bool {
         guard !ScreenshotConfig.isEnabled else { return false }
         guard hasCompletedSetup else { return false }
         guard passivePromptAllowed(now: now) else { return false }
-        guard appLaunchCount >= minimumLaunchCount else { return false }
-        guard positiveMomentCount >= minimumPositiveMoments else { return false }
-        guard let first = firstAppOpenDate else { return false }
-        let minInterval = TimeInterval(minimumDaysSinceFirstOpen) * 86_400
-        guard now.timeIntervalSince(first) >= minInterval else { return false }
-        return true
+        return appLaunchCount >= minimumLaunchCount
     }
 
     /// Passive prompt: eligibility plus a recent positive moment.
@@ -213,7 +204,7 @@ enum ReviewPromptTracker {
         now: Date = .now
     ) -> Bool {
         guard hasPendingPositiveMoment else { return false }
-        return canPresentEnjoymentPrompt(hasCompletedSetup: hasCompletedSetup, now: now)
+        return canRequestReview(hasCompletedSetup: hasCompletedSetup, now: now)
     }
 
     static func markShown(now: Date = .now) {

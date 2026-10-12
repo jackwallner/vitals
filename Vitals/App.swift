@@ -828,6 +828,9 @@ struct MainTabView: View {
                   !showTrialPaywall,
                   pendingMilestone == nil,
                   !showReviewPrompt,
+                  !showWhatsNew,
+                  !showWeeklyRecap,
+                  !showExcludedDays,
                   ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup)
             else {
                 if trialPitch != nil || showTrialPaywall {
