@@ -15,4 +15,24 @@
         <lastmod>2026-04-05</lastmod>
         <priority>0.3</priority>
     </url>
+    <url>
+        <loc>https://jackwallner.github.io/vitals/guides.html</loc>
+        <lastmod>2026-10-11</lastmod>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://jackwallner.github.io/vitals/tdee-calculator.html</loc>
+        <lastmod>2026-10-11</lastmod>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://jackwallner.github.io/vitals/bmr-calculator.html</loc>
+        <lastmod>2026-10-11</lastmod>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://jackwallner.github.io/vitals/apple-watch-active-vs-resting-calories.html</loc>
+        <lastmod>2026-10-11</lastmod>
+        <priority>0.6</priority>
+    </url>
 </urlset>

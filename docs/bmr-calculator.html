@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free BMR calculator (Mifflin-St Jeor), what basal metabolic rate means, what changes it, and how Apple Watch resting energy compares.">
+    <link rel="icon" type="image/png" sizes="256x256" href="icon_256.png">
+    <link rel="apple-touch-icon" href="icon_256.png">
+    <title>BMR Calculator: Basal Metabolic Rate Explained</title>
+    <link rel="canonical" href="https://jackwallner.github.io/vitals/bmr-calculator.html">
+    <meta property="og:title" content="BMR calculator and what resting burn really is">
+    <meta property="og:description" content="Free BMR calculator (Mifflin-St Jeor), what basal metabolic rate means, what changes it, and how Apple Watch resting energy compares.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://jackwallner.github.io/vitals/bmr-calculator.html">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "BMR calculator and what resting burn really is", "description": "Free BMR calculator (Mifflin-St Jeor), what basal metabolic rate means, what changes it, and how Apple Watch resting energy compares.", "author": {"@type": "Person", "name": "Jack Wallner"}, "publisher": {"@type": "Organization", "name": "Total Calories"}, "mainEntityOfPage": "https://jackwallner.github.io/vitals/bmr-calculator.html", "dateModified": "2026-10-11"}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is BMR the same as resting metabolic rate?", "acceptedAnswer": {"@type": "Answer", "text": "Nearly. RMR is measured under slightly looser conditions and runs about 10% higher than true BMR. Fitness apps, including Apple Health's resting energy, use the two interchangeably."}}, {"@type": "Question", "name": "Should I eat my BMR to lose weight?", "acceptedAnswer": {"@type": "Answer", "text": "No. BMR is the energy you burn at complete rest. Your real daily burn is higher, so set a moderate deficit from your total daily expenditure, not from BMR."}}, {"@type": "Question", "name": "Why is my Apple Watch resting energy different from the calculator?", "acceptedAnswer": {"@type": "Answer", "text": "Apple uses its own model and the height, weight, age and sex in your Health profile. Small differences of 50 to 150 kcal are expected. Keep your Health profile current and the number tracks you better than any formula."}}]}</script>
+    <style>* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif; color: #1d1d1f; background: #fafafa; -webkit-font-smoothing: antialiased; }
+.container { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+nav { padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.06); background: rgba(250,250,250,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 10; }
+nav .container { display: flex; align-items: center; justify-content: space-between; max-width: 980px; }
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1d1d1f; }
+.nav-brand img { width: 32px; height: 32px; border-radius: 7px; }
+.nav-brand span { font-size: 15px; font-weight: 600; }
+.nav-link { font-size: 14px; text-decoration: none; background: #1d1d1f; color: #fff; padding: 8px 18px; border-radius: 980px; font-weight: 500; }
+.nav-link:hover { opacity: 0.85; }
+article { padding: 64px 0 48px; }
+.eyebrow { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: #86868b; margin-bottom: 14px; }
+h1 { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
+.lede { font-size: 19px; color: #6e6e73; line-height: 1.5; margin-bottom: 36px; }
+h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.4px; margin: 40px 0 12px; }
+p, li { font-size: 17px; line-height: 1.6; margin-bottom: 14px; }
+ul, ol { padding-left: 22px; }
+li { margin-bottom: 6px; }
+a { color: #1d1d1f; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 20px; font-size: 16px; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid rgba(0,0,0,0.08); }
+th { font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px; color: #86868b; font-weight: 600; }
+.formula { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; padding: 16px 18px; font-family: "SF Mono", Menlo, monospace; font-size: 15px; line-height: 1.7; margin: 8px 0 20px; overflow-x: auto; }
+.calc { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 18px; padding: 24px; margin: 20px 0 28px; }
+.calc h2 { margin: 0 0 16px; font-size: 20px; }
+.calc .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.calc label { display: block; font-size: 13px; color: #6e6e73; margin-bottom: 6px; }
+.calc input, .calc select { width: 100%; font: inherit; font-size: 17px; padding: 10px 12px; border: 1px solid rgba(0,0,0,0.14); border-radius: 10px; background: #fafafa; color: #1d1d1f; }
+.calc .seg { display: flex; gap: 8px; }
+.calc .seg button { flex: 1; font: inherit; font-size: 15px; padding: 9px 0; border-radius: 10px; border: 1px solid rgba(0,0,0,0.14); background: #fafafa; cursor: pointer; }
+.calc .seg button[aria-pressed="true"] { background: #1d1d1f; color: #fff; border-color: #1d1d1f; }
+.result { margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.08); }
+.result .big { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1; }
+.result .big small { font-size: 16px; font-weight: 500; color: #6e6e73; letter-spacing: 0; margin-left: 6px; }
+.result .sub { font-size: 15px; color: #6e6e73; margin-top: 8px; }
+.cta { text-align: center; padding: 48px 24px 56px; border-top: 1px solid rgba(0,0,0,0.06); margin-top: 24px; }
+.cta h2 { margin: 0 0 8px; }
+.cta p { color: #6e6e73; max-width: 440px; margin: 0 auto 22px; }
+.download-btn { display: inline-block; background: #1d1d1f; color: #fff; font-size: 15px; font-weight: 500; padding: 14px 36px; border-radius: 980px; text-decoration: none; }
+.download-btn:hover { opacity: 0.85; }
+.related { padding: 24px 0 8px; }
+.related h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: #86868b; margin-bottom: 10px; }
+.related a { display: block; font-size: 16px; text-decoration: none; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+footer { text-align: center; padding: 20px 24px 40px; font-size: 12px; color: #86868b; }
+footer a { color: #86868b; text-decoration: none; margin: 0 10px; }
+footer .divider { margin: 4px 0; }
+.note { font-size: 14px; color: #86868b; line-height: 1.5; }
+@media (max-width: 520px) { h1 { font-size: 32px; } .calc .row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a class="nav-brand" href="./"><img src="icon_256.png" alt="Total Calories"><span>Total Calories</span></a>
+            <a class="nav-link" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504">Download</a>
+        </div>
+    </nav>
+    <article>
+        <div class="container">
+            <div class="eyebrow">Guide</div>
+            <h1>BMR calculator and what resting burn really is</h1>
+            <p class="lede">Basal metabolic rate is the energy your body spends just staying alive: breathing, circulation, cell repair, keeping warm. It is the largest share of what you burn each day.</p>
+            
+    <div class="calc" id="calc">
+      <h2>BMR calculator</h2>
+      <div class="row">
+        <div><label>Units</label><div class="seg" data-seg="units"><button type="button" data-value="metric" aria-pressed="true">kg / cm</button><button type="button" data-value="imperial" aria-pressed="false">lb / ft</button></div></div>
+        <div><label>Sex (for the formula)</label><div class="seg" data-seg="sex"><button type="button" data-value="male" aria-pressed="true">Male</button><button type="button" data-value="female" aria-pressed="false">Female</button></div></div>
+      </div>
+      <div class="row">
+        <div><label for="age">Age</label><input id="age" type="number" inputmode="numeric" min="10" max="100" value="35"></div>
+        <div id="metric"><div class="row" style="margin:0"><div><label for="kg">Weight (kg)</label><input id="kg" type="number" inputmode="decimal" value="75"></div><div><label for="cm">Height (cm)</label><input id="cm" type="number" inputmode="decimal" value="175"></div></div></div>
+        <div id="imperial" hidden><div class="row" style="margin:0;grid-template-columns:1fr 1fr 1fr"><div><label for="lb">Weight (lb)</label><input id="lb" type="number" inputmode="decimal" value="165"></div><div><label for="ft">Height (ft)</label><input id="ft" type="number" inputmode="numeric" value="5"></div><div><label for="in">(in)</label><input id="in" type="number" inputmode="numeric" value="9"></div></div></div>
+      </div>
+      
+      <div class="result"><div class="big"><span id="bmr">–</span><small>kcal/day BMR</small></div><div class="sub">What your body burns at complete rest over 24 hours.</div></div>
+      <p class="note" style="margin:14px 0 0">Mifflin-St Jeor equation. An estimate from population averages, not a measurement of you.</p>
+    </div>
+    <script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var units='metric', sex='male';
+  function segs(name, cb){ document.querySelectorAll('[data-seg="'+name+'"] button').forEach(function(b){ b.addEventListener('click', function(){ document.querySelectorAll('[data-seg="'+name+'"] button').forEach(function(x){x.setAttribute('aria-pressed','false')}); b.setAttribute('aria-pressed','true'); cb(b.dataset.value); }); }); }
+  segs('units', function(v){ units=v; $('metric').hidden = v!=='metric'; $('imperial').hidden = v!=='imperial'; calc(); });
+  segs('sex', function(v){ sex=v; calc(); });
+  ['age','kg','cm','lb','ft','in','activity'].forEach(function(id){ var el=$(id); if(el){ el.addEventListener('input', calc); el.addEventListener('change', calc);} });
+  function num(id){ var v=parseFloat($(id).value); return isFinite(v)?v:0; }
+  function calc(){
+    var age=num('age'), kg, cm;
+    if(units==='metric'){ kg=num('kg'); cm=num('cm'); } else { kg=num('lb')*0.45359237; cm=(num('ft')*12+num('in'))*2.54; }
+    if(!(age>0&&kg>0&&cm>0)){ $('bmr').textContent='–'; if($('tdee')) $('tdee').textContent='–'; return; }
+    var bmr = 10*kg + 6.25*cm - 5*age + (sex==='male'?5:-161);
+    bmr=Math.round(bmr);
+    $('bmr').textContent=bmr.toLocaleString();
+    if($('tdee')){ var mult=parseFloat($('activity').value); $('tdee').textContent=Math.round(bmr*mult).toLocaleString(); }
+  }
+  calc();
+})();
+</script>
+            
+<h2>What BMR is</h2>
+<p>BMR is measured at complete rest, fasted, in a neutral-temperature room. It covers the work your organs do with no movement at all. For a typical adult that is 1,200 to 2,000 kcal a day, and it accounts for 60 to 70% of total daily burn in anyone who is not an athlete.</p>
+<h2>The formula</h2>
+<p>The calculator uses Mifflin-St Jeor, which outperformed the older Harris-Benedict equation in validation studies and is the one most dietitians use.</p>
+<div class="formula">BMR (men) = 10 x kg + 6.25 x cm - 5 x age + 5<br>BMR (women) = 10 x kg + 6.25 x cm - 5 x age - 161</div>
+<h2>What moves BMR</h2>
+<ul>
+<li><strong>Lean mass.</strong> Muscle burns more at rest than fat. Two people at the same weight can differ by a few hundred calories.</li>
+<li><strong>Age.</strong> BMR drifts down roughly 1 to 2% per decade after your twenties, mostly from lost muscle.</li>
+<li><strong>Size.</strong> A bigger body has more tissue to maintain, so BMR rises with weight and height.</li>
+<li><strong>Sleep, illness and heat.</strong> Short-term swings of a few percent are normal.</li>
+</ul>
+<h2>BMR versus resting energy on an Apple Watch</h2>
+<p>Apple Health has a <strong>resting energy</strong> field that is the Watch's own estimate of your BMR, built from your height, weight, age and sex in the Health profile and spread across the day. It is close to the Mifflin-St Jeor number but updates as your profile changes, and because it lands in Health hour by hour you can see how much of today's burn is resting versus active.</p>
+<p>Total Calories shows that split on its dashboard and adds the two halves into one daily total, which is the number most people actually want when they ask about their BMR: not the resting figure alone, but what it means for how much they can eat.</p>
+<h2>From BMR to a calorie target</h2>
+<p>BMR is a floor, not a target. Eating below it for long is neither necessary nor pleasant. Multiply by an activity factor, or better, read your measured daily total, and set a deficit or surplus from there. The <a href="tdee-calculator.html">TDEE guide</a> covers that step.</p>
+<p class="note">Informational only, not medical advice.</p>
+
+            <h2>Common questions</h2>
+            <h3 style='font-size:18px;margin:18px 0 6px'>Is BMR the same as resting metabolic rate?</h3><p>Nearly. RMR is measured under slightly looser conditions and runs about 10% higher than true BMR. Fitness apps, including Apple Health's resting energy, use the two interchangeably.</p><h3 style='font-size:18px;margin:18px 0 6px'>Should I eat my BMR to lose weight?</h3><p>No. BMR is the energy you burn at complete rest. Your real daily burn is higher, so set a moderate deficit from your total daily expenditure, not from BMR.</p><h3 style='font-size:18px;margin:18px 0 6px'>Why is my Apple Watch resting energy different from the calculator?</h3><p>Apple uses its own model and the height, weight, age and sex in your Health profile. Small differences of 50 to 150 kcal are expected. Keep your Health profile current and the number tracks you better than any formula.</p>
+            <div class="related"><h3>Related guides</h3><a href="tdee-calculator.html">TDEE calculator: your full daily burn</a><a href="apple-watch-active-vs-resting-calories.html">Active vs resting calories on Apple Watch</a></div>
+        </div>
+    </article>
+    <section class="cta">
+        <h2>See your real burn, not an estimate</h2>
+        <p>Total Calories reads active and resting energy from Apple Health and shows your true daily total on your iPhone, Apple Watch and widgets. Free to start.</p>
+        <a class="download-btn" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504">Download Total Calories</a>
+    </section>
+    <footer>
+        <div class="divider">&copy; 2026 Jack Wallner</div>
+        <div><a href="./">Home</a><a href="guides.html">Guides</a><a href="support.html">Support</a><a href="privacy-policy.html">Privacy</a></div>
+    </footer>
+</body>
+</html>
