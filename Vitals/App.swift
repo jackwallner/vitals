@@ -473,8 +473,8 @@ struct MainTabView: View {
     /// sheet body against a payload it hadn't seen yet, and `if let` over a nil
     /// payload renders an empty sheet — the blank white card.
     @State private var trialPitch: TrialPitchRequest?
+    @Environment(\.requestReview) private var requestReview
     @State private var showReviewPrompt = false
-    @State private var reviewPromptInitialStep: ReviewPromptSheet.Step = .enjoyment
     @State private var reviewPromptShownThisSession = false
     /// If a goal-hit review ask was blocked by an open trial/paywall sheet, retry
     /// once those sheets clear instead of burning the positive moment.
@@ -835,10 +835,7 @@ struct MainTabView: View {
                 }
                 return
             }
-            ReviewPromptTracker.consumePendingPositiveMoment()
-            reviewPromptInitialStep = .enjoyment
-            reviewPromptShownThisSession = true
-            showReviewPrompt = true
+            askForRating()
         }
     }
 
@@ -852,19 +849,25 @@ struct MainTabView: View {
               ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup)
         else { return }
         pendingReviewAfterSheetsClear = false
-        ReviewPromptTracker.consumePendingPositiveMoment()
-        reviewPromptInitialStep = .enjoyment
+        askForRating()
+    }
+
+    /// The rating ask is Apple's own prompt, called straight at a good moment
+    /// with no question in front of it. App Review 5.6.1 reads an "Enjoying
+    /// it?" gate that routes only happy users to the store as manipulation.
+    /// Apple may show nothing (three a year per device), so the tracker's
+    /// cooldown is the only thing that paces re-asks.
+    private func askForRating() {
+        ReviewPromptTracker.markShown()
         reviewPromptShownThisSession = true
-        showReviewPrompt = true
+        requestReview()
     }
 
     private func handleReviewPromptFinish(_ outcome: ReviewPromptDismissOutcome) {
         showReviewPrompt = false
     }
 
-    private func presentReviewPrompt(step: ReviewPromptSheet.Step) {
-        reviewPromptInitialStep = step
-        reviewPromptShownThisSession = true
+    private func presentFeedbackSheet() {
         showReviewPrompt = true
     }
 
@@ -1186,10 +1189,8 @@ struct MainTabView: View {
             defer { reviewPromptCoordinator.clear() }
             guard trialPitch == nil, !showTrialPaywall, pendingMilestone == nil else { return }
             switch presentation {
-            case .enjoymentPrompt:
-                presentReviewPrompt(step: .enjoyment)
             case .feedbackOnly:
-                presentReviewPrompt(step: .feedback)
+                presentFeedbackSheet()
             }
         }
         // Vitals+ tab content stays in the hierarchy (opacity-toggled), so the
@@ -1295,14 +1296,8 @@ struct MainTabView: View {
             .presentationDetents([.fraction(0.7), .large])
             .presentationDragIndicator(.visible)
         }
-        .sheet(isPresented: $showReviewPrompt, onDismiss: {
-            // A soft defer recorded on an older build is still a 30-day promise.
-            // Calling markShown() over it would jail the ask for 120 days.
-            if !ReviewPromptTracker.isSoftDeferred {
-                ReviewPromptTracker.markShown()
-            }
-        }) {
-            ReviewPromptSheet(initialStep: reviewPromptInitialStep, onFinish: handleReviewPromptFinish)
+        .sheet(isPresented: $showReviewPrompt) {
+            ReviewPromptSheet(onFinish: handleReviewPromptFinish)
         }
         .sheet(isPresented: $showWeeklyRecap, onDismiss: {
             // They opened their week and read it. One of the better-disposed

@@ -1,23 +1,18 @@
 import SwiftUI
 import UIKit
 
-/// Manual presentation from Settings bypasses passive eligibility.
+/// Routes the Settings "Send Feedback" row to the host that owns the sheets.
 @MainActor
 final class ReviewPromptCoordinator: ObservableObject {
     static let shared = ReviewPromptCoordinator()
 
     enum Presentation {
-        case enjoymentPrompt
         case feedbackOnly
     }
 
     @Published var pendingPresentation: Presentation?
 
     private init() {}
-
-    func requestEnjoymentPrompt() {
-        pendingPresentation = .enjoymentPrompt
-    }
 
     func requestFeedback() {
         pendingPresentation = .feedbackOnly
@@ -28,123 +23,35 @@ final class ReviewPromptCoordinator: ObservableObject {
     }
 }
 
-/// Returned when the sheet closes so the host can call `requestReview()` if appropriate.
+/// Returned when the sheet closes.
 enum ReviewPromptDismissOutcome: Sendable {
     case notNow
     case feedbackSubmitted
-    case openedWriteReview
 }
 
+/// Private, account-free feedback. The rating ask is separate: the host calls
+/// `requestReview()` directly at a positive moment, with no question in front
+/// of it (App Review 5.6.1), so this sheet never mentions the App Store.
 struct ReviewPromptSheet: View {
-    enum Step {
-        case enjoyment
-        case feedback
-    }
-
-    let initialStep: Step
     let onFinish: (ReviewPromptDismissOutcome) -> Void
 
     @Environment(\.dismiss) private var dismiss
-    @State private var step: Step
     @State private var feedbackText = ""
     @FocusState private var feedbackFocused: Bool
 
-    init(initialStep: Step = .enjoyment, onFinish: @escaping (ReviewPromptDismissOutcome) -> Void) {
-        self.initialStep = initialStep
-        self.onFinish = onFinish
-        _step = State(initialValue: initialStep)
-    }
-
     var body: some View {
         NavigationStack {
-            Group {
-                switch step {
-                case .enjoyment:
-                    enjoymentContent
-                case .feedback:
-                    feedbackContent
-                }
-            }
-            .navigationTitle(navigationTitle)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Not now") {
-                        handleNotNow()
+            feedbackContent
+                .navigationTitle("Help us improve")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Not now") { finish(.notNow) }
                     }
                 }
-            }
         }
-        .presentationDetents(step == .feedback ? [.large] : [.medium, .large])
+        .presentationDetents([.large])
         .presentationDragIndicator(.visible)
-    }
-
-    private var navigationTitle: String {
-        switch step {
-        case .enjoyment: "Enjoying the app?"
-        case .feedback: "Help us improve"
-        }
-    }
-
-    private var enjoymentContent: some View {
-        // Scrolls only when it has to: the pitch and both buttons fit a medium
-        // detent at default type, and merging the old second screen into this
-        // one means large accessibility sizes need somewhere to go.
-        ScrollView {
-            enjoymentBody
-        }
-        .scrollBounceBehavior(.basedOnSize)
-    }
-
-    private var enjoymentBody: some View {
-        VStack(spacing: 20) {
-            ZStack {
-                Circle()
-                    .fill(Theme.caloriesGradient)
-                    .frame(width: 64, height: 64)
-                Image(systemName: "heart.fill")
-                    .font(.system(size: 26, weight: .bold))
-                    .foregroundStyle(.white)
-            }
-            .padding(.top, 8)
-
-            Text("If Total Calories is helping you stay on track, a quick rating makes a real difference.")
-                .font(.system(.subheadline, design: .rounded))
-                .foregroundStyle(Theme.textSecondary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, 8)
-
-            // The indie line used to be a second screen between "yes" and the
-            // App Store. It earns its place as context here; it does not earn a
-            // tap, and every tap between intent and the store loses ratings.
-            Text("Built by one indie developer. No ads, no accounts, and your health data never leaves your phone.")
-                .font(.system(.footnote, design: .rounded))
-                .foregroundStyle(Theme.textTertiary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, 8)
-
-            VStack(spacing: 10) {
-                Button {
-                    ReviewPromptTracker.markOpenedWriteReview()
-                    UIApplication.shared.open(AppStoreReviewLinks.writeReviewURL)
-                    finish(.openedWriteReview)
-                } label: {
-                    primaryButtonLabel("Yes, rate on the App Store")
-                }
-                .buttonStyle(.plain)
-
-                Button {
-                    step = .feedback
-                } label: {
-                    secondaryButtonLabel("Not really")
-                }
-                .buttonStyle(.plain)
-            }
-        }
-        .padding(.horizontal, 24)
-        .padding(.bottom, 24)
     }
 
     private var feedbackContent: some View {
@@ -156,7 +63,7 @@ struct ReviewPromptSheet: View {
 
             TextEditor(text: $feedbackText)
                 .font(.system(.body, design: .rounded))
-                .frame(minHeight: 140)
+                .frame(minHeight: 140, maxHeight: 220)
                 .padding(10)
                 .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 12))
                 .focused($feedbackFocused)
@@ -168,42 +75,30 @@ struct ReviewPromptSheet: View {
             Button {
                 sendFeedback()
             } label: {
-                primaryButtonLabel("Send feedback")
+                Text("Send feedback")
+                    .font(.system(.headline, design: .rounded, weight: .bold))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(Theme.caloriesGradient, in: Capsule())
             }
             .buttonStyle(.plain)
-            .disabled(feedbackText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-            .opacity(feedbackText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.5 : 1)
+            .disabled(trimmedFeedback.isEmpty)
+            .opacity(trimmedFeedback.isEmpty ? 0.5 : 1)
+
+            Spacer(minLength: 0)
         }
         .padding(.horizontal, 24)
         .padding(.bottom, 24)
         .onAppear { feedbackFocused = true }
     }
 
-    private func primaryButtonLabel(_ title: String) -> some View {
-        Text(title)
-            .font(.system(.headline, design: .rounded, weight: .bold))
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
-            .background(Theme.caloriesGradient, in: Capsule())
-    }
-
-    private func secondaryButtonLabel(_ title: String) -> some View {
-        Text(title)
-            .font(.system(.subheadline, design: .rounded, weight: .semibold))
-            .foregroundStyle(Theme.textSecondary)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 10)
-    }
-
-    private func handleNotNow() {
-        ReviewPromptTracker.markShown()
-        finish(.notNow)
+    private var trimmedFeedback: String {
+        feedbackText.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     private func sendFeedback() {
-        let trimmed = feedbackText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty, let url = Self.feedbackMailURL(body: trimmed) else { return }
+        guard !trimmedFeedback.isEmpty, let url = Self.feedbackMailURL(body: trimmedFeedback) else { return }
         ReviewPromptTracker.markFeedbackSubmitted()
         UIApplication.shared.open(url)
         finish(.feedbackSubmitted)

@@ -3922,13 +3922,20 @@ private struct SettingsSheet: View {
 
                 Section {
                     Button {
+                        ReviewPromptTracker.markOpenedWriteReview()
+                        UIApplication.shared.open(AppStoreReviewLinks.writeReviewURL)
+                    } label: {
+                        Label("Write a Review", systemImage: "star")
+                    }
+
+                    Button {
                         dismiss()
                         Task { @MainActor in
                             try? await Task.sleep(nanoseconds: 350_000_000)
-                            ReviewPromptCoordinator.shared.requestEnjoymentPrompt()
+                            ReviewPromptCoordinator.shared.requestFeedback()
                         }
                     } label: {
-                        Label("Rate or Send Feedback", systemImage: "star.bubble")
+                        Label("Send Feedback", systemImage: "envelope")
                     }
 
                     Link(destination: VitalsLinks.privacyPolicy) {

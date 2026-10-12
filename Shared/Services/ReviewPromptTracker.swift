@@ -1,7 +1,7 @@
 import Foundation
 
 extension Notification.Name {
-    /// Posted when the user hits a daily goal — host may present the enjoyment funnel after a short delay.
+    /// Posted when the user hits a daily goal; the host may call requestReview() after a short delay.
     static let vitalsPositiveMomentForReview = Notification.Name("com.jackwallner.vitals.positiveMomentForReview")
 }
 
@@ -35,8 +35,8 @@ enum ReviewPromptTracker {
     static let minimumLaunchCount = 3
     /// Minimum days since first open.
     static let minimumDaysSinceFirstOpen = 3
-    /// Minimum *cumulative* positive moments (goal hits) before we surface the
-    /// enjoyment funnel. Two good days is enough signal they like the app.
+    /// Minimum *cumulative* positive moments (goal hits) before we ask for a
+    /// rating. Two good days is enough signal they like the app.
     static let minimumPositiveMoments = 2
     /// Distinct days the app has been opened before the habit itself counts as a
     /// positive moment. A goal hit is the outcome; this is the behaviour, and it
@@ -46,12 +46,9 @@ enum ReviewPromptTracker {
     /// positive moment. They paid, stayed, and never cancelled — the best-disposed
     /// group the app has, and previously treated like a first-day stranger.
     static let subscriberMomentDays = 30
-    /// Days before "Not now" can surface the enjoyment prompt again. At this app's
-    /// volume 120 days was effectively one ask per user, forever.
+    /// Days between rating asks. Apple's `requestReview()` often shows nothing
+    /// (three a year per device), so this paces our calls, not the user's answers.
     static let cooldownDays = 60
-    /// Shorter cooldown after "Maybe later" on the review pitch — Apple's
-    /// `requestReview()` often shows nothing, so a 120-day jail was burning asks.
-    static let softDeferCooldownDays = 30
 
     static var appLaunchCount: Int {
         get { max(defaults.integer(forKey: launchCountKey), 0) }
@@ -190,12 +187,11 @@ enum ReviewPromptTracker {
     static func passivePromptAllowed(now: Date = .now) -> Bool {
         guard outcome == nil else { return false }
         guard let last = lastShownDate else { return true }
-        let days = defaults.bool(forKey: softDeferKey) ? softDeferCooldownDays : cooldownDays
-        let cooldown = TimeInterval(days) * 86_400
+        let cooldown = TimeInterval(cooldownDays) * 86_400
         return now.timeIntervalSince(last) >= cooldown
     }
 
-    /// Base eligibility for the enjoyment funnel (passive or Settings).
+    /// Base eligibility for the rating ask.
     static func canPresentEnjoymentPrompt(
         hasCompletedSetup: Bool,
         now: Date = .now
@@ -222,23 +218,7 @@ enum ReviewPromptTracker {
 
     static func markShown(now: Date = .now) {
         lastShownDate = now
-        defaults.set(false, forKey: softDeferKey)
-        consumePendingPositiveMoment()
-    }
-
-    /// True after "Maybe later" until the next hard `markShown` / outcome.
-    /// Hosts must not call `markShown()` on sheet dismiss when this is true —
-    /// that would clear the soft-defer flag and apply the 120-day jail instead.
-    static var isSoftDeferred: Bool {
-        defaults.bool(forKey: softDeferKey)
-    }
-
-    /// User said Yes then "Maybe later" — we fire `requestReview()` which Apple
-    /// often silently no-ops. Use a short cooldown so we can ask again instead
-    /// of jailing them for 120 days.
-    static func markSoftDeferred(now: Date = .now) {
-        lastShownDate = now
-        defaults.set(true, forKey: softDeferKey)
+        defaults.removeObject(forKey: softDeferKey)
         consumePendingPositiveMoment()
     }
 

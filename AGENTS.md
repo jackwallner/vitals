@@ -32,7 +32,7 @@ XcodeGen project/scheme: `Vitals`, sim lease owner `vitals`.
 ## App-specific notes
 
 - App Group: `group.com.jackwallner.vitals`.
-- Review funnel triggers after a **daily goal hit**; `AppStoreReviewLinks.writeReviewURL`. (Shared funnel mechanics + playbook in the `ios-dev` skill.)
+- Rating ask: `requestReview()` is called directly after a **daily goal hit** (and the other one-shot positive moments in `ReviewPromptTracker`), with no "Enjoying it?" question first; App Review 5.6.1 rejected that gate on another fleet app as review manipulation. Settings has separate "Write a Review" (`AppStoreReviewLinks.writeReviewURL`) and "Send Feedback" rows.
 - App Store Submission specifics: privacy policy at `docs/privacy-policy.html` (GitHub Pages: `https://jackwallner.github.io/vitals/privacy-policy.html`); privacy manifests `Vitals/PrivacyInfo.xcprivacy` + `VitalsWatch/PrivacyInfo.xcprivacy`; `healthkit` in required device capabilities; VoiceOver labels on all interactive elements; goal validation (calories 500-50,000, steps 100-500,000); HealthKit-denied state shows guidance + Settings link.
 - Astro ASO: `./scripts/astro-setup.sh` (`--extra "phrase"` for app-specific terms); local MCP `http://127.0.0.1:8089/mcp`; playbook `~/ios/aso/astro-setup-process.md`; re-sync keywords `./scripts/sync-astro-keywords.sh`.
 
