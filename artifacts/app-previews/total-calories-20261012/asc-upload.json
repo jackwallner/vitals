@@ -11,6 +11,7 @@
   "assetDeliveryState": "COMPLETE",
   "videoDeliveryState": "COMPLETE",
   "previousPreviewRemoved": true,
-  "testState": "REJECTED",
-  "resubmitted": false
+  "testState": "WAITING_FOR_REVIEW",
+  "resubmitted": true,
+  "resubmittedAt": "2026-10-13T15:59:34Z"
 }
