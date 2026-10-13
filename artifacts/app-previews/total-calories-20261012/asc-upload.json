@@ -9,7 +9,7 @@
   "posterFrame": "00:00:01:15",
   "state": "REPLACED",
   "assetDeliveryState": "COMPLETE",
-  "videoDeliveryState": "PROCESSING",
+  "videoDeliveryState": "COMPLETE",
   "previousPreviewRemoved": true,
   "testState": "REJECTED",
   "resubmitted": false
