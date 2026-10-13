@@ -1,0 +1,34 @@
+{
+  "shots": [
+    {
+      "source": "~/ios/app-previews/output/total-calories-screen-capture/total-calories-screen-capture-preview.mp4",
+      "start": 0.5,
+      "end": 4.0,
+      "headline": "Your total daily burn",
+      "detail": "Active + resting calories, plus steps",
+      "header_height": 310
+    },
+    {
+      "source": "~/ios/app-previews/output/total-calories-screen-capture/total-calories-screen-capture-preview.mp4",
+      "start": 13.3,
+      "end": 18.0,
+      "headline": "See your progress over time",
+      "detail": "Calories and steps, side by side"
+    },
+    {
+      "source": "~/ios/app-previews/output/total-calories-screen-capture/report-capture/raw.mp4",
+      "start": 3.8,
+      "end": 10.0,
+      "headline": "Share your progress",
+      "detail": "PDF reports with Vitals+"
+    },
+    {
+      "source": "~/ios/app-previews/output/total-calories-screen-capture/report-capture/raw.mp4",
+      "start": 23.9,
+      "end": 26.0,
+      "headline": "Share your progress",
+      "detail": "PDF reports with Vitals+",
+      "caption_fade_out": 0.2
+    }
+  ]
+}
