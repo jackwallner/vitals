@@ -476,9 +476,6 @@ struct MainTabView: View {
     @Environment(\.requestReview) private var requestReview
     @State private var showReviewPrompt = false
     @State private var reviewPromptShownThisSession = false
-    /// If a goal-hit review ask was blocked by an open trial/paywall sheet, retry
-    /// once those sheets clear instead of burning the positive moment.
-    @State private var pendingReviewAfterSheetsClear = false
     /// One WidgetKit query per session is plenty; the moment itself is one-shot.
     @State private var widgetMomentEvaluated = false
     /// The feature an intent tap reached for, so the trial sheet (and the plan
@@ -809,50 +806,35 @@ struct MainTabView: View {
     private func scheduleReviewPromptAfterPositiveMoment() {
         guard ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup),
               !reviewPromptShownThisSession,
-              selectedTab == 0,
-              pendingMilestone == nil,
-              !showReviewPrompt
+              isTodayClear
         else { return }
-
-        // Don't lose the ask to a trial/paywall sheet — retry when those clear.
-        if trialPitch != nil || showTrialPaywall {
-            pendingReviewAfterSheetsClear = true
-            return
-        }
 
         Task { @MainActor in
             // Let the goal celebration toast finish (~2.5s) before asking.
             try? await Task.sleep(nanoseconds: 3_500_000_000)
-            guard selectedTab == 0,
-                  trialPitch == nil,
-                  !showTrialPaywall,
-                  pendingMilestone == nil,
-                  !showReviewPrompt,
-                  !showWhatsNew,
-                  !showWeeklyRecap,
-                  !showExcludedDays,
+            // Never over a sheet or a paywall. A blocked ask keeps the moment
+            // pending in the tracker and the next positive moment asks.
+            guard isTodayClear,
+                  !reviewPromptShownThisSession,
                   ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup)
-            else {
-                if trialPitch != nil || showTrialPaywall {
-                    pendingReviewAfterSheetsClear = true
-                }
-                return
-            }
+            else { return }
             askForRating()
         }
     }
 
-    private func presentPendingReviewIfNeeded() {
-        guard pendingReviewAfterSheetsClear,
-              !reviewPromptShownThisSession,
-              trialPitch == nil,
-              !showTrialPaywall,
-              pendingMilestone == nil,
-              !showReviewPrompt,
-              ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup)
-        else { return }
-        pendingReviewAfterSheetsClear = false
-        askForRating()
+    /// Today is on screen with nothing over it: no pitch, paywall or
+    /// celebration of ours, and no Settings or onboarding from the dashboard.
+    private var isTodayClear: Bool {
+        selectedTab == 0
+            && trialPitch == nil
+            && !showTrialPaywall
+            && pendingMilestone == nil
+            && !showReviewPrompt
+            && !showWhatsNew
+            && !showWeeklyRecap
+            && !showExcludedDays
+            && !trialCoordinator.coveringSheetIsPresented
+            && trialCoordinator.pendingIntent == nil
     }
 
     /// The rating ask is Apple's own prompt, called straight at a good moment
@@ -1251,7 +1233,6 @@ struct MainTabView: View {
                 // unrelated purchase doesn't silently flip the feature on.
                 pendingFeatureEnable = nil
                 pendingExcludedDay = nil
-                presentPendingReviewIfNeeded()
             }
         }) { pitch in
             // The sheet that actually sells the trial. It reports its own
@@ -1272,7 +1253,6 @@ struct MainTabView: View {
         .sheet(isPresented: $showTrialPaywall, onDismiss: {
             trialOfferFocus = nil
             if !store.isPro { pendingFeatureEnable = nil }
-            presentPendingReviewIfNeeded()
         }) {
             PaywallView(focus: trialOfferFocus)
                 .environmentObject(store)
@@ -1283,8 +1263,6 @@ struct MainTabView: View {
             pendingDirectTrialAfterMilestoneDismiss = false
             if startTrial {
                 startMilestoneDirectTrial()
-            } else {
-                presentPendingReviewIfNeeded()
             }
         }) { event in
             MilestoneCelebrationSheet(

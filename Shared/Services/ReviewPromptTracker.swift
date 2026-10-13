@@ -218,8 +218,12 @@ enum ReviewPromptTracker {
         markShown()
     }
 
+    /// Never overwrites `.openedWriteReview`: feedback sent after the review
+    /// page must not reopen the asks that page ended.
     static func markFeedbackSubmitted() {
-        outcome = .submittedFeedback
+        if outcome != .openedWriteReview {
+            outcome = .submittedFeedback
+        }
         markShown()
     }
 }

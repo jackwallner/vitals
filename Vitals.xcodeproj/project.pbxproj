@@ -130,6 +130,7 @@
 		9032987B70D7BDD245847674 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = B25E8EC0600130AD108B5EED /* RevenueCat */; };
 		906DF508C80FAF1F80DCF0FC /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A2306ABF7BBFD87A49291EE7 /* PrivacyInfo.xcprivacy */; };
 		919AF5A699922C5CF56DEC03 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C395EAE504DCAD8464C29AC9 /* PaywallView.swift */; };
+		939DBF0EA874369C5FAB4F74 /* ReviewPromptTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6AECE7D2FEB86748EA85D /* ReviewPromptTracker.swift */; };
 		93B99EBF212EE7E85A345BFB /* VitalsConversionCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1FB17511E85720FB3545D /* VitalsConversionCopy.swift */; };
 		9725925E13483C3B2F385962 /* PaywallVariantOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD96649F6BF18899C0A6326 /* PaywallVariantOverride.swift */; };
 		97B3284F672341E171AA3828 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEC52C3FC9793813DF64549 /* DashboardView.swift */; };
@@ -141,6 +142,7 @@
 		A0599F43FA61D1DE21C89711 /* EnergyAveragesCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B9D5B798B90EA3B5158572 /* EnergyAveragesCalculator.swift */; };
 		A18836B7544E3EA896EE185D /* StepTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9515296920AC1C61887CCD1C /* StepTrendSummary.swift */; };
 		A1E13E3675001BC71870A7DA /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76684FF138F58C3A58A97320 /* StoreService.swift */; };
+		A37F41D487E59DBC81432D52 /* ReviewPromptTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A44C7A591373EE7FB91D88F /* ReviewPromptTrackerTests.swift */; };
 		A4B6CEDA195E50DC02F33264 /* ExcludedDays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8950B6E783926A868F274E1F /* ExcludedDays.swift */; };
 		A60B563B521FAB33291DFE22 /* ExcludedDaysPitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C255483C346AE93483286EF /* ExcludedDaysPitch.swift */; };
 		AC4CC88A6ACE68D5ED34C6FE /* HealthKitLabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A524F44F2C81B258D1BBE67 /* HealthKitLabUITests.swift */; };
@@ -296,6 +298,7 @@
 		208A2706128ED69211B77282 /* CTAGlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTAGlow.swift; sourceTree = "<group>"; };
 		28B688A25476BF08977C9AB3 /* VitalsTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = VitalsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		29693CF9343830E2D9DE2029 /* EnergyAveragesCacheReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyAveragesCacheReaderTests.swift; sourceTree = "<group>"; };
+		2A44C7A591373EE7FB91D88F /* ReviewPromptTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewPromptTrackerTests.swift; sourceTree = "<group>"; };
 		2B294CC1AD718FCB854BF56D /* SeededHealthFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeededHealthFlowUITests.swift; sourceTree = "<group>"; };
 		2C255483C346AE93483286EF /* ExcludedDaysPitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcludedDaysPitch.swift; sourceTree = "<group>"; };
 		2E891A2F146A996DD48C13CD /* VitalsWatchWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VitalsWatchWidget.entitlements; sourceTree = "<group>"; };
@@ -533,6 +536,7 @@
 				B54C348522C2E5E849E5692A /* PaywallFunnelTests.swift */,
 				9783FF0AFACBDEAB6F094A00 /* PaywallUIVariantTests.swift */,
 				7896892E56FE0D79E979DEE7 /* ProjectionCalculatorTests.swift */,
+				2A44C7A591373EE7FB91D88F /* ReviewPromptTrackerTests.swift */,
 				3A32F8EB584C5A7B0BD4CA64 /* VitalsConversionCopyTests.swift */,
 				DBA965A83D5BA425B01A46BC /* WeeklyRecapBuilderTests.swift */,
 			);
@@ -1015,6 +1019,8 @@
 				2DFF246FEF1D0468427BA754 /* PaywallUIVariantTests.swift in Sources */,
 				5E0DEBFC4E1BC41D4FFEA18B /* ProjectionCalculator.swift in Sources */,
 				B9BF75C576EB39B0BBA7D1C6 /* ProjectionCalculatorTests.swift in Sources */,
+				939DBF0EA874369C5FAB4F74 /* ReviewPromptTracker.swift in Sources */,
+				A37F41D487E59DBC81432D52 /* ReviewPromptTrackerTests.swift in Sources */,
 				395FBEEB454541B074B31DB4 /* StepTrendSummary.swift in Sources */,
 				772DF822ECADEC7F4D23EB90 /* SupportMail.swift in Sources */,
 				0E0E46ECA14AB2494C91909D /* VitalsConversionCopy.swift in Sources */,
@@ -1206,7 +1212,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 203;
+				CURRENT_PROJECT_VERSION = 206;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1221,7 +1227,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.8.8;
+				MARKETING_VERSION = 1.8.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1351,7 +1357,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 203;
+				CURRENT_PROJECT_VERSION = 206;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1372,7 +1378,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.8.8;
+				MARKETING_VERSION = 1.8.9;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;

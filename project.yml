@@ -160,6 +160,7 @@ targets:
       - path: Shared/Services/ConversionDiagnostics.swift
       - path: Shared/Utilities/BodyProfileCalculator.swift
       - path: Shared/Models/BodyProfile.swift
+      - path: Shared/Services/ReviewPromptTracker.swift
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES
