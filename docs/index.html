@@ -27,6 +27,7 @@
         "@graph": [
             {
                 "@type": "MobileApplication",
+                "dateModified": "2026-10-15",
                 "@id": "https://jackwallner.com/ios/vitals/#app",
                 "name": "Total Calories - Daily Tracker",
                 "alternateName": "Total Calories",
@@ -242,7 +243,7 @@
         }
 
         .hero h1 span {
-            color: #f25c3a;
+            color: #db340e;
         }
 
         .hero .tagline {
@@ -255,7 +256,7 @@
 
         .hero .platforms {
             font-size: 13px;
-            color: #86868b;
+            color: #6e6e73;
             letter-spacing: 0.3px;
             margin-bottom: 36px;
         }
@@ -343,20 +344,6 @@
         .feature-card {
             background: #fff;
             padding: 36px 32px;
-        }
-
-        .feature-card .label {
-            display: inline-block;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: #86868b;
-            margin-bottom: 10px;
-        }
-
-        .feature-card .label.vitals-plus {
-            color: #f25c3a;
         }
 
         .feature-card h3 {
@@ -464,7 +451,7 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            color: #86868b;
+            color: #6e6e73;
             margin-bottom: 12px;
         }
 
@@ -496,7 +483,7 @@
         }
 
         .specs-table td:first-child {
-            color: #86868b;
+            color: #6e6e73;
             width: 140px;
             font-size: 12px;
             text-transform: uppercase;
@@ -508,7 +495,7 @@
         .faq-list details { border-bottom: 1px solid rgba(0,0,0,0.06); padding: 14px 0; }
         .faq-list summary { font-size: 15px; font-weight: 600; color: #1d1d1f; cursor: pointer; list-style: none; line-height: 1.4; }
         .faq-list summary::-webkit-details-marker { display: none; }
-        .faq-list summary::after { content: "+"; float: right; color: #86868b; font-weight: 400; margin-left: 12px; }
+        .faq-list summary::after { content: "+"; float: right; color: #6e6e73; font-weight: 400; margin-left: 12px; }
         .faq-list details[open] summary::after { content: "\2212"; }
         .faq-list details p { font-size: 15px; line-height: 1.6; color: #6e6e73; margin: 10px 0 0; }
 
@@ -529,7 +516,7 @@
 
         .cta p {
             font-size: 15px;
-            color: #86868b;
+            color: #6e6e73;
             margin-bottom: 28px;
         }
 
@@ -538,11 +525,11 @@
             text-align: center;
             padding: 20px 24px;
             font-size: 12px;
-            color: #86868b;
+            color: #6e6e73;
         }
 
         footer a {
-            color: #86868b;
+            color: #6e6e73;
             text-decoration: none;
             margin: 0 10px;
         }
@@ -567,6 +554,12 @@
 
         @media (max-width: 480px) {
             .showcase-card img { height: 360px; }
+        }
+        .feature-card .tier {
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #db340e;
         }
     </style>
 </head>
@@ -618,42 +611,37 @@
         </div>
         <div class="features-grid">
             <div class="feature-card">
-                <span class="label">Dashboard</span>
                 <h3>Total daily calories</h3>
                 <p>See your active and resting calories in one clean ring. Tap for the breakdown.</p>
             </div>
             <div class="feature-card">
-                <span class="label">History</span>
                 <h3>Trends over time</h3>
                 <p>View 7 days, 30 days, 90 days, a full year, or any custom range. Export to CSV anytime.</p>
             </div>
             <div class="feature-card">
-                <span class="label">Goals</span>
                 <h3>Progress rings</h3>
                 <p>Set daily calorie and step targets with animated rings. Or turn goals off and use it as a counter.</p>
             </div>
             <div class="feature-card">
-                <span class="label vitals-plus">Net Deficit · Vitals+</span>
                 <h3>Burned minus eaten</h3>
                 <p>Connect a food app like MyFitnessPal to Apple Health and see your net calorie balance in real time.</p>
+                <p class="tier">Included with Vitals+</p>
             </div>
             <div class="feature-card">
-                <span class="label vitals-plus">PDF Reports · Vitals+</span>
                 <h3>Monthly summaries</h3>
                 <p>Print-ready PDF reports for any date range. Monthly auto-generate or custom snapshots to share with your doctor.</p>
+                <p class="tier">Included with Vitals+</p>
             </div>
             <div class="feature-card">
-                <span class="label">Widgets</span>
                 <h3>Home &amp; lock screen</h3>
                 <p>Calories and steps on your home screen or lock screen without opening the app.</p>
             </div>
             <div class="feature-card">
-                <span class="label vitals-plus">Deep Trends · Vitals+</span>
                 <h3>Period over period</h3>
                 <p>Compare this week to last, this month to the month before. See what's changing and by how much.</p>
+                <p class="tier">Included with Vitals+</p>
             </div>
             <div class="feature-card">
-                <span class="label">Apple Watch</span>
                 <h3>Complications</h3>
                 <p>Your data on your watch face all day, in circular, rectangular, inline, and corner styles. Full watch app included.</p>
             </div>
@@ -739,7 +727,7 @@
     </section>
 
     <footer>
-        <div class="divider">&copy; 2026 Jack Wallner</div>
+        <div class="divider">&copy; 2026 Jack Wallner · Last updated <time datetime="2026-10-15" data-updated>October 15, 2026</time></div>
         <div>
             <a href="guides.html">Guides</a>
             <a href="support.html">Support</a>
