@@ -597,6 +597,9 @@ final class StoreService: NSObject, ObservableObject {
         // older than the arm falls back to catalog and would otherwise be
         // counted as having seen the treatment.
         attributes["paywall_variant"] = upgradeTabVariant.rawValue
+        // Trial CTA wording test arm. Sent with the funnel record, so only
+        // customers who were actually shown a pitch carry it.
+        attributes[CTAExperiment.attributeKey] = CTAExperiment.arm.rawValue
         if let offering = currentOffering?.identifier {
             attributes["offering_id"] = offering
         }

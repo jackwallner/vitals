@@ -247,7 +247,7 @@ struct PaywallView: View {
     @State private var fullListHeight: CGFloat = 0
     /// Last honest CTA title. The button never falls back to a spinner-only
     /// control (that made the label flicker and hid it from UI tests).
-    @State private var displayedCTATitle: String = "Start Free Trial"
+    @State private var displayedCTATitle: String = CTAExperiment.trialCTATitleCase()
 
     /// Outcome bullets. Intent taps lead with the feature they asked for plus
     /// two related companions.

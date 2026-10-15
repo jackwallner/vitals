@@ -5,18 +5,24 @@ import Foundation
 /// These helpers keep every pitch surface (onboarding, trial sheet, milestone,
 /// paywall, What's New) honest when the user already used their free trial.
 enum VitalsConversionCopy {
-    /// Primary button: trial language only when eligible.
-    static func ctaLabel(trialLabel: String?, priceLabel: String, eligibleForTrial: Bool) -> String {
+    /// Primary button: trial language only when eligible. The trial wording is
+    /// the CTA test's arm; the trial length stays in the badge and disclosure.
+    static func ctaLabel(
+        trialLabel: String?,
+        priceLabel: String,
+        eligibleForTrial: Bool,
+        arm: CTAExperiment.Arm = CTAExperiment.arm
+    ) -> String {
         if eligibleForTrial, let trialLabel, !trialLabel.isEmpty {
-            return "Start \(trialLabel)"
+            return CTAExperiment.trialCTA(arm)
         }
         if priceLabel.isEmpty { return "Continue with Vitals+" }
         return "Continue with Vitals+ for \(priceLabel)"
     }
 
     /// Short capsule CTA used on milestone / What's New (less price noise).
-    static func shortCTALabel(eligibleForTrial: Bool) -> String {
-        eligibleForTrial ? "Start Free Trial" : "Continue with Vitals+"
+    static func shortCTALabel(eligibleForTrial: Bool, arm: CTAExperiment.Arm = CTAExperiment.arm) -> String {
+        eligibleForTrial ? CTAExperiment.trialCTATitleCase(arm) : "Continue with Vitals+"
     }
 
     /// Apple 3.1.2 disclosure adjacent to the purchase button.
@@ -120,12 +126,13 @@ enum VitalsConversionCopy {
         isLifetime: Bool,
         hasIntroOffer: Bool,
         eligibilityResolved: Bool,
-        eligibleForTrial: Bool
+        eligibleForTrial: Bool,
+        arm: CTAExperiment.Arm = CTAExperiment.arm
     ) -> String? {
         guard packageSelected else { return nil }
         if isLifetime { return "Unlock Lifetime" }
         if hasIntroOffer && !eligibilityResolved { return nil }
-        if eligibleForTrial { return "Start Free Trial" }
+        if eligibleForTrial { return CTAExperiment.trialCTATitleCase(arm) }
         return "Subscribe"
     }
 }
