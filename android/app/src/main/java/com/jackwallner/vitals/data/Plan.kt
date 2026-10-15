@@ -111,6 +111,14 @@ data class Plan(
         return currency(projected)
     }
 
+    /** "$0.46" a week for a subscription (yearly over 52, anything else over 4.345); null for one-time products. */
+    val perWeekLabel: String?
+        get() {
+            if (period == null) return null
+            val divisor = if (kind == PackageKind.YEARLY) BigDecimal(52) else BigDecimal("4.345")
+            return currency(price.divide(divisor, MathContext.DECIMAL64))
+        }
+
     /** "7-day free trial" when the plan carries a free-trial offer. */
     val introOfferLabel: String?
         get() {

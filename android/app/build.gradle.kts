@@ -98,6 +98,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.18.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.10.0")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.compose.ui:ui")
@@ -118,6 +119,7 @@ dependencies {
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.4.0")
     androidTestUtil("androidx.test:orchestrator:1.6.1")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.4.20")
     testImplementation("org.json:json:20240303")
     constraints {
         // review-ktx 2.0.2 pulls fragment 1.1.0, which Play reports as outdated.
