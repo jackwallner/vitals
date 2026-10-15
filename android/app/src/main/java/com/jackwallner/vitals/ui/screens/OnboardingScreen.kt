@@ -177,8 +177,8 @@ fun OnboardingScreen(graph: AppGraph) {
             }
         }
         Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp).padding(top = 12.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            // Reserved so the primary button sits at the same y on every page.
-            Box(Modifier.heightIn(min = 46.dp).fillMaxWidth(), contentAlignment = Alignment.BottomCenter) {
+            // Welcome and trial keep a fixed-height slot above the button; goals gives the room back to its two cards.
+            if (step != Step.GOALS) Box(Modifier.heightIn(min = 46.dp).fillMaxWidth(), contentAlignment = Alignment.BottomCenter) {
                 when (step) {
                     Step.WELCOME -> Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
                         Icon(Icons.Filled.Lock, null, tint = palette.textTertiary, modifier = Modifier.size(12.dp))
@@ -191,7 +191,7 @@ fun OnboardingScreen(graph: AppGraph) {
                     }
                 }
             }
-            DisclosureSlot(step == Step.TRIAL, store.onboardingDisclosure)
+            if (step != Step.GOALS) DisclosureSlot(step == Step.TRIAL, store.onboardingDisclosure)
             when (step) {
                 Step.WELCOME -> PrimaryButton("Continue", onClick = {
                     scope.launch {
@@ -210,7 +210,7 @@ fun OnboardingScreen(graph: AppGraph) {
                     )
                 }
             }
-            Row(Modifier.alpha(if (step == Step.TRIAL) 1f else 0f), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+            if (step != Step.GOALS) Row(Modifier.alpha(if (step == Step.TRIAL) 1f else 0f), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                 val enabled = step == Step.TRIAL
                 FooterLink("Terms", enabled) { context.openUrl(Links.TERMS) }
                 FooterLink("Privacy", enabled) { context.openUrl(Links.PRIVACY) }

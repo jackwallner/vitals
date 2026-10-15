@@ -9,5 +9,7 @@ object DebugLaunchOptions {
     var onboardingStep: String? = null
     var overlay: String? = null
 
+    fun prepare(app: VitalsApplication, intent: Intent?) = Unit
+
     fun apply(graph: AppGraph, intent: Intent?) = Unit
 }

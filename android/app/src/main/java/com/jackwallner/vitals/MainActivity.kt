@@ -32,6 +32,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) DebugLaunchOptions.prepare(application as VitalsApplication, intent)
         val graph = graph
         graph.permissions.launch = { healthPermissions.launch(it) }
         if (savedInstanceState == null) {

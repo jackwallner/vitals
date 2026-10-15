@@ -10,4 +10,9 @@ class VitalsApplication : Application() {
         super.onCreate()
         graph = AppGraph(this)
     }
+
+    /** Debug launch extras only: a fresh graph after the stored state was wiped, so nothing stale survives in memory. */
+    fun rebuildGraph() {
+        graph = AppGraph(this)
+    }
 }

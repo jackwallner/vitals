@@ -140,7 +140,7 @@ fun PaywallScreen(graph: AppGraph, focus: PlusFeature?, onClose: (() -> Unit)?) 
             plans.isEmpty() -> EmptyState(store.lastError) { scope.launch { store.fetchProducts() } }
             else -> Column(Modifier.fillMaxSize()) {
                 Column(
-                    Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = Geo.gutter).padding(top = if (onClose != null) 40.dp else 12.dp),
+                    Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = Geo.gutter).padding(top = if (onClose != null) 40.dp else 12.dp, bottom = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     Header(focus)

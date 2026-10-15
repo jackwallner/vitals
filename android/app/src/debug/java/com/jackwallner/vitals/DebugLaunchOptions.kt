@@ -26,14 +26,18 @@ object DebugLaunchOptions {
     var onboardingStep: String? = null
     var overlay: String? = null
 
+    /** Wipes stored state and rebuilds the graph before anything reads it. */
+    fun prepare(app: VitalsApplication, intent: Intent?) {
+        if (intent?.getBooleanExtra("resetAll", false) != true) return
+        app.graph.defaults.keys().toList().forEach { app.graph.defaults.remove(it) }
+        app.rebuildGraph()
+    }
+
     fun apply(graph: AppGraph, intent: Intent?) {
         intent ?: return
         tab = intent.getStringExtra("tab")
         onboardingStep = intent.getStringExtra("onboardingStep")
         overlay = intent.getStringExtra("overlay")
-        if (intent.getBooleanExtra("resetAll", false)) {
-            graph.defaults.keys().toList().forEach { graph.defaults.remove(it) }
-        }
         when (intent.getStringExtra("appearance")) {
             "light" -> graph.settings.chooseAppearance(Appearance.LIGHT)
             "dark" -> graph.settings.chooseAppearance(Appearance.DARK)
@@ -60,8 +64,8 @@ object DebugLaunchOptions {
 
     private fun previewPlans(): List<Plan> = listOf(
         Plan("\$rc_annual", "com.jackwallner.vitals.yearly", PackageKind.YEARLY, 23_990_000, "$23.99", "USD", PlanPeriod(1, PeriodUnit.YEAR), PlanPeriod(7, PeriodUnit.DAY), "Yearly"),
-        Plan("\$rc_monthly", "com.jackwallner.vitals.monthly", PackageKind.MONTHLY, 3_990_000, "$3.99", "USD", PlanPeriod(1, PeriodUnit.MONTH), PlanPeriod(7, PeriodUnit.DAY), "Monthly"),
-        Plan("\$rc_lifetime", "com.jackwallner.vitals.plus.lifetime", PackageKind.LIFETIME, 59_990_000, "$59.99", "USD", null, null, "Lifetime"),
+        Plan("\$rc_monthly", "com.jackwallner.vitals.monthly", PackageKind.MONTHLY, 5_490_000, "$5.49", "USD", PlanPeriod(1, PeriodUnit.MONTH), PlanPeriod(7, PeriodUnit.DAY), "Monthly"),
+        Plan("\$rc_lifetime", "com.jackwallner.vitals.plus.lifetime", PackageKind.LIFETIME, 47_990_000, "$47.99", "USD", null, null, "Lifetime"),
     )
 
     /** Ninety days of plausible wearable data written into Health Connect, so every screen has real input. */
