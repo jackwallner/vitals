@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Debug builds only: the seeder writes test records so Health Connect has data on an emulator. -->
+    <uses-permission android:name="android.permission.health.WRITE_ACTIVE_CALORIES_BURNED" />
+    <uses-permission android:name="android.permission.health.WRITE_TOTAL_CALORIES_BURNED" />
+    <uses-permission android:name="android.permission.health.WRITE_BASAL_METABOLIC_RATE" />
+    <uses-permission android:name="android.permission.health.WRITE_STEPS" />
+    <uses-permission android:name="android.permission.health.WRITE_NUTRITION" />
+    <application>
+        <activity android:name="com.jackwallner.vitals.DebugPermissionActivity" android:exported="true" />
+    </application>
+</manifest>
