@@ -71,8 +71,9 @@ paths:
 
 ## Play state (2026-10-17)
 
-Ready to send (verified 2026-10-17): review code saved in App access, RevenueCat
-Play credentials set. Only Send for review remains, in this app's pacing slot.
+In review: submission 1 (production 1.8.9, versionCode 1, full rollout, 178 countries,
+listing, App content, store settings) sent 2026-10-17 22:25. Managed publishing is off, so it
+goes live on approval. Next: confirm the review result.
 
 Staged, not sent for review. Play app id `4973808117865134124` (E3 Apps). versionCode 1 uploaded;
 listing, graphics and screenshots committed by API (`~/docs/android/tools/play_stage.py`); draft
