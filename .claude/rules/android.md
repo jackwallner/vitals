@@ -77,8 +77,8 @@ releases on internal and production, production targets all 178 countries; produ
 App content answer below is entered. Publishing overview shows "Submit 11 changes for review".
 
 Left for Jack: paste `VITALS_PLAY_REVIEW_CODE` from `~/.vitals_credentials` into App access >
-Password, then Send for review when this app's pacing slot comes. Both steps are scripted: `~/docs/android/tools/play_handoff.py review-codes` and
-`play_handoff.py rc-credentials --apply` (RevenueCat Play credentials, missing as of 2026-10-17). The
+Password, then Send for review when this app's pacing slot comes. Review codes: `~/docs/android/tools/play_handoff.py review-codes`. RevenueCat Play credentials
+were uploaded with `play_handoff.py rc-credentials --apply` on  2026-10-17. The
 RevenueCat service account already has account-wide Play permissions, so no per-app grant is needed.
 
 ## Play Console answers (entered 2026-10-16/17)
