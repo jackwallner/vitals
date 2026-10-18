@@ -12,7 +12,7 @@
     <meta property="og:description" content="Free TDEE calculator using Mifflin-St Jeor, what total daily energy expenditure means, and how to measure your real daily burn with an Apple Watch.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://jackwallner.com/ios/vitals/tdee-calculator.html">
-    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "TDEE calculator and what the number means", "description": "Free TDEE calculator using Mifflin-St Jeor, what total daily energy expenditure means, and how to measure your real daily burn with an Apple Watch.", "author": {"@type": "Person", "name": "Jack Wallner"}, "publisher": {"@type": "Organization", "name": "Total Calories"}, "mainEntityOfPage": "https://jackwallner.github.io/vitals/tdee-calculator.html", "dateModified": "2026-10-15"}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "TDEE calculator and what the number means", "description": "Free TDEE calculator using Mifflin-St Jeor, what total daily energy expenditure means, and how to measure your real daily burn with an Apple Watch.", "author": {"@type": "Person", "name": "Jack Wallner"}, "publisher": {"@type": "Organization", "name": "Total Calories"}, "mainEntityOfPage": "https://jackwallner.github.io/vitals/tdee-calculator.html", "dateModified": "2026-10-18"}</script>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is TDEE the same as calories burned?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. TDEE is the total calories burned in a day, including resting metabolism, digestion and all movement. Fitness trackers usually show only the active portion, so their number is lower than your TDEE."}}, {"@type": "Question", "name": "How accurate is a TDEE calculator?", "acceptedAnswer": {"@type": "Answer", "text": "Formula estimates are typically within about 10% for an average adult, but the activity multiplier is a guess and can add several hundred calories of error. A measured 7 to 30 day average from an Apple Watch reflects your own days instead."}}, {"@type": "Question", "name": "What is a normal TDEE?", "acceptedAnswer": {"@type": "Answer", "text": "Most adults fall between 1,600 and 3,000 kcal a day. Larger, younger, more muscular and more active people sit at the top of that range."}}]}</script>
     <style>* { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif; color: #1d1d1f; background: #fafafa; -webkit-font-smoothing: antialiased; }
@@ -74,8 +74,8 @@ footer .divider { margin: 4px 0; }
     <article>
         <div class="container">
             <h1>TDEE calculator and what the number means</h1>
-            <p class="updated">Last updated <time datetime="2026-10-15" data-updated>October 15, 2026</time></p>
-            <p class="lede">Total daily energy expenditure is every calorie your body burns in a day: resting metabolism, digestion, movement and exercise. Estimate yours below, then learn how an Apple Watch measures it instead.</p>
+            <p class="updated">Last updated <time datetime="2026-10-18" data-updated>October 18, 2026</time></p>
+            <p class="lede">Total daily energy expenditure (TDEE) is the total number of calories that your body burns in a day: resting metabolism, digestion, movement and exercise. Estimate yours below, then learn how an Apple Watch measures it instead.</p>
             
     <div class="calc" id="calc">
       <h2>TDEE calculator</h2>
@@ -122,9 +122,9 @@ footer .divider { margin: 4px 0; }
 })();
 </script>
             
-<h2>What TDEE is</h2>
+<h2>What is TDEE?</h2>
 <p>TDEE is the sum of four things: your basal metabolic rate (the energy that keeps you alive at rest), the thermic effect of food (digestion, roughly 10% of intake), non-exercise activity like walking and fidgeting, and deliberate exercise. For most people resting metabolism is 60 to 70% of the total, which is why two people who train the same can have very different daily burns.</p>
-<h2>How the calculator works</h2>
+<h2>How does the TDEE calculator work?</h2>
 <p>It estimates BMR with the Mifflin-St Jeor equation, the formula with the best accuracy in validation studies for the general population, then multiplies by an activity factor.</p>
 <div class="formula">BMR (men) = 10 x kg + 6.25 x cm - 5 x age + 5<br>BMR (women) = 10 x kg + 6.25 x cm - 5 x age - 161<br>TDEE = BMR x activity factor (1.2 to 1.9)</div>
 <table><tr><th>Activity</th><th>Factor</th><th>Who this fits</th></tr>
@@ -133,12 +133,12 @@ footer .divider { margin: 4px 0; }
 <tr><td>Moderate</td><td>1.55</td><td>Exercise 3 to 5 days a week</td></tr>
 <tr><td>Active</td><td>1.725</td><td>Hard training 6 to 7 days a week</td></tr>
 <tr><td>Very active</td><td>1.9</td><td>Physical job plus daily training</td></tr></table>
-<h2>Why the estimate is often wrong for you</h2>
+<h2>Why is the TDEE estimate often wrong?</h2>
 <p>The activity factor is a guess, and most people pick one level too high. A 1.55 versus 1.375 choice moves the result by about 300 kcal a day, which is the entire margin of a typical fat-loss deficit. The equation also knows nothing about your muscle mass, your sleep, or whether you walked 4,000 or 14,000 steps today.</p>
-<h2>Measuring TDEE with an Apple Watch</h2>
-<p>An Apple Watch records two numbers in Apple Health all day: <strong>resting energy</strong>, its model of your BMR spread across the day, and <strong>active energy</strong>, calories above resting from heart rate and motion. Add them and you have a measured total daily energy expenditure for that specific day, not a population average. The Move ring only shows the active half, which is why it reads so much lower than any TDEE calculator.</p>
+<h2>How do you measure TDEE with an Apple Watch?</h2>
+<p>Add the resting energy and active energy your Apple Watch records in Apple Health. An Apple Watch records two numbers in Apple Health all day: <strong>resting energy</strong>, its model of your BMR spread across the day, and <strong>active energy</strong>, calories above resting from heart rate and motion. Add them and you have a measured total daily energy expenditure for that specific day, not a population average. The Move ring only shows the active half, which is why it reads so much lower than any TDEE calculator.</p>
 <p>Total Calories does that addition for you and keeps the daily history, so a 7-day or 30-day average becomes your working TDEE. That rolling average is more useful than any formula: it already includes your real steps, workouts and lazy Sundays.</p>
-<h2>Using the number</h2>
+<h2>How do you use your TDEE?</h2>
 <ul>
 <li>To maintain weight, eat roughly at your average total burn.</li>
 <li>For fat loss, a deficit of 300 to 500 kcal a day below your measured average is the usual starting point. Bigger is not better for long.</li>
