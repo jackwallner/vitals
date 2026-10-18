@@ -44,7 +44,7 @@ paths:
   `offerings.all["android"] ?: current` and treats any active entitlement as Pro.
 - Shared project risk: Android customers appear in iOS charts and in the offering experiments' customer
   counts. Keep `android` out of every experiment and never make it current.
-- Play products (not created yet, `scripts/play-products.py`, idempotent): subscriptions
+- Play products (created and active 2026-10-17, `scripts/play-products.py`, idempotent): subscriptions
   `com.jackwallner.vitals.monthly` (base plan `monthly`) and `com.jackwallner.vitals.yearly` (base plan
   `yearly`), each with a 7-day free-trial offer `trial-7d`, and one-time `com.jackwallner.vitals.plus.lifetime`.
   Android US ladder about 20% under iOS ($6.99 / $29.99 / $59.99): $5.49 / $23.99 / $47.99, local prices
@@ -61,7 +61,7 @@ paths:
 
 - `PLAY_SERVICE_ACCOUNT_JSON=~/.config/google-play/mahj-service-account.json ./scripts/play-upload.sh
   internal-draft` tests, signs, verifies and uploads. Bump `versionCode` in `android/app/build.gradle.kts`
-  before every upload. Neither script has been run: the Play Console app did not exist on 2026-10-15.
+  before every upload. versionCode 1 is already uploaded (2026-10-17); the next upload needs 2.
 - Listing text: `android/play-assets/metadata/android/en-US/` (title 29, short 68, full under 4000, no
   prices). Graphics: `android/play-assets/` (icon-512, feature-graphic-1024x500, screenshots/light and
   screenshots/dark from the real emulator build). Policy pages: `docs/android-privacy.html` and
@@ -69,7 +69,19 @@ paths:
 - Last verified state 2026-10-15: signed AAB builds (`android/app/build/outputs/bundle/release/app-release.aab`),
   package `com.jackwallner.vitals`, versionCode 1, targetSdk 36, 16 KB aligned. Not uploaded.
 
-## Play Console answers to enter (app does not exist yet)
+## Play state (2026-10-17)
+
+Staged, not sent for review. Play app id `4973808117865134124` (E3 Apps). versionCode 1 uploaded;
+listing, graphics and screenshots committed by API (`~/docs/android/tools/play_stage.py`); draft
+releases on internal and production, production targets all 178 countries; products active; every
+App content answer below is entered. Publishing overview shows "Submit 11 changes for review".
+
+Left for Jack: paste `VITALS_PLAY_REVIEW_CODE` from `~/.vitals_credentials` into App access >
+Password, then Send for review when this app's pacing slot comes. RevenueCat service-account
+credentials for the Play app are still not configured (revenuecat-developer.md B), and the RevenueCat
+service account needs Play access to this app (console-recipes play.md 2).
+
+## Play Console answers (entered 2026-10-16/17)
 
 - App content > Health apps declaration: the app has health and fitness features. Functionality:
   activity and fitness tracking, nutrition and weight management (Net Deficit reads logged food
