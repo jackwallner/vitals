@@ -122,6 +122,8 @@ struct VitalsApp: App {
             guard let task = task as? BGAppRefreshTask else { return }
             Self.handleAppRefresh(task)
         }
+        // Before observers start: background deliveries post the daily notifications.
+        DailyNudgeService.install()
         // Must run on every launch (including background) so observer queries are active
         HealthKitService.shared.enableBackgroundDelivery()
         Self.scheduleAppRefresh()
@@ -173,6 +175,10 @@ struct VitalsApp: App {
             MainTabView()
                 .environmentObject(store)
                 .preferredColorScheme(goals.appearance.colorScheme)
+                .onOpenURL { url in
+                    guard let link = DeepLink(url: url) else { return }
+                    DeepLinkRouter.shared.open(link)
+                }
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
                     Task { await store.updateCustomerProductStatus() }
                 }
@@ -313,6 +319,7 @@ final class TrialOfferCoordinator: ObservableObject {
         case projectionsToggle
         case streaksToggle
         case weeklyRecapToggle
+        case eveningReminderToggle
         case settingsUpgradeRow
         case milestoneCelebration
         case whatsNewAnnouncement
@@ -333,6 +340,8 @@ final class TrialOfferCoordinator: ObservableObject {
             case .projectionsToggle: .projections
             case .streaksToggle: .streaks
             case .weeklyRecapToggle: .weeklyRecap
+            // The streak saver is what the reminder sells hardest.
+            case .eveningReminderToggle: .streaks
             case .bodyProfileDetails: .bodyProfile
             case .excludedDaysRow: .excludedDays
             case .settingsUpgradeRow, .milestoneCelebration, .whatsNewAnnouncement: nil
@@ -387,8 +396,24 @@ final class WeeklyRecapCoordinator: ObservableObject {
     func clear() { pendingPresent = false }
 }
 
-/// Handles weekly-recap notification taps (and foreground presentation) and
-/// forwards to `WeeklyRecapCoordinator`. Installed as the notification-center
+/// Routes widget taps, notification taps, and App Shortcuts to a screen.
+/// `MainTabView` switches tabs and presents the recap; `DashboardView` pushes a
+/// metric's history onto its own stack.
+@MainActor
+final class DeepLinkRouter: ObservableObject {
+    static let shared = DeepLinkRouter()
+
+    @Published var pending: DeepLink?
+    /// Set by `MainTabView` once it has switched to Today, for the dashboard to push.
+    @Published var pendingMetric: DeepLink.Metric?
+
+    private init() {}
+
+    func open(_ link: DeepLink) { pending = link }
+}
+
+/// Handles notification taps (and foreground presentation): the weekly recap
+/// and the daily notifications' deep links. Installed as the notification-center
 /// delegate in `VitalsApp.init`.
 final class VitalsNotificationDelegate: NSObject, UNUserNotificationCenterDelegate, @unchecked Sendable {
     static let shared = VitalsNotificationDelegate()
@@ -405,6 +430,12 @@ final class VitalsNotificationDelegate: NSObject, UNUserNotificationCenterDelega
         didReceive response: UNNotificationResponse
     ) async {
         let info = response.notification.request.content.userInfo
+        if let raw = info[DeepLink.userInfoKey] as? String,
+           let url = URL(string: raw),
+           let link = DeepLink(url: url) {
+            await MainActor.run { DeepLinkRouter.shared.open(link) }
+            return
+        }
         guard info[NotificationService.recapRouteKey] as? String == NotificationService.recapRouteValue else { return }
         await MainActor.run { WeeklyRecapCoordinator.shared.request() }
     }
@@ -417,6 +448,7 @@ struct MainTabView: View {
     @StateObject private var milestoneCoordinator = MilestoneCoordinator.shared
     @StateObject private var recapCoordinator = WeeklyRecapCoordinator.shared
     @StateObject private var reviewPromptCoordinator = ReviewPromptCoordinator.shared
+    @StateObject private var deepLinkRouter = DeepLinkRouter.shared
     @State private var selectedTab = 0
     #if DEBUG
     /// Taps on the Upgrade tab while already on it, counted toward the hidden
@@ -801,6 +833,22 @@ struct MainTabView: View {
         }
     }
 
+    private func handlePendingDeepLink() {
+        guard let link = deepLinkRouter.pending else { return }
+        deepLinkRouter.pending = nil
+        guard goals.hasCompletedSetup else { return }
+        switch link {
+        case .today:
+            selectedTab = 0
+        case .metric(let metric):
+            selectedTab = 0
+            NotificationCenter.default.post(name: .vitalsDismissSettings, object: nil)
+            deepLinkRouter.pendingMetric = metric
+        case .weeklyRecap:
+            WeeklyRecapCoordinator.shared.request()
+        }
+    }
+
     /// Passive review ask after a positive moment (e.g. a daily goal). Waits for
     /// the on-dashboard celebration toast to clear; never fires on cold launch.
     private func scheduleReviewPromptAfterPositiveMoment() {
@@ -1169,6 +1217,10 @@ struct MainTabView: View {
             selectedTab = 0
             showWeeklyRecap = true
         }
+        .onChange(of: deepLinkRouter.pending) { _, _ in handlePendingDeepLink() }
+        // A cold launch from a widget or notification sets the link before this
+        // view subscribes, so onChange alone would miss it.
+        .onAppear { handlePendingDeepLink() }
         .onChange(of: reviewPromptCoordinator.pendingPresentation) { _, presentation in
             guard let presentation else { return }
             defer { reviewPromptCoordinator.clear() }

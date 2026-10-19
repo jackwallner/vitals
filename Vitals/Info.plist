@@ -20,6 +20,24 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.jackwallner.vitals</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>totalcalories</string>
+			</array>
+		</dict>
+	</array>
+	<key>INAlternativeAppNames</key>
+	<array>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>Total Calories</string>
+		</dict>
+	</array>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>ITSAppUsesNonExemptEncryption</key>

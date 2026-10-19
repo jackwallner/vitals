@@ -83,6 +83,11 @@ GoalSettings  →  UserDefaults (App Group)  →  Widgets read goals directly
 | `appearance` | Int | 0 | 0=system, 1=light, 2=dark |
 | `excludedDays` | [String] | absent | "yyyy-MM-dd" days the user took out of every computed figure (Vitals+, 1.8.6) |
 | `averagesPausedSince` | Date | absent | Running pause: every day from here through today is excluded until the user resumes |
+| `goalReachedNotificationsEnabled` | Bool | true | Free "goal reached" push, posted from the background HealthKit refresh (`DailyNudgeService`); silent until notifications are authorized |
+| `eveningReminderEnabled` / `eveningReminderMinutes` | Bool / Int | false / 1140 | Vitals+ evening "to go" reminder with streak saver, rescheduled on every today-cache write |
+| `hasAnsweredNotificationAsk` | Bool | false | Dashboard card asking for notification permission at the first goal hit |
+| `calorieGoalSetAt` / `stepGoalSetAt` | Date | absent | Last goal change; `GoalRecalibration` waits 14 days after one |
+| `goalSuggestionSnoozedUntil.<metric>` | Date | absent | "Keep" on the goal recalibration card hides it 30 days |
 
 ### Excluded Days (Vitals+, 1.8.6)
 
@@ -116,3 +121,16 @@ Nothing is deleted: excluded days stay in charts (dimmed), in Recent Days
   would never clear it.
 - The watch mirrors both halves over `GoalSyncKeys.excludedDays` /
   `.averagesPausedSince`; the iOS widget reads `ExcludedDays.effectiveKeys`.
+
+### Daily notifications, deep links, intents
+
+- `HealthKitService.onTodayCacheSaved` runs after every today-cache write
+  (observer, BG refresh, dashboard). The iOS app installs `DailyNudgeService`
+  there: goal-reached push (skipped while the app is active, deduped against the
+  dashboard's `goalCelebration.*` keys) and the Vitals+ evening reminder (one
+  pending request, rewritten each refresh). Copy and rules: `DailyNudgePlanner`.
+- `DeepLink` (`totalcalories://today|recap|metric/<name>`) is the one URL shape
+  for widget taps, notification `userInfo`, and App Shortcuts. `DeepLinkRouter`
+  switches tabs; `DashboardView` pushes the metric onto its `NavigationPath`.
+- App Intents (`Vitals/Intents`): calories and steps today, live HealthKit with a
+  cache fallback while locked. `INAlternativeAppNames` gives Siri "Total Calories".

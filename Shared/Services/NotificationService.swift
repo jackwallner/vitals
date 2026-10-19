@@ -44,6 +44,10 @@ enum NotificationService {
         }
     }
 
+    static func authorizationStatus() async -> UNAuthorizationStatus {
+        await UNUserNotificationCenter.current().notificationSettings().authorizationStatus
+    }
+
     /// True when the user has authorized (or provisionally authorized) notifications.
     static func isAuthorized() async -> Bool {
         let settings = await UNUserNotificationCenter.current().notificationSettings()

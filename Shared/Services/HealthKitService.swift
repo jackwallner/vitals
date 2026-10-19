@@ -915,7 +915,13 @@ final class HealthKitService: ObservableObject {
         try context.save()
         WidgetCenter.shared.reloadAllTimelines()
         healthKitLogger.info("Saved today cache and reloaded widget timelines")
+        await onTodayCacheSaved?(resolvedStats)
     }
+
+    /// Runs after every successful today-cache write, foreground or background
+    /// (observer queries, BG refresh). The iOS app installs the daily
+    /// notifications here; the watch and the widget leave it nil.
+    var onTodayCacheSaved: (@MainActor (_ stats: (active: Double, resting: Double, steps: Int)) async -> Void)?
 
     /// Finalizes recent *completed* days in the shared cache from live HealthKit.
     ///

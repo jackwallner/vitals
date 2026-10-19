@@ -94,6 +94,12 @@ struct DashboardView: View {
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
     @EnvironmentObject private var store: StoreService
+    @StateObject private var deepLinkRouter = DeepLinkRouter.shared
+    /// Explicit so a widget or notification tap can push a metric's history.
+    @State private var navPath = NavigationPath()
+    /// The one card that can sit under the header: the notification ask or a
+    /// goal recalibration. Never both, so Today stays a glance.
+    @State private var prompt: DashboardPrompt?
 
     /// Extra bottom clearance for the paused-averages banner. It and the tab bar
     /// are one overlay stack in `MainTabView`, ignoring the bottom safe area, so
@@ -273,7 +279,7 @@ struct DashboardView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navPath) {
             ZStack {
                 Theme.background
                     .ignoresSafeArea()
@@ -324,6 +330,8 @@ struct DashboardView: View {
                 HistoryView(focusMetric: metric)
                     .environmentObject(store)
             }
+        .onChange(of: deepLinkRouter.pendingMetric) { _, _ in openPendingMetric() }
+        .onAppear { openPendingMetric() }
         .onChange(of: goals.showNetCalories) { _, enabled in
             guard enabled, store.isPro else { return }
             // Covering-sheet path uses `pendingNetDeficitDietaryAuth` and requests
@@ -366,8 +374,12 @@ struct DashboardView: View {
             // if the user still has the toggle on.
             if oldValue && !isPro {
                 NotificationService.cancelWeeklyRecap()
+                DailyNudgeService.cancelEveningReminder()
             } else if !oldValue && isPro && goals.weeklyRecapEnabled {
                 Task { await NotificationService.scheduleWeeklyRecap() }
+            }
+            if !oldValue && isPro && goals.eveningReminderEnabled {
+                Task { await DailyNudgeService.refreshEveningReminder() }
             }
         }
         .onChange(of: scenePhase) { _, newPhase in
@@ -597,6 +609,13 @@ struct DashboardView: View {
             if let healthNotice {
                 healthNoticeBanner(healthNotice)
                     .opacity(animateContent ? 1 : 0)
+            }
+
+            if let prompt, healthNotice == nil {
+                promptCard(prompt)
+                    .padding(.horizontal, 24)
+                    .padding(.top, 12)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
             }
 
             Spacer(minLength: 16)
@@ -1520,7 +1539,7 @@ struct DashboardView: View {
         guard crossedCalories || crossedSteps else { return }
 
         ReviewPromptTracker.recordPositiveMoment()
-        NotificationCenter.default.post(name: .vitalsPositiveMomentForReview, object: nil)
+        Task { await followUpGoalMoment() }
 
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
@@ -1534,6 +1553,32 @@ struct DashboardView: View {
             message = "Step goal reached!"
         }
         showCelebration(message)
+    }
+
+    /// One ask per goal moment. The first time, while notifications have never
+    /// been asked about, the card offering them takes the moment and the review
+    /// ask waits for the next goal (the tracker keeps it pending).
+    private func followUpGoalMoment() async {
+        if !goals.hasAnsweredNotificationAsk,
+           await NotificationService.authorizationStatus() == .notDetermined {
+            // After the celebration toast, not on top of it.
+            try? await Task.sleep(for: .seconds(2.8))
+            withAnimation(reduceMotion ? .none : .snappy) { prompt = .notifications }
+            return
+        }
+        NotificationCenter.default.post(name: .vitalsPositiveMomentForReview, object: nil)
+    }
+
+    private func openPendingMetric() {
+        guard let link = deepLinkRouter.pendingMetric else { return }
+        deepLinkRouter.pendingMetric = nil
+        guard let metric = HistoryMetric(rawValue: link.rawValue) else { return }
+        switch metric {
+        case .net where !isNetDeficitEnabled, .macros where !isMacrosEnabled:
+            return
+        default:
+            navPath = NavigationPath([metric])
+        }
     }
 
     private func showCelebration(_ message: String) {
@@ -1897,6 +1942,7 @@ struct DashboardView: View {
         stepStreak = goals.stepGoal.map { goal in
             MilestoneCalculator.currentStreak(records: days, excludedKeys: excluded) { $0.steps >= goal }
         } ?? 0
+        offerGoalRecalibrationIfNeeded(days: days, excluded: excluded)
 
         // Celebration sheets are a non-Pro upsell, fired off the *combined* streak
         // (hit either goal) - the broadest "on a roll" signal, best for conversion.
@@ -1924,6 +1970,179 @@ struct DashboardView: View {
             firedIds: goals.firedMilestoneIds
         ) else { return }
         MilestoneCoordinator.shared.request(milestone)
+    }
+}
+
+// MARK: - Dashboard prompt card
+
+private enum DashboardPrompt: Equatable {
+    case notifications
+    case goal(GoalRecalibration.Suggestion)
+}
+
+extension DashboardView {
+    @MainActor
+    fileprivate func offerGoalRecalibrationIfNeeded(days: [MilestoneDay], excluded: Set<String>) {
+        guard prompt == nil, goals.hasCompletedSetup else { return }
+        let calorieSuggestion = goals.showCalories ? GoalRecalibration.suggestion(
+            metric: .calories,
+            goal: goals.calorieGoal,
+            days: days.map { ($0.date, $0.calories) },
+            excludedKeys: excluded,
+            goalSetAt: goals.calorieGoalSetAt,
+            snoozedUntil: goals.goalSuggestionSnoozedUntil(.calories)
+        ) : nil
+        let stepSuggestion = goals.showSteps ? GoalRecalibration.suggestion(
+            metric: .steps,
+            goal: goals.stepGoal.map(Double.init),
+            days: days.map { ($0.date, Double($0.steps)) },
+            excludedKeys: excluded,
+            goalSetAt: goals.stepGoalSetAt,
+            snoozedUntil: goals.goalSuggestionSnoozedUntil(.steps)
+        ) : nil
+        guard let suggestion = calorieSuggestion ?? stepSuggestion else { return }
+        withAnimation(reduceMotion ? .none : .snappy) { prompt = .goal(suggestion) }
+    }
+
+    @ViewBuilder
+    fileprivate func promptCard(_ prompt: DashboardPrompt) -> some View {
+        switch prompt {
+        case .notifications:
+            PromptCard(
+                icon: "bell.badge.fill",
+                tint: Theme.caloriesPrimary,
+                title: "Know when you hit your goal",
+                message: store.isPro
+                    ? "Get a notification when you reach a goal, plus your weekly recap on Sunday evenings."
+                    : "Get a notification when you reach a goal, even with the app closed.",
+                primaryTitle: "Turn On",
+                secondaryTitle: "Not Now",
+                onPrimary: { Task { await acceptNotificationAsk() } },
+                onSecondary: {
+                    goals.hasAnsweredNotificationAsk = true
+                    dismissPrompt()
+                }
+            )
+        case .goal(let suggestion):
+            goalPromptCard(suggestion)
+        }
+    }
+
+    private func goalPromptCard(_ suggestion: GoalRecalibration.Suggestion) -> some View {
+        let isSteps = suggestion.metric == .steps
+        let noun = isSteps ? "step" : "calorie"
+        let unit = isSteps ? "steps" : "cal"
+        let current = Int(suggestion.currentGoal).formatted(.number)
+        let suggested = Int(suggestion.suggestedGoal).formatted(.number)
+        let title: String
+        let message: String
+        let primary: String
+        switch suggestion.direction {
+        case .raise:
+            title = "You hit your \(noun) goal on \(suggestion.hits) of your last \(suggestion.daysWithData) days"
+            message = "Raise it to \(suggested) \(unit) to keep it a stretch?"
+            primary = "Raise to \(suggested)"
+        case .lower:
+            title = "Your \(noun) goal has been out of reach"
+            message = "You hit it on \(suggestion.hits) of your last \(suggestion.daysWithData) days. A typical day for you is \(suggested) \(unit)."
+            primary = "Set to \(suggested)"
+        }
+        return PromptCard(
+            icon: isSteps ? "figure.walk" : "flame.fill",
+            tint: isSteps ? Theme.stepsPrimary : Theme.caloriesPrimary,
+            title: title,
+            message: message,
+            primaryTitle: primary,
+            secondaryTitle: "Keep \(current)",
+            onPrimary: {
+                switch suggestion.metric {
+                case .calories: goals.calorieGoal = suggestion.suggestedGoal
+                case .steps: goals.stepGoal = Int(suggestion.suggestedGoal)
+                }
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                dismissPrompt()
+            },
+            onSecondary: {
+                goals.snoozeGoalSuggestion(suggestion.metric)
+                dismissPrompt()
+            }
+        )
+    }
+
+    private func acceptNotificationAsk() async {
+        goals.hasAnsweredNotificationAsk = true
+        let granted = await NotificationService.requestAuthorization()
+        dismissPrompt()
+        guard granted else { return }
+        goals.goalReachedNotificationsEnabled = true
+        if store.isPro && !goals.weeklyRecapEnabled {
+            goals.weeklyRecapEnabled = true
+            await NotificationService.scheduleWeeklyRecap()
+        }
+    }
+
+    private func dismissPrompt() {
+        withAnimation(reduceMotion ? .none : .snappy) { prompt = nil }
+    }
+}
+
+/// A single in-flow card under the Today header: one question, one primary
+/// answer, one way out.
+private struct PromptCard: View {
+    let icon: String
+    let tint: Color
+    let title: String
+    let message: String
+    let primaryTitle: String
+    let secondaryTitle: String
+    let onPrimary: () -> Void
+    let onSecondary: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .top, spacing: 12) {
+                Image(systemName: icon)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(tint)
+                    .frame(width: 32, height: 32)
+                    .background(tint.opacity(0.14), in: Circle())
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(title)
+                        .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                        .foregroundStyle(Theme.textPrimary)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text(message)
+                        .font(.system(.footnote, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            HStack(spacing: 8) {
+                Button(action: onPrimary) {
+                    Text(primaryTitle)
+                        .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 9)
+                        .background(tint, in: Capsule())
+                }
+                .buttonStyle(.plain)
+                Button(action: onSecondary) {
+                    Text(secondaryTitle)
+                        .font(.system(.subheadline, design: .rounded, weight: .medium))
+                        .foregroundStyle(Theme.textSecondary)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 9)
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(.leading, 44)
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .accessibilityElement(children: .contain)
     }
 }
 
@@ -2024,6 +2243,7 @@ private enum SettingsInfoTopic: Identifiable {
     case endOfDayProjection
     case goalStreak
     case weeklyRecap
+    case eveningReminder
     case bodyProfile
 
     var id: Self { self }
@@ -2039,6 +2259,7 @@ private enum SettingsInfoTopic: Identifiable {
         case .endOfDayProjection: "End-of-Day Projection"
         case .goalStreak: "Goal Streak"
         case .weeklyRecap: "Weekly Recap"
+        case .eveningReminder: "Evening Reminder"
         case .bodyProfile: "Body Profile"
         }
     }
@@ -2054,6 +2275,7 @@ private enum SettingsInfoTopic: Identifiable {
         case .endOfDayProjection: "chart.line.uptrend.xyaxis"
         case .goalStreak: "flame.fill"
         case .weeklyRecap: "calendar.badge.clock"
+        case .eveningReminder: "bell.badge"
         case .bodyProfile: "figure"
         }
     }
@@ -2081,6 +2303,8 @@ private enum SettingsInfoTopic: Identifiable {
             "Counts consecutive days you hit a calorie or step goal. Empty days break the streak."
         case .weeklyRecap:
             "A Sunday evening notification summarizing your week. Turning it on asks permission to notify you."
+        case .eveningReminder:
+            "On days a goal is still open, a notification at the time you pick with what's left, like 2,100 steps or about 200 active calories. When a goal streak is at stake, it leads with the streak. Nothing is sent on days you're already there."
         case .bodyProfile:
             "Your BMI, free, calculated from the height and weight already in Apple Health. No Health data? Enter them by hand instead."
         }
@@ -3261,6 +3485,7 @@ private struct SettingsSheet: View {
     /// raised in the same tick as the first one closes is dropped.
     @State private var wantsPlanPicker = false
     @FocusState private var focusedGoalField: GoalField?
+    @State private var notificationStatus: UNAuthorizationStatus = .notDetermined
 
     private enum GoalField: Hashable { case calories, steps, macro(MacroKind) }
 
@@ -3564,6 +3789,65 @@ private struct SettingsSheet: View {
         )
     }
 
+    private var goalReachedBinding: Binding<Bool> {
+        Binding(
+            get: { goals.goalReachedNotificationsEnabled && notificationStatus != .denied },
+            set: { enabled in
+                goals.goalReachedNotificationsEnabled = enabled
+                if enabled { Task { await ensureNotificationPermission() } }
+            }
+        )
+    }
+
+    private var eveningReminderBinding: Binding<Bool> {
+        Binding(
+            get: { store.isPro && goals.eveningReminderEnabled && notificationStatus != .denied },
+            set: { enabled in
+                if store.isPro {
+                    goals.eveningReminderEnabled = enabled
+                    Task {
+                        if enabled { await ensureNotificationPermission() }
+                        await DailyNudgeService.refreshEveningReminder()
+                    }
+                } else if enabled {
+                    goals.eveningReminderEnabled = false
+                    requestTrialOffer(.eveningReminderToggle)
+                }
+            }
+        )
+    }
+
+    private var eveningReminderTimeBinding: Binding<Date> {
+        Binding(
+            get: {
+                let minutes = goals.eveningReminderMinutes
+                return Calendar.current.date(bySettingHour: minutes / 60, minute: minutes % 60, second: 0, of: .now) ?? .now
+            },
+            set: { date in
+                let parts = Calendar.current.dateComponents([.hour, .minute], from: date)
+                goals.eveningReminderMinutes = (parts.hour ?? 19) * 60 + (parts.minute ?? 0)
+                Task { await DailyNudgeService.refreshEveningReminder() }
+            }
+        )
+    }
+
+    /// Asks the first time a notification switch goes on; the system only ever
+    /// shows its prompt once, so later calls just read the answer back.
+    private func ensureNotificationPermission() async {
+        if notificationStatus == .notDetermined {
+            await NotificationService.requestAuthorization()
+            goals.hasAnsweredNotificationAsk = true
+        }
+        notificationStatus = await NotificationService.authorizationStatus()
+    }
+
+    private var notificationsFooter: String {
+        if notificationStatus == .denied {
+            return "Notifications are off for Total Calories in iOS Settings."
+        }
+        return "Goal Reached tells you the first time each goal is met in a day, even with the app closed."
+    }
+
     /// Answer the tap where it happened: the pitch opens over Settings, and
     /// closing it puts the user back on the row they tapped.
     ///
@@ -3624,6 +3908,12 @@ private struct SettingsSheet: View {
     private func applyGoalDrafts() {
         guard !appliedGoalDrafts else { return }
         appliedGoalDrafts = true
+        commitGoalDrafts()
+    }
+
+    /// Writes every valid draft through; an invalid one is left for the user to
+    /// fix and the stored goal keeps its last good value meanwhile.
+    private func commitGoalDrafts() {
         if calEnabled {
             if let cal = Double(calText), (500...50000).contains(cal) {
                 goals.calorieGoal = cal
@@ -3693,7 +3983,7 @@ private struct SettingsSheet: View {
                 } footer: {
                     // What each Vitals+ switch does now lives on its own ⓘ, so
                     // the footer is down to the two facts no row can carry.
-                    Text("What you burn, from Apple Health. Goal changes save when you close Settings.")
+                    Text("What you burn, from Apple Health.")
                 }
 
                 // Calorie Intake — everything read from logged food, in the order
@@ -3812,7 +4102,7 @@ private struct SettingsSheet: View {
                 } header: {
                     Text("Steps")
                 } footer: {
-                    Text("Goal changes save when you close Settings; other settings apply instantly.")
+                    Text("Counted by your iPhone and Apple Watch in Apple Health.")
                 }
 
                 // Pacing & Projections — the "how am I tracking today" family.
@@ -3862,16 +4152,34 @@ private struct SettingsSheet: View {
                     Text(excludedDaysFooter)
                 }
 
-                // Notifications — Weekly Recap is the only push the app sends, so
-                // it gets its own native section.
+                // Notifications: the free goal-reached push first, then the
+                // two Vitals+ ones.
                 Section {
+                    Toggle("Goal Reached", isOn: goalReachedBinding)
+                    settingsToggleRow(
+                        "Evening Reminder",
+                        isOn: eveningReminderBinding,
+                        topic: .eveningReminder
+                    )
+                    if store.isPro && goals.eveningReminderEnabled && notificationStatus != .denied {
+                        DatePicker("Remind at", selection: eveningReminderTimeBinding, displayedComponents: .hourAndMinute)
+                    }
                     settingsToggleRow(
                         "Weekly Recap",
                         isOn: weeklyRecapBinding,
                         topic: .weeklyRecap
                     )
+                    if notificationStatus == .denied {
+                        Button("Turn On in iOS Settings") {
+                            if let url = URL(string: UIApplication.openNotificationSettingsURLString) {
+                                UIApplication.shared.open(url)
+                            }
+                        }
+                    }
                 } header: {
                     Text("Notifications")
+                } footer: {
+                    Text(notificationsFooter)
                 }
 
                 Section("Appearance") {
@@ -3990,6 +4298,14 @@ private struct SettingsSheet: View {
             .onDisappear {
                 applyGoalDrafts()
             }
+            // Goals save as you go: a toggle the moment it flips, a typed target
+            // when you leave its field. Saving per keystroke would write 1,200
+            // on the way to 12,000 and churn the widgets and the watch.
+            .onChange(of: focusedGoalField) { oldField, _ in
+                if oldField != nil { commitGoalDrafts() }
+            }
+            .onChange(of: calEnabled) { _, _ in commitGoalDrafts() }
+            .onChange(of: stepEnabled) { _, _ in commitGoalDrafts() }
             .preferredColorScheme(goals.appearance.colorScheme)
             .sheet(item: $trialPitch, onDismiss: {
                 if store.isPro {
@@ -3997,6 +4313,13 @@ private struct SettingsSheet: View {
                     // and Macros route through DashboardView, which closes
                     // Settings first so HealthKit's permission sheet can appear.
                     PlusFeatureActivation.apply(lastPitch?.featureToEnable, goals: goals)
+                    if lastPitch?.intent == .eveningReminderToggle {
+                        goals.eveningReminderEnabled = true
+                        Task {
+                            await ensureNotificationPermission()
+                            await DailyNudgeService.refreshEveningReminder()
+                        }
+                    }
                 }
                 if wantsPlanPicker {
                     wantsPlanPicker = false
@@ -4030,6 +4353,11 @@ private struct SettingsSheet: View {
                     uniqueKeysWithValues: MacroKind.allCases.map { ($0, String(goals.storedMacroGoal(for: $0))) }
                 )
                 Task { await store.updateCustomerProductStatus() }
+                Task { notificationStatus = await NotificationService.authorizationStatus() }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                // Back from iOS Settings with notifications switched on.
+                Task { notificationStatus = await NotificationService.authorizationStatus() }
             }
         }
     }

@@ -17,6 +17,8 @@ struct TrialPitchRequest: Identifiable {
     /// headline and subheadline. See `ExcludedDaysPitch`.
     var headline: String?
     var subheadline: String?
+    /// The tap that raised this pitch, for settings `featureToEnable` can't name.
+    var intent: TrialOfferCoordinator.Intent?
 
     /// A feature tap. `impressionID` names the surface, not the feature, so the
     /// RevenueCat series stay comparable across builds.
@@ -24,6 +26,7 @@ struct TrialPitchRequest: Identifiable {
         focus = intent.focusFeature
         self.impressionID = impressionID
         featureToEnable = TrialPitchRequest.toggleGatedFeature(for: intent)
+        self.intent = intent
     }
 
     /// The Excluded Days pitch, led by one of the user's own days when there is

@@ -48,6 +48,35 @@ struct VitalsTimelineProvider: TimelineProvider {
 
     @MainActor
     private func fetchLatestEntry() -> VitalsEntry {
+        var entry = fetchTodayEntry()
+        entry.week = fetchWeek()
+        return entry
+    }
+
+    /// The last seven days, oldest first, today included. Missing days are
+    /// zero so the large widget's bars keep their weekday slots.
+    @MainActor
+    private func fetchWeek() -> [WidgetDay] {
+        let calendar = Calendar.current
+        let today = DateHelpers.startOfDay()
+        guard let start = calendar.date(byAdding: .day, value: -6, to: today) else { return [] }
+        let startKey = DailyHealthRecord.key(for: start)
+        let descriptor = FetchDescriptor<DailyHealthRecord>(
+            predicate: #Predicate { $0.dateString >= startKey }
+        )
+        let records = (try? DataService.sharedModelContainer.mainContext.fetch(descriptor)) ?? []
+        let byKey = Dictionary(records.map { ($0.dateString, $0) }, uniquingKeysWith: { lhs, rhs in
+            lhs.lastUpdated >= rhs.lastUpdated ? lhs : rhs
+        })
+        return (0..<7).compactMap { offset in
+            guard let day = calendar.date(byAdding: .day, value: offset, to: start) else { return nil }
+            let record = byKey[DailyHealthRecord.key(for: day)]
+            return WidgetDay(date: day, calories: record?.totalCalories ?? 0, steps: record?.steps ?? 0)
+        }
+    }
+
+    @MainActor
+    private func fetchTodayEntry() -> VitalsEntry {
         let todayKey = DailyHealthRecord.key(for: DateHelpers.startOfDay())
         let container = DataService.sharedModelContainer
         let goals = loadGoals()
@@ -126,6 +155,22 @@ struct VitalsEntry: TimelineEntry {
     var dataAvailable: Bool = true
     /// When set, the values are from a prior day (today's cache hasn't been written yet).
     var staleDate: Date? = nil
+    /// Last seven days, oldest first, for the large widget.
+    var week: [WidgetDay] = []
+
+    /// Where a tap on the whole widget goes: the first metric it shows.
+    var primaryLink: URL {
+        if showCalories { return DeepLink.metric(.calories).url }
+        if showSteps { return DeepLink.metric(.steps).url }
+        if showNetCalories { return DeepLink.metric(.net).url }
+        return DeepLink.today.url
+    }
+}
+
+struct WidgetDay: Hashable {
+    let date: Date
+    let calories: Double
+    let steps: Int
 }
 
 // MARK: - Widget Views
@@ -220,6 +265,7 @@ struct SmallWidgetView: View {
                         .foregroundStyle(Theme.textTertiary)
                 }
             }
+            .widgetURL(entry.primaryLink)
             .containerBackground(.fill.tertiary, for: .widget)
         } else {
             VStack(spacing: 8) {
@@ -273,6 +319,7 @@ struct MediumWidgetView: View {
                 HStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: columnSpacing) {
                     if entry.showCalories {
+                        Link(destination: DeepLink.metric(.calories).url) {
                         VStack(alignment: .leading, spacing: innerSpacing) {
                             Label("Calories", systemImage: "flame.fill")
                                 .font(.caption2)
@@ -290,8 +337,10 @@ struct MediumWidgetView: View {
                                 }
                             }
                         }
+                        }
                     }
                     if entry.showSteps {
+                        Link(destination: DeepLink.metric(.steps).url) {
                         VStack(alignment: .leading, spacing: innerSpacing) {
                             Label("Steps", systemImage: "figure.walk")
                                 .font(.caption2)
@@ -309,8 +358,10 @@ struct MediumWidgetView: View {
                                 }
                             }
                         }
+                        }
                     }
                     if entry.showNetCalories {
+                        Link(destination: DeepLink.metric(.net).url) {
                         VStack(alignment: .leading, spacing: innerSpacing) {
                             Label("Net Deficit", systemImage: "fork.knife")
                                 .font(.caption2)
@@ -320,6 +371,7 @@ struct MediumWidgetView: View {
                                 .foregroundStyle(entry.netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.6)
+                        }
                         }
                     }
                     if metricCount == 0 {
@@ -351,6 +403,7 @@ struct MediumWidgetView: View {
                 }
                 } // close inner HStack
             } // close outer VStack
+            .widgetURL(entry.primaryLink)
             .containerBackground(.fill.tertiary, for: .widget)
         } else {
             HStack(spacing: 12) {
@@ -389,6 +442,7 @@ struct CircularAccessoryView: View {
             .gaugeStyle(.accessoryCircular)
             .tint(Theme.caloriesPrimary)
             .opacity(staleOpacity)
+            .widgetURL(DeepLink.metric(.calories).url)
             .containerBackground(.fill.tertiary, for: .widget)
         } else {
             VStack(spacing: 1) {
@@ -402,6 +456,7 @@ struct CircularAccessoryView: View {
                     .foregroundStyle(.secondary)
             }
             .opacity(staleOpacity)
+            .widgetURL(DeepLink.metric(.calories).url)
             .containerBackground(.fill.tertiary, for: .widget)
         }
     }
@@ -485,7 +540,34 @@ struct RectangularAccessoryView: View {
             }
         }
         .opacity(staleOpacity)
+        .widgetURL(DeepLink.today.url)
         .containerBackground(.fill.tertiary, for: .widget)
+    }
+}
+
+/// One line on the Lock Screen above the clock. The system draws it in its own
+/// font and tint, so all this decides is the words.
+struct InlineAccessoryView: View {
+    let entry: VitalsEntry
+
+    private var text: String {
+        var parts: [String] = []
+        if entry.showCalories {
+            parts.append("\(entry.totalCalories.formatted(.number.precision(.fractionLength(0)))) cal")
+        }
+        if entry.showSteps {
+            parts.append("\(entry.steps.formatted(.number)) steps")
+        }
+        if parts.isEmpty, entry.showNetCalories {
+            parts.append("\(entry.netDeficit.formatted(.number.precision(.fractionLength(0)).sign(strategy: .always()))) net")
+        }
+        return parts.joined(separator: " · ")
+    }
+
+    var body: some View {
+        Label(text, systemImage: entry.showCalories ? "flame.fill" : "figure.walk")
+            .widgetURL(DeepLink.today.url)
+            .containerBackground(.fill.tertiary, for: .widget)
     }
 }
 
@@ -505,6 +587,10 @@ struct VitalsWidgetEntryView: View {
             CircularAccessoryView(entry: entry)
         case .accessoryRectangular:
             RectangularAccessoryView(entry: entry)
+        case .accessoryInline:
+            InlineAccessoryView(entry: entry)
+        case .systemLarge:
+            LargeWidgetView(entry: entry)
         default:
             SmallWidgetView(entry: entry)
         }
@@ -535,8 +621,10 @@ struct VitalsWidget: Widget {
         .supportedFamilies([
             .systemSmall,
             .systemMedium,
+            .systemLarge,
             .accessoryCircular,
             .accessoryRectangular,
+            .accessoryInline,
         ])
     }
 }

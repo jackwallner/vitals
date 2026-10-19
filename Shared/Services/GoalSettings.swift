@@ -631,6 +631,46 @@ final class GoalSettings: ObservableObject {
         didSet { defaults.set(weeklyRecapEnabled, forKey: "weeklyRecapEnabled") }
     }
 
+    /// Free: a notification the first time each goal is met today, posted from
+    /// the background HealthKit refresh. Default on, but nothing is sent until
+    /// the user grants notification permission (asked at their first goal hit).
+    @Published var goalReachedNotificationsEnabled: Bool {
+        didSet { defaults.set(goalReachedNotificationsEnabled, forKey: "goalReachedNotificationsEnabled") }
+    }
+
+    /// Vitals+: an evening "to go" reminder on days a goal is still open, led by
+    /// the streak at stake when there is one. Default off.
+    @Published var eveningReminderEnabled: Bool {
+        didSet { defaults.set(eveningReminderEnabled, forKey: "eveningReminderEnabled") }
+    }
+
+    /// Evening reminder time as minutes after midnight. Default 7:00 PM.
+    @Published var eveningReminderMinutes: Int {
+        didSet { defaults.set(eveningReminderMinutes, forKey: "eveningReminderMinutes") }
+    }
+
+    static let defaultEveningReminderMinutes = 19 * 60
+
+    /// The dashboard's one-time "turn on notifications" card has been answered.
+    @Published var hasAnsweredNotificationAsk: Bool {
+        didSet { defaults.set(hasAnsweredNotificationAsk, forKey: "hasAnsweredNotificationAsk") }
+    }
+
+    /// When each goal last changed value. nil = before this was tracked, which
+    /// the recalibration card reads as "long enough ago".
+    private(set) var calorieGoalSetAt: Date?
+    private(set) var stepGoalSetAt: Date?
+
+    func goalSuggestionSnoozedUntil(_ metric: GoalRecalibration.Metric) -> Date? {
+        defaults.object(forKey: "goalSuggestionSnoozedUntil.\(metric.rawValue)") as? Date
+    }
+
+    func snoozeGoalSuggestion(_ metric: GoalRecalibration.Metric, now: Date = .now) {
+        let until = Calendar.current.date(byAdding: .day, value: GoalRecalibration.snoozeDays, to: now) ?? now
+        defaults.set(until, forKey: "goalSuggestionSnoozedUntil.\(metric.rawValue)")
+        objectWillChange.send()
+    }
+
     // nil means "no goal" — just show the counter
     @Published var calorieGoal: Double? {
         didSet {
@@ -639,6 +679,10 @@ final class GoalSettings: ObservableObject {
                 defaults.set(true, forKey: "calorieGoalEnabled")
             } else {
                 defaults.set(false, forKey: "calorieGoalEnabled")
+            }
+            if calorieGoal != oldValue {
+                calorieGoalSetAt = .now
+                defaults.set(calorieGoalSetAt, forKey: "calorieGoalSetAt")
             }
             WidgetCenter.shared.reloadAllTimelines()
         }
@@ -651,6 +695,10 @@ final class GoalSettings: ObservableObject {
                 defaults.set(true, forKey: "stepGoalEnabled")
             } else {
                 defaults.set(false, forKey: "stepGoalEnabled")
+            }
+            if stepGoal != oldValue {
+                stepGoalSetAt = .now
+                defaults.set(stepGoalSetAt, forKey: "stepGoalSetAt")
             }
             WidgetCenter.shared.reloadAllTimelines()
         }
@@ -738,6 +786,13 @@ final class GoalSettings: ObservableObject {
         self.showProjections = defaults.object(forKey: "showProjections") as? Bool ?? false
         self.showStreaks = defaults.object(forKey: "showStreaks") as? Bool ?? false
         self.weeklyRecapEnabled = defaults.object(forKey: "weeklyRecapEnabled") as? Bool ?? false
+        self.goalReachedNotificationsEnabled = defaults.object(forKey: "goalReachedNotificationsEnabled") as? Bool ?? true
+        self.eveningReminderEnabled = defaults.object(forKey: "eveningReminderEnabled") as? Bool ?? false
+        let reminderMinutes = defaults.object(forKey: "eveningReminderMinutes") as? Int ?? Self.defaultEveningReminderMinutes
+        self.eveningReminderMinutes = (0..<1440).contains(reminderMinutes) ? reminderMinutes : Self.defaultEveningReminderMinutes
+        self.hasAnsweredNotificationAsk = defaults.bool(forKey: "hasAnsweredNotificationAsk")
+        self.calorieGoalSetAt = defaults.object(forKey: "calorieGoalSetAt") as? Date
+        self.stepGoalSetAt = defaults.object(forKey: "stepGoalSetAt") as? Date
         self.pickedExcludedDayKeys = ExcludedDays.load(from: defaults)
         self.averagesPausedSince = ExcludedDays.loadPausedSince(from: defaults)
 
