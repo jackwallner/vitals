@@ -94,6 +94,7 @@
 		59C3C65D81A869280C685079 /* ExcludedDaysPitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C255483C346AE93483286EF /* ExcludedDaysPitch.swift */; };
 		5A19413C5A9673172FC29C82 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		5AA3D87130295D2BFFC2F125 /* DailyNudgePlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E8DEA481D9C4E9461832D5 /* DailyNudgePlanner.swift */; };
+		5DBC8E77AA454B17231D8F7A /* AuditFeaturesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE594FF27D6233DB728F7D5A /* AuditFeaturesUITests.swift */; };
 		5E0DEBFC4E1BC41D4FFEA18B /* ProjectionCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE9370DC12BAC7716DA62A5 /* ProjectionCalculator.swift */; };
 		602FAE5FA1371FA6A1510FB9 /* MacroTotals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E59FD786F13C21C0F91701C /* MacroTotals.swift */; };
 		60592DE2EE57591183C06DD0 /* NetDeficitTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */; };
@@ -219,6 +220,7 @@
 		DFEC7CED445526DD11F88757 /* MacroTotals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E59FD786F13C21C0F91701C /* MacroTotals.swift */; };
 		E05F8EF1DEF21E25F3E7D9F6 /* MacroGoalSelectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EDD6A929AC5CB3DFDD1844 /* MacroGoalSelectionTests.swift */; };
 		E0AB34071857A374FB32E3DC /* SupportMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5DAB758DDA2F38199CF3E /* SupportMail.swift */; };
+		E1B8C2D3D9429F163F7A9864 /* AuditHooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A437363E257769CE62250CF /* AuditHooks.swift */; };
 		E301042E1AFB8011E2FD493C /* OnboardingFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D69AA5CE048C7FF360D80A3 /* OnboardingFlowUITests.swift */; };
 		E423A6BC1D2F4FB0E197829B /* MilestoneCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604A7C1098FB8101FE9A3365 /* MilestoneCalculator.swift */; };
 		E48D5DCE8E5EA92DBEA311A3 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
@@ -315,6 +317,7 @@
 
 /* Begin PBXFileReference section */
 		029E0F56D793DA022CCA3D3F /* WeeklyRecap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyRecap.swift; sourceTree = "<group>"; };
+		0A437363E257769CE62250CF /* AuditHooks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditHooks.swift; sourceTree = "<group>"; };
 		0BDBBE9238310745A59DB7C9 /* BodyProfileCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyProfileCalculatorTests.swift; sourceTree = "<group>"; };
 		12B24F616BC26BFF25C64684 /* SummaryReportGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryReportGenerator.swift; sourceTree = "<group>"; };
 		139F5B0C64C45205FEFCDD22 /* EnergyAveragesCacheReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyAveragesCacheReader.swift; sourceTree = "<group>"; };
@@ -395,6 +398,7 @@
 		BA4334C2CE63928C06983EA7 /* ScreenshotConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotConfig.swift; sourceTree = "<group>"; };
 		BB4287B137F6F3AD1263CD07 /* MacroTotalsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroTotalsTests.swift; sourceTree = "<group>"; };
 		BB68B0FAC8D1E8A883919106 /* Vitals.storekit */ = {isa = PBXFileReference; path = Vitals.storekit; sourceTree = "<group>"; };
+		BE594FF27D6233DB728F7D5A /* AuditFeaturesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditFeaturesUITests.swift; sourceTree = "<group>"; };
 		BF04B417D7D981D153784336 /* DailyNudgePlannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyNudgePlannerTests.swift; sourceTree = "<group>"; };
 		BFEC52C3FC9793813DF64549 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		C395EAE504DCAD8464C29AC9 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
@@ -493,6 +497,7 @@
 		301E5653E037D208D48F8802 /* VitalsUITests */ = {
 			isa = PBXGroup;
 			children = (
+				BE594FF27D6233DB728F7D5A /* AuditFeaturesUITests.swift */,
 				C5F6A6AE22A02C84F2077B36 /* ExcludedDaysUITests.swift */,
 				5A524F44F2C81B258D1BBE67 /* HealthKitLabUITests.swift */,
 				9D69AA5CE048C7FF360D80A3 /* OnboardingFlowUITests.swift */,
@@ -691,6 +696,7 @@
 		CA0215C7D63A9C794C6D9C15 /* Debug */ = {
 			isa = PBXGroup;
 			children = (
+				0A437363E257769CE62250CF /* AuditHooks.swift */,
 				1CFAFB48ADD8CF9B4DBB796A /* HealthKitLabHarness.swift */,
 				6D5166BB647E86A840CBAEF3 /* HealthKitSeeder.swift */,
 			);
@@ -1112,6 +1118,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5DBC8E77AA454B17231D8F7A /* AuditFeaturesUITests.swift in Sources */,
 				75DF1DC0913DA36B2351FFF0 /* ExcludedDaysUITests.swift in Sources */,
 				AC4CC88A6ACE68D5ED34C6FE /* HealthKitLabUITests.swift in Sources */,
 				E301042E1AFB8011E2FD493C /* OnboardingFlowUITests.swift in Sources */,
@@ -1126,6 +1133,7 @@
 			files = (
 				DC70232ABC8F8424A8F1C444 /* App.swift in Sources */,
 				3183517189A7686F14352F26 /* AppStoreReviewLinks.swift in Sources */,
+				E1B8C2D3D9429F163F7A9864 /* AuditHooks.swift in Sources */,
 				4D80D2D1466FF2C79D3D7173 /* BodyProfile.swift in Sources */,
 				64DF4D70D8C01EF659F6FC1B /* BodyProfileCalculator.swift in Sources */,
 				E9C1C6F2822D7E58043F9D18 /* BodyProfileStore.swift in Sources */,

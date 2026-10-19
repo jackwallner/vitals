@@ -64,8 +64,9 @@ enum HealthKitSeeder {
             let isToday = offset == 0
             let wobble = sin(Double(offset) / 3.2)
             let resting = 1_620 + wobble * 40
-            let activeKcal = isToday ? 420 + wobble * 30 : 520 + wobble * 160
-            let stepCount = isToday ? 4_800 : 8_400 + wobble * 2_200
+            let scale = AuditScale.forDay(isToday: isToday)
+            let activeKcal = (isToday ? 420 + wobble * 30 : 520 + wobble * 160) * scale.active
+            let stepCount = (isToday ? 4_800 : 8_400 + wobble * 2_200) * scale.steps
             let food = isToday ? 1_150 : 1_980 + wobble * 180
             let proteinG = isToday ? 72.0 : 138 + wobble * 18
             let carbsG = isToday ? 110.0 : 195 + wobble * 28
@@ -120,6 +121,17 @@ enum HealthKitSeeder {
                 }
             }
         }
+    }
+}
+
+/// Audit-only multipliers so one seeded history can sit on either side of a
+/// goal. `VITALS_SEED_PAST_ACTIVE`, `VITALS_SEED_PAST_STEPS`,
+/// `VITALS_SEED_TODAY_ACTIVE`, `VITALS_SEED_TODAY_STEPS` (default 1).
+enum AuditScale {
+    static func forDay(isToday: Bool) -> (active: Double, steps: Double) {
+        let env = ProcessInfo.processInfo.environment
+        let prefix = isToday ? "VITALS_SEED_TODAY_" : "VITALS_SEED_PAST_"
+        return (Double(env[prefix + "ACTIVE"] ?? "") ?? 1, Double(env[prefix + "STEPS"] ?? "") ?? 1)
     }
 }
 #endif

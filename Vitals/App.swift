@@ -197,6 +197,7 @@ struct VitalsApp: App {
                     if DebugLaunchConfig.seedHealth {
                         await HealthKitSeeder.run()
                     }
+                    AuditHooks.start()
                     #endif
                     #if canImport(WatchConnectivity)
                     PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
