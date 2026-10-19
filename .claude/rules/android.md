@@ -122,9 +122,10 @@ RevenueCat service account already has account-wide Play permissions, so no per-
   by copying `small_phone.avd/config.ini` as in `~/ironman/.claude/rules/android.md`, API 36 image (not
   36.1, instrumentation breaks there). Stop it with `adb -s emulator-5562 emu kill` on Pro, then delete
   only `~/.android/avd/vitals_agent_test.avd` and `.ini`.
-- Pro has no JDK 17: build both APKs on this Mac (`./gradlew assembleDebug assembleDebugAndroidTest`,
-  Temurin 17), then `scripts/android-pro.sh install | test [class] | shot <png> | adb <args>`.
-- Unit tests: `cd android && ./gradlew testDebugUnitTest` (100 tests, JVM, in-memory store).
+- Build both APKs on jmbp: from `android/`, `fm-gradle assembleDebug assembleDebugAndroidTest` (copies
+  the outputs back), then `scripts/android-pro.sh install | test [class] | shot <png> | adb <args>`.
+  Only signed `bundleRelease`/`assembleRelease` run here with `./gradlew` (the upload key stays here).
+- Unit tests: `cd android && fm-gradle testDebugUnitTest` (100 tests, JVM, in-memory store).
 - Debug launch extras (debug build only, `DebugLaunchOptions.kt`): `resetAll` (wipes state and rebuilds
   the graph), `seedDemo` (90 days written into Health Connect, needs the HC write grants made once
   through `DebugPermissionActivity`), `completeSetup`, `demoPro`, `previewStore`, `appearance`
