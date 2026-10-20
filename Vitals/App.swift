@@ -1904,10 +1904,12 @@ private struct PremiumActionRow: View {
                 Text(title)
                     .font(.system(.subheadline, design: .rounded, weight: .semibold))
                     .foregroundStyle(Theme.textPrimary)
+                // Three lines: the Duo's folded display loses width to its
+                // side status bar, and two lines cut the detail mid-word.
                 Text(detail)
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textSecondary)
-                    .lineLimit(2)
+                    .lineLimit(3)
             }
             Spacer(minLength: 8)
             if isEnabled {
