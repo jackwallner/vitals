@@ -27,13 +27,13 @@ enum TodaySnapshotError: Error, CustomLocalizedStringResourceConvertible {
     case locked
 
     var localizedStringResource: LocalizedStringResource {
-        "Unlock your iPhone so Total Calories can read today's numbers from Apple Health."
+        "Unlock your iPhone so Total Calories can read today's numbers from Health."
     }
 }
 
 struct TodayCaloriesIntent: AppIntent {
     static let title: LocalizedStringResource = "Calories Burned Today"
-    static let description = IntentDescription("Your total calories burned today, active plus resting, from Apple Health.")
+    static let description = IntentDescription("Your total calories burned today, active plus resting, from Health.")
     static let openAppWhenRun = false
 
     @MainActor
@@ -55,7 +55,7 @@ struct TodayCaloriesIntent: AppIntent {
 
 struct TodayStepsIntent: AppIntent {
     static let title: LocalizedStringResource = "Steps Today"
-    static let description = IntentDescription("Your step count so far today, from Apple Health.")
+    static let description = IntentDescription("Your step count so far today, from Health.")
     static let openAppWhenRun = false
 
     @MainActor
