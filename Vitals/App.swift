@@ -85,6 +85,22 @@ private final class PhoneGoalSyncService: NSObject, WCSessionDelegate {
 /// scene's `WindowGroup` closure observes nothing: on iOS 27, SwiftUI's async
 /// renderer re-evaluated that closure off the main thread when an observed
 /// object changed, and its main-actor isolation check trapped (SIGTRAP).
+#if DEBUG
+/// Capture-only: walks Today, History, Upgrade and Settings every few seconds
+/// so a native recording shows real tab and sheet transitions.
+@MainActor
+private func runScreenshotTour() async {
+    let stops = ["today", "history", "upgrade", "settings"]
+    try? await Task.sleep(nanoseconds: 6_000_000_000)
+    while !Task.isCancelled {
+        for stop in stops {
+            NotificationCenter.default.post(name: .vitalsDebugShot, object: stop)
+            try? await Task.sleep(nanoseconds: 4_000_000_000)
+        }
+    }
+}
+#endif
+
 private struct RootView: View {
     @ObservedObject private var goals = GoalSettings.shared
     @ObservedObject private var store = StoreService.shared
@@ -97,6 +113,8 @@ private struct RootView: View {
                 #if DEBUG
                 // Capture-only routes (`totalcalories://shot/history|today|upgrade|settings`)
                 // so one launch can photograph every main screen.
+                // simctl openurl raises an "Open in" system alert, so capture
+                // runs drive the same routes with `VITALS_SCREENSHOT_TOUR=1`.
                 if url.host?.lowercased() == "shot" {
                     NotificationCenter.default.post(
                         name: .vitalsDebugShot,
@@ -127,6 +145,9 @@ private struct RootView: View {
                     await HealthKitSeeder.run()
                 }
                 AuditHooks.start()
+                if ProcessInfo.processInfo.environment["VITALS_SCREENSHOT_TOUR"] == "1" {
+                    await runScreenshotTour()
+                }
                 #endif
                 #if canImport(WatchConnectivity)
                 PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
@@ -1165,11 +1186,11 @@ struct MainTabView: View {
                         selectedTab = 2
                     }
                 }
-                .readableWidth(420)
                 .padding(.horizontal, 8)
                 .padding(.vertical, 6)
                 .background(.ultraThinMaterial.opacity(0.8), in: Capsule())
                 .overlay(Capsule().stroke(Color(.separator).opacity(0.3), lineWidth: 0.5))
+                .readableWidth(420)
                 #if DEBUG
                 .overlay(alignment: .top) { variantToast }
                 #endif
