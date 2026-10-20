@@ -60,7 +60,7 @@ struct StepProgressBar: View {
                 // Fill
                 Capsule()
                     .fill(gradient)
-                    .frame(width: geo.size.width * min(progress, 1.0))
+                    .frame(width: geo.size.width * (progress.isFinite ? min(max(progress, 0), 1) : 0))
                     .shadow(color: glowColor, radius: 6, x: 0, y: 0)
             }
         }

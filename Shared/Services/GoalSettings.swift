@@ -660,6 +660,10 @@ final class GoalSettings: ObservableObject {
     /// the recalibration card reads as "long enough ago".
     private(set) var calorieGoalSetAt: Date?
     private(set) var stepGoalSetAt: Date?
+    /// True through `init`: loading the stored goals runs their `didSet`
+    /// (they are default-initialized to nil first), which must not count as the
+    /// user changing the goal, or every launch restarts the recalibration settle.
+    private var isLoading = true
 
     func goalSuggestionSnoozedUntil(_ metric: GoalRecalibration.Metric) -> Date? {
         defaults.object(forKey: "goalSuggestionSnoozedUntil.\(metric.rawValue)") as? Date
@@ -680,7 +684,7 @@ final class GoalSettings: ObservableObject {
             } else {
                 defaults.set(false, forKey: "calorieGoalEnabled")
             }
-            if calorieGoal != oldValue {
+            if calorieGoal != oldValue, !isLoading {
                 calorieGoalSetAt = .now
                 defaults.set(calorieGoalSetAt, forKey: "calorieGoalSetAt")
             }
@@ -696,7 +700,7 @@ final class GoalSettings: ObservableObject {
             } else {
                 defaults.set(false, forKey: "stepGoalEnabled")
             }
-            if stepGoal != oldValue {
+            if stepGoal != oldValue, !isLoading {
                 stepGoalSetAt = .now
                 defaults.set(stepGoalSetAt, forKey: "stepGoalSetAt")
             }
@@ -706,6 +710,9 @@ final class GoalSettings: ObservableObject {
 
     private init() {
         let defaults = UserDefaults(suiteName: DataService.appGroupID) ?? .standard
+        if DebugLaunchConfig.resetState {
+            defaults.removePersistentDomain(forName: DataService.appGroupID)
+        }
         self.defaults = defaults
 
         self.hasCompletedSetup = defaults.bool(forKey: "hasCompletedSetup")
@@ -821,6 +828,7 @@ final class GoalSettings: ObservableObject {
             defaults.set(WhatsNew.currentVersion, forKey: "lastWhatsNewVersionShown")
         }
 
+        isLoading = false
         applyScreenshotOverridesIfNeeded()
         #if DEBUG
         if DebugLaunchConfig.forceSetupComplete {

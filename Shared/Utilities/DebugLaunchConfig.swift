@@ -55,6 +55,12 @@ enum DebugLaunchConfig {
     static var pausedDaysAgo: Int? {
         ProcessInfo.processInfo.environment["VITALS_PAUSED_DAYS_AGO"].flatMap(Int.init)
     }
+
+    /// Wipe the App Group settings before they load, so a UI test starts from
+    /// install defaults (goals, ask flags, snoozes). `VITALS_RESET_STATE=1`.
+    static var resetState: Bool {
+        ProcessInfo.processInfo.environment["VITALS_RESET_STATE"] == "1"
+    }
 #else
     static var upgradeTabOverride: PaywallUIVariant? { nil }
     static var seedHealth: Bool { false }
@@ -63,5 +69,6 @@ enum DebugLaunchConfig {
     static var staleProCache: Bool { false }
     static var revenueCatAppUserID: String? { nil }
     static var pausedDaysAgo: Int? { nil }
+    static var resetState: Bool { false }
 #endif
 }

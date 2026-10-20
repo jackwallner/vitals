@@ -30,6 +30,9 @@ extension Notification.Name {
     /// dietary HealthKit permission sheet can present without being covered.
     static let vitalsDismissSettings = Notification.Name("vitalsDismissSettings")
 
+    /// A `today` deep link: pop any metric page pushed on the Today stack.
+    static let vitalsPopToToday = Notification.Name("vitalsPopToToday")
+
     /// Pro user turned Net Deficit on (Settings toggle or Vitals+ Enable). Host
     /// must dismiss covering sheets first, then flip the setting and request
     /// dietary HealthKit auth — otherwise the system permission UI is suppressed.

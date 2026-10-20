@@ -405,6 +405,9 @@ struct DashboardView: View {
         .onReceive(NotificationCenter.default.publisher(for: .vitalsDismissSettings)) { _ in
             showSettings = false
         }
+        .onReceive(NotificationCenter.default.publisher(for: .vitalsPopToToday)) { _ in
+            navPath = NavigationPath()
+        }
         .onReceive(NotificationCenter.default.publisher(for: .vitalsEnableNetDeficitWithDietaryAuth)) { _ in
             beginEnableNetDeficitWithDietaryAuth()
         }
@@ -615,7 +618,15 @@ struct DashboardView: View {
                 promptCard(prompt)
                     .padding(.horizontal, 24)
                     .padding(.top, 12)
-                    .transition(.opacity.combined(with: .move(edge: .top)))
+                    // Fades in place under the header (a .move from the top edge
+                    // slid it over the date and gear). The ring below makes room
+                    // first, then the card fades in; on removal it fades fast,
+                    // before the ring slides back up through its space.
+                    .transition(.asymmetric(
+                        insertion: .opacity.animation(.easeOut(duration: 0.2).delay(0.2)),
+                        removal: .opacity.animation(.easeOut(duration: 0.1))
+                    ))
+                    .zIndex(1)
             }
 
             Spacer(minLength: 16)
@@ -2001,7 +2012,13 @@ extension DashboardView {
             snoozedUntil: goals.goalSuggestionSnoozedUntil(.steps)
         ) : nil
         guard let suggestion = calorieSuggestion ?? stepSuggestion else { return }
-        withAnimation(reduceMotion ? .none : .snappy) { prompt = .goal(suggestion) }
+        // A beat after the day's numbers land, in its own transaction: inserted
+        // with the stats load, the card popped in unanimated and the layout jumped.
+        Task {
+            try? await Task.sleep(for: .seconds(0.6))
+            guard prompt == nil else { return }
+            withAnimation(reduceMotion ? .none : .snappy) { prompt = .goal(suggestion) }
+        }
     }
 
     @ViewBuilder
@@ -2142,6 +2159,9 @@ private struct PromptCard: View {
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        // Animate as one unit: inserted mid-transition (a sheet closing), the
+        // pill and text otherwise interpolated separately and overprinted.
+        .geometryGroup()
         .accessibilityElement(children: .contain)
     }
 }
@@ -3722,7 +3742,15 @@ private struct SettingsSheet: View {
             .disabled(toggleDisabled)
             if expandedInfoTopic == topic {
                 SettingsInfoCallout(topic: topic)
-                    .transition(.opacity.combined(with: .move(edge: .top)))
+                    // Fades in place under the header (a .move from the top edge
+                    // slid it over the date and gear). The ring below makes room
+                    // first, then the card fades in; on removal it fades fast,
+                    // before the ring slides back up through its space.
+                    .transition(.asymmetric(
+                        insertion: .opacity.animation(.easeOut(duration: 0.2).delay(0.2)),
+                        removal: .opacity.animation(.easeOut(duration: 0.1))
+                    ))
+                    .zIndex(1)
             }
         }
     }
@@ -4221,7 +4249,15 @@ private struct SettingsSheet: View {
                         }
                         if expandedInfoTopic == .bodyProfile {
                             SettingsInfoCallout(topic: .bodyProfile)
-                                .transition(.opacity.combined(with: .move(edge: .top)))
+                                // Fades in place under the header (a .move from the top edge
+                    // slid it over the date and gear). The ring below makes room
+                    // first, then the card fades in; on removal it fades fast,
+                    // before the ring slides back up through its space.
+                    .transition(.asymmetric(
+                        insertion: .opacity.animation(.easeOut(duration: 0.2).delay(0.2)),
+                        removal: .opacity.animation(.easeOut(duration: 0.1))
+                    ))
+                    .zIndex(1)
                         }
                     }
                 } header: {

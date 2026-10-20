@@ -81,11 +81,100 @@ private final class PhoneGoalSyncService: NSObject, WCSessionDelegate {
 }
 #endif
 
+/// The app's content and its app-wide hooks. Kept out of `VitalsApp` so the
+/// scene's `WindowGroup` closure observes nothing: on iOS 27, SwiftUI's async
+/// renderer re-evaluated that closure off the main thread when an observed
+/// object changed, and its main-actor isolation check trapped (SIGTRAP).
+private struct RootView: View {
+    @ObservedObject private var goals = GoalSettings.shared
+    @ObservedObject private var store = StoreService.shared
+
+    var body: some View {
+        MainTabView()
+            .environmentObject(store)
+            .preferredColorScheme(goals.appearance.colorScheme)
+            .onOpenURL { url in
+                guard let link = DeepLink(url: url) else { return }
+                DeepLinkRouter.shared.open(link)
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                Task { await store.updateCustomerProductStatus() }
+            }
+            // Local midnight (also a timezone change or a manual clock change).
+            // Finalizes the day that just ended and rewrites today's row, so an
+            // app left running across midnight doesn't keep showing the old day
+            // and the widgets don't inherit a partial final day.
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.significantTimeChangeNotification)) { _ in
+                Task {
+                    await HealthKitService.shared.finalizeDayRolloverIfNeeded()
+                    try? await HealthKitService.shared.refreshCache()
+                }
+            }
+            .task {
+                #if DEBUG
+                if DebugLaunchConfig.seedHealth {
+                    await HealthKitSeeder.run()
+                }
+                AuditHooks.start()
+                #endif
+                #if canImport(WatchConnectivity)
+                PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                #endif
+            }
+            .onChange(of: goals.calorieGoal) { _, _ in
+                #if canImport(WatchConnectivity)
+                PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                #endif
+            }
+            .onChange(of: goals.stepGoal) { _, _ in
+                #if canImport(WatchConnectivity)
+                PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                #endif
+            }
+            .onChange(of: goals.showNetCalories) { _, _ in
+                #if canImport(WatchConnectivity)
+                PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                #endif
+            }
+            .onChange(of: goals.netDeficitFastingMode) { _, _ in
+                #if canImport(WatchConnectivity)
+                PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                #endif
+            }
+            .onChange(of: store.isPro) { _, _ in
+                #if canImport(WatchConnectivity)
+                PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                #endif
+            }
+            .onChange(of: goals.showCalories) { _, _ in
+                #if canImport(WatchConnectivity)
+                PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                #endif
+            }
+            .onChange(of: goals.showSteps) { _, _ in
+                #if canImport(WatchConnectivity)
+                PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                #endif
+            }
+            .onChange(of: goals.pickedExcludedDayKeys) { _, _ in
+                #if canImport(WatchConnectivity)
+                PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                #endif
+            }
+            .onChange(of: goals.averagesPausedSince) { _, _ in
+                #if canImport(WatchConnectivity)
+                PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
+                #endif
+            }
+    
+    }
+}
+
 @main
 struct VitalsApp: App {
-    @StateObject private var healthKit = HealthKitService.shared
-    @StateObject private var goals = GoalSettings.shared
-    @StateObject private var store = StoreService.shared
+    // Computed, not stored: init must run before either singleton is created.
+    private var goals: GoalSettings { .shared }
+    private var store: StoreService { .shared }
 
     private static let refreshTaskID = "com.jackwallner.vitals.refresh"
 
@@ -161,92 +250,13 @@ struct VitalsApp: App {
                     .environmentObject(store)
                     .preferredColorScheme(goals.appearance.colorScheme)
             } else {
-                mainContent
+                RootView()
             }
             #else
-            mainContent
+            RootView()
             #endif
         }
         .modelContainer(DataService.sharedModelContainer)
-    }
-
-    @ViewBuilder
-    private var mainContent: some View {
-            MainTabView()
-                .environmentObject(store)
-                .preferredColorScheme(goals.appearance.colorScheme)
-                .onOpenURL { url in
-                    guard let link = DeepLink(url: url) else { return }
-                    DeepLinkRouter.shared.open(link)
-                }
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-                    Task { await store.updateCustomerProductStatus() }
-                }
-                // Local midnight (also a timezone change or a manual clock change).
-                // Finalizes the day that just ended and rewrites today's row, so an
-                // app left running across midnight doesn't keep showing the old day
-                // and the widgets don't inherit a partial final day.
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.significantTimeChangeNotification)) { _ in
-                    Task {
-                        await HealthKitService.shared.finalizeDayRolloverIfNeeded()
-                        try? await HealthKitService.shared.refreshCache()
-                    }
-                }
-                .task {
-                    #if DEBUG
-                    if DebugLaunchConfig.seedHealth {
-                        await HealthKitSeeder.run()
-                    }
-                    #endif
-                    #if canImport(WatchConnectivity)
-                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
-                    #endif
-                }
-                .onChange(of: goals.calorieGoal) { _, _ in
-                    #if canImport(WatchConnectivity)
-                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
-                    #endif
-                }
-                .onChange(of: goals.stepGoal) { _, _ in
-                    #if canImport(WatchConnectivity)
-                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
-                    #endif
-                }
-                .onChange(of: goals.showNetCalories) { _, _ in
-                    #if canImport(WatchConnectivity)
-                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
-                    #endif
-                }
-                .onChange(of: goals.netDeficitFastingMode) { _, _ in
-                    #if canImport(WatchConnectivity)
-                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
-                    #endif
-                }
-                .onChange(of: store.isPro) { _, _ in
-                    #if canImport(WatchConnectivity)
-                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
-                    #endif
-                }
-                .onChange(of: goals.showCalories) { _, _ in
-                    #if canImport(WatchConnectivity)
-                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
-                    #endif
-                }
-                .onChange(of: goals.showSteps) { _, _ in
-                    #if canImport(WatchConnectivity)
-                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
-                    #endif
-                }
-                .onChange(of: goals.pickedExcludedDayKeys) { _, _ in
-                    #if canImport(WatchConnectivity)
-                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
-                    #endif
-                }
-                .onChange(of: goals.averagesPausedSince) { _, _ in
-                    #if canImport(WatchConnectivity)
-                    PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
-                    #endif
-                }
     }
 
     static func scheduleAppRefresh() {
@@ -418,26 +428,36 @@ final class DeepLinkRouter: ObservableObject {
 final class VitalsNotificationDelegate: NSObject, UNUserNotificationCenterDelegate, @unchecked Sendable {
     static let shared = VitalsNotificationDelegate()
 
+    // Completion-handler forms on purpose: the async variants resume on a
+    // cooperative thread, and on iOS 27 UIKit asserts (SIGABRT) when a tap's
+    // completion is not called on the main thread.
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
-        willPresent notification: UNNotification
-    ) async -> UNNotificationPresentationOptions {
-        [.banner, .sound]
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
+        completionHandler([.banner, .sound])
     }
 
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
-        didReceive response: UNNotificationResponse
-    ) async {
+        didReceive response: UNNotificationResponse,
+        withCompletionHandler completionHandler: @escaping () -> Void
+    ) {
         let info = response.notification.request.content.userInfo
-        if let raw = info[DeepLink.userInfoKey] as? String,
-           let url = URL(string: raw),
-           let link = DeepLink(url: url) {
-            await MainActor.run { DeepLinkRouter.shared.open(link) }
-            return
+        let link = (info[DeepLink.userInfoKey] as? String).flatMap(URL.init(string:)).flatMap(DeepLink.init(url:))
+        let isRecap = info[NotificationService.recapRouteKey] as? String == NotificationService.recapRouteValue
+        nonisolated(unsafe) let done = completionHandler
+        DispatchQueue.main.async {
+            MainActor.assumeIsolated {
+                if let link {
+                    DeepLinkRouter.shared.open(link)
+                } else if isRecap {
+                    WeeklyRecapCoordinator.shared.request()
+                }
+            }
+            done()
         }
-        guard info[NotificationService.recapRouteKey] as? String == NotificationService.recapRouteValue else { return }
-        await MainActor.run { WeeklyRecapCoordinator.shared.request() }
     }
 }
 
@@ -840,6 +860,8 @@ struct MainTabView: View {
         switch link {
         case .today:
             selectedTab = 0
+            NotificationCenter.default.post(name: .vitalsDismissSettings, object: nil)
+            NotificationCenter.default.post(name: .vitalsPopToToday, object: nil)
         case .metric(let metric):
             selectedTab = 0
             NotificationCenter.default.post(name: .vitalsDismissSettings, object: nil)
