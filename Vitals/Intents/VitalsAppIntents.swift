@@ -8,17 +8,18 @@ import UIKit
 @MainActor
 private enum TodaySnapshot {
     static func load() async throws -> (active: Double, resting: Double, steps: Int) {
-        if let live = try? await HealthKitService.shared.fetchTodayStats(),
-           !HealthKitService.isAllZero(live) {
-            return live
-        }
-        if let cached = try? HealthKitService.shared.fetchCachedTodayStats() {
-            return cached
-        }
-        // Locked with nothing cached for today yet (just after midnight): a
-        // zero here would be a wrong answer, not an empty day.
-        guard UIApplication.shared.isProtectedDataAvailable else { throw TodaySnapshotError.locked }
-        return (0, 0, 0)
+        let live = (try? await HealthKitService.shared.fetchTodayStats()).map(stats)
+        let cached = (try? HealthKitService.shared.fetchCachedTodayStats()).flatMap { $0 }.map(stats)
+        guard let resolved = TodaySnapshotResolver.resolve(
+            live: live,
+            cached: cached,
+            protectedDataAvailable: UIApplication.shared.isProtectedDataAvailable
+        ) else { throw TodaySnapshotError.locked }
+        return (resolved.active, resolved.resting, resolved.steps)
+    }
+
+    private static func stats(_ raw: (active: Double, resting: Double, steps: Int)) -> TodaySnapshotResolver.Stats {
+        TodaySnapshotResolver.Stats(active: raw.active, resting: raw.resting, steps: raw.steps)
     }
 }
 
