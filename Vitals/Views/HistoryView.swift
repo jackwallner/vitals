@@ -587,6 +587,7 @@ struct HistoryView: View {
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 12)
+                .readableWidth()
 
                 // Period selector
                 HStack(spacing: 0) {
@@ -612,6 +613,7 @@ struct HistoryView: View {
                 .background(Theme.cardSurface, in: Capsule())
                 .padding(.horizontal, 24)
                 .padding(.top, 16)
+                .readableWidth()
 
                 if selectedPeriod == .custom {
                     Text("\(customStart, format: .dateTime.month(.abbreviated).day()) – \(customEnd, format: .dateTime.month(.abbreviated).day().year())")
@@ -1593,6 +1595,7 @@ struct HistoryView: View {
 
             VStack(spacing: 0) {
                 periodSelectorBar
+                    .readableWidth()
                     .padding(.top, 12)
 
                 if selectedPeriod == .custom {
