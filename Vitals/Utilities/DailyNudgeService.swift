@@ -95,7 +95,14 @@ enum DailyNudgeService {
             return
         }
 
-        guard let stats = stats ?? (try? HealthKitService.shared.fetchCachedTodayStats()) else { return }
+        // Before today's first cache write (just after midnight, or a reminder
+        // turned on before any refresh), read Health directly rather than skip.
+        var latest = stats ?? (try? HealthKitService.shared.fetchCachedTodayStats())
+        if latest == nil, let live = try? await HealthKitService.shared.fetchTodayStats(),
+           !HealthKitService.isAllZero(live) {
+            latest = live
+        }
+        guard let stats = latest else { return }
         let streaks = goals.showStreaks ? currentStreaks(goals: goals) : (calories: 0, steps: 0)
         guard let content = DailyNudgePlanner.evening(
             active: stats.active,

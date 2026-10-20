@@ -551,6 +551,15 @@ struct InlineAccessoryView: View {
     let entry: VitalsEntry
 
     private var text: String {
+        guard entry.dataAvailable else { return "Open Total Calories" }
+        let numbers = metricText
+        guard !numbers.isEmpty else { return "Total Calories" }
+        // No room to dim one line, so old numbers say whose they are.
+        guard let stale = entry.staleDate else { return numbers }
+        return "\(staleLabel(for: stale)): \(numbers)"
+    }
+
+    private var metricText: String {
         var parts: [String] = []
         if entry.showCalories {
             parts.append("\(entry.totalCalories.formatted(.number.precision(.fractionLength(0)))) cal")

@@ -1,12 +1,13 @@
 import AppIntents
 import Foundation
+import UIKit
 
 /// Today's totals for Siri, Spotlight, Shortcuts and the Action Button. Reads
 /// Apple Health live when the phone is unlocked and falls back to the cache the
 /// widgets read (HealthKit data is unreadable while the device is locked).
 @MainActor
 private enum TodaySnapshot {
-    static func load() async -> (active: Double, resting: Double, steps: Int) {
+    static func load() async throws -> (active: Double, resting: Double, steps: Int) {
         if let live = try? await HealthKitService.shared.fetchTodayStats(),
            !HealthKitService.isAllZero(live) {
             return live
@@ -14,7 +15,18 @@ private enum TodaySnapshot {
         if let cached = try? HealthKitService.shared.fetchCachedTodayStats() {
             return cached
         }
+        // Locked with nothing cached for today yet (just after midnight): a
+        // zero here would be a wrong answer, not an empty day.
+        guard UIApplication.shared.isProtectedDataAvailable else { throw TodaySnapshotError.locked }
         return (0, 0, 0)
+    }
+}
+
+enum TodaySnapshotError: Error, CustomLocalizedStringResourceConvertible {
+    case locked
+
+    var localizedStringResource: LocalizedStringResource {
+        "Unlock your iPhone so Total Calories can read today's numbers from Apple Health."
     }
 }
 
@@ -25,7 +37,7 @@ struct TodayCaloriesIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult & ReturnsValue<Int> & ProvidesDialog {
-        let stats = await TodaySnapshot.load()
+        let stats = try await TodaySnapshot.load()
         let total = Int((stats.active + stats.resting).rounded())
         let goal = GoalSettings.shared.calorieGoal.map { Int($0.rounded()) }
         return .result(value: total, dialog: IntentDialog(stringLiteral: Self.sentence(total: total, goal: goal)))
@@ -47,7 +59,7 @@ struct TodayStepsIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult & ReturnsValue<Int> & ProvidesDialog {
-        let stats = await TodaySnapshot.load()
+        let stats = try await TodaySnapshot.load()
         let goal = GoalSettings.shared.stepGoal
         return .result(value: stats.steps, dialog: IntentDialog(stringLiteral: Self.sentence(steps: stats.steps, goal: goal)))
     }
