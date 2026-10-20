@@ -350,8 +350,7 @@ final class TrialOfferCoordinator: ObservableObject {
             case .projectionsToggle: .projections
             case .streaksToggle: .streaks
             case .weeklyRecapToggle: .weeklyRecap
-            // The streak saver is what the reminder sells hardest.
-            case .eveningReminderToggle: .streaks
+            case .eveningReminderToggle: .eveningReminder
             case .bodyProfileDetails: .bodyProfile
             case .excludedDaysRow: .excludedDays
             case .settingsUpgradeRow, .milestoneCelebration, .whatsNewAnnouncement: nil

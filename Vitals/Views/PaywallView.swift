@@ -24,6 +24,7 @@ enum PlusFeature: CaseIterable {
     case projections
     case streaks
     case weeklyRecap
+    case eveningReminder
     case bodyProfile
     case excludedDays
 
@@ -38,6 +39,7 @@ enum PlusFeature: CaseIterable {
         case .projections: "scope"
         case .streaks: "flame"
         case .weeklyRecap: "calendar.badge.checkmark"
+        case .eveningReminder: "bell.badge"
         case .bodyProfile: "figure.stand"
         case .excludedDays: "slash.circle"
         }
@@ -54,6 +56,7 @@ enum PlusFeature: CaseIterable {
         case .projections: Theme.stepsPrimary
         case .streaks: Theme.streakPrimary
         case .weeklyRecap: Theme.caloriesPrimary
+        case .eveningReminder: Theme.streakPrimary
         case .bodyProfile: Theme.netDeficitBrand
         case .excludedDays: Theme.stepsSecondary
         }
@@ -71,6 +74,7 @@ enum PlusFeature: CaseIterable {
         case .projections: "End-of-day projections"
         case .streaks: "Goal streaks"
         case .weeklyRecap: "Weekly recap"
+        case .eveningReminder: "Evening reminder"
         case .bodyProfile: "Body profile"
         case .excludedDays: "Excluded days"
         }
@@ -88,6 +92,7 @@ enum PlusFeature: CaseIterable {
         case .projections: "Where today's calories and steps will land at your current pace."
         case .streaks: "See how many days in a row you've hit your goal."
         case .weeklyRecap: "Sunday summary of this week vs. last."
+        case .eveningReminder: "One nudge at the time you pick when a goal is still open."
         case .bodyProfile: "Body fat and calorie context next to your BMI."
         case .excludedDays: "Leave sick days and days off the wrist out of your averages."
         }
@@ -105,6 +110,7 @@ enum PlusFeature: CaseIterable {
         case .projections: "End-of-day projections from your pace"
         case .streaks: "Goal streaks: keep the chain alive"
         case .weeklyRecap: "Weekly recap notification + summary"
+        case .eveningReminder: "Evening reminder when a goal is still open"
         case .bodyProfile: "Body fat + calorie context with your BMI"
         case .excludedDays: "Excluded days: keep odd days out of your averages"
         }
@@ -122,6 +128,7 @@ enum PlusFeature: CaseIterable {
         case .projections: "Know where today lands"
         case .streaks: "Keep your streak alive"
         case .weeklyRecap: "Get your week in review"
+        case .eveningReminder: "Close out your day"
         case .bodyProfile: "Understand your body profile"
         case .excludedDays: "Keep odd days out of your averages"
         }
@@ -139,6 +146,7 @@ enum PlusFeature: CaseIterable {
         case .projections: "Projected calories and steps based on your pace so far today."
         case .streaks: "Track consecutive days you hit your goal."
         case .weeklyRecap: "A Sunday night summary of this week vs. last."
+        case .eveningReminder: "One evening nudge with what's left for your goals and your streak. Silent on days you're on track."
         case .bodyProfile: "Body fat and calorie context alongside BMI. BMI stays free."
         case .excludedDays: "Pick the days that shouldn't count (sick days, travel, a day off the wrist) and every average, total, and streak skips them."
         }
@@ -168,6 +176,7 @@ enum PlusFeature: CaseIterable {
         case .projections: [.netDeficit, .streaks]
         case .streaks: [.projections, .weeklyRecap]
         case .weeklyRecap: [.streaks, .deepTrends]
+        case .eveningReminder: [.streaks, .weeklyRecap]
         case .bodyProfile: [.energyAverages, .netDeficit]
         case .excludedDays: [.energyAverages, .deepTrends]
         }
@@ -189,6 +198,7 @@ enum PlusFeature: CaseIterable {
         case .projections: "projections"
         case .streaks: "streaks"
         case .weeklyRecap: "weekly-recap"
+        case .eveningReminder: "evening-reminder"
         case .bodyProfile: "body-profile"
         case .excludedDays: "excluded-days"
         }
@@ -205,6 +215,7 @@ enum PlusFeature: CaseIterable {
         case "projections": .projections
         case "streaks": .streaks
         case "weekly-recap": .weeklyRecap
+        case "evening-reminder": .eveningReminder
         case "body-profile": .bodyProfile
         case "excluded-days": .excludedDays
         default: nil
@@ -214,7 +225,7 @@ enum PlusFeature: CaseIterable {
     /// Every feature-gate a free user can hit (settings toggles + History + Body Profile).
     static let allSnapshotGates: [PlusFeature] = [
         .netDeficit, .macros, .activeResting, .energyAverages, .projections, .streaks,
-        .weeklyRecap, .deepTrends, .customRangesPDF, .bodyProfile, .excludedDays
+        .weeklyRecap, .eveningReminder, .deepTrends, .customRangesPDF, .bodyProfile, .excludedDays
     ]
     #endif
 }
