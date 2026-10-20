@@ -356,7 +356,14 @@ final class HealthKitService: ObservableObject {
     func fetchMacroHistory(from start: Date, to end: Date) async throws -> [(date: Date, macros: MacroTotals)] {
         #if DEBUG
         if ScreenshotConfig.isEnabled {
-            let dayCount = max(Calendar.current.dateComponents([.day], from: start, to: end).day ?? 0, 30)
+            // Inclusive day count, so a 7D period seeds 7 bars rather than 30.
+            let calendar = Calendar.current
+            let span = calendar.dateComponents(
+                [.day],
+                from: calendar.startOfDay(for: start),
+                to: calendar.startOfDay(for: end)
+            ).day ?? 0
+            let dayCount = max(span + 1, 1)
             return ScreenshotFixtures.macroHistory(days: dayCount, end: end)
         }
         #endif
