@@ -133,3 +133,8 @@ RevenueCat service account already has account-wide Play permissions, so no per-
   (welcome|goals|trial), `enable` (activeResting,tdee,projections,streaks,net).
 - Screenshots: put the status bar in demo mode first (`com.android.systemui.demo`: clock 0941, wifi
   full, mobile hidden, notifications off).
+
+## Shift note (2026-10-20, jmbp)
+
+- On jmbp run `JAVA_HOME=/Users/jackwallner/jdks/temurin-17/Contents/Home ./gradlew testDebugUnitTest` (100 tests pass). `fm-gradle` is not installed there.
+- Connected `HealthConnectFeasibilityTest` needs the Health Connect write grants via `DebugPermissionActivity` (one tap) and breaks under orchestrator `clearPackageData`; without them 8 of its 11 tests fail. The agent-emu-1 AVD on jmbp became unstable under load, so screenshots and video are still outstanding.
