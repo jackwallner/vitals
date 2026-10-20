@@ -970,9 +970,11 @@ struct MainTabView: View {
 
     /// Second-touch trial nudge: fires when History finishes loading. Subject to
     /// the same 14-day passive cooldown, and additionally gated so it never
-    /// fires back-to-back with the launch offer in the same session.
+    /// fires back-to-back with the launch offer in the same session. Screenshot
+    /// runs skip it so a History capture shows History, not the sheet.
     private func evaluateHistoryTrialOffer() {
         guard goals.hasCompletedSetup,
+              !ScreenshotConfig.isEnabled,
               !store.isPro,
               !skipPassiveTrialThisSession,
               goals.passiveHistoryTrialOfferAllowed(),
