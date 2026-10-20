@@ -3742,15 +3742,7 @@ private struct SettingsSheet: View {
             .disabled(toggleDisabled)
             if expandedInfoTopic == topic {
                 SettingsInfoCallout(topic: topic)
-                    // Fades in place under the header (a .move from the top edge
-                    // slid it over the date and gear). The ring below makes room
-                    // first, then the card fades in; on removal it fades fast,
-                    // before the ring slides back up through its space.
-                    .transition(.asymmetric(
-                        insertion: .opacity.animation(.easeOut(duration: 0.2).delay(0.2)),
-                        removal: .opacity.animation(.easeOut(duration: 0.1))
-                    ))
-                    .zIndex(1)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
             }
         }
     }
@@ -4249,15 +4241,7 @@ private struct SettingsSheet: View {
                         }
                         if expandedInfoTopic == .bodyProfile {
                             SettingsInfoCallout(topic: .bodyProfile)
-                                // Fades in place under the header (a .move from the top edge
-                    // slid it over the date and gear). The ring below makes room
-                    // first, then the card fades in; on removal it fades fast,
-                    // before the ring slides back up through its space.
-                    .transition(.asymmetric(
-                        insertion: .opacity.animation(.easeOut(duration: 0.2).delay(0.2)),
-                        removal: .opacity.animation(.easeOut(duration: 0.1))
-                    ))
-                    .zIndex(1)
+                                .transition(.opacity.combined(with: .move(edge: .top)))
                         }
                     }
                 } header: {
