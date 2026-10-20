@@ -235,7 +235,7 @@ private fun MonthCalendar(today: LocalDate, picked: Set<String>, pausedSince: Lo
     val earliest = YearMonth.from(today.minusYears(3))
     val first = month.atDay(1)
     val offset = (first.dayOfWeek.value - DayOfWeek.SUNDAY.value + 7) % 7
-    val weekdays = (0..6).map { DayOfWeek.SUNDAY.plus(it.toLong()).getDisplayName(TextStyle.NARROW, Locale.getDefault()) }
+    val weekdays = (0..6).map { DayOfWeek.SUNDAY.plus(it.toLong()).getDisplayName(TextStyle.NARROW, androidx.compose.ui.platform.LocalConfiguration.current.locales[0]) }
     Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(month.format(DateTimeFormatter.ofPattern("MMMM yyyy")), style = Type.headline, color = palette.textPrimary, modifier = Modifier.weight(1f).padding(start = 4.dp))

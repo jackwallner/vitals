@@ -530,7 +530,7 @@ private fun RecentDays(graph: AppGraph, days: List<DayStats>, excluded: Set<Stri
     val nav = LocalNav.current
     val settings = graph.settings
     val rows = days.filter { it.total > 0 || it.steps > 0 }.sortedByDescending { it.date }.take(14)
-    val fmt = DateTimeFormatter.ofPattern("EEE, MMM d", Locale.getDefault())
+    val fmt = DateTimeFormatter.ofPattern("EEE, MMM d", androidx.compose.ui.platform.LocalConfiguration.current.locales[0])
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text("Recent Days", style = Type.headline, color = palette.textPrimary)
         if (rows.isEmpty()) Text("No recent activity to show.", style = Type.footnote, color = palette.textTertiary)

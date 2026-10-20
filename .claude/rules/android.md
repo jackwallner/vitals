@@ -138,3 +138,18 @@ RevenueCat service account already has account-wide Play permissions, so no per-
 
 - On jmbp run `JAVA_HOME=/Users/jackwallner/jdks/temurin-17/Contents/Home ./gradlew testDebugUnitTest` (100 tests pass). `fm-gradle` is not installed there.
 - Connected `HealthConnectFeasibilityTest` needs the Health Connect write grants via `DebugPermissionActivity` (one tap) and breaks under orchestrator `clearPackageData`; without them 8 of its 11 tests fail. The agent-emu-1 AVD on jmbp became unstable under load, so screenshots and video are still outstanding.
+
+## Shift note 2 (2026-10-20, jmbp, runtime evidence)
+
+- jmbp has 4 cores, so the emulator forces 1 vCPU and boots slowly: after a cold boot wait about 5 minutes
+  (ANR dialogs from system_server and GMS are normal until then) before driving it. Run only one Gradle
+  at a time; overlapping runs corrupt `app/build/intermediates`.
+- Health Connect grant: launch `DebugPermissionActivity`, tap "Get started", toggle "Allow all" once. Then run
+  `am instrument -w -e class com.jackwallner.vitals.HealthConnectFeasibilityTest ...` directly, without the
+  orchestrator's `clearPackageData` (which revokes the grants). 17 connected tests pass (11 HC, 6 smoke).
+- `seedDemo` takes about 10 minutes on this emulator. Do not relaunch the app with `-S` while it runs (it
+  kills the seed); the calorie goal reading 2,800 means it finished. HC data persists, so later launches use
+  `resetAll` without `seedDemo`. Seeder fixed to not write future records before 07:35.
+- Lint is clean (`lintDebug`): locale reads use `LocalConfiguration`, `windowLightNavigationBar` has `tools:targetApi="27"`.
+- Emulator video measured 8.4 fps (software-rendered 1 vCPU AVD): not native 60 fps, and not claimed to be.
+  Re-record on a faster host if 60 fps proof is needed.

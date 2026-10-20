@@ -56,7 +56,7 @@ object DebugLaunchOptions {
         }
         if (intent.getBooleanExtra("seedDemo", false)) {
             graph.scope.launch {
-                runCatching { seedDemo(graph) }
+                runCatching { seedDemo(graph) }.onFailure { android.util.Log.e("VitalsSeed", "seedDemo failed", it) }
                 graph.repo.refresh(wantsFood = graph.settings.showNet)
             }
         }
@@ -84,11 +84,12 @@ object DebugLaunchOptions {
             val food = 2_050.0 + 360.0 * sin(day.toEpochDay() / 1.7)
             seeder.basalPerDay(day, 1_780.0 + (abs(wave) * 30.0))
             if (offset == 0L) {
-                val end = now.toLocalTime().minusMinutes(5).takeIf { it.isAfter(LocalTime.of(7, 30)) } ?: LocalTime.of(7, 30)
-                val share = (end.toSecondOfDay() - 7 * 3600) / (14.0 * 3600).coerceAtLeast(1.0)
-                seeder.active(day, active * share.coerceIn(0.1, 1.0), to = end)
-                seeder.steps(day, (steps * share.coerceIn(0.1, 1.0)).toLong(), to = end)
-                seeder.food(day, 1_240.0, LocalTime.of(8, 10))
+                val start = LocalTime.of(7, 0).takeIf { now.toLocalTime().isAfter(LocalTime.of(7, 35)) } ?: LocalTime.MIN
+                val end = now.toLocalTime().minusMinutes(5).takeIf { it.isAfter(start.plusMinutes(5)) } ?: start.plusMinutes(5)
+                val share = (end.toSecondOfDay() - start.toSecondOfDay()) / (14.0 * 3600)
+                seeder.active(day, active * share.coerceIn(0.1, 1.0), from = start, to = end)
+                seeder.steps(day, (steps * share.coerceIn(0.1, 1.0)).toLong(), from = start, to = end)
+                if (now.toLocalTime().isAfter(LocalTime.of(8, 15))) seeder.food(day, 1_240.0, LocalTime.of(8, 10))
             } else {
                 seeder.active(day, active)
                 seeder.steps(day, steps)

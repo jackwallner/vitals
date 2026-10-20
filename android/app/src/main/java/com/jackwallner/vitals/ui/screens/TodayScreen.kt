@@ -227,7 +227,7 @@ private fun handleNotice(graph: AppGraph, notice: HealthNotice, scope: kotlinx.c
 private fun Header(graph: AppGraph, onSettings: () -> Unit) {
     val repo = graph.repo
     val now = repo.now()
-    val title = DateTimeFormatter.ofPattern("EEEE, MMMM d", Locale.getDefault()).format(now)
+    val title = DateTimeFormatter.ofPattern("EEEE, MMMM d", androidx.compose.ui.platform.LocalConfiguration.current.locales[0]).format(now)
     Column(Modifier.padding(horizontal = Geo.gutter).padding(top = 16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(title, style = Type.title3, color = palette.textPrimary, modifier = Modifier.weight(1f))
@@ -419,7 +419,7 @@ private fun PacingExplainer(typical: Double, label: String, comparison: PacingCo
     val window = lookback.label.lowercase()
     val basis = when (comparison) {
         PacingComparison.DAY_OF_WEEK -> {
-            val weekday = java.time.LocalDate.now().dayOfWeek.getDisplayName(java.time.format.TextStyle.FULL, Locale.getDefault())
+            val weekday = java.time.LocalDate.now().dayOfWeek.getDisplayName(java.time.format.TextStyle.FULL, androidx.compose.ui.platform.LocalConfiguration.current.locales[0])
             "your average on past ${weekday}s over the last $window"
         }
         PacingComparison.ALL_DAYS -> "your average on every day over the last $window"
