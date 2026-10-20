@@ -54,8 +54,8 @@ struct LargeWidgetView: View {
                         }
                     }
                 }
-                Spacer(minLength: 0)
             }
+            .frame(maxHeight: .infinity, alignment: .top)
             .widgetURL(DeepLink.today.url)
             .containerBackground(.fill.tertiary, for: .widget)
         } else {
@@ -119,8 +119,10 @@ private struct MetricBlock: View {
                     .tint(tint)
             }
             if bars.count == days.count, !bars.isEmpty {
+                // The bars take the height the other blocks leave, so two
+                // metrics fill the widget instead of leaving its bottom third empty.
                 WeekBars(values: bars, goal: goal, days: days, tint: tint)
-                    .frame(height: 54)
+                    .frame(minHeight: 44, maxHeight: 110)
             }
         }
     }
