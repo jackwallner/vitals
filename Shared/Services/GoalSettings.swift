@@ -793,7 +793,9 @@ final class GoalSettings: ObservableObject {
         self.showProjections = defaults.object(forKey: "showProjections") as? Bool ?? false
         self.showStreaks = defaults.object(forKey: "showStreaks") as? Bool ?? false
         self.weeklyRecapEnabled = defaults.object(forKey: "weeklyRecapEnabled") as? Bool ?? false
-        self.goalReachedNotificationsEnabled = defaults.object(forKey: "goalReachedNotificationsEnabled") as? Bool ?? true
+        // Opt-in: turned on by the first-goal card or the Settings switch, so an
+        // update never starts pushing to someone who only allowed the weekly recap.
+        self.goalReachedNotificationsEnabled = defaults.object(forKey: "goalReachedNotificationsEnabled") as? Bool ?? false
         self.eveningReminderEnabled = defaults.object(forKey: "eveningReminderEnabled") as? Bool ?? false
         let reminderMinutes = defaults.object(forKey: "eveningReminderMinutes") as? Int ?? Self.defaultEveningReminderMinutes
         self.eveningReminderMinutes = (0..<1440).contains(reminderMinutes) ? reminderMinutes : Self.defaultEveningReminderMinutes

@@ -1566,14 +1566,19 @@ struct DashboardView: View {
         showCelebration(message)
     }
 
-    /// One ask per goal moment. The first time, while notifications have never
-    /// been asked about, the card offering them takes the moment and the review
-    /// ask waits for the next goal (the tracker keeps it pending).
+    /// One ask per goal moment. The first time, while the goal-reached push has
+    /// never been offered, the card offering it takes the moment and the review
+    /// ask waits for the next goal (the tracker keeps it pending). Someone who
+    /// already allowed notifications (for the weekly recap) still gets the card,
+    /// since Goal Reached is opt-in; only a denial skips it.
     private func followUpGoalMoment() async {
         if !goals.hasAnsweredNotificationAsk,
-           await NotificationService.authorizationStatus() == .notDetermined {
+           !goals.goalReachedNotificationsEnabled,
+           await NotificationService.authorizationStatus() != .denied {
             // After the celebration toast, not on top of it.
             try? await Task.sleep(for: .seconds(2.8))
+            // A goal suggestion already up keeps the slot; the ask waits for the next goal.
+            guard prompt == nil else { return }
             withAnimation(reduceMotion ? .none : .snappy) { prompt = .notifications }
             return
         }
