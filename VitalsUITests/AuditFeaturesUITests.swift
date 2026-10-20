@@ -48,6 +48,16 @@ final class AuditFeaturesUITests: XCTestCase {
         XCUIDevice.shared.press(.home)
         sleep(2)
         app.activate()
+        // The passive trial pitch can land over the dashboard cards these tests tap.
+        clearPitch(app, within: 6)
+    }
+
+    /// A stale first read during seeding can look like a goal hit, and the
+    /// notification card then holds the one prompt slot. Answer it and re-read.
+    func answerNotificationCardIfShown(_ app: XCUIApplication) {
+        guard app.staticTexts["Know when you hit your goal"].waitForExistence(timeout: 5) else { return }
+        app.buttons["Not Now"].tap()
+        reloadAfterSeed(app)
     }
 
     func waitForToday(_ app: XCUIApplication, reload: Bool = false) {
@@ -133,7 +143,7 @@ final class AuditFeaturesUITests: XCTestCase {
         setGoal(app, current: "10000", to: "5000")
         sleep(2)
         XCTAssertEqual(readDump()["stepGoal"] as? Int, 5000, "step goal not saved on focus loss: \(readDump())")
-        // Goal Reached toggle: off then on drives the system permission alert.
+        // Goal Reached is opt-in; turning it on drives the system permission alert.
         let toggle = app.switches["Goal Reached"]
         scrollTo(toggle, in: app)
         XCTAssertTrue(toggle.waitForExistence(timeout: 5), "Goal Reached switch missing\n\(app.debugDescription)")
@@ -171,6 +181,7 @@ final class AuditFeaturesUITests: XCTestCase {
         XCTAssertTrue(title.waitForExistence(timeout: 30), "permission card never appeared\n\(app.debugDescription)")
         shot("t2-card", app: app)
         XCTAssertFalse(springboard.alerts.firstMatch.exists, "system alert showed before the card was answered")
+        clearPitch(app)
         app.buttons["Turn On"].tap()
         XCTAssertTrue(allowNotificationsIfAsked(), "Turn On never raised the system alert")
         let gone = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: title)
@@ -186,6 +197,7 @@ final class AuditFeaturesUITests: XCTestCase {
         waitForToday(app)
         reloadAfterSeed(app)
         XCTAssertTrue(app.staticTexts["Know when you hit your goal"].waitForExistence(timeout: 30))
+        clearPitch(app)
         app.buttons["Not Now"].tap()
         sleep(2)
         XCTAssertFalse(app.staticTexts["Know when you hit your goal"].exists)
@@ -202,6 +214,7 @@ final class AuditFeaturesUITests: XCTestCase {
         let app = launch(["VITALS_SEED_PAST_ACTIVE": "0.2", "VITALS_SEED_PAST_STEPS": "0.2"])
         waitForToday(app)
         reloadAfterSeed(app)
+        answerNotificationCardIfShown(app)
         let title = app.staticTexts["Your calorie goal has been out of reach"]
         XCTAssertTrue(title.waitForExistence(timeout: 30), "lower card missing\n\(app.debugDescription)")
         shot("t3-lower-card", app: app)
@@ -222,6 +235,7 @@ final class AuditFeaturesUITests: XCTestCase {
         let app = launch(["VITALS_SEED_PAST_ACTIVE": "0.2", "VITALS_SEED_PAST_STEPS": "0.2"])
         waitForToday(app)
         reloadAfterSeed(app)
+        answerNotificationCardIfShown(app)
         XCTAssertTrue(app.staticTexts["Your calorie goal has been out of reach"].waitForExistence(timeout: 30))
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Keep'")).firstMatch.tap()
         sleep(2)
@@ -240,6 +254,7 @@ final class AuditFeaturesUITests: XCTestCase {
         let app = launch(["VITALS_SEED_PAST_ACTIVE": "3", "VITALS_SEED_PAST_STEPS": "0.2"])
         waitForToday(app)
         reloadAfterSeed(app)
+        answerNotificationCardIfShown(app)
         let title = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'You hit your calorie goal on'")).firstMatch
         XCTAssertTrue(title.waitForExistence(timeout: 30), "raise card missing\n\(app.debugDescription)")
         shot("t3-raise-card", app: app)
@@ -480,7 +495,7 @@ final class AuditFeaturesUITests: XCTestCase {
         try? springboard.debugDescription.write(toFile: Self.dir + "/tree-\(name).txt", atomically: true, encoding: .utf8)
     }
 
-    /// Feature 5: add the large widget to the Home Screen, then tap each row.
+    /// Feature 5: add the large widget to the Home Screen, then tap each metric into its history.
     func testLargeWidgetAddAndTap() {
         let app = launch(dumpNotifications: false)
         waitForToday(app)
@@ -514,11 +529,70 @@ final class AuditFeaturesUITests: XCTestCase {
         if sb.buttons["Done"].firstMatch.exists { sb.buttons["Done"].firstMatch.tap() }
         sleep(8)
         sbDump("w-added-home")
-        let widget = sb.otherElements.matching(NSPredicate(format: "identifier == 'Total Calories - Daily Tracker' OR label CONTAINS 'Total Calories'")).firstMatch
-        _ = widget.waitForExistence(timeout: 3)
+        // The large widget fills the top of the page: Calories in its upper
+        // half, Steps in its lower half. Each block links to its history.
+        sb.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.44)).tap()
+        XCTAssertTrue(app.wait(for: .runningForeground, timeout: 20), "widget tap did not open the app")
+        clearPitch(app)
+        assertOnHistory("Steps", app)
+        shot("w-tap-steps", app: app)
+        XCUIDevice.shared.press(.home)
+        sleep(2)
+        sb.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25)).tap()
+        XCTAssertTrue(app.wait(for: .runningForeground, timeout: 20), "second widget tap did not open the app")
+        clearPitch(app)
+        assertOnHistory("Calories", app)
+        shot("w-tap-calories", app: app)
     }
 
-    /// Feature 3 (settings): turning Goal Reached on prompts once; "Don't Allow" puts the section in its denied state.
+    func openLink(_ path: String, in app: XCUIApplication) {
+        app.open(URL(string: "totalcalories://\(path)")!)
+        XCTAssertTrue(app.wait(for: .runningForeground, timeout: 20), "\(path) did not bring the app forward")
+        sleep(3)
+    }
+
+    func assertOnHistory(_ title: String, _ app: XCUIApplication, file: StaticString = #filePath, line: UInt = #line) {
+        XCTAssertTrue(
+            app.navigationBars.staticTexts[title].waitForExistence(timeout: 15),
+            "not on \(title) history\n\(app.debugDescription)", file: file, line: line
+        )
+    }
+
+    /// Feature 4: every link lands where it says, warm and cold, and the
+    /// Vitals+ destinations stay shut for a free user.
+    func testDeepLinksRouteOnScreen() {
+        let app = launch(dumpNotifications: false)
+        waitForToday(app)
+        clearPitch(app)
+        openLink("metric/steps", in: app)
+        clearPitch(app)
+        assertOnHistory("Steps", app)
+        shot("dl-steps", app: app)
+        openLink("today", in: app)
+        clearPitch(app)
+        XCTAssertTrue(app.buttons["Settings"].waitForExistence(timeout: 10), "today link did not pop to the dashboard")
+        XCTAssertFalse(app.navigationBars.staticTexts["Steps"].exists, "today link left Steps on screen")
+        openLink("metric/calories", in: app)
+        clearPitch(app)
+        assertOnHistory("Calories", app)
+        shot("dl-calories", app: app)
+        // Free user: Vitals+ routes do nothing.
+        openLink("today", in: app)
+        clearPitch(app)
+        openLink("recap", in: app)
+        XCTAssertFalse(app.navigationBars["This Week"].waitForExistence(timeout: 5), "recap opened for a free user")
+        openLink("metric/net", in: app)
+        XCTAssertFalse(app.navigationBars.staticTexts["Net Deficit"].exists, "net opened for a free user")
+        shot("dl-free-gated", app: app)
+        // Cold launch straight into a metric.
+        app.terminate()
+        openLink("metric/steps", in: app)
+        clearPitch(app)
+        assertOnHistory("Steps", app)
+        shot("dl-cold-steps", app: app)
+    }
+
+    /// Feature 3 (settings): Goal Reached starts off; turning it on prompts once, and "Don't Allow" puts the section in its denied state.
     func testSettingsNotificationsDeniedState() {
         let app = launch()
         waitForToday(app)
@@ -527,9 +601,8 @@ final class AuditFeaturesUITests: XCTestCase {
         scrollTo(toggle, in: app)
         XCTAssertTrue(toggle.waitForExistence(timeout: 10))
         shot("t5-section-initial", app: app)
-        XCTAssertEqual(toggle.value as? String, "1", "Goal Reached should default on")
-        // Off, then on again to trigger the one system prompt.
-        flip(toggle, to: false)
+        XCTAssertEqual(toggle.value as? String, "0", "Goal Reached is opt-in")
+        // Turning it on raises the one system prompt.
         flip(toggle, to: true)
         let deny = springboard.alerts.buttons["Don\u{2019}t Allow"]
         let denyStraight = springboard.alerts.buttons["Don't Allow"]
