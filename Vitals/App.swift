@@ -867,6 +867,8 @@ struct MainTabView: View {
             NotificationCenter.default.post(name: .vitalsDismissSettings, object: nil)
             deepLinkRouter.pendingMetric = metric
         case .weeklyRecap:
+            // The recap is Vitals+; a typed URL must not open it for free users.
+            guard store.isPro else { return }
             WeeklyRecapCoordinator.shared.request()
         }
     }
