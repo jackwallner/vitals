@@ -65,6 +65,7 @@ struct BodyProfileView: View {
             .padding(.horizontal, 20)
             .padding(.top, 12)
             .padding(.bottom, 40)
+            .readableWidth()
         }
         .background(Theme.background.ignoresSafeArea())
         .navigationTitle("Body Profile")

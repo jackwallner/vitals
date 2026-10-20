@@ -94,6 +94,17 @@ private struct RootView: View {
             .environmentObject(store)
             .preferredColorScheme(goals.appearance.colorScheme)
             .onOpenURL { url in
+                #if DEBUG
+                // Capture-only routes (`totalcalories://shot/history|today|upgrade|settings`)
+                // so one launch can photograph every main screen.
+                if url.host?.lowercased() == "shot" {
+                    NotificationCenter.default.post(
+                        name: .vitalsDebugShot,
+                        object: url.pathComponents.first { $0 != "/" }
+                    )
+                    return
+                }
+                #endif
                 guard let link = DeepLink(url: url) else { return }
                 DeepLinkRouter.shared.open(link)
             }
@@ -1162,6 +1173,7 @@ struct MainTabView: View {
                         selectedTab = 2
                     }
                 }
+                .readableWidth(420)
                 .padding(.horizontal, 8)
                 .padding(.vertical, 6)
                 .background(.ultraThinMaterial.opacity(0.8), in: Capsule())
@@ -1249,6 +1261,17 @@ struct MainTabView: View {
             selectedTab = 0
             showWeeklyRecap = true
         }
+        #if DEBUG
+        .onReceive(NotificationCenter.default.publisher(for: .vitalsDebugShot)) { note in
+            NotificationCenter.default.post(name: .vitalsDismissSettings, object: nil)
+            switch note.object as? String {
+            case "history": historyHasAppeared = true; selectedTab = 1
+            case "upgrade": selectedTab = 2
+            case "settings": selectedTab = 0; NotificationCenter.default.post(name: .vitalsOpenSettings, object: nil)
+            default: selectedTab = 0
+            }
+        }
+        #endif
         .onChange(of: deepLinkRouter.pending) { _, _ in handlePendingDeepLink() }
         // A cold launch from a widget or notification sets the link before this
         // view subscribes, so onChange alone would miss it.
@@ -1473,6 +1496,7 @@ private struct PremiumFeaturesView: View {
                     .padding(.horizontal, 24)
                     .padding(.top, 20)
                     .padding(.bottom, 96)
+                    .readableWidth()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }

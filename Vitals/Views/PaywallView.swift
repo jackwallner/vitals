@@ -310,7 +310,7 @@ struct PaywallView: View {
             } else if store.products.isEmpty {
                 emptyState
             } else {
-                content
+                content.readableWidth()
             }
 
             if displayCloseButton {

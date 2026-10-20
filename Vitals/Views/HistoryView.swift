@@ -25,6 +25,9 @@ extension Notification.Name {
     /// Posted by the "What's New" sheet's Open Settings CTA (Pro users) so the
     /// dashboard can present its Settings sheet for the user to opt into extras.
     static let vitalsOpenSettings = Notification.Name("vitalsOpenSettings")
+    #if DEBUG
+    static let vitalsDebugShot = Notification.Name("vitalsDebugShot")
+    #endif
 
     /// Posted after a Net Deficit unlock so Settings (if open) dismisses and the
     /// dietary HealthKit permission sheet can present without being covered.
@@ -776,6 +779,7 @@ struct HistoryView: View {
                         .padding(.bottom, bottomContentInset)
                         .opacity(animateContent ? 1 : 0)
                         .offset(y: animateContent ? 0 : 15)
+                        .readableWidth()
                     }
                     .refreshable { await loadHistory() }
                 }
@@ -1633,6 +1637,7 @@ struct HistoryView: View {
                         .padding(.bottom, bottomContentInset)
                         .opacity(animateContent ? 1 : 0)
                         .offset(y: animateContent ? 0 : 15)
+                        .readableWidth()
                     }
                     .refreshable { await loadHistory() }
                 }

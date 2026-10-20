@@ -62,3 +62,27 @@ struct OptionalCTAGlow: ViewModifier {
         }
     }
 }
+
+/// Caps content at a readable column on regular-width displays (iPad, iPhone
+/// Duo inner display, wide windows) and centres it. Compact width is untouched,
+/// so the folded or ordinary iPhone layout keeps its exact behaviour.
+struct ReadableWidth: ViewModifier {
+    var maxWidth: CGFloat = 640
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
+    func body(content: Content) -> some View {
+        if horizontalSizeClass == .regular {
+            content
+                .frame(maxWidth: maxWidth)
+                .frame(maxWidth: .infinity)
+        } else {
+            content
+        }
+    }
+}
+
+extension View {
+    func readableWidth(_ maxWidth: CGFloat = 640) -> some View {
+        modifier(ReadableWidth(maxWidth: maxWidth))
+    }
+}

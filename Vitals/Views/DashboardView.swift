@@ -300,6 +300,7 @@ struct DashboardView: View {
                     GeometryReader { geo in
                         ScrollView(showsIndicators: false) {
                             mainContent(availableHeight: geo.size.height)
+                                .readableWidth()
                                 .frame(minHeight: geo.size.height)
                         }
                         .refreshable { await refresh() }
