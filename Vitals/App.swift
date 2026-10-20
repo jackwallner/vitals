@@ -81,10 +81,6 @@ private final class PhoneGoalSyncService: NSObject, WCSessionDelegate {
 }
 #endif
 
-/// The app's content and its app-wide hooks. Kept out of `VitalsApp` so the
-/// scene's `WindowGroup` closure observes nothing: on iOS 27, SwiftUI's async
-/// renderer re-evaluated that closure off the main thread when an observed
-/// object changed, and its main-actor isolation check trapped (SIGTRAP).
 #if DEBUG
 /// Capture-only: walks Today, History, Upgrade and Settings every few seconds
 /// so a native recording shows real tab and sheet transitions.
@@ -101,6 +97,10 @@ private func runScreenshotTour() async {
 }
 #endif
 
+/// The app's content and its app-wide hooks. Kept out of `VitalsApp` so the
+/// scene's `WindowGroup` closure observes nothing: on iOS 27, SwiftUI's async
+/// renderer re-evaluated that closure off the main thread when an observed
+/// object changed, and its main-actor isolation check trapped (SIGTRAP).
 private struct RootView: View {
     @ObservedObject private var goals = GoalSettings.shared
     @ObservedObject private var store = StoreService.shared
