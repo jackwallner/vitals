@@ -860,17 +860,26 @@ struct MainTabView: View {
         switch link {
         case .today:
             selectedTab = 0
-            NotificationCenter.default.post(name: .vitalsDismissSettings, object: nil)
+            dismissSheetsForDeepLink()
             NotificationCenter.default.post(name: .vitalsPopToToday, object: nil)
         case .metric(let metric):
             selectedTab = 0
-            NotificationCenter.default.post(name: .vitalsDismissSettings, object: nil)
+            dismissSheetsForDeepLink()
             deepLinkRouter.pendingMetric = metric
         case .weeklyRecap:
             // The recap is Vitals+; a typed URL must not open it for free users.
             guard store.isPro else { return }
             WeeklyRecapCoordinator.shared.request()
         }
+    }
+
+    /// Clears what would hide the link's destination. A trial pitch, paywall or
+    /// milestone stays up: closing one could cut off a purchase, and the
+    /// destination is underneath it when it closes.
+    private func dismissSheetsForDeepLink() {
+        NotificationCenter.default.post(name: .vitalsDismissSettings, object: nil)
+        showWeeklyRecap = false
+        showReviewPrompt = false
     }
 
     /// Passive review ask after a positive moment (e.g. a daily goal). Waits for
