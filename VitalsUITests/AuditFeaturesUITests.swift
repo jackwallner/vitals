@@ -161,7 +161,13 @@ final class AuditFeaturesUITests: XCTestCase {
         springShot("t1-notification-center")
         XCTAssertNotNil(banner, "no Step goal reached entry in Notification Center\n\(readDump())")
         banner?.tap()
-        XCTAssertTrue(app.wait(for: .runningForeground, timeout: 20))
+        // On iOS 27 a tap in Notification Center can just reveal an "Open" button.
+        if !app.wait(for: .runningForeground, timeout: 8) {
+            springShot("t1-after-first-tap")
+            let open = springboard.buttons["Open"].firstMatch
+            if open.waitForExistence(timeout: 3) { open.tap() }
+        }
+        XCTAssertTrue(app.wait(for: .runningForeground, timeout: 20), "app not foregrounded after tapping the notification\n\(springboard.debugDescription)")
         XCTAssertTrue(
             app.navigationBars.staticTexts["Steps"].waitForExistence(timeout: 15)
                 || app.staticTexts["Steps"].waitForExistence(timeout: 5),
