@@ -1,0 +1,16 @@
+{
+  "project": "Vitals.xcodeproj",
+  "scheme": "VitalsUITests",
+  "uitests_dir": "VitalsUITests",
+  "journeys": [
+    "VitalsUITests/ReleaseJourneysUITests"
+  ],
+  "personas": [
+    "newcomer",
+    "accessibility",
+    "reduce-motion",
+    "german"
+  ],
+  "persona_overrides": {},
+  "slot": null
+}
