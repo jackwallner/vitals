@@ -492,6 +492,11 @@ final class VitalsNotificationDelegate: NSObject, UNUserNotificationCenterDelega
     }
 }
 
+private struct PaneGeometry: Equatable, Sendable {
+    var width: CGFloat
+    var fold: ClosedRange<CGFloat>?
+}
+
 struct MainTabView: View {
     @EnvironmentObject private var store: StoreService
     @StateObject private var goals = GoalSettings.shared
@@ -509,6 +514,10 @@ struct MainTabView: View {
     @State private var variantToastLabel: String?
     #endif
     @State private var historyHasAppeared = false
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    /// The container's width and fold, measured so the unfolded iPhone Duo can
+    /// put the tabs and History on opposite sides of the fold.
+    @State private var paneGeometry = PaneGeometry(width: 0, fold: nil)
     /// The Excluded Days screen, raised from the paused-averages banner rather
     /// than through Settings, so "unpause" is two taps from anywhere in the app.
     @State private var showExcludedDays = false
@@ -818,7 +827,9 @@ struct MainTabView: View {
         // so the user re-encounters it after a 14-day cooldown rather than
         // being killed forever by a single "Not now". Intent-driven taps
         // bypass this cooldown.
+        // Screenshot runs capture Today itself, not the sheet over it.
         guard goals.hasCompletedSetup,
+              !ScreenshotConfig.isEnabled,
               !store.isPro,
               goals.passiveTrialOfferAllowed(),
               canPitchFreeTrial,
@@ -1103,13 +1114,32 @@ struct MainTabView: View {
         pendingMilestone = event
     }
 
+    /// Unfolded, History has its own pane beside Today, so it is never a tab.
+    private var split: UnfoldedSplit? {
+        UnfoldedSplit.make(
+            width: paneGeometry.width,
+            isRegularWidth: horizontalSizeClass == .regular,
+            fold: paneGeometry.fold
+        )
+    }
+
+    private var showsHistory: Bool { split != nil || selectedTab == 1 }
+
+    /// Each unfolded pane is phone-width, so its screen lays out as on a phone.
+    private var paneSizeClass: UserInterfaceSizeClass? {
+        split == nil ? horizontalSizeClass : .compact
+    }
+
     var body: some View {
-        ZStack(alignment: .bottom) {
+        ZStack(alignment: .bottomLeading) {
             // Keep both views alive, toggle visibility. `.accessibilityHidden` on the
             // inactive tab prevents VoiceOver's rotor from surfacing elements that are
             // visually invisible (opacity 0) but still in the accessibility tree.
+            // Opening or closing the Duo only moves these frames, so neither view
+            // is rebuilt and both keep their scroll position and period.
             DashboardView()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .environment(\.horizontalSizeClass, paneSizeClass)
+                .frame(maxWidth: split?.primaryWidth ?? .infinity, maxHeight: .infinity)
                 .opacity(selectedTab == 0 ? 1 : 0)
                 .allowsHitTesting(selectedTab == 0)
                 .accessibilityHidden(selectedTab != 0)
@@ -1121,10 +1151,12 @@ struct MainTabView: View {
                         HistoryView()
                     }
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .opacity(selectedTab == 1 ? 1 : 0)
-                .allowsHitTesting(selectedTab == 1)
-                .accessibilityHidden(selectedTab != 1)
+                .environment(\.horizontalSizeClass, paneSizeClass)
+                .frame(maxWidth: split?.secondaryWidth ?? .infinity, maxHeight: .infinity)
+                .padding(.leading, split?.secondaryX ?? 0)
+                .opacity(showsHistory ? 1 : 0)
+                .allowsHitTesting(showsHistory)
+                .accessibilityHidden(!showsHistory)
             }
             Group {
                 if store.isPro {
@@ -1150,12 +1182,16 @@ struct MainTabView: View {
                     PaywallView(displayCloseButton: false)
                 }
             }
+            .environment(\.horizontalSizeClass, paneSizeClass)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 // Reserve space so the native paywall's CTA + footer aren't
                 // hidden by the floating tab-bar capsule below.
                 Color.clear.frame(height: 68)
             }
+            // After the inset, which fills its proposal and would centre a
+            // narrower pane across the fold.
+            .frame(maxWidth: split?.primaryWidth ?? .infinity)
             .opacity(selectedTab == 2 ? 1 : 0)
             .allowsHitTesting(selectedTab == 2)
             .accessibilityHidden(selectedTab != 2)
@@ -1176,13 +1212,15 @@ struct MainTabView: View {
                         isSelected: selectedTab == 0
                     ) { selectedTab = 0 }
 
-                    TabButton(
-                        icon: "chart.bar.fill",
-                        label: "History",
-                        isSelected: selectedTab == 1
-                    ) {
-                        if !historyHasAppeared { historyHasAppeared = true }
-                        selectedTab = 1
+                    if split == nil {
+                        TabButton(
+                            icon: "chart.bar.fill",
+                            label: "History",
+                            isSelected: selectedTab == 1
+                        ) {
+                            if !historyHasAppeared { historyHasAppeared = true }
+                            selectedTab = 1
+                        }
                     }
 
                     TabButton(
@@ -1206,6 +1244,19 @@ struct MainTabView: View {
                 #endif
             }
             .padding(.bottom, 12)
+            .frame(maxWidth: split?.primaryWidth ?? .infinity)
+        }
+        .onGeometryChange(for: PaneGeometry.self) { proxy in
+            PaneGeometry(width: proxy.size.width, fold: proxy.verticalFold())
+        } action: { paneGeometry = $0 }
+        .onChange(of: split != nil) { _, isSplit in
+            guard isSplit else { return }
+            historyHasAppeared = true
+            if selectedTab == 1 { selectedTab = 0 }
+        }
+        .onChange(of: selectedTab) { _, tab in
+            // Deep links and the launch routes still ask for the History tab.
+            if tab == 1, split != nil { selectedTab = 0 }
         }
         .ignoresSafeArea(edges: .bottom)
         .sheet(isPresented: $showExcludedDays) {

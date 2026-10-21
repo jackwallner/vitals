@@ -70,14 +70,14 @@ struct ReadableWidth: ViewModifier {
     var maxWidth: CGFloat = 640
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
+    // One branch for both widths: an `if` here rebuilt the wrapped screen, and
+    // lost its state, every time the Duo opened or closed.
+    // nil bounds size the frame to its content, so compact layout is unchanged.
     func body(content: Content) -> some View {
-        if horizontalSizeClass == .regular {
-            content
-                .frame(maxWidth: maxWidth)
-                .frame(maxWidth: .infinity)
-        } else {
-            content
-        }
+        let isRegular = horizontalSizeClass == .regular
+        content
+            .frame(maxWidth: isRegular ? maxWidth : nil)
+            .frame(maxWidth: isRegular ? .infinity : nil)
     }
 }
 
