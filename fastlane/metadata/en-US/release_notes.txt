@@ -1,3 +1,13 @@
-History loads faster on a cold start. A failed food read now says so instead of showing "No food logged". The Excluded Days screen and the Pause Averages switch describe a paused state accurately, and the paused banner leaves room for larger text sizes.
+New Large Home Screen widget with your week of calories at a glance.
 
-Behind-the-scenes improvements and fixes to keep Total Calories running smoothly. Thank you for being here.
+Ask Siri for the calories you've burned today, or your steps.
+
+Optional Goal Reached notification when you hit your daily goal.
+
+If your calorie goal has been out of reach, Today suggests one that fits your typical day.
+
+Evening Reminder for Vitals+ members.
+
+On iPhone Duo, unfold to see Today and History side by side.
+
+Fixes a crash when opening a notification.
