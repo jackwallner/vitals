@@ -219,6 +219,16 @@ footer a { color: #6e6e73; text-decoration: none; margin: 0 10px; }
 .tw table { min-width: 760px; margin: 0; }
 .disclosure { font-size: 15px; color: #515154; margin-bottom: 18px; }
 article h3 a { color: inherit; }
+
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.nav-actions .nav-link, .nav-brand span { white-space: nowrap; }
+@media (max-width: 480px) { .nav-actions { gap: 6px; } .nav-actions .nav-link { padding: 7px 12px; font-size: 13px; } }
+.nav-link-play { background: transparent; color: #1d1d1f; box-shadow: inset 0 0 0 1px #1d1d1f; }
+.store-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; }
+.play-badge { display: inline-block; line-height: 0; margin: -11px -12px; }
+.play-badge img { height: 69px; width: auto; display: block; }
+.cta-box .play-badge { margin: -10px -11px; }
+.cta-box .play-badge img { height: 64px; }
 </style>
 </head>
 <body>
@@ -228,7 +238,7 @@ article h3 a { color: inherit; }
                 <img src="icon_256.png" alt="Total Calories">
                 <span>Total Calories</span>
             </a>
-            <a class="nav-link" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-best-app-to-track-calories-bur&amp;mt=8">Download</a>
+            <span class="nav-actions"><a class="nav-link" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-best-app-to-track-calories-bur&amp;mt=8">Download</a><a class="nav-link nav-link-play" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener">Google Play</a></span>
         </div>
     </nav>
 
@@ -294,6 +304,7 @@ article h3 a { color: inherit; }
             <h2>Sources</h2>
             <ul class="sources">
 <li><a href="https://apps.apple.com/us/app/id6761743504?pt=128748779&amp;ct=jw-vitals-best-app-to-track-calories-bur&amp;mt=8" rel="noopener">Total Calories on the App Store</a></li>
+<li><a href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener">Total Calories on Google Play</a></li>
 <li><a href="https://apps.apple.com/us/app/id993667592" rel="noopener">ActivityTracker Pedometer on the App Store</a></li>
 <li><a href="https://apps.apple.com/us/app/id1398051875" rel="noopener">TDEE (Apperitif) on the App Store</a></li>
 <li><a href="https://apps.apple.com/us/app/id1620861771" rel="noopener">TDEE Calculator (Clixade) on the App Store</a></li>

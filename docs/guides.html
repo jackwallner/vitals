@@ -56,11 +56,21 @@ footer a { color: #6e6e73; text-decoration: none; margin: 0 10px; }
 footer .divider { margin: 4px 0; }
 .note { font-size: 14px; color: #6e6e73; line-height: 1.5; }
 @media (max-width: 520px) { h1 { font-size: 32px; } .calc .row { grid-template-columns: 1fr; } }
+
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.nav-actions .nav-link, .nav-brand span { white-space: nowrap; }
+@media (max-width: 480px) { .nav-actions { gap: 6px; } .nav-actions .nav-link { padding: 7px 12px; font-size: 13px; } }
+.nav-link-play { background: transparent; color: #1d1d1f; box-shadow: inset 0 0 0 1px #1d1d1f; }
+.store-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; }
+.play-badge { display: inline-block; line-height: 0; margin: -11px -12px; }
+.play-badge img { height: 69px; width: auto; display: block; }
+.cta-box .play-badge { margin: -10px -11px; }
+.cta-box .play-badge img { height: 64px; }
 </style>
     <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Calories burned, explained", "author": {"@type": "Person", "name": "Jack Wallner"}, "dateModified": "2026-10-15"}</script>
 </head>
 <body>
-    <nav><div class="container"><a class="nav-brand" href="./"><img src="icon_256.png" alt="Total Calories"><span>Total Calories</span></a><a class="nav-link" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-guides&amp;mt=8">Download</a></div></nav>
+    <nav><div class="container"><a class="nav-brand" href="./"><img src="icon_256.png" alt="Total Calories"><span>Total Calories</span></a><span class="nav-actions"><a class="nav-link" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-guides&amp;mt=8">Download</a><a class="nav-link nav-link-play" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener">Google Play</a></span></div></nav>
     <article><div class="container">
         <h1>Calories burned, explained</h1>
         <p class="updated">Last updated <time datetime="2026-10-15" data-updated>October 15, 2026</time></p>

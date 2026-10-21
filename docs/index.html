@@ -34,11 +34,14 @@
                 "alternateName": "Total Calories",
                 "description": "Total Calories is a total calories burned app for iPhone and Apple Watch. It adds your active and resting calories from Apple Health into one daily number, shown on Apple Watch complications, home and lock screen widgets, and a dashboard with steps and trends. It is not a food logger. Vitals+ adds TDEE and BMR reference figures, an active versus resting breakdown, and a net deficit that uses food energy from another food app.",
                 "applicationCategory": "HealthApplication",
-                "operatingSystem": "iOS 17+, watchOS 10+",
+                "operatingSystem": "iOS 17+, watchOS 10+, Android",
                 "url": "https://jackwallner.com/ios/vitals/",
                 "downloadUrl": "https://apps.apple.com/us/app/id6761743504",
-                "installUrl": "https://apps.apple.com/us/app/id6761743504",
-                "sameAs": "https://apps.apple.com/us/app/id6761743504",
+                "installUrl": ["https://apps.apple.com/us/app/id6761743504", "https://play.google.com/store/apps/details?id=com.jackwallner.vitals"],
+                "sameAs": [
+                    "https://apps.apple.com/us/app/id6761743504",
+                    "https://play.google.com/store/apps/details?id=com.jackwallner.vitals"
+                ],
                 "screenshot": [
                     "https://jackwallner.github.io/vitals/appstore-screenshot-01.png",
                     "https://jackwallner.github.io/vitals/appstore-screenshot-02.png",
@@ -562,7 +565,17 @@
             font-weight: 600;
             color: #db340e;
         }
-    </style>
+    
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.nav-actions .nav-link, .nav-brand span { white-space: nowrap; }
+@media (max-width: 480px) { .nav-actions { gap: 6px; } .nav-actions .nav-link { padding: 7px 12px; font-size: 13px; } }
+.nav-link-play { background: transparent; color: #1d1d1f; box-shadow: inset 0 0 0 1px #1d1d1f; }
+.store-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; }
+.play-badge { display: inline-block; line-height: 0; margin: -11px -12px; }
+.play-badge img { height: 69px; width: auto; display: block; }
+.cta-box .play-badge { margin: -10px -11px; }
+.cta-box .play-badge img { height: 64px; }
+</style>
 </head>
 <body>
 
@@ -572,7 +585,7 @@
                 <img src="icon_256.png" alt="Total Calories">
                 <span>Total Calories</span>
             </a>
-            <a class="nav-link" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-home&amp;mt=8">Download</a>
+            <span class="nav-actions"><a class="nav-link" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-home&amp;mt=8">Download</a><a class="nav-link nav-link-play" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener">Google Play</a></span>
         </div>
     </nav>
 
@@ -580,7 +593,7 @@
         <h1>Know your <span>total burn</span></h1>
         <p class="tagline">Total Calories is a total calories burned app for Apple Watch and iPhone. Active plus resting calories, steps, trends, and goals, all from Apple Health and all on your device. Free to start.</p>
         <p class="platforms">iPhone &middot; Apple Watch &middot; Widgets</p>
-        <a class="download-btn" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-home&amp;mt=8">Download for free</a>
+        <div class="store-row"><a class="download-btn" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-home&amp;mt=8">Download for free</a><a class="play-badge" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener"><img src="google-play-badge.png" alt="Get it on Google Play"></a></div>
     </section>
 
     <section class="showcase">
@@ -723,8 +736,8 @@
 
     <section class="cta">
         <h2>Start tracking today</h2>
-        <p>Free on the App Store. No account required. Upgrade to Vitals+ anytime.</p>
-        <a class="download-btn" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-home&amp;mt=8">Download for free</a>
+        <p>Free on the App Store and Google Play. No account required. Upgrade to Vitals+ anytime.</p>
+        <div class="store-row"><a class="download-btn" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-home&amp;mt=8">Download for free</a><a class="play-badge" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener"><img src="google-play-badge.png" alt="Get it on Google Play"></a></div>
     </section>
 
     <footer>
