@@ -1,1 +1,1 @@
-Perbaikan: Riwayat tetap cepat saat rata-rata dijeda, dan layar Hari yang Dikecualikan kini menampilkan tanggal yang benar pada kalender Buddha, Jepang, Islam, dan kalender non-Gregorian lainnya.
+Peningkatan di balik layar dan perbaikan bug agar Total Calories berjalan lancar. Terima kasih telah hadir.

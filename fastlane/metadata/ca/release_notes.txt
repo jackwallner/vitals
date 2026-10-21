@@ -1,1 +1,1 @@
-Correccions: l'historial continua sent ràpid mentre les mitjanes estan en pausa, i la pantalla de dies exclosos ara mostra les dates correctes amb calendaris budista, japonès, islàmic i altres no gregorians.
+Millores internes i correccions d'errors perquè Total Calories funcioni bé. Gràcies per ser aquí.

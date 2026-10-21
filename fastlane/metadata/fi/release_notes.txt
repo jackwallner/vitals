@@ -1,1 +1,1 @@
-Korjaukset: Historia pysyy nopeana, kun keskiarvot on keskeytetty, ja Poissuljetut päivät -näkymä näyttää nyt oikeat päivämäärät buddhalaisessa, japanilaisessa, islamilaisessa ja muissa ei-gregoriaanisissa kalentereissa.
+Taustaparannuksia ja virhekorjauksia, jotta Total Calories toimii sujuvasti. Kiitos, että olet mukana.

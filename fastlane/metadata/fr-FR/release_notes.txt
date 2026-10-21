@@ -1,1 +1,1 @@
-Corrections : l'historique reste rapide pendant que les moyennes sont en pause, et l'écran Jours exclus affiche maintenant les bonnes dates avec les calendriers bouddhiste, japonais, islamique et autres calendriers non grégoriens.
+Améliorations en coulisses et corrections de bugs pour que Total Calories reste fluide. Merci d'être là.

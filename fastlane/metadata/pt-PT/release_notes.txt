@@ -1,1 +1,1 @@
-Correções: o histórico continua rápido enquanto as médias estão em pausa, e o ecrã Dias excluídos mostra agora as datas corretas nos calendários budista, japonês, islâmico e outros não gregorianos.
+Melhorias nos bastidores e correções de erros para o Total Calories funcionar melhor. Obrigado por estar aqui.

@@ -1,1 +1,1 @@
-Oplossingen: Geschiedenis blijft snel terwijl gemiddelden gepauzeerd zijn, en het scherm Uitgesloten dagen toont nu de juiste datums in boeddhistische, Japanse, islamitische en andere niet-gregoriaanse kalenders.
+Verbeteringen achter de schermen en bugfixes zodat Total Calories soepel werkt. Bedankt dat je er bent.

@@ -1,1 +1,1 @@
-Javítások: az Előzmények gyors marad, amíg az átlagok szünetelnek, és a Kizárt napok képernyő most már helyes dátumokat mutat buddhista, japán, iszlám és más nem Gergely-naptárakban.
+Háttérbeli fejlesztések és hibajavítások, hogy a Total Calories gördülékenyen működjön. Köszönjük, hogy itt vagy.

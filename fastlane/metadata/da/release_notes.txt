@@ -1,1 +1,1 @@
-Rettelser: Historik forbliver hurtig, mens gennemsnit er sat på pause, og skærmen Udelukkede dage viser nu de rigtige datoer i buddhistiske, japanske, islamiske og andre ikke-gregorianske kalendere.
+Forbedringer bag kulisserne og fejlrettelser, så Total Calories kører glat. Tak fordi du er her.

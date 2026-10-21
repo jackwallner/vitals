@@ -1,1 +1,1 @@
-Sửa lỗi: Lịch sử vẫn nhanh khi tạm dừng tính trung bình, và màn hình Ngày loại trừ giờ hiển thị đúng ngày trên lịch Phật giáo, lịch Nhật, lịch Hồi giáo và các lịch không phải Gregory khác.
+Cải tiến phía sau và sửa lỗi để Total Calories chạy mượt mà. Cảm ơn bạn đã đồng hành.

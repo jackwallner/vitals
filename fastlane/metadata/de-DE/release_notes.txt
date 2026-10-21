@@ -1,1 +1,1 @@
-Fehlerbehebungen: Der Verlauf bleibt schnell, während Durchschnitte pausiert sind, und Ausgeschlossene Tage zeigt jetzt die richtigen Daten in buddhistischen, japanischen, islamischen und anderen nicht-gregorianischen Kalendern.
+Verbesserungen und Fehlerbehebungen im Hintergrund, damit Total Calories reibungslos läuft. Danke, dass du dabei bist.

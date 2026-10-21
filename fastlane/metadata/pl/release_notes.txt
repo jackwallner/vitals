@@ -1,1 +1,1 @@
-Poprawki: Historia działa szybko, gdy średnie są wstrzymane, a ekran Wykluczone dni pokazuje teraz prawidłowe daty w kalendarzu buddyjskim, japońskim, islamskim i innych kalendarzach niegregoriańskich.
+Ulepszenia w tle i poprawki błędów, aby Total Calories działał płynnie. Dziękujemy, że jesteś.

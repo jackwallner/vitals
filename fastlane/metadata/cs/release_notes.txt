@@ -1,1 +1,1 @@
-Opravy: Historie zůstává rychlá i při pozastavených průměrech a obrazovka Vyloučené dny nyní zobrazuje správná data v buddhistickém, japonském, islámském a dalších negregoriánských kalendářích.
+Vylepšení na pozadí a opravy chyb, aby Total Calories běžel hladce. Děkujeme, že jste tu.

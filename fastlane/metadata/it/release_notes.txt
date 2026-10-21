@@ -1,1 +1,1 @@
-Correzioni: la cronologia resta veloce mentre le medie sono in pausa, e la schermata Giorni esclusi ora mostra le date corrette con i calendari buddista, giapponese, islamico e altri calendari non gregoriani.
+Miglioramenti dietro le quinte e correzioni di bug per far funzionare Total Calories senza intoppi. Grazie di esserci.

@@ -1,1 +1,1 @@
-Rettelser: Historikk forblir rask mens gjennomsnitt er satt på pause, og skjermen Utelatte dager viser nå riktige datoer i buddhistiske, japanske, islamske og andre ikke-gregorianske kalendere.
+Forbedringer bak kulissene og feilrettinger så Total Calories fungerer problemfritt. Takk for at du er her.

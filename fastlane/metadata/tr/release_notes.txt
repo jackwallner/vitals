@@ -1,1 +1,1 @@
-Düzeltmeler: Ortalamalar duraklatılmışken Geçmiş hızlı kalır ve Hariç Tutulan Günler ekranı artık Budist, Japon, Hicri ve diğer Gregoryen olmayan takvimlerde doğru tarihleri gösterir.
+Total Calories'ın sorunsuz çalışması için arka planda iyileştirmeler ve hata düzeltmeleri. Burada olduğun için teşekkürler.
