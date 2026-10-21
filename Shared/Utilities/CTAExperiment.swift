@@ -1,61 +1,65 @@
 import Foundation
 
-/// Paywall CTA wording test, October 2026: "Start my free trial" against
-/// "Start your free trial", judged on trial starts per exposed customer.
+/// The trial button's wording, picked by the current offering's `trial_cta`
+/// metadata so a wording test is a RevenueCat Experiment against a real
+/// control, the Mahj pattern. Every wording ships in the binary; a missing or
+/// unknown value is `standard`, the copy 1.8.8 shipped, so nobody's button
+/// changes until an Experiment arm sets the key.
 ///
-/// Each install is assigned once, 50/50, and keeps its arm for life, so nobody
-/// sees the button change under them. The arm rides to RevenueCat as the
-/// `cta_wording` subscriber attribute together with the funnel attributes,
-/// which are only sent once a pitch has been shown: a customer carrying the
-/// attribute saw a trial CTA in that arm. Readout and decision rule:
-/// `~/ios/growth/cta-wording-test.md`.
+/// The arm rides to RevenueCat as the `cta_wording` subscriber attribute with
+/// the funnel attributes, which are only sent once a pitch has been shown.
+/// Readout and decision rule: `~/ios/growth/cta-wording-test.md`.
 ///
-/// Only the possessive changes. Each surface keeps its own casing, and
-/// non-trial labels ("Subscribe", lifetime) are untouched.
+/// Each surface keeps its own casing, and non-trial labels ("Subscribe",
+/// lifetime) are untouched.
 enum CTAExperiment {
     enum Arm: String, CaseIterable, Sendable {
-        case my, your
+        /// Control: "Start 7-day free trial" / "Start Free Trial", as live.
+        case standard
+        case my
+        case your
     }
 
     static let attributeKey = "cta_wording"
-    private static let storageKey = "experiment.ctaWording.2026-10"
+    static let metadataKey = "trial_cta"
 
-    /// Overridable so tests get their own suite.
-    nonisolated(unsafe) static var defaults: UserDefaults = .standard
+    /// Set by `StoreService` whenever the current offering changes.
+    nonisolated(unsafe) static var offeringArm: Arm = .standard
 
     static var arm: Arm {
         #if DEBUG
         if let pinned = launchOverride { return pinned }
         #endif
-        if let stored = defaults.string(forKey: storageKey).flatMap(Arm.init(rawValue:)) {
-            return stored
+        return offeringArm
+    }
+
+    static func from(metadata: [String: Any]?) -> Arm {
+        guard let raw = metadata?[metadataKey] as? String else { return .standard }
+        return Arm(rawValue: raw) ?? .standard
+    }
+
+    /// Sentence case: "Start 7-day free trial", "Start my free trial".
+    static func trialCTA(_ arm: Arm = CTAExperiment.arm, trialLabel: String) -> String {
+        switch arm {
+        case .standard: "Start \(trialLabel)"
+        case .my, .your: "Start \(arm.rawValue) free trial"
         }
-        let assigned: Arm = Bool.random() ? .my : .your
-        defaults.set(assigned.rawValue, forKey: storageKey)
-        return assigned
     }
 
-    /// Sentence case: "Start my free trial".
-    static func trialCTA(_ arm: Arm = CTAExperiment.arm) -> String {
-        "Start \(arm.rawValue) free trial"
-    }
-
-    /// Title case: "Start My Free Trial".
+    /// Title case: "Start Free Trial", "Start My Free Trial".
     static func trialCTATitleCase(_ arm: Arm = CTAExperiment.arm) -> String {
-        "Start \(arm.rawValue.capitalized) Free Trial"
+        switch arm {
+        case .standard: "Start Free Trial"
+        case .my, .your: "Start \(arm.rawValue.capitalized) Free Trial"
+        }
     }
 
     #if DEBUG
-    /// `-cta.arm my` or `-cta.arm your` pins the arm for captures.
+    /// `-cta.arm standard|my|your` pins the arm for captures.
     private static var launchOverride: Arm? {
         let args = ProcessInfo.processInfo.arguments
         guard let index = args.firstIndex(of: "-cta.arm"), index + 1 < args.count else { return nil }
         return Arm(rawValue: args[index + 1])
-    }
-
-    /// Test seam: forget the assignment.
-    static func reset() {
-        defaults.removeObject(forKey: storageKey)
     }
     #endif
 }

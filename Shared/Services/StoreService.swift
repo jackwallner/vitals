@@ -264,7 +264,9 @@ final class StoreService: NSObject, ObservableObject {
     static let shared = StoreService()
 
     @Published private(set) var products: [Package] = []
-    @Published private(set) var currentOffering: Offering?
+    @Published private(set) var currentOffering: Offering? {
+        didSet { CTAExperiment.offeringArm = CTAExperiment.from(metadata: currentOffering?.metadata) }
+    }
     @Published private(set) var customerInfo: CustomerInfo?
     @Published private(set) var isPro: Bool = false {
         didSet {
@@ -597,7 +599,7 @@ final class StoreService: NSObject, ObservableObject {
         // older than the arm falls back to catalog and would otherwise be
         // counted as having seen the treatment.
         attributes["paywall_variant"] = upgradeTabVariant.rawValue
-        // Trial CTA wording test arm. Sent with the funnel record, so only
+        // Trial CTA wording arm. Sent with the funnel record, so only
         // customers who were actually shown a pitch carry it.
         attributes[CTAExperiment.attributeKey] = CTAExperiment.arm.rawValue
         if let offering = currentOffering?.identifier {

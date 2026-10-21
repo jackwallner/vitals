@@ -9,6 +9,11 @@ final class VitalsConversionCopyTests: XCTestCase {
             arm: .my
         )
         XCTAssertEqual(cta, "Start my free trial")
+        XCTAssertEqual(
+            VitalsConversionCopy.ctaLabel(trialLabel: "7-day free trial", priceLabel: "$14.99 / year",
+                                          eligibleForTrial: true, arm: .standard),
+            "Start 7-day free trial"
+        )
     }
 
     func testIneligibleCTAUsesPaidYearly() {
@@ -78,6 +83,7 @@ final class VitalsConversionCopyTests: XCTestCase {
     func testShortCTA() {
         XCTAssertEqual(VitalsConversionCopy.shortCTALabel(eligibleForTrial: true, arm: .my), "Start My Free Trial")
         XCTAssertEqual(VitalsConversionCopy.shortCTALabel(eligibleForTrial: true, arm: .your), "Start Your Free Trial")
+        XCTAssertEqual(VitalsConversionCopy.shortCTALabel(eligibleForTrial: true, arm: .standard), "Start Free Trial")
         XCTAssertEqual(VitalsConversionCopy.shortCTALabel(eligibleForTrial: false), "Continue with Vitals+")
     }
 

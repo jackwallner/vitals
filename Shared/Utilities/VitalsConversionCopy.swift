@@ -5,8 +5,8 @@ import Foundation
 /// These helpers keep every pitch surface (onboarding, trial sheet, milestone,
 /// paywall, What's New) honest when the user already used their free trial.
 enum VitalsConversionCopy {
-    /// Primary button: trial language only when eligible. The trial wording is
-    /// the CTA test's arm; the trial length stays in the badge and disclosure.
+    /// Primary button: trial language only when eligible, worded by the
+    /// offering's CTA arm (`CTAExperiment`).
     static func ctaLabel(
         trialLabel: String?,
         priceLabel: String,
@@ -14,7 +14,7 @@ enum VitalsConversionCopy {
         arm: CTAExperiment.Arm = CTAExperiment.arm
     ) -> String {
         if eligibleForTrial, let trialLabel, !trialLabel.isEmpty {
-            return CTAExperiment.trialCTA(arm)
+            return CTAExperiment.trialCTA(arm, trialLabel: trialLabel)
         }
         if priceLabel.isEmpty { return "Continue with Vitals+" }
         return "Continue with Vitals+ for \(priceLabel)"

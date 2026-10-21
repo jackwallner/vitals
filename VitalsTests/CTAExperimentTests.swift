@@ -1,38 +1,31 @@
 import XCTest
 
 final class CTAExperimentTests: XCTestCase {
-    private var suite: UserDefaults!
-
-    override func setUp() {
-        super.setUp()
-        suite = UserDefaults(suiteName: "CTAExperimentTests")
-        suite.removePersistentDomain(forName: "CTAExperimentTests")
-        CTAExperiment.defaults = suite
+    func testMissingOrUnknownMetadataIsTheLiveControl() {
+        XCTAssertEqual(CTAExperiment.from(metadata: nil), .standard)
+        XCTAssertEqual(CTAExperiment.from(metadata: [:]), .standard)
+        XCTAssertEqual(CTAExperiment.from(metadata: ["trial_cta": "mine"]), .standard)
+        XCTAssertEqual(CTAExperiment.from(metadata: ["trial_cta": 1]), .standard)
     }
 
-    override func tearDown() {
-        CTAExperiment.defaults = .standard
-        suite.removePersistentDomain(forName: "CTAExperimentTests")
-        super.tearDown()
+    func testMetadataPicksTheArm() {
+        XCTAssertEqual(CTAExperiment.from(metadata: ["trial_cta": "my"]), .my)
+        XCTAssertEqual(CTAExperiment.from(metadata: ["trial_cta": "your"]), .your)
+        XCTAssertEqual(CTAExperiment.from(metadata: ["trial_cta": "standard"]), .standard)
     }
 
-    func testArmIsStableOnceAssigned() {
-        let first = CTAExperiment.arm
-        for _ in 0..<20 { XCTAssertEqual(CTAExperiment.arm, first) }
+    func testDefaultArmIsTheLiveControl() {
+        XCTAssertEqual(CTAExperiment.offeringArm, .standard)
     }
 
-    func testAssignmentSplitsBothWays() {
-        var seen = Set<CTAExperiment.Arm>()
-        for _ in 0..<200 {
-            CTAExperiment.reset()
-            seen.insert(CTAExperiment.arm)
-        }
-        XCTAssertEqual(seen, Set(CTAExperiment.Arm.allCases))
+    func testStandardIsTheLiveCopy() {
+        XCTAssertEqual(CTAExperiment.trialCTA(.standard, trialLabel: "7-day free trial"), "Start 7-day free trial")
+        XCTAssertEqual(CTAExperiment.trialCTATitleCase(.standard), "Start Free Trial")
     }
 
-    func testWordingDiffersOnlyInThePossessive() {
-        XCTAssertEqual(CTAExperiment.trialCTA(.my), "Start my free trial")
-        XCTAssertEqual(CTAExperiment.trialCTA(.your), "Start your free trial")
+    func testTestArmsDifferOnlyInThePossessive() {
+        XCTAssertEqual(CTAExperiment.trialCTA(.my, trialLabel: "7-day free trial"), "Start my free trial")
+        XCTAssertEqual(CTAExperiment.trialCTA(.your, trialLabel: "7-day free trial"), "Start your free trial")
         XCTAssertEqual(CTAExperiment.trialCTATitleCase(.my), "Start My Free Trial")
         XCTAssertEqual(CTAExperiment.trialCTATitleCase(.your), "Start Your Free Trial")
     }
