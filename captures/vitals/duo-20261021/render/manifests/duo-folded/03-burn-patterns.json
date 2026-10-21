@@ -1,0 +1,70 @@
+{
+  "filename": "03-burn-patterns.png",
+  "path": "duo-folded/03-burn-patterns.png",
+  "output_sha256": "515395e237c1638610e27be5a830a34f7dcddf529744f6871a2128fef9af69d0",
+  "output_size": [
+    1398,
+    2034
+  ],
+  "device": "iphone",
+  "header": "See daily burn patterns over time",
+  "pitch": {
+    "benefit": "See whether daily burn is rising or slipping instead of judging one day",
+    "problem": "A single day's number does not show whether a routine is changing",
+    "advantage": "History charts daily calories with averages and totals across 7 days to a year",
+    "proof": "The literal History capture shows a 30-day calorie chart with a 2,118 cal average",
+    "header_problem": "one isolated day",
+    "header_advantage": "daily burn patterns",
+    "search_terms": [
+      "daily burn",
+      "calorie history"
+    ]
+  },
+  "source": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-history.png",
+  "source_sha256": "1d1aa74521014c434048e7f056c6196997491678afa2a2a90ec1ea5e35ac32c3",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/duo-folded/03-burn-patterns.foreground.png",
+  "foreground_sha256": "c4a4609e7327c545cab18a521c4ed7f80b17f1972f174f2720ebe1d56f8f86a5",
+  "ui_mask": "manifests/duo-folded/03-burn-patterns.ui-mask.png",
+  "ui_coverage": 0.5218,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_duo_outer",
+  "size": [
+    1398,
+    2034
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#fbf7f1",
+  "background_bottom": "#efe3d4",
+  "background_asset_applied": false,
+  "phone": {
+    "x": 173,
+    "y": 500,
+    "width": 1051,
+    "height": 1510,
+    "screen_x": 194,
+    "screen_y": 521,
+    "screen_width": 1009,
+    "screen_height": 1468,
+    "source_crop_top": 0,
+    "source_crop_bottom": 0
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 150,
+  "header_lines": 2,
+  "header_text": "See daily burn patterns over time",
+  "header_bounds": [
+    143,
+    120,
+    1256,
+    427
+  ],
+  "source_evidence": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-history.png",
+  "source_evidence_sha256": "1d1aa74521014c434048e7f056c6196997491678afa2a2a90ec1ea5e35ac32c3"
+}

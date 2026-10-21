@@ -1,0 +1,70 @@
+{
+  "filename": "04-goal-that-fits.png",
+  "path": "duo-folded/04-goal-that-fits.png",
+  "output_sha256": "09b390b62b89d244bdd6857a6e2340cb8e00f814038d6209d0d05c5d294f25e3",
+  "output_size": [
+    1398,
+    2034
+  ],
+  "device": "iphone",
+  "header": "Fit your calorie goal to your real days",
+  "pitch": {
+    "benefit": "Get a calorie goal grounded in what a typical day actually burns",
+    "problem": "A goal that is never reached stops meaning anything",
+    "advantage": "When the goal keeps slipping out of reach, the app suggests a target from the user's typical day",
+    "proof": "The literal Today capture shows the goal card suggesting 2,050 cal from the last 14 days",
+    "header_problem": "an unreachable goal",
+    "header_advantage": "calorie goal",
+    "search_terms": [
+      "calorie goal",
+      "daily target"
+    ]
+  },
+  "source": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-dashboard.png",
+  "source_sha256": "0dfa1b8d7355015e048be72bf68589f25f43d5531782289d90929c2dd200518e",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/duo-folded/04-goal-that-fits.foreground.png",
+  "foreground_sha256": "be2232ab0f7c2b9accfb59578949902a0edee42e97d658aab46342e4a4bf5cb3",
+  "ui_mask": "manifests/duo-folded/04-goal-that-fits.ui-mask.png",
+  "ui_coverage": 0.5218,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_duo_outer",
+  "size": [
+    1398,
+    2034
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#fbf7f1",
+  "background_bottom": "#efe3d4",
+  "background_asset_applied": false,
+  "phone": {
+    "x": 173,
+    "y": 500,
+    "width": 1051,
+    "height": 1510,
+    "screen_x": 194,
+    "screen_y": 521,
+    "screen_width": 1009,
+    "screen_height": 1468,
+    "source_crop_top": 0,
+    "source_crop_bottom": 0
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 150,
+  "header_lines": 2,
+  "header_text": "Fit your calorie goal to your real days",
+  "header_bounds": [
+    103,
+    120,
+    1295,
+    427
+  ],
+  "source_evidence": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-dashboard.png",
+  "source_evidence_sha256": "0dfa1b8d7355015e048be72bf68589f25f43d5531782289d90929c2dd200518e"
+}

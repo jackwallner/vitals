@@ -1,0 +1,70 @@
+{
+  "filename": "01-total-at-a-glance.png",
+  "path": "duo-folded/01-total-at-a-glance.png",
+  "output_sha256": "afc8b6cbddf7a1121907f3e947ca26f9701f135fb3e997fe3695bf54ae462691",
+  "output_size": [
+    1398,
+    2034
+  ],
+  "device": "iphone",
+  "header": "See total calories at a glance",
+  "pitch": {
+    "benefit": "Read one combined daily burn number without adding up activity and resting energy",
+    "problem": "Apple Health splits active and resting energy, so total daily burn is easy to miss",
+    "advantage": "Total Calories adds active and resting energy into one ring against a daily target",
+    "proof": "The literal Today capture shows 2,400 of a 2,500 cal target plus 10,342 steps",
+    "header_problem": "split energy numbers",
+    "header_advantage": "total calories",
+    "search_terms": [
+      "total calories",
+      "daily burn"
+    ]
+  },
+  "source": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-darkDashboard.png",
+  "source_sha256": "ca24c64a2b855f1f3332aded02e04a7742acde9023f0926eaf021a421bc980d4",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/duo-folded/01-total-at-a-glance.foreground.png",
+  "foreground_sha256": "29a5fd9cb1a5aed02728b6df6a5d2d67733545f1a7ec7fc5d20124549948c4cf",
+  "ui_mask": "manifests/duo-folded/01-total-at-a-glance.ui-mask.png",
+  "ui_coverage": 0.5218,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_duo_outer",
+  "size": [
+    1398,
+    2034
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#fbf7f1",
+  "background_bottom": "#efe3d4",
+  "background_asset_applied": false,
+  "phone": {
+    "x": 173,
+    "y": 500,
+    "width": 1051,
+    "height": 1510,
+    "screen_x": 194,
+    "screen_y": 521,
+    "screen_width": 1009,
+    "screen_height": 1468,
+    "source_crop_top": 0,
+    "source_crop_bottom": 0
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 150,
+  "header_lines": 2,
+  "header_text": "See total calories at a glance",
+  "header_bounds": [
+    190,
+    120,
+    1207,
+    427
+  ],
+  "source_evidence": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-darkDashboard.png",
+  "source_evidence_sha256": "ca24c64a2b855f1f3332aded02e04a7742acde9023f0926eaf021a421bc980d4"
+}

@@ -1,0 +1,441 @@
+{
+  "app": "vitals",
+  "manifest": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/manifest.json",
+  "target": "iphone_duo_outer",
+  "copy_contract": "single-header-benefit-story-v3",
+  "background_override": null,
+  "sets": [
+    {
+      "id": "duo-folded",
+      "style": "soft-modern",
+      "frames": [
+        {
+          "filename": "01-total-at-a-glance.png",
+          "path": "duo-folded/01-total-at-a-glance.png",
+          "output_sha256": "afc8b6cbddf7a1121907f3e947ca26f9701f135fb3e997fe3695bf54ae462691",
+          "output_size": [
+            1398,
+            2034
+          ],
+          "device": "iphone",
+          "header": "See total calories at a glance",
+          "pitch": {
+            "benefit": "Read one combined daily burn number without adding up activity and resting energy",
+            "problem": "Apple Health splits active and resting energy, so total daily burn is easy to miss",
+            "advantage": "Total Calories adds active and resting energy into one ring against a daily target",
+            "proof": "The literal Today capture shows 2,400 of a 2,500 cal target plus 10,342 steps",
+            "header_problem": "split energy numbers",
+            "header_advantage": "total calories",
+            "search_terms": [
+              "total calories",
+              "daily burn"
+            ]
+          },
+          "source": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-darkDashboard.png",
+          "source_sha256": "ca24c64a2b855f1f3332aded02e04a7742acde9023f0926eaf021a421bc980d4",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/duo-folded/01-total-at-a-glance.foreground.png",
+          "foreground_sha256": "29a5fd9cb1a5aed02728b6df6a5d2d67733545f1a7ec7fc5d20124549948c4cf",
+          "ui_mask": "manifests/duo-folded/01-total-at-a-glance.ui-mask.png",
+          "ui_coverage": 0.5218,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_duo_outer",
+          "size": [
+            1398,
+            2034
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#fbf7f1",
+          "background_bottom": "#efe3d4",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 173,
+            "y": 500,
+            "width": 1051,
+            "height": 1510,
+            "screen_x": 194,
+            "screen_y": 521,
+            "screen_width": 1009,
+            "screen_height": 1468,
+            "source_crop_top": 0,
+            "source_crop_bottom": 0
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 150,
+          "header_lines": 2,
+          "header_text": "See total calories at a glance",
+          "header_bounds": [
+            190,
+            120,
+            1207,
+            427
+          ],
+          "source_evidence": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-darkDashboard.png",
+          "source_evidence_sha256": "ca24c64a2b855f1f3332aded02e04a7742acde9023f0926eaf021a421bc980d4",
+          "manifest": "manifests/duo-folded/01-total-at-a-glance.json"
+        },
+        {
+          "filename": "02-burn-and-steps.png",
+          "path": "duo-folded/02-burn-and-steps.png",
+          "output_sha256": "2890865cbdc14559112d9cdb628b3a50150362a8ec5ccd13cf88dc3206070498",
+          "output_size": [
+            1398,
+            2034
+          ],
+          "device": "iphone",
+          "header": "Keep total burn and steps in one view",
+          "pitch": {
+            "benefit": "Check the two daily numbers that matter without a crowded activity dashboard",
+            "problem": "Activity apps bury the daily total under rings, badges and secondary metrics",
+            "advantage": "The minimal view reduces the check-in to total calories and steps",
+            "proof": "The literal minimal capture shows 2,368 calories and 9,629 steps and nothing else",
+            "header_problem": "a crowded dashboard",
+            "header_advantage": "total burn and steps",
+            "search_terms": [
+              "calories burned",
+              "step counter"
+            ]
+          },
+          "source": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-minimal.png",
+          "source_sha256": "29fb5f691c54ed7df3e315925ba52030a2412017705eb93008898ad4af7d8617",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/duo-folded/02-burn-and-steps.foreground.png",
+          "foreground_sha256": "51d6a737564fe03afbc9dcbc5fdea5a94af8c6869b5209d39d8ae86bea2661a7",
+          "ui_mask": "manifests/duo-folded/02-burn-and-steps.ui-mask.png",
+          "ui_coverage": 0.5218,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_duo_outer",
+          "size": [
+            1398,
+            2034
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#fbf7f1",
+          "background_bottom": "#efe3d4",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 173,
+            "y": 500,
+            "width": 1051,
+            "height": 1510,
+            "screen_x": 194,
+            "screen_y": 521,
+            "screen_width": 1009,
+            "screen_height": 1468,
+            "source_crop_top": 0,
+            "source_crop_bottom": 0
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 150,
+          "header_lines": 2,
+          "header_text": "Keep total burn and steps in one view",
+          "header_bounds": [
+            99,
+            120,
+            1299,
+            427
+          ],
+          "source_evidence": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-minimal.png",
+          "source_evidence_sha256": "29fb5f691c54ed7df3e315925ba52030a2412017705eb93008898ad4af7d8617",
+          "manifest": "manifests/duo-folded/02-burn-and-steps.json"
+        },
+        {
+          "filename": "03-burn-patterns.png",
+          "path": "duo-folded/03-burn-patterns.png",
+          "output_sha256": "515395e237c1638610e27be5a830a34f7dcddf529744f6871a2128fef9af69d0",
+          "output_size": [
+            1398,
+            2034
+          ],
+          "device": "iphone",
+          "header": "See daily burn patterns over time",
+          "pitch": {
+            "benefit": "See whether daily burn is rising or slipping instead of judging one day",
+            "problem": "A single day's number does not show whether a routine is changing",
+            "advantage": "History charts daily calories with averages and totals across 7 days to a year",
+            "proof": "The literal History capture shows a 30-day calorie chart with a 2,118 cal average",
+            "header_problem": "one isolated day",
+            "header_advantage": "daily burn patterns",
+            "search_terms": [
+              "daily burn",
+              "calorie history"
+            ]
+          },
+          "source": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-history.png",
+          "source_sha256": "1d1aa74521014c434048e7f056c6196997491678afa2a2a90ec1ea5e35ac32c3",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/duo-folded/03-burn-patterns.foreground.png",
+          "foreground_sha256": "c4a4609e7327c545cab18a521c4ed7f80b17f1972f174f2720ebe1d56f8f86a5",
+          "ui_mask": "manifests/duo-folded/03-burn-patterns.ui-mask.png",
+          "ui_coverage": 0.5218,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_duo_outer",
+          "size": [
+            1398,
+            2034
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#fbf7f1",
+          "background_bottom": "#efe3d4",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 173,
+            "y": 500,
+            "width": 1051,
+            "height": 1510,
+            "screen_x": 194,
+            "screen_y": 521,
+            "screen_width": 1009,
+            "screen_height": 1468,
+            "source_crop_top": 0,
+            "source_crop_bottom": 0
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 150,
+          "header_lines": 2,
+          "header_text": "See daily burn patterns over time",
+          "header_bounds": [
+            143,
+            120,
+            1256,
+            427
+          ],
+          "source_evidence": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-history.png",
+          "source_evidence_sha256": "1d1aa74521014c434048e7f056c6196997491678afa2a2a90ec1ea5e35ac32c3",
+          "manifest": "manifests/duo-folded/03-burn-patterns.json"
+        },
+        {
+          "filename": "04-goal-that-fits.png",
+          "path": "duo-folded/04-goal-that-fits.png",
+          "output_sha256": "09b390b62b89d244bdd6857a6e2340cb8e00f814038d6209d0d05c5d294f25e3",
+          "output_size": [
+            1398,
+            2034
+          ],
+          "device": "iphone",
+          "header": "Fit your calorie goal to your real days",
+          "pitch": {
+            "benefit": "Get a calorie goal grounded in what a typical day actually burns",
+            "problem": "A goal that is never reached stops meaning anything",
+            "advantage": "When the goal keeps slipping out of reach, the app suggests a target from the user's typical day",
+            "proof": "The literal Today capture shows the goal card suggesting 2,050 cal from the last 14 days",
+            "header_problem": "an unreachable goal",
+            "header_advantage": "calorie goal",
+            "search_terms": [
+              "calorie goal",
+              "daily target"
+            ]
+          },
+          "source": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-dashboard.png",
+          "source_sha256": "0dfa1b8d7355015e048be72bf68589f25f43d5531782289d90929c2dd200518e",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/duo-folded/04-goal-that-fits.foreground.png",
+          "foreground_sha256": "be2232ab0f7c2b9accfb59578949902a0edee42e97d658aab46342e4a4bf5cb3",
+          "ui_mask": "manifests/duo-folded/04-goal-that-fits.ui-mask.png",
+          "ui_coverage": 0.5218,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_duo_outer",
+          "size": [
+            1398,
+            2034
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#fbf7f1",
+          "background_bottom": "#efe3d4",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 173,
+            "y": 500,
+            "width": 1051,
+            "height": 1510,
+            "screen_x": 194,
+            "screen_y": 521,
+            "screen_width": 1009,
+            "screen_height": 1468,
+            "source_crop_top": 0,
+            "source_crop_bottom": 0
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 150,
+          "header_lines": 2,
+          "header_text": "Fit your calorie goal to your real days",
+          "header_bounds": [
+            103,
+            120,
+            1295,
+            427
+          ],
+          "source_evidence": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-dashboard.png",
+          "source_evidence_sha256": "0dfa1b8d7355015e048be72bf68589f25f43d5531782289d90929c2dd200518e",
+          "manifest": "manifests/duo-folded/04-goal-that-fits.json"
+        },
+        {
+          "filename": "05-health-data-private.png",
+          "path": "duo-folded/05-health-data-private.png",
+          "output_sha256": "291e4dbbed47850cb0821b7d6accc27e90095b095641b23ccd6e6ee2be06b0f9",
+          "output_size": [
+            1398,
+            2034
+          ],
+          "device": "iphone",
+          "header": "Keep your Health data on your iPhone",
+          "pitch": {
+            "benefit": "Use calorie tracking without an account, a cloud sync or write access to Health",
+            "problem": "Many trackers ask for an account and send health data to a server",
+            "advantage": "Total Calories only reads from Apple Health and keeps everything on the device",
+            "proof": "The literal onboarding capture states read-only access, on-device storage and no account",
+            "header_problem": "accounts and cloud sync",
+            "header_advantage": "Health data",
+            "search_terms": [
+              "private calorie tracker",
+              "no account"
+            ]
+          },
+          "source": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-onboarding.png",
+          "source_sha256": "b46cd1a71b1d0e635666a39e494afd85e83ea8c74fdf20f6559e850333d830ce",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/duo-folded/05-health-data-private.foreground.png",
+          "foreground_sha256": "9eac550a731aba08be18c89ee227e56bbc6259727e722b11bfbbbe5426de778e",
+          "ui_mask": "manifests/duo-folded/05-health-data-private.ui-mask.png",
+          "ui_coverage": 0.5218,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_duo_outer",
+          "size": [
+            1398,
+            2034
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#fbf7f1",
+          "background_bottom": "#efe3d4",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 173,
+            "y": 500,
+            "width": 1051,
+            "height": 1510,
+            "screen_x": 194,
+            "screen_y": 521,
+            "screen_width": 1009,
+            "screen_height": 1468,
+            "source_crop_top": 0,
+            "source_crop_bottom": 0
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 150,
+          "header_lines": 2,
+          "header_text": "Keep your Health data on your iPhone",
+          "header_bounds": [
+            92,
+            120,
+            1307,
+            427
+          ],
+          "source_evidence": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-onboarding.png",
+          "source_evidence_sha256": "b46cd1a71b1d0e635666a39e494afd85e83ea8c74fdf20f6559e850333d830ce",
+          "manifest": "manifests/duo-folded/05-health-data-private.json"
+        },
+        {
+          "filename": "06-calorie-view.png",
+          "path": "duo-folded/06-calorie-view.png",
+          "output_sha256": "7957df549446ba5cef9595d70d988bf012f01ece174c3d8c8a5c8a050ff814f7",
+          "output_size": [
+            1398,
+            2034
+          ],
+          "device": "iphone",
+          "header": "Choose the calorie view you want",
+          "pitch": {
+            "benefit": "Show only the calorie and step readouts that are useful today",
+            "problem": "One fixed layout shows numbers some users never look at",
+            "advantage": "Settings toggles calories, the goal ring, breakdowns and steps individually",
+            "proof": "The literal Settings capture shows the Calorie Burn, Calorie Intake and Steps toggles",
+            "header_problem": "a fixed layout",
+            "header_advantage": "calorie view",
+            "search_terms": [
+              "calorie tracker",
+              "calories burned"
+            ]
+          },
+          "source": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-settings.png",
+          "source_sha256": "e3406f4886828a6746c11f4eadf2c9cd6988255b51187b64c18108af0bfcfac6",
+          "background_asset": null,
+          "background_asset_sha256": null,
+          "background_override": null,
+          "foreground": "manifests/duo-folded/06-calorie-view.foreground.png",
+          "foreground_sha256": "3cd80554c86257d3d68b2c68496157401fca451f759b60a6d0aa1bdd7380e91a",
+          "ui_mask": "manifests/duo-folded/06-calorie-view.ui-mask.png",
+          "ui_coverage": 0.5218,
+          "imagegen_received_ui_source": false,
+          "target": "iphone_duo_outer",
+          "size": [
+            1398,
+            2034
+          ],
+          "background_mode": "theme",
+          "background_id": "theme",
+          "background_top": "#fbf7f1",
+          "background_bottom": "#efe3d4",
+          "background_asset_applied": false,
+          "phone": {
+            "x": 173,
+            "y": 500,
+            "width": 1051,
+            "height": 1510,
+            "screen_x": 194,
+            "screen_y": 521,
+            "screen_width": 1009,
+            "screen_height": 1468,
+            "source_crop_top": 0,
+            "source_crop_bottom": 0
+          },
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 150,
+          "header_lines": 2,
+          "header_text": "Choose the calorie view you want",
+          "header_bounds": [
+            148,
+            120,
+            1249,
+            427
+          ],
+          "source_evidence": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-settings.png",
+          "source_evidence_sha256": "e3406f4886828a6746c11f4eadf2c9cd6988255b51187b64c18108af0bfcfac6",
+          "manifest": "manifests/duo-folded/06-calorie-view.json"
+        }
+      ]
+    }
+  ]
+}
