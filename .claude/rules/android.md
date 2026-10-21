@@ -37,8 +37,8 @@ paths:
 ## Billing
 
 - RevenueCat project `projd0d314f5` (shared with iOS by decision, not a separate project). Play app
-  `app459152e4e6` (package `com.jackwallner.vitals`, created 2026-10-15, **service-account credentials
-  not configured yet**), Test Store app `app6302e748f4`. Entitlement `Total Calories - Daily Tracker
+  `app459152e4e6` (package `com.jackwallner.vitals`, created 2026-10-15, service-account credentials
+  uploaded 2026-10-17), Test Store app `app6302e748f4`. Entitlement `Total Calories - Daily Tracker
   Vitals+` (`entl05bb1ab663`) now also holds the three Play products. Offering `android`
   (`ofrng8ab09d37a4`, not current) with `$rc_annual`, `$rc_monthly`, `$rc_lifetime`. The app picks
   `offerings.all["android"] ?: current` and treats any active entitlement as Pro.
@@ -67,21 +67,20 @@ paths:
   screenshots/dark from the real emulator build). Policy pages: `docs/android-privacy.html` and
   `docs/android-terms.html` (the Sober lesson: check they render in a browser, not just curl 200).
 - Last verified state 2026-10-15: signed AAB builds (`android/app/build/outputs/bundle/release/app-release.aab`),
-  package `com.jackwallner.vitals`, versionCode 1, targetSdk 36, 16 KB aligned. Not uploaded.
+  package `com.jackwallner.vitals`, versionCode 1, targetSdk 36, 16 KB aligned.
 
-## Play state (2026-10-17)
+## Play state (2026-10-21)
 
-In review: submission 1 (production 1.8.9, versionCode 1, full rollout, 178 countries,
-listing, App content, store settings) sent 2026-10-17 22:25. Managed publishing is off, so it
-goes live on approval. Next: confirm the review result.
+Submission 1 (production 1.8.9, versionCode 1, full rollout, 178 countries,
+listing, App content, store settings) sent 2026-10-17 22:25. Managed publishing is off.
+Live in production as of 2026-10-21.
 
-Staged, not sent for review. Play app id `4973808117865134124` (E3 Apps). versionCode 1 uploaded;
+Play app id `4973808117865134124` (E3 Apps). versionCode 1 uploaded;
 listing, graphics and screenshots committed by API (`~/docs/android/tools/play_stage.py`); draft
 releases on internal and production, production targets all 178 countries; products active; every
-App content answer below is entered. Publishing overview shows "Submit 11 changes for review".
+App content answer below is entered. Publishing overview showed "Submit 11 changes for review" before the send.
 
-Left for Jack: paste `VITALS_PLAY_REVIEW_CODE` from `~/.vitals_credentials` into App access >
-Password, then Send for review when this app's pacing slot comes. Review codes: `~/docs/android/tools/play_handoff.py review-codes`. RevenueCat Play credentials
+Review codes: `~/docs/android/tools/play_handoff.py review-codes`. RevenueCat Play credentials
 were uploaded with `play_handoff.py rc-credentials --apply` on  2026-10-17. The
 RevenueCat service account already has account-wide Play permissions, so no per-app grant is needed.
 
