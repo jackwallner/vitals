@@ -13,6 +13,7 @@ Developer notes and historical audits for this repository. The published site re
 - [reg93.md](audits/reg93.md): REG93: released build versus latest TestFlight build
 - [reg94.md](audits/reg94.md): REG94: released build versus latest TestFlight build
 - [AUDIT-2026-10-20-qol-209-211.md](audits/AUDIT-2026-10-20-qol-209-211.md): Audit: QoL features, builds 209 to 211
+- [duo-screenshots-fleet-2026-10-21.md](audits/duo-screenshots-fleet-2026-10-21.md): Fleet audit: APP_IPHONE_DUO screenshot sets
 
 ## Experiments
 
