@@ -58,8 +58,15 @@ enum QA {
         let context = Context(journey: journey.replacingOccurrences(of: "()", with: ""), checkpoint: name)
         XCTContext.runActivity(named: "QA checkpoint \(name)") { _ in
             let started = Date()
+            if app.state != .runningForeground { _ = app.wait(for: .runningForeground, timeout: 5) }
             guard app.state == .runningForeground else {
-                record(context, "crash", "P0", "", "app is \(app.state.rawValue) at this checkpoint, not running in the foreground")
+                // Show whatever took the screen: a crash leaves the home screen, an alert stays on top.
+                _ = save(XCUIScreen.main.screenshot(), context)
+                record(context, "crash", "P0", "", app.state == .notRunning
+                       ? "the app is not running at this checkpoint (crashed or was killed)"
+                       : "the app is in the background at this checkpoint (state \(app.state.rawValue)); see the screenshot for what took the screen")
+                lastFindings = context.findings
+                if strict { XCTFail("[crash] \(name): app left the foreground", file: file, line: line) }
                 return
             }
             let settle = Layout.settle(app, grace: grace, ambient: Set(ambient), context: context)
@@ -436,10 +443,7 @@ enum Copy {
 enum Audit {
     static func severity(_ type: XCUIAccessibilityAuditType) -> String {
         switch type {
-        // Apple's clipped-text check predicts clipping at larger sizes. The
-        // truncation oracle reads what is actually drawn and is the one that blocks.
-        case .textClipped: return QA.persona == "accessibility" ? "P2" : "P3"
-        case .hitRegion, .contrast, .dynamicType: return "P2"
+        case .hitRegion, .contrast: return "P2"
         default: return "P3"
         }
     }
@@ -460,7 +464,10 @@ enum Audit {
     static func run(_ app: XCUIApplication, context: QA.Context) {
         do {
             var checked = 0
-            try app.performAccessibilityAudit(for: .all) { issue in
+            // Dynamic Type and clipped-text checks re-render the app at other text
+            // sizes, which shows on video and moves the layout under the other
+            // oracles. The accessibility persona measures what AX3 really draws instead.
+            try app.performAccessibilityAudit(for: XCUIAccessibilityAuditType.all.subtracting([.dynamicType, .textClipped])) { issue in
                 // The audit walks hidden tabs too. Skip what nobody can see,
                 // within a budget so a long screen cannot stall the gate.
                 if let target = issue.element, checked < 40 {
