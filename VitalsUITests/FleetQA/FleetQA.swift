@@ -54,7 +54,7 @@ enum QA {
     ///   - grace: seconds after the step during which movement is the step's
     ///     own transition. Movement after it is a late layout shift.
     static func checkpoint(_ app: XCUIApplication, _ name: String, ambient: [String] = [], grace: TimeInterval = 0.8,
-                           journey: String = #function, file: StaticString = #filePath, line: UInt = #line) {
+                           observe: TimeInterval = 5, journey: String = #function, file: StaticString = #filePath, line: UInt = #line) {
         let context = Context(journey: journey.replacingOccurrences(of: "()", with: ""), checkpoint: name)
         XCTContext.runActivity(named: "QA checkpoint \(name)") { _ in
             let started = Date()
@@ -83,6 +83,10 @@ enum QA {
             system("audit", journey: context.journey) { Audit.run(app, context: context) }
             Idle.check(app, first: shot, ambient: leaves.filter { ambient.contains($0.label) || ambient.contains($0.identifier) },
                        context: context)
+            // Data that lands a few seconds late still jumps under the user's eye, so
+            // every screen is watched for at least `observe` seconds before the recheck.
+            let watched = Date().timeIntervalSince(started)
+            if watched < observe { usleep(UInt32((observe - watched) * 1_000_000)) }
             Layout.recheck(app, settled: leaves, ambient: Set(ambient), seconds: Date().timeIntervalSince(started),
                            context: context)
             write("checkpoints.jsonl", [
@@ -634,13 +638,15 @@ enum Render {
                 return piece.isEmpty ? nil : piece
             }
             guard !pieces.isEmpty else { continue }
+            // Compare letters and digits only: OCR adds stray marks ("•sto") and drops commas.
+            let plain = { (text: String) in text.lowercased().filter { $0.isLetter || $0.isNumber } }
             let joined = pieces.joined()
             // OCR can lose a short first piece ("Cu"), so the rest in order is enough.
-            if pieces.count >= 2, joined.count >= 3, label.lowercased().contains(joined.lowercased()) {
+            if pieces.count >= 2, plain(joined).count >= 3, plain(label).contains(plain(joined)) {
                 QA.record(context, "clipped", "P1", leaf.name,
                           "\(Layout.typeName(leaf.type)) \"\(label)\" is broken across \(pieces.count) lines: \(pieces.joined(separator: " / "))")
-            } else if pieces.count == 1, joined.count >= 2, joined.count < label.count,
-                      label.lowercased().hasPrefix(joined.lowercased()), !joined.hasSuffix("…"), !joined.hasSuffix("...") {
+            } else if pieces.count == 1, plain(joined).count >= 2, plain(joined).count < plain(label).count,
+                      plain(label).hasPrefix(plain(joined)), !joined.hasSuffix("…"), !joined.hasSuffix("...") {
                 QA.record(context, "clipped", "P1", leaf.name,
                           "\(Layout.typeName(leaf.type)) drawn as \"\(joined)\" but reads \"\(label)\", cut off with no ellipsis")
             }
