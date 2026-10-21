@@ -1,0 +1,38 @@
+Xem nhanh hôm nay bạn đã đốt bao nhiêu calo. Total Calories đọc calo và số bước từ Health Connect rồi biến chúng thành một vòng tròn rõ ràng, lịch sử theo ngày và xu hướng đáng tin cậy.
+
+Không tài khoản. Không quảng cáo. Không theo dõi. Dữ liệu sức khỏe nằm trên điện thoại của bạn và ứng dụng chỉ đọc chúng.
+
+HÔM NAY
+- Tổng calo đã đốt trong một vòng tròn, mục tiêu ngay bên cạnh
+- Số bước với mục tiêu và thanh tiến độ riêng
+- Nhịp độ: vào giờ này bạn đang nhanh hay chậm hơn một ngày bình thường bao nhiêu
+- Tiện ích màn hình chính hiển thị cả hai con số mà không cần mở ứng dụng
+- Giao diện sáng, tối hoặc theo điện thoại
+
+LỊCH SỬ
+- 7 ngày, 30 ngày, 90 ngày, 1 năm hoặc khoảng tùy chọn
+- Trung bình và tổng calo, số bước trong khoảng đó
+- Biểu đồ từng ngày, bên dưới là danh sách các ngày gần đây
+- Xuất lịch sử thành tệp CSV
+
+VITALS+ (nâng cấp tùy chọn)
+- Calo vận động và calo nghỉ, tách khỏi tổng
+- TDEE và BMR, trung bình 30 ngày gần nhất của chính bạn
+- Dự báo cuối ngày: với nhịp hiện tại hôm nay bạn sẽ đạt bao nhiêu
+- Chuỗi ngày đạt mục tiêu
+- Thâm hụt calo: calo đã đốt trừ năng lượng thức ăn ghi trong Health Connect, có chế độ nhịn ăn
+- Xu hướng chuyên sâu: so sánh bất kỳ khoảng thời gian nào với khoảng trước đó
+- Báo cáo PDF cho 30 ngày gần nhất hoặc ngày bạn chọn
+- Ngày loại trừ: bỏ ngày ốm, chuyến đi hay ngày không đeo đồng hồ khỏi trung bình, tổng và chuỗi
+
+CÁCH HOẠT ĐỘNG
+Total Calories đọc calo vận động, tổng calo, tỷ lệ trao đổi chất cơ bản và số bước từ Health Connect, nên dùng được với mọi đồng hồ, vòng đeo hay ứng dụng ghi dữ liệu vào đó. Khi bật Thâm hụt calo, ứng dụng cũng đọc năng lượng thức ăn bạn ghi ở đó. Mọi quyền đều chỉ đọc và có thể thay đổi bất cứ lúc nào trong Health Connect.
+
+Khi một nguồn chỉ cung cấp một phần dữ liệu, ứng dụng nói rõ thay vì đoán: những ngày có năng lượng nghỉ ước tính được đánh dấu và không tính vào trung bình TDEE và BMR.
+
+QUYỀN RIÊNG TƯ
+Dữ liệu được xử lý trên điện thoại. Không có thông tin sức khỏe nào bị tải lên, bán hay chia sẻ. Không tài khoản, không quảng cáo. Giao dịch mua do Google Play xử lý.
+
+Bản thân ứng dụng dùng tiếng Anh.
+
+Total Calories là công cụ theo dõi cá nhân, không phải thiết bị y tế. Số liệu lấy từ dữ liệu mà ứng dụng và thiết bị khác ghi vào Health Connect và có thể khác với ứng dụng khác.

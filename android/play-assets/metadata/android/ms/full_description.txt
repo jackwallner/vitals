@@ -1,0 +1,38 @@
+Lihat sepintas berapa kalori yang anda bakar hari ini. Total Calories membaca kalori dan langkah anda daripada Health Connect dan menukarnya kepada satu gelang yang jelas, sejarah harian dan trend yang boleh dipercayai.
+
+Tiada akaun. Tiada iklan. Tiada penjejakan. Data kesihatan anda kekal dalam telefon dan aplikasi hanya membacanya.
+
+HARI INI
+- Jumlah kalori terbakar dalam satu gelang, dengan matlamat di sebelahnya
+- Langkah dengan matlamat dan bar kemajuan tersendiri
+- Rentak: sejauh mana anda mendahului atau ketinggalan hari biasa tepat pada jam ini
+- Widget skrin utama yang menunjukkan kedua-dua angka tanpa membuka aplikasi
+- Tema cerah, gelap atau ikut telefon
+
+SEJARAH
+- 7 hari, 30 hari, 90 hari, 1 tahun atau julat pilihan sendiri
+- Purata dan jumlah kalori serta langkah bagi tempoh itu
+- Carta setiap hari, dengan senarai hari terkini di bawahnya
+- Eksport sejarah sebagai fail CSV
+
+VITALS+ (naik taraf pilihan)
+- Kalori aktif dan kalori rehat, diasingkan daripada jumlah
+- TDEE dan BMR, purata 30 hari terakhir data anda
+- Unjuran hujung hari: di mana hari ini mungkin berakhir pada rentak semasa
+- Rentetan matlamat yang mengekalkan konsistensi
+- Defisit kalori: kalori terbakar tolak tenaga makanan yang direkod dalam Health Connect, termasuk mod puasa
+- Trend mendalam: bandingkan mana-mana tempoh dengan tempoh sebelumnya
+- Laporan PDF untuk 30 hari terakhir atau tarikh pilihan anda
+- Hari dikecualikan: keluarkan hari sakit, perjalanan atau hari tanpa jam tangan daripada purata, jumlah dan rentetan
+
+CARA IA BERFUNGSI
+Total Calories membaca kalori aktif, jumlah kalori, kadar metabolisme basal dan langkah daripada Health Connect, jadi ia berfungsi dengan mana-mana jam tangan, gelang atau aplikasi yang menulis data ke sana. Jika Defisit Kalori dihidupkan, ia turut membaca tenaga makanan yang anda rekod di sana. Semua kebenaran adalah baca sahaja dan boleh ditukar bila-bila masa dalam Health Connect.
+
+Apabila sesuatu sumber hanya memberi sebahagian data, aplikasi memberitahu anda dan tidak meneka: hari dengan tenaga rehat anggaran ditanda dan tidak dikira dalam purata TDEE dan BMR.
+
+PRIVASI
+Data anda diproses dalam telefon. Tiada maklumat kesihatan anda dimuat naik, dijual atau dikongsi. Tiada akaun dan tiada iklan. Pembelian dikendalikan oleh Google Play.
+
+Aplikasi ini sendiri dalam bahasa Inggeris.
+
+Total Calories ialah alat penjejak peribadi, bukan peranti perubatan. Angka datang daripada rekod yang ditulis oleh aplikasi dan peranti lain ke Health Connect dan mungkin berbeza daripada aplikasi lain.

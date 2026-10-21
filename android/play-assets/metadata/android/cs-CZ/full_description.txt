@@ -1,0 +1,38 @@
+Na první pohled uvidíte, kolik jste dnes spálili. Total Calories čte vaše kalorie a kroky z Health Connect a mění je v jasný kruh, denní historii a spolehlivé trendy.
+
+Žádný účet. Žádné reklamy. Žádné sledování. Vaše zdravotní data zůstávají v telefonu a aplikace je jen čte.
+
+DNES
+- Celkové spálené kalorie v jednom kruhu, cíl hned vedle
+- Kroky s vlastním cílem a ukazatelem postupu
+- Tempo: o kolik jste v tuto hodinu před běžným dnem nebo za ním
+- Widget na plochu s oběma čísly bez otevírání aplikace
+- Světlý, tmavý nebo podle telefonu
+
+HISTORIE
+- 7 dní, 30 dní, 90 dní, 1 rok nebo vlastní rozsah
+- Průměr a součet kalorií a kroků za období
+- Grafy pro každý den a pod nimi seznam posledních dní
+- Export historie do souboru CSV
+
+VITALS+ (volitelné rozšíření)
+- Aktivní a klidové kalorie oddělené od celku
+- TDEE a bazální metabolismus (BMR) jako průměr vašich posledních 30 dní
+- Odhad konce dne: kam se dnes dostanete současným tempem
+- Série splněných cílů
+- Kalorický deficit: spálené kalorie minus energie z jídla zapsaná v Health Connect, s režimem půstu
+- Podrobné trendy: porovnejte libovolné období s předchozím
+- PDF přehledy za posledních 30 dní nebo vybraná data
+- Vynechané dny: vyřaďte den nemoci, cestu nebo den bez hodinek z průměrů, součtů i sérií
+
+JAK TO FUNGUJE
+Total Calories čte aktivní kalorie, celkové kalorie, bazální metabolismus a kroky z Health Connect, takže funguje s jakýmikoli hodinkami, náramkem nebo aplikací, která tam zapisuje. Když zapnete kalorický deficit, čte také energii z jídla, které tam zapisujete. Všechna oprávnění jsou jen pro čtení a v Health Connect je můžete kdykoli změnit.
+
+Když zdroj hlásí jen část údajů, aplikace to řekne a nehádá: dny s odhadovanou klidovou energií jsou označené a nepočítají se do průměrů TDEE a BMR.
+
+SOUKROMÍ
+Data se zpracovávají v telefonu. Nic o vašem zdraví se nenahrává, neprodává ani nesdílí. Žádný účet a žádná reklama. Nákupy vyřizuje Google Play.
+
+Samotná aplikace je v angličtině.
+
+Total Calories je osobní nástroj pro sledování, nikoli zdravotnický prostředek. Čísla pocházejí z dat, která do Health Connect zapisují jiné aplikace a zařízení, a mohou se od jiných aplikací lišit.

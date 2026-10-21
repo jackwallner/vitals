@@ -1,0 +1,36 @@
+See what you burned today at a glance. Total Calories reads your calories and steps from Health Connect and turns them into one clear ring, a daily history, and trends you can trust.
+
+No account. No ads. No tracking. Your health data stays on your phone, and the app only reads it.
+
+TODAY
+- Total calories burned in a single ring, with your goal beside it
+- Steps with their own goal and progress bar
+- Pacing: how far ahead of or behind your usual day you are at this exact hour
+- A home-screen widget that shows both numbers without opening the app
+- Light and dark appearance, or follow your phone
+
+HISTORY
+- 7 day, 30 day, 90 day, 1 year or custom ranges
+- Average and total calories and steps for the period
+- Charts that show every day, with a recent days list underneath
+- Export your history as a CSV file
+
+VITALS+ (optional upgrade)
+- Active and resting calories, split out from your total
+- TDEE and BMR, averaged over your last 30 days of your own data
+- End-of-day projection: where today is likely to land at your current pace
+- Goal streaks that keep the chain alive
+- Net Deficit: calories burned minus the food energy logged in Health Connect, including a Fasting Mode
+- Deep Trends: compare any period with the one before it
+- Summary PDF reports for the last 30 days or any dates you choose
+- Excluded Days: leave a sick day, a trip or a day off the wrist out of every average, total and streak, or pause averages for a stretch with no end date
+
+HOW IT WORKS
+Total Calories reads active calories, total calories, basal metabolic rate and steps from Health Connect, so it works with any watch, band or app that writes to Health Connect. If you turn on Net Deficit it also reads the nutrition energy you log there. Every permission is read-only and you can change it any time in Health Connect.
+
+When a source only reports part of the picture, the app tells you instead of guessing: days where resting energy is estimated are marked and kept out of your TDEE and BMR averages.
+
+PRIVACY
+Your data is processed on your phone. Nothing about your health is uploaded, sold or shared. There is no account and no advertising. Purchases are handled by Google Play.
+
+Total Calories is a personal tracking tool. It is not a medical device and does not diagnose, treat or cure any condition. Numbers come from the records other apps and devices write to Health Connect and can differ from other apps.

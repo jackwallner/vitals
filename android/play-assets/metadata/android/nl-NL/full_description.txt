@@ -1,0 +1,38 @@
+Zie in één oogopslag wat je vandaag verbrandt. Total Calories leest je calorieën en stappen uit Health Connect en maakt er één duidelijke ring, een dagoverzicht en betrouwbare trends van.
+
+Geen account. Geen advertenties. Geen tracking. Je gezondheidsgegevens blijven op je telefoon en de app leest ze alleen.
+
+VANDAAG
+- Totaal verbrande calorieën in één ring, met je doel ernaast
+- Stappen met een eigen doel en voortgangsbalk
+- Tempo: hoeveel je op dit uur voor of achter loopt op een gewone dag
+- Een widget op je startscherm met beide getallen, zonder de app te openen
+- Licht, donker of gelijk aan je telefoon
+
+GESCHIEDENIS
+- 7 dagen, 30 dagen, 90 dagen, 1 jaar of een eigen periode
+- Gemiddelde en totaal van calorieën en stappen
+- Grafieken per dag, met een lijst van recente dagen eronder
+- Exporteer je geschiedenis als CSV-bestand
+
+VITALS+ (optionele upgrade)
+- Actieve calorieën en rustcalorieën, los van je totaal
+- TDEE en BMR, gemiddeld over je laatste 30 dagen
+- Dagprognose: waar je vandaag uitkomt in je huidige tempo
+- Doelreeksen die je ketting heel houden
+- Calorietekort: verbrande calorieën min de voedingsenergie in Health Connect, met vastenmodus
+- Diepere trends: vergelijk elke periode met de vorige
+- PDF-rapporten voor de laatste 30 dagen of zelfgekozen data
+- Uitgesloten dagen: laat een ziektedag, reis of dag zonder horloge buiten gemiddelden, totalen en reeksen
+
+ZO WERKT HET
+Total Calories leest actieve calorieën, totale calorieën, basaal metabolisme en stappen uit Health Connect. Zo werkt het met elk horloge, elke band en elke app die daar gegevens opslaat. Zet je Calorietekort aan, dan leest de app ook de voedingsenergie die je daar logt. Alle rechten zijn alleen-lezen en je wijzigt ze altijd in Health Connect.
+
+Geeft een bron maar een deel van het plaatje, dan zegt de app dat in plaats van te gokken: dagen met geschatte rustenergie worden gemarkeerd en tellen niet mee in je TDEE en BMR.
+
+PRIVACY
+Je gegevens worden op je telefoon verwerkt. Niets over je gezondheid wordt geüpload, verkocht of gedeeld. Geen account en geen advertenties. Aankopen lopen via Google Play.
+
+De app zelf is in het Engels.
+
+Total Calories is een persoonlijk hulpmiddel om bij te houden, geen medisch hulpmiddel. De cijfers komen uit gegevens die andere apps en apparaten in Health Connect opslaan en kunnen afwijken van andere apps.

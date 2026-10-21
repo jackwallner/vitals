@@ -1,0 +1,1 @@
+Compteur de calories brûlées et de pas, via Health Connect, sur un seul écran.

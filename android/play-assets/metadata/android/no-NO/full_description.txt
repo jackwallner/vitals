@@ -1,0 +1,38 @@
+Se med en gang hva du har forbrent i dag. Total Calories leser kalorier og skritt fra Health Connect og gjør dem om til en tydelig ring, en daglig historikk og trender du kan stole på.
+
+Ingen konto. Ingen reklame. Ingen sporing. Helsedataene dine blir på telefonen, og appen bare leser dem.
+
+I DAG
+- Totalt forbrente kalorier i én ring, med målet ditt ved siden av
+- Skritt med eget mål og fremdriftslinje
+- Tempo: hvor langt foran eller bak en vanlig dag du ligger akkurat nå
+- En widget på startskjermen som viser begge tallene uten å åpne appen
+- Lyst, mørkt eller som telefonen
+
+HISTORIKK
+- 7 dager, 30 dager, 90 dager, 1 år eller egen periode
+- Snitt og sum for kalorier og skritt
+- Diagrammer for hver dag, med en liste over de siste dagene under
+- Eksporter historikken som CSV-fil
+
+VITALS+ (valgfri oppgradering)
+- Aktive kalorier og hvilekalorier, skilt fra totalen
+- TDEE og BMR, i snitt over dine siste 30 dager
+- Dagsprognose: hvor du sannsynligvis havner i dag i nåværende tempo
+- Målrekker som holder kjeden i live
+- Kaloriunderskudd: forbrente kalorier minus maten du har logget i Health Connect, med fastemodus
+- Dypere trender: sammenlign en periode med den forrige
+- PDF-rapporter for de siste 30 dagene eller valgfrie datoer
+- Utelatte dager: hold en sykedag, en reise eller en dag uten klokke utenfor snitt, summer og rekker
+
+SLIK FUNGERER DET
+Total Calories leser aktive kalorier, totale kalorier, basalforbrenning og skritt fra Health Connect, så det fungerer med alle klokker, bånd og apper som skriver dit. Slår du på Kaloriunderskudd, leser appen også energien fra maten du logger der. Alle tillatelser er kun lesetilgang og kan endres når som helst i Health Connect.
+
+Når en kilde bare gir en del av bildet, sier appen fra i stedet for å gjette: dager med anslått hvileenergi merkes og holdes utenfor TDEE og BMR.
+
+PERSONVERN
+Dataene dine behandles på telefonen. Ingenting om helsen din lastes opp, selges eller deles. Ingen konto og ingen reklame. Kjøp håndteres av Google Play.
+
+Selve appen er på engelsk.
+
+Total Calories er et personlig verktøy for å følge med, ikke medisinsk utstyr. Tallene kommer fra data som andre apper og enheter lagrer i Health Connect og kan avvike fra andre apper.

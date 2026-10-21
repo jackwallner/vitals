@@ -1,0 +1,38 @@
+Sieh auf einen Blick, wie viele Kalorien du heute verbrannt hast. Total Calories liest Kalorien und Schritte aus Health Connect und macht daraus einen klaren Ring, einen Tagesverlauf und Trends, auf die du dich verlassen kannst.
+
+Kein Konto. Keine Werbung. Kein Tracking. Deine Gesundheitsdaten bleiben auf deinem Handy, und die App liest sie nur.
+
+HEUTE
+- Gesamter Kalorienverbrauch in einem Ring, dein Ziel direkt daneben
+- Schritte mit eigenem Ziel und Fortschrittsbalken
+- Tempo: wie weit du zu dieser Uhrzeit vor oder hinter einem üblichen Tag liegst
+- Widget für den Startbildschirm mit beiden Werten, ohne die App zu öffnen
+- Helles oder dunkles Design, oder wie dein Handy
+
+VERLAUF
+- 7 Tage, 30 Tage, 90 Tage, 1 Jahr oder eigener Zeitraum
+- Durchschnitt und Summe von Kalorien und Schritten
+- Diagramme für jeden Tag, darunter eine Liste der letzten Tage
+- Export als CSV-Datei
+
+VITALS+ (optionales Upgrade)
+- Aktive Kalorien und Grundumsatz getrennt vom Gesamtwert
+- TDEE und BMR als Durchschnitt deiner letzten 30 Tage
+- Tagesprognose: wo du heute im aktuellen Tempo wahrscheinlich landest
+- Zielserien, die deine Kette am Leben halten
+- Kaloriendefizit: verbrannte Kalorien minus die in Health Connect erfasste Nahrungsenergie, mit Fasten-Modus
+- Tiefere Trends: jeden Zeitraum mit dem vorherigen vergleichen
+- PDF-Berichte für die letzten 30 Tage oder frei gewählte Daten
+- Ausgeschlossene Tage: Krankheitstage, Reisen oder Tage ohne Uhr aus Durchschnitt, Summe und Serien herausnehmen
+
+SO FUNKTIONIERT ES
+Total Calories liest aktive Kalorien, Gesamtkalorien, Grundumsatz und Schritte aus Health Connect und funktioniert damit mit jeder Uhr, jedem Fitnessband und jeder App, die dort Daten speichert. Mit Kaloriendefizit liest die App zusätzlich die Nahrungsenergie, die du dort einträgst. Alle Berechtigungen sind nur lesend und lassen sich jederzeit in Health Connect ändern.
+
+Meldet eine Quelle nur einen Teil der Daten, sagt dir die App das, statt zu raten: Tage mit geschätztem Ruheumsatz werden markiert und fließen nicht in TDEE und BMR ein.
+
+DATENSCHUTZ
+Deine Daten werden auf deinem Handy verarbeitet. Nichts über deine Gesundheit wird hochgeladen, verkauft oder weitergegeben. Kein Konto, keine Werbung. Käufe laufen über Google Play.
+
+Die App selbst ist auf Englisch.
+
+Total Calories ist ein persönliches Tracking-Werkzeug und kein Medizinprodukt. Die Werte stammen aus den Daten, die andere Apps und Geräte in Health Connect speichern, und können von anderen Apps abweichen.

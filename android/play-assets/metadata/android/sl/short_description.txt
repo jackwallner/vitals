@@ -1,0 +1,1 @@
+Števec porabljenih kalorij in korakov iz Health Connect na enem zaslonu.

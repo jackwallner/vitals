@@ -1,0 +1,38 @@
+Veja num relance quantas calorias queimou hoje. O Total Calories lê as suas calorias e passos do Health Connect e transforma-os num anel claro, num histórico diário e em tendências fiáveis.
+
+Sem conta. Sem anúncios. Sem rastreio. Os seus dados de saúde ficam no seu telemóvel e a app apenas os lê.
+
+HOJE
+- Total de calorias queimadas num só anel, com o seu objetivo ao lado
+- Passos com objetivo e barra de progresso próprios
+- Ritmo: quanto está à frente ou atrás de um dia habitual a esta mesma hora
+- Widget no ecrã principal com os dois números, sem abrir a app
+- Aspeto claro, escuro ou igual ao do telemóvel
+
+HISTÓRICO
+- 7 dias, 30 dias, 90 dias, 1 ano ou período personalizado
+- Média e total de calorias e passos no período
+- Gráficos de cada dia, com a lista dos últimos dias por baixo
+- Exporte o histórico num ficheiro CSV
+
+VITALS+ (upgrade opcional)
+- Calorias ativas e em repouso, separadas do total
+- TDEE e metabolismo basal (BMR), com a média dos seus últimos 30 dias
+- Projeção do dia: onde deverá terminar hoje ao ritmo atual
+- Sequências de objetivos cumpridos
+- Défice calórico: calorias queimadas menos a energia dos alimentos registada no Health Connect, com modo jejum
+- Tendências detalhadas: compare qualquer período com o anterior
+- Relatórios em PDF dos últimos 30 dias ou das datas que escolher
+- Dias excluídos: retire um dia de doença, uma viagem ou um dia sem relógio das médias, totais e sequências
+
+COMO FUNCIONA
+O Total Calories lê calorias ativas, calorias totais, metabolismo basal e passos do Health Connect, por isso funciona com qualquer relógio, pulseira ou app que lá grave dados. Com o défice calórico ativo, lê também a energia dos alimentos que regista. Todas as permissões são só de leitura e podem ser alteradas a qualquer momento no Health Connect.
+
+Quando uma fonte só fornece parte dos dados, a app avisa em vez de adivinhar: os dias com energia em repouso estimada são assinalados e ficam fora das médias de TDEE e BMR.
+
+PRIVACIDADE
+Os seus dados são processados no telemóvel. Nada sobre a sua saúde é enviado, vendido ou partilhado. Sem conta e sem publicidade. As compras são feitas através do Google Play.
+
+A app em si está em inglês.
+
+O Total Calories é uma ferramenta de registo pessoal, não um dispositivo médico. Os números vêm dos dados que outras apps e dispositivos gravam no Health Connect e podem diferir de outras apps.

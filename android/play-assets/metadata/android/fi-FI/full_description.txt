@@ -1,0 +1,38 @@
+Näe yhdellä silmäyksellä, paljonko olet kuluttanut tänään. Total Calories lukee kalorit ja askeleet Health Connectista ja kokoaa ne selkeäksi renkaaksi, päivittäiseksi historiaksi ja luotettaviksi trendeiksi.
+
+Ei tiliä. Ei mainoksia. Ei seurantaa. Terveystietosi pysyvät puhelimessa, ja sovellus vain lukee niitä.
+
+TÄNÄÄN
+- Kokonaiskalorikulutus yhdessä renkaassa, tavoite vieressä
+- Askeleet omalla tavoitteella ja edistymispalkilla
+- Tahti: kuinka paljon olet edellä tai jäljessä tavallisesta päivästä juuri tähän aikaan
+- Aloitusnäytön widget, joka näyttää molemmat luvut avaamatta sovellusta
+- Vaalea, tumma tai puhelimen mukainen ulkoasu
+
+HISTORIA
+- 7 päivää, 30 päivää, 90 päivää, 1 vuosi tai oma jakso
+- Kalorien ja askelten keskiarvo ja summa
+- Kaaviot jokaisesta päivästä ja alla lista viime päivistä
+- Vie historia CSV-tiedostona
+
+VITALS+ (valinnainen päivitys)
+- Aktiiviset kalorit ja lepokalorit eriteltynä kokonaismäärästä
+- TDEE ja perusaineenvaihdunta (BMR) viimeisen 30 päivän keskiarvona
+- Päivän ennuste: mihin päädyt tänään nykyisellä tahdilla
+- Tavoiteputket, jotka pitävät ketjun hengissä
+- Kalorivaje: kulutetut kalorit miinus Health Connectiin kirjattu ruokaenergia, myös paastotila
+- Syvemmät trendit: vertaa mitä tahansa jaksoa edelliseen
+- PDF-raportit viimeisiltä 30 päivältä tai valitsemiltasi päiviltä
+- Pois jätetyt päivät: jätä sairaspäivä, matka tai päivä ilman kelloa pois keskiarvoista, summista ja putkista
+
+NÄIN SE TOIMII
+Total Calories lukee aktiiviset kalorit, kokonaiskalorit, perusaineenvaihdunnan ja askeleet Health Connectista, joten se toimii minkä tahansa sinne tietoja tallentavan kellon, rannekkeen tai sovelluksen kanssa. Kun Kalorivaje on päällä, sovellus lukee myös sinne kirjaamasi ruokaenergian. Kaikki käyttöoikeudet ovat vain lukuoikeuksia, ja voit muuttaa niitä milloin tahansa Health Connectissa.
+
+Jos lähde antaa vain osan tiedoista, sovellus kertoo sen arvaamatta: päivät, joiden lepoenergia on arvioitu, merkitään eikä niitä lasketa TDEE- ja BMR-keskiarvoihin.
+
+YKSITYISYYS
+Tietosi käsitellään puhelimessa. Mitään terveyteesi liittyvää ei ladata, myydä eikä jaeta. Ei tiliä eikä mainoksia. Ostot hoitaa Google Play.
+
+Itse sovellus on englanninkielinen.
+
+Total Calories on henkilökohtainen seurantatyökalu, ei lääkinnällinen laite. Luvut tulevat tiedoista, joita muut sovellukset ja laitteet tallentavat Health Connectiin, ja ne voivat poiketa muiden sovellusten luvuista.

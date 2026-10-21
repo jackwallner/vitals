@@ -1,0 +1,38 @@
+Lihat sekilas berapa kalori yang kamu bakar hari ini. Total Calories membaca kalori dan langkahmu dari Health Connect lalu menyajikannya dalam satu cincin yang jelas, riwayat harian, dan tren yang bisa dipercaya.
+
+Tanpa akun. Tanpa iklan. Tanpa pelacakan. Data kesehatanmu tetap di ponsel, dan aplikasi hanya membacanya.
+
+HARI INI
+- Total kalori terbakar dalam satu cincin, dengan target di sebelahnya
+- Langkah dengan target dan bilah progres sendiri
+- Laju: seberapa jauh kamu di depan atau di belakang hari biasa tepat di jam ini
+- Widget layar utama yang menampilkan kedua angka tanpa membuka aplikasi
+- Tampilan terang, gelap, atau mengikuti ponsel
+
+RIWAYAT
+- 7 hari, 30 hari, 90 hari, 1 tahun, atau rentang pilihanmu
+- Rata-rata dan total kalori serta langkah dalam periode itu
+- Grafik setiap hari, dengan daftar hari terakhir di bawahnya
+- Ekspor riwayat sebagai file CSV
+
+VITALS+ (upgrade opsional)
+- Kalori aktif dan kalori istirahat, terpisah dari total
+- TDEE dan BMR, rata-rata dari 30 hari terakhir datamu
+- Proyeksi akhir hari: di mana hari ini kemungkinan berakhir dengan laju sekarang
+- Rangkaian target yang menjaga konsistensi
+- Defisit kalori: kalori terbakar dikurangi energi makanan yang dicatat di Health Connect, termasuk mode puasa
+- Tren mendalam: bandingkan periode mana pun dengan periode sebelumnya
+- Laporan PDF untuk 30 hari terakhir atau tanggal pilihanmu
+- Hari dikecualikan: keluarkan hari sakit, perjalanan, atau hari tanpa jam tangan dari rata-rata, total, dan rangkaian
+
+CARA KERJANYA
+Total Calories membaca kalori aktif, total kalori, laju metabolisme basal, dan langkah dari Health Connect, jadi bisa dipakai dengan jam tangan, gelang, atau aplikasi apa pun yang menulis data ke sana. Jika Defisit Kalori diaktifkan, aplikasi juga membaca energi makanan yang kamu catat di sana. Semua izin hanya baca dan bisa diubah kapan saja di Health Connect.
+
+Jika sebuah sumber hanya memberi sebagian data, aplikasi memberitahumu alih-alih menebak: hari dengan energi istirahat yang diperkirakan ditandai dan tidak dihitung dalam rata-rata TDEE dan BMR.
+
+PRIVASI
+Datamu diproses di ponsel. Tidak ada data kesehatanmu yang diunggah, dijual, atau dibagikan. Tanpa akun dan tanpa iklan. Pembelian ditangani oleh Google Play.
+
+Aplikasinya sendiri berbahasa Inggris.
+
+Total Calories adalah alat pelacak pribadi, bukan perangkat medis. Angka berasal dari catatan yang ditulis aplikasi dan perangkat lain ke Health Connect dan bisa berbeda dari aplikasi lain.

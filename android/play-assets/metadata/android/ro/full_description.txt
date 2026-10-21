@@ -1,0 +1,38 @@
+Vezi dintr-o privire câte calorii ai ars azi. Total Calories citește caloriile și pașii din Health Connect și îi transformă într-un inel clar, un istoric zilnic și tendințe de încredere.
+
+Fără cont. Fără reclame. Fără urmărire. Datele tale de sănătate rămân pe telefon, iar aplicația doar le citește.
+
+AZI
+- Totalul caloriilor arse într-un singur inel, cu obiectivul alături
+- Pași cu obiectiv și bară de progres proprii
+- Ritm: cât ești înainte sau în urma unei zile obișnuite la ora asta
+- Widget pe ecranul de pornire cu ambele cifre, fără să deschizi aplicația
+- Aspect luminos, întunecat sau ca al telefonului
+
+ISTORIC
+- 7 zile, 30 de zile, 90 de zile, 1 an sau interval personalizat
+- Media și totalul caloriilor și pașilor din perioadă
+- Grafice pentru fiecare zi, cu lista zilelor recente dedesubt
+- Exportă istoricul într-un fișier CSV
+
+VITALS+ (upgrade opțional)
+- Calorii active și în repaus, separate de total
+- TDEE și metabolism bazal (BMR), ca medie a ultimelor tale 30 de zile
+- Estimarea zilei: unde vei ajunge azi în ritmul actual
+- Serii de obiective atinse
+- Deficit caloric: calorii arse minus energia din mâncare înregistrată în Health Connect, cu mod post
+- Tendințe detaliate: compară orice perioadă cu cea dinainte
+- Rapoarte PDF pentru ultimele 30 de zile sau datele alese
+- Zile excluse: scoate o zi de boală, o călătorie sau o zi fără ceas din medii, totaluri și serii
+
+CUM FUNCȚIONEAZĂ
+Total Calories citește caloriile active, caloriile totale, metabolismul bazal și pașii din Health Connect, așa că funcționează cu orice ceas, brățară sau aplicație care scrie acolo. Dacă activezi deficitul caloric, citește și energia din mâncarea pe care o înregistrezi. Toate permisiunile sunt doar de citire și le poți schimba oricând în Health Connect.
+
+Când o sursă oferă doar o parte din date, aplicația îți spune asta în loc să ghicească: zilele cu energie în repaus estimată sunt marcate și scoase din mediile TDEE și BMR.
+
+CONFIDENȚIALITATE
+Datele tale sunt procesate pe telefon. Nimic despre sănătatea ta nu este încărcat, vândut sau partajat. Fără cont și fără publicitate. Achizițiile sunt gestionate de Google Play.
+
+Aplicația în sine este în limba engleză.
+
+Total Calories este un instrument personal de monitorizare, nu un dispozitiv medical. Cifrele provin din datele pe care alte aplicații și dispozitive le scriu în Health Connect și pot diferi de alte aplicații.

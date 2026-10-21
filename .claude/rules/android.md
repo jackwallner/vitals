@@ -62,8 +62,10 @@ paths:
 - `PLAY_SERVICE_ACCOUNT_JSON=~/.config/google-play/mahj-service-account.json ./scripts/play-upload.sh
   internal-draft` tests, signs, verifies and uploads. Bump `versionCode` in `android/app/build.gradle.kts`
   before every upload. versionCode 1 is already uploaded (2026-10-17); the next upload needs 2.
-- Listing text: `android/play-assets/metadata/android/en-US/` (title 29, short 68, full under 4000, no
-  prices). Graphics: `android/play-assets/` (icon-512, feature-graphic-1024x500, screenshots/light and
+- Listing text: `android/play-assets/metadata/android/<play-locale>/` in Sober's 50 Play locales
+  (en-US matches the live listing; titles are "Total Calories: <local search phrase>"; every
+  non-English description says the app itself is in English). Check with
+  `scripts/validate-play-listing.py` (limits 30/80/4000, no prices, em dashes or Apple wording). Graphics: `android/play-assets/` (icon-512, feature-graphic-1024x500, screenshots/light and
   screenshots/dark from the real emulator build). Policy pages: `docs/android-privacy.html` and
   `docs/android-terms.html` (the Sober lesson: check they render in a browser, not just curl 200).
 - Last verified state 2026-10-15: signed AAB builds (`android/app/build/outputs/bundle/release/app-release.aab`),

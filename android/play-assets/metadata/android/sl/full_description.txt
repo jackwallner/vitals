@@ -1,0 +1,38 @@
+Na prvi pogled vidite, koliko ste danes porabili. Total Calories prebere kalorije in korake iz Health Connect ter jih prikaže kot jasen krog, dnevno zgodovino in zanesljive trende.
+
+Brez računa. Brez oglasov. Brez sledenja. Vaši zdravstveni podatki ostanejo v telefonu, aplikacija jih samo bere.
+
+DANES
+- Skupaj porabljene kalorije v enem krogu, cilj tik ob njem
+- Koraki z lastnim ciljem in vrstico napredka
+- Tempo: koliko ste ob tej uri pred običajnim dnem ali za njim
+- Pripomoček na začetnem zaslonu z obema številkama, brez odpiranja aplikacije
+- Svetel, temen videz ali kot v telefonu
+
+ZGODOVINA
+- 7 dni, 30 dni, 90 dni, 1 leto ali lastno obdobje
+- Povprečje in vsota kalorij in korakov
+- Grafi za vsak dan, pod njimi seznam zadnjih dni
+- Izvoz zgodovine v datoteko CSV
+
+VITALS+ (izbirna nadgradnja)
+- Aktivne kalorije in kalorije v mirovanju, ločene od skupne vrednosti
+- TDEE in bazalni metabolizem (BMR) kot povprečje zadnjih 30 dni
+- Napoved dneva: kje boste danes končali s trenutnim tempom
+- Nizi doseženih ciljev
+- Kalorični primanjkljaj: porabljene kalorije minus energija hrane, zapisana v Health Connect, z načinom posta
+- Poglobljeni trendi: primerjajte katero koli obdobje s prejšnjim
+- Poročila PDF za zadnjih 30 dni ali izbrane datume
+- Izključeni dnevi: dan bolezni, potovanje ali dan brez ure izločite iz povprečij, vsot in nizov
+
+KAKO DELUJE
+Total Calories bere aktivne kalorije, skupne kalorije, bazalni metabolizem in korake iz Health Connect, zato deluje s katero koli uro, zapestnico ali aplikacijo, ki tja zapisuje. Če vklopite kalorični primanjkljaj, bere tudi energijo hrane, ki jo tam beležite. Vsa dovoljenja so samo za branje in jih lahko kadar koli spremenite v Health Connect.
+
+Ko vir poda le del podatkov, vam aplikacija to pove, namesto da bi ugibala: dnevi z ocenjeno energijo v mirovanju so označeni in izločeni iz povprečij TDEE in BMR.
+
+ZASEBNOST
+Podatki se obdelujejo v telefonu. Nič o vašem zdravju se ne naloži, proda ali deli. Brez računa in brez oglasov. Nakupe ureja Google Play.
+
+Sama aplikacija je v angleščini.
+
+Total Calories je osebno orodje za spremljanje, ne medicinski pripomoček. Številke izhajajo iz podatkov, ki jih druge aplikacije in naprave zapišejo v Health Connect, in se lahko razlikujejo od drugih aplikacij.

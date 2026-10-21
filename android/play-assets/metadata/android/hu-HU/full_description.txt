@@ -1,0 +1,38 @@
+Egy pillantással láthatod, mennyit égettél ma. A Total Calories a Health Connectből olvassa a kalóriáidat és lépéseidet, és egy átlátható gyűrűvé, napi előzménnyé és megbízható trendekké alakítja őket.
+
+Nincs fiók. Nincs reklám. Nincs követés. Az egészségügyi adataid a telefonodon maradnak, az app csak olvassa őket.
+
+MA
+- Az összes elégetett kalória egy gyűrűben, mellette a célod
+- Lépések saját céllal és folyamatjelzővel
+- Tempó: ebben az órában mennyivel jársz egy átlagos nap előtt vagy mögött
+- Kezdőképernyő-widget mindkét számmal, az app megnyitása nélkül
+- Világos, sötét vagy a telefonhoz igazodó megjelenés
+
+ELŐZMÉNYEK
+- 7 nap, 30 nap, 90 nap, 1 év vagy egyéni időszak
+- A kalóriák és lépések átlaga és összege
+- Napi bontású grafikonok, alattuk a legutóbbi napok listája
+- Előzmények exportálása CSV-fájlba
+
+VITALS+ (opcionális bővítés)
+- Aktív és nyugalmi kalóriák külön a teljes összegtől
+- TDEE és alapanyagcsere (BMR) az utolsó 30 napod átlagából
+- Napi előrejelzés: hová érsz ma a jelenlegi tempóval
+- Célsorozatok, amelyek életben tartják a láncot
+- Kalóriadeficit: elégetett kalória mínusz a Health Connectben rögzített étel energiája, böjt móddal
+- Részletes trendek: bármely időszak összevetése az előzővel
+- PDF-jelentések az utolsó 30 napról vagy választott dátumokról
+- Kihagyott napok: egy betegnap, utazás vagy óra nélküli nap kimarad az átlagokból, összegekből és sorozatokból
+
+HOGYAN MŰKÖDIK
+A Total Calories az aktív kalóriát, a teljes kalóriát, az alapanyagcserét és a lépéseket olvassa a Health Connectből, így minden órával, karpánttal és appal működik, amely oda ír adatot. Ha bekapcsolod a kalóriadeficitet, az ott rögzített étkezések energiáját is beolvassa. Minden engedély csak olvasási, és bármikor módosíthatod a Health Connectben.
+
+Ha egy forrás csak részadatot ad, az app ezt jelzi, ahelyett hogy találgatna: a becsült nyugalmi energiájú napok jelölve vannak, és kimaradnak a TDEE- és BMR-átlagból.
+
+ADATVÉDELEM
+Az adataid a telefonon kerülnek feldolgozásra. Semmi nem kerül feltöltésre, eladásra vagy megosztásra az egészségedről. Nincs fiók és nincs reklám. A vásárlásokat a Google Play kezeli.
+
+Maga az app angol nyelvű.
+
+A Total Calories személyes követőeszköz, nem orvostechnikai eszköz. A számok a más appok és eszközök által a Health Connectbe írt adatokból származnak, és eltérhetnek más appokétól.

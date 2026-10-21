@@ -1,0 +1,1 @@
+Contador de calorías quemadas y pasos con Health Connect, en una sola pantalla.

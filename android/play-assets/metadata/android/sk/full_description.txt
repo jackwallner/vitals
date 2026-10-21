@@ -1,0 +1,38 @@
+Na prvý pohľad uvidíte, koľko ste dnes spálili. Total Calories číta vaše kalórie a kroky z Health Connect a mení ich na jasný kruh, dennú históriu a spoľahlivé trendy.
+
+Žiadny účet. Žiadne reklamy. Žiadne sledovanie. Vaše zdravotné údaje zostávajú v telefóne a aplikácia ich len číta.
+
+DNES
+- Celkové spálené kalórie v jednom kruhu, cieľ hneď vedľa
+- Kroky s vlastným cieľom a ukazovateľom postupu
+- Tempo: o koľko ste v túto hodinu pred bežným dňom alebo za ním
+- Miniaplikácia na plochu s oboma číslami bez otvárania aplikácie
+- Svetlý, tmavý alebo podľa telefónu
+
+HISTÓRIA
+- 7 dní, 30 dní, 90 dní, 1 rok alebo vlastný rozsah
+- Priemer a súčet kalórií a krokov za obdobie
+- Grafy pre každý deň a pod nimi zoznam posledných dní
+- Export histórie do súboru CSV
+
+VITALS+ (voliteľné rozšírenie)
+- Aktívne a pokojové kalórie oddelené od celku
+- TDEE a bazálny metabolizmus (BMR) ako priemer vašich posledných 30 dní
+- Odhad konca dňa: kam sa dnes dostanete súčasným tempom
+- Série splnených cieľov
+- Kalorický deficit: spálené kalórie mínus energia z jedla zapísaná v Health Connect, s režimom pôstu
+- Podrobné trendy: porovnajte ľubovoľné obdobie s predchádzajúcim
+- PDF prehľady za posledných 30 dní alebo vybrané dátumy
+- Vynechané dni: vyraďte deň choroby, cestu alebo deň bez hodiniek z priemerov, súčtov aj sérií
+
+AKO TO FUNGUJE
+Total Calories číta aktívne kalórie, celkové kalórie, bazálny metabolizmus a kroky z Health Connect, takže funguje s akýmikoľvek hodinkami, náramkom alebo aplikáciou, ktorá tam zapisuje. Keď zapnete kalorický deficit, číta aj energiu z jedla, ktoré tam zapisujete. Všetky povolenia sú len na čítanie a v Health Connect ich môžete kedykoľvek zmeniť.
+
+Keď zdroj hlási len časť údajov, aplikácia to povie a nehádže odhady: dni s odhadovanou pokojovou energiou sú označené a nepočítajú sa do priemerov TDEE a BMR.
+
+SÚKROMIE
+Údaje sa spracúvajú v telefóne. Nič o vašom zdraví sa nenahráva, nepredáva ani nezdieľa. Žiadny účet a žiadna reklama. Nákupy vybavuje Google Play.
+
+Samotná aplikácia je v angličtine.
+
+Total Calories je osobný nástroj na sledovanie, nie zdravotnícka pomôcka. Čísla pochádzajú z údajov, ktoré do Health Connect zapisujú iné aplikácie a zariadenia, a môžu sa od iných aplikácií líšiť.

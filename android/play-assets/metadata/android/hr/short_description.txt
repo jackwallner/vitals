@@ -1,0 +1,1 @@
+Brojač potrošenih kalorija i koraka iz Health Connecta na jednom zaslonu.

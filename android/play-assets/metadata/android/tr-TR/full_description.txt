@@ -1,0 +1,38 @@
+Bugün ne kadar yaktığını tek bakışta gör. Total Calories kalorilerini ve adımlarını Health Connect'ten okur, onları net bir halkaya, günlük geçmişe ve güvenilir eğilimlere dönüştürür.
+
+Hesap yok. Reklam yok. Takip yok. Sağlık verilerin telefonunda kalır, uygulama yalnızca okur.
+
+BUGÜN
+- Yakılan toplam kalori tek bir halkada, hedefin hemen yanında
+- Kendi hedefi ve ilerleme çubuğu olan adımlar
+- Tempo: tam bu saatte normal bir günün ne kadar önünde ya da gerisinde olduğun
+- İki sayıyı uygulamayı açmadan gösteren ana ekran widget'ı
+- Açık, koyu ya da telefonla aynı görünüm
+
+GEÇMİŞ
+- 7 gün, 30 gün, 90 gün, 1 yıl veya özel aralık
+- Dönem için kalori ve adım ortalaması ile toplamı
+- Her günü gösteren grafikler, altında son günlerin listesi
+- Geçmişini CSV dosyası olarak dışa aktar
+
+VITALS+ (isteğe bağlı yükseltme)
+- Aktif ve dinlenme kalorileri, toplamdan ayrı
+- TDEE ve bazal metabolizma (BMR), son 30 gününün ortalaması
+- Gün sonu tahmini: mevcut temponla bugün nereye varacağın
+- Zinciri koruyan hedef serileri
+- Kalori açığı: yakılan kalori eksi Health Connect'e kaydettiğin besin enerjisi, oruç moduyla
+- Derin eğilimler: herhangi bir dönemi bir öncekiyle karşılaştır
+- Son 30 gün veya seçtiğin tarihler için PDF raporlar
+- Hariç tutulan günler: hasta olduğun günü, bir seyahati ya da saatsiz bir günü ortalamalardan, toplamlardan ve serilerden çıkar
+
+NASIL ÇALIŞIR
+Total Calories aktif kalorileri, toplam kalorileri, bazal metabolizmayı ve adımları Health Connect'ten okur; bu yüzden oraya veri yazan her saat, bileklik ve uygulamayla çalışır. Kalori açığını açarsan oraya kaydettiğin besin enerjisini de okur. Tüm izinler salt okunurdur ve Health Connect'te istediğin zaman değiştirebilirsin.
+
+Bir kaynak verinin yalnızca bir kısmını sağladığında uygulama tahmin yürütmek yerine bunu söyler: dinlenme enerjisi tahmini olan günler işaretlenir ve TDEE ile BMR ortalamalarına katılmaz.
+
+GİZLİLİK
+Verilerin telefonunda işlenir. Sağlığınla ilgili hiçbir şey yüklenmez, satılmaz veya paylaşılmaz. Hesap ve reklam yok. Satın alımlar Google Play üzerinden yapılır.
+
+Uygulamanın kendisi İngilizcedir.
+
+Total Calories kişisel bir takip aracıdır, tıbbi bir cihaz değildir. Sayılar diğer uygulama ve cihazların Health Connect'e yazdığı verilerden gelir ve başka uygulamalardan farklı olabilir.
