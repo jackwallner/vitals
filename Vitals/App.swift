@@ -81,6 +81,22 @@ private final class PhoneGoalSyncService: NSObject, WCSessionDelegate {
 }
 #endif
 
+#if DEBUG
+/// Capture-only: walks Today, History, Upgrade and Settings every few seconds
+/// so a native recording shows real tab and sheet transitions.
+@MainActor
+private func runScreenshotTour() async {
+    let stops = ["today", "history", "upgrade", "settings"]
+    try? await Task.sleep(nanoseconds: 6_000_000_000)
+    while !Task.isCancelled {
+        for stop in stops {
+            NotificationCenter.default.post(name: .vitalsDebugShot, object: stop)
+            try? await Task.sleep(nanoseconds: 4_000_000_000)
+        }
+    }
+}
+#endif
+
 /// The app's content and its app-wide hooks. Kept out of `VitalsApp` so the
 /// scene's `WindowGroup` closure observes nothing: on iOS 27, SwiftUI's async
 /// renderer re-evaluated that closure off the main thread when an observed
@@ -94,6 +110,19 @@ private struct RootView: View {
             .environmentObject(store)
             .preferredColorScheme(goals.appearance.colorScheme)
             .onOpenURL { url in
+                #if DEBUG
+                // Capture-only routes (`totalcalories://shot/history|today|upgrade|settings`)
+                // so one launch can photograph every main screen.
+                // simctl openurl raises an "Open in" system alert, so capture
+                // runs drive the same routes with `VITALS_SCREENSHOT_TOUR=1`.
+                if url.host?.lowercased() == "shot" {
+                    NotificationCenter.default.post(
+                        name: .vitalsDebugShot,
+                        object: url.pathComponents.first { $0 != "/" }
+                    )
+                    return
+                }
+                #endif
                 guard let link = DeepLink(url: url) else { return }
                 DeepLinkRouter.shared.open(link)
             }
@@ -116,6 +145,9 @@ private struct RootView: View {
                     await HealthKitSeeder.run()
                 }
                 AuditHooks.start()
+                if ProcessInfo.processInfo.environment["VITALS_SCREENSHOT_TOUR"] == "1" {
+                    await runScreenshotTour()
+                }
                 #endif
                 #if canImport(WatchConnectivity)
                 PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
@@ -938,9 +970,11 @@ struct MainTabView: View {
 
     /// Second-touch trial nudge: fires when History finishes loading. Subject to
     /// the same 14-day passive cooldown, and additionally gated so it never
-    /// fires back-to-back with the launch offer in the same session.
+    /// fires back-to-back with the launch offer in the same session. Screenshot
+    /// runs skip it so a History capture shows History, not the sheet.
     private func evaluateHistoryTrialOffer() {
         guard goals.hasCompletedSetup,
+              !ScreenshotConfig.isEnabled,
               !store.isPro,
               !skipPassiveTrialThisSession,
               goals.passiveHistoryTrialOfferAllowed(),
@@ -1166,6 +1200,7 @@ struct MainTabView: View {
                 .padding(.vertical, 6)
                 .background(.ultraThinMaterial.opacity(0.8), in: Capsule())
                 .overlay(Capsule().stroke(Color(.separator).opacity(0.3), lineWidth: 0.5))
+                .readableWidth(420)
                 #if DEBUG
                 .overlay(alignment: .top) { variantToast }
                 #endif
@@ -1249,6 +1284,17 @@ struct MainTabView: View {
             selectedTab = 0
             showWeeklyRecap = true
         }
+        #if DEBUG
+        .onReceive(NotificationCenter.default.publisher(for: .vitalsDebugShot)) { note in
+            NotificationCenter.default.post(name: .vitalsDismissSettings, object: nil)
+            switch note.object as? String {
+            case "history": historyHasAppeared = true; selectedTab = 1
+            case "upgrade": selectedTab = 2
+            case "settings": selectedTab = 0; NotificationCenter.default.post(name: .vitalsOpenSettings, object: nil)
+            default: selectedTab = 0
+            }
+        }
+        #endif
         .onChange(of: deepLinkRouter.pending) { _, _ in handlePendingDeepLink() }
         // A cold launch from a widget or notification sets the link before this
         // view subscribes, so onChange alone would miss it.
@@ -1473,6 +1519,7 @@ private struct PremiumFeaturesView: View {
                     .padding(.horizontal, 24)
                     .padding(.top, 20)
                     .padding(.bottom, 96)
+                    .readableWidth()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }
@@ -1865,10 +1912,12 @@ private struct PremiumActionRow: View {
                 Text(title)
                     .font(.system(.subheadline, design: .rounded, weight: .semibold))
                     .foregroundStyle(Theme.textPrimary)
+                // Three lines: the Duo's folded display loses width to its
+                // side status bar, and two lines cut the detail mid-word.
                 Text(detail)
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textSecondary)
-                    .lineLimit(2)
+                    .lineLimit(3)
             }
             Spacer(minLength: 8)
             if isEnabled {

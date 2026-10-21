@@ -1,0 +1,70 @@
+{
+  "filename": "06-calorie-view.png",
+  "path": "duo-folded/06-calorie-view.png",
+  "output_sha256": "7957df549446ba5cef9595d70d988bf012f01ece174c3d8c8a5c8a050ff814f7",
+  "output_size": [
+    1398,
+    2034
+  ],
+  "device": "iphone",
+  "header": "Choose the calorie view you want",
+  "pitch": {
+    "benefit": "Show only the calorie and step readouts that are useful today",
+    "problem": "One fixed layout shows numbers some users never look at",
+    "advantage": "Settings toggles calories, the goal ring, breakdowns and steps individually",
+    "proof": "The literal Settings capture shows the Calorie Burn, Calorie Intake and Steps toggles",
+    "header_problem": "a fixed layout",
+    "header_advantage": "calorie view",
+    "search_terms": [
+      "calorie tracker",
+      "calories burned"
+    ]
+  },
+  "source": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-settings.png",
+  "source_sha256": "e3406f4886828a6746c11f4eadf2c9cd6988255b51187b64c18108af0bfcfac6",
+  "background_asset": null,
+  "background_asset_sha256": null,
+  "background_override": null,
+  "foreground": "manifests/duo-folded/06-calorie-view.foreground.png",
+  "foreground_sha256": "3cd80554c86257d3d68b2c68496157401fca451f759b60a6d0aa1bdd7380e91a",
+  "ui_mask": "manifests/duo-folded/06-calorie-view.ui-mask.png",
+  "ui_coverage": 0.5218,
+  "imagegen_received_ui_source": false,
+  "target": "iphone_duo_outer",
+  "size": [
+    1398,
+    2034
+  ],
+  "background_mode": "theme",
+  "background_id": "theme",
+  "background_top": "#fbf7f1",
+  "background_bottom": "#efe3d4",
+  "background_asset_applied": false,
+  "phone": {
+    "x": 173,
+    "y": 500,
+    "width": 1051,
+    "height": 1510,
+    "screen_x": 194,
+    "screen_y": 521,
+    "screen_width": 1009,
+    "screen_height": 1468,
+    "source_crop_top": 0,
+    "source_crop_bottom": 0
+  },
+  "header_only": true,
+  "compositor_text_layers": [
+    "header"
+  ],
+  "header_font_size": 150,
+  "header_lines": 2,
+  "header_text": "Choose the calorie view you want",
+  "header_bounds": [
+    148,
+    120,
+    1249,
+    427
+  ],
+  "source_evidence": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-settings.png",
+  "source_evidence_sha256": "e3406f4886828a6746c11f4eadf2c9cd6988255b51187b64c18108af0bfcfac6"
+}

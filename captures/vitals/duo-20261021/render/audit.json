@@ -1,0 +1,353 @@
+{
+  "app": "vitals",
+  "target": "iphone_duo_outer",
+  "expected_size": [
+    1398,
+    2034
+  ],
+  "copy_contract": "single-header-benefit-story-v3",
+  "market": {
+    "category": "Apple Watch calorie and activity trackers",
+    "audience": "iPhone Duo and Apple Watch users who want total calories burned visible during the day without logging food or opening Health",
+    "problem": "Apple Health separates energy details and activity surfaces emphasize movement, so total daily burn is easy to miss at the moment of decision.",
+    "advantage": "Total Calories combines active plus resting energy into one daily number and puts it on the Watch face, widgets, and Lock Screen, free and on-device.",
+    "competitive_context": "The app competes with activity rings and calorie trackers that make users open a phone, log food, create an account, or pay for basic visibility. It wins on total-burn visibility in the surfaces users already check.",
+    "search_intent": [
+      "total calories",
+      "daily burn",
+      "watch calories",
+      "widget calories"
+    ],
+    "proof_points": [
+      {
+        "claim": "The Today screen shows total calories against a daily target with steps",
+        "source": "raw/outer-darkDashboard.png"
+      },
+      {
+        "claim": "History shows 30 days of daily burn with averages and totals",
+        "source": "raw/outer-history.png"
+      },
+      {
+        "claim": "Onboarding states the app reads Apple Health, stays on the device and needs no account",
+        "source": "raw/outer-onboarding.png"
+      }
+    ]
+  },
+  "sets": [
+    {
+      "id": "duo-folded",
+      "submission": true,
+      "story": {
+        "throughline": "Make total daily burn visible at a glance, over time and privately on the iPhone Duo outer display",
+        "sequence": [
+          "problem",
+          "mechanism",
+          "proof"
+        ]
+      },
+      "frames": [
+        {
+          "filename": "01-total-at-a-glance.png",
+          "path": "duo-folded/01-total-at-a-glance.png",
+          "header": "See total calories at a glance",
+          "pitch": {
+            "benefit": "Read one combined daily burn number without adding up activity and resting energy",
+            "problem": "Apple Health splits active and resting energy, so total daily burn is easy to miss",
+            "advantage": "Total Calories adds active and resting energy into one ring against a daily target",
+            "proof": "The literal Today capture shows 2,400 of a 2,500 cal target plus 10,342 steps",
+            "header_problem": "split energy numbers",
+            "header_advantage": "total calories",
+            "search_terms": [
+              "total calories",
+              "daily burn"
+            ]
+          },
+          "capture_flow": "darkDashboard",
+          "evidence_status": "canonical",
+          "benefit": "Read one combined daily burn number without adding up activity and resting energy",
+          "generic_header_terms": [],
+          "size": [
+            1398,
+            2034
+          ],
+          "mode": "RGB",
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 150,
+          "header_lines": 2,
+          "header_bounds": [
+            190,
+            120,
+            1207,
+            427
+          ],
+          "story_role": "problem",
+          "story_focus": "total calories",
+          "background_id": "theme",
+          "foreground_sha256": "29a5fd9cb1a5aed02728b6df6a5d2d67733545f1a7ec7fc5d20124549948c4cf",
+          "background_contrast": {
+            "top": 17.31,
+            "bottom": 14.61
+          },
+          "thumbnail_ocr": "See total calories ata glance 2,400 : & 10,342",
+          "corner_contrast_vs_ink": 15.92
+        },
+        {
+          "filename": "02-burn-and-steps.png",
+          "path": "duo-folded/02-burn-and-steps.png",
+          "header": "Keep total burn and steps in one view",
+          "pitch": {
+            "benefit": "Check the two daily numbers that matter without a crowded activity dashboard",
+            "problem": "Activity apps bury the daily total under rings, badges and secondary metrics",
+            "advantage": "The minimal view reduces the check-in to total calories and steps",
+            "proof": "The literal minimal capture shows 2,368 calories and 9,629 steps and nothing else",
+            "header_problem": "a crowded dashboard",
+            "header_advantage": "total burn and steps",
+            "search_terms": [
+              "calories burned",
+              "step counter"
+            ]
+          },
+          "capture_flow": "minimal",
+          "evidence_status": "canonical",
+          "benefit": "Check the two daily numbers that matter without a crowded activity dashboard",
+          "generic_header_terms": [],
+          "size": [
+            1398,
+            2034
+          ],
+          "mode": "RGB",
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 150,
+          "header_lines": 2,
+          "header_bounds": [
+            99,
+            120,
+            1299,
+            427
+          ],
+          "story_role": "mechanism",
+          "story_focus": "total burn and steps",
+          "background_id": "theme",
+          "foreground_sha256": "51d6a737564fe03afbc9dcbc5fdea5a94af8c6869b5209d39d8ae86bea2661a7",
+          "background_contrast": {
+            "top": 17.31,
+            "bottom": 14.61
+          },
+          "thumbnail_ocr": "Keep total burn and steps in one view \u00bb 2,368 ; 9,629",
+          "corner_contrast_vs_ink": 15.92
+        },
+        {
+          "filename": "03-burn-patterns.png",
+          "path": "duo-folded/03-burn-patterns.png",
+          "header": "See daily burn patterns over time",
+          "pitch": {
+            "benefit": "See whether daily burn is rising or slipping instead of judging one day",
+            "problem": "A single day's number does not show whether a routine is changing",
+            "advantage": "History charts daily calories with averages and totals across 7 days to a year",
+            "proof": "The literal History capture shows a 30-day calorie chart with a 2,118 cal average",
+            "header_problem": "one isolated day",
+            "header_advantage": "daily burn patterns",
+            "search_terms": [
+              "daily burn",
+              "calorie history"
+            ]
+          },
+          "capture_flow": "history",
+          "evidence_status": "canonical",
+          "benefit": "See whether daily burn is rising or slipping instead of judging one day",
+          "generic_header_terms": [],
+          "size": [
+            1398,
+            2034
+          ],
+          "mode": "RGB",
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 150,
+          "header_lines": 2,
+          "header_bounds": [
+            143,
+            120,
+            1256,
+            427
+          ],
+          "story_role": "proof",
+          "story_focus": "daily burn patterns",
+          "background_id": "theme",
+          "foreground_sha256": "c4a4609e7327c545cab18a521c4ed7f80b17f1972f174f2720ebe1d56f8f86a5",
+          "background_contrast": {
+            "top": 17.31,
+            "bottom": 14.61
+          },
+          "thumbnail_ocr": "See daily burn patterns over time History Bo",
+          "corner_contrast_vs_ink": 15.92
+        },
+        {
+          "filename": "04-goal-that-fits.png",
+          "path": "duo-folded/04-goal-that-fits.png",
+          "header": "Fit your calorie goal to your real days",
+          "pitch": {
+            "benefit": "Get a calorie goal grounded in what a typical day actually burns",
+            "problem": "A goal that is never reached stops meaning anything",
+            "advantage": "When the goal keeps slipping out of reach, the app suggests a target from the user's typical day",
+            "proof": "The literal Today capture shows the goal card suggesting 2,050 cal from the last 14 days",
+            "header_problem": "an unreachable goal",
+            "header_advantage": "calorie goal",
+            "search_terms": [
+              "calorie goal",
+              "daily target"
+            ]
+          },
+          "capture_flow": "dashboard",
+          "evidence_status": "canonical",
+          "benefit": "Get a calorie goal grounded in what a typical day actually burns",
+          "generic_header_terms": [],
+          "size": [
+            1398,
+            2034
+          ],
+          "mode": "RGB",
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 150,
+          "header_lines": 2,
+          "header_bounds": [
+            103,
+            120,
+            1295,
+            427
+          ],
+          "story_role": "support",
+          "story_focus": "calorie goal",
+          "background_id": "theme",
+          "foreground_sha256": "be2232ab0f7c2b9accfb59578949902a0edee42e97d658aab46342e4a4bf5cb3",
+          "background_contrast": {
+            "top": 17.31,
+            "bottom": 14.61
+          },
+          "thumbnail_ocr": "Fit your calorie goal to your real days cD - (=) & 10,342",
+          "corner_contrast_vs_ink": 15.92
+        },
+        {
+          "filename": "05-health-data-private.png",
+          "path": "duo-folded/05-health-data-private.png",
+          "header": "Keep your Health data on your iPhone",
+          "pitch": {
+            "benefit": "Use calorie tracking without an account, a cloud sync or write access to Health",
+            "problem": "Many trackers ask for an account and send health data to a server",
+            "advantage": "Total Calories only reads from Apple Health and keeps everything on the device",
+            "proof": "The literal onboarding capture states read-only access, on-device storage and no account",
+            "header_problem": "accounts and cloud sync",
+            "header_advantage": "Health data",
+            "search_terms": [
+              "private calorie tracker",
+              "no account"
+            ]
+          },
+          "capture_flow": "onboarding",
+          "evidence_status": "canonical",
+          "benefit": "Use calorie tracking without an account, a cloud sync or write access to Health",
+          "generic_header_terms": [
+            "data"
+          ],
+          "size": [
+            1398,
+            2034
+          ],
+          "mode": "RGB",
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 150,
+          "header_lines": 2,
+          "header_bounds": [
+            92,
+            120,
+            1307,
+            427
+          ],
+          "story_role": "support",
+          "story_focus": "Health data",
+          "background_id": "theme",
+          "foreground_sha256": "9eac550a731aba08be18c89ee227e56bbc6259727e722b11bfbbbe5426de778e",
+          "background_contrast": {
+            "top": 17.31,
+            "bottom": 14.61
+          },
+          "thumbnail_ocr": "Keep your Health data on your iPhone 2 oe Welcome to @ Total Calories",
+          "corner_contrast_vs_ink": 15.92
+        },
+        {
+          "filename": "06-calorie-view.png",
+          "path": "duo-folded/06-calorie-view.png",
+          "header": "Choose the calorie view you want",
+          "pitch": {
+            "benefit": "Show only the calorie and step readouts that are useful today",
+            "problem": "One fixed layout shows numbers some users never look at",
+            "advantage": "Settings toggles calories, the goal ring, breakdowns and steps individually",
+            "proof": "The literal Settings capture shows the Calorie Burn, Calorie Intake and Steps toggles",
+            "header_problem": "a fixed layout",
+            "header_advantage": "calorie view",
+            "search_terms": [
+              "calorie tracker",
+              "calories burned"
+            ]
+          },
+          "capture_flow": "settings",
+          "evidence_status": "canonical",
+          "benefit": "Show only the calorie and step readouts that are useful today",
+          "generic_header_terms": [],
+          "size": [
+            1398,
+            2034
+          ],
+          "mode": "RGB",
+          "header_only": true,
+          "compositor_text_layers": [
+            "header"
+          ],
+          "header_font_size": 150,
+          "header_lines": 2,
+          "header_bounds": [
+            148,
+            120,
+            1249,
+            427
+          ],
+          "story_role": "support",
+          "story_focus": "calorie view",
+          "background_id": "theme",
+          "foreground_sha256": "3cd80554c86257d3d68b2c68496157401fca451f759b60a6d0aa1bdd7380e91a",
+          "background_contrast": {
+            "top": 17.31,
+            "bottom": 14.61
+          },
+          "thumbnail_ocr": "Choose the calorie view you want Calorie Goal . @)",
+          "corner_contrast_vs_ink": 15.92
+        }
+      ],
+      "errors": [],
+      "warnings": [],
+      "status": "pass"
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "release_requested": false,
+  "release_ready": true,
+  "disposition": "release-ready",
+  "capture_status": "ok",
+  "canonical_submission_evidence": true,
+  "status": "pass"
+}

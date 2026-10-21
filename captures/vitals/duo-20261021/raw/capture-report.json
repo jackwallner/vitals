@@ -1,0 +1,200 @@
+{
+  "status": "ok",
+  "manifest": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/manifest.json",
+  "app": "vitals",
+  "mode": "generic",
+  "lease": "vitals",
+  "output": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw",
+  "proof_only": false,
+  "checkout_options": [
+    "--slot",
+    "11"
+  ],
+  "lease_checked_in": true,
+  "screenshots": [
+    "outer-dashboard.png",
+    "outer-history.png",
+    "outer-minimal.png",
+    "outer-onboarding.png",
+    "outer-netDeficit.png",
+    "outer-calorieIntake.png",
+    "outer-darkDashboard.png",
+    "outer-settings.png",
+    "outer-premiumDashboard.png",
+    "outer-macroHistory.png"
+  ],
+  "screenshot_records": [
+    {
+      "name": "outer-dashboard.png",
+      "path": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-dashboard.png",
+      "size": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "0dfa1b8d7355015e048be72bf68589f25f43d5531782289d90929c2dd200518e"
+    },
+    {
+      "name": "outer-history.png",
+      "path": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-history.png",
+      "size": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "1d1aa74521014c434048e7f056c6196997491678afa2a2a90ec1ea5e35ac32c3"
+    },
+    {
+      "name": "outer-minimal.png",
+      "path": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-minimal.png",
+      "size": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "29fb5f691c54ed7df3e315925ba52030a2412017705eb93008898ad4af7d8617"
+    },
+    {
+      "name": "outer-onboarding.png",
+      "path": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-onboarding.png",
+      "size": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "b46cd1a71b1d0e635666a39e494afd85e83ea8c74fdf20f6559e850333d830ce"
+    },
+    {
+      "name": "outer-netDeficit.png",
+      "path": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-netDeficit.png",
+      "size": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "b777d2dda338c9f8110621fefff46ac99d62a99af870ea4678eca737c03972d9"
+    },
+    {
+      "name": "outer-calorieIntake.png",
+      "path": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-calorieIntake.png",
+      "size": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "5c42b9c63da8602ca5b8fe3b35d6e64149624e1a3201f0ee86f03e0a535656f6"
+    },
+    {
+      "name": "outer-darkDashboard.png",
+      "path": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-darkDashboard.png",
+      "size": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "ca24c64a2b855f1f3332aded02e04a7742acde9023f0926eaf021a421bc980d4"
+    },
+    {
+      "name": "outer-settings.png",
+      "path": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-settings.png",
+      "size": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "e3406f4886828a6746c11f4eadf2c9cd6988255b51187b64c18108af0bfcfac6"
+    },
+    {
+      "name": "outer-premiumDashboard.png",
+      "path": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-premiumDashboard.png",
+      "size": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "45e3fed685f64b5717b58e8be10ee9b3dcbc7f45654cd970a4b81e8997af8693"
+    },
+    {
+      "name": "outer-macroHistory.png",
+      "path": "/Users/jackwallner/.fleet-shift/worktrees/shift-stage-vitals-2-1792568741/captures/vitals/duo-20261021/raw/outer-macroHistory.png",
+      "size": [
+        1398,
+        2034
+      ],
+      "mode": "RGBA",
+      "sha256": "c27f4192b99cb6612bb0cca2cc859a9c2d7e5727791dd81c75eb0316395a1139"
+    }
+  ],
+  "flows": [
+    {
+      "id": "dashboard",
+      "screenshots": [
+        "outer-dashboard.png"
+      ]
+    },
+    {
+      "id": "history",
+      "screenshots": [
+        "outer-history.png"
+      ]
+    },
+    {
+      "id": "minimal",
+      "screenshots": [
+        "outer-minimal.png"
+      ]
+    },
+    {
+      "id": "onboarding",
+      "screenshots": [
+        "outer-onboarding.png"
+      ]
+    },
+    {
+      "id": "netDeficit",
+      "screenshots": [
+        "outer-netDeficit.png"
+      ]
+    },
+    {
+      "id": "calorieIntake",
+      "screenshots": [
+        "outer-calorieIntake.png"
+      ]
+    },
+    {
+      "id": "darkDashboard",
+      "screenshots": [
+        "outer-darkDashboard.png"
+      ]
+    },
+    {
+      "id": "settings",
+      "screenshots": [
+        "outer-settings.png"
+      ]
+    },
+    {
+      "id": "premiumDashboard",
+      "screenshots": [
+        "outer-premiumDashboard.png"
+      ]
+    },
+    {
+      "id": "macroHistory",
+      "screenshots": [
+        "outer-macroHistory.png"
+      ]
+    }
+  ],
+  "app_repo": {
+    "path": "/private/tmp/vitals-stage-test-81886",
+    "git_commit": "585416509881bd4078157230c01176f795346293"
+  },
+  "device": {
+    "udid": "B56E24A8-AADF-40AE-8BD3-2C3F38A84F44",
+    "name": "agent-sim-11",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-27-1",
+    "device_type": "com.apple.CoreSimulator.SimDeviceType.iPhone-Duo"
+  }
+}
