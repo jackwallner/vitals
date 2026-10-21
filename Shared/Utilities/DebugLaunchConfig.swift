@@ -45,8 +45,13 @@ enum DebugLaunchConfig {
     /// A named Test Store customer instead of the install's anonymous one, so a
     /// UI test that buys cannot leave the next test subscribed.
     /// `VITALS_RC_APP_USER_ID=<id>`.
+    ///
+    /// Without the override every debug run is `qa-ios`. Each fresh simulator
+    /// install used to become a new anonymous customer in the live project and
+    /// inflate New and Active Customers; one shared tester counts at most once
+    /// a day. `rc-clean-test-users --reset-qa` deletes it for a clean start.
     static var revenueCatAppUserID: String? {
-        ProcessInfo.processInfo.environment["VITALS_RC_APP_USER_ID"]
+        ProcessInfo.processInfo.environment["VITALS_RC_APP_USER_ID"] ?? "qa-ios"
     }
 
     /// Start the Pro settings scene with a pause that began this many days ago,
