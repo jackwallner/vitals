@@ -538,7 +538,12 @@ final class StoreService: NSObject, ObservableObject {
     func exitOfferOnClose(surface: String) -> Bool {
         #if DEBUG
         if ScreenshotConfig.isEnabled && !ExitOffer.isForced { return false }
-        if ExitOffer.isForced { return exitOfferPackage != nil && !isPro }
+        if ExitOffer.isForced {
+            // Record like a real offer-arm close, but show it on every close.
+            _ = ExitOffer.shouldOffer(onCloseOf: surface, arm: .offer, offerLoaded: true, isPro: isPro)
+            syncConversionAttributes()
+            return exitOfferPackage != nil && !isPro
+        }
         #endif
         let show = ExitOffer.shouldOffer(
             onCloseOf: surface,
