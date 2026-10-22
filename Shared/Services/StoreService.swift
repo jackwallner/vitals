@@ -264,6 +264,11 @@ final class StoreService: NSObject, ObservableObject {
     static let shared = StoreService()
 
     @Published private(set) var products: [Package] = []
+    /// The half-price yearly plan, from the `exit_offer` offering (never the
+    /// current one). Kept out of `products` so no plan list or yearly lookup
+    /// can pick it up: its product id contains the yearly one.
+    @Published private(set) var exitOfferPackage: Package?
+    private var exitOffering: Offering?
     @Published private(set) var currentOffering: Offering? {
         didSet { CTAExperiment.offeringArm = CTAExperiment.from(metadata: currentOffering?.metadata) }
     }
@@ -357,6 +362,8 @@ final class StoreService: NSObject, ObservableObject {
             let offering = offerings.vitalsPaywallOffering
             currentOffering = offering
             products = offering?.vitalsSortedPackages ?? []
+            exitOffering = offerings.offering(identifier: ExitOffer.offeringID)
+            exitOfferPackage = exitOffering?.package(identifier: ExitOffer.packageID)
             lastError = nil
             await refreshIntroEligibility()
         } catch {
@@ -384,14 +391,14 @@ final class StoreService: NSObject, ObservableObject {
         #endif
         #if DEBUG && targetEnvironment(simulator)
         if RevenueCatConfig.apiKey.hasPrefix("test_") {
-            introEligibility = Dictionary(uniqueKeysWithValues: products.compactMap { package in
+            introEligibility = Dictionary(uniqueKeysWithValues: eligibilityPackages.compactMap { package in
                 package.vitalsIntroOfferLabel == nil ? nil : (package.storeProduct.productIdentifier, true)
             })
             introEligibilityResolved = true
             return
         }
         #endif
-        let identifiers = products
+        let identifiers = eligibilityPackages
             .filter { $0.storeProduct.introductoryDiscount != nil }
             .map { $0.storeProduct.productIdentifier }
         guard !identifiers.isEmpty else {
@@ -402,6 +409,10 @@ final class StoreService: NSObject, ObservableObject {
         let result = await Purchases.shared.checkTrialOrIntroDiscountEligibility(productIdentifiers: identifiers)
         introEligibility = result.mapValues { $0.status == .eligible }
         introEligibilityResolved = true
+    }
+
+    private var eligibilityPackages: [Package] {
+        products + [exitOfferPackage].compactMap { $0 }
     }
 
     /// True when this package advertises a free trial AND the user is eligible
@@ -512,6 +523,33 @@ final class StoreService: NSObject, ObservableObject {
         return currentOffering?.vitalsUpgradeTabVariant ?? .catalog
     }
 
+    /// The exit offer arm this customer hashes to. nil means not in the test.
+    /// See `ExitOffer`.
+    var exitOfferArm: ExitOffer.Arm? {
+        #if DEBUG
+        if ExitOffer.isForced { return .offer }
+        #endif
+        guard isConfigured else { return nil }
+        return ExitOffer.arm(from: exitOffering?.metadata, appUserID: Purchases.shared.appUserID)
+    }
+
+    /// A paywall was closed on purpose. Records the close for the test and
+    /// answers whether the caller should show the exit offer in its place.
+    func exitOfferOnClose(surface: String) -> Bool {
+        #if DEBUG
+        if ScreenshotConfig.isEnabled && !ExitOffer.isForced { return false }
+        if ExitOffer.isForced { return exitOfferPackage != nil && !isPro }
+        #endif
+        let show = ExitOffer.shouldOffer(
+            onCloseOf: surface,
+            arm: exitOfferArm,
+            offerLoaded: exitOfferPackage != nil,
+            isPro: isPro
+        )
+        syncConversionAttributes()
+        return show
+    }
+
     #if DEBUG
     /// Advance the hidden rotator one arm and publish the change.
     ///
@@ -605,6 +643,7 @@ final class StoreService: NSObject, ObservableObject {
         if let offering = currentOffering?.identifier {
             attributes["offering_id"] = offering
         }
+        attributes.merge(ExitOffer.subscriberAttributes) { _, new in new }
         Purchases.shared.attribution.setAttributes(attributes)
     }
 
@@ -675,7 +714,9 @@ final class StoreService: NSObject, ObservableObject {
         // Freeze what the funnel looked like at the moment of sale: which
         // surface was last on screen, and how many pitches came before it.
         ConversionDiagnostics.recordConversion(
-            plan: String(describing: product.vitalsPackageKind),
+            plan: product.identifier == ExitOffer.packageID
+                ? "yearly_exit"
+                : String(describing: product.vitalsPackageKind),
             startedTrial: startedTrial,
             variant: upgradeTabVariant.rawValue,
             offeringID: currentOffering?.identifier

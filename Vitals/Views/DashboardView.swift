@@ -2657,6 +2657,8 @@ private struct OnboardingSheet: View {
     /// Emergency fallback: presented only when the onboarding package failed to load,
     /// so the primary CTA is never a dead disabled button.
     @State private var showPaywallFallback = false
+    /// Set when "Get Started" turned into the exit offer. See `ExitOffer`.
+    @State private var showExitOffer = false
 
     private var calValid: Bool {
         !wantCalGoal || (Double(calText).map { (500...50000).contains($0) } ?? false)
@@ -2862,6 +2864,23 @@ private struct OnboardingSheet: View {
             PaywallView()
                 .environmentObject(store)
                 .task { store.trackPaywallImpression(id: "vitals_onboarding_fallback") }
+        }
+        .overlay {
+            if showExitOffer, let package = store.exitOfferPackage {
+                ExitOfferView(package: package, onFinish: finishOnboarding)
+                    .environmentObject(store)
+                    .transition(.opacity)
+            }
+        }
+    }
+
+    /// "Get Started": straight in, unless this is the close the exit offer
+    /// answers.
+    private func leaveTrialStep() {
+        if store.exitOfferOnClose(surface: "onboarding_trial"), store.exitOfferPackage != nil {
+            withAnimation(.easeInOut(duration: 0.2)) { showExitOffer = true }
+        } else {
+            finishOnboarding()
         }
     }
 
@@ -3184,7 +3203,7 @@ private struct OnboardingSheet: View {
     /// which outranks a cross-app heuristic.
     private var softExitSlot: some View {
         Button {
-            finishOnboarding()
+            leaveTrialStep()
         } label: {
             Text("Get Started")
                 .font(.system(.subheadline, design: .rounded, weight: .semibold))

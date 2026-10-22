@@ -260,6 +260,8 @@ struct PaywallView: View {
     /// Last honest CTA title. The button never falls back to a spinner-only
     /// control (that made the label flicker and hid it from UI tests).
     @State private var displayedCTATitle: String = CTAExperiment.trialCTATitleCase()
+    /// Set when the close button turned into the exit offer. See `ExitOffer`.
+    @State private var exitOfferPackage: Package?
 
     /// Outcome bullets. Intent taps lead with the feature they asked for plus
     /// two related companions.
@@ -316,6 +318,11 @@ struct PaywallView: View {
 
             if displayCloseButton {
                 closeButton
+            }
+
+            if let exitOfferPackage {
+                ExitOfferView(package: exitOfferPackage, onFinish: { dismiss() })
+                    .transition(.opacity)
             }
         }
         .onChange(of: store.isPro) { _, isPro in
@@ -766,7 +773,7 @@ struct PaywallView: View {
             HStack {
                 Spacer()
                 Button {
-                    dismiss()
+                    close()
                 } label: {
                     Image(systemName: "xmark.circle.fill")
                         .font(.system(size: 28))
@@ -863,6 +870,14 @@ struct PaywallView: View {
                 await store.refreshIntroEligibility()
                 errorMessage = store.purchaseFailedMessage(for: package)
             }
+        }
+    }
+
+    private func close() {
+        if store.exitOfferOnClose(surface: "paywall"), let package = store.exitOfferPackage {
+            withAnimation(.easeInOut(duration: 0.2)) { exitOfferPackage = package }
+        } else {
+            dismiss()
         }
     }
 

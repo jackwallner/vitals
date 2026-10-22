@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00AB9266458E4142789A8A77 /* SeededHealthFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B294CC1AD718FCB854BF56D /* SeededHealthFlowUITests.swift */; };
+		01B80CB59C8EE3C97DECC3F2 /* ExitOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52147499747F8CEC3CAABE45 /* ExitOffer.swift */; };
 		0300E24894022A49E65EC41C /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2600C40B77EF3FF5126EAFE /* NotificationService.swift */; };
 		043F3422554E02BFF53D0512 /* BodyProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF63533B3E56E5C3FBE91384 /* BodyProfile.swift */; };
 		07B6B187221A3664D2D0B2D2 /* TodaySnapshotResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F084D67C16DE5A62199BD0 /* TodaySnapshotResolver.swift */; };
@@ -18,6 +19,7 @@
 		0A15A50AFA7DC19834C3D106 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
 		0ABF71410170EF6C0DF7D63D /* PaywallUIVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92A4096A4EFCD26122F1D62 /* PaywallUIVariant.swift */; };
 		0AC639F100296E17EF0A0680 /* GoalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6804EF421C3725E70674D40 /* GoalSettings.swift */; };
+		0D3B51AC0624667BA5C93A38 /* ExitOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52147499747F8CEC3CAABE45 /* ExitOffer.swift */; };
 		0E0201FB0EAAC755B25E719B /* PaywallScreenshotHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8287269CC5CE093BEF6CBB25 /* PaywallScreenshotHarness.swift */; };
 		0E0E46ECA14AB2494C91909D /* VitalsConversionCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1FB17511E85720FB3545D /* VitalsConversionCopy.swift */; };
 		0EA5DC155C32F07931E96361 /* ProjectionCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE9370DC12BAC7716DA62A5 /* ProjectionCalculator.swift */; };
@@ -34,6 +36,7 @@
 		162F6C3B386295BF2B5DE297 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2600C40B77EF3FF5126EAFE /* NotificationService.swift */; };
 		16F8288C5254F2E00C920180 /* EnergyAveragesCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B9D5B798B90EA3B5158572 /* EnergyAveragesCalculator.swift */; };
 		190B62EE4C40586FB45DC78B /* DebugLaunchConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50E0376FEA7B50B4868C06F /* DebugLaunchConfig.swift */; };
+		19575DD0DEA53D9C4592C2EE /* ExitOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52147499747F8CEC3CAABE45 /* ExitOffer.swift */; };
 		1CE9B5C66CB288E0ABDDACCF /* PaywallUIVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92A4096A4EFCD26122F1D62 /* PaywallUIVariant.swift */; };
 		1E006B2434ECB58F1D51CB19 /* HealthRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */; };
 		1E8A3E8458958263B5786781 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2600C40B77EF3FF5126EAFE /* NotificationService.swift */; };
@@ -99,6 +102,7 @@
 		59C3C65D81A869280C685079 /* ExcludedDaysPitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C255483C346AE93483286EF /* ExcludedDaysPitch.swift */; };
 		5A19413C5A9673172FC29C82 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		5AA3D87130295D2BFFC2F125 /* DailyNudgePlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E8DEA481D9C4E9461832D5 /* DailyNudgePlanner.swift */; };
+		5B7DBF7BDDF9D3894753AA89 /* ExitOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52147499747F8CEC3CAABE45 /* ExitOffer.swift */; };
 		5DBC8E77AA454B17231D8F7A /* AuditFeaturesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE594FF27D6233DB728F7D5A /* AuditFeaturesUITests.swift */; };
 		5E0DEBFC4E1BC41D4FFEA18B /* ProjectionCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE9370DC12BAC7716DA62A5 /* ProjectionCalculator.swift */; };
 		602FAE5FA1371FA6A1510FB9 /* MacroTotals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E59FD786F13C21C0F91701C /* MacroTotals.swift */; };
@@ -116,6 +120,7 @@
 		6BD5AEA6B71B870CC53605AF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
 		6C13EBA7B3822A37F81402DF /* DebugLaunchConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50E0376FEA7B50B4868C06F /* DebugLaunchConfig.swift */; };
 		6C52771FEDE346D91B293CC8 /* DailyNudgePlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E8DEA481D9C4E9461832D5 /* DailyNudgePlanner.swift */; };
+		6CB1CB21E7335BC042D550A6 /* ExitOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52147499747F8CEC3CAABE45 /* ExitOffer.swift */; };
 		6CBFC060DEDD8AB1E6C1B2A7 /* VitalsConversionCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1FB17511E85720FB3545D /* VitalsConversionCopy.swift */; };
 		6E1DD1188F271AE88FE30922 /* WeeklyRecap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029E0F56D793DA022CCA3D3F /* WeeklyRecap.swift */; };
 		6F74C37EF8D351E860EC8DAE /* ExcludedDays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8950B6E783926A868F274E1F /* ExcludedDays.swift */; };
@@ -235,6 +240,7 @@
 		E0AB34071857A374FB32E3DC /* SupportMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5DAB758DDA2F38199CF3E /* SupportMail.swift */; };
 		E1B8C2D3D9429F163F7A9864 /* AuditHooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A437363E257769CE62250CF /* AuditHooks.swift */; };
 		E301042E1AFB8011E2FD493C /* OnboardingFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D69AA5CE048C7FF360D80A3 /* OnboardingFlowUITests.swift */; };
+		E36C17E1A93C7166B7955C8A /* ExitOfferTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C5DB218E2D480B2A3C877E /* ExitOfferTests.swift */; };
 		E423A6BC1D2F4FB0E197829B /* MilestoneCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604A7C1098FB8101FE9A3365 /* MilestoneCalculator.swift */; };
 		E48D5DCE8E5EA92DBEA311A3 /* CalorieTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952AFBE8093B6469EB2E271B /* CalorieTrendSummary.swift */; };
 		E64B441E3127F6495D506CF1 /* PaywallVariantOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD96649F6BF18899C0A6326 /* PaywallVariantOverride.swift */; };
@@ -257,6 +263,7 @@
 		F67410975DE52D10329F1479 /* NetDeficitTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */; };
 		F8CE32C95ABAE3744A30D432 /* SummaryReportGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B24F616BC26BFF25C64684 /* SummaryReportGenerator.swift */; };
 		F93415C3586901C55415E5C6 /* ProjectionCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE9370DC12BAC7716DA62A5 /* ProjectionCalculator.swift */; };
+		FD9D67DB58E931EB9D539282 /* ExitOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB8BFBF90331A8992799DDA /* ExitOfferView.swift */; };
 		FDC255EDF9FC897146209356 /* ProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971064F5F952A25427D7F46B /* ProgressRing.swift */; };
 		FDD2B3AC4FDAD33746E92A0A /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E152DC23E11DAD83864E5A /* HistoryView.swift */; };
 		FE5CF05C3EA0D9BD231CB733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA75A0BD07845E85F69ED5F7 /* Assets.xcassets */; };
@@ -362,6 +369,7 @@
 		4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetDeficitTrendSummary.swift; sourceTree = "<group>"; };
 		4E7DCA825A17AEC469980F76 /* TrialOfferPitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialOfferPitch.swift; sourceTree = "<group>"; };
 		5067457F6627E7ABFE38988A /* Vitals.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Vitals.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		52147499747F8CEC3CAABE45 /* ExitOffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitOffer.swift; sourceTree = "<group>"; };
 		5A524F44F2C81B258D1BBE67 /* HealthKitLabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitLabUITests.swift; sourceTree = "<group>"; };
 		5A9790EDD451E0514314B465 /* VitalsAppIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitalsAppIntents.swift; sourceTree = "<group>"; };
 		5BF3757DA98CAB80DB0EC338 /* CTAExperimentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTAExperimentTests.swift; sourceTree = "<group>"; };
@@ -384,6 +392,7 @@
 		8100A0E0977892F00983F8A4 /* FleetQA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetQA.swift; sourceTree = "<group>"; };
 		8287269CC5CE093BEF6CBB25 /* PaywallScreenshotHarness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallScreenshotHarness.swift; sourceTree = "<group>"; };
 		82E152DC23E11DAD83864E5A /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		83C5DB218E2D480B2A3C877E /* ExitOfferTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitOfferTests.swift; sourceTree = "<group>"; };
 		8950B6E783926A868F274E1F /* ExcludedDays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcludedDays.swift; sourceTree = "<group>"; };
 		8984606AC7BF0325F5B42DA3 /* TodaySnapshotResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySnapshotResolverTests.swift; sourceTree = "<group>"; };
 		8BA6AECE7D2FEB86748EA85D /* ReviewPromptTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewPromptTracker.swift; sourceTree = "<group>"; };
@@ -424,6 +433,7 @@
 		C5F6A6AE22A02C84F2077B36 /* ExcludedDaysUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcludedDaysUITests.swift; sourceTree = "<group>"; };
 		C9B9F018B1D8859226963C63 /* WeeklyRecapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyRecapView.swift; sourceTree = "<group>"; };
 		CA5FB56CFC81FAF6AF852A96 /* BodyProfileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyProfileStore.swift; sourceTree = "<group>"; };
+		CAB8BFBF90331A8992799DDA /* ExitOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitOfferView.swift; sourceTree = "<group>"; };
 		CC1E08DB6178018D805FEA45 /* DeepLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkTests.swift; sourceTree = "<group>"; };
 		CEE9370DC12BAC7716DA62A5 /* ProjectionCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectionCalculator.swift; sourceTree = "<group>"; };
 		CFC6717A33895256B9C16964 /* ConversionDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionDiagnostics.swift; sourceTree = "<group>"; };
@@ -564,6 +574,7 @@
 				208A2706128ED69211B77282 /* CTAGlow.swift */,
 				BFEC52C3FC9793813DF64549 /* DashboardView.swift */,
 				7DCF988879AF0A15410FB69E /* ExcludedDaysView.swift */,
+				CAB8BFBF90331A8992799DDA /* ExitOfferView.swift */,
 				82E152DC23E11DAD83864E5A /* HistoryView.swift */,
 				8287269CC5CE093BEF6CBB25 /* PaywallScreenshotHarness.swift */,
 				C395EAE504DCAD8464C29AC9 /* PaywallView.swift */,
@@ -591,6 +602,7 @@
 				13B9D5B798B90EA3B5158572 /* EnergyAveragesCalculator.swift */,
 				8950B6E783926A868F274E1F /* ExcludedDays.swift */,
 				2C255483C346AE93483286EF /* ExcludedDaysPitch.swift */,
+				52147499747F8CEC3CAABE45 /* ExitOffer.swift */,
 				292C63911A7E258A1952BF35 /* GoalRecalibration.swift */,
 				604A7C1098FB8101FE9A3365 /* MilestoneCalculator.swift */,
 				A92A4096A4EFCD26122F1D62 /* PaywallUIVariant.swift */,
@@ -621,6 +633,7 @@
 				7800BEFF745F92FF35F9DD7D /* EnergyAveragesCalculatorTests.swift */,
 				602F111714360E64D4151635 /* ExcludedDaysPitchTests.swift */,
 				B1EC6EAD080AEDE2F97FDB77 /* ExcludedDaysTests.swift */,
+				83C5DB218E2D480B2A3C877E /* ExitOfferTests.swift */,
 				D9AF21BD00FB8CAEEFA36434 /* GoalRecalibrationTests.swift */,
 				E2EDD6A929AC5CB3DFDD1844 /* MacroGoalSelectionTests.swift */,
 				BB4287B137F6F3AD1263CD07 /* MacroTotalsTests.swift */,
@@ -979,6 +992,7 @@
 				A0599F43FA61D1DE21C89711 /* EnergyAveragesCalculator.swift in Sources */,
 				C54430F56523F205E912B22C /* ExcludedDays.swift in Sources */,
 				A60B563B521FAB33291DFE22 /* ExcludedDaysPitch.swift in Sources */,
+				01B80CB59C8EE3C97DECC3F2 /* ExitOffer.swift in Sources */,
 				3E23C357F718D75971C59159 /* GoalRecalibration.swift in Sources */,
 				1039A99017046E5F1A2DAAF2 /* GoalSettings.swift in Sources */,
 				75A6835298F7F33CA2EF9884 /* HealthKitService.swift in Sources */,
@@ -1026,6 +1040,7 @@
 				B19D140773617085D5DD3705 /* EnergyAveragesCalculator.swift in Sources */,
 				64862100BF41ECB14670DF69 /* ExcludedDays.swift in Sources */,
 				56E1B51434D93AACDEB417B7 /* ExcludedDaysPitch.swift in Sources */,
+				5B7DBF7BDDF9D3894753AA89 /* ExitOffer.swift in Sources */,
 				2BD5DEB0702570F08BB08F49 /* GoalRecalibration.swift in Sources */,
 				72DEDC8616FEE6109AF0E931 /* GoalSettings.swift in Sources */,
 				73E57B5289F6A146D19D6011 /* HealthKitService.swift in Sources */,
@@ -1074,6 +1089,7 @@
 				9DBD04B252D8A3D651BF2F8C /* EnergyAveragesWidget.swift in Sources */,
 				6F74C37EF8D351E860EC8DAE /* ExcludedDays.swift in Sources */,
 				59C3C65D81A869280C685079 /* ExcludedDaysPitch.swift in Sources */,
+				19575DD0DEA53D9C4592C2EE /* ExitOffer.swift in Sources */,
 				A842A6E395769AFF6E02A03D /* GoalRecalibration.swift in Sources */,
 				DC24AE05CDB72AFF52FE97A2 /* GoalSettings.swift in Sources */,
 				7DE03846B38547D81722040A /* HealthKitService.swift in Sources */,
@@ -1129,6 +1145,8 @@
 				86C034170AC0E8BF5FD83B60 /* ExcludedDaysPitch.swift in Sources */,
 				EA2BFDD16494E6D5EBD534C1 /* ExcludedDaysPitchTests.swift in Sources */,
 				1336783F5309584DFE530FF3 /* ExcludedDaysTests.swift in Sources */,
+				6CB1CB21E7335BC042D550A6 /* ExitOffer.swift in Sources */,
+				E36C17E1A93C7166B7955C8A /* ExitOfferTests.swift in Sources */,
 				3BB32C907E3FE10EE1F3BC2C /* GoalRecalibration.swift in Sources */,
 				758912D0BC4FC9EA81EE7503 /* GoalRecalibrationTests.swift in Sources */,
 				C0ED7A3AC0364B181E667DC1 /* HealthRecord.swift in Sources */,
@@ -1200,6 +1218,8 @@
 				A4B6CEDA195E50DC02F33264 /* ExcludedDays.swift in Sources */,
 				7751DCFF58386558C37157C7 /* ExcludedDaysPitch.swift in Sources */,
 				1336BCBB4FD0FF2431BBBDDB /* ExcludedDaysView.swift in Sources */,
+				0D3B51AC0624667BA5C93A38 /* ExitOffer.swift in Sources */,
+				FD9D67DB58E931EB9D539282 /* ExitOfferView.swift in Sources */,
 				7233432BE67695EAE89C5130 /* GoalRecalibration.swift in Sources */,
 				0AC639F100296E17EF0A0680 /* GoalSettings.swift in Sources */,
 				52B99A6FB6864BC7445FBCBC /* HealthKitLabHarness.swift in Sources */,
