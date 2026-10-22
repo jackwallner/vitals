@@ -2660,6 +2660,13 @@ private struct OnboardingSheet: View {
     /// Set when "Get Started" turned into the exit offer. See `ExitOffer`.
     @State private var showExitOffer = false
 
+    /// The outgoing page is gone before the next one fades in. A plain
+    /// crossfade stacked two pages of readable text for several frames.
+    private static let pageTransition = AnyTransition.asymmetric(
+        insertion: .opacity.animation(.easeOut(duration: 0.15).delay(0.12)),
+        removal: .opacity.animation(.easeIn(duration: 0.12))
+    )
+
     private var calValid: Bool {
         !wantCalGoal || (Double(calText).map { (500...50000).contains($0) } ?? false)
     }
@@ -2758,13 +2765,14 @@ private struct OnboardingSheet: View {
                                 guard !Task.isCancelled else { return }
                                 trialCTAWaitExpired = true
                             }
+                            .transition(Self.pageTransition)
                     } else {
                         ScrollViewReader { proxy in
                             ScrollView {
                                 Group {
                                     switch step {
-                                    case .welcome: welcomePage
-                                    case .goals: goalsPage
+                                    case .welcome: welcomePage.transition(Self.pageTransition)
+                                    case .goals: goalsPage.transition(Self.pageTransition)
                                     case .trial: EmptyView()
                                     }
                                 }
@@ -2795,6 +2803,7 @@ private struct OnboardingSheet: View {
                                 }
                             }
                         }
+                        .transition(Self.pageTransition)
                     }
 
                     bottomBar

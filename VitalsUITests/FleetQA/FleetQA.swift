@@ -53,8 +53,12 @@ enum QA {
     ///     out of the layout-shift and idle oracles.
     ///   - grace: seconds after the step during which movement is the step's
     ///     own transition. Movement after it is a late layout shift.
+    ///   - paywall: run the paywall oracles. `nil` decides from the checkpoint
+    ///     name (paywall, upgrade, trial, pitch, offer, plans, subscribe) or
+    ///     from the screen (a price next to a Restore control).
     static func checkpoint(_ app: XCUIApplication, _ name: String, ambient: [String] = [], grace: TimeInterval = 0.8,
-                           observe: TimeInterval = 5, journey: String = #function, file: StaticString = #filePath, line: UInt = #line) {
+                           observe: TimeInterval = 5, paywall: Bool? = nil, journey: String = #function,
+                           file: StaticString = #filePath, line: UInt = #line) {
         let context = Context(journey: journey.replacingOccurrences(of: "()", with: ""), checkpoint: name)
         XCTContext.runActivity(named: "QA checkpoint \(name)") { _ in
             let started = Date()
@@ -79,6 +83,11 @@ enum QA {
             Render.clipped(leaves, rendered, context: context)
             Layout.overlaps(app, leaves, rendered, context: context)
             Copy.lint(leaves, context: context)
+            States.check(leaves, rendered, height: settle.height, context: context)
+            Anchor.check(app, leaves, width: settle.width, height: settle.height, context: context)
+            if paywall ?? Paywall.looksLike(app, name: name, leaves: leaves) {
+                Paywall.check(app, leaves, rendered, context: context)
+            }
             // Apple's audit re-renders the app at other text sizes; its motion is not the app's.
             system("audit", journey: context.journey) { Audit.run(app, context: context) }
             Idle.check(app, first: shot, ambient: leaves.filter { ambient.contains($0.label) || ambient.contains($0.identifier) },
@@ -89,6 +98,7 @@ enum QA {
             if watched < observe { usleep(UInt32((observe - watched) * 1_000_000)) }
             Layout.recheck(app, settled: leaves, ambient: Set(ambient), seconds: Date().timeIntervalSince(started),
                            context: context)
+            States.spinner(app, seconds: Date().timeIntervalSince(started), context: context)
             write("checkpoints.jsonl", [
                 "persona": persona, "journey": context.journey, "checkpoint": name,
                 "started": started.timeIntervalSince1970, "finished": Date().timeIntervalSince1970,
@@ -645,11 +655,171 @@ enum Render {
             if pieces.count >= 2, plain(joined).count >= 3, plain(label).contains(plain(joined)) {
                 QA.record(context, "clipped", "P1", leaf.name,
                           "\(Layout.typeName(leaf.type)) \"\(label)\" is broken across \(pieces.count) lines: \(pieces.joined(separator: " / "))")
-            } else if pieces.count == 1, plain(joined).count >= 2, plain(joined).count < plain(label).count,
-                      plain(label).hasPrefix(plain(joined)), !joined.hasSuffix("…"), !joined.hasSuffix("...") {
+                continue
+            }
+            // A clipped element's frame can be wider than what it draws and take in
+            // a neighbour's first word ("1,234, sto"), so keep the leading words that
+            // still spell the start of the label.
+            // A neighbour's word on a line above ("Cu") can come first, so take the
+            // line whose leading words spell the most of it.
+            let lead = pieces.map { piece in
+                piece.split(separator: " ").reduce(into: (text: "", open: true)) { run, word in
+                    let next = run.text.isEmpty ? String(word) : run.text + " " + word
+                    if run.open && plain(label).hasPrefix(plain(next)) { run.text = next } else { run.open = false }
+                }.text
+            }.max { plain($0).count < plain($1).count } ?? ""
+            if plain(lead).count >= 2, plain(lead).count < plain(label).count, !lead.hasSuffix("…"), !lead.hasSuffix("...") {
                 QA.record(context, "clipped", "P1", leaf.name,
-                          "\(Layout.typeName(leaf.type)) drawn as \"\(joined)\" but reads \"\(label)\", cut off with no ellipsis")
+                          "\(Layout.typeName(leaf.type)) drawn as \"\(lead)\" but reads \"\(label)\", cut off with no ellipsis")
             }
         }
+    }
+}
+
+// MARK: - States: error copy, blank screens, endless spinners
+
+@MainActor
+enum States {
+    /// Copy that means the screen failed to get what it needed. Journeys run on
+    /// seeded data, so reaching one of these is a broken screen, not bad luck.
+    static let failure = #"couldn['’]?t load|could not load|unable to load|failed to load|error loading"#
+        + #"|something went wrong|try again later|no (plans|products|offerings|subscriptions) (are )?(available|found)"#
+        + #"|(plans|products|prices) (are )?(not |un)available|not available right now|no internet|connection (error|failed)"#
+
+    static func check(_ leaves: [Leaf], _ rendered: [Render.Line], height: CGFloat, context: QA.Context) {
+        let texts = leaves.filter { $0.type == .staticText || $0.type == .button }.map(\.label) + rendered.map(\.text)
+        if let text = texts.first(where: { $0.range(of: failure, options: [.regularExpression, .caseInsensitive]) != nil }) {
+            QA.record(context, "error-state", "P1", text, "the screen shows a failure: \"\(text)\"")
+        }
+        // Below the status bar, a screen with almost nothing to read is blank
+        // (a paywall that never rendered, a white sheet after relaunch).
+        let drawn = rendered.filter { $0.frame.minY > 60 && !Render.words($0.text).isEmpty }
+        let labelled = leaves.filter { !$0.label.isEmpty && $0.frame.minY > 60 && $0.frame.minY < height }
+        if drawn.count < 2 && labelled.count < 2 {
+            QA.record(context, "blank-screen", "P1", "",
+                      "the screen is blank: \(drawn.count) line(s) drawn, \(labelled.count) labelled element(s)")
+        }
+    }
+
+    /// A spinner still turning once the screen has been watched for `seconds`:
+    /// the user is left waiting on something that is not coming.
+    static func spinner(_ app: XCUIApplication, seconds: TimeInterval, context: QA.Context) {
+        guard let leaf = Layout.leaves(app)?.leaves.first(where: { $0.type == .activityIndicator }) else { return }
+        QA.record(context, "still-loading", "P1", leaf.name,
+                  String(format: "a spinner is still showing %.0fs into the step", seconds))
+    }
+}
+
+// MARK: - Anchor: the main button stays put from one step to the next
+
+@MainActor
+enum Anchor {
+    /// The previous checkpoint's main button, with its journey.
+    static var last: (journey: String, checkpoint: String, frame: CGRect)?
+
+    /// The largest button in the bottom 40% of the screen, at least half the screen wide.
+    static func primary(_ leaves: [Leaf], width: CGFloat, height: CGFloat) -> Leaf? {
+        leaves.filter { $0.type == .button && !$0.inScroll && $0.frame.width >= width * 0.5 && $0.frame.midY >= height * 0.6 }
+            .max { $0.frame.width * $0.frame.height < $1.frame.width * $1.frame.height }
+    }
+
+    /// Onboarding and paywall steps share one call to action. When it jumps
+    /// between steps (legal text pushing it up, a "Not now" row nudging it) the
+    /// thumb misses and the flow feels unfinished.
+    static func check(_ app: XCUIApplication, _ leaves: [Leaf], width: CGFloat, height: CGFloat, context: QA.Context) {
+        // A keyboard lifts the button on purpose.
+        guard app.keyboards.count == 0, let button = primary(leaves, width: width, height: height) else {
+            last = nil
+            return
+        }
+        defer { last = (context.journey, context.checkpoint, button.frame) }
+        guard let before = last, before.journey == context.journey else { return }
+        let a = button.frame, b = before.frame
+        guard max(abs(a.minY - b.minY), abs(a.height - b.height), abs(a.minX - b.minX), abs(a.width - b.width)) > 2 else { return }
+        QA.record(context, "cta-jump", "P1", button.name,
+                  String(format: "the main button \"%@\" is at y %.0f, %.0f by %.0f; on \"%@\" it was at y %.0f, %.0f by %.0f",
+                         button.name, a.minY, a.width, a.height, before.checkpoint, b.minY, b.width, b.height))
+    }
+}
+
+// MARK: - Paywall: what App Review checks on every purchase screen (3.1.1, 3.1.2)
+
+@MainActor
+enum Paywall {
+    static let named = #"paywall|upgrade|trial|pitch|offer|plans|subscri|purchase"#
+    static let after = #"dismiss|closed|after|return|back|done"#
+    static let price = #"(?:US\$|CA\$|A\$|[$€£¥₹])\s?\d[\d.,]*|\d[\d.,]*\s?(?:[$€£¥₹]|kr|zł|CHF)"#
+    static let period = #"year|annual|month|week|/\s?(yr|mo|wk)\b|trial"#
+    static let derived = #"/\s?(mo|month|wk|week|day)\b|(per|a|each) (month|week|day)\b"#
+    static let yearly = #"year|annual|/\s?yr\b"#
+
+    /// A purchase screen: the checkpoint is named like one and something on
+    /// screen sells (a priced plan, a visible Restore, a subscribe or trial
+    /// button), or a priced plan sits next to a visible Restore. Restore alone
+    /// is not enough: a Settings tab keeps its Restore row in the tree behind
+    /// every other tab.
+    static func looksLike(_ app: XCUIApplication, name: String, leaves: [Leaf]) -> Bool {
+        let restore = find(app, "restore")?.isHittable ?? false
+        let priced = leaves.contains { leaf in
+            leaf.label.range(of: price, options: .regularExpression) != nil
+                && leaf.label.range(of: period, options: [.regularExpression, .caseInsensitive]) != nil
+        }
+        let pitch = leaves.contains { leaf in
+            leaf.type == .button && leaf.label.range(of: #"subscribe|start .*trial|try .*free"#,
+                                                     options: [.regularExpression, .caseInsensitive]) != nil
+        }
+        let saysSo = name.range(of: named, options: [.regularExpression, .caseInsensitive]) != nil
+            && name.range(of: after, options: [.regularExpression, .caseInsensitive]) == nil
+        return (saysSo && (restore || priced || pitch)) || (priced && restore)
+    }
+
+    /// An element anywhere in the tree, scrolled off or not, whose label contains `text`.
+    static func find(_ app: XCUIApplication, _ text: String) -> XCUIElement? {
+        let predicate = NSPredicate(format: "label CONTAINS[c] %@", text)
+        return [app.buttons, app.links, app.staticTexts].lazy.map { $0.matching(predicate).firstMatch }.first { $0.exists }
+    }
+
+    /// The first price in `text` as a number: "$29.99" 29.99, "29,99 €" 29.99, "1.299 kr" 1299.
+    static func amount(_ text: String) -> Double? {
+        guard let range = text.range(of: price, options: .regularExpression) else { return nil }
+        let raw = String(text[range].filter { $0.isNumber || $0 == "." || $0 == "," })
+        guard let last = raw.lastIndex(where: { $0 == "." || $0 == "," }),
+              raw.distance(from: last, to: raw.endIndex) == 3 else { return Double(raw.filter(\.isNumber)) }
+        return Double(raw[..<last].filter(\.isNumber) + "." + raw[raw.index(after: last)...])
+    }
+
+    static func check(_ app: XCUIApplication, _ leaves: [Leaf], _ rendered: [Render.Line], context: QA.Context) {
+        let drawn = rendered.filter { $0.text.range(of: price, options: .regularExpression) != nil }
+        if drawn.isEmpty && !leaves.contains(where: { $0.label.range(of: price, options: .regularExpression) != nil }) {
+            QA.record(context, "paywall-price", "P0", "", "a paywall with no price on screen: the plans did not load or the price is hidden")
+        }
+        if find(app, "terms") == nil && find(app, "EULA") == nil {
+            QA.record(context, "paywall-terms", "P1", "", "no Terms of Use (EULA) link anywhere on the paywall (3.1.2)")
+        }
+        if find(app, "privacy") == nil {
+            QA.record(context, "paywall-privacy", "P1", "", "no Privacy Policy link anywhere on the paywall (3.1.2)")
+        }
+        if find(app, "restore") == nil {
+            QA.record(context, "paywall-restore", "P2", "", "no Restore Purchases control on the paywall (3.1.1)")
+        }
+        prominence(drawn, context: context)
+    }
+
+    /// 3.1.2(c): the billed amount must be the most prominent price. A monthly
+    /// or weekly figure worked out from the yearly price ($2.49/mo for
+    /// $29.99/year) may not be drawn larger than the yearly price itself.
+    static func prominence(_ drawn: [Render.Line], context: QA.Context) {
+        let priced = drawn.compactMap { line in amount(line.text).map { (line: line, amount: $0) } }
+        let years = priced.filter { $0.line.text.range(of: yearly, options: [.regularExpression, .caseInsensitive]) != nil }
+        let computed = priced.filter { item in
+            item.line.text.range(of: derived, options: [.regularExpression, .caseInsensitive]) != nil
+                && years.contains { year in [12.0, 52.0, 365.0].contains { abs(year.amount / $0 - item.amount) <= max(0.02, item.amount * 0.03) } }
+        }
+        guard let loudest = computed.max(by: { $0.line.frame.height < $1.line.frame.height }),
+              let billed = years.max(by: { $0.line.frame.height < $1.line.frame.height }),
+              loudest.line.frame.height > billed.line.frame.height * 1.15 else { return }
+        QA.record(context, "paywall-prominence", "P1", loudest.line.text,
+                  String(format: "\"%@\" (worked out from the yearly price) is drawn %.0fpt tall, larger than the billed \"%@\" at %.0fpt (3.1.2(c))",
+                         loudest.line.text, loudest.line.frame.height, billed.line.text, billed.line.frame.height))
     }
 }
