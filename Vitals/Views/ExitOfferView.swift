@@ -1,0 +1,219 @@
+import SwiftUI
+@preconcurrency import RevenueCat
+
+/// The exit offer: Vitals+ Yearly at half price, drawn in place of the paywall
+/// the customer just closed. One price, one button, one way out. See `ExitOffer`
+/// for who sees it and when.
+struct ExitOfferView: View {
+    let package: Package
+    /// Called after "No thanks" or a purchase; the host closes what it was closing.
+    let onFinish: () -> Void
+
+    @EnvironmentObject private var store: StoreService
+    @State private var isPurchasing = false
+    @State private var errorMessage: String?
+    /// A purchase answers twice (the result and the `isPro` flip); finish once.
+    @State private var finished = false
+
+    private var regularYearly: Package? { store.yearlyPackage }
+
+    /// Off the real store prices, never a hardcoded 50: purchasing-power prices
+    /// round to the nearest price point, so a territory may read 49% or 51%.
+    private var percentOff: Int? {
+        guard let regular = regularYearly?.vitalsPriceAmount, regular > 0 else { return nil }
+        let ratio = (package.vitalsPriceAmount / regular as NSDecimalNumber).doubleValue
+        let pct = Int(((1 - ratio) * 100).rounded())
+        return pct > 0 ? pct : nil
+    }
+
+    private var eligibleForTrial: Bool { store.isEligibleForIntroOffer(package) }
+
+    private var headline: String {
+        switch percentOff {
+        case 50: "Vitals+ Yearly at half price"
+        case let pct?: "\(pct)% off Vitals+ Yearly"
+        case nil: "Vitals+ Yearly for less"
+        }
+    }
+
+    private var subheadline: String {
+        let trial = eligibleForTrial ? package.vitalsIntroOfferLabel.map { "Starts with a \($0). " } ?? "" : ""
+        return "\(trial)Every Vitals+ feature. We only show this offer once."
+    }
+
+    private var ctaTitle: String {
+        VitalsConversionCopy.ctaLabel(
+            trialLabel: package.vitalsIntroOfferLabel,
+            priceLabel: package.vitalsPriceLabel,
+            eligibleForTrial: eligibleForTrial
+        )
+    }
+
+    private var disclosure: String {
+        VitalsConversionCopy.disclosure(
+            trialLabel: package.vitalsIntroOfferLabel,
+            priceLabel: package.vitalsPriceLabel,
+            eligibleForTrial: eligibleForTrial
+        )
+    }
+
+    var body: some View {
+        ZStack {
+            Theme.background.ignoresSafeArea()
+
+            VStack(spacing: 0) {
+                Spacer(minLength: 16)
+                pitch
+                Spacer(minLength: 16)
+                footer
+            }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 12)
+            .readableWidth()
+        }
+        .interactiveDismissDisabled(isPurchasing)
+        .onAppear {
+            ExitOffer.recordShown()
+            store.trackPaywallImpression(id: ExitOffer.impressionID)
+        }
+        .onChange(of: store.isPro) { _, isPro in
+            if isPro { finish(.purchased) }
+        }
+    }
+
+    private var pitch: some View {
+        VStack(spacing: 14) {
+            // The onboarding trial page's glyph, so the offer reads as the same
+            // product answering the close rather than an ad.
+            Image(systemName: "sparkles")
+                .font(.system(size: 44))
+                .foregroundStyle(Theme.caloriesGradient)
+                .accessibilityHidden(true)
+
+            Text(headline)
+                .font(.system(.title, design: .rounded, weight: .bold))
+                .foregroundStyle(Theme.textPrimary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+
+            priceRow
+
+            Text(subheadline)
+                .font(.system(.subheadline, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    private var priceRow: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 10) {
+            if let regular = regularYearly, percentOff != nil {
+                Text(regular.vitalsLocalizedPriceString)
+                    .font(.system(.title3, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textTertiary)
+                    .strikethrough(true, color: Theme.textTertiary)
+                    .accessibilityLabel("Was \(regular.vitalsLocalizedPriceString)")
+            }
+            Text(package.vitalsPriceLabel)
+                .font(.system(.title, design: .rounded, weight: .heavy))
+                .foregroundStyle(Theme.caloriesPrimary)
+                .minimumScaleFactor(0.7)
+                .lineLimit(1)
+        }
+        .accessibilityElement(children: .combine)
+    }
+
+    private var footer: some View {
+        VStack(spacing: 10) {
+            if let errorMessage {
+                Text(errorMessage)
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            } else {
+                Text(disclosure)
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Button(action: startPurchase) {
+                ZStack {
+                    Text(ctaTitle)
+                        .font(.system(.headline, design: .rounded, weight: .bold))
+                        .foregroundStyle(.white)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.75)
+                        .multilineTextAlignment(.center)
+                        .opacity(isPurchasing ? 0 : 1)
+                    if isPurchasing {
+                        ProgressView().tint(.white)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 13)
+                .background(Theme.caloriesGradient, in: Capsule())
+                .ctaGlow()
+            }
+            .buttonStyle(.plain)
+            .disabled(isPurchasing)
+            .accessibilityIdentifier("exit-offer-cta")
+
+            Button {
+                finish(.declined)
+            } label: {
+                Text("No thanks")
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textSecondary)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 8)
+            }
+            .buttonStyle(.plain)
+            .disabled(isPurchasing)
+            .accessibilityIdentifier("exit-offer-decline")
+
+            HStack(spacing: 4) {
+                Link("Terms", destination: PaywallLinks.standardEULA)
+                Text("·")
+                Link("Privacy Policy", destination: PaywallLinks.privacyPolicy)
+            }
+            .font(.system(.caption2, design: .rounded))
+            .foregroundStyle(Theme.textTertiary)
+        }
+    }
+
+    private func finish(_ outcome: ExitOffer.Outcome) {
+        guard !finished else { return }
+        finished = true
+        ExitOffer.recordOutcome(outcome)
+        store.syncConversionAttributes()
+        onFinish()
+    }
+
+    private func startPurchase() {
+        errorMessage = nil
+        isPurchasing = true
+        Task { @MainActor in
+            defer { isPurchasing = false }
+            await store.refreshIntroEligibility()
+            do {
+                switch try await store.purchase(package) {
+                case .purchased:
+                    finish(.purchased)
+                case .pending:
+                    errorMessage = store.purchasePendingMessage(for: package)
+                case .cancelled:
+                    errorMessage = store.purchaseCancelledMessage(for: package)
+                case .unavailable:
+                    errorMessage = VitalsConversionCopy.purchaseUnavailableMessage
+                }
+            } catch {
+                await store.refreshIntroEligibility()
+                errorMessage = store.purchaseFailedMessage(for: package)
+            }
+        }
+    }
+}

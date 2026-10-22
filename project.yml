@@ -162,6 +162,7 @@ targets:
       - path: Shared/Utilities/DebugLaunchConfig.swift
       - path: Shared/Utilities/SupportMail.swift
       - path: Shared/Services/ConversionDiagnostics.swift
+      - path: Shared/Utilities/ExitOffer.swift
       - path: Shared/Utilities/BodyProfileCalculator.swift
       - path: Shared/Models/BodyProfile.swift
       - path: Shared/Services/ReviewPromptTracker.swift

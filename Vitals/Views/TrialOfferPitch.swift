@@ -87,6 +87,8 @@ struct TrialOfferPitchSheet: View {
     /// Set only on the used-trial pitch, where the user picks a plan. nil means
     /// "the one-tap trial target", which is always yearly.
     @State private var selectedPlanID: String?
+    /// Set when "Not now" turned into the exit offer. See `ExitOffer`.
+    @State private var exitOfferPackage: Package?
 
     private var package: Package? {
         guard let selectedPlanID else { return snapshot ?? store.conversionPackage }
@@ -125,6 +127,25 @@ struct TrialOfferPitchSheet: View {
     }
 
     var body: some View {
+        Group {
+            if let exitOfferPackage {
+                ExitOfferView(package: exitOfferPackage, onFinish: onDismiss)
+            } else {
+                pitch
+            }
+        }
+        .presentationDetents([TrialOfferSheet.pitchDetent])
+        .presentationDragIndicator(.visible)
+        .presentationContentInteraction(.resizes)
+        .interactiveDismissDisabled(isPurchasing)
+        .task {
+            if store.products.isEmpty { await store.fetchProducts() }
+            snapshot = store.conversionPackage
+            store.trackPaywallImpression(id: request.impressionID)
+        }
+    }
+
+    private var pitch: some View {
         TrialOfferSheet(
             focus: request.focus,
             headlineOverride: request.headline,
@@ -140,7 +161,7 @@ struct TrialOfferPitchSheet: View {
             isPurchasing: isPurchasing,
             errorMessage: errorMessage,
             onStartTrial: startPurchase,
-            onDismiss: onDismiss,
+            onDismiss: closeTapped,
             onRestore: startRestore,
             isRestoring: isRestoring,
             restoreMessage: restoreMessage,
@@ -152,14 +173,14 @@ struct TrialOfferPitchSheet: View {
             selectedPlanID: selectedPlanID ?? planOptions.first?.id,
             onSelectPlan: { selectedPlanID = $0 }
         )
-        .presentationDetents([TrialOfferSheet.pitchDetent])
-        .presentationDragIndicator(.visible)
-        .presentationContentInteraction(.resizes)
-        .interactiveDismissDisabled(isPurchasing)
-        .task {
-            if store.products.isEmpty { await store.fetchProducts() }
-            snapshot = store.conversionPackage
-            store.trackPaywallImpression(id: request.impressionID)
+    }
+
+    private func closeTapped() {
+        let surface = ConversionDiagnostics.surface(fromImpressionID: request.impressionID)
+        if store.exitOfferOnClose(surface: surface), let package = store.exitOfferPackage {
+            withAnimation(.easeInOut(duration: 0.2)) { exitOfferPackage = package }
+        } else {
+            onDismiss()
         }
     }
 
