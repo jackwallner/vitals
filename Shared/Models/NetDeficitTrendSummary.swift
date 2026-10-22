@@ -22,7 +22,7 @@ struct NetDeficitTrendSummary {
                 // A day counts toward net-deficit history only when it has burn
                 // data and (unless Fasting Mode is on) food was actually logged —
                 // an unlogged day would otherwise read as a full-burn "deficit".
-                let isExcluded = ExcludedDays.contains(key, in: excludedKeys)
+                let isExcluded = ExcludedDays.contains(key, in: excludedKeys, timeZone: calendar.timeZone)
                 let isLogged = burned > 0 && (fastingMode || food > 0)
                 return NetDeficitTrendPoint(
                     date: key,

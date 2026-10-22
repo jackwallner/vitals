@@ -541,85 +541,39 @@ final class HealthKitService: ObservableObject {
             return ScreenshotFixtures.pacing()
         }
         #endif
-        let calendar = Calendar.current
         let now = Date.now
-        let currentHour = calendar.component(.hour, from: now)
+        let lookbackDays = lookback.rawValue
 
         // Too early in the day for meaningful pacing
-        guard currentHour >= 6 else {
+        guard let window = PacingCalculator.window(now: now, lookbackDays: lookbackDays) else {
             healthKitLogger.debug("fetchPacing: skipped (before 6:00)")
             return PacingResult(avgCalories: nil, avgSteps: nil, calorieSampleDays: 0, stepSampleDays: 0)
         }
 
-        let lookbackDays = lookback.rawValue
-        let today = calendar.startOfDay(for: now)
-        guard let windowStartDate = calendar.date(byAdding: .day, value: -lookbackDays, to: now) else {
-            return PacingResult(avgCalories: nil, avgSteps: nil, calorieSampleDays: 0, stepSampleDays: 0)
-        }
-        let windowStart = calendar.startOfDay(for: windowStartDate)
-        let targetWeekday = calendar.component(.weekday, from: now)
-
         let interval = DateComponents(day: 1)
 
-        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: windowStart, end: today, interval: interval)
-        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: windowStart, end: today, interval: interval)
-        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: windowStart, end: today, interval: interval)
+        async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: window.windowStart, end: window.today, interval: interval)
+        async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: window.windowStart, end: window.today, interval: interval)
+        async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: window.windowStart, end: window.today, interval: interval)
 
         let (active, resting, steps) = try await (activeMap, restingMap, stepsMap)
 
-        let secondsSoFar = now.timeIntervalSince(today)
-        let endOfToday = calendar.date(byAdding: .day, value: 1, to: today) ?? today.addingTimeInterval(86400)
-        let totalSecondsToday = endOfToday.timeIntervalSince(today)
-        let dayFraction = min(secondsSoFar / totalSecondsToday, 1.0)
-
-        var calorieWeighted = 0.0
-        var stepWeighted = 0.0
-        var calorieFullDay = 0.0
-        var stepFullDay = 0.0
-        var calorieSampleDays = 0
-        var stepSampleDays = 0
-
-        let excluded = excludedDayKeys
-        for dayOffset in 1...lookbackDays {
-            guard let day = calendar.date(byAdding: .day, value: -dayOffset, to: today) else { continue }
-            let dayStart = calendar.startOfDay(for: day)
-            if comparison == .dayOfWeek, calendar.component(.weekday, from: dayStart) != targetWeekday {
-                continue
-            }
-            // A day the user excluded is not a sample of their usual day.
-            if ExcludedDays.contains(dayStart, in: excluded) { continue }
-
-            let dayCal = statisticValue(active, for: dayStart) + statisticValue(resting, for: dayStart)
-            let daySteps = statisticValue(steps, for: dayStart)
-            if dayCal > 0 {
-                calorieSampleDays += 1
-                calorieWeighted += dayCal * dayFraction
-                calorieFullDay += dayCal
-            }
-            if daySteps > 0 {
-                stepSampleDays += 1
-                stepWeighted += Double(daySteps) * dayFraction
-                stepFullDay += Double(daySteps)
-            }
-        }
-
-        let avgCalories: Double? = calorieSampleDays > 0 ? calorieWeighted / Double(calorieSampleDays) : nil
-        let avgSteps: Int? = stepSampleDays > 0 ? Int(stepWeighted / Double(stepSampleDays)) : nil
-        let avgCaloriesFullDay: Double? = calorieSampleDays > 0 ? calorieFullDay / Double(calorieSampleDays) : nil
-        let avgStepsFullDay: Int? = stepSampleDays > 0 ? Int(stepFullDay / Double(stepSampleDays)) : nil
+        let result = PacingCalculator.compute(
+            calories: { self.statisticValue(active, for: $0) + self.statisticValue(resting, for: $0) },
+            steps: { self.statisticValue(steps, for: $0) },
+            comparison: comparison,
+            lookbackDays: lookbackDays,
+            excluded: excludedDayKeys,
+            now: now
+        )
+        let calorieSampleDays = result.calorieSampleDays
+        let stepSampleDays = result.stepSampleDays
 
         healthKitLogger.debug(
             "fetchPacing: comparison=\(String(describing: comparison), privacy: .public) lookbackDays=\(lookbackDays, privacy: .public) calSamples=\(calorieSampleDays, privacy: .public) stepSamples=\(stepSampleDays, privacy: .public)"
         )
 
-        return PacingResult(
-            avgCalories: avgCalories,
-            avgSteps: avgSteps,
-            calorieSampleDays: calorieSampleDays,
-            stepSampleDays: stepSampleDays,
-            avgCaloriesFullDay: avgCaloriesFullDay,
-            avgStepsFullDay: avgStepsFullDay
-        )
+        return result
     }
 
     // MARK: - Body Profile
@@ -812,11 +766,14 @@ final class HealthKitService: ObservableObject {
         #else
         let todayKey = DailyHealthRecord.key(for: DateHelpers.startOfDay())
         let previousKey = lastCachedDayKey
-        guard previousKey != todayKey else { return }
-        // First run ever: nothing stale to finalize, just record where we are.
-        guard previousKey != nil else {
+        switch DayRollover.action(previousKey: previousKey, todayKey: todayKey) {
+        case .none:
+            return
+        case .recordOnly:
             lastCachedDayKey = todayKey
             return
+        case .finalize:
+            break
         }
         healthKitLogger.info(
             "Day rolled over from \(previousKey ?? "-", privacy: .public) to \(todayKey, privacy: .public); finalizing completed days"
@@ -1032,7 +989,6 @@ final class HealthKitService: ObservableObject {
     /// Returned array fills in missing days with zeroes so callers can rely on a contiguous window.
     func fetchCachedHistory(from start: Date, to end: Date) throws -> [(date: Date, active: Double, resting: Double, steps: Int)] {
         let context = ModelContext(DataService.sharedModelContainer)
-        let calendar = Calendar.current
         let normalizedStart = DateHelpers.startOfDay(start)
         let normalizedEnd = DateHelpers.startOfDay(end)
         let startKey = DailyHealthRecord.key(for: normalizedStart)
@@ -1054,18 +1010,11 @@ final class HealthKitService: ObservableObject {
             uniquingKeysWith: { lhs, rhs in lhs.lastUpdated >= rhs.lastUpdated ? lhs : rhs }
         )
 
-        var results: [(date: Date, active: Double, resting: Double, steps: Int)] = []
-        var current = normalizedStart
-        while current <= normalizedEnd {
-            let key = DailyHealthRecord.key(for: current)
-            if let record = recordDict[key] {
-                results.append((date: record.date, active: record.activeCalories, resting: record.restingCalories, steps: record.steps))
-            } else {
-                results.append((date: current, active: 0, resting: 0, steps: 0))
-            }
-            guard let next = calendar.date(byAdding: .day, value: 1, to: current) else { break }
-            current = next
-        }
+        let results = CachedHistoryWindow.fill(
+            rows: recordDict.mapValues { (date: $0.date, active: $0.activeCalories, resting: $0.restingCalories, steps: $0.steps) },
+            from: normalizedStart,
+            to: normalizedEnd
+        )
         healthKitLogger.info("Loaded cached history: \(results.count, privacy: .public) days from \(startKey, privacy: .public) to \(endKey, privacy: .public)")
         return results
     }
@@ -1198,8 +1147,7 @@ final class HealthKitService: ObservableObject {
         // HealthKit rejects a zero-length interval, and at the stroke of midnight
         // there is nothing elapsed to report anyway. Round up so the single
         // bucket covers the whole window with nothing left over.
-        let elapsed = Int(now.timeIntervalSince(dayStart).rounded(.up))
-        guard elapsed >= 1 else { return 0 }
+        guard let elapsed = DateHelpers.elapsedSeconds(since: dayStart, now: now) else { return 0 }
         let map = try await queryStatisticsCollection(
             identifier,
             unit: unit,

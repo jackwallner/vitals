@@ -19,7 +19,7 @@ struct CalorieTrendSummary {
                 return CalorieTrendPoint(
                     date: day,
                     totalCalories: max($0.active + $0.resting, 0),
-                    isExcluded: ExcludedDays.contains(day, in: excludedKeys)
+                    isExcluded: ExcludedDays.contains(day, in: excludedKeys, timeZone: calendar.timeZone)
                 )
             }
             .sorted { $0.date < $1.date }

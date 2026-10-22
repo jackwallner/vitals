@@ -78,7 +78,7 @@ enum MilestoneCalculator {
         var daysWalked = 0
         while daysWalked < maxStreakLookbackDays {
             daysWalked += 1
-            if ExcludedDays.contains(cursor, in: excludedKeys) {
+            if ExcludedDays.contains(cursor, in: excludedKeys, timeZone: calendar.timeZone) {
                 // Neither extends nor breaks: step over it.
             } else {
                 guard let day = byDay[cursor], hit(day) else { break }
@@ -158,7 +158,7 @@ enum MilestoneCalculator {
         let daysWithData = records.reduce(into: 0) { acc, rec in
             guard rec.date >= monthStart, rec.date < nextMonthStart else { return }
             // An excluded day is not month-review material.
-            guard !ExcludedDays.contains(rec.date, in: excludedKeys) else { return }
+            guard !ExcludedDays.contains(rec.date, in: excludedKeys, timeZone: calendar.timeZone) else { return }
             if rec.calories > 0 || rec.steps > 0 { acc += 1 }
         }
         guard daysWithData >= minDaysWithData else { return nil }

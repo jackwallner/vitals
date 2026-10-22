@@ -215,7 +215,7 @@ struct MacroSummary: Equatable, Sendable {
         let logged = macrosByDay
             .filter { $0.value.hasData(in: visible) }
             .map { Day(date: calendar.startOfDay(for: $0.key), totals: $0.value) }
-            .filter { !ExcludedDays.contains($0.date, in: excludedKeys) }
+            .filter { !ExcludedDays.contains($0.date, in: excludedKeys, timeZone: calendar.timeZone) }
             .sorted { $0.date < $1.date }
         guard !logged.isEmpty else { return nil }
 

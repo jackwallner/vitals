@@ -40,7 +40,18 @@ final class DailyHealthRecord {
     }
 
     static func key(for date: Date) -> String {
-        let cal = gregorian
+        key(for: date, calendar: gregorian)
+    }
+
+    /// Same spelling, read in `timeZone` (always Gregorian, whatever calendar the
+    /// device uses).
+    static func key(for date: Date, timeZone: TimeZone) -> String {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = timeZone
+        return key(for: date, calendar: cal)
+    }
+
+    private static func key(for date: Date, calendar cal: Calendar) -> String {
         let y = cal.component(.year, from: date)
         let m = cal.component(.month, from: date)
         let d = cal.component(.day, from: date)

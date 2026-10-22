@@ -169,6 +169,7 @@ targets:
       - path: Shared/Utilities/DailyNudgePlanner.swift
       - path: Shared/Utilities/GoalRecalibration.swift
       - path: Shared/Utilities/TodaySnapshotResolver.swift
+      - path: Shared/Utilities/DayWindows.swift
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES

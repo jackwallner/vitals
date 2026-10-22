@@ -1,20 +1,28 @@
 import Foundation
 
 enum DateHelpers {
-    static func startOfDay(_ date: Date = .now) -> Date {
-        Calendar.current.startOfDay(for: date)
+    static func startOfDay(_ date: Date = .now, calendar: Calendar = .current) -> Date {
+        calendar.startOfDay(for: date)
     }
 
-    static func daysAgo(_ days: Int, from date: Date = .now) -> Date {
-        Calendar.current.date(byAdding: .day, value: -days, to: startOfDay(date))
-            ?? startOfDay(date)
+    static func daysAgo(_ days: Int, from date: Date = .now, calendar: Calendar = .current) -> Date {
+        calendar.date(byAdding: .day, value: -days, to: startOfDay(date, calendar: calendar))
+            ?? startOfDay(date, calendar: calendar)
+    }
+
+    /// Whole seconds of `dayStart`'s day that have elapsed at `now`, rounded up so a
+    /// single statistics bucket covers the window with nothing left over. `nil`
+    /// when under a second has passed: HealthKit rejects a zero-length interval,
+    /// and at the stroke of midnight there is nothing elapsed to report anyway.
+    static func elapsedSeconds(since dayStart: Date, now: Date) -> Int? {
+        let elapsed = Int(now.timeIntervalSince(dayStart).rounded(.up))
+        return elapsed >= 1 ? elapsed : nil
     }
 
     /// Exclusive end for a daily HealthKit query whose requested end date is inclusive.
     /// Completed days extend to the next midnight; ranges containing today stop at `now`
     /// so duration-based samples cannot contribute future quantities.
-    static func healthQueryEnd(including end: Date, now: Date = .now) -> Date {
-        let calendar = Calendar.current
+    static func healthQueryEnd(including end: Date, now: Date = .now, calendar: Calendar = .current) -> Date {
         let endDay = calendar.startOfDay(for: end)
         let today = calendar.startOfDay(for: now)
         guard endDay < today else { return now }

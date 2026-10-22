@@ -40,6 +40,10 @@ enum ExcludedDays {
         DailyHealthRecord.key(for: date)
     }
 
+    static func key(for date: Date, timeZone: TimeZone) -> String {
+        DailyHealthRecord.key(for: date, timeZone: timeZone)
+    }
+
     static func load(from defaults: UserDefaults?) -> Set<String> {
         guard let stored = defaults?.array(forKey: defaultsKey) as? [String] else { return [] }
         return Set(stored)
@@ -77,7 +81,7 @@ enum ExcludedDays {
         var keys: Set<String> = []
         var cursor = start
         while cursor <= today {
-            keys.insert(key(for: cursor))
+            keys.insert(key(for: cursor, timeZone: calendar.timeZone))
             guard let next = calendar.date(byAdding: .day, value: 1, to: cursor) else { break }
             cursor = next
         }
@@ -135,6 +139,11 @@ enum ExcludedDays {
     static func contains(_ date: Date, in keys: Set<String>) -> Bool {
         guard !keys.isEmpty else { return false }
         return keys.contains(key(for: date))
+    }
+
+    static func contains(_ date: Date, in keys: Set<String>, timeZone: TimeZone) -> Bool {
+        guard !keys.isEmpty else { return false }
+        return keys.contains(key(for: date, timeZone: timeZone))
     }
 
     /// Drops excluded days from any per-day collection. `date` pulls the day out

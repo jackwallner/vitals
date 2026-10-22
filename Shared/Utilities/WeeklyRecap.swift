@@ -45,7 +45,7 @@ enum WeeklyRecapBuilder {
         func windowDays(startOffset: Int) -> [MilestoneDay] {
             (startOffset..<(startOffset + 7)).compactMap { offset -> MilestoneDay? in
                 guard let day = calendar.date(byAdding: .day, value: -offset, to: todayStart),
-                      !ExcludedDays.contains(day, in: excludedKeys)
+                      !ExcludedDays.contains(day, in: excludedKeys, timeZone: calendar.timeZone)
                 else { return nil }
                 return byDay[day]
             }

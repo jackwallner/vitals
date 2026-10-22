@@ -19,7 +19,7 @@ struct StepTrendSummary {
                 return StepTrendPoint(
                     date: day,
                     steps: max($0.steps, 0),
-                    isExcluded: ExcludedDays.contains(day, in: excludedKeys)
+                    isExcluded: ExcludedDays.contains(day, in: excludedKeys, timeZone: calendar.timeZone)
                 )
             }
             .sorted { $0.date < $1.date }

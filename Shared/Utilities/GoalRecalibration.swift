@@ -61,7 +61,7 @@ enum GoalRecalibration {
         guard let windowStart = calendar.date(byAdding: .day, value: -windowDays, to: todayStart) else { return nil }
         let values = days
             .filter { $0.date >= windowStart && $0.date < todayStart }
-            .filter { !ExcludedDays.contains($0.date, in: excludedKeys) }
+            .filter { !ExcludedDays.contains($0.date, in: excludedKeys, timeZone: calendar.timeZone) }
             .map(\.value)
             .filter { $0 > 0 }
         guard values.count >= minDaysWithData else { return nil }

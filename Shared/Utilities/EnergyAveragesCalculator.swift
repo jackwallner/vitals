@@ -27,13 +27,14 @@ enum EnergyAveragesCalculator {
         records: [(date: Date, active: Double, resting: Double)],
         referenceDate: Date,
         minSamples: Int = 7,
-        excludedKeys: Set<String> = []
+        excludedKeys: Set<String> = [],
+        calendar: Calendar = .current
     ) -> EnergyAveragesResult {
-        let today = DateHelpers.startOfDay(referenceDate)
-        let windowStart = DateHelpers.daysAgo(windowDays, from: referenceDate)
+        let today = DateHelpers.startOfDay(referenceDate, calendar: calendar)
+        let windowStart = DateHelpers.daysAgo(windowDays, from: referenceDate, calendar: calendar)
         let valid = records.filter {
-            let day = DateHelpers.startOfDay($0.date)
-            guard !ExcludedDays.contains(day, in: excludedKeys) else { return false }
+            let day = DateHelpers.startOfDay($0.date, calendar: calendar)
+            guard !ExcludedDays.contains(day, in: excludedKeys, timeZone: calendar.timeZone) else { return false }
             return day >= windowStart && day < today && $0.resting > 0
         }
         guard valid.count >= minSamples else {
