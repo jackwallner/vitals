@@ -35,10 +35,15 @@ enum ScreenshotConfig {
     /// copy across onboarding, trial sheet, milestone, paywall, and What's New.
     static let forceIntroIneligible =
         ProcessInfo.processInfo.environment["VITALS_FORCE_INTRO_INELIGIBLE"] == "1"
+    /// Release-gate journeys use the screenshot fixtures but must see the
+    /// device's own light or dark mode, or the dark persona never tests dark.
+    static let keepsAppearance =
+        isEnabled && ProcessInfo.processInfo.environment["VITALS_SCREENSHOT_KEEP_APPEARANCE"] == "1"
 #else
     static let isEnabled = false
     static let scene: ScreenshotScene? = nil
     static let forceIntroIneligible = false
+    static let keepsAppearance = false
 #endif
 
     static var wantsHistoryTab: Bool { scene == .history || scene == .macroHistory }

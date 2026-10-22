@@ -738,7 +738,7 @@ final class GoalSettings: ObservableObject {
         showNetCalories = false
         showMacros = false
         macroSplitEnabled = false
-        appearance = ScreenshotConfig.wantsDarkDashboard ? .dark : .light
+        appearance = ScreenshotConfig.keepsAppearance ? .system : (ScreenshotConfig.wantsDarkDashboard ? .dark : .light)
 
         // Settings review scene: Vitals+ unlocked with both intake parents on,
         // so Fasting Mode, the per-macro rows, Calorie Split, Macro Goals, and
