@@ -240,6 +240,7 @@ enum PlusFeature: CaseIterable {
 struct PaywallView: View {
     @EnvironmentObject private var store: StoreService
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     /// Set to `false` when rendered as tab content rather than in a sheet — the
     /// tab bar handles navigation, so a built-in close button looks off.
@@ -485,14 +486,17 @@ struct PaywallView: View {
                         .font(.system(.caption2, design: .rounded))
                         .foregroundStyle(Theme.textTertiary)
                         .multilineTextAlignment(.center)
-                        .lineLimit(3)
+                        .lineLimit(typeSize.isAccessibilitySize ? nil : 3)
                         .minimumScaleFactor(0.9)
                         .frame(maxWidth: .infinity)
                 }
 
                 legalFooter
             }
-            .frame(height: 62, alignment: .top)
+            // At accessibility sizes the price and renewal terms cannot fit the
+            // fixed slot, and 3.1.2 copy must be readable in full, so the slot
+            // grows there; the plan list above scrolls to make room.
+            .frame(height: typeSize.isAccessibilitySize ? nil : 62, alignment: .top)
         }
         .padding(.horizontal, 22)
         .padding(.top, 8)
@@ -518,7 +522,10 @@ struct PaywallView: View {
     /// which cost a row of the pitch above it to say something almost nobody
     /// taps; it stays the most prominent of the three.
     private var legalFooter: some View {
-        HStack(spacing: 6) {
+        let layout = typeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(spacing: 4))
+            : AnyLayout(HStackLayout(spacing: 6))
+        return layout {
             Button(action: startRestore) {
                 Text(isRestoring ? "Restoring…" : "Restore")
                     .font(.system(.caption2, design: .rounded, weight: .semibold))
@@ -526,9 +533,9 @@ struct PaywallView: View {
             }
             .buttonStyle(.plain)
             .disabled(isRestoring || isPurchasing)
-            Text("·").foregroundStyle(Theme.textTertiary)
+            if !typeSize.isAccessibilitySize { Text("·").foregroundStyle(Theme.textTertiary) }
             Link("Terms", destination: PaywallLinks.standardEULA)
-            Text("·").foregroundStyle(Theme.textTertiary)
+            if !typeSize.isAccessibilitySize { Text("·").foregroundStyle(Theme.textTertiary) }
             Link("Privacy Policy", destination: PaywallLinks.privacyPolicy)
         }
         .font(.system(.caption2, design: .rounded))

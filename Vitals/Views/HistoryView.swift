@@ -122,6 +122,7 @@ struct HistoryView: View {
     var focusMetric: HistoryMetric? = nil
 
     @Environment(\.scenePhase) var scenePhase
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
     @EnvironmentObject private var store: StoreService
@@ -687,7 +688,7 @@ struct HistoryView: View {
 
                             // Summary cards grouped by metric: Calories, Steps, Net Deficit
                             // Calories row
-                            HStack(spacing: 12) {
+                            CardRow {
                                 AverageCard(
                                     label: "Avg Calories",
                                     value: avgCalories.formatted(.number.precision(.fractionLength(0))),
@@ -701,7 +702,7 @@ struct HistoryView: View {
                             }
 
                             // Steps row
-                            HStack(spacing: 12) {
+                            CardRow {
                                 AverageCard(
                                     label: "Avg Steps",
                                     value: avgSteps.formatted(.number),
@@ -718,7 +719,7 @@ struct HistoryView: View {
                             // Counted days, not `hasNetData`: a period whose logged days are
                             // all excluded still draws its dimmed bars, but has no average.
                             if store.isPro && goals.showNetCalories && !netRecords.isEmpty {
-                                HStack(spacing: 12) {
+                                CardRow {
                                     AverageCard(
                                         label: "Avg Deficit",
                                         value: formatSignedNet(avgNetDeficit),
@@ -780,7 +781,7 @@ struct HistoryView: View {
                         .padding(.top, 20)
                         .padding(.bottom, bottomContentInset)
                         .opacity(animateContent ? 1 : 0)
-                        .offset(y: animateContent ? 0 : 15)
+                        .offset(y: animateContent || reduceMotion ? 0 : 15)
                         .readableWidth()
                     }
                     .refreshable { await loadHistory() }
@@ -1537,7 +1538,7 @@ struct HistoryView: View {
                         color: Theme.macroColor(only)
                     )
                 } else {
-                    HStack(spacing: 12) {
+                    CardRow {
                         ForEach(visible) { kind in
                             AverageCard(
                                 label: "Avg \(kind.label)",
@@ -1639,7 +1640,7 @@ struct HistoryView: View {
                         .padding(.top, 20)
                         .padding(.bottom, bottomContentInset)
                         .opacity(animateContent ? 1 : 0)
-                        .offset(y: animateContent ? 0 : 15)
+                        .offset(y: animateContent || reduceMotion ? 0 : 15)
                         .readableWidth()
                     }
                     .refreshable { await loadHistory() }
@@ -1686,7 +1687,7 @@ struct HistoryView: View {
         switch metric {
         case .calories:
             VStack(spacing: 12) {
-                HStack(spacing: 12) {
+                CardRow {
                     AverageCard(label: "Avg Calories", value: avgCalories.formatted(.number.precision(.fractionLength(0))), color: Theme.caloriesPrimary)
                     if let peak = peakCalorieDay {
                         PeakCard(label: "Best Day", value: peak.totalCalories.formatted(.number.precision(.fractionLength(0))), date: peak.date, color: Theme.caloriesPrimary)
@@ -1696,7 +1697,7 @@ struct HistoryView: View {
             }
         case .steps:
             VStack(spacing: 12) {
-                HStack(spacing: 12) {
+                CardRow {
                     AverageCard(label: "Avg Steps", value: avgSteps.formatted(.number), color: Theme.stepsPrimary)
                     if let peak = peakStepDay {
                         PeakCard(label: "Best Day", value: peak.steps.formatted(.number), date: peak.date, color: Theme.stepsPrimary)
@@ -1707,7 +1708,7 @@ struct HistoryView: View {
         case .net:
             if !netRecords.isEmpty {
                 VStack(spacing: 12) {
-                    HStack(spacing: 12) {
+                    CardRow {
                         AverageCard(label: "Avg Deficit", value: formatSignedNet(avgNetDeficit), color: netColor(for: avgNetDeficit))
                         if let best = bestNetDay {
                             PeakCard(label: "Best Day", value: formatSignedNet(netDeficit(for: best)), date: best.date, color: netColor(for: netDeficit(for: best)))
@@ -2020,7 +2021,7 @@ struct HistoryView: View {
             }
             isLoading = false
             if !animateContent {
-                withAnimation(.easeOut(duration: 0.4)) { animateContent = true }
+                withAnimation(.easeOut(duration: reduceMotion ? 0.2 : 0.4)) { animateContent = true }
             }
         }
 
@@ -2128,7 +2129,7 @@ struct HistoryView: View {
         }
         isLoading = false
         if !animateContent {
-            withAnimation(.easeOut(duration: 0.4)) {
+            withAnimation(.easeOut(duration: reduceMotion ? 0.2 : 0.4)) {
                 animateContent = true
             }
         }
@@ -2804,6 +2805,8 @@ private struct SegmentButton: View {
                 }
                 Text(title)
                     .font(.caption.bold())
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
             }
             .foregroundStyle(locked ? Theme.textTertiary : (isSelected ? Theme.textPrimary : Theme.textSecondary))
             .padding(.vertical, 8)
@@ -2841,18 +2844,33 @@ struct LoadingBar: View {
                     ))
                     .frame(width: segmentWidth)
                     .offset(x: animating ? width : -segmentWidth)
+                    // Scoped to the segment. A repeatForever `withAnimation` in
+                    // onAppear also caught every view laid out in the same pass:
+                    // the Today header's date sat squeezed to one word per line
+                    // for as long as the bar ran, then flew out to full width.
+                    .animation(.linear(duration: 1.1).repeatForever(autoreverses: false), value: animating)
             }
             .clipShape(Capsule())
         }
         .frame(height: 4)
-        .onAppear {
-            withAnimation(.linear(duration: 1.1).repeatForever(autoreverses: false)) {
-                animating = true
-            }
-        }
+        .onAppear { animating = true }
         .accessibilityElement()
         .accessibilityLabel("Loading")
         .accessibilityAddTraits(.updatesFrequently)
+    }
+}
+
+/// Summary cards side by side; stacked at accessibility text sizes, where half
+/// a screen cannot hold "TOTAL CALORIES" or a six-digit total.
+private struct CardRow<Content: View>: View {
+    @Environment(\.dynamicTypeSize) private var typeSize
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        let layout = typeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(spacing: 12))
+            : AnyLayout(HStackLayout(spacing: 12))
+        layout { content }
     }
 }
 
@@ -2876,6 +2894,8 @@ private struct AverageCard: View {
             Text(value)
                 .font(.system(.title3, design: .rounded, weight: .bold).monospacedDigit())
                 .foregroundStyle(color)
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(Theme.cardPadding)
@@ -2904,6 +2924,8 @@ private struct WideTotalCard: View {
             Text(value)
                 .font(.system(.title3, design: .rounded, weight: .bold).monospacedDigit())
                 .foregroundStyle(color)
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
         }
         .frame(maxWidth: .infinity)
         .padding(Theme.cardPadding)
@@ -2936,6 +2958,8 @@ private struct PeakCard: View {
             Text(value)
                 .font(.system(.title3, design: .rounded, weight: .bold).monospacedDigit())
                 .foregroundStyle(color)
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
             Text(Self.peakDateFormatter.string(from: date))
                 .font(.caption2)
                 .foregroundStyle(Theme.textTertiary)

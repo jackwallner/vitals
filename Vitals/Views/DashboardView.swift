@@ -608,7 +608,7 @@ struct DashboardView: View {
             .padding(.horizontal, 24)
             .padding(.top, 16)
             .opacity(animateContent ? 1 : 0)
-            .offset(y: animateContent ? 0 : 10)
+            .offset(y: animateContent || reduceMotion ? 0 : 10)
 
             if let healthNotice {
                 healthNoticeBanner(healthNotice)
@@ -743,7 +743,7 @@ struct DashboardView: View {
                     .accessibilityValue("\(steps) steps"
                         + (showStepStreak ? ". \(stepStreak) day goal streak." : ""))
                     .opacity(animateContent ? 1 : 0)
-                    .scaleEffect(animateContent ? 1 : 0.9)
+                    .scaleEffect(animateContent || reduceMotion ? 1 : 0.9)
                 } else {
                     // Card layout with goals/pacing
                     VStack(spacing: 14) {
@@ -808,7 +808,7 @@ struct DashboardView: View {
                     .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
                     .padding(.horizontal, 24)
                     .opacity(animateContent ? 1 : 0)
-                    .offset(y: animateContent ? 0 : 20)
+                    .offset(y: animateContent || reduceMotion ? 0 : 20)
                 }
                 }
                 .contentShape(Rectangle())
@@ -1030,7 +1030,7 @@ struct DashboardView: View {
                 .accessibilityLabel("Net calories")
                 .accessibilityValue(netDeficitAccessibilitySummary(deficit: deficit))
                 .opacity(animateContent ? 1 : 0)
-                .scaleEffect(animateContent ? 1 : 0.9)
+                .scaleEffect(animateContent || reduceMotion ? 1 : 0.9)
             } else {
                 VStack(spacing: 10) {
                     HStack(alignment: .firstTextBaseline) {
@@ -1063,7 +1063,7 @@ struct DashboardView: View {
                 .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
                 .padding(.horizontal, 24)
                 .opacity(animateContent ? 1 : 0)
-                .offset(y: animateContent ? 0 : 20)
+                .offset(y: animateContent || reduceMotion ? 0 : 20)
             }
         }
     }
@@ -1161,7 +1161,7 @@ struct DashboardView: View {
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
         .padding(.horizontal, 24)
         .opacity(animateContent ? 1 : 0)
-        .offset(y: animateContent ? 0 : 20)
+        .offset(y: animateContent || reduceMotion ? 0 : 20)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Macros")
     }
@@ -1404,7 +1404,7 @@ struct DashboardView: View {
         .accessibilityLabel("Calories")
         .accessibilityValue("\(Int(totalCalories)) calories")
         .opacity(animateContent ? 1 : 0)
-        .scaleEffect(animateContent ? 1 : 0.9)
+        .scaleEffect(animateContent || reduceMotion ? 1 : 0.9)
     }
 
     private func openHealthApp() {
@@ -1613,11 +1613,17 @@ struct DashboardView: View {
     private func showLoadedStateIfNeeded() {
         if isLoading {
             isLoading = false
-            withAnimation(.easeOut(duration: 0.5)) {
-                animateContent = true
-            }
-            withAnimation(.spring(duration: 1.0, bounce: 0.15).delay(0.3)) {
-                animateRing = true
+            // The reveal waits one update so the content is laid out before any
+            // animation starts: in the same transaction its first layout was
+            // animated too, and the date header drew one word per line.
+            Task { @MainActor in
+                // Reduce Motion: no slide, scale or ring sweep, just a short fade.
+                withAnimation(reduceMotion ? .easeOut(duration: 0.2) : .easeOut(duration: 0.5)) {
+                    animateContent = true
+                }
+                withAnimation(reduceMotion ? nil : .spring(duration: 1.0, bounce: 0.15).delay(0.3)) {
+                    animateRing = true
+                }
             }
             // Signal that the dashboard has its data on screen so the passive
             // trial nudge can start its delay from here rather than app launch.
@@ -3363,6 +3369,9 @@ private struct OnboardingSheet: View {
     private func primaryLabel(_ title: String) -> some View {
         Text(title)
             .font(.system(.headline, design: .rounded))
+            // Wraps at large Dynamic Type rather than cutting the trial CTA short.
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
             .background(Theme.caloriesPrimary, in: RoundedRectangle(cornerRadius: 14))
