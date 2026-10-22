@@ -140,6 +140,7 @@ private struct RootView: View {
                 }
             }
             .task {
+                store.start()
                 #if DEBUG
                 if DebugLaunchConfig.seedHealth {
                     await HealthKitSeeder.run()
@@ -250,7 +251,9 @@ struct VitalsApp: App {
         Self.scheduleAppRefresh()
         // Route weekly-recap notification taps to the recap sheet.
         UNUserNotificationCenter.current().delegate = VitalsNotificationDelegate.shared
-        StoreService.shared.start()
+        // RevenueCat is configured by `RootView` after the first frame: its
+        // setup decodes cached responses on the main thread, and the first
+        // screen never waited for it (`isPro` arrives asynchronously either way).
         ReviewPromptTracker.recordAppLaunch()
         ConversionDiagnostics.recordAppOpen()
         #if DEBUG
@@ -514,6 +517,9 @@ struct MainTabView: View {
     @State private var variantToastLabel: String?
     #endif
     @State private var historyHasAppeared = false
+    /// The Upgrade tab is built on first visit, like History, so launch does
+    /// not build a paywall nobody is looking at.
+    @State private var upgradeHasAppeared = false
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     /// The container's width and fold, measured so the unfolded iPhone Duo can
     /// put the tabs and History on opposite sides of the fold.
@@ -594,6 +600,7 @@ struct MainTabView: View {
             _historyHasAppeared = State(initialValue: true)
         } else if ScreenshotConfig.wantsPremiumTab {
             _selectedTab = State(initialValue: 2)
+            _upgradeHasAppeared = State(initialValue: true)
         }
     }
 
@@ -1130,6 +1137,46 @@ struct MainTabView: View {
         split == nil ? horizontalSizeClass : .compact
     }
 
+    private var upgradeTab: some View {
+        Group {
+            if store.isPro {
+                PremiumFeaturesView(
+                    onOpenNetDeficit: {
+                        // Dismiss covering UI, enable Net Deficit, then request
+                        // dietary HealthKit auth once the window is clear.
+                        NotificationCenter.default.post(
+                            name: .vitalsEnableNetDeficitWithDietaryAuth,
+                            object: nil
+                        )
+                        selectedTab = 0
+                    },
+                    onOpenMacros: {
+                        NotificationCenter.default.post(
+                            name: .vitalsEnableMacrosWithHealthAuth,
+                            object: nil
+                        )
+                        selectedTab = 0
+                    }
+                )
+            } else {
+                PaywallView(displayCloseButton: false)
+            }
+        }
+        .environment(\.horizontalSizeClass, paneSizeClass)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            // Reserve space so the native paywall's CTA + footer aren't
+            // hidden by the floating tab-bar capsule below.
+            Color.clear.frame(height: 68)
+        }
+        // After the inset, which fills its proposal and would centre a
+        // narrower pane across the fold.
+        .frame(maxWidth: split?.primaryWidth ?? .infinity)
+        .opacity(selectedTab == 2 ? 1 : 0)
+        .allowsHitTesting(selectedTab == 2)
+        .accessibilityHidden(selectedTab != 2)
+    }
+
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             // Keep both views alive, toggle visibility. `.accessibilityHidden` on the
@@ -1158,43 +1205,9 @@ struct MainTabView: View {
                 .allowsHitTesting(showsHistory)
                 .accessibilityHidden(!showsHistory)
             }
-            Group {
-                if store.isPro {
-                    PremiumFeaturesView(
-                        onOpenNetDeficit: {
-                            // Dismiss covering UI, enable Net Deficit, then request
-                            // dietary HealthKit auth once the window is clear.
-                            NotificationCenter.default.post(
-                                name: .vitalsEnableNetDeficitWithDietaryAuth,
-                                object: nil
-                            )
-                            selectedTab = 0
-                        },
-                        onOpenMacros: {
-                            NotificationCenter.default.post(
-                                name: .vitalsEnableMacrosWithHealthAuth,
-                                object: nil
-                            )
-                            selectedTab = 0
-                        }
-                    )
-                } else {
-                    PaywallView(displayCloseButton: false)
-                }
+            if upgradeHasAppeared || selectedTab == 2 {
+                upgradeTab
             }
-            .environment(\.horizontalSizeClass, paneSizeClass)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .safeAreaInset(edge: .bottom, spacing: 0) {
-                // Reserve space so the native paywall's CTA + footer aren't
-                // hidden by the floating tab-bar capsule below.
-                Color.clear.frame(height: 68)
-            }
-            // After the inset, which fills its proposal and would centre a
-            // narrower pane across the fold.
-            .frame(maxWidth: split?.primaryWidth ?? .infinity)
-            .opacity(selectedTab == 2 ? 1 : 0)
-            .allowsHitTesting(selectedTab == 2)
-            .accessibilityHidden(selectedTab != 2)
 
             // Custom tab bar — always visible so the user can navigate away from
             // the paywall. The native paywall scrolls its own auto-renew disclosure,
@@ -1255,6 +1268,7 @@ struct MainTabView: View {
             if selectedTab == 1 { selectedTab = 0 }
         }
         .onChange(of: selectedTab) { _, tab in
+            if tab == 2 { upgradeHasAppeared = true }
             // Deep links and the launch routes still ask for the History tab.
             if tab == 1, split != nil { selectedTab = 0 }
         }

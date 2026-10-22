@@ -117,6 +117,8 @@ struct DashboardView: View {
     @State private var pacingCalories: Double? = nil
     @State private var pacingSteps: Int? = nil
     @State private var isLoading = true
+    /// True once the first reveal (ring sweep, data-loaded signal) has run.
+    @State private var hasRevealed = false
     @State private var animateRing = false
     @State private var animateContent = false
     @State private var showSettings = false
@@ -276,6 +278,30 @@ struct DashboardView: View {
     /// Exactly one of calories / steps / net is enabled.
     private var isSingleMetric: Bool {
         visibleMetricCount == 1
+    }
+
+    init() {
+        // A cold launch paints today's cached totals in its first frame. It
+        // used to show a spinner until the first refresh read the same cache a
+        // beat later and faded the content in from nothing, so a launch showed
+        // a blank screen for that long after the app had already drawn.
+        guard let cached = Self.takeLaunchSnapshot() else { return }
+        _activeCalories = State(initialValue: cached.active)
+        _restingCalories = State(initialValue: cached.resting)
+        _steps = State(initialValue: cached.steps)
+        _isLoading = State(initialValue: false)
+        _animateContent = State(initialValue: true)
+    }
+
+    /// Read once per process: SwiftUI rebuilds this view's value on every
+    /// parent update, and only the first one seeds its state.
+    private static var launchSnapshotTaken = false
+
+    private static func takeLaunchSnapshot() -> (active: Double, resting: Double, steps: Int)? {
+        guard !launchSnapshotTaken else { return nil }
+        launchSnapshotTaken = true
+        guard GoalSettings.shared.hasCompletedSetup, !ScreenshotConfig.wantsOnboarding else { return nil }
+        return try? HealthKitService.shared.fetchCachedTodayStats()
     }
 
     var body: some View {
@@ -1611,15 +1637,19 @@ struct DashboardView: View {
     }
 
     private func showLoadedStateIfNeeded() {
-        if isLoading {
+        if !hasRevealed {
+            hasRevealed = true
             isLoading = false
             // The reveal waits one update so the content is laid out before any
             // animation starts: in the same transaction its first layout was
             // animated too, and the date header drew one word per line.
             Task { @MainActor in
                 // Reduce Motion: no slide, scale or ring sweep, just a short fade.
-                withAnimation(reduceMotion ? .easeOut(duration: 0.2) : .easeOut(duration: 0.5)) {
-                    animateContent = true
+                // Content painted from the launch snapshot is already showing.
+                if !animateContent {
+                    withAnimation(reduceMotion ? .easeOut(duration: 0.2) : .easeOut(duration: 0.5)) {
+                        animateContent = true
+                    }
                 }
                 withAnimation(reduceMotion ? nil : .spring(duration: 1.0, bounce: 0.15).delay(0.3)) {
                     animateRing = true
@@ -1791,7 +1821,7 @@ struct DashboardView: View {
         // Paint cached values immediately — even zero rows beat the gray spinner
         // and reassure the user the app remembers them. The header pill still
         // shows that a fresh read is in flight.
-        if isLoading, let cachedStats {
+        if !hasRevealed, let cachedStats {
             applyStats(cachedStats)
             showLoadedStateIfNeeded()
         }
