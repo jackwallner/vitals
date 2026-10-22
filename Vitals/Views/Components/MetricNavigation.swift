@@ -43,6 +43,7 @@ struct SkeletonBlock: View {
             let band = max(width * 0.4, 48)
             shape
                 .fill(Theme.textTertiary.opacity(pulse ? 0.18 : 0.08))
+                .animation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true), value: pulse)
                 // A LoadingBar-style highlight that sweeps across the skeleton, so
                 // the placeholder reads as "loading" rather than a static block.
                 .overlay {
@@ -54,16 +55,15 @@ struct SkeletonBlock: View {
                         ))
                         .frame(width: band)
                         .offset(x: shimmer ? width : -band)
+                        .animation(.linear(duration: 1.1).repeatForever(autoreverses: false), value: shimmer)
                 }
                 .clipShape(shape)
         }
+        // Scoped animations: a repeatForever `withAnimation` here also animated
+        // the layout of everything appearing with the skeleton.
         .onAppear {
-            withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) {
-                pulse = true
-            }
-            withAnimation(.linear(duration: 1.1).repeatForever(autoreverses: false)) {
-                shimmer = true
-            }
+            pulse = true
+            shimmer = true
         }
         .accessibilityHidden(true)
     }
