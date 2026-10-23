@@ -87,10 +87,11 @@ struct TrialOfferPitchSheet: View {
     /// Set only on the used-trial pitch, where the user picks a plan. nil means
     /// "the one-tap trial target", which is always yearly.
     @State private var selectedPlanID: String?
-    /// Set when "Not now" turned into the exit offer. See `ExitOffer`.
+    /// Set when "Not now" turned this pitch into the exit offer. See `ExitOffer`.
     @State private var exitOfferPackage: Package?
 
     private var package: Package? {
+        if let exitOfferPackage { return exitOfferPackage }
         guard let selectedPlanID else { return snapshot ?? store.conversionPackage }
         return store.products.first { $0.identifier == selectedPlanID }
             ?? snapshot
@@ -107,7 +108,7 @@ struct TrialOfferPitchSheet: View {
     /// a free trial should have exactly one thing to do; someone who has spent it
     /// is deciding on price, so give them the price ladder instead of one number.
     private var planOptions: [TrialPlanOption] {
-        guard !eligibleForTrial else { return [] }
+        guard !eligibleForTrial, exitOfferPackage == nil else { return [] }
         let ladder = store.products.filter { $0.vitalsPackageKind != .other }
         guard ladder.count > 1 else { return [] }
         let order: [RevenueCatPackageKind] = [.yearly, .monthly, .lifetime]
@@ -127,13 +128,7 @@ struct TrialOfferPitchSheet: View {
     }
 
     var body: some View {
-        Group {
-            if let exitOfferPackage {
-                ExitOfferView(package: exitOfferPackage, onFinish: onDismiss)
-            } else {
-                pitch
-            }
-        }
+        pitch
         .presentationDetents([TrialOfferSheet.pitchDetent])
         .presentationDragIndicator(.visible)
         .presentationContentInteraction(.resizes)
@@ -171,14 +166,22 @@ struct TrialOfferPitchSheet: View {
             annualSavingsPercent: store.annualSavingsPercent,
             planOptions: planOptions,
             selectedPlanID: selectedPlanID ?? planOptions.first?.id,
-            onSelectPlan: { selectedPlanID = $0 }
+            onSelectPlan: { selectedPlanID = $0 },
+            exitOffer: exitOfferPackage,
+            exitOfferRegular: store.yearlyPackage
         )
     }
 
     private func closeTapped() {
+        if exitOfferPackage != nil {
+            store.declineExitOffer()
+            onDismiss()
+            return
+        }
         let surface = ConversionDiagnostics.surface(fromImpressionID: request.impressionID)
         if store.exitOfferOnClose(surface: surface), let package = store.exitOfferPackage {
-            withAnimation(.easeInOut(duration: 0.2)) { exitOfferPackage = package }
+            errorMessage = nil
+            withAnimation(.easeInOut(duration: 0.3)) { exitOfferPackage = package }
         } else {
             onDismiss()
         }

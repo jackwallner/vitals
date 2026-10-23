@@ -260,7 +260,9 @@ struct PaywallView: View {
     /// Last honest CTA title. The button never falls back to a spinner-only
     /// control (that made the label flicker and hid it from UI tests).
     @State private var displayedCTATitle: String = CTAExperiment.trialCTATitleCase()
-    /// Set when the close button turned into the exit offer. See `ExitOffer`.
+    /// Set when the close button turned this paywall into the exit offer: the
+    /// price tiles take the plans' place and the button buys the half-price
+    /// plan. A second close is "No thanks". See `ExitOffer`.
     @State private var exitOfferPackage: Package?
 
     /// Outcome bullets. Intent taps lead with the feature they asked for plus
@@ -320,10 +322,6 @@ struct PaywallView: View {
                 closeButton
             }
 
-            if let exitOfferPackage {
-                ExitOfferView(package: exitOfferPackage, onFinish: { dismiss() })
-                    .transition(.opacity)
-            }
         }
         .onChange(of: store.isPro) { _, isPro in
             if isPro { dismiss() }
@@ -750,7 +748,17 @@ struct PaywallView: View {
         }
     }
 
+    @ViewBuilder
     private var planCards: some View {
+        if let exitOfferPackage {
+            ExitOfferPriceTiles(offer: exitOfferPackage, regular: store.yearlyPackage)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+        } else {
+            planList
+        }
+    }
+
+    private var planList: some View {
         VStack(spacing: 6) {
             ForEach(store.products, id: \.identifier) { package in
                 let isYearly = package.vitalsPackageKind == .yearly
@@ -874,8 +882,14 @@ struct PaywallView: View {
     }
 
     private func close() {
-        if store.exitOfferOnClose(surface: "paywall"), let package = store.exitOfferPackage {
-            withAnimation(.easeInOut(duration: 0.2)) { exitOfferPackage = package }
+        if exitOfferPackage != nil {
+            store.declineExitOffer()
+            dismiss()
+        } else if store.exitOfferOnClose(surface: "paywall"), let package = store.exitOfferPackage {
+            errorMessage = nil
+            restoreMessage = nil
+            selectedPackage = package
+            withAnimation(.easeInOut(duration: 0.3)) { exitOfferPackage = package }
         } else {
             dismiss()
         }

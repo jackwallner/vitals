@@ -2,6 +2,7 @@ import SwiftUI
 import HealthKit
 import UIKit
 import os
+@preconcurrency import RevenueCat
 
 private let dashboardLogger = Logger(subsystem: "com.jackwallner.vitals", category: "Dashboard")
 
@@ -2687,8 +2688,15 @@ private struct OnboardingSheet: View {
     /// Emergency fallback: presented only when the onboarding package failed to load,
     /// so the primary CTA is never a dead disabled button.
     @State private var showPaywallFallback = false
-    /// Set when "Get Started" turned into the exit offer. See `ExitOffer`.
+    /// Set when "Get Started" turned this page into the exit offer: the price
+    /// tiles slide in, the button buys the half-price plan, and the way out
+    /// says "No thanks". See `ExitOffer`.
     @State private var showExitOffer = false
+
+    /// What the trial button buys: the half-price plan once the offer is up.
+    private var trialPackage: Package? {
+        showExitOffer ? store.exitOfferPackage : store.onboardingTrialPackage
+    }
 
     /// The outgoing page is gone before the next one fades in. A plain
     /// crossfade stacked two pages of readable text for several frames.
@@ -2910,20 +2918,17 @@ private struct OnboardingSheet: View {
                 .environmentObject(store)
                 .task { store.trackPaywallImpression(id: "vitals_onboarding_fallback") }
         }
-        .overlay {
-            if showExitOffer, let package = store.exitOfferPackage {
-                ExitOfferView(package: package, onFinish: finishOnboarding)
-                    .environmentObject(store)
-                    .transition(.opacity)
-            }
-        }
     }
 
     /// "Get Started": straight in, unless this is the close the exit offer
-    /// answers.
+    /// answers. Once the offer is up the same button is "No thanks".
     private func leaveTrialStep() {
-        if store.exitOfferOnClose(surface: "onboarding_trial"), store.exitOfferPackage != nil {
-            withAnimation(.easeInOut(duration: 0.2)) { showExitOffer = true }
+        if showExitOffer {
+            store.declineExitOffer()
+            finishOnboarding()
+        } else if store.exitOfferOnClose(surface: "onboarding_trial"), store.exitOfferPackage != nil {
+            trialError = nil
+            withAnimation(.easeInOut(duration: 0.3)) { showExitOffer = true }
         } else {
             finishOnboarding()
         }
@@ -3214,8 +3219,9 @@ private struct OnboardingSheet: View {
     /// that appeared only when products loaded would walk the button down
     /// mid-onboarding.
     private var billingDisclosureSlot: some View {
-        let isReal = step == .trial && store.onboardingTrialDisclosureText != nil
-        return Text(store.onboardingTrialDisclosureText ?? Self.disclosureHeightPlaceholder)
+        let disclosure = trialPackage.map(store.onboardingDisclosure(for:))
+        let isReal = step == .trial && disclosure != nil
+        return Text(disclosure ?? Self.disclosureHeightPlaceholder)
             .font(.system(.caption2, design: .rounded))
             .foregroundStyle(Theme.textTertiary)
             .multilineTextAlignment(.center)
@@ -3252,7 +3258,7 @@ private struct OnboardingSheet: View {
         Button {
             leaveTrialStep()
         } label: {
-            Text("Get Started")
+            Text(showExitOffer ? "No thanks" : "Get Started")
                 .font(.system(.subheadline, design: .rounded, weight: .semibold))
                 .foregroundStyle(Theme.textSecondary)
                 .frame(maxWidth: .infinity)
@@ -3360,6 +3366,11 @@ private struct OnboardingSheet: View {
                         )
                     }
                 }
+
+                if showExitOffer, let offer = store.exitOfferPackage {
+                    ExitOfferPriceTiles(offer: offer, regular: store.yearlyPackage)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
             }
 
             Spacer(minLength: minGap)
@@ -3370,7 +3381,7 @@ private struct OnboardingSheet: View {
     /// so Apple's confirm sheet is the only interstitial. Falls back to the full
     /// PaywallView only when products failed to load, never a dead button.
     private func startTrial() {
-        guard let package = store.onboardingTrialPackage else {
+        guard let package = trialPackage else {
             // No package means products never loaded. The full paywall owns the
             // retry and error UI, so hand the user to it rather than leaving
             // them on a button that cannot do anything.
@@ -3422,7 +3433,8 @@ private struct OnboardingSheet: View {
     /// Never promises a trial the store has not confirmed. Once the wait expires
     /// without products, the button stops naming a price it does not know.
     private var trialCTALabel: String {
-        store.conversionCTAReady ? store.onboardingTrialCTALabel : "See Vitals+ Plans"
+        guard store.conversionCTAReady else { return "See Vitals+ Plans" }
+        return trialPackage.map(store.ctaLabel(for:)) ?? store.onboardingTrialCTALabel
     }
 
     /// Every onboarding primary carries the same halo. It used to be the trial

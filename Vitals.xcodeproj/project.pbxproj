@@ -197,6 +197,7 @@
 		B844F240515B2EFEF3B063CE /* UnfoldedSplit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C81022D3DCC69DECE614DA /* UnfoldedSplit.swift */; };
 		B8BEFE2FDF424BC013E52CD4 /* UnfoldedSplit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C81022D3DCC69DECE614DA /* UnfoldedSplit.swift */; };
 		B923EA6CC78A7551381174E3 /* PaywallUIVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92A4096A4EFCD26122F1D62 /* PaywallUIVariant.swift */; };
+		B9470B02955E298054686272 /* ExitOfferPriceTiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E973CA57AB927CFB3D78D7 /* ExitOfferPriceTiles.swift */; };
 		B9BF75C576EB39B0BBA7D1C6 /* ProjectionCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7896892E56FE0D79E979DEE7 /* ProjectionCalculatorTests.swift */; };
 		BA4710524597ABF620355290 /* ClockBoundaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7073F99FFDB65A4A2CF01A /* ClockBoundaryTests.swift */; };
 		BAAF27492ADCF82BF62686CA /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
@@ -271,7 +272,6 @@
 		F67410975DE52D10329F1479 /* NetDeficitTrendSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */; };
 		F8CE32C95ABAE3744A30D432 /* SummaryReportGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B24F616BC26BFF25C64684 /* SummaryReportGenerator.swift */; };
 		F93415C3586901C55415E5C6 /* ProjectionCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE9370DC12BAC7716DA62A5 /* ProjectionCalculator.swift */; };
-		FD9D67DB58E931EB9D539282 /* ExitOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB8BFBF90331A8992799DDA /* ExitOfferView.swift */; };
 		FDC255EDF9FC897146209356 /* ProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971064F5F952A25427D7F46B /* ProgressRing.swift */; };
 		FDD2B3AC4FDAD33746E92A0A /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E152DC23E11DAD83864E5A /* HistoryView.swift */; };
 		FE5CF05C3EA0D9BD231CB733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA75A0BD07845E85F69ED5F7 /* Assets.xcassets */; };
@@ -357,6 +357,7 @@
 		1DABF18D30A514919DE529CB /* InteractivePopGestureEnabler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractivePopGestureEnabler.swift; sourceTree = "<group>"; };
 		207ADC8FCC7E1328298839A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		208A2706128ED69211B77282 /* CTAGlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTAGlow.swift; sourceTree = "<group>"; };
+		23E973CA57AB927CFB3D78D7 /* ExitOfferPriceTiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitOfferPriceTiles.swift; sourceTree = "<group>"; };
 		28B688A25476BF08977C9AB3 /* VitalsTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = VitalsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		292C63911A7E258A1952BF35 /* GoalRecalibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalRecalibration.swift; sourceTree = "<group>"; };
 		29693CF9343830E2D9DE2029 /* EnergyAveragesCacheReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyAveragesCacheReaderTests.swift; sourceTree = "<group>"; };
@@ -443,7 +444,6 @@
 		C5F6A6AE22A02C84F2077B36 /* ExcludedDaysUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcludedDaysUITests.swift; sourceTree = "<group>"; };
 		C9B9F018B1D8859226963C63 /* WeeklyRecapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyRecapView.swift; sourceTree = "<group>"; };
 		CA5FB56CFC81FAF6AF852A96 /* BodyProfileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyProfileStore.swift; sourceTree = "<group>"; };
-		CAB8BFBF90331A8992799DDA /* ExitOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitOfferView.swift; sourceTree = "<group>"; };
 		CC1E08DB6178018D805FEA45 /* DeepLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkTests.swift; sourceTree = "<group>"; };
 		CEE9370DC12BAC7716DA62A5 /* ProjectionCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectionCalculator.swift; sourceTree = "<group>"; };
 		CFC6717A33895256B9C16964 /* ConversionDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionDiagnostics.swift; sourceTree = "<group>"; };
@@ -587,7 +587,7 @@
 				208A2706128ED69211B77282 /* CTAGlow.swift */,
 				BFEC52C3FC9793813DF64549 /* DashboardView.swift */,
 				7DCF988879AF0A15410FB69E /* ExcludedDaysView.swift */,
-				CAB8BFBF90331A8992799DDA /* ExitOfferView.swift */,
+				23E973CA57AB927CFB3D78D7 /* ExitOfferPriceTiles.swift */,
 				82E152DC23E11DAD83864E5A /* HistoryView.swift */,
 				8287269CC5CE093BEF6CBB25 /* PaywallScreenshotHarness.swift */,
 				C395EAE504DCAD8464C29AC9 /* PaywallView.swift */,
@@ -1243,7 +1243,7 @@
 				7751DCFF58386558C37157C7 /* ExcludedDaysPitch.swift in Sources */,
 				1336BCBB4FD0FF2431BBBDDB /* ExcludedDaysView.swift in Sources */,
 				0D3B51AC0624667BA5C93A38 /* ExitOffer.swift in Sources */,
-				FD9D67DB58E931EB9D539282 /* ExitOfferView.swift in Sources */,
+				B9470B02955E298054686272 /* ExitOfferPriceTiles.swift in Sources */,
 				7233432BE67695EAE89C5130 /* GoalRecalibration.swift in Sources */,
 				0AC639F100296E17EF0A0680 /* GoalSettings.swift in Sources */,
 				52B99A6FB6864BC7445FBCBC /* HealthKitLabHarness.swift in Sources */,
@@ -1398,7 +1398,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 223;
+				CURRENT_PROJECT_VERSION = 224;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1545,7 +1545,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 223;
+				CURRENT_PROJECT_VERSION = 224;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

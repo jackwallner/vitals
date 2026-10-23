@@ -2107,6 +2107,12 @@ struct TrialOfferSheet: View {
     var planOptions: [TrialPlanOption] = []
     var selectedPlanID: String?
     var onSelectPlan: (String) -> Void = { _ in }
+    /// Set when "Not now" turned this sheet into the exit offer: the price tiles
+    /// take the plans' place, the button buys this plan, and "Not now" becomes
+    /// "No thanks". See `ExitOffer`.
+    var exitOffer: Package?
+    /// The regular yearly plan, struck through beside the offer.
+    var exitOfferRegular: Package?
 
     /// One detent, sized to hold the whole pitch. It used to open at 0.68 with
     /// a `.large` companion: the third benefit was clipped by the footer, so the
@@ -2300,12 +2306,15 @@ struct TrialOfferSheet: View {
                             // there is nothing to contrast against, and three
                             // one-word pills waste the space they sit in, so the
                             // generic pitch shows what each feature actually does.
-                            compact: !planOptions.isEmpty || (focus != nil && feature != focus)
+                            compact: !planOptions.isEmpty || exitOffer != nil || (focus != nil && feature != focus)
                         )
                     }
                 }
 
-                if !planOptions.isEmpty {
+                if let exitOffer {
+                    ExitOfferPriceTiles(offer: exitOffer, regular: exitOfferRegular)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                } else if !planOptions.isEmpty {
                     VStack(spacing: 6) {
                         ForEach(planOptions) { option in
                             TrialPlanRow(
@@ -2368,7 +2377,7 @@ struct TrialOfferSheet: View {
                     .accessibilityIdentifier("trial-pitch-cta")
 
                     Button(action: onDismiss) {
-                        Text("Not now")
+                        Text(exitOffer == nil ? "Not now" : "No thanks")
                             .font(.system(.subheadline, design: .rounded, weight: .semibold))
                             .foregroundStyle(Theme.textSecondary)
                     }

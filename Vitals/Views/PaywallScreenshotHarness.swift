@@ -13,15 +13,11 @@ struct PaywallScreenshotHarness: View {
     var body: some View {
         Group {
             if request.plan == .exit {
-                if let exitPackage = store.exitOfferPackage {
-                    if request.focusSlug == "sheet" {
-                        trialBackdrop { ExitOfferView(package: exitPackage, onFinish: {}) }
-                    } else {
-                        ExitOfferView(package: exitPackage, onFinish: {})
-                    }
+                if request.focusSlug == "sheet" {
+                    trialBackdrop { exitOfferSheet }
                 } else {
-                    // A non-empty view, so `.task` below runs and loads the plan.
-                    ProgressView()
+                    // Tap the close button (with `-exitOffer.force`) to turn it.
+                    PaywallView(displayCloseButton: true, focus: focus)
                 }
             } else if request.plan == .trial {
                 trialBackdrop {
@@ -48,6 +44,34 @@ struct PaywallScreenshotHarness: View {
         .environmentObject(store)
         .task {
             if store.products.isEmpty { await store.fetchProducts() }
+        }
+    }
+
+    /// The trial sheet already turned into the exit offer.
+    @ViewBuilder
+    private var exitOfferSheet: some View {
+        if let offer = store.exitOfferPackage {
+            TrialOfferSheet(
+                focus: nil,
+                offerLabel: offer.vitalsIntroOfferLabel,
+                priceLabel: offer.vitalsPriceLabel,
+                ctaTitle: store.ctaLabel(for: offer),
+                disclosureText: VitalsConversionCopy.sheetDisclosure(
+                    trialLabel: offer.vitalsIntroOfferLabel,
+                    priceLabel: offer.vitalsPriceLabel,
+                    eligibleForTrial: store.isEligibleForIntroOffer(offer)
+                ),
+                directPurchase: true,
+                isPurchasing: false,
+                errorMessage: nil,
+                onStartTrial: {},
+                onDismiss: {},
+                exitOffer: offer,
+                exitOfferRegular: store.yearlyPackage
+            )
+        } else {
+            // A non-empty view, so `.task` below runs and loads the plan.
+            ProgressView()
         }
     }
 

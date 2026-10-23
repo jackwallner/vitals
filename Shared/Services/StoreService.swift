@@ -482,7 +482,12 @@ final class StoreService: NSObject, ObservableObject {
     /// CTA label for the direct onboarding purchase.
     var onboardingTrialCTALabel: String {
         guard let package = onboardingTrialPackage else { return "Continue with Vitals+" }
-        return VitalsConversionCopy.ctaLabel(
+        return ctaLabel(for: package)
+    }
+
+    /// Trial or paid CTA for any recurring package, by this Apple ID's eligibility.
+    func ctaLabel(for package: Package) -> String {
+        VitalsConversionCopy.ctaLabel(
             trialLabel: package.vitalsIntroOfferLabel,
             priceLabel: package.vitalsPriceLabel,
             eligibleForTrial: isEligibleForIntroOffer(package)
@@ -496,8 +501,12 @@ final class StoreService: NSObject, ObservableObject {
     /// page and pushed the CTA down. This still names the trial, the price, that
     /// it auto-renews, and where to cancel, which is what 3.1.2 asks for.
     var onboardingTrialDisclosureText: String? {
-        guard let package = onboardingTrialPackage else { return nil }
-        return VitalsConversionCopy.disclosure(
+        onboardingTrialPackage.map(onboardingDisclosure(for:))
+    }
+
+    /// The onboarding disclosure's short form for any recurring package.
+    func onboardingDisclosure(for package: Package) -> String {
+        VitalsConversionCopy.disclosure(
             trialLabel: package.vitalsIntroOfferLabel,
             priceLabel: package.vitalsPriceLabel,
             eligibleForTrial: isEligibleForIntroOffer(package),
@@ -535,6 +544,12 @@ final class StoreService: NSObject, ObservableObject {
 
     /// A paywall was closed on purpose. Records the close for the test and
     /// answers whether the caller should show the exit offer in its place.
+    /// "No thanks" on the in-place offer: the customer saw the half price and left.
+    func declineExitOffer() {
+        ExitOffer.recordOutcome(.declined)
+        syncConversionAttributes()
+    }
+
     func exitOfferOnClose(surface: String) -> Bool {
         #if DEBUG
         if ScreenshotConfig.isEnabled && !ExitOffer.isForced { return false }
@@ -718,6 +733,7 @@ final class StoreService: NSObject, ObservableObject {
         }
         // Freeze what the funnel looked like at the moment of sale: which
         // surface was last on screen, and how many pitches came before it.
+        if product.identifier == ExitOffer.packageID { ExitOffer.recordOutcome(.purchased) }
         ConversionDiagnostics.recordConversion(
             plan: product.identifier == ExitOffer.packageID
                 ? "yearly_exit"

@@ -1,7 +1,9 @@
 ---
 paths:
   - "Shared/Utilities/ExitOffer.swift"
-  - "Vitals/Views/ExitOfferView.swift"
+  - "Vitals/Views/ExitOfferPriceTiles.swift"
+  - "Vitals/Views/DashboardView.swift"
+  - "Vitals/App.swift"
   - "Vitals/Views/PaywallView.swift"
   - "Vitals/Views/TrialOfferPitch.swift"
   - "Shared/Services/StoreService.swift"
@@ -18,5 +20,14 @@ list and every older binary. The split lives in that offering's metadata
 id, so it runs beside RevenueCat Experiments without competing for traffic.
 `exitOfferPackage` is kept out of `products` on purpose: its product id
 contains the yearly one and would match `yearlyPackage`.
-`-exitOffer.force` (DEBUG) shows it on the next close for captures.
+The offer appears in place, never as a new screen (Jack's 2026-10-23 call,
+after a standalone screen read as an ad): the page that was closed stays,
+`ExitOfferPriceTiles` (usual price struck through beside the half price)
+slides in where the plans or under the benefit rows were, the primary button
+buys `exit_annual`, and the way out reads "No thanks" (the paywall keeps its
+close button). The tiles appearing is the impression; "No thanks" calls
+`StoreService.declineExitOffer()`, and a purchase records its outcome in
+`StoreService.purchase`.
+`-exitOffer.force` (DEBUG) shows it on the next close; `-PaywallSnapshot
+exit-sheet` captures the trial sheet version and `exit` the paywall (tap close).
 Method, go-live steps and readout: `~/ios/growth/exit-offer-test.md`.
