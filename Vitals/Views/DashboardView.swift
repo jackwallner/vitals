@@ -2697,6 +2697,12 @@ private struct OnboardingSheet: View {
         removal: .opacity.animation(.easeIn(duration: 0.12))
     )
 
+    /// The same out-then-in timing for bottom-bar text that stays laid out and
+    /// only changes opacity, so the trial terms never draw over the goals page.
+    private static func pageFade(shown: Bool) -> Animation {
+        shown ? .easeOut(duration: 0.15).delay(0.12) : .easeIn(duration: 0.12)
+    }
+
     private var calValid: Bool {
         !wantCalGoal || (Double(calText).map { (500...50000).contains($0) } ?? false)
     }
@@ -3083,6 +3089,7 @@ private struct OnboardingSheet: View {
             // never changes; only visible + interactive on the trial page.
             legalFooter
                 .opacity(step == .trial ? 1 : 0)
+                .animation(Self.pageFade(shown: step == .trial), value: step == .trial)
                 .allowsHitTesting(step == .trial)
                 .accessibilityHidden(step != .trial)
         }
@@ -3103,9 +3110,9 @@ private struct OnboardingSheet: View {
     @ViewBuilder
     private var aboveButtonContent: some View {
         switch step {
-        case .welcome: welcomeTrustLine
+        case .welcome: welcomeTrustLine.transition(Self.pageTransition)
         case .goals: EmptyView()
-        case .trial: trialSoftExitAndError
+        case .trial: trialSoftExitAndError.transition(Self.pageTransition)
         }
     }
 
@@ -3215,6 +3222,7 @@ private struct OnboardingSheet: View {
             .fixedSize(horizontal: false, vertical: true)
             .padding(.horizontal, 24)
             .opacity(isReal ? 1 : 0)
+            .animation(Self.pageFade(shown: isReal), value: isReal)
             .accessibilityHidden(!isReal)
     }
 
