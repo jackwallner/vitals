@@ -334,7 +334,7 @@ final class LandscapeSplitUITests: XCTestCase {
         let deadline = Date.now.addingTimeInterval(6)
         while Date.now < deadline {
             let dismiss = app.buttons.matching(
-                NSPredicate(format: "label IN {'Not now', 'Maybe later', 'Close'}")
+                NSPredicate(format: "label IN {'Not now', 'No thanks', 'Maybe later', 'Close'}")
             ).firstMatch
             guard dismiss.exists else { return }
             if dismiss.isHittable { dismiss.tap() }

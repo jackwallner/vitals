@@ -290,10 +290,64 @@ final class SeededHealthFlowUITests: XCTestCase {
         attach(app.screenshot(), name: "free-history-exclusion-after-purchase")
     }
 
+    /// The real trial sheet (`TrialOfferPitch`), not the capture harness: its
+    /// "Not now" keeps the sheet, slides the exit offer's price tiles in under
+    /// the benefits, and the button buys the half-price plan. "No thanks"
+    /// then closes it. Onboarding and the paywall are in `ExitOfferUITests`.
+    func testTrialSheetNotNowTurnsIntoTheExitOffer() {
+        let app = launchSeeded(upgradeTab: "catalog", arguments: ["-exitOffer.force"])
+        grantHealthKitAccess(in: app)
+
+        let notNow = app.buttons["Not now"]
+        XCTAssertTrue(notNow.waitForExistence(timeout: 60), "the passive trial sheet never presented")
+        let cta = app.buttons["trial-pitch-cta"]
+        XCTAssertTrue(cta.waitForExistence(timeout: 15), "pitch CTA missing")
+        // The seeded steps clear the goal, and the goal-hit rating alert can
+        // land over the sheet and swallow the tap meant for "Not now".
+        dismissRatingAlert(in: app)
+        let ctaBefore = cta.frame
+        notNow.tap()
+
+        let tiles = app.descendants(matching: .any)["exit-offer-tiles"]
+        XCTAssertTrue(tiles.waitForExistence(timeout: 5), "\"Not now\" did not bring in the offer")
+        sleep(1)
+        attach(app.screenshot(), name: "trial-sheet-exit-offer")
+
+        let noThanks = app.buttons["No thanks"]
+        XCTAssertTrue(noThanks.exists, "the way out is not \"No thanks\"")
+        XCTAssertEqual(ctaBefore.minY, cta.frame.minY, accuracy: 1, "CTA moved when the offer came in")
+        XCTAssertTrue(app.frame.contains(tiles.frame), "tiles (\(tiles.frame)) run off the screen")
+        XCTAssertTrue(tiles.frame.maxY <= cta.frame.minY, "tiles overlap the footer")
+
+        let price = tiles.label
+            .replacingOccurrences(of: "Your price, ", with: "")
+            .components(separatedBy: " a year").first ?? ""
+        XCTAssertFalse(price.isEmpty, "no price in the tiles label: \(tiles.label)")
+        XCTAssertTrue(
+            app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "\(price) / year")).firstMatch.exists,
+            "no disclosure quotes the offer price \(price) / year"
+        )
+
+        noThanks.tap()
+        XCTAssertTrue(cta.waitForNonExistence(timeout: 10), "\"No thanks\" did not close the sheet")
+    }
+
+    private func dismissRatingAlert(in app: XCUIApplication) {
+        let prompt = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Enjoying")).firstMatch
+        guard prompt.waitForExistence(timeout: 4) else { return }
+        app.buttons["Not Now"].tap()
+        XCTAssertTrue(prompt.waitForNonExistence(timeout: 5), "rating alert would not dismiss")
+    }
+
     // MARK: - Launch
 
-    private func launchSeeded(upgradeTab: String, staleProCache: Bool = false) -> XCUIApplication {
+    private func launchSeeded(
+        upgradeTab: String,
+        staleProCache: Bool = false,
+        arguments: [String] = []
+    ) -> XCUIApplication {
         let app = XCUIApplication()
+        app.launchArguments += arguments
         if staleProCache { app.launchEnvironment["VITALS_STALE_PRO_CACHE"] = "1" }
         // A fresh Test Store customer per launch: one test here buys, and an
         // install's anonymous customer would carry that into every later test.
@@ -335,7 +389,7 @@ final class SeededHealthFlowUITests: XCTestCase {
         let deadline = Date.now.addingTimeInterval(10)
         while Date.now < deadline {
             let dismiss = app.buttons.matching(
-                NSPredicate(format: "label IN {'Not now', 'Maybe later', 'Close'}")
+                NSPredicate(format: "label IN {'Not now', 'No thanks', 'Maybe later', 'Close'}")
             ).firstMatch
             guard dismiss.exists else { return }
             if dismiss.isHittable { dismiss.tap() }
@@ -346,7 +400,7 @@ final class SeededHealthFlowUITests: XCTestCase {
     private func dismissBlockingSheets(in app: XCUIApplication) {
         let deadline = Date.now.addingTimeInterval(20)
         while Date.now < deadline {
-            for label in ["Maybe later", "Not now", "Close"] where app.buttons[label].exists {
+            for label in ["Maybe later", "Not now", "No thanks", "Close"] where app.buttons[label].exists {
                 app.buttons[label].tap()
                 _ = app.buttons["nonexistent"].waitForExistence(timeout: 0.4)
             }

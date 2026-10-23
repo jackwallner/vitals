@@ -2771,14 +2771,17 @@ private struct OnboardingSheet: View {
                             trialPage(minGap: 0)
                                 .padding(.horizontal, 24)
 
-                            ScrollView {
-                                trialPage(minGap: 8)
-                                    .padding(.horizontal, 24)
+                            ScrollViewReader { reader in
+                                ScrollView {
+                                    trialPage(minGap: 8)
+                                        .padding(.horizontal, 24)
+                                }
+                                // Nothing to bounce against: this branch is only
+                                // ever chosen because the content is taller than
+                                // the reader.
+                                .scrollBounceBehavior(.basedOnSize)
+                                .revealingInScroll(reader)
                             }
-                            // Nothing to bounce against: this branch is only
-                            // ever chosen because the content is taller than
-                            // the reader.
-                            .scrollBounceBehavior(.basedOnSize)
                         }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .onAppear {

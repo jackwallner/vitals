@@ -2603,12 +2603,15 @@ struct CenteredScrollContainer: ViewModifier {
 
     func body(content: Content) -> some View {
         GeometryReader { proxy in
-            ScrollView(showsIndicators: false) {
-                content
+            ScrollViewReader { reader in
+                ScrollView(showsIndicators: false) {
+                    content
+                }
+                .scrollBounceBehavior(.basedOnSize)
+                .revealingInScroll(reader)
+                .onAppear { height = proxy.size.height }
+                .onChange(of: proxy.size.height) { _, new in height = new }
             }
-            .scrollBounceBehavior(.basedOnSize)
-            .onAppear { height = proxy.size.height }
-            .onChange(of: proxy.size.height) { _, new in height = new }
         }
     }
 }

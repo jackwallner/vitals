@@ -35,7 +35,7 @@ final class AuditFeaturesUITests: XCTestCase {
         let deadline = Date.now.addingTimeInterval(seconds)
         while Date.now < deadline {
             let dismiss = app.descendants(matching: .any)
-                .matching(NSPredicate(format: "label IN {'Not now', 'Maybe later'}")).firstMatch
+                .matching(NSPredicate(format: "label IN {'Not now', 'No thanks', 'Maybe later'}")).firstMatch
             if dismiss.exists { dismiss.tap(); _ = app.buttons["nonexistent"].waitForExistence(timeout: 1) }
             else { _ = app.buttons["nonexistent"].waitForExistence(timeout: 0.5) }
         }
@@ -374,7 +374,7 @@ final class AuditFeaturesUITests: XCTestCase {
     func dismissBlockingSheets(in app: XCUIApplication) {
         let deadline = Date.now.addingTimeInterval(20)
         while Date.now < deadline {
-            for label in ["Maybe later", "Not now", "Close"] where app.buttons[label].exists {
+            for label in ["Maybe later", "Not now", "No thanks", "Close"] where app.buttons[label].exists {
                 app.buttons[label].tap()
                 _ = app.buttons["nonexistent"].waitForExistence(timeout: 0.4)
             }

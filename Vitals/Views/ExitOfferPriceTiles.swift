@@ -13,6 +13,9 @@ struct ExitOfferPriceTiles: View {
     let regular: Package?
 
     @EnvironmentObject private var store: StoreService
+    @Environment(\.enclosingScrollReader) private var scrollReader
+
+    static let scrollID = "exit-offer-tiles"
 
     /// Off the real store prices, never a hardcoded 50: purchasing-power prices
     /// round to the nearest price point, so a territory may read 49% or 51%.
@@ -27,14 +30,14 @@ struct ExitOfferPriceTiles: View {
         switch percentOff {
         case 50: "HALF OFF"
         case let pct?: "\(pct)% OFF"
-        case nil: "ONE TIME"
+        case nil: "OFFER"
         }
     }
 
     private var accessibilitySummary: String {
         let offerPrice = "\(offer.vitalsLocalizedPriceString) a year"
-        guard let regular, percentOff != nil else { return "One-time price, \(offerPrice)" }
-        return "One-time price, \(offerPrice), usually \(regular.vitalsLocalizedPriceString)"
+        guard let regular, percentOff != nil else { return "Your price, \(offerPrice)" }
+        return "Your price, \(offerPrice), usually \(regular.vitalsLocalizedPriceString)"
     }
 
     var body: some View {
@@ -50,7 +53,9 @@ struct ExitOfferPriceTiles: View {
             }
 
             tile(
-                label: "One-time price",
+                // Not "One-time price": it renews at this price every year,
+                // and the disclosure under it says so.
+                label: "Your price",
                 labelColor: Theme.caloriesPrimary,
                 price: Text(offer.vitalsLocalizedPriceString),
                 priceColor: Theme.textPrimary
@@ -74,9 +79,19 @@ struct ExitOfferPriceTiles: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilitySummary)
         .accessibilityIdentifier("exit-offer-tiles")
+        .id(Self.scrollID)
         .onAppear {
             ExitOffer.recordShown()
             store.trackPaywallImpression(id: ExitOffer.impressionID)
+            // At large text sizes the page scrolls, and the tiles land under
+            // the fold: the button and disclosure changed with nothing on
+            // screen saying why. Wait one pass so they have a frame to scroll to.
+            guard let scrollReader else { return }
+            DispatchQueue.main.async {
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    scrollReader.scrollTo(Self.scrollID, anchor: .bottom)
+                }
+            }
         }
     }
 
@@ -96,5 +111,19 @@ struct ExitOfferPriceTiles: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 14)
+    }
+}
+
+extension EnvironmentValues {
+    /// The scroll view a child sits in, so it can scroll itself into view. nil
+    /// outside one that opted in with `revealingInScroll(_:)`.
+    @Entry var enclosingScrollReader: ScrollViewProxy? = nil
+}
+
+extension View {
+    /// Lets children scroll themselves into view in `reader`, the way the exit
+    /// offer tiles do when they slide in below the fold.
+    func revealingInScroll(_ reader: ScrollViewProxy) -> some View {
+        environment(\.enclosingScrollReader, reader)
     }
 }

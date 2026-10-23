@@ -37,6 +37,25 @@ final class ReleaseJourneysUITests: XCTestCase {
         QA.checkpoint(app, "pitch")
     }
 
+    /// The onboarding pitch after "Get Started" in the offer arm: the same page
+    /// with the exit offer's price tiles in it. Checked by the oracles like any
+    /// other screen, since it is one a new customer can land on.
+    func testOnboardingExitOffer() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        QA.launch(app, environment: ["VITALS_RC_APP_USER_ID": Self.journeyCustomer, "VITALS_SCREENSHOT_MODE": "1", "VITALS_SCREENSHOT_KEEP_APPEARANCE": "1", "VITALS_SCREENSHOT_SCENE": "onboarding"], arguments: ["-exitOffer.force"])
+        for _ in 0..<2 {
+            XCTAssertTrue(app.buttons["Continue"].waitForExistence(timeout: 20), "onboarding stalled")
+            app.buttons["Continue"].tap()
+            dismissSystemSheet()
+        }
+        let softExit = app.buttons["Get Started"]
+        XCTAssertTrue(softExit.waitForExistence(timeout: 25), "pitch never rendered")
+        softExit.tap()
+        XCTAssertTrue(app.descendants(matching: .any)["exit-offer-tiles"].waitForExistence(timeout: 5), "offer never came in")
+        QA.checkpoint(app, "pitch-exit-offer")
+    }
+
     func testTodayHistoryUpgradeAndBack() {
         let app = launchDashboard()
         QA.checkpoint(app, "today-launch")
@@ -56,7 +75,7 @@ final class ReleaseJourneysUITests: XCTestCase {
 
     func testTrialSheetPresents() {
         let app = launchDashboard()
-        let pitch = app.buttons.matching(NSPredicate(format: "label IN {'Not now', 'Maybe later', 'Close'}")).firstMatch
+        let pitch = app.buttons.matching(NSPredicate(format: "label IN {'Not now', 'No thanks', 'Maybe later', 'Close'}")).firstMatch
         guard pitch.waitForExistence(timeout: 40) else { return }
         QA.checkpoint(app, "trial-sheet")
         pitch.tap()
@@ -93,9 +112,12 @@ final class ReleaseJourneysUITests: XCTestCase {
 
     /// The trial pitch lands on a timer; it is checked in its own journey.
     private func clearTrialPitch(_ app: XCUIApplication) {
-        let dismiss = app.buttons.matching(NSPredicate(format: "label IN {'Not now', 'Maybe later', 'Close'}")).firstMatch
-        if dismiss.exists, dismiss.isHittable { dismiss.tap() }
-        _ = dismiss.waitForNonExistence(timeout: 3)
+        let dismiss = app.buttons.matching(NSPredicate(format: "label IN {'Not now', 'No thanks', 'Maybe later', 'Close'}")).firstMatch
+        // Twice: a first "Not now" can turn the sheet into the exit offer.
+        for _ in 0..<2 where dismiss.exists {
+            if dismiss.isHittable { dismiss.tap() }
+            _ = dismiss.waitForNonExistence(timeout: 3)
+        }
     }
 
     private func dismissSystemSheet() {
