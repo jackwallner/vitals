@@ -12,10 +12,15 @@ import XCTest
 @MainActor
 final class ReleaseJourneysUITests: XCTestCase {
 
+    /// A RevenueCat customer of its own per launch. The Debug default (`qa-ios`)
+    /// is shared by every run on every simulator, so one Test Store purchase
+    /// anywhere turned the newcomer into a subscriber with no Upgrade tab.
+    static var freshCustomer: String { "qa-journey-\(UUID().uuidString)" }
+
     func testFirstRunOnboardingToPitch() {
         continueAfterFailure = false
         let app = XCUIApplication()
-        QA.launch(app, environment: ["VITALS_SCREENSHOT_MODE": "1", "VITALS_SCREENSHOT_KEEP_APPEARANCE": "1", "VITALS_SCREENSHOT_SCENE": "onboarding"])
+        QA.launch(app, environment: ["VITALS_RC_APP_USER_ID": Self.freshCustomer, "VITALS_SCREENSHOT_MODE": "1", "VITALS_SCREENSHOT_KEEP_APPEARANCE": "1", "VITALS_SCREENSHOT_SCENE": "onboarding"])
         let cta = app.buttons["Continue"]
         XCTAssertTrue(cta.waitForExistence(timeout: 20), "welcome never rendered")
         QA.checkpoint(app, "welcome")
@@ -59,7 +64,7 @@ final class ReleaseJourneysUITests: XCTestCase {
     func testSettingsSheet() {
         continueAfterFailure = false
         let app = XCUIApplication()
-        QA.launch(app, environment: ["VITALS_SCREENSHOT_MODE": "1", "VITALS_SCREENSHOT_KEEP_APPEARANCE": "1", "VITALS_SCREENSHOT_SCENE": "settings"])
+        QA.launch(app, environment: ["VITALS_RC_APP_USER_ID": Self.freshCustomer, "VITALS_SCREENSHOT_MODE": "1", "VITALS_SCREENSHOT_KEEP_APPEARANCE": "1", "VITALS_SCREENSHOT_SCENE": "settings"])
         XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 30), "Settings never presented")
         QA.checkpoint(app, "settings")
     }
@@ -79,7 +84,7 @@ final class ReleaseJourneysUITests: XCTestCase {
     private func launchDashboard() -> XCUIApplication {
         continueAfterFailure = false
         let app = XCUIApplication()
-        QA.launch(app, environment: ["VITALS_SCREENSHOT_MODE": "1", "VITALS_SCREENSHOT_KEEP_APPEARANCE": "1", "VITALS_SCREENSHOT_SCENE": "dashboard"])
+        QA.launch(app, environment: ["VITALS_RC_APP_USER_ID": Self.freshCustomer, "VITALS_SCREENSHOT_MODE": "1", "VITALS_SCREENSHOT_KEEP_APPEARANCE": "1", "VITALS_SCREENSHOT_SCENE": "dashboard"])
         XCTAssertTrue(app.buttons["Today"].waitForExistence(timeout: 20), "Today tab never rendered")
         return app
     }
