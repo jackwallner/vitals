@@ -833,7 +833,7 @@ struct PaywallView: View {
                 selectedPackage = store.products.first { $0.vitalsPackageKind == .monthly }
             case .lifetime:
                 selectedPackage = store.products.first { $0.vitalsPackageKind == .lifetime }
-            case .yearly, .trial:
+            case .yearly, .trial, .exit:
                 selectedPackage = store.products.first { $0.vitalsPackageKind == .yearly }
             }
             return

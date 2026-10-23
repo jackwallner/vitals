@@ -6,12 +6,14 @@ import Foundation
 /// `-PaywallSnapshot yearly` — generic full paywall, yearly selected
 /// `-PaywallSnapshot trial-tdee` — intent trial sheet (TDEE toggle)
 /// `-PaywallSnapshot yearly-net-deficit` — intent full paywall, yearly selected
+/// `-PaywallSnapshot exit` / `exit-sheet` — exit offer, full screen or in the trial sheet
 struct PaywallSnapshotRequest: Equatable {
     enum Plan: String {
         case trial
         case monthly
         case yearly
         case lifetime
+        case exit
     }
 
     let plan: Plan

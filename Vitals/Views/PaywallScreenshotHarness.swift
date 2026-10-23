@@ -12,7 +12,18 @@ struct PaywallScreenshotHarness: View {
 
     var body: some View {
         Group {
-            if request.plan == .trial {
+            if request.plan == .exit {
+                if let exitPackage = store.exitOfferPackage {
+                    if request.focusSlug == "sheet" {
+                        trialBackdrop { ExitOfferView(package: exitPackage, onFinish: {}) }
+                    } else {
+                        ExitOfferView(package: exitPackage, onFinish: {})
+                    }
+                } else {
+                    // A non-empty view, so `.task` below runs and loads the plan.
+                    ProgressView()
+                }
+            } else if request.plan == .trial {
                 trialBackdrop {
                     TrialOfferSheet(
                         focus: focus,

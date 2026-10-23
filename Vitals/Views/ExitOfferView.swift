@@ -30,16 +30,15 @@ struct ExitOfferView: View {
 
     private var headline: String {
         switch percentOff {
-        case 50: "Vitals+ Yearly at half price"
-        case let pct?: "\(pct)% off Vitals+ Yearly"
-        case nil: "Vitals+ Yearly for less"
+        case 50: "Half price on a full year"
+        case let pct?: "\(pct)% off a full year"
+        case nil: "A full year for less"
         }
     }
 
-    private var subheadline: String {
-        let trial = eligibleForTrial ? package.vitalsIntroOfferLabel.map { "Starts with a \($0). " } ?? "" : ""
-        return "\(trial)Every Vitals+ feature. We only show this offer once."
-    }
+    /// The three Vitals+ features shown on the card. None needs food logging,
+    /// so the list is true for everyone who closed the paywall.
+    private let highlights: [PlusFeature] = [.energyAverages, .deepTrends, .streaks]
 
     private var ctaTitle: String {
         VitalsConversionCopy.ctaLabel(
@@ -62,12 +61,13 @@ struct ExitOfferView: View {
             Theme.background.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                Spacer(minLength: 16)
+                Spacer(minLength: 12)
                 pitch
-                Spacer(minLength: 16)
+                Spacer(minLength: 12)
                 footer
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 22)
+            .padding(.top, 8)
             .padding(.bottom, 12)
             .readableWidth()
         }
@@ -82,64 +82,119 @@ struct ExitOfferView: View {
     }
 
     private var pitch: some View {
-        VStack(spacing: 14) {
-            // The onboarding trial page's glyph, so the offer reads as the same
-            // product answering the close rather than an ad.
-            Image(systemName: "sparkles")
-                .font(.system(size: 44))
-                .foregroundStyle(Theme.caloriesGradient)
-                .accessibilityHidden(true)
+        VStack(spacing: 18) {
+            VStack(spacing: 8) {
+                Text("ONE-TIME OFFER")
+                    .font(.system(.caption, design: .rounded, weight: .bold))
+                    .tracking(1.2)
+                    .foregroundStyle(Theme.caloriesPrimary)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .background(Theme.caloriesPrimary.opacity(0.12), in: Capsule())
 
-            Text(headline)
-                .font(.system(.title, design: .rounded, weight: .bold))
-                .foregroundStyle(Theme.textPrimary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
+                Text(headline)
+                    .font(.system(.title2, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.textPrimary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
 
-            priceRow
-
-            Text(subheadline)
-                .font(.system(.subheadline, design: .rounded))
-                .foregroundStyle(Theme.textSecondary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
+            offerCard
         }
     }
 
-    private var priceRow: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 10) {
-            if let regular = regularYearly, percentOff != nil {
-                Text(regular.vitalsLocalizedPriceString)
-                    .font(.system(.title3, design: .rounded, weight: .semibold))
-                    .foregroundStyle(Theme.textTertiary)
-                    .strikethrough(true, color: Theme.textTertiary)
-                    .accessibilityLabel("Was \(regular.vitalsLocalizedPriceString)")
+    /// The plan as one object: price first, then what it buys.
+    private var offerCard: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(alignment: .firstTextBaseline) {
+                Text("Vitals+ \(package.vitalsDisplayName)")
+                    .font(.system(.subheadline, design: .rounded, weight: .bold))
+                    .foregroundStyle(Theme.textSecondary)
+                Spacer(minLength: 8)
+                if let percentOff {
+                    Text("\(percentOff)% OFF")
+                        .font(.system(size: 11, weight: .bold, design: .rounded))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(Theme.caloriesGradient, in: Capsule())
+                }
             }
-            Text(package.vitalsPriceLabel)
-                .font(.system(.title, design: .rounded, weight: .heavy))
-                .foregroundStyle(Theme.caloriesPrimary)
-                .minimumScaleFactor(0.7)
-                .lineLimit(1)
+
+            priceBlock
+
+            if eligibleForTrial, let days = package.vitalsTrialDayCount {
+                Label("Free for the first \(days) days, cancel anytime", systemImage: "checkmark.circle.fill")
+                    .font(.system(.footnote, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.stepsPrimary)
+            }
+
+            Divider()
+
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach(highlights, id: \.self) { feature in
+                    HStack(spacing: 12) {
+                        Image(systemName: feature.icon)
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(feature.tint)
+                            .frame(width: 22)
+                        Text(feature.title)
+                            .font(.system(.subheadline, design: .rounded, weight: .medium))
+                            .foregroundStyle(Theme.textPrimary)
+                    }
+                }
+                HStack(spacing: 12) {
+                    Image(systemName: "plus")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(Theme.textTertiary)
+                        .frame(width: 22)
+                    Text("Every other Vitals+ feature")
+                        .font(.system(.subheadline, design: .rounded))
+                        .foregroundStyle(Theme.textSecondary)
+                }
+            }
+            .accessibilityElement(children: .combine)
+        }
+        .padding(Theme.cardPadding)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous)
+                .stroke(Theme.caloriesPrimary.opacity(0.5), lineWidth: 1.5)
+        }
+    }
+
+    private var priceBlock: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                Text(package.vitalsLocalizedPriceString)
+                    .font(Theme.bigNumber(44))
+                    .foregroundStyle(Theme.textPrimary)
+                    .minimumScaleFactor(0.6)
+                    .lineLimit(1)
+                Text("/ year")
+                    .font(.system(.title3, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textSecondary)
+            }
+            HStack(spacing: 6) {
+                if let regular = regularYearly, percentOff != nil {
+                    Text(regular.vitalsLocalizedPriceString)
+                        .strikethrough(true, color: Theme.textTertiary)
+                        .accessibilityLabel("was \(regular.vitalsLocalizedPriceString)")
+                }
+                if let perMonth = package.vitalsPricePerMonthLabel {
+                    if percentOff != nil { Text("·") }
+                    Text("just \(perMonth) a month")
+                }
+            }
+            .font(.system(.subheadline, design: .rounded, weight: .medium).monospacedDigit())
+            .foregroundStyle(Theme.textTertiary)
         }
         .accessibilityElement(children: .combine)
     }
 
     private var footer: some View {
-        VStack(spacing: 10) {
-            if let errorMessage {
-                Text(errorMessage)
-                    .font(.system(.caption, design: .rounded))
-                    .foregroundStyle(.red)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-            } else {
-                Text(disclosure)
-                    .font(.system(.caption2, design: .rounded))
-                    .foregroundStyle(Theme.textTertiary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-
+        VStack(spacing: 8) {
             Button(action: startPurchase) {
                 ZStack {
                     Text(ctaTitle)
@@ -174,6 +229,20 @@ struct ExitOfferView: View {
             .buttonStyle(.plain)
             .disabled(isPurchasing)
             .accessibilityIdentifier("exit-offer-decline")
+
+            if let errorMessage {
+                Text(errorMessage)
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            } else {
+                Text(disclosure)
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
 
             HStack(spacing: 4) {
                 Link("Terms", destination: PaywallLinks.standardEULA)
