@@ -27,14 +27,14 @@ struct ExitOfferPriceTiles: View {
         switch percentOff {
         case 50: "HALF OFF"
         case let pct?: "\(pct)% OFF"
-        case nil: "ONE TIME"
+        case nil: "OFFER"
         }
     }
 
     private var accessibilitySummary: String {
         let offerPrice = "\(offer.vitalsLocalizedPriceString) a year"
-        guard let regular, percentOff != nil else { return "One-time price, \(offerPrice)" }
-        return "One-time price, \(offerPrice), usually \(regular.vitalsLocalizedPriceString)"
+        guard let regular, percentOff != nil else { return "Your price, \(offerPrice)" }
+        return "Your price, \(offerPrice), usually \(regular.vitalsLocalizedPriceString)"
     }
 
     var body: some View {
@@ -50,7 +50,9 @@ struct ExitOfferPriceTiles: View {
             }
 
             tile(
-                label: "One-time price",
+                // Not "One-time price": it renews at this price every year,
+                // and the disclosure under it says so.
+                label: "Your price",
                 labelColor: Theme.caloriesPrimary,
                 price: Text(offer.vitalsLocalizedPriceString),
                 priceColor: Theme.textPrimary

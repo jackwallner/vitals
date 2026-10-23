@@ -161,9 +161,14 @@ struct TrialOfferPitchSheet: View {
             isRestoring: isRestoring,
             restoreMessage: restoreMessage,
             // The ladder prints a per-week figure on every row; saying it in the
-            // subhead too is the same number twice in one glance.
-            perWeekLabel: planOptions.isEmpty ? store.yearlyPackage?.vitalsPricePerWeekLabel : nil,
-            annualSavingsPercent: store.annualSavingsPercent,
+            // subhead too is the same number twice in one glance. Under the
+            // exit offer it is the half price's, never the regular plan's.
+            perWeekLabel: planOptions.isEmpty
+                ? (exitOfferPackage ?? store.yearlyPackage)?.vitalsPricePerWeekLabel
+                : nil,
+            // The tiles carry the exit offer's deal; a yearly-vs-monthly
+            // "SAVE 37%" above "HALF OFF" would be two discounts at once.
+            annualSavingsPercent: exitOfferPackage == nil ? store.annualSavingsPercent : nil,
             planOptions: planOptions,
             selectedPlanID: selectedPlanID ?? planOptions.first?.id,
             onSelectPlan: { selectedPlanID = $0 },

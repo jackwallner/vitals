@@ -542,14 +542,14 @@ final class StoreService: NSObject, ObservableObject {
         return ExitOffer.arm(from: exitOffering?.metadata, appUserID: Purchases.shared.appUserID)
     }
 
-    /// A paywall was closed on purpose. Records the close for the test and
-    /// answers whether the caller should show the exit offer in its place.
     /// "No thanks" on the in-place offer: the customer saw the half price and left.
     func declineExitOffer() {
         ExitOffer.recordOutcome(.declined)
         syncConversionAttributes()
     }
 
+    /// A paywall was closed on purpose. Records the close for the test and
+    /// answers whether the caller should show the exit offer in its place.
     func exitOfferOnClose(surface: String) -> Bool {
         #if DEBUG
         if ScreenshotConfig.isEnabled && !ExitOffer.isForced { return false }

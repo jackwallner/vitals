@@ -28,6 +28,13 @@ buys `exit_annual`, and the way out reads "No thanks" (the paywall keeps its
 close button). The tiles appearing is the impression; "No thanks" calls
 `StoreService.declineExitOffer()`, and a purchase records its outcome in
 `StoreService.purchase`.
+The tile reads "Your price", never "One-time price": the plan renews at that
+price every year. While `force: "offer"` is set for App Review, every 1.9.1
+build in the wild and every non-capture UI test gets the offer on its first
+close, so UI test dismiss helpers also look for "No thanks".
 `-exitOffer.force` (DEBUG) shows it on the next close; `-PaywallSnapshot
 exit-sheet` captures the trial sheet version and `exit` the paywall (tap close).
+UI tests: `ExitOfferUITests` (onboarding, paywall),
+`SeededHealthFlowUITests.testTrialSheetNotNowTurnsIntoTheExitOffer` (the real
+trial sheet), and the `testOnboardingExitOffer` release journey.
 Method, go-live steps and readout: `~/ios/growth/exit-offer-test.md`.
