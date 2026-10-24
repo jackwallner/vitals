@@ -119,7 +119,16 @@ private enum HistoryPrefs {
 struct HistoryView: View {
     /// When set, the view renders a single-metric detail screen (pushed from a
     /// Dashboard row or a History chart card) instead of the full History tab.
-    var focusMetric: HistoryMetric? = nil
+    let focusMetric: HistoryMetric?
+
+    /// Detail screens pushed over the full History tab. Seeded only by capture
+    /// runs that open on a detail, so it arrives with its back button.
+    @State private var path: [HistoryMetric]
+
+    init(focusMetric: HistoryMetric? = nil, pushing pushed: HistoryMetric? = nil) {
+        self.focusMetric = focusMetric
+        _path = State(initialValue: pushed.map { [$0] } ?? [])
+    }
 
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -134,8 +143,13 @@ struct HistoryView: View {
     /// the last card sits under the banner at full scroll while paused.
     @ScaledMetric(relativeTo: .footnote) private var pausedBannerInset: CGFloat = 58
 
+    /// Unfolded, the tab bar sits above the leading pane instead of over it.
+    @Environment(\.isUnfoldedPane) private var isUnfoldedPane
+    @Environment(\.dismiss) private var dismiss
+
     private var bottomContentInset: CGFloat {
-        90 + (store.isPro && goals.isAveragesPaused ? pausedBannerInset : 0)
+        guard !isUnfoldedPane else { return 24 }
+        return 90 + (store.isPro && goals.isAveragesPaused ? pausedBannerInset : 0)
     }
     @State private var selectedPeriod: Period = HistoryPrefs.savedPeriod()
     @State private var customStart: Date = HistoryPrefs.savedCustomStart()
@@ -530,8 +544,10 @@ struct HistoryView: View {
         if let focusMetric {
             focusedBody(focusMetric)
         } else {
-            NavigationStack {
+            NavigationStack(path: $path) {
                 fullBody
+                    // Hidden under the custom header; names the detail's back button.
+                    .navigationTitle("History")
                     .toolbar(.hidden, for: .navigationBar)
                     .background(InteractivePopGestureEnabler())
                     .navigationDestination(for: HistoryMetric.self) { metric in
@@ -1538,17 +1554,31 @@ struct HistoryView: View {
                         color: Theme.macroColor(only)
                     )
                 } else {
-                    CardRow {
-                        ForEach(visible) { kind in
-                            AverageCard(
-                                label: "Avg \(kind.label)",
-                                value: "\(Int(summary.average.grams(kind).rounded())) g",
-                                color: Theme.macroColor(kind)
-                            )
-                        }
+                    // Three across, "AVG PROTEIN" is cut short on a narrow
+                    // phone or an unfolded pane; then every card drops "Avg",
+                    // which the per-logged-day caption below already says.
+                    ViewThatFits(in: .horizontal) {
+                        macroAverageRow(summary, visible) { "Avg \($0.label)" }
+                        macroAverageRow(summary, visible) { $0.label }
                     }
                 }
                 macroAverageDenominatorCaption(summary)
+            }
+        }
+    }
+
+    private func macroAverageRow(
+        _ summary: MacroSummary,
+        _ visible: [MacroKind],
+        label: @escaping (MacroKind) -> String
+    ) -> some View {
+        CardRow(equalColumns: true) {
+            ForEach(visible) { kind in
+                AverageCard(
+                    label: label(kind),
+                    value: "\(Int(summary.average.grams(kind).rounded())) g",
+                    color: Theme.macroColor(kind)
+                )
             }
         }
     }
@@ -1590,11 +1620,43 @@ struct HistoryView: View {
         .padding(.horizontal, 24)
     }
 
+    /// The unfolded detail's back button and title, in the same row and style
+    /// as the History header it was pushed from.
+    private func paneDetailHeader(_ metric: HistoryMetric) -> some View {
+        HStack(spacing: 12) {
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(Theme.textPrimary)
+                    .frame(width: 22, height: 22)
+                    .padding(10)
+                    .background(Theme.cardSurface, in: Circle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Back")
+
+            Text(metric.title)
+                .font(.title.bold())
+                .foregroundStyle(Theme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
+            Spacer()
+        }
+        .padding(.horizontal, 24)
+        .padding(.top, 12)
+        .readableWidth()
+    }
+
     private func focusedBody(_ metric: HistoryMetric) -> some View {
         ZStack {
             Theme.background.ignoresSafeArea()
 
             VStack(spacing: 0) {
+                if isUnfoldedPane {
+                    paneDetailHeader(metric)
+                }
+
                 periodSelectorBar
                     .readableWidth()
                     .padding(.top, 12)
@@ -1648,7 +1710,12 @@ struct HistoryView: View {
             }
         }
         .navigationTitle(metric.title)
-        .navigationBarTitleDisplayMode(.inline)
+        // Large, like the History header it is pushed from.
+        .navigationBarTitleDisplayMode(.large)
+        // iOS 27.1 puts the system back button in the vertical bar at the
+        // display's trailing edge, which unfolded is under the status bar,
+        // away from this pane's title. The pane draws its own instead.
+        .toolbar(isUnfoldedPane ? .hidden : .automatic, for: .navigationBar)
         .background(InteractivePopGestureEnabler())
         .task { await loadHistory() }
         .onChange(of: selectedPeriod) { _, _ in
@@ -1778,15 +1845,16 @@ struct HistoryView: View {
 
     @ViewBuilder
     private func focusedChartCard(_ metric: HistoryMetric) -> some View {
+        // "Daily": the screen's title already names the metric.
         switch metric {
         case .calories:
-            ChartCard(title: "Calories", selection: selectedCalorieRecord) { caloriesChart }
+            ChartCard(title: "Daily Calories", selection: selectedCalorieRecord) { caloriesChart }
         case .steps:
-            ChartCard(title: "Steps", selection: selectedStepRecord) { stepsChart }
+            ChartCard(title: "Daily Steps", selection: selectedStepRecord) { stepsChart }
         case .net:
-            ChartCard(title: "Net Deficit", selection: hasNetData ? selectedNetRecord : nil) { netDeficitCardContent }
+            ChartCard(title: "Daily Net Deficit", selection: hasNetData ? selectedNetRecord : nil) { netDeficitCardContent }
         case .macros:
-            ChartCard(title: "Macros", selection: hasMacroData ? selectedMacroRecord : nil) { macrosCardContent }
+            ChartCard(title: "Daily Macros", selection: hasMacroData ? selectedMacroRecord : nil) { macrosCardContent }
         }
     }
 
@@ -2864,13 +2932,49 @@ struct LoadingBar: View {
 /// a screen cannot hold "TOTAL CALORIES" or a six-digit total.
 private struct CardRow<Content: View>: View {
     @Environment(\.dynamicTypeSize) private var typeSize
+    var equalColumns = false
     @ViewBuilder let content: Content
 
     var body: some View {
         let layout = typeSize.isAccessibilitySize
             ? AnyLayout(VStackLayout(spacing: 12))
-            : AnyLayout(HStackLayout(spacing: 12))
+            : equalColumns ? AnyLayout(EqualColumnsRow(spacing: 12)) : AnyLayout(HStackLayout(spacing: 12))
         layout { content }
+    }
+}
+
+/// Equal columns, as an HStack of full-width cards lays out, and measured the
+/// same way: its ideal width is the widest card times the count. An HStack
+/// reports the sum of the cards' widths, so ViewThatFits picked "AVG PROTEIN"
+/// for a row that then gave it a third and shrank its label below the others.
+private struct EqualColumnsRow: Layout {
+    var spacing: CGFloat
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        guard !subviews.isEmpty else { return .zero }
+        let count = CGFloat(subviews.count)
+        let gaps = spacing * (count - 1)
+        var width = proposal.width ?? .infinity
+        if !width.isFinite {
+            let widest = subviews.map { $0.sizeThatFits(.unspecified).width }.max() ?? 0
+            width = widest * count + gaps
+        }
+        let column = ProposedViewSize(width: (width - gaps) / count, height: proposal.height)
+        let height = subviews.map { $0.sizeThatFits(column).height }.max() ?? 0
+        return CGSize(width: width, height: height)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        guard !subviews.isEmpty else { return }
+        let count = CGFloat(subviews.count)
+        let column = (bounds.width - spacing * (count - 1)) / count
+        for (index, subview) in subviews.enumerated() {
+            let x = bounds.minX + CGFloat(index) * (column + spacing)
+            subview.place(
+                at: CGPoint(x: x, y: bounds.minY),
+                proposal: ProposedViewSize(width: column, height: bounds.height)
+            )
+        }
     }
 }
 

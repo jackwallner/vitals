@@ -22,16 +22,18 @@ struct CTAGlow: ViewModifier {
             // Two shadows: a tight one that keeps the button's own edge crisp,
             // and a wide soft one that is the glow people actually notice.
             .shadow(color: tint.opacity(0.35), radius: 6, x: 0, y: 2)
-            .shadow(
-                color: tint.opacity(open ? 0.45 : 0.18),
-                radius: open ? 22 : 12,
-                x: 0,
-                y: 4
-            )
-            .animation(
-                reduceMotion ? nil : .easeInOut(duration: period).repeatForever(autoreverses: true),
-                value: open
-            )
+            // Scoped to the halo. Attached to the whole button, the endless
+            // breath also caught any change made in the same update as `open`,
+            // so a CTA that appeared with its plan cross-faded its spinner and
+            // label forever, both at half strength.
+            .animation(reduceMotion ? nil : .easeInOut(duration: period).repeatForever(autoreverses: true)) {
+                $0.shadow(
+                    color: tint.opacity(open ? 0.45 : 0.18),
+                    radius: open ? 22 : 12,
+                    x: 0,
+                    y: 4
+                )
+            }
             .onAppear {
                 // Reduce Motion still gets the halo, just a still one at its
                 // resting spread — it is emphasis, not motion, that carries it.

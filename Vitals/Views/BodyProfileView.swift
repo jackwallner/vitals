@@ -70,6 +70,8 @@ struct BodyProfileView: View {
         .background(Theme.background.ignoresSafeArea())
         .navigationTitle("Body Profile")
         .navigationBarTitleDisplayMode(.inline)
+        .unfoldedPaneBackHeader("Body Profile")
+        .background(InteractivePopGestureEnabler())
         .sheet(item: $trialPitch) { pitch in
             TrialOfferPitchSheet(request: pitch, onDismiss: { trialPitch = nil })
                 .environmentObject(store)

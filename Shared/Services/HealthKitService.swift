@@ -292,7 +292,11 @@ final class HealthKitService: ObservableObject {
 
     func fetchDietaryHistory(from start: Date, to end: Date) async throws -> [(date: Date, foodCalories: Double)] {
         #if DEBUG
-        if ScreenshotConfig.isEnabled { return [] }
+        if ScreenshotConfig.isEnabled {
+            // Food that agrees with the seeded macros, so History's deficit is
+            // burned minus eaten rather than the whole burn.
+            return ScreenshotFixtures.dietaryHistory(days: ScreenshotFixtures.dayCount(from: start, to: end), end: end)
+        }
         #endif
         let normalizedStart = DateHelpers.startOfDay(start)
         let endNormalized = DateHelpers.startOfDay(end)
@@ -356,15 +360,7 @@ final class HealthKitService: ObservableObject {
     func fetchMacroHistory(from start: Date, to end: Date) async throws -> [(date: Date, macros: MacroTotals)] {
         #if DEBUG
         if ScreenshotConfig.isEnabled {
-            // Inclusive day count, so a 7D period seeds 7 bars rather than 30.
-            let calendar = Calendar.current
-            let span = calendar.dateComponents(
-                [.day],
-                from: calendar.startOfDay(for: start),
-                to: calendar.startOfDay(for: end)
-            ).day ?? 0
-            let dayCount = max(span + 1, 1)
-            return ScreenshotFixtures.macroHistory(days: dayCount, end: end)
+            return ScreenshotFixtures.macroHistory(days: ScreenshotFixtures.dayCount(from: start, to: end), end: end)
         }
         #endif
         let normalizedStart = DateHelpers.startOfDay(start)
@@ -584,6 +580,11 @@ final class HealthKitService: ObservableObject {
     /// caller can't distinguish "denied" from "absent" (HealthKit doesn't expose
     /// read auth), so the UI offers manual entry either way.
     func fetchBodyProfileFromHealth(includeBodyFat: Bool = true) async throws -> HealthBodyProfile {
+        #if DEBUG
+        if ScreenshotConfig.isEnabled {
+            return ScreenshotFixtures.bodyProfile(includeBodyFat: includeBodyFat)
+        }
+        #endif
         guard HKHealthStore.isHealthDataAvailable() else { return .empty }
 
         async let height = mostRecentQuantity(.height, unit: .meter())

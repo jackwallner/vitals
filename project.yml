@@ -173,6 +173,7 @@ targets:
       - path: Shared/Utilities/GoalRecalibration.swift
       - path: Shared/Utilities/TodaySnapshotResolver.swift
       - path: Shared/Utilities/DayWindows.swift
+      - path: Shared/Utilities/ScreenshotConfig.swift
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES

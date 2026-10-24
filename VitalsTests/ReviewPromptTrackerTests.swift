@@ -1,10 +1,9 @@
 import XCTest
 import Foundation
 
-// The app defines these in DataService.swift and ScreenshotConfig.swift, which
-// pull in most of the app. The test bundle compiles the tracker on its own.
+// The app defines this in DataService.swift, which pulls in most of the app.
+// The test bundle compiles the tracker on its own.
 let vitalsAppGroupID = "group.com.jackwallner.vitals"
-enum ScreenshotConfig { static let isEnabled = false }
 
 /// The rating-ask rules from the fleet policy: ask from the second launch, wait
 /// out a 30-day cooldown, stop only when the user opened the review page, and

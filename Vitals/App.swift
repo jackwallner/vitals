@@ -524,6 +524,9 @@ struct MainTabView: View {
     /// The container's width and fold, measured so the unfolded iPhone Duo can
     /// put the tabs and History on opposite sides of the fold.
     @State private var paneGeometry = PaneGeometry(width: 0, fold: nil)
+    /// The tab bar stack's height. Unfolded, the bar sits at the top of the
+    /// leading pane and the pane starts below it, so the bar never covers a card.
+    @State private var tabBarHeight: CGFloat = 0
     /// The Excluded Days screen, raised from the paused-averages banner rather
     /// than through Settings, so "unpause" is two taps from anywhere in the app.
     @State private var showExcludedDays = false
@@ -694,7 +697,7 @@ struct MainTabView: View {
                 .padding(.horizontal, 12)
                 .padding(.vertical, 7)
                 .background(.black.opacity(0.82), in: Capsule())
-                .offset(y: -46)
+                .offset(y: split == nil ? -46 : 46)
                 .allowsHitTesting(false)
                 .accessibilityIdentifier("variant-toast")
         }
@@ -1137,6 +1140,21 @@ struct MainTabView: View {
         split == nil ? horizontalSizeClass : .compact
     }
 
+    /// Unfolded, the bar sits above the primary pane instead of floating over it.
+    private var primaryTopInset: CGFloat {
+        UnfoldedSplit.primaryTopInset(split, tabBarHeight: tabBarHeight)
+    }
+
+    /// Opaque down to the last 28 pt, which fade out. Zero height folded.
+    private var paneEdgeFade: some View {
+        VStack(spacing: 0) {
+            Color.black
+            LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
+                .frame(height: split == nil ? 0 : 28)
+        }
+        .ignoresSafeArea()
+    }
+
     private var upgradeTab: some View {
         Group {
             if store.isPro {
@@ -1163,21 +1181,26 @@ struct MainTabView: View {
             }
         }
         .environment(\.horizontalSizeClass, paneSizeClass)
+        .environment(\.isUnfoldedPane, split != nil)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .safeAreaInset(edge: .bottom, spacing: 0) {
             // Reserve space so the native paywall's CTA + footer aren't
-            // hidden by the floating tab-bar capsule below.
-            Color.clear.frame(height: 68)
+            // hidden by the floating tab-bar capsule below. Unfolded, the
+            // bar sits above the pane instead.
+            Color.clear.frame(height: split == nil ? 68 : 0)
         }
         // After the inset, which fills its proposal and would centre a
         // narrower pane across the fold.
         .frame(maxWidth: split?.primaryWidth ?? .infinity)
+        .padding(.top, primaryTopInset)
         .opacity(selectedTab == 2 ? 1 : 0)
         .allowsHitTesting(selectedTab == 2)
         .accessibilityHidden(selectedTab != 2)
     }
 
-    var body: some View {
+    /// The panes and the tab bar. Its own property: inline in `body`, the
+    /// modifier chain below outgrew the type checker's time limit.
+    private var panes: some View {
         ZStack(alignment: .bottomLeading) {
             // Keep both views alive, toggle visibility. `.accessibilityHidden` on the
             // inactive tab prevents VoiceOver's rotor from surfacing elements that are
@@ -1186,24 +1209,23 @@ struct MainTabView: View {
             // is rebuilt and both keep their scroll position and period.
             DashboardView()
                 .environment(\.horizontalSizeClass, paneSizeClass)
+                .environment(\.isUnfoldedPane, split != nil)
                 .frame(maxWidth: split?.primaryWidth ?? .infinity, maxHeight: .infinity)
+                .padding(.top, primaryTopInset)
                 .opacity(selectedTab == 0 ? 1 : 0)
                 .allowsHitTesting(selectedTab == 0)
                 .accessibilityHidden(selectedTab != 0)
             if historyHasAppeared {
-                Group {
-                    if ScreenshotConfig.wantsMacroHistory {
-                        HistoryView(focusMetric: .macros)
-                    } else {
-                        HistoryView()
-                    }
-                }
-                .environment(\.horizontalSizeClass, paneSizeClass)
-                .frame(maxWidth: split?.secondaryWidth ?? .infinity, maxHeight: .infinity)
-                .padding(.leading, split?.secondaryX ?? 0)
-                .opacity(showsHistory ? 1 : 0)
-                .allowsHitTesting(showsHistory)
-                .accessibilityHidden(!showsHistory)
+                // The macro capture opens on the detail pushed over History, as
+                // a tap on its Macros card would, so it has its back button.
+                HistoryView(pushing: ScreenshotConfig.wantsMacroHistory ? .macros : nil)
+                    .environment(\.horizontalSizeClass, paneSizeClass)
+                    .environment(\.isUnfoldedPane, split != nil)
+                    .frame(maxWidth: split?.secondaryWidth ?? .infinity, maxHeight: .infinity)
+                    .padding(.leading, split?.secondaryX ?? 0)
+                    .opacity(showsHistory ? 1 : 0)
+                    .allowsHitTesting(showsHistory)
+                    .accessibilityHidden(!showsHistory)
             }
             if upgradeHasAppeared || selectedTab == 2 {
                 upgradeTab
@@ -1253,12 +1275,31 @@ struct MainTabView: View {
                 .overlay(Capsule().stroke(Color(.separator).opacity(0.3), lineWidth: 0.5))
                 .readableWidth(420)
                 #if DEBUG
-                .overlay(alignment: .top) { variantToast }
+                .overlay(alignment: split == nil ? .top : .bottom) { variantToast }
                 #endif
             }
-            .padding(.bottom, 12)
-            .frame(maxWidth: split?.primaryWidth ?? .infinity)
+            .padding(.top, split == nil ? 0 : 6)
+            .padding(.bottom, split == nil ? 12 : 4)
+            .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { tabBarHeight = $0 }
+            // Unfolded, the bar heads the leading pane, as on iPad, so both
+            // panes run to the display's bottom edge and no card ends against
+            // a bar. Same view either way: folding only moves it.
+            .frame(
+                maxWidth: split?.primaryWidth ?? .infinity,
+                maxHeight: .infinity,
+                alignment: split == nil ? .bottom : .top
+            )
         }
+        // Unfolded, both panes scroll off the display's bottom edge; a short
+        // fade there keeps the last line from being sliced mid-glyph. Folded,
+        // the fade has no height and the floating bar sits on that edge.
+        .mask { paneEdgeFade }
+    }
+
+    var body: some View {
+        panes
+        // Behind the bar's strip above the primary pane.
+        .background(Theme.background.ignoresSafeArea())
         .onGeometryChange(for: PaneGeometry.self) { proxy in
             PaneGeometry(width: proxy.size.width, fold: proxy.verticalFold())
         } action: { paneGeometry = $0 }
@@ -1490,6 +1531,7 @@ struct MainTabView: View {
 
 private struct PremiumFeaturesView: View {
     @Environment(\.scenePhase) var scenePhase
+    @Environment(\.isUnfoldedPane) private var isUnfoldedPane
     @EnvironmentObject private var store: StoreService
     @StateObject private var healthKit = HealthKitService.shared
     @StateObject private var goals = GoalSettings.shared
@@ -1517,7 +1559,8 @@ private struct PremiumFeaturesView: View {
 
     @StateObject private var bodyProfile = BodyProfileStore.shared
     @State private var resolvedBMI: Double?
-    @State private var showBodyProfile = false
+    /// The Body Profile capture opens on it pushed, as a tap on its row would.
+    @State private var showBodyProfile = ScreenshotConfig.wantsBodyProfile
 
     var body: some View {
         NavigationStack {
@@ -1583,7 +1626,7 @@ private struct PremiumFeaturesView: View {
                     }
                     .padding(.horizontal, 24)
                     .padding(.top, 20)
-                    .padding(.bottom, 96)
+                    .padding(.bottom, isUnfoldedPane ? 24 : 96)
                     .readableWidth()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
