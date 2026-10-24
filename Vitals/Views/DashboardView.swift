@@ -40,55 +40,6 @@ private enum GoalCelebration {
     }
 }
 
-private enum HealthNotice: Equatable {
-    case accessNeeded
-    case accessBlocked
-    case noData
-    case loadError
-
-    var iconName: String {
-        switch self {
-        case .accessNeeded: "heart.text.square.fill"
-        case .accessBlocked: "lock.shield"
-        case .noData: "heart.text.clipboard"
-        case .loadError: "exclamationmark.triangle.fill"
-        }
-    }
-
-    var title: String {
-        switch self {
-        case .accessNeeded: "Health access needed"
-        case .accessBlocked: "Health access is off"
-        case .noData: "No Health data yet"
-        case .loadError: "Couldn't refresh Health data"
-        }
-    }
-
-    var message: String {
-        switch self {
-        case .accessNeeded:
-            "Grant Apple Health access so Total Calories can load your active calories, resting calories, and steps."
-        case .accessBlocked:
-            "In Apple Health: Profile → Privacy → Apps → Total Calories, then turn on each category to load your data."
-        case .noData:
-            "If you just granted access, Apple Health may still be catching up. If this seems wrong, check Health access."
-        case .loadError:
-            "Try reopening the app in a moment, or check Apple Health access."
-        }
-    }
-
-    var buttonTitle: String? {
-        switch self {
-        case .accessNeeded:
-            "Enable Health"
-        case .accessBlocked:
-            "Open Health"
-        case .noData, .loadError:
-            "Open Health"
-        }
-    }
-}
-
 struct DashboardView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -544,9 +495,23 @@ struct DashboardView: View {
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(.white.opacity(0.92))
                     .fixedSize(horizontal: false, vertical: true)
+                if notice == .noData {
+                    HStack {
+                        Button("Retry") {
+                            Task { await refresh() }
+                        }
+                        Button("Check Health Access") {
+                            openHealthApp()
+                        }
+                    }
+                    .font(.system(.caption, design: .rounded, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .buttonStyle(.plain)
+                    .padding(.top, 6)
+                }
             }
             Spacer(minLength: 0)
-            if let buttonTitle = notice.buttonTitle {
+            if notice != .noData, let buttonTitle = notice.buttonTitle {
                 Button(buttonTitle) {
                     handleHealthNoticeAction(notice)
                 }
@@ -614,7 +579,7 @@ struct DashboardView: View {
                     .accessibilityLabel("Settings")
                 }
                 HStack(spacing: 8) {
-                    if healthNotice == .accessNeeded || healthNotice == .accessBlocked {
+                    if healthNotice == .accessNeeded {
                         Text("Waiting for Health access")
                             .font(.system(.caption2, design: .rounded))
                             .foregroundStyle(Theme.textTertiary)
@@ -1501,13 +1466,10 @@ struct DashboardView: View {
         switch notice {
         case .accessNeeded:
             Task {
-                // If the system has already prompted (status == .unnecessary),
-                // requestAuthorization is a silent no-op for previously-denied
-                // categories. Surface a Settings deeplink instead so the user
-                // can recover.
+                // A handled prompt cannot distinguish denied access from empty data.
                 let status = await healthKit.authorizationRequestStatus()
                 if status == .unnecessary {
-                    healthNotice = .accessBlocked
+                    healthNotice = .noData
                     return
                 }
                 do {
@@ -1518,8 +1480,6 @@ struct DashboardView: View {
                     healthNotice = .loadError
                 }
             }
-        case .accessBlocked:
-            openHealthApp()
         case .noData, .loadError:
             openHealthApp()
         }
@@ -1790,30 +1750,6 @@ struct DashboardView: View {
         HealthKitService.isAllZero(stats)
     }
 
-    /// Classify the dashboard's recovery notice based on the most recent fetch result and
-    /// HealthKit authorization request status. Runs only when both live HK and the cache
-    /// were empty — otherwise the merged display values speak for themselves.
-    ///
-    /// - `shouldRequest`: system has not yet presented the sheet (or it was interrupted) →
-    ///   surface `.accessNeeded` so users can retry the prompt.
-    /// - `unnecessary`: sheet was already presented. We cannot tell granted-but-empty apart
-    ///   from denied via the API, so we prefer `.accessBlocked` (Settings deep-link) because
-    ///   it's strictly more useful recovery than `.noData` (Health app) for denied users.
-    ///   A brand-new device that genuinely has no HealthKit samples will show `.accessBlocked`
-    ///   once; as soon as any sample arrives (including from the Watch) the banner clears.
-    private func classifyEmptyFetchNotice(
-        requestStatus: HKAuthorizationRequestStatus?
-    ) -> HealthNotice {
-        switch requestStatus {
-        case .shouldRequest:
-            return .accessNeeded
-        case .unnecessary:
-            return .accessBlocked
-        default:
-            return .noData
-        }
-    }
-
     private func refresh() async {
         guard !isRefreshing else { return }
         isRefreshing = true
@@ -1881,16 +1817,15 @@ struct DashboardView: View {
             if isAllZero(displayStats) {
                 // An all-zero today read is normal early in the day (e.g. just
                 // after midnight, before any active/step/basal samples land). If
-                // we have ANY historical data, access clearly works — showing
-                // "Health access is off" then is a false alarm. Only surface the
-                // recovery banner when there's no evidence we've ever read data.
+                // cached history exists, keep the dashboard clear. Without it,
+                // offer neutral recovery since empty reads do not prove denial.
                 let hasHistory = (try? healthKit.fetchCachedHistory(days: 30))?
                     .contains { $0.active > 0 || $0.resting > 0 || $0.steps > 0 } ?? false
                 if hasHistory {
                     healthNotice = nil
                 } else {
                     let status = await healthKit.authorizationRequestStatus()
-                    healthNotice = classifyEmptyFetchNotice(requestStatus: status)
+                    healthNotice = HealthNotice.emptyFetch(requestStatus: status)
                 }
             } else {
                 // We have data to show — either fresh from iPhone HK, or merged
@@ -4533,6 +4468,16 @@ private struct SettingsSheet: View {
     @ViewBuilder
     private var vitalsPlusSection: some View {
         Section {
+            if store.entitlementStatus.resolution == .unresolved {
+                HStack {
+                    Text("Checking subscription")
+                        .foregroundStyle(Theme.textSecondary)
+                    Spacer()
+                    Button("Retry") {
+                        Task { await store.updateCustomerProductStatus(fetchPolicy: .fetchCurrent) }
+                    }
+                }
+            }
             if store.isPro {
                 VStack(alignment: .leading, spacing: 10) {
                     HStack(spacing: 12) {

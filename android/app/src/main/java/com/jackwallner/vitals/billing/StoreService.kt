@@ -71,12 +71,13 @@ class StoreService(
     private val diagnostics: ConversionDiagnostics,
 ) {
     private val reviewAccess = ReviewAccess(defaults, BuildConfig.PLAY_REVIEW_CODE_SHA256)
-    private var entitlementActive by mutableStateOf(false)
+    val entitlementStatus = EntitlementStatus(defaults)
+    private val entitlementActive: Boolean get() = entitlementStatus.resolution == EntitlementStatus.Resolution.ACTIVE
     private var overrideActive by mutableStateOf(BuildConfig.DEBUG && defaults.getBoolean(LOCAL_OVERRIDE))
     private var reviewGranted by mutableStateOf(reviewAccess.isGranted)
 
     /** The single gate the whole app reads. */
-    val isPro: Boolean get() = entitlementActive || overrideActive || reviewGranted
+    val isPro: Boolean get() = entitlementStatus.isPro || overrideActive || reviewGranted
 
     var isConfigured by mutableStateOf(false)
         private set
@@ -138,7 +139,10 @@ class StoreService(
         if (!configureIfNeeded() || isPreview) return
         runCatching { Purchases.sharedInstance.awaitCustomerInfo() }
             .onSuccess(::apply)
-            .onFailure { if (it is CancellationException) throw it }
+            .onFailure {
+                if (it is CancellationException) throw it
+                entitlementStatus.refreshFailed()
+            }
     }
 
     suspend fun fetchProducts() {
@@ -285,7 +289,7 @@ class StoreService(
         customerInfoLoaded = true
         hasSubscriptionHistory = info.allExpirationDatesByProduct.isNotEmpty()
         introEligibilityResolved = plans.isNotEmpty() || packages.isNotEmpty()
-        entitlementActive = info.entitlements.active.isNotEmpty()
+        entitlementStatus.resolve(info.entitlements.active.isNotEmpty())
     }
 
     private fun configureIfNeeded(): Boolean {

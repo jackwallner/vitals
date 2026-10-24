@@ -273,16 +273,10 @@ final class StoreService: NSObject, ObservableObject {
         didSet { CTAExperiment.offeringArm = CTAExperiment.from(metadata: currentOffering?.metadata) }
     }
     @Published private(set) var customerInfo: CustomerInfo?
-    @Published private(set) var isPro: Bool = false {
-        didSet {
-            guard oldValue != isPro else { return }
-            // Mirror the entitlement into the App Group so extensions (the TDEE
-            // widget) can gate the paid figure without a StoreKit round-trip,
-            // then nudge widget timelines to re-render against the new state.
-            StoreService.cachedProDefaults?.set(isPro, forKey: StoreService.cachedProKey)
-            WidgetCenter.shared.reloadAllTimelines()
-        }
-    }
+    @Published private(set) var entitlementStatus = EntitlementStatus(
+        cachedPro: StoreService.cachedProDefaults?.bool(forKey: StoreService.cachedProKey) ?? false
+    )
+    var isPro: Bool { entitlementStatus.isPro }
 
     /// App Group key mirroring the live `isPro` entitlement for widget gating.
     /// `nonisolated` because the widget and complication timeline providers read
@@ -329,15 +323,12 @@ final class StoreService: NSObject, ObservableObject {
 
     private override init() {}
 
-    /// Call once on app launch to configure RevenueCat and hydrate `isPro`.
-    /// The initial customer info fetch uses `.fetchCurrent` to bypass any stale cache
-    /// from a previous install — critical for sandbox testing where the purchase
-    /// history may have been cleared but the RevenueCat cache on-device has not.
+    /// Refresh current access on launch while honoring the App Group cache until resolved.
     func start() {
         configureIfNeeded()
         #if DEBUG
         if ScreenshotConfig.wantsPremiumActive {
-            isPro = true
+            resolveEntitlement(isPro: true)
         }
         #endif
         Task { await updateCustomerProductStatus(fetchPolicy: .fetchCurrent) }
@@ -752,7 +743,7 @@ final class StoreService: NSObject, ObservableObject {
         configureIfNeeded()
         #if DEBUG
         if ScreenshotConfig.wantsPremiumActive {
-            isPro = true
+            resolveEntitlement(isPro: true)
             return
         }
         #endif
@@ -762,6 +753,7 @@ final class StoreService: NSObject, ObservableObject {
             apply(customerInfo: info)
             lastError = nil
         } catch {
+            entitlementStatus.refreshFailed()
             logger.error("Customer info refresh failed: \(String(describing: error), privacy: .public)")
             lastError = "Couldn't refresh your subscription status. Check your connection and try again."
         }
@@ -796,18 +788,15 @@ final class StoreService: NSObject, ObservableObject {
         let allKeys = customerInfo.entitlements.all.keys.sorted().joined(separator: ", ")
         logger.info("Applied customerInfo — active: [\(activeKeys, privacy: .public)] all: [\(allKeys, privacy: .public)]")
         let hasActiveSubscription = customerInfo.hasVitalsProEntitlement
-        if isPro != hasActiveSubscription {
-            isPro = hasActiveSubscription
-            logger.info("isPro updated to \(hasActiveSubscription, privacy: .public)")
-        }
-        reconcileCachedEntitlement(with: hasActiveSubscription)
+        resolveEntitlement(isPro: hasActiveSubscription)
     }
 
-    /// `isPro` starts false on every launch, so a lapsed subscriber resolving as
-    /// free never changes it and its `didSet` never clears the mirror. Left
-    /// alone, the App Group would keep claiming Vitals+ and GoalSettings would
-    /// keep filtering excluded days behind UI that is already hidden. Every
-    /// resolved customer overwrites the mirror, changed or not.
+    private func resolveEntitlement(isPro: Bool) {
+        entitlementStatus.resolve(isPro: isPro)
+        reconcileCachedEntitlement(with: isPro)
+    }
+
+    /// Only a resolved customer response overwrites the App Group mirror.
     private func reconcileCachedEntitlement(with resolved: Bool) {
         guard let defaults = StoreService.cachedProDefaults,
               defaults.bool(forKey: StoreService.cachedProKey) != resolved

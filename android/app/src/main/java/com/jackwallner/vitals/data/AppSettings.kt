@@ -120,13 +120,4 @@ class AppSettings(private val defaults: KeyValueStore, private val isPro: () -> 
         pausedSince = null
         defaults.remove(ExcludedDays.PAUSED_SINCE_KEY)
     }
-
-    /** A lapsed subscriber's Pro-only switches go back off, like iOS. */
-    fun switchOffProFeatures() {
-        showActiveResting = false
-        showEnergyAverages = false
-        showProjections = false
-        showStreaks = false
-        showNet = false
-    }
 }

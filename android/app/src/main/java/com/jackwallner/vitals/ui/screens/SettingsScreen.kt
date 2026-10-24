@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jackwallner.vitals.AppGraph
 import com.jackwallner.vitals.BuildConfig
+import com.jackwallner.vitals.billing.EntitlementStatus
 import com.jackwallner.vitals.data.Appearance
 import com.jackwallner.vitals.data.HealthPermissions
 import com.jackwallner.vitals.model.PacingComparison
@@ -131,6 +132,12 @@ fun SettingsScreen(graph: AppGraph, onClose: () -> Unit) {
         }
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp).padding(bottom = 32.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
             FormSection(header = "Vitals+") {
+                if (store.entitlementStatus.resolution == EntitlementStatus.Resolution.UNRESOLVED) {
+                    Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text("Checking subscription", style = Type.footnote, color = palette.textSecondary, modifier = Modifier.weight(1f))
+                        TextButton(onClick = { scope.launch { store.refreshCustomerInfo() } }) { Text("Retry") }
+                    }
+                }
                 if (isPro) {
                     Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {

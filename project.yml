@@ -142,6 +142,8 @@ targets:
     platform: iOS
     sources:
       - path: VitalsTests
+      - path: Vitals/Views/HealthNotice.swift
+      - path: Shared/Utilities/EntitlementStatus.swift
       - path: Shared/Models/CalorieTrendSummary.swift
       - path: Shared/Models/MacroTotals.swift
       - path: Shared/Utilities/EnergyAveragesCalculator.swift

@@ -65,14 +65,6 @@ class SettingsAndCelebrationTest {
         assertFalse(store.contains("excludedDays"))
     }
 
-    @Test fun lapsedSubscriberSwitchesProFeaturesBackOff() {
-        val s = AppSettings(InMemoryStore()) { true }
-        s.showNet = true
-        s.showStreaks = true
-        s.switchOffProFeatures()
-        assertFalse(s.showNet || s.showStreaks)
-    }
-
     @Test fun celebrationFiresOncePerGoalPerDay() {
         var date = today
         val c = GoalCelebration(InMemoryStore()) { date }

@@ -122,9 +122,7 @@ private fun MainShell(graph: AppGraph, nav: Navigator) {
             "paywall" -> nav.push(Overlay.Paywall(null))
         }
     }
-    // A lapsed subscriber's Pro-only switches go back off, like iOS.
     LaunchedEffect(store.isPro) {
-        if (!store.isPro) settings.switchOffProFeatures()
         graph.review.recordProStatus(store.isPro)
     }
 
