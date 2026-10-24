@@ -33,9 +33,24 @@ struct UnfoldedSplit: Equatable, Sendable {
         let half = (width / 2).rounded(.down)
         return UnfoldedSplit(primaryWidth: half, secondaryX: half, secondaryWidth: width - half)
     }
+
+    /// The primary pane's top inset. Unfolded, the tab bar heads the leading
+    /// pane, so the pane starts below it and, like History, runs to the
+    /// display's bottom edge: no card is cut off against a docked bar. Folded,
+    /// the bar floats at the bottom and the pane fills the screen.
+    static func primaryTopInset(_ split: UnfoldedSplit?, tabBarHeight: CGFloat) -> CGFloat {
+        split == nil ? 0 : tabBarHeight
+    }
 }
 
 #if os(iOS)
+extension EnvironmentValues {
+    /// True inside one pane of the unfolded split. The tab bar sits above the
+    /// leading pane there, so scroll views drop the clearance they keep for a
+    /// floating bar, and Settings opens in its pane rather than as a sheet over both.
+    @Entry var isUnfoldedPane = false
+}
+
 extension GeometryProxy {
     /// The vertical fold's horizontal extent in this proxy's space. Inactive
     /// folds count too, so the panes don't jump while the device opens.

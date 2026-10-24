@@ -176,6 +176,8 @@ struct ExcludedDaysView: View {
         }
         .navigationTitle("Excluded Days")
         .navigationBarTitleDisplayMode(.inline)
+        .unfoldedPaneBackHeader("Excluded Days", background: Color(.systemGroupedBackground))
+        .background(InteractivePopGestureEnabler())
         .task(id: goals.excludedDayKeys) { await loadStats() }
         // Every appearance, not once: a first open before HealthKit has answered
         // (fresh install, permission still pending) would otherwise keep the

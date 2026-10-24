@@ -241,6 +241,9 @@ struct PaywallView: View {
     @EnvironmentObject private var store: StoreService
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var typeSize
+    /// An unfolded pane is too short for the pitch and every plan, so the plans
+    /// pin above the button there and only the pitch scrolls.
+    @Environment(\.isUnfoldedPane) private var isUnfoldedPane
 
     /// Set to `false` when rendered as tab content rather than in a sheet — the
     /// tab bar handles navigation, so a built-in close button looks off.
@@ -278,7 +281,9 @@ struct PaywallView: View {
         // catalog arm cut it to five and moved the rest to one summary line.
         // Which of those sells better is the whole point of running them
         // against each other, so both have to exist in the same binary.
-        if upgradeTabVariant == .fullList {
+        // An unfolded pane pins the plans, which leaves room for five and no
+        // summary line.
+        if upgradeTabVariant == .fullList && !pinsPlanCards {
             return [
                 .netDeficit, .macros, .activeResting, .energyAverages, .deepTrends,
                 .projections, .streaks, .customRangesPDF, .weeklyRecap, .bodyProfile,
@@ -388,7 +393,7 @@ struct PaywallView: View {
                         header(compact: true)
                         paywallFeatureList
                     }
-                    planCards
+                    if !pinsPlanCards { planCards }
                 }
                 .padding(.horizontal, 22)
                 .padding(.top, displayCloseButton ? 44 : 12)
@@ -429,6 +434,10 @@ struct PaywallView: View {
         }
     }
 
+    /// Plans that scrolled under the footer were sliced by it, half a plan
+    /// card showing above the button.
+    private var pinsPlanCards: Bool { isUnfoldedPane && showsFullBenefitList }
+
     /// CTA + required 3.1.2 copy.
     ///
     /// The copy below the button sits in a slot of *fixed* height. It used to be
@@ -437,6 +446,9 @@ struct PaywallView: View {
     /// thumb, mid-decision.
     private var pinnedCheckoutFooter: some View {
         VStack(spacing: 6) {
+            if pinsPlanCards {
+                planCards.padding(.bottom, 6)
+            }
             Button(action: startPurchase) {
                 ZStack {
                     Text(displayedCTATitle)
@@ -519,6 +531,9 @@ struct PaywallView: View {
                     )
                     .frame(height: 22)
                     .offset(y: -22)
+                    // Pinned plans leave only the pitch to scroll, and it
+                    // fits; a fade there only greyed out its last benefit.
+                    .opacity(pinsPlanCards ? 0 : 1)
                 }
         }
     }
@@ -551,7 +566,7 @@ struct PaywallView: View {
     /// the screen. 1.8.2 did not manage that and hid Lifetime; tightening the
     /// row rhythm is what buys the space back.
     private var featureListSpacing: CGFloat {
-        upgradeTabVariant == .fullList ? 3 : 7
+        upgradeTabVariant == .fullList || pinsPlanCards ? 3 : 7
     }
 
     private var paywallFeatureList: some View {
@@ -579,7 +594,7 @@ struct PaywallView: View {
                     }
                 }
             }
-            if upgradeTabVariant == .catalog, let remainingBenefitsLine {
+            if upgradeTabVariant == .catalog, !pinsPlanCards, let remainingBenefitsLine {
                 Text(remainingBenefitsLine)
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)

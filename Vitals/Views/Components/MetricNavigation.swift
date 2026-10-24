@@ -68,3 +68,54 @@ struct SkeletonBlock: View {
         .accessibilityHidden(true)
     }
 }
+
+extension View {
+    /// Unfolded, a pushed screen hides its navigation bar and draws its back
+    /// button and title in the pane: iOS 27.1 moves the system back button
+    /// into the vertical bar at the display's edge, outside the pane.
+    func unfoldedPaneBackHeader(_ title: String, background: Color = Theme.background) -> some View {
+        modifier(UnfoldedPaneBackHeader(title: title, background: background))
+    }
+}
+
+private struct UnfoldedPaneBackHeader: ViewModifier {
+    let title: String
+    let background: Color
+    @Environment(\.isUnfoldedPane) private var isUnfoldedPane
+    @Environment(\.dismiss) private var dismiss
+
+    func body(content: Content) -> some View {
+        content
+            .safeAreaInset(edge: .top, spacing: 0) {
+                if isUnfoldedPane { header }
+            }
+            .toolbar(isUnfoldedPane ? .hidden : .automatic, for: .navigationBar)
+    }
+
+    private var header: some View {
+        HStack(spacing: 12) {
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(Theme.textPrimary)
+                    .frame(width: 22, height: 22)
+                    .padding(10)
+                    .background(Theme.cardSurface, in: Circle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Back")
+
+            Text(title)
+                .font(.title.bold())
+                .foregroundStyle(Theme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
+            Spacer()
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 12)
+        .padding(.bottom, 4)
+        .background(background)
+    }
+}

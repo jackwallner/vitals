@@ -60,8 +60,12 @@ struct DashboardView: View {
     /// the last card sits under the banner at full scroll while paused.
     @ScaledMetric(relativeTo: .footnote) private var pausedBannerInset: CGFloat = 58
 
+    /// Unfolded, the tab bar sits above the leading pane instead of over it.
+    @Environment(\.isUnfoldedPane) private var isUnfoldedPane
+
     private var bottomContentInset: CGFloat {
-        90 + (store.isPro && goals.isAveragesPaused ? pausedBannerInset : 0)
+        guard !isUnfoldedPane else { return 24 }
+        return 90 + (store.isPro && goals.isAveragesPaused ? pausedBannerInset : 0)
     }
     @State private var activeCalories: Double = 0
     @State private var restingCalories: Double = 0
@@ -257,6 +261,26 @@ struct DashboardView: View {
     }
 
     var body: some View {
+        dashboardStack
+            // Unfolded, Settings fills Today's pane, beside History, rather
+            // than dimming both panes with a sheet that straddles the fold.
+            // Outside the stack: Settings brings its own NavigationStack.
+            .overlay {
+                if showSettings && isUnfoldedPane {
+                    SettingsSheet(goals: goals, close: { showSettings = false })
+                        .environmentObject(store)
+                        // A sheet's rounded top, so the panel reads as raised
+                        // within the pane under the tab bar, not cut from it.
+                        .clipShape(UnevenRoundedRectangle(topLeadingRadius: 24, topTrailingRadius: 24, style: .continuous))
+                        .padding(.top, 4)
+                        .transition(.move(edge: .bottom))
+                        .onDisappear(perform: settingsDidClose)
+                }
+            }
+            .animation(.snappy(duration: 0.3), value: showSettings && isUnfoldedPane)
+    }
+
+    private var dashboardStack: some View {
         NavigationStack(path: $navPath) {
             ZStack {
                 Theme.background
@@ -424,15 +448,7 @@ struct DashboardView: View {
         .onChange(of: showOnboarding) { _, isUp in
             TrialOfferCoordinator.shared.coveringSheetIsPresented = isUp || showSettings
         }
-        .sheet(isPresented: $showSettings, onDismiss: {
-            if pendingNetDeficitDietaryAuth {
-                Task { await finishEnableNetDeficitWithDietaryAuth() }
-            } else if pendingMacrosHealthAuth {
-                Task { await finishEnableMacrosWithHealthAuth() }
-            } else {
-                Task { await refresh() }
-            }
-        }) {
+        .sheet(isPresented: settingsSheetIsPresented, onDismiss: settingsDidClose) {
             SettingsSheet(goals: goals)
                 .environmentObject(store)
                 .presentationDetents([.large])
@@ -447,6 +463,23 @@ struct DashboardView: View {
                 .environmentObject(store)
                 .interactiveDismissDisabled()
         }
+        }
+    }
+
+    private var settingsSheetIsPresented: Binding<Bool> {
+        Binding(
+            get: { showSettings && !isUnfoldedPane },
+            set: { if !$0 { showSettings = false } }
+        )
+    }
+
+    private func settingsDidClose() {
+        if pendingNetDeficitDietaryAuth {
+            Task { await finishEnableNetDeficitWithDietaryAuth() }
+        } else if pendingMacrosHealthAuth {
+            Task { await finishEnableMacrosWithHealthAuth() }
+        } else {
+            Task { await refresh() }
         }
     }
 
@@ -1562,6 +1595,7 @@ struct DashboardView: View {
     private func followUpGoalMoment() async {
         if !goals.hasAnsweredNotificationAsk,
            !goals.goalReachedNotificationsEnabled,
+           !ScreenshotConfig.isEnabled,
            await NotificationService.authorizationStatus() != .denied {
             // After the celebration toast, not on top of it.
             try? await Task.sleep(for: .seconds(2.8))
@@ -1972,7 +2006,9 @@ private enum DashboardPrompt: Equatable {
 extension DashboardView {
     @MainActor
     fileprivate func offerGoalRecalibrationIfNeeded(days: [MilestoneDay], excluded: Set<String>) {
-        guard prompt == nil, goals.hasCompletedSetup else { return }
+        // Capture runs show the day itself; the fixtures' week sits under the
+        // seeded goal, which made this card the first thing on every shot.
+        guard prompt == nil, goals.hasCompletedSetup, !ScreenshotConfig.isEnabled else { return }
         let calorieSuggestion = goals.showCalories ? GoalRecalibration.suggestion(
             metric: .calories,
             goal: goals.calorieGoal,
@@ -3511,6 +3547,8 @@ private struct GoalRow: View {
 
 private struct SettingsSheet: View {
     @ObservedObject var goals: GoalSettings
+    /// Closes Settings when it fills an unfolded pane instead of a sheet.
+    var close: (() -> Void)?
     @EnvironmentObject private var store: StoreService
     @Environment(\.dismiss) private var dismiss
     private let healthKit = HealthKitService.shared
@@ -4288,7 +4326,7 @@ private struct SettingsSheet: View {
                     }
 
                     Button {
-                        dismiss()
+                        closeSettings()
                         Task { @MainActor in
                             try? await Task.sleep(nanoseconds: 350_000_000)
                             ReviewPromptCoordinator.shared.requestFeedback()
@@ -4335,7 +4373,7 @@ private struct SettingsSheet: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
                         applyGoalDrafts()
-                        dismiss()
+                        closeSettings()
                     }
                     .bold()
                     .disabled(!calValid || !stepValid || !macroGoalsValid)
@@ -4411,6 +4449,10 @@ private struct SettingsSheet: View {
                 Task { notificationStatus = await NotificationService.authorizationStatus() }
             }
         }
+    }
+
+    private func closeSettings() {
+        if let close { close() } else { dismiss() }
     }
 
     /// Rate App and Get Help, on one line, in the same place for subscribers and

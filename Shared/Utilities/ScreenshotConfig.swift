@@ -19,6 +19,8 @@ enum ScreenshotScene: String {
     /// Settings sheet with Vitals+ unlocked and the intake toggles on, so the
     /// nested Fasting Mode / macro sub-options can be reviewed in capture runs.
     case settingsPro
+    /// Vitals+ with Body Profile pushed, filled in from Apple Health.
+    case bodyProfile
     case onboarding
     case watchToday
     case watchBreakdown
@@ -27,9 +29,14 @@ enum ScreenshotScene: String {
 
 enum ScreenshotConfig {
 #if DEBUG
-    static let isEnabled = ProcessInfo.processInfo.environment["VITALS_SCREENSHOT_MODE"] == "1"
+    /// `-ScreenshotScene <scene>` launch argument. Capture tools relaunch the
+    /// app once per scene with arguments, while the environment is fixed for
+    /// the whole run, so the argument wins and also turns screenshot mode on.
+    private static let launchScene = sceneArgument(in: ProcessInfo.processInfo.arguments)
+    static let isEnabled = launchScene != nil
+        || ProcessInfo.processInfo.environment["VITALS_SCREENSHOT_MODE"] == "1"
     static let scene = isEnabled
-        ? ScreenshotScene(rawValue: ProcessInfo.processInfo.environment["VITALS_SCREENSHOT_SCENE"] ?? "")
+        ? ScreenshotScene(rawValue: launchScene ?? ProcessInfo.processInfo.environment["VITALS_SCREENSHOT_SCENE"] ?? "")
         : nil
     /// Force intro-offer ineligible so we can verify used-trial / paid yearly
     /// copy across onboarding, trial sheet, milestone, paywall, and What's New.
@@ -46,8 +53,14 @@ enum ScreenshotConfig {
     static let keepsAppearance = false
 #endif
 
+    /// The value after the last `-ScreenshotScene`, or nil.
+    static func sceneArgument(in arguments: [String]) -> String? {
+        guard let flag = arguments.lastIndex(of: "-ScreenshotScene"), flag + 1 < arguments.count else { return nil }
+        return arguments[flag + 1]
+    }
+
     static var wantsHistoryTab: Bool { scene == .history || scene == .macroHistory }
-    static var wantsPremiumTab: Bool { scene == .premium || scene == .premiumActive }
+    static var wantsPremiumTab: Bool { scene == .premium || scene == .premiumActive || scene == .bodyProfile }
     // "Premium unlocked" (isPro true + Vitals+ readouts on). Covers the paywall-
     // while-subscribed scene and the premium Today-tab hero showing TDEE/BMR.
     static var wantsPremiumActive: Bool {
@@ -59,6 +72,7 @@ enum ScreenshotConfig {
             || scene == .macroGoals
             || scene == .macroHistory
             || scene == .settingsPro
+            || scene == .bodyProfile
     }
     static var wantsSettingsSheet: Bool { scene == .settings || scene == .settingsPro }
     static var wantsOnboarding: Bool { scene == .onboarding }
@@ -69,6 +83,7 @@ enum ScreenshotConfig {
         scene == .macroDashboard || scene == .macroGoals || scene == .macroHistory
     }
     static var wantsMacroHistory: Bool { scene == .macroHistory }
+    static var wantsBodyProfile: Bool { scene == .bodyProfile }
     static var wantsNetDeficit: Bool { scene == .netDeficit }
     static var wantsCalorieIntake: Bool { scene == .calorieIntake }
     static var wantsDarkDashboard: Bool { scene == .darkDashboard }
@@ -105,6 +120,12 @@ enum ScreenshotFixtures {
         }
     }
 
+    /// Height, weight and body fat as Apple Health would report them: a BMI of
+    /// 24.1, so Body Profile reads as a healthy, filled-in profile.
+    static func bodyProfile(includeBodyFat: Bool) -> HealthBodyProfile {
+        HealthBodyProfile(heightMeters: 1.78, weightKilograms: 76.2, bodyFatPercent: includeBodyFat ? 18.5 : nil)
+    }
+
     static func energyAverages() -> EnergyAveragesResult {
         EnergyAveragesResult(tdee: 2380, bmr: 1715, sampleDays: 30)
     }
@@ -125,6 +146,26 @@ enum ScreenshotFixtures {
                     fat: 60 + wobble * 2
                 )
             )
+        }
+    }
+
+    /// Inclusive day count, so a 7D period seeds 7 days rather than 30.
+    static func dayCount(from start: Date, to end: Date) -> Int {
+        let calendar = Calendar.current
+        let span = calendar.dateComponents(
+            [.day],
+            from: calendar.startOfDay(for: start),
+            to: calendar.startOfDay(for: end)
+        ).day ?? 0
+        return max(span + 1, 1)
+    }
+
+    /// Food logged each day of `macroHistory`: its macro calories plus the
+    /// same small remainder today's fixtures carry (1,950 eaten against
+    /// 1,861 macro calories), so the deficit and the macros tell one story.
+    static func dietaryHistory(days: Int, end: Date = .now) -> [(date: Date, foodCalories: Double)] {
+        macroHistory(days: days, end: end).map { day in
+            (date: day.date, foodCalories: day.macros.calories + 90)
         }
     }
 
