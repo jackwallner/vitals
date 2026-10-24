@@ -33,7 +33,9 @@ paths:
   ids change per boot; resolve them from `simctl io <udid> enumerate` by width
   (outer 1398, inner 2007).
 - App Store set (`APP_IPHONE_DUO`, 1398x2034): `scripts/render-duo-screenshots.py`
-  over raw captures; current set in `captures/vitals/duo-split-20261021/`.
+  over raw captures; current set in `captures/vitals/duo-20261024/` (source 17c07cd, passed independent
+  review 2026-10-24). Store frames: Today, deficit, Vitals+ tools, Body Profile, folded.
+  Macros is left out: its pushed back chevron sits beside the fold.
 - Captures: one `gh-sim all --device "iPhone Duo"` with `--env
   VITALS_SCREENSHOT_MODE=1` and one `--screen "-ScreenshotScene <scene>"` per
   surface (the launch argument overrides `VITALS_SCREENSHOT_SCENE`). Never

@@ -21,11 +21,11 @@ FONT = "/System/Library/Fonts/SFNSRounded.ttf"
 
 # (output name, source capture, header, folded)
 FRAMES = [
-    ("01-today-and-trends.png", "in-dashboard.png", "Today and your trends side by side", False),
-    ("02-burn-and-month.png", "in-premiumDashboard.png", "See your full burn beside your month", False),
-    ("03-deficit-and-history.png", "in-netDeficit.png", "Match today's deficit to your history", False),
-    ("04-macros-and-month.png", "in-calorieIntake.png", "Check today's macros against your month", False),
-    ("05-folded-glance.png", "out-dashboard.png", "Fold it shut for a quick glance", True),
+    ("01-burn-and-trend.png", "launch-inner.png", "Today's burn beside your 30-day trend", False),
+    ("02-deficit-all-month.png", "calorieIntake-inner.png", "Burned, eaten and your deficit all month", False),
+    ("03-vitals-plus-tools.png", "premiumActive-inner.png", "Every Vitals+ tool beside your history", False),
+    ("04-body-profile.png", "bodyProfile-inner.png", "Your BMI beside your trends", False),
+    ("05-folded-glance.png", "launch-outer.png", "Fold it shut for a quick glance", True),
 ]
 
 
@@ -44,15 +44,16 @@ def header_font(size: int) -> ImageFont.FreeTypeFont:
     return font
 
 
-def wrap(text: str, font: ImageFont.FreeTypeFont, width: int) -> list[str]:
-    """One line if it fits, else the two-line break with the most even lengths."""
+def wrap(text: str, font: ImageFont.FreeTypeFont, width: int) -> list[str] | None:
+    """One line if it fits, else the two-line break with the most even lengths;
+    None when no two-line break fits at this size."""
     if font.getlength(text) <= width:
         return [text]
     words = text.split()
     splits = [(" ".join(words[:i]), " ".join(words[i:])) for i in range(1, len(words))]
     fitting = [pair for pair in splits if max(map(font.getlength, pair)) <= width]
     if not fitting:
-        return [text, ""]  # forces a smaller size
+        return None
     return list(min(fitting, key=lambda pair: max(map(font.getlength, pair))))
 
 
@@ -63,10 +64,10 @@ def draw_header(img: Image.Image, text: str) -> int:
     while True:
         font = header_font(size)
         lines = wrap(text, font, W - 2 * 90)
-        if len(lines) <= 2 or size <= 80:
+        if lines or size <= 80:
             break
         size -= 4
-    assert len(lines) <= 2, text
+    assert lines, f"header does not fit in two lines: {text}"
     line_h = round(size * 1.12)
     y = 150
     for line in lines:
