@@ -88,4 +88,17 @@ final class ExitOfferTests: XCTestCase {
         ExitOffer.recordOutcome(.purchased)
         XCTAssertEqual(ExitOffer.subscriberAttributes["exit_offer_outcome"], "declined")
     }
+
+    /// An owed offer survives a relaunch until the sheet has been up, and the
+    /// flag is not part of the readout.
+    func testPendingPersistsAndStaysOutOfTheAttributes() {
+        XCTAssertFalse(ExitOffer.isPending)
+        _ = ExitOffer.shouldOffer(onCloseOf: "onboarding_trial", arm: .offer, offerLoaded: true, isPro: false)
+        ExitOffer.isPending = true
+        XCTAssertTrue(suite.bool(forKey: "conv.exitOffer.pending"), "not stored in the diagnostics suite")
+        XCTAssertTrue(ExitOffer.isPending)
+        XCTAssertNil(ExitOffer.subscriberAttributes["exit_offer_pending"])
+        ExitOffer.isPending = false
+        XCTAssertFalse(ExitOffer.isPending)
+    }
 }

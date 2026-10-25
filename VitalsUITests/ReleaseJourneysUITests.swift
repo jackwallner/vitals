@@ -37,9 +37,9 @@ final class ReleaseJourneysUITests: XCTestCase {
         QA.checkpoint(app, "pitch")
     }
 
-    /// The onboarding pitch after "Get Started" in the offer arm: the same page
-    /// with the exit offer's price tiles in it. Checked by the oracles like any
-    /// other screen, since it is one a new customer can land on.
+    /// The exit offer's own sheet, raised on Today a few seconds after "Get
+    /// Started" in the offer arm. Checked by the oracles like any other screen,
+    /// since it is one a new customer can land on.
     func testOnboardingExitOffer() {
         continueAfterFailure = false
         let app = XCUIApplication()
@@ -52,8 +52,8 @@ final class ReleaseJourneysUITests: XCTestCase {
         let softExit = app.buttons["Get Started"]
         XCTAssertTrue(softExit.waitForExistence(timeout: 25), "pitch never rendered")
         softExit.tap()
-        XCTAssertTrue(app.descendants(matching: .any)["exit-offer-tiles"].waitForExistence(timeout: 5), "offer never came in")
-        QA.checkpoint(app, "pitch-exit-offer")
+        XCTAssertTrue(app.descendants(matching: .any)["exit-offer-tiles"].waitForExistence(timeout: 25), "offer never followed on Today")
+        QA.checkpoint(app, "exit-offer-sheet")
     }
 
     func testTodayHistoryUpgradeAndBack() {

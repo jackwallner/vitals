@@ -14,8 +14,10 @@ import Foundation
 ///
 /// The close is the denominator, recorded for both arms the same way: the
 /// first deliberate close (a close button, "Not now", or onboarding's "Get
-/// Started"). A swipe-down is not counted in either arm. Readout:
-/// `~/ios/growth/exit-offer-test.md`.
+/// Started"). A swipe-down is not counted in either arm. The close itself
+/// goes through as normal in both arms; the offer arm then gets the offer as
+/// its own sheet a few seconds after Today is back on screen (`isPending`,
+/// shown by `MainTabView`). Readout: `~/ios/growth/exit-offer-test.md`.
 enum ExitOffer {
     enum Arm: String, Sendable {
         case offer
@@ -60,6 +62,7 @@ enum ExitOffer {
         static let surface = "conv.exitOffer.surface"
         static let shownAt = "conv.exitOffer.shownAt"
         static let outcome = "conv.exitOffer.outcome"
+        static let pending = "conv.exitOffer.pending"
     }
 
     /// Same suite as `ConversionDiagnostics`, so its test reset clears this too.
@@ -88,6 +91,13 @@ enum ExitOffer {
         }
         guard arm == .offer, offerLoaded else { return false }
         return d.object(forKey: Key.shownAt) == nil
+    }
+
+    /// Owed but not yet on screen. Persisted, so an app closed before the sheet
+    /// came up still gets it on the next launch.
+    static var isPending: Bool {
+        get { defaults.bool(forKey: Key.pending) }
+        set { defaults.set(newValue, forKey: Key.pending) }
     }
 
     static func recordShown(now: Date = .now) {

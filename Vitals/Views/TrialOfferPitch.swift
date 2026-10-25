@@ -19,6 +19,9 @@ struct TrialPitchRequest: Identifiable {
     var subheadline: String?
     /// The tap that raised this pitch, for settings `featureToEnable` can't name.
     var intent: TrialOfferCoordinator.Intent?
+    /// The exit offer's own sheet: the half-price plan instead of the trial
+    /// target. See `ExitOffer`.
+    var isExitOffer = false
 
     /// A feature tap. `impressionID` names the surface, not the feature, so the
     /// RevenueCat series stay comparable across builds.
@@ -45,6 +48,13 @@ struct TrialPitchRequest: Identifiable {
         focus = nil
         impressionID = passiveImpressionID
         featureToEnable = nil
+    }
+
+    /// The exit offer, raised a few seconds after a deliberate close.
+    static func exitOffer() -> TrialPitchRequest {
+        var request = TrialPitchRequest(passiveImpressionID: ExitOffer.impressionID)
+        request.isExitOffer = true
+        return request
     }
 
     /// Deep Trends and PDF export unlock with Pro itself and have no stored
@@ -87,8 +97,10 @@ struct TrialOfferPitchSheet: View {
     /// Set only on the used-trial pitch, where the user picks a plan. nil means
     /// "the one-tap trial target", which is always yearly.
     @State private var selectedPlanID: String?
-    /// Set when "Not now" turned this pitch into the exit offer. See `ExitOffer`.
-    @State private var exitOfferPackage: Package?
+    /// The half-price plan, on the exit offer's own sheet only. See `ExitOffer`.
+    private var exitOfferPackage: Package? {
+        request.isExitOffer ? store.exitOfferPackage : nil
+    }
 
     private var package: Package? {
         if let exitOfferPackage { return exitOfferPackage }
@@ -136,14 +148,16 @@ struct TrialOfferPitchSheet: View {
         .task {
             if store.products.isEmpty { await store.fetchProducts() }
             snapshot = store.conversionPackage
-            store.trackPaywallImpression(id: request.impressionID)
+            // The exit offer's tiles report its impression when they appear.
+            if !request.isExitOffer { store.trackPaywallImpression(id: request.impressionID) }
         }
     }
 
     private var pitch: some View {
         TrialOfferSheet(
             focus: request.focus,
-            headlineOverride: request.headline,
+            headlineOverride: exitOfferPackage.map { ExitOfferPriceTiles.headline(offer: $0, regular: store.yearlyPackage) }
+                ?? request.headline,
             subheadlineOverride: request.subheadline,
             logsFood: goals.logsFoodInHealth,
             // Trial language only when this Apple ID is still eligible —
@@ -177,19 +191,14 @@ struct TrialOfferPitchSheet: View {
         )
     }
 
+    /// "Not now" closes as normal; the exit offer, if owed, follows on its own.
     private func closeTapped() {
-        if exitOfferPackage != nil {
+        if request.isExitOffer {
             store.declineExitOffer()
-            onDismiss()
-            return
-        }
-        let surface = ConversionDiagnostics.surface(fromImpressionID: request.impressionID)
-        if store.exitOfferOnClose(surface: surface), let package = store.exitOfferPackage {
-            errorMessage = nil
-            withAnimation(.easeInOut(duration: 0.3)) { exitOfferPackage = package }
         } else {
-            onDismiss()
+            store.exitOfferOnClose(surface: ConversionDiagnostics.surface(fromImpressionID: request.impressionID))
         }
+        onDismiss()
     }
 
     /// CTA and disclosure follow the *selected* plan, not the yearly default —

@@ -2659,15 +2659,7 @@ private struct OnboardingSheet: View {
     /// Emergency fallback: presented only when the onboarding package failed to load,
     /// so the primary CTA is never a dead disabled button.
     @State private var showPaywallFallback = false
-    /// Set when "Get Started" turned this page into the exit offer: the price
-    /// tiles slide in, the button buys the half-price plan, and the way out
-    /// says "No thanks". See `ExitOffer`.
-    @State private var showExitOffer = false
-
-    /// What the trial button buys: the half-price plan once the offer is up.
-    private var trialPackage: Package? {
-        showExitOffer ? store.exitOfferPackage : store.onboardingTrialPackage
-    }
+    private var trialPackage: Package? { store.onboardingTrialPackage }
 
     /// The outgoing page is gone before the next one fades in. A plain
     /// crossfade stacked two pages of readable text for several frames.
@@ -2894,18 +2886,10 @@ private struct OnboardingSheet: View {
         }
     }
 
-    /// "Get Started": straight in, unless this is the close the exit offer
-    /// answers. Once the offer is up the same button is "No thanks".
+    /// "Get Started": straight in. The exit offer, if owed, follows on Today.
     private func leaveTrialStep() {
-        if showExitOffer {
-            store.declineExitOffer()
-            finishOnboarding()
-        } else if store.exitOfferOnClose(surface: "onboarding_trial"), store.exitOfferPackage != nil {
-            trialError = nil
-            withAnimation(.easeInOut(duration: 0.3)) { showExitOffer = true }
-        } else {
-            finishOnboarding()
-        }
+        store.exitOfferOnClose(surface: "onboarding_trial")
+        finishOnboarding()
     }
 
     /// Completes onboarding and dismisses. Does **not** stamp the passive trial
@@ -3232,7 +3216,7 @@ private struct OnboardingSheet: View {
         Button {
             leaveTrialStep()
         } label: {
-            Text(showExitOffer ? "No thanks" : "Get Started")
+            Text("Get Started")
                 .font(.system(.subheadline, design: .rounded, weight: .semibold))
                 .foregroundStyle(Theme.textSecondary)
                 .frame(maxWidth: .infinity)
@@ -3339,11 +3323,6 @@ private struct OnboardingSheet: View {
                             detail: point.detail
                         )
                     }
-                }
-
-                if showExitOffer, let offer = store.exitOfferPackage {
-                    ExitOfferPriceTiles(offer: offer, regular: store.yearlyPackage)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
 

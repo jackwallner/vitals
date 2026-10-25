@@ -263,10 +263,6 @@ struct PaywallView: View {
     /// Last honest CTA title. The button never falls back to a spinner-only
     /// control (that made the label flicker and hid it from UI tests).
     @State private var displayedCTATitle: String = CTAExperiment.trialCTATitleCase()
-    /// Set when the close button turned this paywall into the exit offer: the
-    /// price tiles take the plans' place and the button buys the half-price
-    /// plan. A second close is "No thanks". See `ExitOffer`.
-    @State private var exitOfferPackage: Package?
 
     /// Outcome bullets. Intent taps lead with the feature they asked for plus
     /// two related companions.
@@ -393,7 +389,7 @@ struct PaywallView: View {
                         header(compact: true)
                         paywallFeatureList
                     }
-                    if !pinsPlanCards { planCards }
+                    if !pinsPlanCards { planList }
                 }
                 .padding(.horizontal, 22)
                 .padding(.top, displayCloseButton ? 44 : 12)
@@ -420,7 +416,7 @@ struct PaywallView: View {
                     Spacer(minLength: 0)
                     header(compact: true)
                     paywallFeatureList
-                    planCards
+                    planList
                     Spacer(minLength: 0)
                 }
                 .padding(.horizontal, 22)
@@ -447,7 +443,7 @@ struct PaywallView: View {
     private var pinnedCheckoutFooter: some View {
         VStack(spacing: 6) {
             if pinsPlanCards {
-                planCards.padding(.bottom, 6)
+                planList.padding(.bottom, 6)
             }
             Button(action: startPurchase) {
                 ZStack {
@@ -763,16 +759,6 @@ struct PaywallView: View {
         }
     }
 
-    @ViewBuilder
-    private var planCards: some View {
-        if let exitOfferPackage {
-            ExitOfferPriceTiles(offer: exitOfferPackage, regular: store.yearlyPackage)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
-        } else {
-            planList
-        }
-    }
-
     private var planList: some View {
         VStack(spacing: 6) {
             ForEach(store.products, id: \.identifier) { package in
@@ -896,18 +882,10 @@ struct PaywallView: View {
         }
     }
 
+    /// Closes as normal; the exit offer, if owed, follows on its own.
     private func close() {
-        if exitOfferPackage != nil {
-            store.declineExitOffer()
-            dismiss()
-        } else if store.exitOfferOnClose(surface: "paywall"), let package = store.exitOfferPackage {
-            errorMessage = nil
-            restoreMessage = nil
-            selectedPackage = package
-            withAnimation(.easeInOut(duration: 0.3)) { exitOfferPackage = package }
-        } else {
-            dismiss()
-        }
+        store.exitOfferOnClose(surface: "paywall")
+        dismiss()
     }
 
     private func startRestore() {

@@ -533,22 +533,34 @@ final class StoreService: NSObject, ObservableObject {
         return ExitOffer.arm(from: exitOffering?.metadata, appUserID: Purchases.shared.appUserID)
     }
 
-    /// "No thanks" on the in-place offer: the customer saw the half price and left.
+    /// The exit offer is owed and has not been on screen yet. `MainTabView`
+    /// raises it once Today has been clear for a few seconds.
+    @Published private(set) var exitOfferDue = ExitOffer.isPending
+
+    /// "No thanks" on the offer: the customer saw the half price and left.
     func declineExitOffer() {
         ExitOffer.recordOutcome(.declined)
         syncConversionAttributes()
     }
 
-    /// A paywall was closed on purpose. Records the close for the test and
-    /// answers whether the caller should show the exit offer in its place.
-    func exitOfferOnClose(surface: String) -> Bool {
+    /// The offer sheet is up, or no longer owed (already Vitals+).
+    func clearExitOfferDue() {
+        ExitOffer.isPending = false
+        exitOfferDue = false
+    }
+
+    /// A paywall was closed on purpose. The caller closes as normal; this
+    /// records the close for the test and, in the offer arm, marks the offer
+    /// due so it follows a few seconds later as its own sheet.
+    func exitOfferOnClose(surface: String) {
         #if DEBUG
-        if ScreenshotConfig.isEnabled && !ExitOffer.isForced { return false }
+        if ScreenshotConfig.isEnabled && !ExitOffer.isForced { return }
         if ExitOffer.isForced {
-            // Record like a real offer-arm close, but show it on every close.
+            // Record like a real offer-arm close, but owe it on every close.
             _ = ExitOffer.shouldOffer(onCloseOf: surface, arm: .offer, offerLoaded: true, isPro: isPro)
             syncConversionAttributes()
-            return exitOfferPackage != nil && !isPro
+            if exitOfferPackage != nil && !isPro { markExitOfferDue() }
+            return
         }
         #endif
         let show = ExitOffer.shouldOffer(
@@ -558,7 +570,12 @@ final class StoreService: NSObject, ObservableObject {
             isPro: isPro
         )
         syncConversionAttributes()
-        return show
+        if show { markExitOfferDue() }
+    }
+
+    private func markExitOfferDue() {
+        ExitOffer.isPending = true
+        exitOfferDue = true
     }
 
     #if DEBUG

@@ -16,7 +16,6 @@ struct PaywallScreenshotHarness: View {
                 if request.focusSlug == "sheet" {
                     trialBackdrop { exitOfferSheet }
                 } else {
-                    // Tap the close button (with `-exitOffer.force`) to turn it.
                     PaywallView(displayCloseButton: true, focus: focus)
                 }
             } else if request.plan == .trial {
@@ -47,12 +46,13 @@ struct PaywallScreenshotHarness: View {
         }
     }
 
-    /// The trial sheet already turned into the exit offer.
+    /// The exit offer's own sheet, as `MainTabView` raises it.
     @ViewBuilder
     private var exitOfferSheet: some View {
         if let offer = store.exitOfferPackage {
             TrialOfferSheet(
                 focus: nil,
+                headlineOverride: ExitOfferPriceTiles.headline(offer: offer, regular: store.yearlyPackage),
                 offerLabel: offer.vitalsIntroOfferLabel,
                 priceLabel: offer.vitalsPriceLabel,
                 ctaTitle: store.ctaLabel(for: offer),

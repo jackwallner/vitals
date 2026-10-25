@@ -595,7 +595,11 @@ struct MainTabView: View {
         case launch
         case historyLoad
         case intent
+        case exitOffer
     }
+
+    /// How long Today has to sit clear before the exit offer comes up.
+    private static let exitOfferDelaySeconds = 3
 
     init() {
         if ScreenshotConfig.wantsHistoryTab {
@@ -830,6 +834,8 @@ struct MainTabView: View {
         // The What's New announcement owns the launch moment for users who just
         // updated; don't stack the passive trial pitch on top of it.
         guard !showWhatsNew else { return }
+        // An owed exit offer has this moment; see `presentExitOfferWhenClear`.
+        guard !store.exitOfferDue else { return }
         // Just finished onboarding this session — they already saw the trial step.
         // Re-pitch on a later cold launch at the value moment, not minutes later.
         guard !skipPassiveTrialThisSession else { return }
@@ -1003,9 +1009,30 @@ struct MainTabView: View {
               canPitchFreeTrial,
               selectedTab == 1,
               trialPitch == nil,
-              !showTrialPaywall
+              !showTrialPaywall,
+              !store.exitOfferDue
         else { return }
         presentPassiveTrialOffer(source: .historyLoad)
+    }
+
+    /// The exit offer follows a deliberate close as its own sheet, a few
+    /// seconds after Today is back with nothing over it, so the half price
+    /// reads as a moment of its own rather than a change to the page that was
+    /// just closed. Owed across launches until it has been up. See `ExitOffer`.
+    private func presentExitOfferWhenClear() async {
+        var clearFor = 0
+        while store.exitOfferDue, !Task.isCancelled {
+            try? await Task.sleep(for: .seconds(1))
+            if store.isPro {
+                store.clearExitOfferDue()
+                return
+            }
+            clearFor = isTodayClear && store.exitOfferPackage != nil ? clearFor + 1 : 0
+            guard clearFor >= Self.exitOfferDelaySeconds else { continue }
+            store.clearExitOfferDue()
+            presentTrialOffer(source: .exitOffer, request: .exitOffer())
+            return
+        }
     }
 
     /// Records the last-shown timestamp for whichever trigger opened the offer.
@@ -1013,6 +1040,10 @@ struct MainTabView: View {
     /// cooldown then naturally suppresses passive surfaces while still letting
     /// intent taps fire on demand.
     private func markTrialOfferSeen() {
+        // The exit offer is not a trial pitch: stamping the cooldown would
+        // take the second-session pitch from the offer arm but not the
+        // holdout, and the test would measure that instead of the price.
+        guard trialOfferSource != .exitOffer else { return }
         let now = Date()
         goals.lastTrialOfferShownDate = now
         if trialOfferSource == .historyLoad {
@@ -1334,6 +1365,7 @@ struct MainTabView: View {
             if !maybeShowWhatsNew() { evaluateTrialOffer() }
         }
         .onChange(of: store.products.count) { _, _ in evaluateTrialOffer() }
+        .task(id: store.exitOfferDue) { await presentExitOfferWhenClear() }
         // First-launch users complete onboarding *after* the .task /
         // products-loaded evaluations have already bailed on
         // `hasCompletedSetup == false`. Mark this session so the passive
@@ -2150,9 +2182,9 @@ struct TrialOfferSheet: View {
     var planOptions: [TrialPlanOption] = []
     var selectedPlanID: String?
     var onSelectPlan: (String) -> Void = { _ in }
-    /// Set when "Not now" turned this sheet into the exit offer: the price tiles
-    /// take the plans' place, the button buys this plan, and "Not now" becomes
-    /// "No thanks". See `ExitOffer`.
+    /// Set on the exit offer's own sheet: the price tiles take the plans'
+    /// place, the button buys this plan, and "Not now" becomes "No thanks".
+    /// See `ExitOffer`.
     var exitOffer: Package?
     /// The regular yearly plan, struck through beside the offer.
     var exitOfferRegular: Package?

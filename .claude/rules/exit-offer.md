@@ -20,24 +20,28 @@ list and every older binary. The split lives in that offering's metadata
 id, so it runs beside RevenueCat Experiments without competing for traffic.
 `exitOfferPackage` is kept out of `products` on purpose: its product id
 contains the yearly one and would match `yearlyPackage`.
-The offer appears in place, never as a new screen (Jack's 2026-10-23 call,
-after a standalone screen read as an ad): the page that was closed stays,
-`ExitOfferPriceTiles` (usual price struck through beside the half price)
-slides in where the plans or under the benefit rows were, the primary button
-buys `exit_annual`, and the way out reads "No thanks" (the paywall keeps its
-close button). The tiles appearing is the impression; "No thanks" calls
+The close goes through as normal in both arms. In the offer arm it marks the
+offer due (`StoreService.exitOfferDue`, persisted as `ExitOffer.isPending` so
+an app killed first still gets it next launch), and `MainTabView`
+(`presentExitOfferWhenClear`) raises it as its own sheet once Today has been
+clear for 3 seconds (`isTodayClear`, plan loaded). Jack's 2026-10-24 call,
+replacing the in-place version of 10-23: on video the switch to the half price
+inside the page being closed was too easy to miss. The sheet is the trial
+pitch (`TrialPitchRequest.exitOffer()`) with `ExitOfferPriceTiles` (usual price
+struck through beside the half price), a headline named from the real
+discount ("Vitals+ at half price"), the button buying `exit_annual`, and
+"No thanks" as the way out. A due offer holds off the passive launch and
+History pitches. The tiles appearing is the impression; "No thanks" calls
 `StoreService.declineExitOffer()`, and a purchase records its outcome in
-`StoreService.purchase`.
-At accessibility text sizes the pitch and paywall scroll, so the tiles scroll
-themselves into view on appear (`revealingInScroll`, `enclosingScrollReader`);
-without it they landed under the fold and only the disclosure changed.
+`StoreService.purchase`. At accessibility text sizes the tiles scroll
+themselves into view (`revealingInScroll`, `enclosingScrollReader`).
 The tile reads "Your price", never "One-time price": the plan renews at that
 price every year. While `force: "offer"` is set for App Review, every 1.9.1
-build in the wild and every non-capture UI test gets the offer on its first
+build in the wild and every non-capture UI test gets the offer after its first
 close, so UI test dismiss helpers also look for "No thanks".
-`-exitOffer.force` (DEBUG) shows it on the next close; `-PaywallSnapshot
-exit-sheet` captures the trial sheet version and `exit` the paywall (tap close).
-UI tests: `ExitOfferUITests` (onboarding at default and AX text, paywall),
-`SeededHealthFlowUITests.testTrialSheetNotNowTurnsIntoTheExitOffer` (the real
+`-exitOffer.force` (DEBUG) owes it on every close; `-PaywallSnapshot
+exit-sheet` captures the sheet.
+UI tests: `ExitOfferUITests` (onboarding at default and AX text),
+`SeededHealthFlowUITests.testTrialSheetNotNowLeadsToTheExitOffer` (the real
 trial sheet), and the `testOnboardingExitOffer` release journey.
 Method, go-live steps and readout: `~/ios/growth/exit-offer-test.md`.

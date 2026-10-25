@@ -1,10 +1,10 @@
 import SwiftUI
 @preconcurrency import RevenueCat
 
-/// The exit offer as it appears in place: the usual yearly price beside the
-/// half price, dropped into the pitch the customer was about to leave. The
-/// page around it stays put; its button buys this plan and its way out becomes
-/// "No thanks". See `ExitOffer` for who sees it and when.
+/// The exit offer's price: the usual yearly price beside the half price, in the
+/// offer sheet that follows a deliberate close. The sheet's button buys this
+/// plan and its way out reads "No thanks". See `ExitOffer` for who sees it and
+/// when.
 ///
 /// Appearing is the impression, so every surface records it the same way.
 struct ExitOfferPriceTiles: View {
@@ -19,11 +19,22 @@ struct ExitOfferPriceTiles: View {
 
     /// Off the real store prices, never a hardcoded 50: purchasing-power prices
     /// round to the nearest price point, so a territory may read 49% or 51%.
-    private var percentOff: Int? {
+    private var percentOff: Int? { Self.percentOff(offer: offer, regular: regular) }
+
+    static func percentOff(offer: Package, regular: Package?) -> Int? {
         guard let regular = regular?.vitalsPriceAmount, regular > 0 else { return nil }
         let ratio = (offer.vitalsPriceAmount / regular as NSDecimalNumber).doubleValue
         let pct = Int(((1 - ratio) * 100).rounded())
         return pct > 0 ? pct : nil
+    }
+
+    /// The offer sheet's headline, named from the same real discount as the badge.
+    static func headline(offer: Package, regular: Package?) -> String {
+        switch percentOff(offer: offer, regular: regular) {
+        case 50: "Vitals+ at half price"
+        case let pct?: "Vitals+ at \(pct)% off"
+        case nil: "A lower price on Vitals+"
+        }
     }
 
     private var badge: String {

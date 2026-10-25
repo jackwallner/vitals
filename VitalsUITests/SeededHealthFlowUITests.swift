@@ -290,11 +290,11 @@ final class SeededHealthFlowUITests: XCTestCase {
         attach(app.screenshot(), name: "free-history-exclusion-after-purchase")
     }
 
-    /// The real trial sheet (`TrialOfferPitch`), not the capture harness: its
-    /// "Not now" keeps the sheet, slides the exit offer's price tiles in under
-    /// the benefits, and the button buys the half-price plan. "No thanks"
-    /// then closes it. Onboarding and the paywall are in `ExitOfferUITests`.
-    func testTrialSheetNotNowTurnsIntoTheExitOffer() {
+    /// The real trial sheet (`TrialOfferPitch`): "Not now" closes it as
+    /// normal, and the exit offer follows a few seconds later as its own sheet,
+    /// with the price tiles and a disclosure naming the half price. "No thanks"
+    /// closes it for good. Onboarding is in `ExitOfferUITests`.
+    func testTrialSheetNotNowLeadsToTheExitOffer() {
         let app = launchSeeded(upgradeTab: "catalog", arguments: ["-exitOffer.force"])
         grantHealthKitAccess(in: app)
 
@@ -305,17 +305,17 @@ final class SeededHealthFlowUITests: XCTestCase {
         // The seeded steps clear the goal, and the goal-hit rating alert can
         // land over the sheet and swallow the tap meant for "Not now".
         dismissRatingAlert(in: app)
-        let ctaBefore = cta.frame
         notNow.tap()
 
         let tiles = app.descendants(matching: .any)["exit-offer-tiles"]
-        XCTAssertTrue(tiles.waitForExistence(timeout: 5), "\"Not now\" did not bring in the offer")
+        XCTAssertTrue(cta.waitForNonExistence(timeout: 10), "\"Not now\" did not close the sheet")
+        XCTAssertFalse(tiles.exists, "the offer came up on the closing sheet itself")
+        XCTAssertTrue(tiles.waitForExistence(timeout: 20), "the offer never followed on Today")
         sleep(1)
         attach(app.screenshot(), name: "trial-sheet-exit-offer")
 
         let noThanks = app.buttons["No thanks"]
         XCTAssertTrue(noThanks.exists, "the way out is not \"No thanks\"")
-        XCTAssertEqual(ctaBefore.minY, cta.frame.minY, accuracy: 1, "CTA moved when the offer came in")
         XCTAssertTrue(app.frame.contains(tiles.frame), "tiles (\(tiles.frame)) run off the screen")
         XCTAssertTrue(tiles.frame.maxY <= cta.frame.minY, "tiles overlap the footer")
 
@@ -329,7 +329,7 @@ final class SeededHealthFlowUITests: XCTestCase {
         )
 
         noThanks.tap()
-        XCTAssertTrue(cta.waitForNonExistence(timeout: 10), "\"No thanks\" did not close the sheet")
+        XCTAssertTrue(tiles.waitForNonExistence(timeout: 10), "\"No thanks\" did not close the offer")
     }
 
     private func dismissRatingAlert(in app: XCUIApplication) {

@@ -1,30 +1,30 @@
 import XCTest
 
-/// The exit offer appears in place on the page that was closed (see
+/// The exit offer follows a deliberate close as its own sheet (see
 /// `.claude/rules/exit-offer.md`). `-exitOffer.force` puts the run in the offer
-/// arm. Each surface is checked for the same contract:
+/// arm. The contract:
 ///
-/// 1. The close keeps the page and slides the price tiles in.
-/// 2. The primary button stays put and now buys the half-price plan, so the
-///    disclosure above or under it names the offer price.
-/// 3. The way out reads "No thanks" and leaves on the next tap.
+/// 1. The close goes through as normal: onboarding finishes, Today shows.
+/// 2. A few seconds later the offer sheet comes up with the price tiles, and
+///    its disclosure names the offer price, so the button sells the plan on
+///    screen.
+/// 3. "No thanks" closes it, and it does not come back.
 ///
-/// The trial sheet's version needs seeded Health data to present, so it lives
-/// in `SeededHealthFlowUITests.testTrialSheetNotNowTurnsIntoTheExitOffer`.
+/// The trial sheet's "Not now" needs seeded Health data to present, so it lives
+/// in `SeededHealthFlowUITests.testTrialSheetNotNowLeadsToTheExitOffer`.
 final class ExitOfferUITests: XCTestCase {
 
     override func setUp() {
         continueAfterFailure = false
     }
 
-    func testOnboardingGetStartedTurnsThePitchIntoTheOffer() {
+    func testOnboardingGetStartedLeadsToTheOfferOnToday() {
         runOnboardingOffer(screenshotName: "onboarding-exit-offer")
     }
 
-    /// At accessibility text sizes the pitch scrolls, and the tiles used to
-    /// slide in under the fold: the button and disclosure switched to the half
-    /// price with nothing on screen saying why. They must scroll into view.
-    func testOnboardingOfferScrollsIntoViewAtLargestText() {
+    /// At accessibility text sizes the sheet scrolls, and the tiles must still
+    /// be on screen when it opens, not under the fold.
+    func testOnboardingOfferIsOnScreenAtLargestText() {
         runOnboardingOffer(
             screenshotName: "onboarding-exit-offer-ax",
             arguments: ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityM"]
@@ -48,62 +48,17 @@ final class ExitOfferUITests: XCTestCase {
 
         let softExit = app.buttons["Get Started"]
         XCTAssertTrue(softExit.waitForExistence(timeout: 25), "pitch never rendered")
-        let cta = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "trial")).firstMatch
-        XCTAssertTrue(cta.waitForExistence(timeout: 25), "trial CTA never rendered")
-        let ctaBefore = cta.frame
         softExit.tap()
 
-        let tiles = app.descendants(matching: .any)["exit-offer-tiles"]
-        XCTAssertTrue(tiles.waitForExistence(timeout: 5), "Get Started did not bring in the offer")
-        sleep(2)
-        attach(app.screenshot(), name: screenshotName)
-
-        XCTAssertTrue(app.staticTexts["Go further with Vitals+"].exists, "the pitch was replaced, not kept")
-        let noThanks = app.buttons["No thanks"]
-        XCTAssertTrue(noThanks.exists, "the way out is not \"No thanks\"")
-        XCTAssertFalse(app.buttons["Get Started"].exists, "\"Get Started\" is still the way out")
-
-        let ctaAfter = cta.frame
-        XCTAssertEqual(ctaBefore.minY, ctaAfter.minY, accuracy: 1, "CTA moved when the offer came in")
-        XCTAssertEqual(ctaBefore.width, ctaAfter.width, accuracy: 1, "CTA changed width")
-        XCTAssertTrue(app.frame.contains(tiles.frame), "tiles (\(tiles.frame)) run off the screen")
-        XCTAssertTrue(tiles.frame.maxY <= noThanks.frame.minY,
-                      "tiles (\(tiles.frame)) overlap the footer (No thanks at \(noThanks.frame))")
-
-        assertDisclosureNamesOfferPrice(app, tiles: tiles)
-
-        noThanks.tap()
         XCTAssertTrue(app.staticTexts["Go further with Vitals+"].waitForNonExistence(timeout: 10),
-                      "\"No thanks\" did not leave onboarding")
-    }
-
-    func testPaywallCloseSwapsThePlansForTheOffer() {
-        let app = XCUIApplication()
-        app.launchArguments += ["-PaywallSnapshot", "exit", "-exitOffer.force"]
-        app.launch()
-
-        let purchase = app.buttons["paywall-purchase"]
-        XCTAssertTrue(purchase.waitForExistence(timeout: 30), "paywall never rendered")
-        let monthly = app.descendants(matching: .any)
-            .matching(NSPredicate(format: "label CONTAINS %@", "Monthly")).firstMatch
-        XCTAssertTrue(monthly.waitForExistence(timeout: 30), "plans never loaded")
-        let close = app.buttons["Close"]
-        XCTAssertTrue(close.exists, "no close button")
-        let purchaseBefore = purchase.frame
-        close.tap()
-
+                      "\"Get Started\" did not leave onboarding")
         let tiles = app.descendants(matching: .any)["exit-offer-tiles"]
-        XCTAssertTrue(tiles.waitForExistence(timeout: 5), "close did not bring in the offer")
+        XCTAssertFalse(tiles.exists, "the offer came up on the onboarding page itself")
+
+        XCTAssertTrue(tiles.waitForExistence(timeout: 20), "the offer never followed on Today")
         sleep(1)
-        attach(app.screenshot(), name: "paywall-exit-offer")
-
-        XCTAssertFalse(monthly.exists, "the plan list is still showing beside the offer")
-        XCTAssertTrue(app.buttons["Close"].exists, "the paywall lost its way out")
-        XCTAssertEqual(purchaseBefore.minY, purchase.frame.minY, accuracy: 1, "purchase button moved")
-        XCTAssertTrue(app.frame.contains(tiles.frame), "tiles (\(tiles.frame)) run off the screen")
-        XCTAssertTrue(tiles.frame.maxY <= purchase.frame.minY, "tiles overlap the purchase button")
-
-        assertDisclosureNamesOfferPrice(app, tiles: tiles)
+        attach(app.screenshot(), name: screenshotName)
+        assertOfferSheet(app, tiles: tiles)
     }
 
     // MARK: - Helpers
@@ -111,7 +66,14 @@ final class ExitOfferUITests: XCTestCase {
     /// The tiles read "Your price, $14.99 a year, usually $29.99"; the 3.1.2
     /// disclosure has to quote that same yearly price, or the button would be
     /// selling a different plan from the one on screen.
-    private func assertDisclosureNamesOfferPrice(_ app: XCUIApplication, tiles: XCUIElement) {
+    private func assertOfferSheet(_ app: XCUIApplication, tiles: XCUIElement) {
+        let cta = app.buttons["trial-pitch-cta"]
+        let noThanks = app.buttons["No thanks"]
+        XCTAssertTrue(cta.exists, "the offer sheet has no purchase button")
+        XCTAssertTrue(noThanks.exists, "the way out is not \"No thanks\"")
+        XCTAssertTrue(app.frame.contains(tiles.frame), "tiles (\(tiles.frame)) run off the screen")
+        XCTAssertTrue(tiles.frame.maxY <= cta.frame.minY, "tiles (\(tiles.frame)) overlap the footer")
+
         let label = tiles.label
         XCTAssertTrue(label.hasPrefix("Your price, "), "unexpected tiles label: \(label)")
         let price = label
@@ -123,6 +85,11 @@ final class ExitOfferUITests: XCTestCase {
             .matching(NSPredicate(format: "label CONTAINS %@", "\(price) / year")).firstMatch
         XCTAssertTrue(disclosure.waitForExistence(timeout: 5),
                       "no disclosure quotes the offer price \(price) / year")
+
+        noThanks.tap()
+        XCTAssertTrue(tiles.waitForNonExistence(timeout: 10), "\"No thanks\" did not close the offer")
+        sleep(6)
+        XCTAssertFalse(tiles.exists, "the offer came back after \"No thanks\"")
     }
 
     private func dismissSystemSheet() {
