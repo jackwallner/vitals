@@ -72,14 +72,16 @@ enum HealthKitSeeder {
             let carbsG = isToday ? 110.0 : 195 + wobble * 28
             let fatG = isToday ? 38.0 : 64 + wobble * 10
 
-            let restStart = day.addingTimeInterval(3_600)
-            let restEnd = isToday ? min(now, restStart.addingTimeInterval(3_600)) : day.addingTimeInterval(7_200)
-            let actStart = day.addingTimeInterval(10_800)
-            let actEnd = isToday ? min(now, actStart.addingTimeInterval(3_600)) : day.addingTimeInterval(14_400)
+            // Today's samples span midnight to now, so a run just after
+            // midnight still seeds today instead of leaving it empty.
+            let restStart = isToday ? today : day.addingTimeInterval(3_600)
+            let restEnd = isToday ? now : day.addingTimeInterval(7_200)
+            let actStart = isToday ? today : day.addingTimeInterval(10_800)
+            let actEnd = isToday ? now : day.addingTimeInterval(14_400)
             guard restEnd > restStart, actEnd > actStart else { continue }
 
             let mealEnd = isToday ? now : day.addingTimeInterval(50_400)
-            let mealStart = mealEnd.addingTimeInterval(-3_600)
+            let mealStart = isToday ? max(today, now.addingTimeInterval(-3_600)) : mealEnd.addingTimeInterval(-3_600)
             guard mealEnd > mealStart else { continue }
 
             samples.append(quantity(types.basal, unit: .kilocalorie(), value: resting, start: restStart, end: restEnd))
