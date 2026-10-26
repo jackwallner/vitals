@@ -16,13 +16,13 @@ enum VitalsConversionCopy {
         if eligibleForTrial, let trialLabel, !trialLabel.isEmpty {
             return CTAExperiment.trialCTA(arm, trialLabel: trialLabel)
         }
-        if priceLabel.isEmpty { return "Continue with Vitals+" }
-        return "Continue with Vitals+ for \(priceLabel)"
+        if priceLabel.isEmpty { return String(localized: "Continue with Vitals+") }
+        return String(localized: "Continue with Vitals+ for \(priceLabel)")
     }
 
     /// Short capsule CTA used on milestone / What's New (less price noise).
     static func shortCTALabel(eligibleForTrial: Bool, arm: CTAExperiment.Arm = CTAExperiment.arm) -> String {
-        eligibleForTrial ? CTAExperiment.trialCTATitleCase(arm) : "Continue with Vitals+"
+        eligibleForTrial ? CTAExperiment.trialCTATitleCase(arm) : String(localized: "Continue with Vitals+")
     }
 
     /// Apple 3.1.2 disclosure adjacent to the purchase button.
@@ -30,10 +30,10 @@ enum VitalsConversionCopy {
         trialLabel: String?,
         priceLabel: String,
         eligibleForTrial: Bool,
-        renewClause: String = "Auto-renews unless cancelled at least 24 hours before the end of the current period. Manage or cancel in Settings › Apple ID › Subscriptions."
+        renewClause: String = String(localized: "Auto-renews unless cancelled at least 24 hours before the end of the current period. Manage or cancel in Settings › Apple ID › Subscriptions.")
     ) -> String {
         if eligibleForTrial, let trialLabel, !trialLabel.isEmpty {
-            return "\(trialLabel.capitalized), then \(priceLabel). \(renewClause)"
+            return String(localized: "\(trialLabel.leadingCapitalized), then \(priceLabel). \(renewClause)")
         }
         return "\(priceLabel). \(renewClause)"
     }
@@ -41,9 +41,9 @@ enum VitalsConversionCopy {
     /// Compact disclosure for the trial offer sheet footer.
     static func sheetDisclosure(trialLabel: String?, priceLabel: String, eligibleForTrial: Bool) -> String {
         if eligibleForTrial, let trialLabel, !trialLabel.isEmpty {
-            return "Free during trial, then \(priceLabel). Auto-renews unless cancelled 24h before trial ends."
+            return String(localized: "Free during trial, then \(priceLabel). Auto-renews unless cancelled 24h before trial ends.")
         }
-        return "\(priceLabel). Auto-renews unless cancelled 24h before the period ends."
+        return String(localized: "\(priceLabel). Auto-renews unless cancelled 24h before the period ends.")
     }
 
     /// Headline for the pitch. A used-trial account gets its own line: they have
@@ -51,9 +51,9 @@ enum VitalsConversionCopy {
     static func headline(focusHeadline: String?, trialLabel: String?, eligibleForTrial: Bool) -> String {
         if let focusHeadline { return focusHeadline }
         if eligibleForTrial, let trialLabel, !trialLabel.isEmpty {
-            return "\(trialLabel.capitalized), on us."
+            return String(localized: "\(trialLabel.leadingCapitalized), on us.")
         }
-        return "Pick up where your trial left off."
+        return String(localized: "Pick up where your trial left off.")
     }
 
     /// Sub-headline. The used-trial variant leads with the smallest honest unit
@@ -64,17 +64,17 @@ enum VitalsConversionCopy {
         perWeekLabel: String?
     ) -> String {
         if let focusSubheadline {
-            if eligibleForTrial { return "\(focusSubheadline) Free for 7 days. Cancel anytime." }
-            if let perWeekLabel { return "\(focusSubheadline) About \(perWeekLabel) a week on the yearly plan." }
+            if eligibleForTrial { return String(localized: "\(focusSubheadline) Free for 7 days. Cancel anytime.") }
+            if let perWeekLabel { return String(localized: "\(focusSubheadline) About \(perWeekLabel) a week on the yearly plan.") }
             return focusSubheadline
         }
         if eligibleForTrial {
-            return "Calories, steps, and trends in one place. No charge until your trial ends."
+            return String(localized: "Calories, steps, and trends in one place. No charge until your trial ends.")
         }
         if let perWeekLabel {
-            return "You've already seen what Vitals+ adds. Keep it for about \(perWeekLabel) a week, billed yearly."
+            return String(localized: "You've already seen what Vitals+ adds. Keep it for about \(perWeekLabel) a week, billed yearly.")
         }
-        return "You've already seen what Vitals+ adds. Keep it on."
+        return String(localized: "You've already seen what Vitals+ adds. Keep it on.")
     }
 
     /// The badge above the headline. With no trial left to advertise, the annual
@@ -83,10 +83,10 @@ enum VitalsConversionCopy {
     static func badgeText(trialLabel: String?, eligibleForTrial: Bool, annualSavingsPercent: Int?) -> String {
         if eligibleForTrial, let trialLabel,
            let days = trialLabel.split(whereSeparator: { !$0.isNumber }).first, !days.isEmpty {
-            return "\(days) DAYS FREE"
+            return String(localized: "\(days) DAYS FREE")
         }
         if !eligibleForTrial, let annualSavingsPercent, annualSavingsPercent > 0 {
-            return "SAVE \(annualSavingsPercent)%"
+            return String(localized: "SAVE \(annualSavingsPercent)%")
         }
         return "VITALS+"
     }
@@ -94,14 +94,14 @@ enum VitalsConversionCopy {
     /// Cancel / failure copy — never blames a "trial" the user wasn't eligible for.
     static func purchaseCancelledMessage(eligibleForTrial: Bool) -> String {
         eligibleForTrial
-            ? "Trial wasn't started. Tap again to continue."
-            : "Purchase wasn't completed. Tap again to continue."
+            ? String(localized: "Trial wasn't started. Tap again to continue.")
+            : String(localized: "Purchase wasn't completed. Tap again to continue.")
     }
 
     static func purchaseFailedMessage(eligibleForTrial: Bool) -> String {
         eligibleForTrial
-            ? "Couldn't start your trial. Please try again."
-            : "Couldn't complete the purchase. Please try again."
+            ? String(localized: "Couldn't start your trial. Please try again.")
+            : String(localized: "Couldn't complete the purchase. Please try again.")
     }
 
     /// A transaction StoreKit accepted but has not settled: Ask to Buy waiting on
@@ -109,14 +109,14 @@ enum VitalsConversionCopy {
     /// a success nor a failure, and the surface has to stay up and say which.
     static func purchasePendingMessage(eligibleForTrial: Bool) -> String {
         eligibleForTrial
-            ? "Waiting on Apple to approve this. Your trial starts as soon as it clears."
-            : "Waiting on Apple to approve this. Vitals+ unlocks as soon as it clears."
+            ? String(localized: "Waiting on Apple to approve this. Your trial starts as soon as it clears.")
+            : String(localized: "Waiting on Apple to approve this. Vitals+ unlocks as soon as it clears.")
     }
 
     /// Purchases cannot run at all in this process. Route the user somewhere
     /// that can recover rather than telling them nothing happened.
     static let purchaseUnavailableMessage =
-        "Couldn't reach the App Store. Check your connection and try again."
+        String(localized: "Couldn't reach the App Store. Check your connection and try again.")
 
     /// Hold the purchase button quiet until StoreKit has named the action.
     /// Returning nil means show a spinner, never "Continue" flipping into
@@ -130,9 +130,9 @@ enum VitalsConversionCopy {
         arm: CTAExperiment.Arm = CTAExperiment.arm
     ) -> String? {
         guard packageSelected else { return nil }
-        if isLifetime { return "Unlock Lifetime" }
+        if isLifetime { return String(localized: "Unlock Lifetime") }
         if hasIntroOffer && !eligibilityResolved { return nil }
         if eligibleForTrial { return CTAExperiment.trialCTATitleCase(arm) }
-        return "Subscribe"
+        return String(localized: "Subscribe")
     }
 }

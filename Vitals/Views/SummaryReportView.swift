@@ -15,7 +15,7 @@ struct SummaryReportView: View {
 
     private static let dateFmt: DateFormatter = {
         let f = DateFormatter()
-        f.dateFormat = "MMM d"
+        f.setLocalizedDateFormatFromTemplate("MMMd")
         return f
     }()
 
@@ -62,8 +62,8 @@ struct SummaryReportView: View {
                         .font(.system(size: 11, weight: .medium, design: .rounded))
                         .foregroundStyle(.gray)
                     Text(report.excludedDayCount > 0
-                         ? "\(report.activeDayCount) active days · \(report.excludedDayCount) excluded"
-                         : "\(report.activeDayCount) active days")
+                         ? String(localized: "\(report.activeDayCount) active days · \(report.excludedDayCount) excluded")
+                         : String(localized: "\(report.activeDayCount) active days"))
                         .font(.system(size: 10, design: .rounded))
                         .foregroundStyle(.gray)
                 }
@@ -79,14 +79,14 @@ struct SummaryReportView: View {
         VStack(spacing: isCompact ? 8 : 10) {
             HStack(spacing: 10) {
                 MetricTile(
-                    label: "AVG CALORIES / DAY",
+                    label: String(localized: "AVG CALORIES / DAY"),
                     value: formatNumber(report.avgCalories),
                     accent: reportCalorieColor,
                     trendPct: report.calorieTrendPct,
                     compact: isCompact
                 )
                 MetricTile(
-                    label: "TOTAL CALORIES",
+                    label: String(localized: "TOTAL CALORIES"),
                     value: formatNumber(report.totalCalories),
                     accent: reportCalorieColor,
                     trendPct: nil,
@@ -95,14 +95,14 @@ struct SummaryReportView: View {
             }
             HStack(spacing: 10) {
                 MetricTile(
-                    label: "AVG STEPS / DAY",
+                    label: String(localized: "AVG STEPS / DAY"),
                     value: formatNumber(Double(report.avgSteps)),
                     accent: reportStepsColor,
                     trendPct: report.stepTrendPct,
                     compact: isCompact
                 )
                 MetricTile(
-                    label: "TOTAL STEPS",
+                    label: String(localized: "TOTAL STEPS"),
                     value: formatNumber(Double(report.totalSteps)),
                     accent: reportStepsColor,
                     trendPct: nil,
@@ -112,14 +112,14 @@ struct SummaryReportView: View {
             if hasNetData, let avgNet = report.avgNetDeficit, let totalNet = report.totalNetDeficit {
                 HStack(spacing: 10) {
                     MetricTile(
-                        label: "AVG NET DEFICIT",
+                        label: String(localized: "AVG NET DEFICIT"),
                         value: formatSignedNumber(avgNet),
                         accent: netColor(for: avgNet),
                         trendPct: nil,
                         compact: isCompact
                     )
                     MetricTile(
-                        label: "TOTAL NET DEFICIT",
+                        label: String(localized: "TOTAL NET DEFICIT"),
                         value: formatSignedNumber(totalNet),
                         accent: netColor(for: totalNet),
                         trendPct: nil,
@@ -131,9 +131,9 @@ struct SummaryReportView: View {
                 HStack(spacing: 10) {
                     ForEach(report.macroKinds, id: \.self) { kind in
                         MetricTile(
-                            label: "AVG \(kind.label.uppercased())",
-                            value: "\(Int(avgMacros.grams(kind).rounded())) g",
-                            sub: "\(report.macroDayCount) logged days",
+                            label: String(localized: "AVG \(kind.label)").localizedUppercase,
+                            value: String(localized: "\(Int(avgMacros.grams(kind).rounded())) g"),
+                            sub: String(localized: "\(report.macroDayCount) logged days"),
                             accent: Theme.macroColor(kind),
                             trendPct: nil,
                             compact: isCompact
@@ -145,9 +145,9 @@ struct SummaryReportView: View {
                 HStack(spacing: 10) {
                     if let goal = report.calorieGoal {
                         MetricTile(
-                            label: "CALORIE GOAL HIT",
-                            value: "\(report.calorieGoalHitDays) days",
-                            sub: "Goal: \(formatNumber(goal))",
+                            label: String(localized: "CALORIE GOAL HIT"),
+                            value: String(localized: "\(report.calorieGoalHitDays) days"),
+                            sub: String(localized: "Goal: \(formatNumber(goal))"),
                             accent: reportCalorieColor,
                             trendPct: nil,
                             compact: isCompact
@@ -155,9 +155,9 @@ struct SummaryReportView: View {
                     }
                     if let goal = report.stepGoal {
                         MetricTile(
-                            label: "STEP GOAL HIT",
-                            value: "\(report.stepGoalHitDays) days",
-                            sub: "Goal: \(formatNumber(Double(goal)))",
+                            label: String(localized: "STEP GOAL HIT"),
+                            value: String(localized: "\(report.stepGoalHitDays) days"),
+                            sub: String(localized: "Goal: \(formatNumber(Double(goal)))"),
                             accent: reportStepsColor,
                             trendPct: nil,
                             compact: isCompact
@@ -169,7 +169,7 @@ struct SummaryReportView: View {
     }
 
     private var caloriesChart: some View {
-        ReportChartCard(title: "Total Calories", color: reportCalorieColor, compact: isCompact) {
+        ReportChartCard(title: String(localized: "Total Calories"), color: reportCalorieColor, compact: isCompact) {
             Chart(report.days) { day in
                 BarMark(
                     x: .value("Date", day.date, unit: .day),
@@ -186,7 +186,7 @@ struct SummaryReportView: View {
     }
 
     private var stepsChart: some View {
-        ReportChartCard(title: "Steps", color: reportStepsColor, compact: isCompact) {
+        ReportChartCard(title: String(localized: "Steps"), color: reportStepsColor, compact: isCompact) {
             Chart(report.days) { day in
                 BarMark(
                     x: .value("Date", day.date, unit: .day),
@@ -232,7 +232,7 @@ struct SummaryReportView: View {
         HStack(spacing: 8) {
             if let peak = report.peakCalorieDay {
                 HighlightTile(
-                    label: "BIGGEST BURN",
+                    label: String(localized: "BIGGEST BURN"),
                     value: formatNumber(peak.totalCalories) + " cal",
                     date: peak.date,
                     accent: reportCalorieColor,
@@ -241,7 +241,7 @@ struct SummaryReportView: View {
             }
             if let peak = report.peakStepDay {
                 HighlightTile(
-                    label: "MOST STEPS",
+                    label: String(localized: "MOST STEPS"),
                     value: formatNumber(Double(peak.steps)),
                     date: peak.date,
                     accent: reportStepsColor,
@@ -250,7 +250,7 @@ struct SummaryReportView: View {
             }
             if let best = report.bestNetDay, let net = best.netDeficit {
                 HighlightTile(
-                    label: "BEST DEFICIT",
+                    label: String(localized: "BEST DEFICIT"),
                     value: formatSignedNumber(net),
                     date: best.date,
                     accent: netColor(for: net),
@@ -258,10 +258,10 @@ struct SummaryReportView: View {
                 )
             }
             HighlightTile(
-                label: "ACTIVE DAYS",
+                label: String(localized: "ACTIVE DAYS"),
                 value: "\(report.activeDayCount)",
                 date: nil,
-                sub: "of \(report.countedDayCount) tracked",
+                sub: String(localized: "of \(report.countedDayCount) tracked"),
                 accent: .black,
                 compact: isCompact
             )
@@ -403,7 +403,7 @@ private struct HighlightTile: View {
 
     private static let dateFmt: DateFormatter = {
         let f = DateFormatter()
-        f.dateFormat = "MMM d"
+        f.setLocalizedDateFormatFromTemplate("MMMd")
         return f
     }()
 
@@ -472,26 +472,31 @@ enum SummaryReportShareText {
     static let appStoreURL = "https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504"
 
     static func make(report: SummaryReport) -> String {
-        let calorieTrend = emojiLine(label: "calories", percent: report.calorieTrendPct)
-        let stepTrend = emojiLine(label: "steps", percent: report.stepTrendPct)
+        let calorieTrend = emojiLine(label: String(localized: "Calories"), percent: report.calorieTrendPct)
+        let stepTrend = emojiLine(label: String(localized: "Steps"), percent: report.stepTrendPct)
         let goalBlocks = goalBlockLine(report: report)
-        return """
-        Vitals+ \(report.title) 💪
-        \(goalBlocks)
-        🔥 Avg calories: \(report.avgCalories.formatted(.number.precision(.fractionLength(0))))
-        👟 Avg steps: \(report.avgSteps.formatted(.number))
-        \(calorieTrend)
-        \(stepTrend)
-
-        Track yours: \(appStoreURL)
-        """
+        let avgCalories = report.avgCalories.formatted(.number.precision(.fractionLength(0)))
+        let avgSteps = report.avgSteps.formatted(.number)
+        return [
+            "Vitals+ \(report.title) 💪",
+            goalBlocks,
+            String(localized: "🔥 Avg calories: \(avgCalories)"),
+            String(localized: "👟 Avg steps: \(avgSteps)"),
+            calorieTrend,
+            stepTrend,
+            "",
+            String(localized: "Track yours: \(appStoreURL)"),
+        ].joined(separator: "\n")
     }
 
     private static func emojiLine(label: String, percent: Double?) -> String {
-        guard let percent else { return "⬜️ \(label.capitalized): more data needed" }
-        if Int(percent.rounded()) == 0 { return "➡️ \(label.capitalized): steady" }
+        guard let percent else { return String(localized: "⬜️ \(label): more data needed") }
+        if Int(percent.rounded()) == 0 { return String(localized: "➡️ \(label): steady") }
         let arrow = percent >= 0 ? "↗️" : "↘️"
-        return "\(arrow) \(label.capitalized): \(abs(Int(percent.rounded())))% \(percent >= 0 ? "up" : "down")"
+        let pct = abs(Int(percent.rounded()))
+        return percent >= 0
+            ? String(localized: "\(arrow) \(label): \(pct)% up")
+            : String(localized: "\(arrow) \(label): \(pct)% down")
     }
 
     private static func goalBlockLine(report: SummaryReport) -> String {
@@ -500,7 +505,7 @@ enum SummaryReportShareText {
         let stepRatio = min(Double(report.stepGoalHitDays) / Double(dayCount), 1)
         let filled = Int(((calorieRatio + stepRatio) / 2 * 5).rounded())
         let blocks = (0..<5).map { $0 < filled ? "🟩" : "⬜️" }.joined()
-        return "\(blocks) Goals: 🔥 \(report.calorieGoalHitDays)/\(dayCount)  👟 \(report.stepGoalHitDays)/\(dayCount)"
+        return String(localized: "\(blocks) Goals: 🔥 \(report.calorieGoalHitDays)/\(dayCount)  👟 \(report.stepGoalHitDays)/\(dayCount)")
     }
 }
 

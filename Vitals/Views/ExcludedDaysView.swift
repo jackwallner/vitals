@@ -94,7 +94,7 @@ struct ExcludedDaysView: View {
 
     private static let rowDateFormatter: DateFormatter = {
         let f = DateFormatter()
-        f.dateFormat = "EEEE, MMM d, yyyy"
+        f.setLocalizedDateFormatFromTemplate("EEEEMMMdyyyy")
         return f
     }()
 
@@ -131,10 +131,10 @@ struct ExcludedDaysView: View {
             } footer: {
                 Text(
                     isLocked
-                        ? "Tap a day to take it out of your averages with Vitals+."
+                        ? String(localized: "Tap a day to take it out of your averages with Vitals+.")
                         : goals.isAveragesPaused
-                            ? "Tap a day before the pause to take it out too. Tap it again to put it back."
-                            : "Tap a day to take it out of your averages. Tap it again to put it back."
+                            ? String(localized: "Tap a day before the pause to take it out too. Tap it again to put it back.")
+                            : String(localized: "Tap a day to take it out of your averages. Tap it again to put it back.")
                 )
             }
 
@@ -161,7 +161,7 @@ struct ExcludedDaysView: View {
                     }
                 } header: {
                     HStack {
-                        Text(excludedDates.count == 1 ? "1 Excluded Day" : "\(excludedDates.count) Excluded Days")
+                        Text(excludedDates.count == 1 ? String(localized: "1 Excluded Day") : String(localized: "\(excludedDates.count) Excluded Days"))
                         Spacer()
                         Button("Clear All", role: .destructive) {
                             goals.clearExcludedDays()
@@ -176,7 +176,7 @@ struct ExcludedDaysView: View {
         }
         .navigationTitle("Excluded Days")
         .navigationBarTitleDisplayMode(.inline)
-        .unfoldedPaneBackHeader("Excluded Days", background: Color(.systemGroupedBackground))
+        .unfoldedPaneBackHeader(String(localized: "Excluded Days"), background: Color(.systemGroupedBackground))
         .background(InteractivePopGestureEnabler())
         .task(id: goals.excludedDayKeys) { await loadStats() }
         // Every appearance, not once: a first open before HealthKit has answered
@@ -210,10 +210,10 @@ struct ExcludedDaysView: View {
                 .font(.system(.caption, design: .rounded, weight: .bold))
                 .foregroundStyle(Theme.caloriesPrimary)
             VStack(alignment: .leading, spacing: 4) {
-                Text(suggestion?.headline ?? "Keep odd days out of your averages")
+                Text(suggestion?.headline ?? String(localized: "Keep odd days out of your averages"))
                     .font(.system(.headline, design: .rounded))
                     .foregroundStyle(Theme.textPrimary)
-                Text(suggestion?.subheadline ?? "Pick the days that shouldn't count, like a sick day or a day the watch stayed on the charger.")
+                Text(suggestion?.subheadline ?? String(localized: "Pick the days that shouldn't count, like a sick day or a day the watch stayed on the charger."))
                     .font(.system(.subheadline, design: .rounded))
                     .foregroundStyle(Theme.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -221,7 +221,7 @@ struct ExcludedDaysView: View {
             Button {
                 presentPitch(for: suggestion.map { .exclude($0.day) }, copy: suggestion)
             } label: {
-                Text(suggestion.map { "Exclude \(Self.shortDayFormatter.string(from: $0.day))" } ?? "Try Excluded Days")
+                Text(suggestion.map { String(localized: "Exclude \(Self.shortDayFormatter.string(from: $0.day))") } ?? String(localized: "Try Excluded Days"))
                     .font(.system(.subheadline, design: .rounded, weight: .semibold))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
@@ -305,14 +305,16 @@ struct ExcludedDaysView: View {
     /// don't agree with.
     private var pauseSubtitle: String {
         guard let since = goals.averagesPausedSince else {
-            return "Stop counting new days until you resume"
+            return String(localized: "Stop counting new days until you resume")
         }
         let date = Self.pauseDateFormatter.string(from: since)
         if isLocked {
-            return "Paused since \(date) · on hold without Vitals+"
+            return String(localized: "Paused since \(date) · on hold without Vitals+")
         }
         let count = goals.pausedDates.count
-        return "Paused since \(date) · \(count) \(count == 1 ? "day" : "days")"
+        return count == 1
+            ? String(localized: "Paused since \(date) · 1 day")
+            : String(localized: "Paused since \(date) · \(count) days")
     }
 
     /// Only a pause that is actually filtering gets the accent colour.
@@ -344,25 +346,25 @@ struct ExcludedDaysView: View {
             // and with nothing kept, fall through to the plain description of
             // what the feature does.
             if goals.isAveragesPaused {
-                return "Your pause and excluded days are saved. Every day is counting toward your averages again until Vitals+ is back."
+                return String(localized: "Your pause and excluded days are saved. Every day is counting toward your averages again until Vitals+ is back.")
             }
             if !goals.excludedDates.isEmpty {
-                return "Your excluded days are saved. Every day is counting toward your averages until Vitals+ is back."
+                return String(localized: "Your excluded days are saved. Every day is counting toward your averages until Vitals+ is back.")
             }
         }
         return goals.isAveragesPaused
-            ? "Today and every day until you resume is excluded. Resuming starts counting again and keeps the paused days excluded, and you can drop them from the list below afterwards."
-            : "For a stretch you can't put an end date on yet: an injury, a trip, a spell off the wrist. Each new day is excluded automatically until you resume."
+            ? String(localized: "Today and every day until you resume is excluded. Resuming starts counting again and keeps the paused days excluded, and you can drop them from the list below afterwards.")
+            : String(localized: "For a stretch you can't put an end date on yet: an injury, a trip, a spell off the wrist. Each new day is excluded automatically until you resume.")
     }
 
     private static let pauseDateFormatter: DateFormatter = {
         let f = DateFormatter()
-        f.dateFormat = "MMM d"
+        f.setLocalizedDateFormatFromTemplate("MMMd")
         return f
     }()
 
     private var effectFooter: String {
-        "Excluded days count toward no average, total, best day, pacing figure, or weekly recap, and they neither extend nor break a goal streak. Nothing is deleted: they stay in your charts and CSV export, drawn dimmed."
+        String(localized: "Excluded days count toward no average, total, best day, pacing figure, or weekly recap, and they neither extend nor break a goal streak. Nothing is deleted: they stay in your charts and CSV export, drawn dimmed.")
     }
 
     private var emptyState: some View {
@@ -401,9 +403,9 @@ struct ExcludedDaysView: View {
     }
 
     private func accessibilityLabel(for date: Date) -> String {
-        let base = Self.rowDateFormatter.string(from: date) + ", excluded"
+        let base = Self.rowDateFormatter.string(from: date) + String(localized: ", excluded")
         guard let stats = statsByKey[ExcludedDays.key(for: date)] else { return base }
-        return "\(base), \(Int(stats.calories)) calories, \(stats.steps) steps"
+        return String(localized: "\(base), \(Int(stats.calories)) calories, \(stats.steps) steps")
     }
 
     /// One query covering the oldest excluded day through today. Cheaper and

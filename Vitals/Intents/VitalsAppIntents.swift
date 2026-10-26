@@ -45,11 +45,11 @@ struct TodayCaloriesIntent: AppIntent {
     }
 
     static func sentence(total: Int, goal: Int?) -> String {
-        let burned = "You've burned \(total.formatted(.number)) calories today"
-        guard let goal, goal > 0 else { return burned + "." }
-        if total >= goal { return burned + ". Calorie goal reached." }
+        let burned = total.formatted(.number)
+        guard let goal, goal > 0 else { return String(localized: "You've burned \(burned) calories today.") }
+        if total >= goal { return String(localized: "You've burned \(burned) calories today. Calorie goal reached.") }
         let percent = Int((Double(total) / Double(goal) * 100).rounded(.down))
-        return burned + ", \(percent)% of your \(goal.formatted(.number)) goal."
+        return String(localized: "You've burned \(burned) calories today, \(percent)% of your \(goal.formatted(.number)) goal.")
     }
 }
 
@@ -66,10 +66,10 @@ struct TodayStepsIntent: AppIntent {
     }
 
     static func sentence(steps: Int, goal: Int?) -> String {
-        let walked = "You've taken \(steps.formatted(.number)) steps today"
-        guard let goal, goal > 0 else { return walked + "." }
-        if steps >= goal { return walked + ". Step goal reached." }
-        return walked + ", \((goal - steps).formatted(.number)) to go."
+        let walked = steps.formatted(.number)
+        guard let goal, goal > 0 else { return String(localized: "You've taken \(walked) steps today.") }
+        if steps >= goal { return String(localized: "You've taken \(walked) steps today. Step goal reached.") }
+        return String(localized: "You've taken \(walked) steps today, \((goal - steps).formatted(.number)) to go.")
     }
 }
 

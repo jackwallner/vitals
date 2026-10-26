@@ -18,9 +18,9 @@ enum MacroKind: String, CaseIterable, Sendable, Identifiable, Comparable {
 
     var label: String {
         switch self {
-        case .protein: "Protein"
-        case .carbs: "Carbs"
-        case .fat: "Fat"
+        case .protein: String(localized: "Protein")
+        case .carbs: String(localized: "Carbs")
+        case .fat: String(localized: "Fat")
         }
     }
 

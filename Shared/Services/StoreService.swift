@@ -105,11 +105,11 @@ extension Package {
     var vitalsDisplayName: String {
         switch vitalsPackageKind {
         case .lifetime:
-            return "Lifetime"
+            return String(localized: "Lifetime")
         case .yearly:
-            return "Yearly"
+            return String(localized: "Yearly")
         case .monthly:
-            return "Monthly"
+            return String(localized: "Monthly")
         case .other:
             return storeProduct.localizedTitle
         }
@@ -117,18 +117,18 @@ extension Package {
 
     var vitalsPriceLabel: String {
         guard let period = storeProduct.subscriptionPeriod else { return vitalsLocalizedPriceString }
-        let unit: String
-        switch period.unit {
-        case .day: unit = period.value == 1 ? "day" : "days"
-        case .week: unit = period.value == 1 ? "week" : "weeks"
-        case .month: unit = period.value == 1 ? "month" : "months"
-        case .year: unit = period.value == 1 ? "year" : "years"
-        @unknown default: unit = ""
-        }
-        if period.value == 1 {
-            return "\(vitalsLocalizedPriceString) / \(unit)"
-        } else {
-            return "\(vitalsLocalizedPriceString) / \(period.value) \(unit)"
+        let price = vitalsLocalizedPriceString
+        let n = period.value
+        switch (period.unit, n) {
+        case (.day, 1): return String(localized: "\(price) / day")
+        case (.week, 1): return String(localized: "\(price) / week")
+        case (.month, 1): return String(localized: "\(price) / month")
+        case (.year, 1): return String(localized: "\(price) / year")
+        case (.day, _): return String(localized: "\(price) / \(n) days")
+        case (.week, _): return String(localized: "\(price) / \(n) weeks")
+        case (.month, _): return String(localized: "\(price) / \(n) months")
+        case (.year, _): return String(localized: "\(price) / \(n) years")
+        @unknown default: return price
         }
     }
 
@@ -181,25 +181,19 @@ extension Package {
         #if DEBUG && targetEnvironment(simulator)
         if RevenueCatConfig.apiKey.hasPrefix("test_"),
            vitalsPackageKind == .monthly || vitalsPackageKind == .yearly {
-            return "7-day free trial"
+            return String(localized: "7-day free trial")
         }
         #endif
         guard let intro = storeProduct.introductoryDiscount, intro.paymentMode == .freeTrial else {
             return nil
         }
         let period = intro.subscriptionPeriod
-        let unit: String
         switch period.unit {
-        case .day: unit = period.value == 1 ? "day" : "days"
-        case .week: unit = period.value == 1 ? "week" : "weeks"
-        case .month: unit = period.value == 1 ? "month" : "months"
-        case .year: unit = period.value == 1 ? "year" : "years"
-        @unknown default: unit = ""
-        }
-        if period.unit == .week {
-            return "\(period.value * 7)-day free trial"
-        } else {
-            return "\(period.value)-\(unit.dropLast(period.value == 1 ? 0 : 1)) free trial"
+        case .day: return String(localized: "\(period.value)-day free trial")
+        case .week: return String(localized: "\(period.value * 7)-day free trial")
+        case .month: return String(localized: "\(period.value)-month free trial")
+        case .year: return String(localized: "\(period.value)-year free trial")
+        @unknown default: return nil
         }
     }
 }
@@ -343,7 +337,7 @@ final class StoreService: NSObject, ObservableObject {
         if DebugLaunchConfig.failProductLoad {
             currentOffering = nil
             products = []
-            lastError = "Couldn't load subscription options. Check your connection and try again."
+            lastError = String(localized: "Couldn't load subscription options. Check your connection and try again.")
             return
         }
         #endif
@@ -359,7 +353,7 @@ final class StoreService: NSObject, ObservableObject {
             await refreshIntroEligibility()
         } catch {
             logger.error("Product fetch failed: \(String(describing: error), privacy: .public)")
-            lastError = "Couldn't load subscription options. Check your connection and try again."
+            lastError = String(localized: "Couldn't load subscription options. Check your connection and try again.")
         }
     }
 
@@ -472,7 +466,7 @@ final class StoreService: NSObject, ObservableObject {
 
     /// CTA label for the direct onboarding purchase.
     var onboardingTrialCTALabel: String {
-        guard let package = onboardingTrialPackage else { return "Continue with Vitals+" }
+        guard let package = onboardingTrialPackage else { return String(localized: "Continue with Vitals+") }
         return ctaLabel(for: package)
     }
 
@@ -501,7 +495,7 @@ final class StoreService: NSObject, ObservableObject {
             trialLabel: package.vitalsIntroOfferLabel,
             priceLabel: package.vitalsPriceLabel,
             eligibleForTrial: isEligibleForIntroOffer(package),
-            renewClause: "Auto-renews unless cancelled 24h before it ends. Cancel in Settings."
+            renewClause: String(localized: "Auto-renews unless cancelled 24h before it ends. Cancel in Settings.")
         )
     }
 
@@ -782,7 +776,7 @@ final class StoreService: NSObject, ObservableObject {
         } catch {
             entitlementStatus.refreshFailed()
             logger.error("Customer info refresh failed: \(String(describing: error), privacy: .public)")
-            lastError = "Couldn't refresh your subscription status. Check your connection and try again."
+            lastError = String(localized: "Couldn't refresh your subscription status. Check your connection and try again.")
         }
     }
 
@@ -793,10 +787,10 @@ final class StoreService: NSObject, ObservableObject {
         do {
             let info = try await Purchases.shared.restorePurchases()
             apply(customerInfo: info)
-            lastError = isPro ? nil : "No active Vitals+ purchase was found for this Apple ID."
+            lastError = isPro ? nil : String(localized: "No active Vitals+ purchase was found for this Apple ID.")
         } catch {
             logger.error("Restore failed: \(String(describing: error), privacy: .public)")
-            lastError = "Couldn't restore purchases. Try again."
+            lastError = String(localized: "Couldn't restore purchases. Try again.")
         }
     }
 

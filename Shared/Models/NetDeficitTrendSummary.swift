@@ -39,7 +39,7 @@ struct NetDeficitTrendSummary {
         guard let endDate = sorted.last?.date else { return nil }
         let visible = Array(sorted.suffix(30))
         let weekly = NetDeficitTrendMetric.make(
-            title: "7D AVG",
+            title: String(localized: "7D AVG"),
             periodDays: 7,
             points: sorted,
             endDate: endDate,
@@ -89,8 +89,8 @@ struct NetDeficitTrendMetric {
     }
 
     var accessibilityText: String {
-        guard let average else { return "\(title) no data" }
-        return "\(title) \(Int(average)) net calories per day over \(sampleDays) completed days"
+        guard let average else { return String(localized: "\(title) no data") }
+        return String(localized: "\(title) \(Int(average)) net calories per day over \(sampleDays) completed days")
     }
 
     static func make(

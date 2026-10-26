@@ -552,7 +552,7 @@ struct NetDeficitRectangularView: View {
                     .minimumScaleFactor(0.7)
                     .monospacedDigit()
                     .foregroundStyle(color)
-                Text(entry.staleDate != nil ? "yesterday" : "net cal")
+                Text(entry.staleDate != nil ? "yesterday" : String(localized: "net cal"))
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)

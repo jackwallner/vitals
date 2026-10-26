@@ -69,7 +69,7 @@ struct WeeklyRecapView: View {
             Text("Last 7 days")
                 .font(.system(.title2, design: .rounded, weight: .bold))
                 .foregroundStyle(Theme.textPrimary)
-            Text("\(recap.daysWithData) day\(recap.daysWithData == 1 ? "" : "s") with data")
+            Text(recap.daysWithData == 1 ? "1 day with data" : "\(recap.daysWithData) days with data")
                 .font(.system(.subheadline, design: .rounded))
                 .foregroundStyle(Theme.textSecondary)
         }
@@ -80,13 +80,13 @@ struct WeeklyRecapView: View {
     private func metricCards(_ recap: WeeklyRecap) -> some View {
         HStack(spacing: 12) {
             statCard(
-                title: "Avg calories",
+                title: String(localized: "Avg calories"),
                 value: Int(recap.avgCalories.rounded()).formatted(.number),
                 changePct: recap.calorieChangePct,
                 tint: Theme.caloriesPrimary
             )
             statCard(
-                title: "Avg steps",
+                title: String(localized: "Avg steps"),
                 value: recap.avgSteps.formatted(.number),
                 changePct: recap.stepChangePct,
                 tint: Theme.stepsPrimary

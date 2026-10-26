@@ -26,8 +26,8 @@ struct StepTrendSummary {
 
         guard let endDate = sorted.last?.date else { return nil }
         let visiblePoints = Array(sorted.suffix(30))
-        let weekly = StepTrendMetric.make(title: "7D AVG", periodDays: 7, points: sorted, endDate: endDate, calendar: calendar)
-        let monthly = StepTrendMetric.make(title: "30D AVG", periodDays: 30, points: sorted, endDate: endDate, calendar: calendar)
+        let weekly = StepTrendMetric.make(title: String(localized: "7D AVG"), periodDays: 7, points: sorted, endDate: endDate, calendar: calendar)
+        let monthly = StepTrendMetric.make(title: String(localized: "30D AVG"), periodDays: 30, points: sorted, endDate: endDate, calendar: calendar)
 
         return StepTrendSummary(points: visiblePoints, weekly: weekly, monthly: monthly)
     }
@@ -61,24 +61,26 @@ struct StepTrendMetric {
 
     var changeText: String {
         guard let percentChange else {
-            return sampleDays > 0 ? "—" : "No data"
+            return sampleDays > 0 ? "—" : String(localized: "No data")
         }
         let direction = percentChange >= 0 ? "↑" : "↓"
         return "\(direction) \(abs(percentChange).formatted(.number.precision(.fractionLength(0))))%"
     }
 
     var accessibilityText: String {
-        guard let average else { return "\(title) no data" }
+        guard let average else { return String(localized: "\(title) no data") }
         let trendLabel: String
         if let percentChange {
-            let direction = percentChange >= 0 ? "up" : "down"
-            trendLabel = "\(direction) \(abs(percentChange).formatted(.number.precision(.fractionLength(0)))) percent from prior period"
+            let pct = abs(percentChange).formatted(.number.precision(.fractionLength(0)))
+            trendLabel = percentChange >= 0
+                ? String(localized: "up \(pct) percent from prior period")
+                : String(localized: "down \(pct) percent from prior period")
         } else if sampleDays > 0 {
-            trendLabel = "\(sampleDays) of \(expectedDays) days with data"
+            trendLabel = String(localized: "\(sampleDays) of \(expectedDays) days with data")
         } else {
-            trendLabel = "no prior data for comparison"
+            trendLabel = String(localized: "no prior data for comparison")
         }
-        return "\(title) \(Int(average)) steps per day over \(sampleDays) completed days, \(trendLabel)"
+        return String(localized: "\(title) \(Int(average)) steps per day over \(sampleDays) completed days, \(trendLabel)")
     }
 
     static func make(

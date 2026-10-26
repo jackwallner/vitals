@@ -17,15 +17,15 @@ private enum WatchHealthNotice: Equatable {
     var message: String {
         switch self {
         case .accessNeeded:
-            "Enable Apple Health access\nto load your real data."
+            String(localized: "Enable Apple Health access\nto load your real data.")
         case .accessBlocked:
-            "Health access is off. On your iPhone: Settings → Privacy → Health → Total Calories."
+            String(localized: "Health access is off. On your iPhone: Settings → Privacy → Health → Total Calories.")
         case .noData:
-            "No Health data yet.\nCheck Apple Health access on iPhone."
+            String(localized: "No Health data yet.\nCheck Apple Health access on iPhone.")
         case .cachedData:
-            "Showing last good saved data."
+            String(localized: "Showing last good saved data.")
         case .loadError:
-            "Couldn't load Health data."
+            String(localized: "Couldn't load Health data.")
         }
     }
 }
@@ -492,7 +492,7 @@ private struct WatchTrendSection: View {
 
     var body: some View {
         WatchTrendPeriodSection(
-            title: "Calories, Last 7 Days",
+            title: String(localized: "Calories, Last 7 Days"),
             points: Array(trends.points.suffix(7)),
             metric: trends.weekly
         )
@@ -579,7 +579,7 @@ private struct WatchStepTrendSection: View {
 
     var body: some View {
         WatchStepTrendPeriodSection(
-            title: "Steps, Last 7 Days",
+            title: String(localized: "Steps, Last 7 Days"),
             points: Array(trends.points.suffix(7)),
             metric: trends.weekly
         )
@@ -662,7 +662,7 @@ private struct WatchNetDeficitTrendSection: View {
 
     var body: some View {
         WatchNetDeficitPeriodSection(
-            title: "Net Deficit, Last 7 Days",
+            title: String(localized: "Net Deficit, Last 7 Days"),
             points: Array(trends.points.suffix(7)),
             metric: trends.weekly
         )

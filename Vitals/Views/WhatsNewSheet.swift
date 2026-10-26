@@ -87,7 +87,7 @@ struct WhatsNewSheet: View {
     private var footerCTAs: some View {
         VStack(spacing: 10) {
             Button(action: isPro ? onOpenSettings : onTryFree) {
-                Text(isPro ? "Choose in Settings" : tryFreeCTATitle)
+                Text(isPro ? String(localized: "Choose in Settings") : tryFreeCTATitle)
                     .font(.system(.headline, design: .rounded, weight: .bold))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)

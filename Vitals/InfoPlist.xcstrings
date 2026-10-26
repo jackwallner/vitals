@@ -1,0 +1,100 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSHealthShareUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories liest Aktive Energie, Grundumsatz, Schritte, optional Nahrungsenergie sowie optional Größe, Gewicht und Körperfett aus Apple Health, um deinen Tagesfortschritt, BMI und dein Körperprofil anzuzeigen. Total Calories schreibt nie Health-Daten."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories reads your Active Energy, Basal Energy, Step Count, optional Dietary Energy, and optional height, weight, and body-fat data from Apple Health to display your daily progress, BMI, and body profile. Total Calories never writes Health data."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories lee tu energía activa, energía en reposo, pasos y, de forma opcional, energía de los alimentos, altura, peso y grasa corporal de Apple Salud para mostrar tu progreso diario, tu IMC y tu perfil corporal. Total Calories nunca escribe datos de Salud."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories lit votre énergie active, votre énergie au repos, votre nombre de pas, et en option votre énergie alimentaire, votre taille, votre poids et votre masse grasse dans Apple Santé pour afficher votre progression du jour, votre IMC et votre profil corporel. Total Calories n’écrit jamais de données Santé."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories legge energia attiva, energia a riposo, passi e, facoltativamente, energia dei pasti, altezza, peso e massa grassa da Apple Salute per mostrare i progressi del giorno, il BMI e il profilo corporeo. Total Calories non scrive mai dati di Salute."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Caloriesは、毎日の進捗、BMI、からだのプロフィールを表示するために、ヘルスケアからアクティブエネルギー、安静時消費エネルギー、歩数、および任意で摂取エネルギー、身長、体重、体脂肪率を読み取ります。ヘルスケアにデータを書き込むことはありません。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories 会从 Apple 健康读取你的活动能量、静息能量、步数，以及可选的膳食能量、身高、体重和体脂率，用于显示每日进度、BMI 和身体档案。Total Calories 从不写入健康数据。"
+          }
+        }
+      }
+    },
+    "NSHealthUpdateUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories schreibt keine Daten in Apple Health."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories does not write any data to Apple Health."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories no escribe ningún dato en Apple Salud."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories n’écrit aucune donnée dans Apple Santé."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories non scrive alcun dato in Apple Salute."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Caloriesはヘルスケアにデータを書き込みません。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories 不会向 Apple 健康写入任何数据。"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

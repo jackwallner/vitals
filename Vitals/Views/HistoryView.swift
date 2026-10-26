@@ -199,6 +199,16 @@ struct HistoryView: View {
         case year = "1Y"
         case custom = "Custom"
 
+        var title: String {
+            switch self {
+            case .week: String(localized: "7D", comment: "History range: 7 days")
+            case .month: String(localized: "30D", comment: "History range: 30 days")
+            case .threeMonths: String(localized: "90D", comment: "History range: 90 days")
+            case .year: String(localized: "1Y", comment: "History range: 1 year")
+            case .custom: String(localized: "Custom", comment: "History range: custom dates")
+            }
+        }
+
         var days: Int? {
             switch self {
             case .week: 7
@@ -587,7 +597,7 @@ struct HistoryView: View {
                                 .background(Theme.cardSurface, in: Circle())
                         }
                         .buttonStyle(.plain)
-                        .accessibilityLabel(store.isPro ? "Generate summary report" : "Vitals Plus summary report (locked)")
+                        .accessibilityLabel(store.isPro ? String(localized: "Generate summary report") : String(localized: "Vitals Plus summary report (locked)"))
                         .disabled(isGeneratingPDF)
 
                         Button {
@@ -610,7 +620,7 @@ struct HistoryView: View {
                 HStack(spacing: 0) {
                     ForEach(Period.allCases, id: \.self) { period in
                         SegmentButton(
-                            title: period.rawValue,
+                            title: period.title,
                             isSelected: selectedPeriod == period,
                             locked: period == .custom && !store.isPro
                         ) {
@@ -706,12 +716,12 @@ struct HistoryView: View {
                             // Calories row
                             CardRow {
                                 AverageCard(
-                                    label: "Avg Calories",
+                                    label: String(localized: "Avg Calories"),
                                     value: avgCalories.formatted(.number.precision(.fractionLength(0))),
                                     color: Theme.caloriesPrimary
                                 )
                                 AverageCard(
-                                    label: "Total Calories",
+                                    label: String(localized: "Total Calories"),
                                     value: totalCalories.formatted(.number.precision(.fractionLength(0))),
                                     color: Theme.caloriesPrimary
                                 )
@@ -720,12 +730,12 @@ struct HistoryView: View {
                             // Steps row
                             CardRow {
                                 AverageCard(
-                                    label: "Avg Steps",
+                                    label: String(localized: "Avg Steps"),
                                     value: avgSteps.formatted(.number),
                                     color: Theme.stepsPrimary
                                 )
                                 AverageCard(
-                                    label: "Total Steps",
+                                    label: String(localized: "Total Steps"),
                                     value: totalSteps.formatted(.number),
                                     color: Theme.stepsPrimary
                                 )
@@ -737,12 +747,12 @@ struct HistoryView: View {
                             if store.isPro && goals.showNetCalories && !netRecords.isEmpty {
                                 CardRow {
                                     AverageCard(
-                                        label: "Avg Deficit",
+                                        label: String(localized: "Avg Deficit"),
                                         value: formatSignedNet(avgNetDeficit),
                                         color: netColor(for: avgNetDeficit)
                                     )
                                     AverageCard(
-                                        label: "Total Deficit",
+                                        label: String(localized: "Total Deficit"),
                                         value: formatSignedNet(totalNetDeficit),
                                         color: netColor(for: totalNetDeficit)
                                     )
@@ -757,12 +767,12 @@ struct HistoryView: View {
                             excludedDaysNote
 
                             // Calories chart
-                            ChartCard(title: "Calories", selection: selectedCalorieRecord, metricLink: .calories) {
+                            ChartCard(title: String(localized: "Calories"), selection: selectedCalorieRecord, metricLink: .calories) {
                                 caloriesChart
                             }
 
                             // Steps chart
-                            ChartCard(title: "Steps", selection: selectedStepRecord, metricLink: .steps) {
+                            ChartCard(title: String(localized: "Steps"), selection: selectedStepRecord, metricLink: .steps) {
                                 stepsChart
                             }
 
@@ -770,7 +780,7 @@ struct HistoryView: View {
                             // section is discoverable: skeleton while food data loads,
                             // empty state when no days have food logged, else the chart.
                             if store.isPro && goals.showNetCalories {
-                                ChartCard(title: "Net Deficit", selection: hasNetData ? selectedNetRecord : nil, metricLink: .net) {
+                                ChartCard(title: String(localized: "Net Deficit"), selection: hasNetData ? selectedNetRecord : nil, metricLink: .net) {
                                     netDeficitCardContent
                                 }
                             }
@@ -779,7 +789,7 @@ struct HistoryView: View {
                             // Deficit so the section is discoverable before any
                             // food has been logged.
                             if isMacrosEnabled {
-                                ChartCard(title: "Macros", selection: hasMacroData ? selectedMacroRecord : nil, metricLink: .macros) {
+                                ChartCard(title: String(localized: "Macros"), selection: hasMacroData ? selectedMacroRecord : nil, metricLink: .macros) {
                                     macrosCardContent
                                 }
                             }
@@ -965,7 +975,7 @@ struct HistoryView: View {
         try? await Task.sleep(nanoseconds: 100_000_000)
 
         guard !countedRecords.isEmpty else {
-            pdfErrorMessage = "Every day in this period is excluded from your averages, so there is nothing to summarize."
+            pdfErrorMessage = String(localized: "Every day in this period is excluded from your averages, so there is nothing to summarize.")
             return
         }
         let reportDays: [ReportDay] = records.map { rec in
@@ -1010,7 +1020,7 @@ struct HistoryView: View {
             pdfFile = PDFFile(url: url)
             ReviewPromptTracker.recordOneShotPositiveMomentAndNotify(key: "report_generated")
         } catch {
-            pdfErrorMessage = "Could not generate the PDF report. Please try again."
+            pdfErrorMessage = String(localized: "Could not generate the PDF report. Please try again.")
         }
     }
 
@@ -1071,14 +1081,14 @@ struct HistoryView: View {
             // Only reachable when the period's counted days ran out after the
             // offer was shown; a report of zero days is not a report.
             guard reportDays.contains(where: { !$0.isExcluded }) else {
-                pdfErrorMessage = "Every day in the last 30 is excluded from your averages, so there is nothing to summarize."
+                pdfErrorMessage = String(localized: "Every day in the last 30 is excluded from your averages, so there is nothing to summarize.")
                 return
             }
             let start = history.map(\.date).min() ?? DateHelpers.daysAgo(29)
             let end = history.map(\.date).max() ?? Date.now
 
             let report = SummaryReportGenerator.make(
-                title: "Monthly Summary",
+                title: String(localized: "Monthly Summary"),
                 periodStart: start,
                 periodEnd: end,
                 days: reportDays,
@@ -1096,17 +1106,17 @@ struct HistoryView: View {
             pdfFile = PDFFile(url: url)
             ReviewPromptTracker.recordOneShotPositiveMomentAndNotify(key: "report_generated")
         } catch {
-            pdfErrorMessage = "Could not generate the PDF report. Please try again."
+            pdfErrorMessage = String(localized: "Could not generate the PDF report. Please try again.")
         }
     }
 
     private var reportTitle: String {
         switch selectedPeriod {
-        case .week: return "7-Day Summary"
-        case .month: return "30-Day Summary"
-        case .threeMonths: return "90-Day Summary"
-        case .year: return "Annual Summary"
-        case .custom: return "Vitals Summary"
+        case .week: return String(localized: "7-Day Summary")
+        case .month: return String(localized: "30-Day Summary")
+        case .threeMonths: return String(localized: "90-Day Summary")
+        case .year: return String(localized: "Annual Summary")
+        case .custom: return String(localized: "Vitals Summary")
         }
     }
 
@@ -1114,11 +1124,11 @@ struct HistoryView: View {
 
     private var deepTrendsPeriodLabel: String {
         switch selectedPeriod {
-        case .week: return "vs. previous week"
-        case .month: return "vs. previous 30 days"
-        case .threeMonths: return "vs. previous 90 days"
-        case .year: return "vs. previous year"
-        case .custom: return "vs. previous range"
+        case .week: return String(localized: "vs. previous week")
+        case .month: return String(localized: "vs. previous 30 days")
+        case .threeMonths: return String(localized: "vs. previous 90 days")
+        case .year: return String(localized: "vs. previous year")
+        case .custom: return String(localized: "vs. previous range")
         }
     }
 
@@ -1149,7 +1159,7 @@ struct HistoryView: View {
         guard let item = selectedChartItem(for: selectedCalorieDate, in: data) else { return nil }
         return ChartSelection(
             date: item.date,
-            primary: ("Calories", selectedChartValue(item.value.formatted(.number.precision(.fractionLength(0))))),
+            primary: (String(localized: "Calories"), selectedChartValue(item.value.formatted(.number.precision(.fractionLength(0))))),
             dateLabel: selectedChartDateLabel(for: item.date)
         )
     }
@@ -1159,7 +1169,7 @@ struct HistoryView: View {
         guard let item = selectedChartItem(for: selectedStepDate, in: data) else { return nil }
         return ChartSelection(
             date: item.date,
-            primary: ("Steps", selectedChartValue(Int(item.value.rounded()).formatted(.number))),
+            primary: (String(localized: "Steps"), selectedChartValue(Int(item.value.rounded()).formatted(.number))),
             dateLabel: selectedChartDateLabel(for: item.date)
         )
     }
@@ -1169,7 +1179,7 @@ struct HistoryView: View {
         guard let item = selectedChartItem(for: selectedNetDate, in: data) else { return nil }
         return ChartSelection(
             date: item.date,
-            primary: ("Net", selectedChartValue(formatSignedNet(item.value))),
+            primary: (String(localized: "Net"), selectedChartValue(formatSignedNet(item.value))),
             dateLabel: selectedChartDateLabel(for: item.date)
         )
     }
@@ -1182,7 +1192,7 @@ struct HistoryView: View {
         else { return nil }
         return ChartSelection(
             date: bucket.date,
-            primary: ("Macros", macroShortText(macroBucketTotal(for: bucket.date))),
+            primary: (String(localized: "Macros"), macroShortText(macroBucketTotal(for: bucket.date))),
             dateLabel: selectedChartDateLabel(for: bucket.date)
         )
     }
@@ -1549,8 +1559,8 @@ struct HistoryView: View {
                     // form (label left, value right) is what the rest of the screen
                     // uses for a single full-width figure.
                     WideTotalCard(
-                        label: "Avg \(only.label)",
-                        value: "\(Int(summary.average.grams(only).rounded())) g",
+                        label: String(localized: "Avg \(only.label)"),
+                        value: String(localized: "\(Int(summary.average.grams(only).rounded())) g"),
                         color: Theme.macroColor(only)
                     )
                 } else {
@@ -1558,7 +1568,7 @@ struct HistoryView: View {
                     // phone or an unfolded pane; then every card drops "Avg",
                     // which the per-logged-day caption below already says.
                     ViewThatFits(in: .horizontal) {
-                        macroAverageRow(summary, visible) { "Avg \($0.label)" }
+                        macroAverageRow(summary, visible) { String(localized: "Avg \($0.label)") }
                         macroAverageRow(summary, visible) { $0.label }
                     }
                 }
@@ -1576,7 +1586,7 @@ struct HistoryView: View {
             ForEach(visible) { kind in
                 AverageCard(
                     label: label(kind),
-                    value: "\(Int(summary.average.grams(kind).rounded())) g",
+                    value: String(localized: "\(Int(summary.average.grams(kind).rounded())) g"),
                     color: Theme.macroColor(kind)
                 )
             }
@@ -1599,7 +1609,7 @@ struct HistoryView: View {
         HStack(spacing: 0) {
             ForEach(Period.allCases, id: \.self) { period in
                 SegmentButton(
-                    title: period.rawValue,
+                    title: period.title,
                     isSelected: selectedPeriod == period,
                     locked: period == .custom && !store.isPro
                 ) {
@@ -1755,33 +1765,33 @@ struct HistoryView: View {
         case .calories:
             VStack(spacing: 12) {
                 CardRow {
-                    AverageCard(label: "Avg Calories", value: avgCalories.formatted(.number.precision(.fractionLength(0))), color: Theme.caloriesPrimary)
+                    AverageCard(label: String(localized: "Avg Calories"), value: avgCalories.formatted(.number.precision(.fractionLength(0))), color: Theme.caloriesPrimary)
                     if let peak = peakCalorieDay {
-                        PeakCard(label: "Best Day", value: peak.totalCalories.formatted(.number.precision(.fractionLength(0))), date: peak.date, color: Theme.caloriesPrimary)
+                        PeakCard(label: String(localized: "Best Day"), value: peak.totalCalories.formatted(.number.precision(.fractionLength(0))), date: peak.date, color: Theme.caloriesPrimary)
                     }
                 }
-                WideTotalCard(label: "Total Calories", value: totalCalories.formatted(.number.precision(.fractionLength(0))), color: Theme.caloriesPrimary)
+                WideTotalCard(label: String(localized: "Total Calories"), value: totalCalories.formatted(.number.precision(.fractionLength(0))), color: Theme.caloriesPrimary)
             }
         case .steps:
             VStack(spacing: 12) {
                 CardRow {
-                    AverageCard(label: "Avg Steps", value: avgSteps.formatted(.number), color: Theme.stepsPrimary)
+                    AverageCard(label: String(localized: "Avg Steps"), value: avgSteps.formatted(.number), color: Theme.stepsPrimary)
                     if let peak = peakStepDay {
-                        PeakCard(label: "Best Day", value: peak.steps.formatted(.number), date: peak.date, color: Theme.stepsPrimary)
+                        PeakCard(label: String(localized: "Best Day"), value: peak.steps.formatted(.number), date: peak.date, color: Theme.stepsPrimary)
                     }
                 }
-                WideTotalCard(label: "Total Steps", value: totalSteps.formatted(.number), color: Theme.stepsPrimary)
+                WideTotalCard(label: String(localized: "Total Steps"), value: totalSteps.formatted(.number), color: Theme.stepsPrimary)
             }
         case .net:
             if !netRecords.isEmpty {
                 VStack(spacing: 12) {
                     CardRow {
-                        AverageCard(label: "Avg Deficit", value: formatSignedNet(avgNetDeficit), color: netColor(for: avgNetDeficit))
+                        AverageCard(label: String(localized: "Avg Deficit"), value: formatSignedNet(avgNetDeficit), color: netColor(for: avgNetDeficit))
                         if let best = bestNetDay {
-                            PeakCard(label: "Best Day", value: formatSignedNet(netDeficit(for: best)), date: best.date, color: netColor(for: netDeficit(for: best)))
+                            PeakCard(label: String(localized: "Best Day"), value: formatSignedNet(netDeficit(for: best)), date: best.date, color: netColor(for: netDeficit(for: best)))
                         }
                     }
-                    WideTotalCard(label: "Total Deficit", value: formatSignedNet(totalNetDeficit), color: netColor(for: totalNetDeficit))
+                    WideTotalCard(label: String(localized: "Total Deficit"), value: formatSignedNet(totalNetDeficit), color: netColor(for: totalNetDeficit))
                 }
             }
         case .macros:
@@ -1795,7 +1805,7 @@ struct HistoryView: View {
                 // Neutral, not `macrosBrand`: these span all three macros, and
                 // the brand blue is protein's colour everywhere else on screen.
                 let daysLogged = AverageCard(
-                    label: "Days Logged",
+                    label: String(localized: "Days Logged"),
                     value: summary.loggedDays.formatted(.number),
                     color: Theme.textPrimary
                 )
@@ -1805,7 +1815,7 @@ struct HistoryView: View {
                     HStack(spacing: 12) {
                         if let bestProtein {
                             PeakCard(
-                                label: "Best Protein",
+                                label: String(localized: "Best Protein"),
                                 value: "\(Int(bestProtein.grams.rounded())) g",
                                 date: bestProtein.date,
                                 color: Theme.proteinPrimary
@@ -1816,7 +1826,7 @@ struct HistoryView: View {
                             // moves up rather than leaving a half-empty row.
                             daysLogged
                             AverageCard(
-                                label: "Avg Logged Cal",
+                                label: String(localized: "Avg Logged Cal"),
                                 value: Int(avgFood.rounded()).formatted(.number),
                                 color: Theme.textPrimary
                             )
@@ -1825,7 +1835,7 @@ struct HistoryView: View {
                             // food energy logged): the wide row form, same as a
                             // lone macro average.
                             WideTotalCard(
-                                label: "Days Logged",
+                                label: String(localized: "Days Logged"),
                                 value: summary.loggedDays.formatted(.number),
                                 color: Theme.textPrimary
                             )
@@ -1833,7 +1843,7 @@ struct HistoryView: View {
                     }
                     if bestProtein != nil, let avgFood = avgLoggedFoodCalories {
                         WideTotalCard(
-                            label: "Avg Logged Calories",
+                            label: String(localized: "Avg Logged Calories"),
                             value: Int(avgFood.rounded()).formatted(.number),
                             color: Theme.textPrimary
                         )
@@ -1848,13 +1858,13 @@ struct HistoryView: View {
         // "Daily": the screen's title already names the metric.
         switch metric {
         case .calories:
-            ChartCard(title: "Daily Calories", selection: selectedCalorieRecord) { caloriesChart }
+            ChartCard(title: String(localized: "Daily Calories"), selection: selectedCalorieRecord) { caloriesChart }
         case .steps:
-            ChartCard(title: "Daily Steps", selection: selectedStepRecord) { stepsChart }
+            ChartCard(title: String(localized: "Daily Steps"), selection: selectedStepRecord) { stepsChart }
         case .net:
-            ChartCard(title: "Daily Net Deficit", selection: hasNetData ? selectedNetRecord : nil) { netDeficitCardContent }
+            ChartCard(title: String(localized: "Daily Net Deficit"), selection: hasNetData ? selectedNetRecord : nil) { netDeficitCardContent }
         case .macros:
-            ChartCard(title: "Daily Macros", selection: hasMacroData ? selectedMacroRecord : nil) { macrosCardContent }
+            ChartCard(title: String(localized: "Daily Macros"), selection: hasMacroData ? selectedMacroRecord : nil) { macrosCardContent }
         }
     }
 
@@ -1888,7 +1898,7 @@ struct HistoryView: View {
         if excludedDaysInPeriod > 0 {
             HStack(spacing: 6) {
                 Image(systemName: "slash.circle")
-                Text("\(excludedDaysInPeriod) \(excludedDaysInPeriod == 1 ? "day" : "days") excluded from these figures")
+                Text(excludedDaysInPeriod == 1 ? "1 day excluded from these figures" : "\(excludedDaysInPeriod) days excluded from these figures")
             }
             .font(.system(.caption, design: .rounded))
             .foregroundStyle(Theme.textTertiary)
@@ -1984,14 +1994,14 @@ struct HistoryView: View {
             return DateHelpers.monthYear(date)
         }
         if shouldAggregateByWeek {
-            return "Week of \(DateHelpers.mediumDate(date))"
+            return String(localized: "Week of \(DateHelpers.mediumDate(date))")
         }
         return nil
     }
 
     private func selectedChartValue(_ value: String) -> String {
         if shouldAggregateByMonth || shouldAggregateByWeek {
-            return "Avg \(value)"
+            return String(localized: "Avg \(value)")
         }
         return value
     }
@@ -2192,8 +2202,8 @@ struct HistoryView: View {
             guard token == loadToken else { return }
             historyLogger.error("History fetch failed: \(String(describing: error), privacy: .public)")
             loadErrorMessage = records.isEmpty
-                ? "Try again in a moment or check Apple Health access."
-                : "Showing the last available data because refresh failed."
+                ? String(localized: "Try again in a moment or check Apple Health access.")
+                : String(localized: "Showing the last available data because refresh failed.")
         }
         isLoading = false
         if !animateContent {
@@ -2285,9 +2295,9 @@ struct HistoryView: View {
         formatter.dateFormat = "yyyy-MM-dd"
 
         let includeNet = store.isPro && goals.showNetCalories
-        var columns = ["Date", "Active Calories", "Resting Calories", "Total Calories", "Steps"]
+        var columns = [String(localized: "Date"), String(localized: "Active Calories"), String(localized: "Resting Calories"), String(localized: "Total Calories"), String(localized: "Steps")]
         if includeNet {
-            columns += ["Food Calories", "Net Deficit"]
+            columns += [String(localized: "Food Calories"), String(localized: "Net Deficit")]
         }
         if isMacrosEnabled {
             columns += goals.visibleMacros.map { "\($0.label) (g)" }
@@ -2297,7 +2307,7 @@ struct HistoryView: View {
         // from a gap in Apple Health.
         let hasExclusions = excludedDaysInPeriod > 0
         if hasExclusions {
-            columns.append("Excluded")
+            columns.append(String(localized: "Excluded"))
         }
         let header = columns.map(Self.csvEscape).joined(separator: ",") + "\n"
 
@@ -2375,7 +2385,7 @@ struct ChartSelection {
 
     private static let dateFormatter: DateFormatter = {
         let f = DateFormatter()
-        f.dateFormat = "EEE, MMM d"
+        f.setLocalizedDateFormatFromTemplate("EEEMMMd")
         return f
     }()
 
@@ -2434,13 +2444,13 @@ enum DeepTrendsBuilder {
             let percent = (delta / prev) * 100
             insights.append(
                 DeepTrendInsight(
-                    title: "Calories",
+                    title: String(localized: "Calories"),
                     icon: "flame.fill",
                     current: current.formatted(.number.precision(.fractionLength(0))),
                     previous: prev.formatted(.number.precision(.fractionLength(0))),
                     change: signedValue(Int(delta.rounded()).formatted(.number)),
                     percent: signedPercent(percent),
-                    narrative: abs(delta) < 1 ? "Calories held steady day-to-day." : "You averaged \(abs(Int(delta.rounded())).formatted(.number)) \(delta >= 0 ? "more" : "fewer") calories per day.",
+                    narrative: abs(delta) < 1 ? String(localized: "Calories held steady day-to-day.") : (delta >= 0 ? String(localized: "You averaged \(abs(Int(delta.rounded())).formatted(.number)) more calories per day.") : String(localized: "You averaged \(abs(Int(delta.rounded())).formatted(.number)) fewer calories per day.")),
                     color: Theme.caloriesPrimary,
                     isUp: delta >= 0,
                     isFlat: Int(percent.rounded()) == 0
@@ -2455,13 +2465,13 @@ enum DeepTrendsBuilder {
             let percent = (delta / prev) * 100
             insights.append(
                 DeepTrendInsight(
-                    title: "Steps",
+                    title: String(localized: "Steps"),
                     icon: "figure.walk",
                     current: Int(current.rounded()).formatted(.number),
                     previous: Int(prev.rounded()).formatted(.number),
                     change: signedValue(Int(delta.rounded()).formatted(.number)),
                     percent: signedPercent(percent),
-                    narrative: abs(delta) < 1 ? "Steps held steady day-to-day." : "You averaged \(abs(Int(delta.rounded())).formatted(.number)) \(delta >= 0 ? "more" : "fewer") steps per day.",
+                    narrative: abs(delta) < 1 ? String(localized: "Steps held steady day-to-day.") : (delta >= 0 ? String(localized: "You averaged \(abs(Int(delta.rounded())).formatted(.number)) more steps per day.") : String(localized: "You averaged \(abs(Int(delta.rounded())).formatted(.number)) fewer steps per day.")),
                     color: Theme.stepsPrimary,
                     isUp: delta >= 0,
                     isFlat: Int(percent.rounded()) == 0
@@ -2475,13 +2485,13 @@ enum DeepTrendsBuilder {
         var highlights: [String] = []
         let activeDays = records.filter { $0.totalCalories > 0 || $0.steps > 0 }.count
         if !records.isEmpty {
-            highlights.append("\(activeDays) of \(records.count) days had calories or steps logged.")
+            highlights.append(String(localized: "\(activeDays) of \(records.count) days had calories or steps logged."))
         }
         if let peak = records.max(by: { $0.totalCalories < $1.totalCalories }), peak.totalCalories > 0 {
-            highlights.append("Peak calories: \(peak.totalCalories.formatted(.number.precision(.fractionLength(0)))) on \(DateHelpers.shortDate(peak.date)).")
+            highlights.append(String(localized: "Peak calories: \(peak.totalCalories.formatted(.number.precision(.fractionLength(0)))) on \(DateHelpers.shortDate(peak.date))."))
         }
         if let peak = records.max(by: { $0.steps < $1.steps }), peak.steps > 0 {
-            highlights.append("Peak steps: \(peak.steps.formatted(.number)) on \(DateHelpers.shortDate(peak.date)).")
+            highlights.append(String(localized: "Peak steps: \(peak.steps.formatted(.number)) on \(DateHelpers.shortDate(peak.date))."))
         }
         return highlights
     }
@@ -2511,13 +2521,13 @@ enum DeepTrendsBuilder {
         if let cal = average(of: currentRecords.map(\.totalCalories)) {
             insights.append(
                 DeepTrendInsight(
-                    title: "Calories",
+                    title: String(localized: "Calories"),
                     icon: "flame.fill",
                     current: cal.formatted(.number.precision(.fractionLength(0))),
                     previous: "—",
                     change: "—",
-                    percent: "vs last",
-                    narrative: "Compare your current pace against the prior matching window.",
+                    percent: String(localized: "vs last"),
+                    narrative: String(localized: "Compare your current pace against the prior matching window."),
                     color: Theme.caloriesPrimary,
                     isUp: true
                 )
@@ -2526,13 +2536,13 @@ enum DeepTrendsBuilder {
         if let steps = average(of: currentRecords.map { Double($0.steps) }) {
             insights.append(
                 DeepTrendInsight(
-                    title: "Steps",
+                    title: String(localized: "Steps"),
                     icon: "figure.walk",
                     current: Int(steps.rounded()).formatted(.number),
                     previous: "—",
                     change: "—",
-                    percent: "vs last",
-                    narrative: "See momentum on steps across periods.",
+                    percent: String(localized: "vs last"),
+                    narrative: String(localized: "See momentum on steps across periods."),
                     color: Theme.stepsPrimary,
                     isUp: true
                 )
@@ -2543,9 +2553,9 @@ enum DeepTrendsBuilder {
 
     static func teaserHighlights(records: [DayRecord]) -> [String] {
         [
-            "Period-over-period averages, deltas, and percent movement.",
-            "Peak-day highlights with dates for every metric.",
-            "Refresh trends instantly when you switch windows."
+            String(localized: "Period-over-period averages, deltas, and percent movement."),
+            String(localized: "Peak-day highlights with dates for every metric."),
+            String(localized: "Refresh trends instantly when you switch windows.")
         ]
     }
 }
@@ -2571,7 +2581,7 @@ struct DeepTrendsCard: View {
                     .font(.headline)
                     .foregroundStyle(Theme.textPrimary)
                 Spacer()
-                Text(isPro ? "Active" : "Vitals+")
+                Text(isPro ? String(localized: "Active") : String(localized: "Vitals+"))
                     .font(.system(size: 10, weight: .bold, design: .rounded))
                     .padding(.horizontal, 8)
                     .padding(.vertical, 3)
@@ -2761,11 +2771,11 @@ struct DeepTrendInsightRow: View {
             }
 
             HStack(spacing: 8) {
-                DeepTrendMiniStat(label: "Current", value: insight.current)
-                DeepTrendMiniStat(label: "Previous", value: insight.previous)
+                DeepTrendMiniStat(label: String(localized: "Current"), value: insight.current)
+                DeepTrendMiniStat(label: String(localized: "Previous"), value: insight.previous)
                     .blur(radius: blurComparisons ? 8 : 0)
                     .accessibilityHidden(blurComparisons)
-                DeepTrendMiniStat(label: "Change", value: insight.change)
+                DeepTrendMiniStat(label: String(localized: "Change"), value: insight.change)
                     .blur(radius: blurComparisons ? 8 : 0)
                     .accessibilityHidden(blurComparisons)
             }
@@ -2886,7 +2896,7 @@ private struct SegmentButton: View {
         }
         .buttonStyle(.plain)
         .animation(.easeInOut(duration: 0.2), value: isSelected)
-        .accessibilityHint(locked ? "Vitals+: pick any date range" : "")
+        .accessibilityHint(locked ? String(localized: "Vitals+: pick any date range") : "")
     }
 }
 
@@ -3048,7 +3058,7 @@ private struct PeakCard: View {
 
     private static let peakDateFormatter: DateFormatter = {
         let f = DateFormatter()
-        f.dateFormat = "MMM d"
+        f.setLocalizedDateFormatFromTemplate("MMMd")
         return f
     }()
 
@@ -3176,15 +3186,15 @@ private struct RecentDaysList: View {
 
     private var recentDaysEmptyText: String {
         switch metric {
-        case .net: "No days with food logged yet."
-        case .macros: "No days with macros logged yet."
-        case .calories, .steps: "No recent activity to show."
+        case .net: String(localized: "No days with food logged yet.")
+        case .macros: String(localized: "No days with macros logged yet.")
+        case .calories, .steps: String(localized: "No recent activity to show.")
         }
     }
 
     private static let dateFormatter: DateFormatter = {
         let f = DateFormatter()
-        f.dateFormat = "EEE, MMM d"
+        f.setLocalizedDateFormatFromTemplate("EEEMMMd")
         return f
     }()
 
@@ -3246,7 +3256,7 @@ private struct RecentDaysList: View {
                             onToggleExclusion(row)
                         } label: {
                             Label(
-                                row.isExcluded ? "Include in Averages" : "Exclude from Averages",
+                                row.isExcluded ? String(localized: "Include in Averages") : String(localized: "Exclude from Averages"),
                                 systemImage: row.isExcluded ? "arrow.uturn.backward" : "slash.circle"
                             )
                         }

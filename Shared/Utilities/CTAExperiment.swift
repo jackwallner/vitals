@@ -41,16 +41,18 @@ enum CTAExperiment {
     /// Sentence case: "Start 7-day free trial", "Start my free trial".
     static func trialCTA(_ arm: Arm = CTAExperiment.arm, trialLabel: String) -> String {
         switch arm {
-        case .standard: "Start \(trialLabel)"
-        case .my, .your: "Start \(arm.rawValue) free trial"
+        case .standard: String(localized: "Start \(trialLabel)")
+        case .my: String(localized: "Start my free trial")
+        case .your: String(localized: "Start your free trial")
         }
     }
 
     /// Title case: "Start Free Trial", "Start My Free Trial".
     static func trialCTATitleCase(_ arm: Arm = CTAExperiment.arm) -> String {
         switch arm {
-        case .standard: "Start Free Trial"
-        case .my, .your: "Start \(arm.rawValue.capitalized) Free Trial"
+        case .standard: String(localized: "Start Free Trial")
+        case .my: String(localized: "Start My Free Trial")
+        case .your: String(localized: "Start Your Free Trial")
         }
     }
 

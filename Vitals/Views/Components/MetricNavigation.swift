@@ -12,10 +12,10 @@ enum HistoryMetric: String, Identifiable, Hashable {
 
     var title: String {
         switch self {
-        case .calories: return "Calories"
-        case .steps: return "Steps"
-        case .net: return "Net Deficit"
-        case .macros: return "Macros"
+        case .calories: return String(localized: "Calories")
+        case .steps: return String(localized: "Steps")
+        case .net: return String(localized: "Net Deficit")
+        case .macros: return String(localized: "Macros")
         }
     }
 

@@ -67,8 +67,8 @@ enum NotificationService {
         }
 
         let content = UNMutableNotificationContent()
-        content.title = "Your week in review"
-        content.body = "See how your calories and steps stacked up this week."
+        content.title = String(localized: "Your week in review")
+        content.body = String(localized: "See how your calories and steps stacked up this week.")
         content.sound = .default
         content.userInfo = [recapRouteKey: recapRouteValue]
 

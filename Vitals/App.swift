@@ -771,12 +771,15 @@ struct MainTabView: View {
 
     private static let pausedBannerDateFormatter: DateFormatter = {
         let f = DateFormatter()
-        f.dateFormat = "MMM d"
+        f.setLocalizedDateFormatFromTemplate("MMMd")
         return f
     }()
 
     private static func pausedBannerDetail(since: Date, days: Int) -> String {
-        "Since \(pausedBannerDateFormatter.string(from: since)) · \(days) \(days == 1 ? "day" : "days") excluded"
+        let date = pausedBannerDateFormatter.string(from: since)
+        return days == 1
+            ? String(localized: "Since \(date) · 1 day excluded")
+            : String(localized: "Since \(date) · \(days) days excluded")
     }
 
     /// Milestone CTA: buy yearly in place (Apple confirm). Trial applies only
@@ -1282,14 +1285,14 @@ struct MainTabView: View {
                 HStack(spacing: 0) {
                     TabButton(
                         icon: "heart.fill",
-                        label: "Today",
+                        label: String(localized: "Today"),
                         isSelected: selectedTab == 0
                     ) { selectedTab = 0 }
 
                     if split == nil {
                         TabButton(
                             icon: "chart.bar.fill",
-                            label: "History",
+                            label: String(localized: "History"),
                             isSelected: selectedTab == 1
                         ) {
                             if !historyHasAppeared { historyHasAppeared = true }
@@ -1299,7 +1302,7 @@ struct MainTabView: View {
 
                     TabButton(
                         icon: store.isPro ? "sparkles" : "lock.fill",
-                        label: store.isPro ? "Vitals+" : "Upgrade",
+                        label: store.isPro ? String(localized: "Vitals+") : String(localized: "Upgrade"),
                         isSelected: selectedTab == 2
                     ) {
                         #if DEBUG
@@ -1585,7 +1588,7 @@ private struct PremiumFeaturesView: View {
     @State private var restoreMessage: String?
     @State private var isRestoring = false
     @State private var pdfFile: PDFFile?
-    @State private var pdfTitle = "Vitals+ Report"
+    @State private var pdfTitle = String(localized: "Vitals+ Report")
     @State private var pdfShareText = SummaryReportShareText.appStoreURL
     /// URL of the temp report being previewed, kept so the sheet's
     /// `onDismiss` can delete it after the item binding has been cleared.
@@ -1621,9 +1624,9 @@ private struct PremiumFeaturesView: View {
                         VStack(spacing: 8) {
                             PremiumActionRow(
                                 icon: "plus.forwardslash.minus",
-                                title: "Net Deficit",
-                                detail: "Burn minus Apple Health food on Today + History.",
-                                buttonTitle: "Enable",
+                                title: String(localized: "Net Deficit"),
+                                detail: String(localized: "Burn minus Apple Health food on Today + History."),
+                                buttonTitle: String(localized: "Enable"),
                                 action: onOpenNetDeficit,
                                 isEnabled: goals.showNetCalories
                             )
@@ -1632,24 +1635,24 @@ private struct PremiumFeaturesView: View {
                             // Vitals+ feature you can only find in Settings.
                             PremiumActionRow(
                                 icon: "chart.pie.fill",
-                                title: "Macros",
-                                detail: "Protein, carbs, and fat from the food you already log.",
-                                buttonTitle: "Enable",
+                                title: String(localized: "Macros"),
+                                detail: String(localized: "Protein, carbs, and fat from the food you already log."),
+                                buttonTitle: String(localized: "Enable"),
                                 action: onOpenMacros,
                                 isEnabled: goals.showMacros
                             )
                             PremiumActionRow(
                                 icon: "doc.richtext.fill",
-                                title: "Monthly Summary PDF",
-                                detail: "Generate a 30-day report and preview before sharing.",
-                                buttonTitle: "Generate",
-                                action: { Task { await generateReport(days: 30, title: "30-Day Summary") } }
+                                title: String(localized: "Monthly Summary PDF"),
+                                detail: String(localized: "Generate a 30-day report and preview before sharing."),
+                                buttonTitle: String(localized: "Generate"),
+                                action: { Task { await generateReport(days: 30, title: String(localized: "30-Day Summary")) } }
                             )
                             PremiumActionRow(
                                 icon: "calendar.badge.clock",
-                                title: "Custom-Range Reports",
-                                detail: "Pick an exact range and review the PDF in-app.",
-                                buttonTitle: "Choose Dates",
+                                title: String(localized: "Custom-Range Reports"),
+                                detail: String(localized: "Pick an exact range and review the PDF in-app."),
+                                buttonTitle: String(localized: "Choose Dates"),
                                 action: { showCustomReportSheet = true }
                             )
                             // Body Profile belongs here rather than on Today.
@@ -1660,9 +1663,9 @@ private struct PremiumFeaturesView: View {
                             // deliberately, and body fat is the Vitals+ half.
                             PremiumActionRow(
                                 icon: "figure",
-                                title: "Body Profile",
+                                title: String(localized: "Body Profile"),
                                 detail: bodyProfileDetail,
-                                buttonTitle: "Open",
+                                buttonTitle: String(localized: "Open"),
                                 action: { showBodyProfile = true }
                             )
                         }
@@ -1700,7 +1703,7 @@ private struct PremiumFeaturesView: View {
             }
             .sheet(isPresented: $showCustomReportSheet) {
                 PremiumCustomReportSheet(start: $customStart, end: $customEnd, isGenerating: isGeneratingReport) {
-                    Task { await generateReport(start: customStart, end: customEnd, title: "Custom Summary") }
+                    Task { await generateReport(start: customStart, end: customEnd, title: String(localized: "Custom Summary")) }
                 }
                 .presentationDetents([.medium])
             }
@@ -1749,10 +1752,10 @@ private struct PremiumFeaturesView: View {
     /// only "is this set up" signal that also tells you something.
     private var bodyProfileDetail: String {
         guard let resolvedBMI else {
-            return "Free BMI from Apple Health, plus body fat and calorie context."
+            return String(localized: "Free BMI from Apple Health, plus body fat and calorie context.")
         }
         return String(
-            format: "BMI %.1f · body fat and calorie context inside.",
+            format: String(localized: "BMI %.1f · body fat and calorie context inside."),
             resolvedBMI
         )
     }
@@ -1769,14 +1772,14 @@ private struct PremiumFeaturesView: View {
                 isCalculating: !deepTrendsLoaded,
                 insights: deepTrendInsights,
                 highlights: deepTrendHighlights,
-                periodLabel: "vs. previous 30 days"
+                periodLabel: String(localized: "vs. previous 30 days")
             )
             // Same notice History shows: without it, "28 of 28 days" in a
             // 30-day card reads like two days of missing data.
             if deepTrendsLoaded && deepTrendsExcludedCount > 0 {
                 HStack(spacing: 6) {
                     Image(systemName: "slash.circle")
-                    Text("\(deepTrendsExcludedCount) \(deepTrendsExcludedCount == 1 ? "day" : "days") excluded from these figures")
+                    Text(deepTrendsExcludedCount == 1 ? "1 day excluded from these figures" : "\(deepTrendsExcludedCount) days excluded from these figures")
                 }
                 .font(.system(.caption, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
@@ -1850,14 +1853,14 @@ private struct PremiumFeaturesView: View {
                     // and writes either the success or the failure message, so the
                     // view doesn't need to invent its own fallback string.
                     restoreMessage = store.isPro
-                        ? "Your Vitals+ access is active."
-                        : (store.lastError ?? "Couldn't refresh your subscription. Try again.")
+                        ? String(localized: "Your Vitals+ access is active.")
+                        : (store.lastError ?? String(localized: "Couldn't refresh your subscription. Try again."))
                 }
             } label: {
                 PremiumAccountRow(
                     icon: "arrow.clockwise",
-                    title: isRestoring ? "Restoring…" : "Restore Purchases",
-                    detail: "Refresh your access after changing devices or reinstalling.",
+                    title: isRestoring ? "Restoring…" : String(localized: "Restore Purchases"),
+                    detail: String(localized: "Refresh your access after changing devices or reinstalling."),
                     showsActivity: isRestoring
                 )
             }
@@ -1891,7 +1894,7 @@ private struct PremiumFeaturesView: View {
             }
 
             guard !history.isEmpty else {
-                reportErrorMessage = "There is no history data for that report range yet."
+                reportErrorMessage = String(localized: "There is no history data for that report range yet.")
                 return
             }
 
@@ -1915,7 +1918,7 @@ private struct PremiumFeaturesView: View {
                 )
             }
             guard reportDays.contains(where: { !$0.isExcluded }) else {
-                reportErrorMessage = "Every day in that range is excluded from your averages, so there is nothing to summarize."
+                reportErrorMessage = String(localized: "Every day in that range is excluded from your averages, so there is nothing to summarize.")
                 return
             }
             let previousDays = ExcludedDays.excluding(previous, keys: excluded, date: \.date).map { rec in
@@ -1947,7 +1950,7 @@ private struct PremiumFeaturesView: View {
             // to share. Counts once, however many reports they make.
             ReviewPromptTracker.recordOneShotPositiveMomentAndNotify(key: "report_generated")
         } catch {
-            reportErrorMessage = "Could not generate the PDF report. Please try again."
+            reportErrorMessage = String(localized: "Could not generate the PDF report. Please try again.")
         }
     }
 
@@ -2023,7 +2026,7 @@ private struct PremiumCustomReportSheet: View {
                 DatePicker("End", selection: $end, in: ...Date.now, displayedComponents: .date)
                 if !isValid {
                     Section {
-                        Text(start >= end ? "Start date must be before end date." : "Maximum range is 2 years.")
+                        Text(start >= end ? String(localized: "Start date must be before end date.") : String(localized: "Maximum range is 2 years."))
                             .foregroundStyle(.red)
                             .font(.caption)
                     }
@@ -2349,7 +2352,7 @@ struct TrialOfferSheet: View {
                         .shadow(color: Theme.caloriesPrimary.opacity(0.5), radius: animateGlow ? 12 : 6, x: 0, y: 2)
                         .scaleEffect(animateGlow ? 1.03 : 1.0)
                         .animation(glowAnimation, value: animateGlow)
-                        .accessibilityLabel(trialBadgeText.capitalized)
+                        .accessibilityLabel(trialBadgeText.leadingCapitalized)
                 }
 
                 VStack(spacing: 4) {
@@ -2467,7 +2470,7 @@ struct TrialOfferSheet: View {
                     .accessibilityIdentifier("trial-pitch-cta")
 
                     Button(action: onDismiss) {
-                        Text(exitOffer == nil ? "Not now" : "No thanks")
+                        Text(exitOffer == nil ? String(localized: "Not now") : String(localized: "No thanks"))
                             .font(.system(.subheadline, design: .rounded, weight: .semibold))
                             .foregroundStyle(Theme.textSecondary)
                     }
@@ -2484,7 +2487,7 @@ struct TrialOfferSheet: View {
 
                     HStack(spacing: 4) {
                         Button(action: onRestore) {
-                            Text(isRestoring ? "Restoring…" : "Restore")
+                            Text(isRestoring ? "Restoring…" : String(localized: "Restore"))
                         }
                         .buttonStyle(.plain)
                         .disabled(isRestoring || isPurchasing)
@@ -2558,17 +2561,17 @@ private struct MilestoneCelebrationSheet: View {
 
     private var headline: String {
         switch event {
-        case .goalStreak(let n): return "\(n)-day streak!"
-        case .monthReview(let month, _): return "\(Self.monthName(month)) recap"
+        case .goalStreak(let n): return String(localized: "\(n)-day streak!")
+        case .monthReview(let month, _): return String(localized: "\(Self.monthName(month)) recap")
         }
     }
 
     private var subheadline: String {
         switch event {
         case .goalStreak(let n):
-            return "You hit your goal \(n) days in a row. That consistency is the whole game."
+            return String(localized: "You hit your goal \(n) days in a row. That consistency is the whole game.")
         case .monthReview(_, let days):
-            return "You logged \(days) days last month. There's a story in that data worth seeing."
+            return String(localized: "You logged \(days) days last month. There's a story in that data worth seeing.")
         }
     }
 
@@ -2577,14 +2580,14 @@ private struct MilestoneCelebrationSheet: View {
             TrialBullet(
                 icon: "chart.line.uptrend.xyaxis",
                 tint: Theme.stepsPrimary,
-                title: "Deep Trends",
-                detail: "See how this run stacks up against your past, period over period."
+                title: String(localized: "Deep Trends"),
+                detail: String(localized: "See how this run stacks up against your past, period over period.")
             ),
             TrialBullet(
                 icon: "doc.richtext.fill",
                 tint: Theme.caloriesPrimary,
-                title: "PDF report",
-                detail: "Export a clean summary of this milestone to keep or share with a coach."
+                title: String(localized: "PDF report"),
+                detail: String(localized: "Export a clean summary of this milestone to keep or share with a coach.")
             )
         ]
     }

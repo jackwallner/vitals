@@ -136,8 +136,8 @@ enum PacingComparison: Int, CaseIterable, Sendable {
 
     var label: String {
         switch self {
-        case .dayOfWeek: "Same weekday"
-        case .allDays: "All days"
+        case .dayOfWeek: String(localized: "Same weekday")
+        case .allDays: String(localized: "All days")
         }
     }
 }
@@ -153,10 +153,10 @@ enum PacingLookback: Int, CaseIterable, Sendable {
 
     var label: String {
         switch self {
-        case .fourteenDays: "14 days"
-        case .thirtyDays: "30 days"
-        case .ninetyDays: "90 days"
-        case .oneYear: "1 year"
+        case .fourteenDays: String(localized: "14 days")
+        case .thirtyDays: String(localized: "30 days")
+        case .ninetyDays: String(localized: "90 days")
+        case .oneYear: String(localized: "1 year")
         }
     }
 }

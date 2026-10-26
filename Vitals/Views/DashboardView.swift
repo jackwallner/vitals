@@ -684,18 +684,18 @@ struct DashboardView: View {
                 .accessibilityHint("Opens calorie history")
                 .accessibilityValue((showActiveResting
                     ? (calorieProgress != nil
-                        ? "\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories. Active \(Int(activeCalories)), resting \(Int(restingCalories))."
-                        : "\(Int(totalCalories)) calories. Active \(Int(activeCalories)), resting \(Int(restingCalories)).")
+                        ? String(localized: "\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories. Active \(Int(activeCalories)), resting \(Int(restingCalories)).")
+                        : String(localized: "\(Int(totalCalories)) calories. Active \(Int(activeCalories)), resting \(Int(restingCalories))."))
                     : (calorieProgress != nil
-                        ? "\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories"
-                        : "\(Int(totalCalories)) calories"))
-                    + (showCalorieStreak ? " \(calorieStreak) day goal streak." : ""))
+                        ? String(localized: "\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories")
+                        : String(localized: "\(Int(totalCalories)) calories")))
+                    + (showCalorieStreak ? String(localized: " \(calorieStreak) day goal streak.") : ""))
 
                 // Active/Resting breakdown is a Vitals+ feature. Toggle lives in Settings.
                 if showActiveResting {
                     HStack(spacing: 16) {
-                        MetricPill(label: "active", value: activeCalories, color: Theme.activePrimary)
-                        MetricPill(label: "resting", value: restingCalories, color: Theme.restingPrimary)
+                        MetricPill(label: String(localized: "active"), value: activeCalories, color: Theme.activePrimary)
+                        MetricPill(label: String(localized: "resting"), value: restingCalories, color: Theme.restingPrimary)
                     }
                     .padding(.top, 14)
                     .opacity(animateContent ? 1 : 0)
@@ -750,7 +750,7 @@ struct DashboardView: View {
                                 current: Double(steps),
                                 typical: stepTypical,
                                 projected: projectedSteps,
-                                label: "steps",
+                                label: String(localized: "steps"),
                                 color: Theme.stepsPrimary,
                                 comparison: goals.pacingComparison,
                                 lookback: goals.pacingLookback
@@ -766,7 +766,7 @@ struct DashboardView: View {
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel("Steps")
                     .accessibilityValue("\(steps) steps"
-                        + (showStepStreak ? ". \(stepStreak) day goal streak." : ""))
+                        + (showStepStreak ? String(localized: ". \(stepStreak) day goal streak.") : ""))
                     .opacity(animateContent ? 1 : 0)
                     .scaleEffect(animateContent || reduceMotion ? 1 : 0.9)
                 } else {
@@ -814,7 +814,7 @@ struct DashboardView: View {
                                 current: Double(steps),
                                 typical: stepTypical,
                                 projected: projectedSteps,
-                                label: "steps",
+                                label: String(localized: "steps"),
                                 color: Theme.stepsPrimary,
                                 comparison: goals.pacingComparison,
                                 lookback: goals.pacingLookback
@@ -828,7 +828,7 @@ struct DashboardView: View {
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel("Steps")
                     .accessibilityValue("\(steps) steps"
-                        + (showStepStreak ? ". \(stepStreak) day goal streak." : ""))
+                        + (showStepStreak ? String(localized: ". \(stepStreak) day goal streak.") : ""))
                     .padding(Theme.cardPadding)
                     .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
                     .padding(.horizontal, 24)
@@ -917,8 +917,8 @@ struct DashboardView: View {
             .opacity(animateContent ? 1 : 0)
             .accessibilityElement(children: .combine)
             .accessibilityLabel(energyTDEE != nil
-                ? "Maintenance calories \(Int(energyTDEE ?? 0)) TDEE, resting \(Int(energyBMR ?? 0)) BMR, 30-day average."
-                : "TDEE and BMR estimate building, \(energySampleDays) of 7 days.")
+                ? String(localized: "Maintenance calories \(Int(energyTDEE ?? 0)) TDEE, resting \(Int(energyBMR ?? 0)) BMR, 30-day average.")
+                : String(localized: "TDEE and BMR estimate building, \(energySampleDays) of 7 days."))
         }
     }
 
@@ -937,7 +937,7 @@ struct DashboardView: View {
                         current: totalCalories,
                         typical: calorieTypical,
                         projected: projectedCalories,
-                        label: "cal",
+                        label: String(localized: "cal"),
                         color: Theme.caloriesPrimary,
                         comparison: goals.pacingComparison,
                         lookback: goals.pacingLookback
@@ -960,7 +960,7 @@ struct DashboardView: View {
         HStack(spacing: 4) {
             Image(systemName: "flame.fill")
                 .font(.system(size: 10, weight: .bold))
-            Text(compact ? "\(count)d" : "\(count)-day streak")
+            Text(compact ? String(localized: "\(count)d") : String(localized: "\(count)-day streak"))
                 .font(.system(.caption2, design: .rounded, weight: .semibold))
         }
         .foregroundStyle(Theme.streakPrimary)
@@ -968,7 +968,7 @@ struct DashboardView: View {
         .padding(.vertical, 4)
         .background(Theme.streakPrimary.opacity(0.12), in: Capsule())
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(count) day \(metric) goal streak")
+        .accessibilityLabel(metric == "step" ? "\(count) day step goal streak" : "\(count) day calorie goal streak")
     }
 
     private func netDeficitDisplayText(_ value: Double) -> String {
@@ -1135,13 +1135,15 @@ struct DashboardView: View {
 
     private func netDeficitAccessibilitySummary(deficit: Double) -> String {
         if dietaryEnergyFetchFailed {
-            return "Food data unavailable"
+            return String(localized: "Food data unavailable")
         }
         if !dietaryEnergyReady {
-            return "Waiting for Health permission or loading food data"
+            return String(localized: "Waiting for Health permission or loading food data")
         }
         let n = Int(deficit.rounded())
-        return "\(n) calories, \(deficit < 0 ? "surplus" : "deficit"), burned minus food from Health"
+        return deficit < 0
+            ? String(localized: "\(n) calories, surplus, burned minus food from Health")
+            : String(localized: "\(n) calories, deficit, burned minus food from Health")
     }
 
     // MARK: - Macros
@@ -1313,13 +1315,13 @@ struct DashboardView: View {
     /// calories" is the difference between an honest split and an arithmetic bug.
     private var macroSplitDenominatorText: String {
         goals.visibleMacros.count == MacroKind.allCases.count
-            ? "of macro calories"
-            : "of all macro calories"
+            ? String(localized: "of macro calories")
+            : String(localized: "of all macro calories")
     }
 
     private func macroSplitAccessibilityText(_ percentages: [MacroKind: Int]) -> String {
-        let parts = goals.visibleMacros.map { "\(percentages[$0] ?? 0) percent \($0.label.lowercased())" }
-        return parts.joined(separator: ", ") + ", \(macroSplitDenominatorText)"
+        let parts = goals.visibleMacros.map { String(localized: "\(percentages[$0] ?? 0) percent \($0.label.midSentence)") }
+        return (parts + [macroSplitDenominatorText]).joined(separator: ", ")
     }
 
     private func loadMacros() async {
@@ -1578,11 +1580,11 @@ struct DashboardView: View {
 
         let message: String
         if crossedCalories && crossedSteps {
-            message = "Both goals reached!"
+            message = String(localized: "Both goals reached!")
         } else if crossedCalories {
-            message = "Calorie goal reached!"
+            message = String(localized: "Calorie goal reached!")
         } else {
-            message = "Step goal reached!"
+            message = String(localized: "Step goal reached!")
         }
         showCelebration(message)
     }
@@ -1776,8 +1778,9 @@ struct DashboardView: View {
     }
 
     private func pacingBuildingText(samples: Int) -> String {
-        let dayWord = pacingMinSamples == 1 ? "day" : "days"
-        return "Building pace data: \(samples)/\(pacingMinSamples) \(dayWord)"
+        return pacingMinSamples == 1
+            ? String(localized: "Building pace data: \(samples)/1 day")
+            : String(localized: "Building pace data: \(samples)/\(pacingMinSamples) days")
     }
 
     private func isAllZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
@@ -2042,12 +2045,12 @@ extension DashboardView {
             PromptCard(
                 icon: "bell.badge.fill",
                 tint: Theme.caloriesPrimary,
-                title: "Know when you hit your goal",
+                title: String(localized: "Know when you hit your goal"),
                 message: store.isPro
-                    ? "Get a notification when you reach a goal, plus your weekly recap on Sunday evenings."
-                    : "Get a notification when you reach a goal, even with the app closed.",
-                primaryTitle: "Turn On",
-                secondaryTitle: "Not Now",
+                    ? String(localized: "Get a notification when you reach a goal, plus your weekly recap on Sunday evenings.")
+                    : String(localized: "Get a notification when you reach a goal, even with the app closed."),
+                primaryTitle: String(localized: "Turn On"),
+                secondaryTitle: String(localized: "Not Now"),
                 onPrimary: { Task { await acceptNotificationAsk() } },
                 onSecondary: {
                     goals.hasAnsweredNotificationAsk = true
@@ -2061,8 +2064,7 @@ extension DashboardView {
 
     private func goalPromptCard(_ suggestion: GoalRecalibration.Suggestion) -> some View {
         let isSteps = suggestion.metric == .steps
-        let noun = isSteps ? "step" : "calorie"
-        let unit = isSteps ? "steps" : "cal"
+        let unit = isSteps ? String(localized: "steps") : String(localized: "cal")
         let current = Int(suggestion.currentGoal).formatted(.number)
         let suggested = Int(suggestion.suggestedGoal).formatted(.number)
         let title: String
@@ -2070,13 +2072,17 @@ extension DashboardView {
         let primary: String
         switch suggestion.direction {
         case .raise:
-            title = "You hit your \(noun) goal on \(suggestion.hits) of your last \(suggestion.daysWithData) days"
-            message = "Raise it to \(suggested) \(unit) to keep it a stretch?"
-            primary = "Raise to \(suggested)"
+            title = isSteps
+                ? String(localized: "You hit your step goal on \(suggestion.hits) of your last \(suggestion.daysWithData) days")
+                : String(localized: "You hit your calorie goal on \(suggestion.hits) of your last \(suggestion.daysWithData) days")
+            message = String(localized: "Raise it to \(suggested) \(unit) to keep it a stretch?")
+            primary = String(localized: "Raise to \(suggested)")
         case .lower:
-            title = "Your \(noun) goal has been out of reach"
-            message = "You hit it on \(suggestion.hits) of your last \(suggestion.daysWithData) days. A typical day for you is \(suggested) \(unit)."
-            primary = "Set to \(suggested)"
+            title = isSteps
+                ? String(localized: "Your step goal has been out of reach")
+                : String(localized: "Your calorie goal has been out of reach")
+            message = String(localized: "You hit it on \(suggestion.hits) of your last \(suggestion.daysWithData) days. A typical day for you is \(suggested) \(unit).")
+            primary = String(localized: "Set to \(suggested)")
         }
         return PromptCard(
             icon: isSteps ? "figure.walk" : "flame.fill",
@@ -2084,7 +2090,7 @@ extension DashboardView {
             title: title,
             message: message,
             primaryTitle: primary,
-            secondaryTitle: "Keep \(current)",
+            secondaryTitle: String(localized: "Keep \(current)"),
             onPrimary: {
                 switch suggestion.metric {
                 case .calories: goals.calorieGoal = suggestion.suggestedGoal
@@ -2215,11 +2221,13 @@ private struct PacingPill: View {
     private var message: String {
         var parts: [String] = []
         if let diff {
-            let dir = diff >= 0 ? "ahead of" : "behind"
-            parts.append("\(abs(Int(diff)).formatted(.number)) \(label) \(dir) usual pace")
+            let amount = abs(Int(diff)).formatted(.number)
+            parts.append(diff >= 0
+                ? String(localized: "\(amount) \(label) ahead of usual pace")
+                : String(localized: "\(amount) \(label) behind usual pace"))
         }
         if let projected {
-            parts.append("on pace for \(Int(projected.rounded()).formatted(.number)) \(label)")
+            parts.append(String(localized: "on pace for \(Int(projected.rounded()).formatted(.number)) \(label)"))
         }
         return parts.joined(separator: ", ")
     }
@@ -2284,17 +2292,17 @@ private enum SettingsInfoTopic: Identifiable {
 
     var title: String {
         switch self {
-        case .activeResting: "Active + Resting"
-        case .energyAverages: "TDEE & BMR"
-        case .netDeficit: "Net Deficit"
-        case .fastingMode: "Fasting Mode"
-        case .macros: "Macros"
-        case .calorieSplit: "Calorie Split"
-        case .endOfDayProjection: "End-of-Day Projection"
-        case .goalStreak: "Goal Streak"
-        case .weeklyRecap: "Weekly Recap"
-        case .eveningReminder: "Evening Reminder"
-        case .bodyProfile: "Body Profile"
+        case .activeResting: String(localized: "Active + Resting")
+        case .energyAverages: String(localized: "TDEE & BMR")
+        case .netDeficit: String(localized: "Net Deficit")
+        case .fastingMode: String(localized: "Fasting Mode")
+        case .macros: String(localized: "Macros")
+        case .calorieSplit: String(localized: "Calorie Split")
+        case .endOfDayProjection: String(localized: "End-of-Day Projection")
+        case .goalStreak: String(localized: "Goal Streak")
+        case .weeklyRecap: String(localized: "Weekly Recap")
+        case .eveningReminder: String(localized: "Evening Reminder")
+        case .bodyProfile: String(localized: "Body Profile")
         }
     }
 
@@ -2320,27 +2328,27 @@ private enum SettingsInfoTopic: Identifiable {
     var message: String {
         switch self {
         case .activeResting:
-            "Splits the ring into the calories you burned moving and the calories your body burned at rest."
+            String(localized: "Splits the ring into the calories you burned moving and the calories your body burned at rest.")
         case .energyAverages:
-            "TDEE is your maintenance burn, BMR your resting burn, each averaged over the last 30 days of your own Apple Health data. They are reference figures, not goals."
+            String(localized: "TDEE is your maintenance burn, BMR your resting burn, each averaged over the last 30 days of your own Apple Health data. They are reference figures, not goals.")
         case .netDeficit:
-            "Calories burned minus the food energy in Apple Health. A positive number means a deficit."
+            String(localized: "Calories burned minus the food energy in Apple Health. A positive number means a deficit.")
         case .fastingMode:
-            "Counts days with no food logged toward your Net Deficit history. Off by default, so an unlogged day doesn't read as a full-burn deficit."
+            String(localized: "Counts days with no food logged toward your Net Deficit history. Off by default, so an unlogged day doesn't read as a full-burn deficit.")
         case .macros:
-            "The protein, carbs, and fat your food app writes to Apple Health. Log meals wherever you already do and they appear beside your calories. Vitals only reads them."
+            String(localized: "The protein, carbs, and fat your food app writes to Apple Health. Log meals wherever you already do and they appear beside your calories. Vitals only reads them.")
         case .calorieSplit:
-            "Adds the food energy you logged today and each macro's share of it."
+            String(localized: "Adds the food energy you logged today and each macro's share of it.")
         case .endOfDayProjection:
-            "Projects where today's calories and steps will land from your pace so far, using the pacing window set above."
+            String(localized: "Projects where today's calories and steps will land from your pace so far, using the pacing window set above.")
         case .goalStreak:
-            "Counts consecutive days you hit a calorie or step goal. Empty days break the streak."
+            String(localized: "Counts consecutive days you hit a calorie or step goal. Empty days break the streak.")
         case .weeklyRecap:
-            "A Sunday evening notification summarizing your week. Turning it on asks permission to notify you."
+            String(localized: "A Sunday evening notification summarizing your week. Turning it on asks permission to notify you.")
         case .eveningReminder:
-            "On days a goal is still open, a notification at the time you pick with what's left, like 2,100 steps or about 200 active calories. When a goal streak is at stake, it leads with the streak. Nothing is sent on days you're already there."
+            String(localized: "On days a goal is still open, a notification at the time you pick with what's left, like 2,100 steps or about 200 active calories. When a goal streak is at stake, it leads with the streak. Nothing is sent on days you're already there.")
         case .bodyProfile:
-            "Your BMI, free, calculated from the height and weight already in Apple Health. No Health data? Enter them by hand instead."
+            String(localized: "Your BMI, free, calculated from the height and weight already in Apple Health. No Health data? Enter them by hand instead.")
         }
     }
 
@@ -2350,13 +2358,13 @@ private enum SettingsInfoTopic: Identifiable {
     var detail: String? {
         switch self {
         case .macros:
-            "Show only the ones you track: carbs alone for carb counting, protein alone for training. Macro Goals adds a daily gram target, one macro at a time: hit a protein number while carbs and fat stay a plain readout.\n\nIf your calories sync but macros stay empty, your food app is sharing Energy without the Nutrition categories. In MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing."
+            String(localized: "Show only the ones you track: carbs alone for carb counting, protein alone for training. Macro Goals adds a daily gram target, one macro at a time: hit a protein number while carbs and fat stay a plain readout.\n\nIf your calories sync but macros stay empty, your food app is sharing Energy without the Nutrition categories. In MyFitnessPal: More → Settings → Sharing & Privacy → HealthKit Sharing.")
         case .calorieSplit:
-            "The percentages come from grams the way food labels do it (4 per gram of protein and carbs, 9 for fat), so they won't match the logged figure exactly. Hiding a macro hides its row but keeps its share in the split, so visible percentages may not total 100%."
+            String(localized: "The percentages come from grams the way food labels do it (4 per gram of protein and carbs, 9 for fat), so they won't match the logged figure exactly. Hiding a macro hides its row but keeps its share in the split, so visible percentages may not total 100%.")
         case .energyAverages:
-            "Needs about a month of Apple Health data to settle. Days without resting energy are skipped rather than counted as zero."
+            String(localized: "Needs about a month of Apple Health data to settle. Days without resting energy are skipped rather than counted as zero.")
         case .bodyProfile:
-            "It gives your calorie numbers something to sit against: BMI puts today's burn in the context of your size rather than leaving it as a bare figure. Body fat percentage is a Vitals+ extra; the BMI readout never is."
+            String(localized: "It gives your calorie numbers something to sit against: BMI puts today's burn in the context of your size rather than leaving it as a bare figure. Body fat percentage is a Vitals+ extra; the BMI readout never is.")
         default:
             nil
         }
@@ -2400,7 +2408,7 @@ private struct SettingsInfoDot: View {
             .accessibilityElement()
             .accessibilityLabel("About \(topic.title)")
             .accessibilityAddTraits(.isButton)
-            .accessibilityValue(isOpen ? "Shown" : "Hidden")
+            .accessibilityValue(isOpen ? String(localized: "Shown") : String(localized: "Hidden"))
     }
 }
 
@@ -2440,13 +2448,13 @@ private struct PacingExplainerSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     private var basisText: String {
-        let window = lookback.label.lowercased()
+        let window = lookback.label.midSentence
         switch comparison {
         case .dayOfWeek:
             let weekday = Date().formatted(.dateTime.weekday(.wide))
-            return "your average on past \(weekday)s over the last \(window)"
+            return String(localized: "your average on past \(weekday)s over the last \(window)")
         case .allDays:
-            return "your average on every day over the last \(window)"
+            return String(localized: "your average on every day over the last \(window)")
         }
     }
 
@@ -2544,7 +2552,7 @@ private struct MacroPill: View {
             Text("g")
                 .font(.system(.caption2, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
-            Text(kind.label.lowercased())
+            Text(kind.label.midSentence)
                 .font(.system(.caption2, design: .rounded))
                 .foregroundStyle(Theme.textSecondary)
         }
@@ -2582,7 +2590,7 @@ private struct MacroBarRow: View {
     }
 
     private var valueText: String {
-        "\(Int(grams.rounded()).formatted(.number)) / \(goal.formatted(.number)) g"
+        String(localized: "\(Int(grams.rounded()).formatted(.number)) / \(goal.formatted(.number)) g")
     }
 
     var body: some View {
@@ -2616,7 +2624,7 @@ private struct MacroBarRow: View {
     }
 
     private var accessibilityValue: String {
-        "\(Int(grams.rounded())) of \(goal) grams"
+        String(localized: "\(Int(grams.rounded())) of \(goal) grams")
     }
 }
 
@@ -2847,7 +2855,7 @@ private struct OnboardingSheet: View {
                         Button {
                             focusedGoal = nil
                         } label: {
-                            primaryLabel("Done")
+                            primaryLabel(String(localized: "Done"))
                         }
                         .padding(.horizontal, 24)
                         .padding(.vertical, 10)
@@ -2949,14 +2957,14 @@ private struct OnboardingSheet: View {
                 WelcomePoint(
                     icon: "heart.fill",
                     color: Theme.caloriesPrimary,
-                    title: "Reads from Apple Health",
-                    detail: "Next we’ll ask permission to read your active and resting calories and steps. The app only reads; it never writes anything back."
+                    title: String(localized: "Reads from Apple Health"),
+                    detail: String(localized: "Next we’ll ask permission to read your active and resting calories and steps. The app only reads; it never writes anything back.")
                 )
                 WelcomePoint(
                     icon: "lock.fill",
                     color: Theme.stepsPrimary,
-                    title: "Stays on your device",
-                    detail: "Your health data never leaves your iPhone. No account, no cloud sync."
+                    title: String(localized: "Stays on your device"),
+                    detail: String(localized: "Your health data never leaves your iPhone. No account, no cloud sync.")
                 )
             }
         }
@@ -2989,7 +2997,7 @@ private struct OnboardingSheet: View {
                 GoalRow(
                     icon: "flame.fill",
                     color: Theme.caloriesPrimary,
-                    title: "Calorie Goal",
+                    title: String(localized: "Calorie Goal"),
                     enabled: $wantCalGoal,
                     text: $calText,
                     isValid: calValid,
@@ -3000,7 +3008,7 @@ private struct OnboardingSheet: View {
                 GoalRow(
                     icon: "figure.walk",
                     color: Theme.stepsPrimary,
-                    title: "Step Goal",
+                    title: String(localized: "Step Goal"),
                     enabled: $wantStepGoal,
                     text: $stepText,
                     isValid: stepValid,
@@ -3089,7 +3097,7 @@ private struct OnboardingSheet: View {
                 Task { await requestHealthAccessIfNeeded() }
                 withAnimation(.easeInOut(duration: 0.25)) { step = .goals }
             } label: {
-                primaryLabel("Continue")
+                primaryLabel(String(localized: "Continue"))
             }
             .padding(.horizontal, 24)
         case .goals:
@@ -3114,7 +3122,7 @@ private struct OnboardingSheet: View {
                 // having: XCUITest stopped calling it hittable, which is the
                 // same signal assistive tech would get. The glow that made the
                 // bleed is gone with the 1.7.5 restore.
-                primaryLabel("Continue")
+                primaryLabel(String(localized: "Continue"))
             }
             .disabled(!calValid || !stepValid)
             .opacity(calValid && stepValid ? 1 : 0.5)
@@ -3195,10 +3203,10 @@ private struct OnboardingSheet: View {
     /// copy. Never read: the slot that uses it is invisible and hidden from
     /// VoiceOver whenever this is what it holds.
     private static let disclosureHeightPlaceholder = VitalsConversionCopy.disclosure(
-        trialLabel: "7-day free trial",
+        trialLabel: String(localized: "7-day free trial"),
         priceLabel: "$00.00 / year",
         eligibleForTrial: true,
-        renewClause: "Auto-renews unless cancelled 24h before it ends. Cancel in Settings."
+        renewClause: String(localized: "Auto-renews unless cancelled 24h before it ends. Cancel in Settings.")
     )
 
     /// The free way out of onboarding. Above the trial button so the primary
@@ -3233,7 +3241,7 @@ private struct OnboardingSheet: View {
         HStack(spacing: 14) {
             Link("Terms", destination: VitalsLinks.standardEULA)
             Link("Privacy", destination: VitalsLinks.privacyPolicy)
-            Button(isRestoring ? "Restoring…" : "Restore") {
+            Button(isRestoring ? "Restoring…" : String(localized: "Restore")) {
                 // Fire-and-forget before: the task was unobserved, so a
                 // returning subscriber with nothing to restore tapped it and
                 // watched nothing happen. A success flips `isPro`, which
@@ -3245,7 +3253,7 @@ private struct OnboardingSheet: View {
                     await store.restorePurchases()
                     guard !store.isPro else { return }
                     trialError = store.lastError
-                        ?? "No active Vitals+ purchase was found for this Apple ID."
+                        ?? String(localized: "No active Vitals+ purchase was found for this Apple ID.")
                 }
             }
             .buttonStyle(.plain)
@@ -3266,17 +3274,17 @@ private struct OnboardingSheet: View {
     private var trialSellingPoints: [TrialPoint] {
         [
             TrialPoint(icon: "plus.forwardslash.minus", color: Theme.caloriesPrimary,
-                       title: "Net deficit",
-                       detail: "Burned minus food logged in Apple Health"),
+                       title: String(localized: "Net deficit"),
+                       detail: String(localized: "Burned minus food logged in Apple Health")),
             TrialPoint(icon: "flame.fill", color: Theme.streakPrimary,
-                       title: "Streaks & projections",
-                       detail: "Keep the chain and see end-of-day pace"),
+                       title: String(localized: "Streaks & projections"),
+                       detail: String(localized: "Keep the chain and see end-of-day pace")),
             TrialPoint(icon: "chart.line.uptrend.xyaxis", color: Theme.stepsPrimary,
-                       title: "Deeper trends",
-                       detail: "TDEE, BMR, and period comparisons"),
+                       title: String(localized: "Deeper trends"),
+                       detail: String(localized: "TDEE, BMR, and period comparisons")),
             TrialPoint(icon: "doc.richtext.fill", color: Theme.netDeficitBrand,
-                       title: "Summary reports",
-                       detail: "Export a PDF for any date range"),
+                       title: String(localized: "Summary reports"),
+                       detail: String(localized: "Export a PDF for any date range")),
         ]
     }
 
@@ -3386,7 +3394,7 @@ private struct OnboardingSheet: View {
     /// Never promises a trial the store has not confirmed. Once the wait expires
     /// without products, the button stops naming a price it does not know.
     private var trialCTALabel: String {
-        guard store.conversionCTAReady else { return "See Vitals+ Plans" }
+        guard store.conversionCTAReady else { return String(localized: "See Vitals+ Plans") }
         return trialPackage.map(store.ctaLabel(for:)) ?? store.onboardingTrialCTALabel
     }
 
@@ -3513,7 +3521,7 @@ private struct GoalRow: View {
                     .padding(12)
                     .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: 10))
                 if !isValid {
-                    Text(title == "Calorie Goal" ? "Enter 500–50,000 calories." : "Enter 100–500,000 steps.")
+                    Text(title == String(localized: "Calorie Goal") ? String(localized: "Enter 500–50,000 calories.") : String(localized: "Enter 100–500,000 steps."))
                         .font(.caption)
                         .foregroundStyle(.red)
                 }
@@ -3797,21 +3805,26 @@ private struct SettingsSheet: View {
 
     private var excludedDaysSubtitle: String {
         let count = goals.excludedDayKeys.count
-        let dayWord = count == 1 ? "day" : "days"
         if goals.isAveragesPaused {
-            return "Paused · \(count) \(dayWord) excluded"
+            return count == 1
+                ? String(localized: "Paused · 1 day excluded")
+                : String(localized: "Paused · \(count) days excluded")
         }
-        return count == 0 ? "None excluded" : "\(count) \(dayWord) excluded"
+        switch count {
+        case 0: return String(localized: "None excluded")
+        case 1: return String(localized: "1 day excluded")
+        default: return String(localized: "\(count) days excluded")
+        }
     }
 
     private var excludedDaysFooter: String {
         // The banner this points at is Vitals+ only, and a lapsed pause filters nothing.
         if store.isPro && goals.isAveragesPaused {
-            return "Averages are paused: every new day is excluded until you resume. Open this row (or the banner above the tab bar) to resume or edit the days."
+            return String(localized: "Averages are paused: every new day is excluded until you resume. Open this row (or the banner above the tab bar) to resume or edit the days.")
         }
         return goals.excludedDayKeys.isEmpty
-            ? "Leave a sick day or a day off the wrist out of every average, total, and streak, or pause averages for a stretch you can't put an end date on. Nothing is deleted, and excluded days still show in your charts, dimmed."
-            : "Excluded days still show in your charts and export, dimmed. They count toward no average, total, best day, or streak."
+            ? String(localized: "Leave a sick day or a day off the wrist out of every average, total, and streak, or pause averages for a stretch you can't put an end date on. Nothing is deleted, and excluded days still show in your charts, dimmed.")
+            : String(localized: "Excluded days still show in your charts and export, dimmed. They count toward no average, total, best day, or streak.")
     }
 
     /// A plain navigation row for everyone, with no lock: anyone can open the
@@ -3830,7 +3843,7 @@ private struct SettingsSheet: View {
     private var excludedDaysRowLabel: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text("Excluded Days")
-            Text(store.isPro ? excludedDaysSubtitle : "Keep odd days out of your averages")
+            Text(store.isPro ? excludedDaysSubtitle : String(localized: "Keep odd days out of your averages"))
                 .font(.caption)
                 .foregroundStyle(Theme.textSecondary)
         }
@@ -3911,9 +3924,9 @@ private struct SettingsSheet: View {
 
     private var notificationsFooter: String {
         if notificationStatus == .denied {
-            return "Notifications are off for Total Calories in iOS Settings."
+            return String(localized: "Notifications are off for Total Calories in iOS Settings.")
         }
-        return "Goal Reached tells you the first time each goal is met in a day, even with the app closed."
+        return String(localized: "Goal Reached tells you the first time each goal is met in a day, even with the app closed.")
     }
 
     /// Answer the tap where it happened: the pitch opens over Settings, and
@@ -3960,17 +3973,19 @@ private struct SettingsSheet: View {
     /// Every switch in this section now explains itself on its own ⓘ, so the
     /// footer says only where the numbers come from.
     private var calorieIntakeFooter: String {
-        "Read from the food you log in Apple Health."
+        String(localized: "Read from the food you log in Apple Health.")
     }
 
     private var pacingFooter: String {
-        let window = goals.pacingLookback.label.lowercased()
+        let window = goals.pacingLookback.label.midSentence
         let basis = goals.pacingComparison == .dayOfWeek
-            ? "Past \(window), same weekday as today."
-            : "Past \(window), every day."
+            ? String(localized: "Past \(window), same weekday as today.")
+            : String(localized: "Past \(window), every day.")
         let minSamples = effectiveMinPacingSamples(for: goals.pacingComparison, lookback: goals.pacingLookback)
-        let dayWord = minSamples == 1 ? "day" : "days"
-        return "Compares your progress so far to your usual at this time (Apple Health). \(basis) Empty days don’t count. Need \(minSamples)+ \(dayWord) with data to show a comparison."
+        let need = minSamples == 1
+            ? String(localized: "Need 1+ day with data to show a comparison.")
+            : String(localized: "Need \(minSamples)+ days with data to show a comparison.")
+        return String(localized: "Compares your progress so far to your usual at this time (Apple Health). \(basis) Empty days don’t count. \(need)")
     }
 
     private func applyGoalDrafts() {
@@ -4037,12 +4052,12 @@ private struct SettingsSheet: View {
                         }
                     }
                     settingsToggleRow(
-                        "Active + Resting Breakdown",
+                        String(localized: "Active + Resting Breakdown"),
                         isOn: showActiveRestingBinding,
                         topic: .activeResting
                     )
                     settingsToggleRow(
-                        "TDEE & BMR",
+                        String(localized: "TDEE & BMR"),
                         isOn: showEnergyAveragesBinding,
                         topic: .energyAverages
                     )
@@ -4060,19 +4075,19 @@ private struct SettingsSheet: View {
                 // explanation these switches used to spend a footer paragraph on.
                 Section {
                     settingsToggleRow(
-                        "Net Deficit",
+                        String(localized: "Net Deficit"),
                         isOn: showNetCaloriesBinding,
                         topic: .netDeficit
                     )
                     if store.isPro && goals.showNetCalories {
                         settingsToggleRow(
-                            "Fasting Mode",
+                            String(localized: "Fasting Mode"),
                             isOn: netDeficitFastingBinding,
                             topic: .fastingMode
                         )
                     }
                     settingsToggleRow(
-                        "Show Macros",
+                        String(localized: "Show Macros"),
                         isOn: showMacrosBinding,
                         topic: .macros
                     )
@@ -4096,12 +4111,12 @@ private struct SettingsSheet: View {
                         // rather than sitting greyed out above the fold for
                         // everyone who doesn't track food at all.
                         settingsToggleRow(
-                            "Calorie Split",
+                            String(localized: "Calorie Split"),
                             isOn: macroSplitBinding,
                             topic: .calorieSplit
                         )
                         Toggle(isOn: macroGoalsBinding) {
-                            plusToggleLabel("Macro Goals")
+                            plusToggleLabel(String(localized: "Macro Goals"))
                         }
                     }
                     if store.isPro && goals.showMacros && goals.macroGoalsEnabled {
@@ -4120,7 +4135,7 @@ private struct SettingsSheet: View {
                                     // already names the setting, and three rows
                                     // reading "Daily target" would be
                                     // indistinguishable to VoiceOver.
-                                    Text("Daily \(kind.label.lowercased())")
+                                    Text("Daily \(kind.label.midSentence)")
                                         .foregroundStyle(Theme.textSecondary)
                                     Spacer()
                                     TextField(String(kind.defaultGoal), text: macroGoalBinding(kind))
@@ -4191,12 +4206,12 @@ private struct SettingsSheet: View {
                         }
                     }
                     settingsToggleRow(
-                        "End-of-Day Projection",
+                        String(localized: "End-of-Day Projection"),
                         isOn: showProjectionsBinding,
                         topic: .endOfDayProjection
                     )
                     settingsToggleRow(
-                        "Goal Streak",
+                        String(localized: "Goal Streak"),
                         isOn: showStreaksBinding,
                         topic: .goalStreak
                     )
@@ -4225,7 +4240,7 @@ private struct SettingsSheet: View {
                 Section {
                     Toggle("Goal Reached", isOn: goalReachedBinding)
                     settingsToggleRow(
-                        "Evening Reminder",
+                        String(localized: "Evening Reminder"),
                         isOn: eveningReminderBinding,
                         topic: .eveningReminder
                     )
@@ -4233,7 +4248,7 @@ private struct SettingsSheet: View {
                         DatePicker("Remind at", selection: eveningReminderTimeBinding, displayedComponents: .hourAndMinute)
                     }
                     settingsToggleRow(
-                        "Weekly Recap",
+                        String(localized: "Weekly Recap"),
                         isOn: weeklyRecapBinding,
                         topic: .weeklyRecap
                     )
@@ -4645,30 +4660,30 @@ struct CoachPromoCard: View {
 
             ViewThatFits(in: .horizontal) {
                 HStack(spacing: 8) {
-                    CoachTag(title: "Virtual sessions", systemImage: "video.fill", tint: CoachBrand.aquamarine)
-                    CoachTag(title: "Custom plans", systemImage: "checklist", tint: CoachBrand.dustyRose)
-                    CoachTag(title: "Nutrition support", systemImage: "leaf.fill", tint: CoachBrand.aquamarine)
+                    CoachTag(title: String(localized: "Virtual sessions"), systemImage: "video.fill", tint: CoachBrand.aquamarine)
+                    CoachTag(title: String(localized: "Custom plans"), systemImage: "checklist", tint: CoachBrand.dustyRose)
+                    CoachTag(title: String(localized: "Nutrition support"), systemImage: "leaf.fill", tint: CoachBrand.aquamarine)
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 8) {
-                        CoachTag(title: "Virtual sessions", systemImage: "video.fill", tint: CoachBrand.aquamarine)
-                        CoachTag(title: "Custom plans", systemImage: "checklist", tint: CoachBrand.dustyRose)
+                        CoachTag(title: String(localized: "Virtual sessions"), systemImage: "video.fill", tint: CoachBrand.aquamarine)
+                        CoachTag(title: String(localized: "Custom plans"), systemImage: "checklist", tint: CoachBrand.dustyRose)
                     }
-                    CoachTag(title: "Nutrition support", systemImage: "leaf.fill", tint: CoachBrand.aquamarine)
+                    CoachTag(title: String(localized: "Nutrition support"), systemImage: "leaf.fill", tint: CoachBrand.aquamarine)
                 }
             }
 
             ViewThatFits(in: .horizontal) {
                 HStack(spacing: 10) {
                     CoachLinkButton(
-                        title: compact ? "Contact Elsa" : "Work with Elsa",
+                        title: compact ? String(localized: "Contact Elsa") : String(localized: "Work with Elsa"),
                         systemImage: "arrow.up.right",
                         destination: VitalsLinks.coachContact,
                         prominent: true
                     )
                     CoachLinkButton(
-                        title: "View services",
+                        title: String(localized: "View services"),
                         systemImage: "list.bullet.clipboard",
                         destination: VitalsLinks.coachServices,
                         prominent: false
@@ -4677,13 +4692,13 @@ struct CoachPromoCard: View {
 
                 VStack(spacing: 10) {
                     CoachLinkButton(
-                        title: compact ? "Contact Elsa" : "Work with Elsa",
+                        title: compact ? String(localized: "Contact Elsa") : String(localized: "Work with Elsa"),
                         systemImage: "arrow.up.right",
                         destination: VitalsLinks.coachContact,
                         prominent: true
                     )
                     CoachLinkButton(
-                        title: "View services",
+                        title: String(localized: "View services"),
                         systemImage: "list.bullet.clipboard",
                         destination: VitalsLinks.coachServices,
                         prominent: false

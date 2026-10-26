@@ -10,10 +10,10 @@ enum BMICategory: String, CaseIterable, Sendable {
 
     var label: String {
         switch self {
-        case .underweight: "Underweight"
-        case .healthy: "Healthy"
-        case .overweight: "Overweight"
-        case .obesity: "Obesity"
+        case .underweight: String(localized: "Underweight")
+        case .healthy: String(localized: "Healthy")
+        case .overweight: String(localized: "Overweight")
+        case .obesity: String(localized: "Obesity")
         }
     }
 

@@ -14,7 +14,7 @@ struct LargeWidgetView: View {
                 if entry.showCalories {
                     Link(destination: DeepLink.metric(.calories).url) {
                         MetricBlock(
-                            title: "Calories",
+                            title: String(localized: "Calories"),
                             icon: "flame.fill",
                             tint: Theme.caloriesPrimary,
                             value: entry.totalCalories.formatted(.number.precision(.fractionLength(0))),
@@ -29,7 +29,7 @@ struct LargeWidgetView: View {
                 if entry.showSteps {
                     Link(destination: DeepLink.metric(.steps).url) {
                         MetricBlock(
-                            title: "Steps",
+                            title: String(localized: "Steps"),
                             icon: "figure.walk",
                             tint: Theme.stepsPrimary,
                             value: entry.steps.formatted(.number),
@@ -74,7 +74,7 @@ struct LargeWidgetView: View {
 
     private var header: some View {
         HStack(alignment: .firstTextBaseline) {
-            Text(entry.staleDate == nil ? "Today" : "Last synced")
+            Text(entry.staleDate == nil ? String(localized: "Today") : String(localized: "Last synced"))
                 .font(.system(.headline, design: .rounded))
                 .foregroundStyle(Theme.textPrimary)
             Spacer()

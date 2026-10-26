@@ -47,7 +47,7 @@ struct BodyProfileView: View {
     }
 
     private var manualEntryTitle: String {
-        bodyProfile.preferredSource == .manual ? "Manual Entry" : "Enter Height & Weight"
+        bodyProfile.preferredSource == .manual ? String(localized: "Manual Entry") : String(localized: "Enter Height & Weight")
     }
 
     var body: some View {
@@ -70,7 +70,7 @@ struct BodyProfileView: View {
         .background(Theme.background.ignoresSafeArea())
         .navigationTitle("Body Profile")
         .navigationBarTitleDisplayMode(.inline)
-        .unfoldedPaneBackHeader("Body Profile")
+        .unfoldedPaneBackHeader(String(localized: "Body Profile"))
         .background(InteractivePopGestureEnabler())
         .sheet(item: $trialPitch) { pitch in
             TrialOfferPitchSheet(request: pitch, onDismiss: { trialPitch = nil })
@@ -114,12 +114,12 @@ struct BodyProfileView: View {
 
     private var headerSubtitle: String {
         if usingAppleHealthData {
-            return "BMI from height and weight synced from Apple Health."
+            return String(localized: "BMI from height and weight synced from Apple Health.")
         }
         if bodyProfile.preferredSource == .manual {
-            return "BMI from height and weight you enter."
+            return String(localized: "BMI from height and weight you enter.")
         }
-        return "Sync from Apple Health or enter height and weight below."
+        return String(localized: "Sync from Apple Health or enter height and weight below.")
     }
 
     // MARK: - Source
@@ -186,7 +186,7 @@ struct BodyProfileView: View {
                         } else {
                             Image(systemName: "heart.text.square.fill")
                         }
-                        Text(isSyncing ? "Syncing…" : "Use Apple Health Instead")
+                        Text(isSyncing ? "Syncing…" : String(localized: "Use Apple Health Instead"))
                             .font(.system(.subheadline, design: .rounded, weight: .semibold))
                     }
                     .foregroundStyle(.white)
@@ -215,7 +215,7 @@ struct BodyProfileView: View {
                         } else {
                             Image(systemName: "heart.text.square.fill")
                         }
-                        Text(isSyncing ? "Syncing…" : "Sync from Apple Health")
+                        Text(isSyncing ? "Syncing…" : String(localized: "Sync from Apple Health"))
                             .font(.system(.subheadline, design: .rounded, weight: .semibold))
                     }
                     .foregroundStyle(.white)
@@ -289,11 +289,11 @@ struct BodyProfileView: View {
             if resolved.heightMeters != nil || resolved.weightKilograms != nil {
                 Divider().background(Theme.textTertiary.opacity(0.2))
                 HStack {
-                    metricColumn(label: "Height", value: heightDisplay)
+                    metricColumn(label: String(localized: "Height"), value: heightDisplay)
                     Spacer()
-                    metricColumn(label: "Weight", value: weightDisplay)
+                    metricColumn(label: String(localized: "Weight"), value: weightDisplay)
                     Spacer()
-                    metricColumn(label: "Source", value: resolved.source.label)
+                    metricColumn(label: String(localized: "Source"), value: resolved.source.label)
                 }
             }
         }
@@ -354,31 +354,31 @@ struct BodyProfileView: View {
 
             if unitSystem == .us {
                 HStack(spacing: 10) {
-                    entryField(title: "Feet", text: $feetText, unit: "ft")
-                    entryField(title: "Inches", text: $inchesText, unit: "in")
+                    entryField(title: String(localized: "Feet"), text: $feetText, unit: "ft")
+                    entryField(title: String(localized: "Inches"), text: $inchesText, unit: "in")
                 }
                 if heightError {
-                    fieldError("Enter a realistic height.")
+                    fieldError(String(localized: "Enter a realistic height."))
                 }
-                entryField(title: "Weight", text: $poundsText, unit: "lb")
+                entryField(title: String(localized: "Weight"), text: $poundsText, unit: "lb")
                 if weightError {
-                    fieldError("Enter a realistic weight.")
+                    fieldError(String(localized: "Enter a realistic weight."))
                 }
             } else {
-                entryField(title: "Height", text: $cmText, unit: "cm")
+                entryField(title: String(localized: "Height"), text: $cmText, unit: "cm")
                 if heightError {
-                    fieldError("Enter a realistic height.")
+                    fieldError(String(localized: "Enter a realistic height."))
                 }
-                entryField(title: "Weight", text: $kgText, unit: "kg")
+                entryField(title: String(localized: "Weight"), text: $kgText, unit: "kg")
                 if weightError {
-                    fieldError("Enter a realistic weight.")
+                    fieldError(String(localized: "Enter a realistic weight."))
                 }
             }
 
             if store.isPro {
-                entryField(title: "Body Fat", text: $bodyFatText, unit: "%")
+                entryField(title: String(localized: "Body Fat"), text: $bodyFatText, unit: "%")
                 if bodyFatError {
-                    fieldError("Enter a body fat between 2% and 75%.")
+                    fieldError(String(localized: "Enter a body fat between \(2)% and \(75)%."))
                 }
             }
         }
@@ -540,15 +540,15 @@ struct BodyProfileView: View {
     }
 
     private var bmiAccessibilityLabel: String {
-        var parts = ["Body Mass Index"]
+        var parts = [String(localized: "Body Mass Index")]
         if let bmi = resolved.bmi {
             parts.append(BodyProfileCalculator.formattedBMI(bmi))
             if let category = resolved.category { parts.append(category.label) }
-            parts.append("Source \(resolved.source.label)")
-            parts.append("Height \(heightDisplay)")
-            parts.append("Weight \(weightDisplay)")
+            parts.append(String(localized: "Source \(resolved.source.label)"))
+            parts.append(String(localized: "Height \(heightDisplay)"))
+            parts.append(String(localized: "Weight \(weightDisplay)"))
         } else {
-            parts.append("Not enough data. Add height and weight.")
+            parts.append(String(localized: "Not enough data. Add height and weight."))
         }
         return parts.joined(separator: ", ")
     }
@@ -584,10 +584,10 @@ struct BodyProfileView: View {
                 bodyProfile.preferredSource = .appleHealth
                 healthStatusMessage = nil
             } else {
-                healthStatusMessage = "Couldn’t find height and weight in Apple Health. You can enter them manually here."
+                healthStatusMessage = String(localized: "Couldn’t find height and weight in Apple Health. You can enter them manually here.")
             }
         } catch {
-            healthStatusMessage = "Couldn’t read from Apple Health. Enter your height and weight manually here."
+            healthStatusMessage = String(localized: "Couldn’t read from Apple Health. Enter your height and weight manually here.")
         }
     }
 

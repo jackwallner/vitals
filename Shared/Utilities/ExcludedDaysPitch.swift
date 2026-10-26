@@ -57,15 +57,15 @@ struct ExcludedDaysPitch: Equatable {
         // Only a lift is worth quoting. "Lowers your average" is true of any
         // above-average day the user taps and sells nothing.
         let effect = lift > 0
-            ? "Leaving it out lifts your 30-day average by \(lift.formatted(.number)) cal."
-            : "Leave it out of every average, total, and streak."
+            ? String(localized: "Leaving it out lifts your 30-day average by \(lift.formatted(.number)) cal.")
+            : String(localized: "Leave it out of every average, total, and streak.")
         let isLowest = tapped == nil
         let lead = isLowest
-            ? "Your lowest day in the last 30 burned \(calories) cal."
-            : "That day burned \(calories) cal."
+            ? String(localized: "Your lowest day in the last 30 burned \(calories) cal.")
+            : String(localized: "That day burned \(calories) cal.")
         return ExcludedDaysPitch(
             day: chosen.day,
-            headline: "Leave \(dayLabel) out of your averages",
+            headline: String(localized: "Leave \(dayLabel) out of your averages"),
             subheadline: "\(lead) \(effect)"
         )
     }

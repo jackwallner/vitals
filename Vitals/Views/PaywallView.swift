@@ -65,90 +65,90 @@ enum PlusFeature: CaseIterable {
     /// Short title for compact bullet rows (trial sheet companions).
     var title: String {
         switch self {
-        case .netDeficit: "Net Deficit"
-        case .macros: "Macros"
-        case .activeResting: "Active vs. resting"
-        case .energyAverages: "TDEE & BMR"
-        case .deepTrends: "Deep Trends"
-        case .customRangesPDF: "Custom ranges + PDF"
-        case .projections: "End-of-day projections"
-        case .streaks: "Goal streaks"
-        case .weeklyRecap: "Weekly recap"
-        case .eveningReminder: "Evening reminder"
-        case .bodyProfile: "Body profile"
-        case .excludedDays: "Excluded days"
+        case .netDeficit: String(localized: "Net Deficit")
+        case .macros: String(localized: "Macros")
+        case .activeResting: String(localized: "Active vs. resting")
+        case .energyAverages: String(localized: "TDEE & BMR")
+        case .deepTrends: String(localized: "Deep Trends")
+        case .customRangesPDF: String(localized: "Custom ranges + PDF")
+        case .projections: String(localized: "End-of-day projections")
+        case .streaks: String(localized: "Goal streaks")
+        case .weeklyRecap: String(localized: "Weekly recap")
+        case .eveningReminder: String(localized: "Evening reminder")
+        case .bodyProfile: String(localized: "Body profile")
+        case .excludedDays: String(localized: "Excluded days")
         }
     }
 
     /// Supporting line on the focused trial bullet (intent sheet).
     var detail: String {
         switch self {
-        case .netDeficit: "Burned minus food logged in Apple Health, updated through the day."
-        case .macros: "Protein, carbs, and fat from the food you already log in Apple Health."
-        case .activeResting: "See how much of today's burn came from activity vs. resting."
-        case .energyAverages: "30-day maintenance (TDEE) and resting burn (BMR) from your data."
-        case .deepTrends: "Compare any period to the one before it."
-        case .customRangesPDF: "Pick any dates in History and export a summary PDF."
-        case .projections: "Where today's calories and steps will land at your current pace."
-        case .streaks: "See how many days in a row you've hit your goal."
-        case .weeklyRecap: "Sunday summary of this week vs. last."
-        case .eveningReminder: "One nudge at the time you pick when a goal is still open."
-        case .bodyProfile: "Body fat and calorie context next to your BMI."
-        case .excludedDays: "Leave sick days and days off the wrist out of your averages."
+        case .netDeficit: String(localized: "Burned minus food logged in Apple Health, updated through the day.")
+        case .macros: String(localized: "Protein, carbs, and fat from the food you already log in Apple Health.")
+        case .activeResting: String(localized: "See how much of today's burn came from activity vs. resting.")
+        case .energyAverages: String(localized: "30-day maintenance (TDEE) and resting burn (BMR) from your data.")
+        case .deepTrends: String(localized: "Compare any period to the one before it.")
+        case .customRangesPDF: String(localized: "Pick any dates in History and export a summary PDF.")
+        case .projections: String(localized: "Where today's calories and steps will land at your current pace.")
+        case .streaks: String(localized: "See how many days in a row you've hit your goal.")
+        case .weeklyRecap: String(localized: "Sunday summary of this week vs. last.")
+        case .eveningReminder: String(localized: "One nudge at the time you pick when a goal is still open.")
+        case .bodyProfile: String(localized: "Body fat and calorie context next to your BMI.")
+        case .excludedDays: String(localized: "Leave sick days and days off the wrist out of your averages.")
         }
     }
 
     /// Outcome bullets on the full paywall (generic, no focus).
     var featureListTitle: String {
         switch self {
-        case .netDeficit: "Net Deficit: burned minus food logged, live"
-        case .macros: "Macros: protein, carbs, and fat, every day"
-        case .activeResting: "Active vs. resting calorie breakdown"
-        case .energyAverages: "TDEE & BMR from your Apple Health averages"
-        case .deepTrends: "Deep Trends: every period vs. the one before"
-        case .customRangesPDF: "Custom date ranges + PDF reports"
-        case .projections: "End-of-day projections from your pace"
-        case .streaks: "Goal streaks: keep the chain alive"
-        case .weeklyRecap: "Weekly recap notification + summary"
-        case .eveningReminder: "Evening reminder when a goal is still open"
-        case .bodyProfile: "Body fat + calorie context with your BMI"
-        case .excludedDays: "Excluded days: keep odd days out of your averages"
+        case .netDeficit: String(localized: "Net Deficit: burned minus food logged, live")
+        case .macros: String(localized: "Macros: protein, carbs, and fat, every day")
+        case .activeResting: String(localized: "Active vs. resting calorie breakdown")
+        case .energyAverages: String(localized: "TDEE & BMR from your Apple Health averages")
+        case .deepTrends: String(localized: "Deep Trends: every period vs. the one before")
+        case .customRangesPDF: String(localized: "Custom date ranges + PDF reports")
+        case .projections: String(localized: "End-of-day projections from your pace")
+        case .streaks: String(localized: "Goal streaks: keep the chain alive")
+        case .weeklyRecap: String(localized: "Weekly recap notification + summary")
+        case .eveningReminder: String(localized: "Evening reminder when a goal is still open")
+        case .bodyProfile: String(localized: "Body fat + calorie context with your BMI")
+        case .excludedDays: String(localized: "Excluded days: keep odd days out of your averages")
         }
     }
 
     /// Headline when the user tapped to enable this specific feature.
     var intentHeadline: String {
         switch self {
-        case .netDeficit: "Track your live deficit"
-        case .macros: "See your macros here too"
-        case .activeResting: "Split active and resting burn"
-        case .energyAverages: "See your maintenance calories"
-        case .deepTrends: "Compare every period"
-        case .customRangesPDF: "Export any date range"
-        case .projections: "Know where today lands"
-        case .streaks: "Keep your streak alive"
-        case .weeklyRecap: "Get your week in review"
-        case .eveningReminder: "Close out your day"
-        case .bodyProfile: "Understand your body profile"
-        case .excludedDays: "Keep odd days out of your averages"
+        case .netDeficit: String(localized: "Track your live deficit")
+        case .macros: String(localized: "See your macros here too")
+        case .activeResting: String(localized: "Split active and resting burn")
+        case .energyAverages: String(localized: "See your maintenance calories")
+        case .deepTrends: String(localized: "Compare every period")
+        case .customRangesPDF: String(localized: "Export any date range")
+        case .projections: String(localized: "Know where today lands")
+        case .streaks: String(localized: "Keep your streak alive")
+        case .weeklyRecap: String(localized: "Get your week in review")
+        case .eveningReminder: String(localized: "Close out your day")
+        case .bodyProfile: String(localized: "Understand your body profile")
+        case .excludedDays: String(localized: "Keep odd days out of your averages")
         }
     }
 
     /// One sentence under the headline — what they get from the feature they asked for.
     var intentSubheadline: String {
         switch self {
-        case .netDeficit: "Calories burned minus food logged, updated all day from Apple Health."
-        case .macros: "Protein, carbs, and fat read straight from the food app you already use."
-        case .activeResting: "See what actually moved today's calorie number."
-        case .energyAverages: "TDEE and BMR averaged over the last 30 days from your own data."
-        case .deepTrends: "Stack this week against last week, this month against the last."
-        case .customRangesPDF: "Pull any window from History into a clean PDF."
-        case .projections: "Projected calories and steps based on your pace so far today."
-        case .streaks: "Track consecutive days you hit your goal."
-        case .weeklyRecap: "A Sunday night summary of this week vs. last."
-        case .eveningReminder: "One evening nudge with what's left for your goals and your streak. Silent on days you're on track."
-        case .bodyProfile: "Body fat and calorie context alongside BMI. BMI stays free."
-        case .excludedDays: "Pick the days that shouldn't count (sick days, travel, a day off the wrist) and every average, total, and streak skips them."
+        case .netDeficit: String(localized: "Calories burned minus food logged, updated all day from Apple Health.")
+        case .macros: String(localized: "Protein, carbs, and fat read straight from the food app you already use.")
+        case .activeResting: String(localized: "See what actually moved today's calorie number.")
+        case .energyAverages: String(localized: "TDEE and BMR averaged over the last 30 days from your own data.")
+        case .deepTrends: String(localized: "Stack this week against last week, this month against the last.")
+        case .customRangesPDF: String(localized: "Pull any window from History into a clean PDF.")
+        case .projections: String(localized: "Projected calories and steps based on your pace so far today.")
+        case .streaks: String(localized: "Track consecutive days you hit your goal.")
+        case .weeklyRecap: String(localized: "A Sunday night summary of this week vs. last.")
+        case .eveningReminder: String(localized: "One evening nudge with what's left for your goals and your streak. Silent on days you're on track.")
+        case .bodyProfile: String(localized: "Body fat and calorie context alongside BMI. BMI stays free.")
+        case .excludedDays: String(localized: "Pick the days that shouldn't count (sick days, travel, a day off the wrist) and every average, total, and streak skips them.")
         }
     }
 
@@ -291,7 +291,7 @@ struct PaywallView: View {
     /// The benefits the shortened list doesn't spell out, as one line.
     private var remainingBenefitsLine: String? {
         guard focus == nil else { return nil }
-        return "Plus projections, streaks, weekly recap, active/resting split, and body profile."
+        return String(localized: "Plus projections, streaks, weekly recap, active/resting split, and body profile.")
     }
 
     private var showsFullBenefitList: Bool { focus == nil }
@@ -353,7 +353,7 @@ struct PaywallView: View {
             Text("Couldn't Load Plans")
                 .font(.system(.headline, design: .rounded))
                 .foregroundStyle(Theme.textSecondary)
-            Text(store.lastError ?? "Check your connection and try again.")
+            Text(store.lastError ?? String(localized: "Check your connection and try again."))
                 .font(.system(.subheadline, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
                 .multilineTextAlignment(.center)
@@ -543,7 +543,7 @@ struct PaywallView: View {
             : AnyLayout(HStackLayout(spacing: 6))
         return layout {
             Button(action: startRestore) {
-                Text(isRestoring ? "Restoring…" : "Restore")
+                Text(isRestoring ? "Restoring…" : String(localized: "Restore"))
                     .font(.system(.caption2, design: .rounded, weight: .semibold))
                     .foregroundStyle(Theme.textSecondary)
             }
@@ -744,7 +744,7 @@ struct PaywallView: View {
                     .font(.system(size: compact ? 20 : 26, weight: .bold))
                     .foregroundStyle(.white)
             }
-            Text(focus?.intentHeadline ?? "Vitals+")
+            Text(focus?.intentHeadline ?? String(localized: "Vitals+"))
                 .font(.system(compact ? .title2 : .title, design: .rounded, weight: .bold))
                 .foregroundStyle(Theme.textPrimary)
                 .multilineTextAlignment(.center)
@@ -801,7 +801,7 @@ struct PaywallView: View {
     // MARK: - Copy
 
     private var upgradeTabHeaderSubheadline: String {
-        "Calories, steps, and trends in one dashboard."
+        String(localized: "Calories, steps, and trends in one dashboard.")
     }
 
     /// nil while eligibility is still resolving, so the button never flashes
@@ -823,11 +823,11 @@ struct PaywallView: View {
         guard let package = selectedPackage else { return nil }
         let price = package.vitalsPriceLabel
         if package.vitalsPackageKind == .lifetime {
-            return "\(price). One-time purchase. Lifetime access, no subscription."
+            return String(localized: "\(price). One-time purchase. Lifetime access, no subscription.")
         }
-        let renew = "Auto-renews unless cancelled at least 24 hours before the end of the current period. Manage or cancel in Settings."
+        let renew = String(localized: "Auto-renews unless cancelled at least 24 hours before the end of the current period. Manage or cancel in Settings.")
         if store.isEligibleForIntroOffer(package), let trial = package.vitalsIntroOfferLabel {
-            return "\(trial.capitalized), then \(price). \(renew)"
+            return String(localized: "\(trial.leadingCapitalized), then \(price). \(renew)")
         }
         return "\(price). \(renew)"
     }
@@ -896,7 +896,7 @@ struct PaywallView: View {
             defer { isRestoring = false }
             await store.restorePurchases()
             if !store.isPro {
-                restoreMessage = store.lastError ?? "No active Vitals+ purchase found for this Apple ID."
+                restoreMessage = store.lastError ?? String(localized: "No active Vitals+ purchase found for this Apple ID.")
             }
         }
     }
@@ -916,8 +916,8 @@ private struct PlanCard: View {
     /// The one line worth saying under the plan name: the trial when it applies,
     /// otherwise the per-week equivalent. nil when neither is known.
     private var subline: String? {
-        if showsTrialBadge, let trial = package.vitalsIntroOfferLabel { return trial.capitalized }
-        if let perWeekLabel { return "Just \(perWeekLabel)/week" }
+        if showsTrialBadge, let trial = package.vitalsIntroOfferLabel { return trial.leadingCapitalized }
+        if let perWeekLabel { return String(localized: "Just \(perWeekLabel)/week") }
         return nil
     }
 

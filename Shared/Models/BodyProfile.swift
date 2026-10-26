@@ -7,8 +7,8 @@ enum BodyProfileSource: String, CaseIterable, Sendable {
 
     var label: String {
         switch self {
-        case .appleHealth: "Apple Health"
-        case .manual: "Manual"
+        case .appleHealth: String(localized: "Apple Health")
+        case .manual: String(localized: "Manual")
         }
     }
 }
@@ -22,9 +22,9 @@ enum BodyProfileUnitSystem: String, CaseIterable, Sendable {
 
     var label: String {
         switch self {
-        case .automatic: "Automatic"
+        case .automatic: String(localized: "Automatic")
         case .us: "US"
-        case .metric: "Metric"
+        case .metric: String(localized: "Metric")
         }
     }
 }

@@ -57,22 +57,22 @@ enum DailyNudgePlanner {
         let hitSteps = reached.contains(.steps)
         if hitCalories && hitSteps {
             return NudgeContent(
-                title: "Both goals reached",
-                body: "\(formatCalories(calories)) cal burned and \(formatSteps(steps)) steps today.",
+                title: String(localized: "Both goals reached"),
+                body: String(localized: "\(formatCalories(calories)) cal burned and \(formatSteps(steps)) steps today."),
                 link: .today
             )
         }
         if hitCalories, let goal = calorieGoal {
             return NudgeContent(
-                title: "Calorie goal reached",
-                body: "\(formatCalories(calories)) of \(formatCalories(goal)) cal burned today.",
+                title: String(localized: "Calorie goal reached"),
+                body: String(localized: "\(formatCalories(calories)) of \(formatCalories(goal)) cal burned today."),
                 link: .metric(.calories)
             )
         }
         if hitSteps, let goal = stepGoal {
             return NudgeContent(
-                title: "Step goal reached",
-                body: "\(formatSteps(steps)) of \(formatSteps(goal)) steps today.",
+                title: String(localized: "Step goal reached"),
+                body: String(localized: "\(formatSteps(steps)) of \(formatSteps(goal)) steps today."),
                 link: .metric(.steps)
             )
         }
@@ -147,8 +147,8 @@ enum DailyNudgePlanner {
         let stepGap = stepShortfall(steps: steps, goal: stepGoal)
         guard calGap != nil || stepGap != nil else { return nil }
 
-        let calText = calGap.map { "about \(formatCalories($0)) active cal" }
-        let stepText = stepGap.map { "\(formatSteps($0)) steps" }
+        let calText = calGap.map { String(localized: "about \(formatCalories($0)) active cal") }
+        let stepText = stepGap.map { String(localized: "\(formatSteps($0)) steps") }
         let walk = stepGap.flatMap(walkMinutes(forSteps:))
 
         let savedStreak = streakToSave(
@@ -156,13 +156,14 @@ enum DailyNudgePlanner {
             stepStreak: stepGap == nil ? 0 : stepStreak
         )
         if case let (metric, days)? = savedStreak {
-            let noun = metric == .steps ? "step" : "calorie"
-            let gaps = [stepText, calText].compactMap { $0 }.joined(separator: " and ")
-            var body = "\(capitalizedFirst(gaps)) to go today"
-            if let walk, metric == .steps { body += ", about a \(walk) min walk" }
+            let gaps = [stepText, calText].compactMap { $0 }.formatted(.list(type: .and))
+            var body = String(localized: "\(capitalizedFirst(gaps)) to go today")
+            if let walk, metric == .steps { body += String(localized: ", about a \(walk) min walk") }
             return NudgeContent(
-                title: "Keep your \(days)-day \(noun) streak",
-                body: body + ".",
+                title: metric == .steps
+                    ? String(localized: "Keep your \(days)-day step streak")
+                    : String(localized: "Keep your \(days)-day calorie streak"),
+                body: String(localized: "\(body).", comment: "Sentence end punctuation"),
                 link: .today
             )
         }
@@ -170,18 +171,18 @@ enum DailyNudgePlanner {
         switch (calText, stepText) {
         case let (cal?, steps?):
             return NudgeContent(
-                title: "Today's goals are still open",
-                body: "\(steps) and \(cal) to go.",
+                title: String(localized: "Today's goals are still open"),
+                body: String(localized: "\(steps) and \(cal) to go."),
                 link: .today
             )
         case let (nil, steps?):
-            let body = walk.map { "About a \($0) min walk closes out your step goal." }
-                ?? "Still time to close out your step goal."
-            return NudgeContent(title: "\(capitalizedFirst(steps)) to go", body: body, link: .today)
+            let body = walk.map { String(localized: "About a \($0) min walk closes out your step goal.") }
+                ?? String(localized: "Still time to close out your step goal.")
+            return NudgeContent(title: String(localized: "\(capitalizedFirst(steps)) to go"), body: body, link: .today)
         case let (cal?, nil):
             return NudgeContent(
-                title: "\(capitalizedFirst(cal)) to go",
-                body: "A little more movement closes out your calorie goal.",
+                title: String(localized: "\(capitalizedFirst(cal)) to go"),
+                body: String(localized: "A little more movement closes out your calorie goal."),
                 link: .today
             )
         case (nil, nil):

@@ -5,6 +5,7 @@ options:
     iOS: "17.0"
     watchOS: "10.0"
   xcodeVersion: "16.0"
+  developmentLanguage: en
   minimumXcodeGenVersion: "2.38"
 
 settings:
@@ -15,6 +16,10 @@ settings:
     MARKETING_VERSION: "1.9.1"
     CURRENT_PROJECT_VERSION: "231"
     GENERATE_INFOPLIST_FILE: NO
+    # UI copy lives in Shared/Localizable.xcstrings (en, de, fr, es, it, ja,
+    # zh-Hans); HealthKit purpose strings in each app's InfoPlist.xcstrings.
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+    SWIFT_EMIT_LOC_STRINGS: YES
 
 packages:
   RevenueCat:
@@ -158,6 +163,7 @@ targets:
       - path: Shared/Utilities/WeeklyRecap.swift
       - path: Shared/Utilities/MilestoneCalculator.swift
       - path: Shared/Utilities/VitalsConversionCopy.swift
+      - path: Shared/Utilities/LocalizedText.swift
       - path: Shared/Utilities/CTAExperiment.swift
       - path: Shared/Utilities/UnfoldedSplit.swift
       - path: Shared/Utilities/PaywallUIVariant.swift

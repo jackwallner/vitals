@@ -127,8 +127,8 @@ private struct EnergyBuildingView: View {
                 .font(.system(.subheadline, design: .rounded, weight: .semibold))
                 .foregroundStyle(Theme.textSecondary)
             Text(hasCache
-                ? "Building: \(sampleDays)/\(EnergyAveragesEntry.minSamples) days"
-                : "Open Total Calories to load health data.")
+                ? String(localized: "Building: \(sampleDays)/\(EnergyAveragesEntry.minSamples) days")
+                : String(localized: "Open Total Calories to load health data."))
                 .font(.caption2)
                 .foregroundStyle(Theme.textTertiary)
                 .multilineTextAlignment(.center)
@@ -286,7 +286,7 @@ struct EnergyRectangularView: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
             } else {
-                Text(entry.isPro ? "Building 30-day average" : "Vitals+ feature")
+                Text(entry.isPro ? String(localized: "Building 30-day average") : String(localized: "Vitals+ feature"))
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(.secondary)
             }

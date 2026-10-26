@@ -1,0 +1,100 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSHealthShareUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories liest Aktive Energie, Grundumsatz, Schritte und (auf dem iPhone) Nahrungsenergie aus Apple Health, um deinen Tagesfortschritt anzuzeigen. Total Calories schreibt nie Health-Daten."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories reads your Active Energy, Basal Energy, Step Count, and (on iPhone) Dietary Energy from Apple Health to display your daily progress. Total Calories never writes Health data."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories lee tu energía activa, energía en reposo, pasos y (en el iPhone) energía de los alimentos de Apple Salud para mostrar tu progreso diario. Total Calories nunca escribe datos de Salud."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories lit votre énergie active, votre énergie au repos, votre nombre de pas et (sur iPhone) votre énergie alimentaire dans Apple Santé pour afficher votre progression du jour. Total Calories n’écrit jamais de données Santé."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories legge energia attiva, energia a riposo, passi e (su iPhone) energia dei pasti da Apple Salute per mostrare i progressi del giorno. Total Calories non scrive mai dati di Salute."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Caloriesは、毎日の進捗を表示するために、ヘルスケアからアクティブエネルギー、安静時消費エネルギー、歩数、（iPhoneでは）摂取エネルギーを読み取ります。ヘルスケアにデータを書き込むことはありません。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories 会从 Apple 健康读取你的活动能量、静息能量、步数以及（在 iPhone 上）膳食能量，用于显示每日进度。Total Calories 从不写入健康数据。"
+          }
+        }
+      }
+    },
+    "NSHealthUpdateUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories schreibt keine Daten in Apple Health."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories does not write any data to Apple Health."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories no escribe ningún dato en Apple Salud."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories n’écrit aucune donnée dans Apple Santé."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories non scrive alcun dato in Apple Salute."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Caloriesはヘルスケアにデータを書き込みません。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total Calories 不会向 Apple 健康写入任何数据。"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

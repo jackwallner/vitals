@@ -131,9 +131,9 @@ struct TrialOfferPitchSheet: View {
                     id: plan.identifier,
                     title: plan.vitalsDisplayName,
                     price: plan.vitalsPriceLabel,
-                    detail: plan.vitalsPricePerWeekLabel.map { "about \($0) a week" },
+                    detail: plan.vitalsPricePerWeekLabel.map { String(localized: "about \($0) a week") },
                     badge: plan.vitalsPackageKind == .yearly
-                        ? store.annualSavingsPercent.map { "SAVE \($0)%" }
+                        ? store.annualSavingsPercent.map { String(localized: "SAVE \($0)%") }
                         : nil
                 )
             }
@@ -206,7 +206,7 @@ struct TrialOfferPitchSheet: View {
     /// as well as a lie.
     private var ctaTitle: String {
         guard let package else { return store.onboardingTrialCTALabel }
-        if package.vitalsPackageKind == .lifetime { return "Unlock Lifetime" }
+        if package.vitalsPackageKind == .lifetime { return String(localized: "Unlock Lifetime") }
         return VitalsConversionCopy.ctaLabel(
             trialLabel: package.vitalsIntroOfferLabel,
             priceLabel: package.vitalsPriceLabel,
@@ -217,7 +217,7 @@ struct TrialOfferPitchSheet: View {
     private var disclosureText: String? {
         guard let package else { return store.yearlySheetDisclosureText }
         if package.vitalsPackageKind == .lifetime {
-            return "\(package.vitalsPriceLabel). One-time purchase. Lifetime access, no subscription."
+            return String(localized: "\(package.vitalsPriceLabel). One-time purchase. Lifetime access, no subscription.")
         }
         return VitalsConversionCopy.sheetDisclosure(
             trialLabel: package.vitalsIntroOfferLabel,
@@ -239,7 +239,7 @@ struct TrialOfferPitchSheet: View {
             await store.restorePurchases()
             guard !store.isPro else { return }
             restoreMessage = store.lastError
-                ?? "No active Vitals+ purchase was found for this Apple ID."
+                ?? String(localized: "No active Vitals+ purchase was found for this Apple ID.")
         }
     }
 

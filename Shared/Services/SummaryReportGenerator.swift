@@ -90,7 +90,7 @@ struct SummaryReport: Sendable {
 
     var calendarLabel: String {
         let f = DateFormatter()
-        f.dateFormat = "MMMM d, yyyy"
+        f.setLocalizedDateFormatFromTemplate("MMMMdyyyy")
         return "\(f.string(from: periodStart)) – \(f.string(from: periodEnd))"
     }
 }

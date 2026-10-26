@@ -31,31 +31,31 @@ struct ExitOfferPriceTiles: View {
     /// The offer sheet's headline, named from the same real discount as the badge.
     static func headline(offer: Package, regular: Package?) -> String {
         switch percentOff(offer: offer, regular: regular) {
-        case 50: "Vitals+ at half price"
-        case let pct?: "Vitals+ at \(pct)% off"
-        case nil: "A lower price on Vitals+"
+        case 50: String(localized: "Vitals+ at half price")
+        case let pct?: String(localized: "Vitals+ at \(pct)% off")
+        case nil: String(localized: "A lower price on Vitals+")
         }
     }
 
     private var badge: String {
         switch percentOff {
-        case 50: "HALF OFF"
-        case let pct?: "\(pct)% OFF"
+        case 50: String(localized: "HALF OFF")
+        case let pct?: String(localized: "\(pct)% OFF")
         case nil: "OFFER"
         }
     }
 
     private var accessibilitySummary: String {
-        let offerPrice = "\(offer.vitalsLocalizedPriceString) a year"
-        guard let regular, percentOff != nil else { return "Your price, \(offerPrice)" }
-        return "Your price, \(offerPrice), usually \(regular.vitalsLocalizedPriceString)"
+        let offerPrice = String(localized: "\(offer.vitalsLocalizedPriceString) a year")
+        guard let regular, percentOff != nil else { return String(localized: "Your price, \(offerPrice)") }
+        return String(localized: "Your price, \(offerPrice), usually \(regular.vitalsLocalizedPriceString)")
     }
 
     var body: some View {
         HStack(spacing: 10) {
             if let regular, percentOff != nil {
                 tile(
-                    label: "Usual price",
+                    label: String(localized: "Usual price"),
                     labelColor: Theme.textSecondary,
                     price: Text(regular.vitalsLocalizedPriceString).strikethrough(true, color: Theme.textTertiary),
                     priceColor: Theme.textTertiary
@@ -66,7 +66,7 @@ struct ExitOfferPriceTiles: View {
             tile(
                 // Not "One-time price": it renews at this price every year,
                 // and the disclosure under it says so.
-                label: "Your price",
+                label: String(localized: "Your price"),
                 labelColor: Theme.caloriesPrimary,
                 price: Text(offer.vitalsLocalizedPriceString),
                 priceColor: Theme.textPrimary

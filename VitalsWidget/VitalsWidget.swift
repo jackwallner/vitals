@@ -177,10 +177,10 @@ struct WidgetDay: Hashable {
 
 private func staleLabel(for date: Date) -> String {
     let cal = Calendar.current
-    if cal.isDateInYesterday(date) { return "Yesterday" }
+    if cal.isDateInYesterday(date) { return String(localized: "Yesterday") }
     let daysOld = cal.dateComponents([.day], from: cal.startOfDay(for: date), to: cal.startOfDay(for: .now)).day ?? 0
     let formatter = DateFormatter()
-    formatter.dateFormat = daysOld >= 7 ? "MMM d" : "EEE d"
+    formatter.setLocalizedDateFormatFromTemplate(daysOld >= 7 ? "MMMd" : "EEEd")
     return formatter.string(from: date)
 }
 
@@ -551,9 +551,9 @@ struct InlineAccessoryView: View {
     let entry: VitalsEntry
 
     private var text: String {
-        guard entry.dataAvailable else { return "Open Total Calories" }
+        guard entry.dataAvailable else { return String(localized: "Open Total Calories") }
         let numbers = metricText
-        guard !numbers.isEmpty else { return "Total Calories" }
+        guard !numbers.isEmpty else { return String(localized: "Total Calories") }
         // No room to dim one line, so old numbers say whose they are.
         guard let stale = entry.staleDate else { return numbers }
         return "\(staleLabel(for: stale)): \(numbers)"
@@ -562,13 +562,13 @@ struct InlineAccessoryView: View {
     private var metricText: String {
         var parts: [String] = []
         if entry.showCalories {
-            parts.append("\(entry.totalCalories.formatted(.number.precision(.fractionLength(0)))) cal")
+            parts.append(String(localized: "\(entry.totalCalories.formatted(.number.precision(.fractionLength(0)))) cal"))
         }
         if entry.showSteps {
-            parts.append("\(entry.steps.formatted(.number)) steps")
+            parts.append(String(localized: "\(entry.steps.formatted(.number)) steps"))
         }
         if parts.isEmpty, entry.showNetCalories {
-            parts.append("\(entry.netDeficit.formatted(.number.precision(.fractionLength(0)).sign(strategy: .always()))) net")
+            parts.append(String(localized: "\(entry.netDeficit.formatted(.number.precision(.fractionLength(0)).sign(strategy: .always()))) net"))
         }
         return parts.joined(separator: " · ")
     }
