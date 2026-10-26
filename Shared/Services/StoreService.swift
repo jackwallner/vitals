@@ -533,8 +533,18 @@ final class StoreService: NSObject, ObservableObject {
         return ExitOffer.arm(from: exitOffering?.metadata, appUserID: Purchases.shared.appUserID)
     }
 
+    /// The arm is pinned by `force` (App Review) or `-exitOffer.force`, so the
+    /// offer follows the close instead of waiting for a return. See `ExitOffer`.
+    var exitOfferSkipsWait: Bool {
+        #if DEBUG
+        if ExitOffer.returnDelayOverride != nil { return false }
+        if ExitOffer.isForced { return true }
+        #endif
+        return exitOffering?.metadata["force"] as? String == ExitOffer.Arm.offer.rawValue
+    }
+
     /// The exit offer is owed and has not been on screen yet. `MainTabView`
-    /// raises it once Today has been clear for a few seconds.
+    /// raises it on a return to the app once `ExitOffer.isReady`.
     @Published private(set) var exitOfferDue = ExitOffer.isPending
 
     /// "No thanks" on the offer: the customer saw the half price and left.
@@ -551,7 +561,7 @@ final class StoreService: NSObject, ObservableObject {
 
     /// A paywall was closed on purpose. The caller closes as normal; this
     /// records the close for the test and, in the offer arm, marks the offer
-    /// due so it follows a few seconds later as its own sheet.
+    /// due so it comes up as its own sheet on a later return.
     func exitOfferOnClose(surface: String) {
         #if DEBUG
         if ScreenshotConfig.isEnabled && !ExitOffer.isForced { return }

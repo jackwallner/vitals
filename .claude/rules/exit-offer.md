@@ -23,10 +23,16 @@ contains the yearly one and would match `yearlyPackage`.
 The close goes through as normal in both arms. In the offer arm it marks the
 offer due (`StoreService.exitOfferDue`, persisted as `ExitOffer.isPending` so
 an app killed first still gets it next launch), and `MainTabView`
-(`presentExitOfferWhenClear`) raises it as its own sheet once Today has been
-clear for 3 seconds (`isTodayClear`, plan loaded). Jack's 2026-10-24 call,
-replacing the in-place version of 10-23: on video the switch to the half price
-inside the page being closed was too easy to miss. The sheet is the trial
+(`presentExitOfferWhenClear`) raises it as its own sheet on the first return
+to the app (a launch or a return from the background) at least an hour after
+the first close (`ExitOffer.isReady`, `returnDelay`), once Today has been clear
+for 3 seconds (`isTodayClear`, plan loaded). Jack's 2026-10-24 call, replacing
+the in-place version of 10-23: on video the switch to the half price inside the
+page being closed was too easy to miss. 2026-10-26: the wait for a return
+replaced "3 seconds after the close", so the visit where they said no stays
+theirs. A pinned arm (`force`, or `-exitOffer.force`) skips the wait
+(`StoreService.exitOfferSkipsWait`) so App Review sees it after the close;
+`-exitOffer.returnDelay <seconds>` (DEBUG) keeps a short wait for UI tests. The sheet is the trial
 pitch (`TrialPitchRequest.exitOffer()`) with `ExitOfferPriceTiles` (usual price
 struck through beside the half price), a headline named from the real
 discount ("Vitals+ at half price"), the button buying `exit_annual`, and
@@ -41,7 +47,8 @@ build in the wild and every non-capture UI test gets the offer after its first
 close, so UI test dismiss helpers also look for "No thanks".
 `-exitOffer.force` (DEBUG) owes it on every close; `-PaywallSnapshot
 exit-sheet` captures the sheet.
-UI tests: `ExitOfferUITests` (onboarding at default and AX text),
+UI tests: `ExitOfferUITests` (onboarding at default and AX text, and the
+wait for a return),
 `SeededHealthFlowUITests.testTrialSheetNotNowLeadsToTheExitOffer` (the real
 trial sheet), and the `testOnboardingExitOffer` release journey.
 Method, go-live steps and readout: `~/ios/growth/exit-offer-test.md`.

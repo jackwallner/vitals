@@ -5,10 +5,12 @@ import XCTest
 /// arm. The contract:
 ///
 /// 1. The close goes through as normal: onboarding finishes, Today shows.
-/// 2. A few seconds later the offer sheet comes up with the price tiles, and
-///    its disclosure names the offer price, so the button sells the plan on
-///    screen.
-/// 3. "No thanks" closes it, and it does not come back.
+/// 2. On release builds the offer waits for a return to the app an hour
+///    later; `-exitOffer.force` skips that wait, as `force` does for App
+///    Review, and `-exitOffer.returnDelay` keeps a short one.
+/// 3. The offer sheet comes up with the price tiles, and its disclosure names
+///    the offer price, so the button sells the plan on screen.
+/// 4. "No thanks" closes it, and it does not come back.
 ///
 /// The trial sheet's "Not now" needs seeded Health data to present, so it lives
 /// in `SeededHealthFlowUITests.testTrialSheetNotNowLeadsToTheExitOffer`.
@@ -31,7 +33,31 @@ final class ExitOfferUITests: XCTestCase {
         )
     }
 
+    /// The release-day path: nothing in the visit that closed the paywall, then
+    /// the offer once the customer comes back after the wait.
+    func testOfferWaitsForAReturnToTheApp() {
+        let app = closeOnboarding(arguments: ["-exitOffer.returnDelay", "20"])
+        let tiles = app.descendants(matching: .any)["exit-offer-tiles"]
+        XCTAssertFalse(tiles.waitForExistence(timeout: 12), "the offer came up in the visit that closed the paywall")
+
+        XCUIDevice.shared.press(.home)
+        sleep(15)
+        app.activate()
+        XCTAssertTrue(tiles.waitForExistence(timeout: 20), "the offer never came up on the return")
+        assertOfferSheet(app, tiles: tiles)
+    }
+
     private func runOnboardingOffer(screenshotName: String, arguments: [String] = []) {
+        let app = closeOnboarding(arguments: arguments)
+        let tiles = app.descendants(matching: .any)["exit-offer-tiles"]
+        XCTAssertTrue(tiles.waitForExistence(timeout: 20), "the offer never followed on Today")
+        sleep(1)
+        attach(app.screenshot(), name: screenshotName)
+        assertOfferSheet(app, tiles: tiles)
+    }
+
+    /// Walks onboarding and closes its trial page with "Get Started".
+    private func closeOnboarding(arguments: [String]) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchEnvironment["VITALS_SCREENSHOT_MODE"] = "1"
         app.launchEnvironment["VITALS_SCREENSHOT_SCENE"] = "onboarding"
@@ -52,13 +78,9 @@ final class ExitOfferUITests: XCTestCase {
 
         XCTAssertTrue(app.staticTexts["Go further with Vitals+"].waitForNonExistence(timeout: 10),
                       "\"Get Started\" did not leave onboarding")
-        let tiles = app.descendants(matching: .any)["exit-offer-tiles"]
-        XCTAssertFalse(tiles.exists, "the offer came up on the onboarding page itself")
-
-        XCTAssertTrue(tiles.waitForExistence(timeout: 20), "the offer never followed on Today")
-        sleep(1)
-        attach(app.screenshot(), name: screenshotName)
-        assertOfferSheet(app, tiles: tiles)
+        XCTAssertFalse(app.descendants(matching: .any)["exit-offer-tiles"].exists,
+                       "the offer came up on the onboarding page itself")
+        return app
     }
 
     // MARK: - Helpers

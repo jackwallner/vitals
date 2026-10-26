@@ -101,4 +101,25 @@ final class ExitOfferTests: XCTestCase {
         ExitOffer.isPending = false
         XCTAssertFalse(ExitOffer.isPending)
     }
+
+    /// The offer waits for a return to the app an hour after the first close,
+    /// so the visit where they said no never gets it.
+    func testOfferWaitsForAReturnAnHourAfterTheClose() {
+        let closed = Date(timeIntervalSince1970: 1_800_000_000)
+        _ = ExitOffer.shouldOffer(onCloseOf: "onboarding_trial", arm: .offer, offerLoaded: true, isPro: false, now: closed)
+        XCTAssertFalse(ExitOffer.isReady(activatedAt: closed.addingTimeInterval(-60), skipsWait: false),
+                       "the visit that closed the paywall got the offer")
+        XCTAssertFalse(ExitOffer.isReady(activatedAt: closed.addingTimeInterval(59 * 60), skipsWait: false),
+                       "a return inside the hour got the offer")
+        XCTAssertTrue(ExitOffer.isReady(activatedAt: closed.addingTimeInterval(3600), skipsWait: false))
+        XCTAssertTrue(ExitOffer.isReady(activatedAt: closed.addingTimeInterval(3 * 86_400), skipsWait: false))
+    }
+
+    /// App Review pins the arm with `force`, and the reviewer has to see the
+    /// offer after the close without leaving the app for an hour.
+    func testForcedArmSkipsTheWait() {
+        let closed = Date(timeIntervalSince1970: 1_800_000_000)
+        _ = ExitOffer.shouldOffer(onCloseOf: "paywall", arm: .offer, offerLoaded: true, isPro: false, now: closed)
+        XCTAssertTrue(ExitOffer.isReady(activatedAt: closed.addingTimeInterval(-60), skipsWait: true))
+    }
 }

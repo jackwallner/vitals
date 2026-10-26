@@ -559,6 +559,11 @@ struct MainTabView: View {
     /// minutes after the onboarding trial step. Next cold launch can pitch at
     /// the strategic value moment.
     @State private var skipPassiveTrialThisSession = false
+    /// When the app last came back: this launch, or the latest return from the
+    /// background. The exit offer waits for one an hour after the close.
+    @State private var activatedAt = Date()
+    @State private var wasBackgrounded = false
+    @Environment(\.scenePhase) private var scenePhase
     /// Set when the Today dashboard posts that its data is on screen (even zeros).
     /// Gates the "What's New" announcement, which is fine over any dashboard state.
     @State private var dashboardDataLoaded = false
@@ -598,7 +603,8 @@ struct MainTabView: View {
         case exitOffer
     }
 
-    /// How long Today has to sit clear before the exit offer comes up.
+    /// How long Today has to sit clear, once the exit offer is ready, before it
+    /// comes up.
     private static let exitOfferDelaySeconds = 3
 
     init() {
@@ -1015,10 +1021,11 @@ struct MainTabView: View {
         presentPassiveTrialOffer(source: .historyLoad)
     }
 
-    /// The exit offer follows a deliberate close as its own sheet, a few
-    /// seconds after Today is back with nothing over it, so the half price
-    /// reads as a moment of its own rather than a change to the page that was
-    /// just closed. Owed across launches until it has been up. See `ExitOffer`.
+    /// The exit offer follows a deliberate close as its own sheet, on the first
+    /// return to the app an hour or more later, once Today has sat clear for a
+    /// few seconds. The visit where they said no stays theirs, and the half
+    /// price lands with their numbers on screen. Owed across launches until it
+    /// has been up. See `ExitOffer`.
     private func presentExitOfferWhenClear() async {
         var clearFor = 0
         while store.exitOfferDue, !Task.isCancelled {
@@ -1027,7 +1034,8 @@ struct MainTabView: View {
                 store.clearExitOfferDue()
                 return
             }
-            clearFor = isTodayClear && store.exitOfferPackage != nil ? clearFor + 1 : 0
+            let ready = ExitOffer.isReady(activatedAt: activatedAt, skipsWait: store.exitOfferSkipsWait)
+            clearFor = ready && isTodayClear && store.exitOfferPackage != nil ? clearFor + 1 : 0
             guard clearFor >= Self.exitOfferDelaySeconds else { continue }
             store.clearExitOfferDue()
             presentTrialOffer(source: .exitOffer, request: .exitOffer())
@@ -1366,6 +1374,13 @@ struct MainTabView: View {
         }
         .onChange(of: store.products.count) { _, _ in evaluateTrialOffer() }
         .task(id: store.exitOfferDue) { await presentExitOfferWhenClear() }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .background { wasBackgrounded = true }
+            if phase == .active, wasBackgrounded {
+                wasBackgrounded = false
+                activatedAt = .now
+            }
+        }
         // First-launch users complete onboarding *after* the .task /
         // products-loaded evaluations have already bailed on
         // `hasCompletedSetup == false`. Mark this session so the passive

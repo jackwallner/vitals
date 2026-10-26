@@ -16,8 +16,9 @@ import Foundation
 /// first deliberate close (a close button, "Not now", or onboarding's "Get
 /// Started"). A swipe-down is not counted in either arm. The close itself
 /// goes through as normal in both arms; the offer arm then gets the offer as
-/// its own sheet a few seconds after Today is back on screen (`isPending`,
-/// shown by `MainTabView`). Readout: `~/ios/growth/exit-offer-test.md`.
+/// its own sheet when the customer comes back to the app at least an hour
+/// later (`isPending`, `isReady`, shown by `MainTabView`), never in the visit
+/// where they said no. Readout: `~/ios/growth/exit-offer-test.md`.
 enum ExitOffer {
     enum Arm: String, Sendable {
         case offer
@@ -100,6 +101,25 @@ enum ExitOffer {
         set { defaults.set(newValue, forKey: Key.pending) }
     }
 
+    /// How long after the first close the offer waits. It then comes up on the
+    /// next return to the app, never in the middle of a visit.
+    static var returnDelay: TimeInterval {
+        #if DEBUG
+        if let override = returnDelayOverride { return override }
+        #endif
+        return 3600
+    }
+
+    /// The app came back (a launch, or a return from the background) at
+    /// `activatedAt`, at least `returnDelay` after the first close. A forced arm
+    /// (App Review) skips the wait so the offer follows the close.
+    static func isReady(activatedAt: Date, skipsWait: Bool) -> Bool {
+        guard !skipsWait else { return true }
+        let closed = defaults.double(forKey: Key.closedAt)
+        guard closed > 0 else { return true }
+        return activatedAt.timeIntervalSince1970 - closed >= returnDelay
+    }
+
     static func recordShown(now: Date = .now) {
         let d = defaults
         guard d.object(forKey: Key.shownAt) == nil else { return }
@@ -144,6 +164,14 @@ enum ExitOffer {
     /// before", for captures and review of the screen.
     static var isForced: Bool {
         ProcessInfo.processInfo.arguments.contains("-exitOffer.force")
+    }
+
+    /// `-exitOffer.returnDelay <seconds>` shortens the wait for a return and
+    /// keeps it even under `-exitOffer.force`, so a UI test can walk it.
+    static var returnDelayOverride: TimeInterval? {
+        let args = ProcessInfo.processInfo.arguments
+        guard let i = args.firstIndex(of: "-exitOffer.returnDelay"), i + 1 < args.count else { return nil }
+        return TimeInterval(args[i + 1])
     }
     #endif
 }
