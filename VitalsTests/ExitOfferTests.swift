@@ -10,6 +10,7 @@ final class ExitOfferTests: XCTestCase {
         super.setUp()
         suite = UserDefaults(suiteName: "exit.tests.\(UUID().uuidString)")!
         ConversionDiagnostics.defaultsOverride = suite
+        ExitOffer.shownThisRun = nil
     }
 
     override func tearDown() {
@@ -121,5 +122,29 @@ final class ExitOfferTests: XCTestCase {
         let closed = Date(timeIntervalSince1970: 1_800_000_000)
         _ = ExitOffer.shouldOffer(onCloseOf: "paywall", arm: .offer, offerLoaded: true, isPro: false, now: closed)
         XCTAssertTrue(ExitOffer.isReady(activatedAt: closed.addingTimeInterval(-60), skipsWait: true))
+    }
+
+    func testWelcomePriceStandsFortyEightHoursFromTheFirstShowing() {
+        let shown = Date(timeIntervalSince1970: 1_800_000_000)
+        XCTAssertNil(ExitOffer.welcomeEndsAt(now: shown), "no window before the offer has shown")
+        ExitOffer.recordShown(now: shown)
+        let ends = shown.addingTimeInterval(48 * 3600)
+        XCTAssertEqual(ExitOffer.welcomeEndsAt(now: shown.addingTimeInterval(47 * 3600)), ends)
+        XCTAssertNil(ExitOffer.welcomeEndsAt(now: ends), "the window ends on time")
+        // A second showing must not restart it.
+        ExitOffer.recordShown(now: ends)
+        XCTAssertNil(ExitOffer.welcomeEndsAt(now: ends.addingTimeInterval(60)))
+    }
+
+    func testWelcomeLineCountsDownInHoursThenMinutes() {
+        let ends = Date(timeIntervalSince1970: 1_800_000_000)
+        func line(_ remaining: TimeInterval) -> String? {
+            ExitOffer.welcomeLine(endsAt: ends, now: ends.addingTimeInterval(-remaining))
+        }
+        XCTAssertEqual(line(48 * 3600 - 1), "Welcome price, ends in 48 hours.")
+        XCTAssertEqual(line(2 * 3600), "Welcome price, ends in 2 hours.")
+        XCTAssertEqual(line(89 * 60), "Welcome price, ends in 89 minutes.")
+        XCTAssertEqual(line(30), "Welcome price, ends in 1 minute.")
+        XCTAssertNil(line(0))
     }
 }

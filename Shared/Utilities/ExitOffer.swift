@@ -1,4 +1,5 @@
 import Foundation
+import Security
 
 /// The paywall exit offer: Vitals+ Yearly at half price, shown once, the first
 /// time someone closes a paywall on purpose without buying.
@@ -18,7 +19,10 @@ import Foundation
 /// goes through as normal in both arms; the offer arm then gets the offer as
 /// its own sheet when the customer comes back to the app at least an hour
 /// later (`isPending`, `isReady`, shown by `MainTabView`), never in the visit
-/// where they said no. Readout: `~/ios/growth/exit-offer-test.md`.
+/// where they said no. Once it has been on screen, the half price is a
+/// welcome price for 48 hours (`welcomeWindow`): every paywall sells the
+/// yearly plan at it, says when it ends, and then goes back to full price for
+/// good. Readout: `~/ios/growth/exit-offer-test.md`.
 enum ExitOffer {
     enum Arm: String, Sendable {
         case offer
@@ -91,7 +95,7 @@ enum ExitOffer {
             d.set(arm.rawValue, forKey: Key.arm)
         }
         guard arm == .offer, offerLoaded else { return false }
-        return d.object(forKey: Key.shownAt) == nil
+        return shownAt == nil
     }
 
     /// Owed but not yet on screen. Persisted, so an app closed before the sheet
@@ -121,9 +125,65 @@ enum ExitOffer {
     }
 
     static func recordShown(now: Date = .now) {
-        let d = defaults
-        guard d.object(forKey: Key.shownAt) == nil else { return }
-        d.set(now.timeIntervalSince1970, forKey: Key.shownAt)
+        #if DEBUG
+        if shownThisRun == nil { shownThisRun = now }
+        #endif
+        guard shownAt == nil else { return }
+        defaults.set(now.timeIntervalSince1970, forKey: Key.shownAt)
+        #if !DEBUG
+        ShownAtKeychain.write(now)
+        #endif
+    }
+
+    /// When the offer first came up. Release builds keep it in the Keychain as
+    /// well, which survives a reinstall, so deleting the app neither brings the
+    /// offer back nor restarts its window. Debug builds skip it so a UI test run
+    /// never inherits the last one's.
+    static var shownAt: Date? {
+        let local = defaults.double(forKey: Key.shownAt)
+        if local > 0 { return Date(timeIntervalSince1970: local) }
+        #if DEBUG
+        return nil
+        #else
+        return ShownAtKeychain.read()
+        #endif
+    }
+
+    /// How long the half price stays on every paywall after the offer first
+    /// came up. It ends for good: nothing resets it, and it never comes back.
+    static var welcomeWindow: TimeInterval {
+        #if DEBUG
+        if let override = welcomeWindowOverride { return override }
+        #endif
+        return 48 * 3600
+    }
+
+    /// When the welcome price ends, while it still stands. nil before the offer
+    /// was shown and after the window closed.
+    static func welcomeEndsAt(now: Date = .now) -> Date? {
+        #if DEBUG
+        // Only this run's showing: the record outlives the app, and one UI
+        // test's offer must not leave the next test at the welcome price.
+        guard let shownAt = shownThisRun else { return nil }
+        #else
+        guard let shownAt else { return nil }
+        #endif
+        let ends = shownAt.addingTimeInterval(welcomeWindow)
+        return now < ends ? ends : nil
+    }
+
+    /// "Welcome price, ends in 31 hours." Whole hours down to 90 minutes, then
+    /// minutes. nil once it has ended.
+    static func welcomeLine(endsAt: Date, now: Date = .now) -> String? {
+        let remaining = endsAt.timeIntervalSince(now)
+        guard remaining > 0 else { return nil }
+        if remaining >= 5400 {
+            let hours = Int((remaining / 3600).rounded())
+            return String(localized: "Welcome price, ends in \(hours) hours.")
+        }
+        let minutes = Int((remaining / 60).rounded(.up))
+        if minutes == 1 { return String(localized: "Welcome price, ends in 1 minute.") }
+        return String(localized: "Welcome price, ends in \(minutes) minutes.")
     }
 
     /// First answer only: a decline followed by a later full-price purchase is
@@ -149,9 +209,8 @@ enum ExitOffer {
         if let surface = d.string(forKey: Key.surface) {
             attributes["exit_offer_surface"] = surface
         }
-        let shown = d.double(forKey: Key.shownAt)
-        if shown > 0 {
-            attributes["exit_offer_shown_at"] = iso.string(from: Date(timeIntervalSince1970: shown))
+        if let shown = shownAt {
+            attributes["exit_offer_shown_at"] = iso.string(from: shown)
         }
         if let outcome = d.string(forKey: Key.outcome) {
             attributes["exit_offer_outcome"] = outcome
@@ -160,6 +219,10 @@ enum ExitOffer {
     }
 
     #if DEBUG
+    /// When this process first showed the offer; the welcome window's start in
+    /// debug builds. Tests reset it.
+    nonisolated(unsafe) static var shownThisRun: Date?
+
     /// `-exitOffer.force` puts this run in the offer arm and ignores "shown
     /// before", for captures and review of the screen.
     static var isForced: Bool {
@@ -173,5 +236,48 @@ enum ExitOffer {
         guard let i = args.firstIndex(of: "-exitOffer.returnDelay"), i + 1 < args.count else { return nil }
         return TimeInterval(args[i + 1])
     }
+
+    /// `-exitOffer.welcomeWindow <seconds>` shortens the welcome price so a UI
+    /// test can watch it end.
+    static var welcomeWindowOverride: TimeInterval? {
+        let args = ProcessInfo.processInfo.arguments
+        guard let i = args.firstIndex(of: "-exitOffer.welcomeWindow"), i + 1 < args.count else { return nil }
+        return TimeInterval(args[i + 1])
+    }
     #endif
+}
+
+/// `ExitOffer.shownAt` in the Keychain, as seconds since 1970.
+enum ShownAtKeychain {
+    private static var query: [String: Any] { [
+        kSecClass as String: kSecClassGenericPassword,
+        kSecAttrService as String: "com.jackwallner.vitals.exitOffer",
+        kSecAttrAccount as String: "shownAt",
+    ] }
+
+    static func read() -> Date? {
+        var lookup = query
+        lookup[kSecReturnData as String] = true
+        lookup[kSecMatchLimit as String] = kSecMatchLimitOne
+        var result: CFTypeRef?
+        guard SecItemCopyMatching(lookup as CFDictionary, &result) == errSecSuccess,
+              let data = result as? Data,
+              let seconds = Double(String(decoding: data, as: UTF8.self)) else { return nil }
+        return Date(timeIntervalSince1970: seconds)
+    }
+
+    @discardableResult
+    static func write(_ date: Date) -> Bool {
+        let data = Data(String(date.timeIntervalSince1970).utf8)
+        let update = [kSecValueData as String: data]
+        if SecItemUpdate(query as CFDictionary, update as CFDictionary) == errSecSuccess { return true }
+        var add = query
+        add[kSecValueData as String] = data
+        add[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
+        return SecItemAdd(add as CFDictionary, nil) == errSecSuccess
+    }
+
+    static func delete() {
+        SecItemDelete(query as CFDictionary)
+    }
 }

@@ -47,7 +47,27 @@ build in the wild and every non-capture UI test gets the offer after its first
 close, so UI test dismiss helpers also look for "No thanks".
 `-exitOffer.force` (DEBUG) owes it on every close; `-PaywallSnapshot
 exit-sheet` captures the sheet.
-UI tests: `ExitOfferUITests` (onboarding at default and AX text, and the
+Welcome price (2026-10-27, Jack's call after the trust question: an
+unexplained cut that reverts looked arbitrary). From the moment the tiles
+first appear (`ExitOffer.shownAt`) the half price stands for 48 hours
+(`welcomeWindow`): `StoreService.refreshWelcomePrice` swaps `exit_annual` into
+`products` in yearly's place, so every paywall, pitch and disclosure sells it;
+the sheet's subheadline and the Upgrade tab header read "Welcome price, ends
+in N hours." (`ExitOffer.welcomeLine`, hours down to 90 minutes, then
+minutes); the paywall's yearly card shows HALF OFF and the regular price
+struck through (`regularYearlyPackage`, never `yearlyPackage`, which is the
+swapped plan). It then ends for good: a Task at the deadline and every return
+call `refreshWelcomePrice`, and nothing restarts it. Release builds also keep
+`shownAt` in the Keychain (`ShownAtKeychain`) so a reinstall neither brings
+the offer back nor reopens the window; debug builds skip the Keychain and
+count only this run's showing (`shownThisRun`), so one UI test never leaves
+the next at the welcome price. Legal footing: a real deadline is fine under
+the FTC, the EU UCPD and the UK DMCC Act; only a timer that resets or a price
+that doesn't revert is not. Keep the copy calm (hours, no seconds, no "gone
+forever"): Apple has rejected a "one-time offer" exit flow under 5.6.
+`-exitOffer.welcomeWindow <seconds>` (DEBUG) shortens it.
+UI tests: `ExitOfferUITests` (including
+`testWelcomePriceStaysOnThePaywallUntilItEnds`) (onboarding at default and AX text, and the
 wait for a return),
 `SeededHealthFlowUITests.testTrialSheetNotNowLeadsToTheExitOffer` (the real
 trial sheet), and the `testOnboardingExitOffer` release journey.

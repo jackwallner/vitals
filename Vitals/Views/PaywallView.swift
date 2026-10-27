@@ -332,6 +332,12 @@ struct PaywallView: View {
             selectDefaultPackageIfNeeded()
         }
         .onChange(of: store.products.count) { _, _ in selectDefaultPackageIfNeeded() }
+        // The welcome price opening or ending swaps the yearly plan underneath
+        // a yearly pick; keep the pick on yearly rather than on nothing.
+        .onChange(of: store.welcomePriceEndsAt) { _, _ in
+            guard selectedPackage?.vitalsPackageKind == .yearly else { return }
+            selectedPackage = store.products.first { $0.vitalsPackageKind == .yearly }
+        }
     }
 
     // MARK: - States
@@ -750,26 +756,38 @@ struct PaywallView: View {
                 .multilineTextAlignment(.center)
                 .lineLimit(focus == nil ? 1 : 2)
                 .minimumScaleFactor(0.85)
-            Text(focus?.intentSubheadline ?? upgradeTabHeaderSubheadline)
-                .font(.system(compact ? .footnote : .subheadline, design: .rounded))
-                .foregroundStyle(Theme.textSecondary)
-                .multilineTextAlignment(.center)
-                .lineLimit(compact ? 2 : nil)
-                .minimumScaleFactor(compact ? 0.9 : 1)
+            // Ticks so the welcome price's "ends in" stays true while it's open.
+            TimelineView(.everyMinute) { context in
+                Text(welcomeLine(now: context.date) ?? focus?.intentSubheadline ?? upgradeTabHeaderSubheadline)
+                    .font(.system(compact ? .footnote : .subheadline, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(compact ? 2 : nil)
+                    .minimumScaleFactor(compact ? 0.9 : 1)
+            }
         }
+    }
+
+    private func welcomeLine(now: Date) -> String? {
+        store.welcomePriceEndsAt.flatMap { ExitOffer.welcomeLine(endsAt: $0, now: now) }
     }
 
     private var planList: some View {
         VStack(spacing: 6) {
             ForEach(store.products, id: \.identifier) { package in
                 let isYearly = package.vitalsPackageKind == .yearly
+                // The welcome price stands in for yearly: its own discount, not
+                // the yearly-vs-monthly saving, or the card would claim two.
+                let regular = isYearly && store.welcomePackage != nil ? store.regularYearlyPackage : nil
                 PlanCard(
                     package: package,
                     isSelected: selectedPackage?.identifier == package.identifier,
                     showsTrialBadge: store.isEligibleForIntroOffer(package),
                     isBestValue: isYearly,
-                    savingsPercent: isYearly ? annualSavingsPercent : nil,
-                    perWeekLabel: isYearly ? package.vitalsPricePerWeekLabel : nil
+                    savingsPercent: isYearly && regular == nil ? annualSavingsPercent : nil,
+                    perWeekLabel: isYearly ? package.vitalsPricePerWeekLabel : nil,
+                    offerBadge: regular.map { ExitOfferPriceTiles.badge(offer: package, regular: $0) },
+                    regularPriceLabel: regular?.vitalsPriceLabel
                 ) {
                     selectedPackage = package
                 }
@@ -911,6 +929,10 @@ private struct PlanCard: View {
     let isBestValue: Bool
     var savingsPercent: Int? = nil
     var perWeekLabel: String? = nil
+    /// The welcome price's badge, in place of the saving.
+    var offerBadge: String? = nil
+    /// The regular price, struck through above the welcome price.
+    var regularPriceLabel: String? = nil
     let onTap: () -> Void
 
     /// The one line worth saying under the plan name: the trial when it applies,
@@ -940,7 +962,14 @@ private struct PlanCard: View {
                         Text(package.vitalsDisplayName)
                             .font(.system(.subheadline, design: .rounded, weight: .bold))
                             .foregroundStyle(Theme.textPrimary)
-                        if let savingsPercent {
+                        if let offerBadge {
+                            Text(offerBadge)
+                                .font(.system(size: 9, weight: .bold, design: .rounded))
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Theme.caloriesPrimary, in: Capsule())
+                        } else if let savingsPercent {
                             Text("SAVE \(savingsPercent)%")
                                 .font(.system(size: 9, weight: .bold, design: .rounded))
                                 .foregroundStyle(.white)
@@ -970,6 +999,14 @@ private struct PlanCard: View {
                 Spacer(minLength: 8)
 
                 VStack(alignment: .trailing, spacing: 1) {
+                    if let regularPriceLabel {
+                        Text(regularPriceLabel)
+                            .font(.system(.caption2, design: .rounded).monospacedDigit())
+                            .strikethrough(true, color: Theme.textTertiary)
+                            .foregroundStyle(Theme.textTertiary)
+                            .lineLimit(1)
+                            .accessibilityLabel(String(localized: "usually \(regularPriceLabel)"))
+                    }
                     Text(package.vitalsPriceLabel)
                         .font(.system(.subheadline, design: .rounded, weight: .semibold).monospacedDigit())
                         .foregroundStyle(Theme.textSecondary)

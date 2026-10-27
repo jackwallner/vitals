@@ -11,6 +11,9 @@ import XCTest
 /// 3. The offer sheet comes up with the price tiles, and its disclosure names
 ///    the offer price, so the button sells the plan on screen.
 /// 4. "No thanks" closes it, and it does not come back.
+/// 5. For the welcome window (`-exitOffer.welcomeWindow` shortens its 48
+///    hours) every paywall sells yearly at the offer price with the regular
+///    price struck through and says when it ends; then full price returns.
 ///
 /// The trial sheet's "Not now" needs seeded Health data to present, so it lives
 /// in `SeededHealthFlowUITests.testTrialSheetNotNowLeadsToTheExitOffer`.
@@ -45,6 +48,36 @@ final class ExitOfferUITests: XCTestCase {
         app.activate()
         XCTAssertTrue(tiles.waitForExistence(timeout: 20), "the offer never came up on the return")
         assertOfferSheet(app, tiles: tiles)
+    }
+
+    /// After "No thanks" the Upgrade tab keeps the half price and counts it
+    /// down, then goes back to the regular price when the window ends.
+    func testWelcomePriceStaysOnThePaywallUntilItEnds() {
+        let app = closeOnboarding(arguments: ["-exitOffer.welcomeWindow", "75"])
+        let tiles = app.descendants(matching: .any)["exit-offer-tiles"]
+        XCTAssertTrue(tiles.waitForExistence(timeout: 20), "the offer never followed on Today")
+        let shownAt = Date()
+        let price = tiles.label
+            .replacingOccurrences(of: "Your price, ", with: "")
+            .components(separatedBy: " a year").first ?? ""
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Welcome price, ends in")).firstMatch.exists,
+                      "the offer sheet does not say when the price ends")
+        assertOfferSheet(app, tiles: tiles)
+
+        app.buttons["Upgrade"].tap()
+        let welcomeLine = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Welcome price, ends in")).firstMatch
+        let offerPlan = app.staticTexts.matching(NSPredicate(format: "label == %@", "\(price) / year")).firstMatch
+        XCTAssertTrue(welcomeLine.waitForExistence(timeout: 15), "the paywall does not say when the welcome price ends")
+        XCTAssertTrue(offerPlan.exists, "the paywall's yearly plan is not at the offer price \(price)")
+        XCTAssertTrue(app.staticTexts["HALF OFF"].exists, "the yearly plan is not marked half off")
+        attach(app.screenshot(), name: "paywall-welcome-price")
+
+        let left = 75 - Date().timeIntervalSince(shownAt)
+        if left > 0 { sleep(UInt32(left.rounded(.up)) + 3) }
+        XCTAssertTrue(welcomeLine.waitForNonExistence(timeout: 10), "the welcome price outlived its window")
+        XCTAssertFalse(offerPlan.exists, "the yearly plan stayed at the offer price after the window")
+        XCTAssertFalse(app.staticTexts["HALF OFF"].exists, "the half-off badge stayed after the window")
+        attach(app.screenshot(), name: "paywall-after-welcome-price")
     }
 
     private func runOnboardingOffer(screenshotName: String, arguments: [String] = []) {

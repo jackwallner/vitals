@@ -53,11 +53,13 @@ enum ScreenshotConfig {
     static let keepsAppearance = false
 #endif
 
+    #if DEBUG
     /// The value after the last `-ScreenshotScene`, or nil.
     static func sceneArgument(in arguments: [String]) -> String? {
         guard let flag = arguments.lastIndex(of: "-ScreenshotScene"), flag + 1 < arguments.count else { return nil }
         return arguments[flag + 1]
     }
+    #endif
 
     static var wantsHistoryTab: Bool { scene == .history || scene == .macroHistory }
     static var wantsPremiumTab: Bool { scene == .premium || scene == .premiumActive || scene == .bodyProfile }

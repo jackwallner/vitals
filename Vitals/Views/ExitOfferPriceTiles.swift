@@ -11,6 +11,9 @@ struct ExitOfferPriceTiles: View {
     let offer: Package
     /// The regular yearly plan, for the struck-through price. nil hides that tile.
     let regular: Package?
+    /// Only the offer's own sheet counts as its impression; a later pitch
+    /// showing the welcome price does not.
+    var recordsImpression = true
 
     @EnvironmentObject private var store: StoreService
     @Environment(\.enclosingScrollReader) private var scrollReader
@@ -37,8 +40,12 @@ struct ExitOfferPriceTiles: View {
         }
     }
 
-    private var badge: String {
-        switch percentOff {
+    private var badge: String { Self.badge(offer: offer, regular: regular) }
+
+    /// "HALF OFF", or the real percentage. Also the yearly plan's badge on the
+    /// paywall while the welcome price stands.
+    static func badge(offer: Package, regular: Package?) -> String {
+        switch percentOff(offer: offer, regular: regular) {
         case 50: String(localized: "HALF OFF")
         case let pct?: String(localized: "\(pct)% OFF")
         case nil: "OFFER"
@@ -92,8 +99,11 @@ struct ExitOfferPriceTiles: View {
         .accessibilityIdentifier("exit-offer-tiles")
         .id(Self.scrollID)
         .onAppear {
-            ExitOffer.recordShown()
-            store.trackPaywallImpression(id: ExitOffer.impressionID)
+            if recordsImpression {
+                ExitOffer.recordShown()
+                store.refreshWelcomePrice()
+                store.trackPaywallImpression(id: ExitOffer.impressionID)
+            }
             // At large text sizes the page scrolls, and the tiles land under
             // the fold: the button and disclosure changed with nothing on
             // screen saying why. Wait one pass so they have a frame to scroll to.
