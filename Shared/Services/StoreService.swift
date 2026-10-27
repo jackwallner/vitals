@@ -405,8 +405,11 @@ final class StoreService: NSObject, ObservableObject {
         introEligibilityResolved = true
     }
 
+    /// The offering's own plans, not `products`: while the welcome price
+    /// stands in for yearly, regular yearly still needs its answer for when it
+    /// comes back.
     private var eligibilityPackages: [Package] {
-        products + [exitOfferPackage].compactMap { $0 }
+        offeringPackages + [exitOfferPackage].compactMap { $0 }
     }
 
     /// True when this package advertises a free trial AND the user is eligible
@@ -437,7 +440,7 @@ final class StoreService: NSObject, ObservableObject {
     /// window is open, and puts the regular one back the moment it closes.
     /// Called on load, when the offer first shows, and on every return.
     func refreshWelcomePrice(now: Date = .now) {
-        let welcome = isPro ? nil : exitOfferPackage
+        let welcome = isPro || exitOfferArm != .offer ? nil : exitOfferPackage
         let endsAt = welcome == nil ? nil : ExitOffer.welcomeEndsAt(now: now)
         if welcomePriceEndsAt != endsAt { welcomePriceEndsAt = endsAt }
         products = offeringPackages.map { package in
@@ -608,6 +611,7 @@ final class StoreService: NSObject, ObservableObject {
             return
         }
         #endif
+        if exitOfferSkipsWait { ExitOffer.resetEndedShowingForReview() }
         let show = ExitOffer.shouldOffer(
             onCloseOf: surface,
             arm: exitOfferArm,
@@ -854,8 +858,11 @@ final class StoreService: NSObject, ObservableObject {
     }
 
     private func resolveEntitlement(isPro: Bool) {
+        let wasPro = self.isPro
         entitlementStatus.resolve(isPro: isPro)
         reconcileCachedEntitlement(with: isPro)
+        // A purchase ends the welcome price at once, not at the next return.
+        if self.isPro != wasPro { refreshWelcomePrice() }
     }
 
     /// Only a resolved customer response overwrites the App Group mirror.

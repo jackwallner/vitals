@@ -48,7 +48,7 @@ struct ExitOfferPriceTiles: View {
         switch percentOff(offer: offer, regular: regular) {
         case 50: String(localized: "HALF OFF")
         case let pct?: String(localized: "\(pct)% OFF")
-        case nil: "OFFER"
+        case nil: String(localized: "OFFER")
         }
     }
 

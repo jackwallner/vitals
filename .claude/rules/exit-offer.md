@@ -61,7 +61,15 @@ call `refreshWelcomePrice`, and nothing restarts it. Release builds also keep
 `shownAt` in the Keychain (`ShownAtKeychain`) so a reinstall neither brings
 the offer back nor reopens the window; debug builds skip the Keychain and
 count only this run's showing (`shownThisRun`), so one UI test never leaves
-the next at the welcome price. Legal footing: a real deadline is fine under
+the next at the welcome price. Once seen ended it stays ended
+(`welcomeEnded`), and a clock earlier than the showing reads as ended, so
+setting the clock back never reopens it. The swap needs the offer arm, so a
+reinstall that hashes into the holdout never inherits a Keychain window. The
+offer sheet counts from now only before the window opens
+(`ExitOffer.windowStart == nil`), then only the real deadline. A forced arm
+(`force: "offer"`) forgets an ended showing on the next close
+(`resetEndedShowingForReview`), so a review device that saw it before sees it
+again. Legal footing: a real deadline is fine under
 the FTC, the EU UCPD and the UK DMCC Act; only a timer that resets or a price
 that doesn't revert is not. Keep the copy calm (hours, no seconds, no "gone
 forever"): Apple has rejected a "one-time offer" exit flow under 5.6.
