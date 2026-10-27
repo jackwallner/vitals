@@ -19,20 +19,24 @@ final class ReleaseJourneysUITests: XCTestCase {
     /// the live project's charts, not one per launch.
     static let journeyCustomer = "qa-ios-journeys"
 
+    /// Found by identifier, not label: the german persona runs these with the
+    /// app in German.
+    static let pitchDismiss = NSPredicate(format: "identifier == 'trial-pitch-dismiss' OR label == 'Close'")
+
     func testFirstRunOnboardingToPitch() {
         continueAfterFailure = false
         let app = XCUIApplication()
         QA.launch(app, environment: ["VITALS_RC_APP_USER_ID": Self.journeyCustomer, "VITALS_SCREENSHOT_MODE": "1", "VITALS_SCREENSHOT_KEEP_APPEARANCE": "1", "VITALS_SCREENSHOT_SCENE": "onboarding"])
-        let cta = app.buttons["Continue"]
+        let cta = app.buttons["onboarding-continue"]
         XCTAssertTrue(cta.waitForExistence(timeout: 20), "welcome never rendered")
         QA.checkpoint(app, "welcome")
 
         cta.tap()
         dismissSystemSheet()
-        XCTAssertTrue(app.buttons["Continue"].waitForExistence(timeout: 20), "goals never rendered")
+        XCTAssertTrue(app.buttons["onboarding-continue"].waitForExistence(timeout: 20), "goals never rendered")
         QA.checkpoint(app, "goals")
 
-        app.buttons["Continue"].tap()
+        app.buttons["onboarding-continue"].tap()
         dismissSystemSheet()
         QA.checkpoint(app, "pitch")
     }
@@ -45,11 +49,11 @@ final class ReleaseJourneysUITests: XCTestCase {
         let app = XCUIApplication()
         QA.launch(app, environment: ["VITALS_RC_APP_USER_ID": Self.journeyCustomer, "VITALS_SCREENSHOT_MODE": "1", "VITALS_SCREENSHOT_KEEP_APPEARANCE": "1", "VITALS_SCREENSHOT_SCENE": "onboarding"], arguments: ["-exitOffer.force"])
         for _ in 0..<2 {
-            XCTAssertTrue(app.buttons["Continue"].waitForExistence(timeout: 20), "onboarding stalled")
-            app.buttons["Continue"].tap()
+            XCTAssertTrue(app.buttons["onboarding-continue"].waitForExistence(timeout: 20), "onboarding stalled")
+            app.buttons["onboarding-continue"].tap()
             dismissSystemSheet()
         }
-        let softExit = app.buttons["Get Started"]
+        let softExit = app.buttons["onboarding-get-started"]
         XCTAssertTrue(softExit.waitForExistence(timeout: 25), "pitch never rendered")
         softExit.tap()
         XCTAssertTrue(app.descendants(matching: .any)["exit-offer-tiles"].waitForExistence(timeout: 25), "offer never followed on Today")
@@ -61,21 +65,21 @@ final class ReleaseJourneysUITests: XCTestCase {
         QA.checkpoint(app, "today-launch")
 
         clearTrialPitch(app)
-        app.buttons["History"].tap()
+        app.buttons["tab-history"].tap()
         QA.checkpoint(app, "history")
 
         clearTrialPitch(app)
-        app.buttons["Upgrade"].tap()
+        app.buttons["tab-upgrade"].tap()
         QA.checkpoint(app, "upgrade")
 
         clearTrialPitch(app)
-        app.buttons["Today"].tap()
+        app.buttons["tab-today"].tap()
         QA.checkpoint(app, "today-return")
     }
 
     func testTrialSheetPresents() {
         let app = launchDashboard()
-        let pitch = app.buttons.matching(NSPredicate(format: "label IN {'Not now', 'No thanks', 'Maybe later', 'Close'}")).firstMatch
+        let pitch = app.buttons.matching(Self.pitchDismiss).firstMatch
         guard pitch.waitForExistence(timeout: 40) else { return }
         QA.checkpoint(app, "trial-sheet")
         pitch.tap()
@@ -86,17 +90,17 @@ final class ReleaseJourneysUITests: XCTestCase {
         continueAfterFailure = false
         let app = XCUIApplication()
         QA.launch(app, environment: ["VITALS_RC_APP_USER_ID": Self.journeyCustomer, "VITALS_SCREENSHOT_MODE": "1", "VITALS_SCREENSHOT_KEEP_APPEARANCE": "1", "VITALS_SCREENSHOT_SCENE": "settings"])
-        XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 30), "Settings never presented")
+        XCTAssertTrue(app.descendants(matching: .any)["settings-list"].waitForExistence(timeout: 30), "Settings never presented")
         QA.checkpoint(app, "settings")
     }
 
     func testInterruptedAndRelaunched() {
         let app = launchDashboard()
-        XCTAssertTrue(app.buttons["Today"].waitForExistence(timeout: 20))
+        XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 20))
         QA.interrupt(app)
         QA.checkpoint(app, "after-background")
         QA.relaunch(app)
-        XCTAssertTrue(app.buttons["Today"].waitForExistence(timeout: 20), "Today missing after relaunch")
+        XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 20), "Today missing after relaunch")
         QA.checkpoint(app, "after-relaunch")
     }
 
@@ -106,13 +110,13 @@ final class ReleaseJourneysUITests: XCTestCase {
         continueAfterFailure = false
         let app = XCUIApplication()
         QA.launch(app, environment: ["VITALS_RC_APP_USER_ID": Self.journeyCustomer, "VITALS_SCREENSHOT_MODE": "1", "VITALS_SCREENSHOT_KEEP_APPEARANCE": "1", "VITALS_SCREENSHOT_SCENE": "dashboard"])
-        XCTAssertTrue(app.buttons["Today"].waitForExistence(timeout: 20), "Today tab never rendered")
+        XCTAssertTrue(app.buttons["tab-today"].waitForExistence(timeout: 20), "Today tab never rendered")
         return app
     }
 
     /// The trial pitch lands on a timer; it is checked in its own journey.
     private func clearTrialPitch(_ app: XCUIApplication) {
-        let dismiss = app.buttons.matching(NSPredicate(format: "label IN {'Not now', 'No thanks', 'Maybe later', 'Close'}")).firstMatch
+        let dismiss = app.buttons.matching(Self.pitchDismiss).firstMatch
         // Twice: a first "Not now" can turn the sheet into the exit offer.
         for _ in 0..<2 where dismiss.exists {
             if dismiss.isHittable { dismiss.tap() }
@@ -122,7 +126,7 @@ final class ReleaseJourneysUITests: XCTestCase {
 
     private func dismissSystemSheet() {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        for label in ["Allow", "Turn On All", "Don't Allow"] where springboard.buttons[label].exists {
+        for label in ["Allow", "Turn On All", "Don't Allow", "Erlauben", "Alle aktivieren", "Nicht erlauben"] where springboard.buttons[label].exists {
             springboard.buttons[label].tap()
             sleep(2)
             return

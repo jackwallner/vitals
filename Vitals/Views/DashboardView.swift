@@ -3099,6 +3099,7 @@ private struct OnboardingSheet: View {
             } label: {
                 primaryLabel(String(localized: "Continue"))
             }
+            .accessibilityIdentifier("onboarding-continue")
             .padding(.horizontal, 24)
         case .goals:
             Button {
@@ -3124,6 +3125,7 @@ private struct OnboardingSheet: View {
                 // bleed is gone with the 1.7.5 restore.
                 primaryLabel(String(localized: "Continue"))
             }
+            .accessibilityIdentifier("onboarding-continue")
             .disabled(!calValid || !stepValid)
             .opacity(calValid && stepValid ? 1 : 0.5)
             .padding(.horizontal, 24)
@@ -3231,6 +3233,7 @@ private struct OnboardingSheet: View {
                 .padding(.vertical, 8)
         }
         .buttonStyle(.plain)
+        .accessibilityIdentifier("onboarding-get-started")
         .padding(.horizontal, 24)
     }
 
@@ -4360,6 +4363,7 @@ private struct SettingsSheet: View {
                     Text("External links open Elsa's E3 Fitness site in Safari.")
                 }
             }
+            .accessibilityIdentifier("settings-list")
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .background(InteractivePopGestureEnabler())

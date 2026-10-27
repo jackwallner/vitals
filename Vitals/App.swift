@@ -1288,6 +1288,7 @@ struct MainTabView: View {
                         label: String(localized: "Today"),
                         isSelected: selectedTab == 0
                     ) { selectedTab = 0 }
+                    .accessibilityIdentifier("tab-today")
 
                     if split == nil {
                         TabButton(
@@ -1298,6 +1299,7 @@ struct MainTabView: View {
                             if !historyHasAppeared { historyHasAppeared = true }
                             selectedTab = 1
                         }
+                        .accessibilityIdentifier("tab-history")
                     }
 
                     TabButton(
@@ -1310,6 +1312,7 @@ struct MainTabView: View {
                         #endif
                         selectedTab = 2
                     }
+                    .accessibilityIdentifier("tab-upgrade")
                 }
                 .padding(.horizontal, 8)
                 .padding(.vertical, 6)
@@ -2480,6 +2483,7 @@ struct TrialOfferSheet: View {
                     }
                     .buttonStyle(.plain)
                     .disabled(isPurchasing)
+                    .accessibilityIdentifier("trial-pitch-dismiss")
 
                     if let restoreMessage {
                         Text(restoreMessage)
@@ -2652,6 +2656,7 @@ private struct MilestoneCelebrationSheet: View {
                             .padding(.vertical, 8)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("trial-pitch-dismiss")
                 }
             }
             .padding(.horizontal, 24)
