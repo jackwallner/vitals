@@ -3336,7 +3336,8 @@ private struct OnboardingSheet: View {
                     }
                 }
 
-                if TrialNote.arm == .indie, !store.isPro {
+                // Only beside a real free trial: a reinstall that used it sees a paid CTA.
+                if TrialNote.arm == .indie, !store.isPro, store.canPitchFreeTrial {
                     Text("We're a small indie studio. Your trial helps us keep building. Not for you? Cancel anytime and tell us what to fix.")
                         .font(.system(.footnote, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)

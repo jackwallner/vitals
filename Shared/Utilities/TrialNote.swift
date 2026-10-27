@@ -45,8 +45,8 @@ enum TrialNote {
         defaults.set(true, forKey: Key.seen)
     }
 
-    /// True once: the note was seen, the customer is in a free trial, and its
-    /// renewal is off. A billing retry is not a choice to leave, so the caller
+    /// True once: the note was seen and the customer's free trial (running or
+    /// ended) will not renew. A billing retry is not a choice to leave, so the caller
     /// passes `willRenew` true for it.
     static func whatToFixDue(inTrial: Bool, willRenew: Bool, _ defaults: UserDefaults = .standard) -> Bool {
         defaults.bool(forKey: Key.seen) && !defaults.bool(forKey: Key.asked) && inTrial && !willRenew

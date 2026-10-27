@@ -868,7 +868,9 @@ final class StoreService: NSObject, ObservableObject {
         logger.info("Applied customerInfo — active: [\(activeKeys, privacy: .public)] all: [\(allKeys, privacy: .public)]")
         let hasActiveSubscription = customerInfo.hasVitalsProEntitlement
         resolveEntitlement(isPro: hasActiveSubscription)
-        let entitlement = customerInfo.entitlements.active.values.first
+        // Running or already ended: someone who cancels and next opens the app
+        // after the week is still owed the ask.
+        let entitlement = customerInfo.entitlements.active.values.first ?? customerInfo.entitlements.all.values.first
         whatToFixDue = TrialNote.whatToFixDue(
             inTrial: entitlement?.periodType == .trial,
             willRenew: entitlement.map { $0.willRenew || $0.billingIssueDetectedAt != nil } ?? true
