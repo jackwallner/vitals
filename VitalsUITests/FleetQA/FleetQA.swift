@@ -65,7 +65,7 @@ enum QA {
             if app.state != .runningForeground { _ = app.wait(for: .runningForeground, timeout: 5) }
             guard app.state == .runningForeground else {
                 // Show whatever took the screen: a crash leaves the home screen, an alert stays on top.
-                _ = save(XCUIScreen.main.screenshot(), context)
+                _ = save(capture(nil), context)
                 record(context, "crash", "P0", "", app.state == .notRunning
                        ? "the app is not running at this checkpoint (crashed or was killed)"
                        : "the app is in the background at this checkpoint (state \(app.state.rawValue)); see the screenshot for what took the screen")
@@ -74,7 +74,7 @@ enum QA {
                 return
             }
             let settle = Layout.settle(app, grace: grace, ambient: Set(ambient), context: context)
-            let shot = app.screenshot()
+            let shot = capture(app)
             let shotPath = save(shot, context)
             let leaves = settle.final
             Layout.offscreen(leaves, width: settle.width, context: context)
@@ -171,15 +171,34 @@ enum QA {
         }
     }
 
-    static func save(_ shot: XCUIScreenshot, _ context: Context) -> String? {
-        let attachment = XCTAttachment(screenshot: shot)
+    /// What is on screen, upright. An unfolded iPhone Duo draws the app on its
+    /// inner display, which is not `XCUIScreen.main` (that shot is black), and
+    /// the inner display's capture comes rotated, so it is redrawn upright to
+    /// match the element frames the oracles compare it with.
+    static func capture(_ app: XCUIApplication?) -> UIImage {
+        let image: UIImage
+        if let inner = XCUIScreen.screens.first(where: { $0 != XCUIScreen.main }) {
+            image = inner.screenshot().image
+        } else {
+            image = app?.screenshot().image ?? XCUIScreen.main.screenshot().image
+        }
+        guard image.imageOrientation != .up else { return image }
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = image.scale
+        return UIGraphicsImageRenderer(size: image.size, format: format).image { _ in
+            image.draw(in: CGRect(origin: .zero, size: image.size))
+        }
+    }
+
+    static func save(_ shot: UIImage, _ context: Context) -> String? {
+        let attachment = XCTAttachment(image: shot)
         attachment.name = "\(context.journey)-\(context.checkpoint)"
         attachment.lifetime = .keepAlways
         XCTContext.runActivity(named: "screenshot \(context.checkpoint)") { $0.add(attachment) }
         guard let dir = outputDir?.appendingPathComponent("shots") else { return nil }
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         let url = dir.appendingPathComponent(slug("\(persona)-\(context.journey)-\(context.checkpoint)") + ".png")
-        return (try? shot.pngRepresentation.write(to: url)) == nil ? nil : url.path
+        return (try? shot.pngData()?.write(to: url)) == nil ? nil : url.path
     }
 
     static func slug(_ text: String) -> String {
@@ -506,12 +525,12 @@ enum Idle {
     /// Compares two screenshots a second apart. A screen that keeps changing
     /// with nothing declared ambient burns battery and makes every capture of
     /// it a coin toss.
-    static func check(_ app: XCUIApplication, first: XCUIScreenshot, ambient: [Leaf], context: QA.Context) {
+    static func check(_ app: XCUIApplication, first: UIImage, ambient: [Leaf], context: QA.Context) {
         sleep(1)
-        let second = app.screenshot()
-        guard let a = pixels(first.image), let b = pixels(second.image), a.data.count == b.data.count else { return }
+        let second = QA.capture(app)
+        guard let a = pixels(first), let b = pixels(second), a.data.count == b.data.count else { return }
         let skip = ambient.map(\.frame)
-        let scale = CGFloat(a.width) / max(first.image.size.width, 1)
+        let scale = CGFloat(a.width) / max(first.size.width, 1)
         var changed = 0, total = 0
         var box = CGRect.null
         let statusBar = Int(60 * scale)
@@ -562,9 +581,9 @@ enum Render {
     }
 
     /// Every line of text in the screenshot, with its frame in points.
-    static func read(_ shot: XCUIScreenshot) -> [Line] {
-        guard let image = shot.image.cgImage else { return [] }
-        let size = shot.image.size
+    static func read(_ shot: UIImage) -> [Line] {
+        guard let image = shot.cgImage else { return [] }
+        let size = shot.size
         let request = VNRecognizeTextRequest()
         request.recognitionLevel = .accurate
         request.usesLanguageCorrection = false
