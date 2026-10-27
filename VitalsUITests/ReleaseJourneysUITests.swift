@@ -7,8 +7,9 @@ import XCTest
 /// screen that never stops drawing). `qa-gate run ~/vitals` runs this class
 /// once per persona and turns the findings into a verdict.
 ///
-/// Journeys here assert reachability only. Whether a screen is right is the
-/// oracles' job, so a new screen gets checked without new assertions.
+/// Journeys here assert reachability, except the core loop, which asserts its
+/// numbers. Whether a screen is right is the oracles' job, so a new screen gets
+/// checked without new assertions.
 @MainActor
 final class ReleaseJourneysUITests: XCTestCase {
 
@@ -61,7 +62,9 @@ final class ReleaseJourneysUITests: XCTestCase {
         QA.checkpoint(app, "today-launch")
 
         clearTrialPitch(app)
-        app.buttons["History"].tap()
+        // Unfolded on an iPhone Duo, History is the trailing pane and has no tab.
+        let history = app.buttons["History"]
+        if history.exists { history.tap() }
         QA.checkpoint(app, "history")
 
         clearTrialPitch(app)
@@ -100,6 +103,50 @@ final class ReleaseJourneysUITests: XCTestCase {
         QA.checkpoint(app, "after-relaunch")
     }
 
+    /// The loop a customer opens Vitals for: today's burn and steps from Apple
+    /// Health, read against a calorie goal they set, still there tomorrow. Runs
+    /// on real HealthKit samples rather than screenshot fixtures, so a broken
+    /// read, a goal that does not save, or one lost on relaunch is a wrong
+    /// number here. The DEBUG seeder writes today as 1,620 resting plus 420
+    /// active kcal and 4,800 steps.
+    func testCoreLoopTodayTotalsReadAgainstANewGoalAfterRelaunch() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        QA.launch(app, environment: ["VITALS_RC_APP_USER_ID": Self.journeyCustomer, "VITALS_SEED_HEALTH": "1", "VITALS_FORCE_SETUP_COMPLETE": "1"])
+        grantHealthAccess(app)
+
+        let calories = app.descendants(matching: .any)["today-calories"].firstMatch
+        let steps = app.descendants(matching: .any)["today-steps"].firstMatch
+        XCTAssertTrue(waitForNumbers(app, steps, prefix: [Self.seededSteps]), "Today never showed the seeded steps: \(numbers(steps))")
+        XCTAssertTrue(waitForNumbers(app, calories, prefix: [Self.seededCalories]), "Today never showed the seeded burn: \(numbers(calories))")
+        QA.checkpoint(app, "core-today")
+
+        // Whatever an earlier run left, the goal entered here is a new one.
+        let goal = numbers(calories).dropFirst().first == 3_100 ? 3_200 : 3_100
+        clearTrialPitch(app)
+        app.buttons["today-settings"].tap()
+        let field = app.textFields["settings-calorie-goal"]
+        XCTAssertTrue(field.waitForExistence(timeout: 30), "Settings has no calorie goal field")
+        for _ in 0..<8 where !field.isHittable { app.swipeUp() }
+        QA.checkpoint(app, "core-settings")
+
+        field.tap()
+        let typed = (field.value as? String) ?? ""
+        field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: typed.count + 2) + "\(goal)")
+        XCTAssertEqual(field.value as? String, "\(goal)", "goal field did not take the typed value")
+        app.buttons["settings-done"].tap()
+        XCTAssertTrue(field.waitForNonExistence(timeout: 15), "Settings did not close on Done")
+
+        let expected = [Self.seededCalories, goal]
+        XCTAssertTrue(waitForNumbers(app, calories, prefix: expected), "Today does not read against the new goal: \(numbers(calories))")
+        QA.checkpoint(app, "core-today-new-goal")
+
+        QA.relaunch(app)
+        XCTAssertTrue(waitForNumbers(app, calories, prefix: expected), "goal or burn lost on relaunch: \(numbers(calories))")
+        XCTAssertTrue(waitForNumbers(app, steps, prefix: [Self.seededSteps]), "steps lost on relaunch: \(numbers(steps))")
+        QA.checkpoint(app, "core-after-relaunch")
+    }
+
     // MARK: - Helpers
 
     private func launchDashboard() -> XCUIApplication {
@@ -108,6 +155,53 @@ final class ReleaseJourneysUITests: XCTestCase {
         QA.launch(app, environment: ["VITALS_RC_APP_USER_ID": Self.journeyCustomer, "VITALS_SCREENSHOT_MODE": "1", "VITALS_SCREENSHOT_KEEP_APPEARANCE": "1", "VITALS_SCREENSHOT_SCENE": "dashboard"])
         XCTAssertTrue(app.buttons["Today"].waitForExistence(timeout: 20), "Today tab never rendered")
         return app
+    }
+
+    /// Today as `HealthKitSeeder` writes it: 1,620 resting + 420 active kcal.
+    static let seededCalories = 2_040
+    static let seededSteps = 4_800
+
+    /// The integers in an element's accessibility value, grouping stripped, so
+    /// "2040 of 3100 calories" and its German reading compare the same.
+    private func numbers(_ element: XCUIElement) -> [Int] {
+        guard element.exists, let value = element.value as? String else { return [] }
+        let pattern = try! NSRegularExpression(pattern: "\\d(?:[\\d.,\\u00A0\\u202F]*\\d)?")
+        return pattern.matches(in: value, range: NSRange(value.startIndex..., in: value)).compactMap { match in
+            Range(match.range, in: value).flatMap { Int(value[$0].filter(\.isNumber)) }
+        }
+    }
+
+    /// Waits for the value to lead with `prefix`. The seeder rewrites today on
+    /// every launch, so the figure passes through zero first; the trial pitch
+    /// can land over Today meanwhile and is cleared so the value stays readable.
+    private func waitForNumbers(_ app: XCUIApplication, _ element: XCUIElement, prefix: [Int],
+                                timeout: TimeInterval = 60) -> Bool {
+        let deadline = Date.now.addingTimeInterval(timeout)
+        while Date.now < deadline {
+            if Array(numbers(element).prefix(prefix.count)) == prefix { return true }
+            clearTrialPitch(app)
+            _ = app.buttons["nonexistent"].waitForExistence(timeout: 0.5)
+        }
+        return false
+    }
+
+    /// The Health sheet the seeder raises on a fresh install. Absent once an
+    /// earlier run on this simulator answered it.
+    private func grantHealthAccess(_ app: XCUIApplication) {
+        let allow = app.buttons.matching(NSPredicate(
+            format: "identifier == %@ OR label == %@", "UIA.Health.Allow.Button", "Allow"
+        )).firstMatch
+        guard allow.waitForExistence(timeout: 20) else { return }
+        let all = app.cells["UIA.Health.AuthSheet.AllCategoryButton"]
+        if all.waitForExistence(timeout: 3) {
+            all.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        }
+        for _ in 0..<3 where allow.exists {
+            let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == true AND isHittable == true"), object: allow)
+            guard XCTWaiter().wait(for: [ready], timeout: 10) == .completed else { return }
+            allow.tap()
+            _ = allow.waitForNonExistence(timeout: 3)
+        }
     }
 
     /// The trial pitch lands on a timer; it is checked in its own journey.

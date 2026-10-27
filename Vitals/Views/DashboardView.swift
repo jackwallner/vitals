@@ -610,6 +610,7 @@ struct DashboardView: View {
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel("Settings")
+                    .accessibilityIdentifier("today-settings")
                 }
                 HStack(spacing: 8) {
                     if healthNotice == .accessNeeded {
@@ -681,6 +682,7 @@ struct DashboardView: View {
                 .buttonStyle(.plain)
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Calorie progress")
+                .accessibilityIdentifier("today-calories")
                 .accessibilityHint("Opens calorie history")
                 .accessibilityValue((showActiveResting
                     ? (calorieProgress != nil
@@ -767,6 +769,7 @@ struct DashboardView: View {
                     .accessibilityLabel("Steps")
                     .accessibilityValue("\(steps) steps"
                         + (showStepStreak ? String(localized: ". \(stepStreak) day goal streak.") : ""))
+                    .accessibilityIdentifier("today-steps")
                     .opacity(animateContent ? 1 : 0)
                     .scaleEffect(animateContent || reduceMotion ? 1 : 0.9)
                 } else {
@@ -829,6 +832,7 @@ struct DashboardView: View {
                     .accessibilityLabel("Steps")
                     .accessibilityValue("\(steps) steps"
                         + (showStepStreak ? String(localized: ". \(stepStreak) day goal streak.") : ""))
+                    .accessibilityIdentifier("today-steps")
                     .padding(Theme.cardPadding)
                     .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
                     .padding(.horizontal, 24)
@@ -4040,6 +4044,7 @@ private struct SettingsSheet: View {
                             Spacer()
                             TextField("2500", text: $calText)
                                 .keyboardType(.numberPad)
+                                .accessibilityIdentifier("settings-calorie-goal")
                                 .multilineTextAlignment(.trailing)
                                 .focused($focusedGoalField, equals: .calories)
                             Text("cal")
@@ -4369,6 +4374,7 @@ private struct SettingsSheet: View {
                         applyGoalDrafts()
                         closeSettings()
                     }
+                    .accessibilityIdentifier("settings-done")
                     .bold()
                     .disabled(!calValid || !stepValid || !macroGoalsValid)
                 }
