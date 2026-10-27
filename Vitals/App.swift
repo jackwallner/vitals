@@ -1008,6 +1008,8 @@ struct MainTabView: View {
         var clearFor = 0
         while store.whatToFixDue, !Task.isCancelled {
             try? await Task.sleep(for: .seconds(1))
+            // Renewal turned back on during the sleep cancels it early.
+            guard !Task.isCancelled, store.whatToFixDue else { return }
             clearFor = isTodayClear ? clearFor + 1 : 0
             guard clearFor >= 2 else { continue }
             store.whatToFixShown()
@@ -1018,6 +1020,7 @@ struct MainTabView: View {
     }
 
     private func presentFeedbackSheet() {
+        reviewPromptAsksWhatToFix = false
         showReviewPrompt = true
     }
 
@@ -1585,7 +1588,8 @@ struct MainTabView: View {
             .presentationDetents([.fraction(0.7), .large])
             .presentationDragIndicator(.visible)
         }
-        .sheet(isPresented: $showReviewPrompt) {
+        // A swipe down skips onFinish, so the mode resets here too.
+        .sheet(isPresented: $showReviewPrompt, onDismiss: { reviewPromptAsksWhatToFix = false }) {
             ReviewPromptSheet(asksWhatToFix: reviewPromptAsksWhatToFix, onFinish: handleReviewPromptFinish)
         }
         .sheet(isPresented: $showWeeklyRecap, onDismiss: {
