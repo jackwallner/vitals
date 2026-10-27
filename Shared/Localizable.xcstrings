@@ -864,7 +864,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$@ فوق وتيرتك المعتادة"
+            "value" : "‏%1$@ %2$@ فوق وتيرتك المعتادة"
           }
         },
         "cs" : {
@@ -912,7 +912,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$@ جلوتر از روند معمول"
+            "value" : "‏%1$@ %2$@ جلوتر از روند معمول"
           }
         },
         "fi" : {
@@ -930,7 +930,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$@ מעל הקצב הרגיל"
+            "value" : "‏%1$@ %2$@ מעל הקצב הרגיל"
           }
         },
         "hi" : {
@@ -1084,7 +1084,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$@ تحت وتيرتك المعتادة"
+            "value" : "‏%1$@ %2$@ تحت وتيرتك المعتادة"
           }
         },
         "cs" : {
@@ -1132,7 +1132,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$@ عقب‌تر از روند معمول"
+            "value" : "‏%1$@ %2$@ عقب‌تر از روند معمول"
           }
         },
         "fi" : {
@@ -1150,7 +1150,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$@ מתחת לקצב הרגיל"
+            "value" : "‏%1$@ %2$@ מתחת לקצב הרגיל"
           }
         },
         "hi" : {
@@ -1304,7 +1304,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$@: انخفاض %3$lld%%"
+            "value" : "‏%1$@ %2$@: انخفاض %3$lld%%"
           }
         },
         "cs" : {
@@ -1352,7 +1352,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$@: %3$lld%% کاهش"
+            "value" : "‏%1$@ %2$@: %3$lld%% کاهش"
           }
         },
         "fi" : {
@@ -1370,7 +1370,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$@: ירידה של %3$lld%%"
+            "value" : "‏%1$@ %2$@: ירידה של %3$lld%%"
           }
         },
         "hi" : {
@@ -1524,7 +1524,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$@: ارتفاع %3$lld%%"
+            "value" : "‏%1$@ %2$@: ارتفاع %3$lld%%"
           }
         },
         "cs" : {
@@ -1572,7 +1572,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$@: %3$lld%% افزایش"
+            "value" : "‏%1$@ %2$@: %3$lld%% افزایش"
           }
         },
         "fi" : {
@@ -1590,7 +1590,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$@: עלייה של %3$lld%%"
+            "value" : "‏%1$@ %2$@: עלייה של %3$lld%%"
           }
         },
         "hi" : {
@@ -1744,7 +1744,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@: %2$lld سعرة يوميًا على مدى %3$lld من الأيام المكتملة، %4$@"
+            "value" : "‏%1$@: %2$lld سعرة يوميًا على مدى %3$lld من الأيام المكتملة، %4$@"
           }
         },
         "cs" : {
@@ -1792,7 +1792,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$lld کیلوکالری در روز طی %3$lld روز کامل، %4$@"
+            "value" : "‏%1$@ %2$lld کیلوکالری در روز طی %3$lld روز کامل، %4$@"
           }
         },
         "fi" : {
@@ -1810,7 +1810,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@: %2$lld קלוריות ביום לאורך %3$lld ימים מלאים, %4$@"
+            "value" : "‏%1$@: %2$lld קלוריות ביום לאורך %3$lld ימים מלאים, %4$@"
           }
         },
         "hi" : {
@@ -1964,7 +1964,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@: صافي %2$lld سعرة يوميًا على مدى %3$lld من الأيام المكتملة"
+            "value" : "‏%1$@: صافي %2$lld سعرة يوميًا على مدى %3$lld من الأيام المكتملة"
           }
         },
         "cs" : {
@@ -2012,7 +2012,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$lld کیلوکالری خالص در روز طی %3$lld روز کامل"
+            "value" : "‏%1$@ %2$lld کیلوکالری خالص در روز طی %3$lld روز کامل"
           }
         },
         "fi" : {
@@ -2030,7 +2030,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@: %2$lld קלוריות נטו ביום לאורך %3$lld ימים מלאים"
+            "value" : "‏%1$@: %2$lld קלוריות נטו ביום לאורך %3$lld ימים מלאים"
           }
         },
         "hi" : {
@@ -2184,7 +2184,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@: %2$lld خطوة يوميًا على مدى %3$lld من الأيام المكتملة، %4$@"
+            "value" : "‏%1$@: %2$lld خطوة يوميًا على مدى %3$lld من الأيام المكتملة، %4$@"
           }
         },
         "cs" : {
@@ -2232,7 +2232,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$lld قدم در روز طی %3$lld روز کامل، %4$@"
+            "value" : "‏%1$@ %2$lld قدم در روز طی %3$lld روز کامل، %4$@"
           }
         },
         "fi" : {
@@ -2250,7 +2250,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@: %2$lld צעדים ביום לאורך %3$lld ימים מלאים, %4$@"
+            "value" : "‏%1$@: %2$lld צעדים ביום לאורך %3$lld ימים מלאים, %4$@"
           }
         },
         "hi" : {
@@ -2404,7 +2404,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ / %2$@ غ"
+            "value" : "‏%1$@ / %2$@ غ"
           }
         },
         "cs" : {
@@ -2452,7 +2452,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ / %2$@ گرم"
+            "value" : "‏%1$@ / %2$@ گرم"
           }
         },
         "fi" : {
@@ -2470,7 +2470,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ / %2$@ ג׳"
+            "value" : "‏%1$@ / %2$@ ג׳"
           }
         },
         "hi" : {
@@ -2624,7 +2624,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ / %2$lld يوم"
+            "value" : "‏%1$@ / %2$lld يوم"
           }
         },
         "cs" : {
@@ -2672,7 +2672,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ / %2$lld روز"
+            "value" : "‏%1$@ / %2$lld روز"
           }
         },
         "fi" : {
@@ -2690,7 +2690,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ / %2$lld ימים"
+            "value" : "‏%1$@ / %2$lld ימים"
           }
         },
         "hi" : {
@@ -2844,7 +2844,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ / %2$lld شهر"
+            "value" : "‏%1$@ / %2$lld شهر"
           }
         },
         "cs" : {
@@ -2892,7 +2892,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ / %2$lld ماه"
+            "value" : "‏%1$@ / %2$lld ماه"
           }
         },
         "fi" : {
@@ -2910,7 +2910,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ / %2$lld חודשים"
+            "value" : "‏%1$@ / %2$lld חודשים"
           }
         },
         "hi" : {
@@ -3064,7 +3064,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ / %2$lld أسبوع"
+            "value" : "‏%1$@ / %2$lld أسبوع"
           }
         },
         "cs" : {
@@ -3112,7 +3112,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ / %2$lld هفته"
+            "value" : "‏%1$@ / %2$lld هفته"
           }
         },
         "fi" : {
@@ -3130,7 +3130,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ / %2$lld שבועות"
+            "value" : "‏%1$@ / %2$lld שבועות"
           }
         },
         "hi" : {
@@ -3284,7 +3284,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ / %2$lld سنة"
+            "value" : "‏%1$@ / %2$lld سنة"
           }
         },
         "cs" : {
@@ -3332,7 +3332,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ / %2$lld سال"
+            "value" : "‏%1$@ / %2$lld سال"
           }
         },
         "fi" : {
@@ -3350,7 +3350,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ / %2$lld שנים"
+            "value" : "‏%1$@ / %2$lld שנים"
           }
         },
         "hi" : {
@@ -3504,7 +3504,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ / يوم"
+            "value" : "‏%@ / يوم"
           }
         },
         "cs" : {
@@ -3546,7 +3546,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ / روز"
+            "value" : "‏%@ / روز"
           }
         },
         "fi" : {
@@ -3564,7 +3564,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ / יום"
+            "value" : "‏%@ / יום"
           }
         },
         "hi" : {
@@ -3718,7 +3718,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ / شهر"
+            "value" : "‏%@ / شهر"
           }
         },
         "cs" : {
@@ -3760,7 +3760,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ / ماه"
+            "value" : "‏%@ / ماه"
           }
         },
         "fi" : {
@@ -3778,7 +3778,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ / חודש"
+            "value" : "‏%@ / חודש"
           }
         },
         "hi" : {
@@ -3932,7 +3932,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ / أسبوع"
+            "value" : "‏%@ / أسبوع"
           }
         },
         "cs" : {
@@ -3974,7 +3974,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ / هفته"
+            "value" : "‏%@ / هفته"
           }
         },
         "fi" : {
@@ -3992,7 +3992,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ / שבוע"
+            "value" : "‏%@ / שבוע"
           }
         },
         "hi" : {
@@ -4146,7 +4146,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ / سنة"
+            "value" : "‏%@ / سنة"
           }
         },
         "cs" : {
@@ -4188,7 +4188,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ / سال"
+            "value" : "‏%@ / سال"
           }
         },
         "fi" : {
@@ -4206,7 +4206,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ / שנה"
+            "value" : "‏%@ / שנה"
           }
         },
         "hi" : {
@@ -4360,7 +4360,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ حوالي %2$@ أسبوعيًا مع الخطة السنوية."
+            "value" : "‏%1$@ حوالي %2$@ أسبوعيًا مع الخطة السنوية."
           }
         },
         "cs" : {
@@ -4408,7 +4408,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ حدود %2$@ در هفته با طرح سالانه."
+            "value" : "‏%1$@ حدود %2$@ در هفته با طرح سالانه."
           }
         },
         "fi" : {
@@ -4426,7 +4426,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ בערך %2$@ לשבוע בתוכנית השנתית."
+            "value" : "‏%1$@ בערך %2$@ לשבוע בתוכנית השנתית."
           }
         },
         "hi" : {
@@ -4580,7 +4580,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMR ‏%@"
+            "value" : "‏BMR ‏%@"
           }
         },
         "cs" : {
@@ -4640,7 +4640,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMR ‏%@"
+            "value" : "‏BMR ‏%@"
           }
         },
         "hi" : {
@@ -4794,7 +4794,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ أيام مجانًا"
+            "value" : "‏%@ أيام مجانًا"
           }
         },
         "cs" : {
@@ -4836,7 +4836,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ روز رایگان"
+            "value" : "‏%@ روز رایگان"
           }
         },
         "fi" : {
@@ -4854,7 +4854,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ ימים חינם"
+            "value" : "‏%@ ימים חינם"
           }
         },
         "hi" : {
@@ -5008,7 +5008,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ مجانًا لمدة 7 أيام. يمكنك الإلغاء في أي وقت."
+            "value" : "‏%@ مجانًا لمدة 7 أيام. يمكنك الإلغاء في أي وقت."
           }
         },
         "cs" : {
@@ -5050,7 +5050,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ ۷ روز رایگان. هر زمان لغو کنید."
+            "value" : "‏%@ ۷ روز رایگان. هر زمان لغو کنید."
           }
         },
         "fi" : {
@@ -5068,7 +5068,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ 7 ימים חינם. אפשר לבטל בכל עת."
+            "value" : "‏%@ 7 ימים חינם. אפשר לבטל בכל עת."
           }
         },
         "hi" : {
@@ -5436,7 +5436,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ الأهداف: 🔥 %2$lld/%3$lld  👟 %4$lld/%5$lld"
+            "value" : "‏%1$@ الأهداف: 🔥 %2$lld/%3$lld  👟 %4$lld/%5$lld"
           }
         },
         "cs" : {
@@ -5484,7 +5484,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ اهداف: 🔥 %2$lld/%3$lld  👟 %4$lld/%5$lld"
+            "value" : "‏%1$@ اهداف: 🔥 %2$lld/%3$lld  👟 %4$lld/%5$lld"
           }
         },
         "fi" : {
@@ -5502,7 +5502,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ יעדים: 🔥 %2$lld/%3$lld  👟 %4$lld/%5$lld"
+            "value" : "‏%1$@ יעדים: 🔥 %2$lld/%3$lld  👟 %4$lld/%5$lld"
           }
         },
         "hi" : {
@@ -5656,7 +5656,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ سنويًا"
+            "value" : "‏%@ سنويًا"
           }
         },
         "cs" : {
@@ -5698,7 +5698,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ در سال"
+            "value" : "‏%@ در سال"
           }
         },
         "fi" : {
@@ -5716,7 +5716,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ לשנה"
+            "value" : "‏%@ לשנה"
           }
         },
         "hi" : {
@@ -5918,7 +5918,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ و %2$@ باقی مانده است."
+            "value" : "‏%1$@ و %2$@ باقی مانده است."
           }
         },
         "fi" : {
@@ -6090,7 +6090,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ محروقة − %2$@ مأكولة"
+            "value" : "‏%1$@ محروقة − %2$@ مأكولة"
           }
         },
         "cs" : {
@@ -6138,7 +6138,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ سوزانده − %2$@ خورده‌شده"
+            "value" : "‏%1$@ سوزانده − %2$@ خورده‌شده"
           }
         },
         "fi" : {
@@ -6156,7 +6156,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ נשרפו − %2$@ נאכלו"
+            "value" : "‏%1$@ נשרפו − %2$@ נאכלו"
           }
         },
         "hi" : {
@@ -6310,7 +6310,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ سعرة"
+            "value" : "‏%@ سعرة"
           }
         },
         "cs" : {
@@ -6370,7 +6370,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ קק״ל"
+            "value" : "‏%@ קק״ל"
           }
         },
         "hi" : {
@@ -6524,7 +6524,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ سعرة محروقة و%2$@ خطوة اليوم."
+            "value" : "‏%1$@ سعرة محروقة و%2$@ خطوة اليوم."
           }
         },
         "cs" : {
@@ -6744,7 +6744,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ سعرة مسجّلة"
+            "value" : "‏%@ سعرة مسجّلة"
           }
         },
         "cs" : {
@@ -6786,7 +6786,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ kcal ثبت‌شده"
+            "value" : "‏%@ kcal ثبت‌شده"
           }
         },
         "fi" : {
@@ -6804,7 +6804,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ קק״ל נרשמו"
+            "value" : "‏%@ קק״ל נרשמו"
           }
         },
         "hi" : {
@@ -6958,7 +6958,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ صافٍ"
+            "value" : "‏%@ صافٍ"
           }
         },
         "cs" : {
@@ -7000,7 +7000,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ خالص"
+            "value" : "‏%@ خالص"
           }
         },
         "fi" : {
@@ -7018,7 +7018,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ נטו"
+            "value" : "‏%@ נטו"
           }
         },
         "hi" : {
@@ -7172,7 +7172,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@: لا بيانات"
+            "value" : "‏%@: لا بيانات"
           }
         },
         "cs" : {
@@ -7214,7 +7214,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ بدون داده"
+            "value" : "‏%@ بدون داده"
           }
         },
         "fi" : {
@@ -7232,7 +7232,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@: אין נתונים"
+            "value" : "‏%@: אין נתונים"
           }
         },
         "hi" : {
@@ -7386,7 +7386,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ من %2$@ سعرة محروقة اليوم."
+            "value" : "‏%1$@ من %2$@ سعرة محروقة اليوم."
           }
         },
         "cs" : {
@@ -7606,7 +7606,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ من %2$@ خطوة اليوم."
+            "value" : "‏%1$@ من %2$@ خطوة اليوم."
           }
         },
         "cs" : {
@@ -7826,7 +7826,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ في %2$@"
+            "value" : "‏%1$@ في %2$@"
           }
         },
         "cs" : {
@@ -7874,7 +7874,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ در %2$@"
+            "value" : "‏%1$@ در %2$@"
           }
         },
         "fi" : {
@@ -7892,7 +7892,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ ב־%2$@"
+            "value" : "‏%1$@ ב־%2$@"
           }
         },
         "hi" : {
@@ -8260,7 +8260,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ خطوة"
+            "value" : "‏%@ خطوة"
           }
         },
         "cs" : {
@@ -8302,7 +8302,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ قدم"
+            "value" : "‏%@ قدم"
           }
         },
         "fi" : {
@@ -8320,7 +8320,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ צעדים"
+            "value" : "‏%@ צעדים"
           }
         },
         "hi" : {
@@ -8516,7 +8516,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ باقی مانده"
+            "value" : "‏%@ باقی مانده"
           }
         },
         "fi" : {
@@ -8902,7 +8902,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ · %2$@ سعرة"
+            "value" : "‏%1$@ · %2$@ سعرة"
           }
         },
         "cs" : {
@@ -8968,7 +8968,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ · %2$@ קק״ל"
+            "value" : "‏%1$@ · %2$@ קק״ל"
           }
         },
         "hi" : {
@@ -9342,7 +9342,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@%2$lld%% مقارنة بالأسبوع الماضي"
+            "value" : "‏%1$@%2$lld%% مقارنة بالأسبوع الماضي"
           }
         },
         "cs" : {
@@ -9390,7 +9390,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@%2$lld%% نسبت به هفته قبل"
+            "value" : "‏%1$@%2$lld%% نسبت به هفته قبل"
           }
         },
         "fi" : {
@@ -9408,7 +9408,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@%2$lld%% לעומת השבוע שעבר"
+            "value" : "‏%1$@%2$lld%% לעומת השבוע שעבר"
           }
         },
         "hi" : {
@@ -9562,7 +9562,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@، %2$lld سعرة، %3$lld خطوة"
+            "value" : "‏%1$@، %2$lld سعرة، %3$lld خطوة"
           }
         },
         "cs" : {
@@ -9610,7 +9610,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@، %2$lld کیلوکالری، %3$lld قدم"
+            "value" : "‏%1$@، %2$lld کیلوکالری، %3$lld قدم"
           }
         },
         "fi" : {
@@ -9628,7 +9628,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@, %2$lld קלוריות, %3$lld צעדים"
+            "value" : "‏%1$@, %2$lld קלוריות, %3$lld צעדים"
           }
         },
         "hi" : {
@@ -9782,7 +9782,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ هدية منّا."
+            "value" : "‏%@ هدية منّا."
           }
         },
         "cs" : {
@@ -9824,7 +9824,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@، هدیه ما به شما."
+            "value" : "‏%@، هدیه ما به شما."
           }
         },
         "fi" : {
@@ -9842,7 +9842,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@, עלינו."
+            "value" : "‏%@, עלינו."
           }
         },
         "hi" : {
@@ -9996,7 +9996,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@، ثم %2$@. %3$@"
+            "value" : "‏%1$@، ثم %2$@. %3$@"
           }
         },
         "cs" : {
@@ -10044,7 +10044,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@، سپس %2$@. %3$@"
+            "value" : "‏%1$@، سپس %2$@. %3$@"
           }
         },
         "fi" : {
@@ -10062,7 +10062,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@, ולאחר מכן %2$@. %3$@"
+            "value" : "‏%1$@, ולאחר מכן %2$@. %3$@"
           }
         },
         "hi" : {
@@ -10651,7 +10651,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@. يتجدد تلقائيًا ما لم يُلغَ قبل انتهاء الفترة بـ 24 ساعة."
+            "value" : "‏%@. يتجدد تلقائيًا ما لم يُلغَ قبل انتهاء الفترة بـ 24 ساعة."
           }
         },
         "cs" : {
@@ -10693,7 +10693,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@. تمدید خودکار، مگر اینکه ۲۴ ساعت پیش از پایان دوره لغو شود."
+            "value" : "‏%@. تمدید خودکار، مگر اینکه ۲۴ ساعت پیش از پایان دوره لغو شود."
           }
         },
         "fi" : {
@@ -10711,7 +10711,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@. מתחדש אוטומטית אלא אם מבטלים 24 שעות לפני סוף התקופה."
+            "value" : "‏%@. מתחדש אוטומטית אלא אם מבטלים 24 שעות לפני סוף התקופה."
           }
         },
         "hi" : {
@@ -10865,7 +10865,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@. شراء لمرة واحدة. وصول مدى الحياة بلا اشتراك."
+            "value" : "‏%@. شراء لمرة واحدة. وصول مدى الحياة بلا اشتراك."
           }
         },
         "cs" : {
@@ -10907,7 +10907,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@. خرید یک‌باره. دسترسی دائمی، بدون اشتراک."
+            "value" : "‏%@. خرید یک‌باره. دسترسی دائمی، بدون اشتراک."
           }
         },
         "fi" : {
@@ -10925,7 +10925,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@. רכישה חד־פעמית. גישה לכל החיים, ללא מינוי."
+            "value" : "‏%@. רכישה חד־פעמית. גישה לכל החיים, ללא מינוי."
           }
         },
         "hi" : {
@@ -11079,7 +11079,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@/أسبوع"
+            "value" : "‏%@/أسبوع"
           }
         },
         "cs" : {
@@ -11121,7 +11121,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@/هفته"
+            "value" : "‏%@/هفته"
           }
         },
         "fi" : {
@@ -11139,7 +11139,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@/שבוע"
+            "value" : "‏%@/שבוע"
           }
         },
         "hi" : {
@@ -11513,7 +11513,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@: %2$@، مستبعد من المتوسطات"
+            "value" : "‏%1$@: %2$@، مستبعد من المتوسطات"
           }
         },
         "cs" : {
@@ -11561,7 +11561,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@: %2$@، خارج از میانگین‌ها"
+            "value" : "‏%1$@: %2$@، خارج از میانگین‌ها"
           }
         },
         "fi" : {
@@ -11579,7 +11579,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@: %2$@, לא נכלל בממוצעים"
+            "value" : "‏%1$@: %2$@, לא נכלל בממוצעים"
           }
         },
         "hi" : {
@@ -11950,37 +11950,37 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld أيام مستبعدة"
+                  "value" : "‏%lld أيام مستبعدة"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يومًا مستبعدًا"
+                  "value" : "‏%lld يومًا مستبعدًا"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم مستبعد"
+                  "value" : "‏%lld يوم مستبعد"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم مستبعد"
+                  "value" : "‏%lld يوم مستبعد"
                 }
               },
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم مستبعد"
+                  "value" : "‏%lld يوم مستبعد"
                 }
               },
               "zero" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم مستبعد"
+                  "value" : "‏%lld يوم مستبعد"
                 }
               }
             }
@@ -12061,7 +12061,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld روز مستثنا"
+            "value" : "‏%lld روز مستثنا"
           }
         },
         "fi" : {
@@ -12082,13 +12082,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld יום שהוחרג"
+                  "value" : "‏%lld יום שהוחרג"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld ימים שהוחרגו"
+                  "value" : "‏%lld ימים שהוחרגו"
                 }
               }
             }
@@ -12398,37 +12398,37 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld أيام نشطة"
+                  "value" : "‏%lld أيام نشطة"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يومًا نشطًا"
+                  "value" : "‏%lld يومًا نشطًا"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم نشط"
+                  "value" : "‏%lld يوم نشط"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم نشط"
+                  "value" : "‏%lld يوم نشط"
                 }
               },
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم نشط"
+                  "value" : "‏%lld يوم نشط"
                 }
               },
               "zero" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم نشط"
+                  "value" : "‏%lld يوم نشط"
                 }
               }
             }
@@ -12509,7 +12509,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld روز فعال"
+            "value" : "‏%lld روز فعال"
           }
         },
         "fi" : {
@@ -12530,13 +12530,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld יום פעיל"
+                  "value" : "‏%lld יום פעיל"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld ימים פעילים"
+                  "value" : "‏%lld ימים פעילים"
                 }
               }
             }
@@ -12891,7 +12891,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld روز فعال · %2$lld مستثنا"
+            "value" : "‏%1$lld روز فعال · %2$lld مستثنا"
           }
         },
         "fi" : {
@@ -12909,7 +12909,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld ימים פעילים · %2$lld הוחרגו"
+            "value" : "‏%1$lld ימים פעילים · %2$lld הוחרגו"
           }
         },
         "hi" : {
@@ -13063,7 +13063,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld سعرة"
+            "value" : "‏%lld سعرة"
           }
         },
         "cs" : {
@@ -13105,7 +13105,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld کیلوکالری"
+            "value" : "‏%lld کیلوکالری"
           }
         },
         "fi" : {
@@ -13123,7 +13123,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld קלוריות"
+            "value" : "‏%lld קלוריות"
           }
         },
         "hi" : {
@@ -13295,7 +13295,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld سعرة مسجّلة في صحتي اليوم"
+            "value" : "‏%lld سعرة مسجّلة في صحتي اليوم"
           }
         },
         "cs" : {
@@ -13355,7 +13355,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld קלוריות נרשמו היום בבריאות"
+            "value" : "‏%lld קלוריות נרשמו היום בבריאות"
           }
         },
         "hi" : {
@@ -13527,7 +13527,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld سعرة، عجز، المحروق ناقص الطعام من صحتي"
+            "value" : "‏%lld سعرة، عجز، المحروق ناقص الطعام من صحتي"
           }
         },
         "cs" : {
@@ -13569,7 +13569,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld کیلوکالری، کسری، سوخته منهای غذا از Health"
+            "value" : "‏%lld کیلوکالری، کسری، سوخته منهای غذا از Health"
           }
         },
         "fi" : {
@@ -13587,7 +13587,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld קלוריות, גירעון, שריפה פחות אוכל מבריאות"
+            "value" : "‏%lld קלוריות, גירעון, שריפה פחות אוכל מבריאות"
           }
         },
         "hi" : {
@@ -13759,7 +13759,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld سعرة، فائض، المحروق ناقص الطعام من صحتي"
+            "value" : "‏%lld سعرة، فائض، المحروق ناقص الطعام من صحتي"
           }
         },
         "cs" : {
@@ -13801,7 +13801,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld کیلوکالری، مازاد، سوخته منهای غذا از Health"
+            "value" : "‏%lld کیلوکالری، مازاد، سوخته منهای غذا از Health"
           }
         },
         "fi" : {
@@ -13819,7 +13819,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld קלוריות, עודף, שריפה פחות אוכל מבריאות"
+            "value" : "‏%lld קלוריות, עודף, שריפה פחות אוכל מבריאות"
           }
         },
         "hi" : {
@@ -13991,7 +13991,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld سعرة. نشطة %2$lld، أثناء الراحة %3$lld."
+            "value" : "‏%1$lld سعرة. نشطة %2$lld، أثناء الراحة %3$lld."
           }
         },
         "cs" : {
@@ -14039,7 +14039,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld کیلوکالری. فعال %2$lld، استراحت %3$lld."
+            "value" : "‏%1$lld کیلوکالری. فعال %2$lld، استراحت %3$lld."
           }
         },
         "fi" : {
@@ -14057,7 +14057,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld קלוריות. פעילות %2$lld, מנוחה %3$lld."
+            "value" : "‏%1$lld קלוריות. פעילות %2$lld, מנוחה %3$lld."
           }
         },
         "hi" : {
@@ -14978,37 +14978,37 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld أيام"
+                  "value" : "‏%lld أيام"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يومًا"
+                  "value" : "‏%lld يومًا"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم"
+                  "value" : "‏%lld يوم"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم"
+                  "value" : "‏%lld يوم"
                 }
               },
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم"
+                  "value" : "‏%lld يوم"
                 }
               },
               "zero" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم"
+                  "value" : "‏%lld يوم"
                 }
               }
             }
@@ -15089,7 +15089,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld روز"
+            "value" : "‏%lld روز"
           }
         },
         "fi" : {
@@ -15110,13 +15110,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld יום"
+                  "value" : "‏%lld יום"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld ימים"
+                  "value" : "‏%lld ימים"
                 }
               }
             }
@@ -15501,7 +15501,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld روز مستثنا"
+            "value" : "‏%lld روز مستثنا"
           }
         },
         "fi" : {
@@ -15895,7 +15895,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld روز از این آمار مستثنا شده است"
+            "value" : "‏%lld روز از این آمار مستثنا شده است"
           }
         },
         "fi" : {
@@ -15916,13 +15916,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld יום הוחרג מהנתונים האלה"
+                  "value" : "‏%lld יום הוחרג מהנתונים האלה"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld ימים הוחרגו מהנתונים האלה"
+                  "value" : "‏%lld ימים הוחרגו מהנתונים האלה"
                 }
               }
             }
@@ -16289,7 +16289,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld روز دارای داده"
+            "value" : "‏%lld روز دارای داده"
           }
         },
         "fi" : {
@@ -16310,13 +16310,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld יום עם נתונים"
+                  "value" : "‏%lld יום עם נתונים"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld ימים עם נתונים"
+                  "value" : "‏%lld ימים עם נתונים"
                 }
               }
             }
@@ -16605,7 +16605,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld غ"
+            "value" : "‏%lld غ"
           }
         },
         "cs" : {
@@ -16647,7 +16647,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld گرم"
+            "value" : "‏%lld گرم"
           }
         },
         "fi" : {
@@ -16665,7 +16665,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld ג׳"
+            "value" : "‏%lld ג׳"
           }
         },
         "hi" : {
@@ -16819,7 +16819,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld غ"
+            "value" : "‏%lld غ"
           }
         },
         "cs" : {
@@ -16897,7 +16897,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld گرم"
+            "value" : "‏%lld گرم"
           }
         },
         "fi" : {
@@ -16915,7 +16915,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld גרם"
+            "value" : "‏%lld גרם"
           }
         },
         "hi" : {
@@ -17297,7 +17297,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld روز ثبت‌شده"
+            "value" : "‏%lld روز ثبت‌شده"
           }
         },
         "fi" : {
@@ -17318,13 +17318,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld יום עם רישום"
+                  "value" : "‏%lld יום עם רישום"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld ימים עם רישום"
+                  "value" : "‏%lld ימים עם רישום"
                 }
               }
             }
@@ -17655,7 +17655,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld کیلوکالری خالص"
+            "value" : "‏%lld کیلوکالری خالص"
           }
         },
         "fi" : {
@@ -17673,7 +17673,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld קלוריות נטו"
+            "value" : "‏%lld קלוריות נטו"
           }
         },
         "hi" : {
@@ -17845,7 +17845,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld من %2$lld سعرة"
+            "value" : "‏%1$lld من %2$lld سعرة"
           }
         },
         "cs" : {
@@ -17893,7 +17893,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld از %2$lld کیلوکالری"
+            "value" : "‏%1$lld از %2$lld کیلوکالری"
           }
         },
         "fi" : {
@@ -17911,7 +17911,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld מתוך %2$lld קלוריות"
+            "value" : "‏%1$lld מתוך %2$lld קלוריות"
           }
         },
         "hi" : {
@@ -18065,7 +18065,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld من %2$lld سعرة. نشطة %3$lld، أثناء الراحة %4$lld."
+            "value" : "‏%1$lld من %2$lld سعرة. نشطة %3$lld، أثناء الراحة %4$lld."
           }
         },
         "cs" : {
@@ -18113,7 +18113,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld از %2$lld کیلوکالری. فعال %3$lld، استراحت %4$lld."
+            "value" : "‏%1$lld از %2$lld کیلوکالری. فعال %3$lld، استراحت %4$lld."
           }
         },
         "fi" : {
@@ -18131,7 +18131,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld מתוך %2$lld קלוריות. פעילות %3$lld, מנוחה %4$lld."
+            "value" : "‏%1$lld מתוך %2$lld קלוריות. פעילות %3$lld, מנוחה %4$lld."
           }
         },
         "hi" : {
@@ -18553,7 +18553,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld از %2$lld روز دارای داده"
+            "value" : "‏%1$lld از %2$lld روز دارای داده"
           }
         },
         "fi" : {
@@ -18571,7 +18571,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld מתוך %2$lld ימים עם נתונים"
+            "value" : "‏%1$lld מתוך %2$lld ימים עם נתונים"
           }
         },
         "hi" : {
@@ -18725,7 +18725,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld من %2$lld غ"
+            "value" : "‏%1$lld من %2$lld غ"
           }
         },
         "cs" : {
@@ -18773,7 +18773,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld از %2$lld گرم"
+            "value" : "‏%1$lld از %2$lld گرم"
           }
         },
         "fi" : {
@@ -18791,7 +18791,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld מתוך %2$lld גרם"
+            "value" : "‏%1$lld מתוך %2$lld גרם"
           }
         },
         "hi" : {
@@ -18945,7 +18945,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%2$@ بنسبة %1$lld بالمئة"
+            "value" : "‏%2$@ بنسبة %1$lld بالمئة"
           }
         },
         "cs" : {
@@ -18993,7 +18993,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld درصد %2$@"
+            "value" : "‏%1$lld درصد %2$@"
           }
         },
         "fi" : {
@@ -19011,7 +19011,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%2$@ %1$lld אחוז"
+            "value" : "‏%2$@ %1$lld אחוז"
           }
         },
         "hi" : {
@@ -19165,7 +19165,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld خطوة"
+            "value" : "‏%lld خطوة"
           }
         },
         "cs" : {
@@ -19243,7 +19243,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld قدم"
+            "value" : "‏%lld قدم"
           }
         },
         "fi" : {
@@ -19264,13 +19264,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld צעד"
+                  "value" : "‏%lld צעד"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld צעדים"
+                  "value" : "‏%lld צעדים"
                 }
               }
             }
@@ -19833,7 +19833,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld%% تخفیف"
+            "value" : "‏%lld%% تخفیف"
           }
         },
         "fi" : {
@@ -19851,7 +19851,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld%% הנחה"
+            "value" : "‏%lld%% הנחה"
           }
         },
         "hi" : {
@@ -20008,37 +20008,37 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld أيام مجانًا"
+                  "value" : "‏%lld أيام مجانًا"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يومًا مجانًا"
+                  "value" : "‏%lld يومًا مجانًا"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم مجانًا"
+                  "value" : "‏%lld يوم مجانًا"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم مجانًا"
+                  "value" : "‏%lld يوم مجانًا"
                 }
               },
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم مجانًا"
+                  "value" : "‏%lld يوم مجانًا"
                 }
               },
               "zero" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld يوم مجانًا"
+                  "value" : "‏%lld يوم مجانًا"
                 }
               }
             }
@@ -20119,7 +20119,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld روز آزمایش رایگان"
+            "value" : "‏%lld روز آزمایش رایگان"
           }
         },
         "fi" : {
@@ -20140,13 +20140,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld יום חינם"
+                  "value" : "‏%lld יום חינם"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld ימים חינם"
+                  "value" : "‏%lld ימים חינם"
                 }
               }
             }
@@ -20920,37 +20920,37 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld أشهر مجانًا"
+                  "value" : "‏%lld أشهر مجانًا"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld شهرًا مجانًا"
+                  "value" : "‏%lld شهرًا مجانًا"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld شهر مجانًا"
+                  "value" : "‏%lld شهر مجانًا"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld شهر مجانًا"
+                  "value" : "‏%lld شهر مجانًا"
                 }
               },
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld شهر مجانًا"
+                  "value" : "‏%lld شهر مجانًا"
                 }
               },
               "zero" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld شهر مجانًا"
+                  "value" : "‏%lld شهر مجانًا"
                 }
               }
             }
@@ -21031,7 +21031,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld ماه آزمایش رایگان"
+            "value" : "‏%lld ماه آزمایش رایگان"
           }
         },
         "fi" : {
@@ -21052,13 +21052,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld חודש חינם"
+                  "value" : "‏%lld חודש חינם"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld חודשים חינם"
+                  "value" : "‏%lld חודשים חינם"
                 }
               }
             }
@@ -21368,37 +21368,37 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld سنوات مجانًا"
+                  "value" : "‏%lld سنوات مجانًا"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld سنةً مجانًا"
+                  "value" : "‏%lld سنةً مجانًا"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld سنة مجانًا"
+                  "value" : "‏%lld سنة مجانًا"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld سنة مجانًا"
+                  "value" : "‏%lld سنة مجانًا"
                 }
               },
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld سنة مجانًا"
+                  "value" : "‏%lld سنة مجانًا"
                 }
               },
               "zero" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld سنة مجانًا"
+                  "value" : "‏%lld سنة مجانًا"
                 }
               }
             }
@@ -21479,7 +21479,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld سال آزمایش رایگان"
+            "value" : "‏%lld سال آزمایش رایگان"
           }
         },
         "fi" : {
@@ -21500,13 +21500,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld שנה חינם"
+                  "value" : "‏%lld שנה חינם"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld שנים חינם"
+                  "value" : "‏%lld שנים חינם"
                 }
               }
             }
@@ -22033,7 +22033,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld ي"
+            "value" : "‏%lld ي"
           }
         },
         "cs" : {
@@ -22075,7 +22075,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld روز"
+            "value" : "‏%lld روز"
           }
         },
         "fi" : {
@@ -22093,7 +22093,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld י׳"
+            "value" : "‏%lld י׳"
           }
         },
         "hi" : {
@@ -23533,7 +23533,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "/ %@ سعرة"
+            "value" : "‏/ %@ سعرة"
           }
         },
         "cs" : {
@@ -23593,7 +23593,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "/ %@ קק״ל"
+            "value" : "‏/ %@ קק״ל"
           }
         },
         "hi" : {
@@ -35135,7 +35135,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health کالری خوردنی این دوره را ارائه نکرد."
+            "value" : "‏Apple Health کالری خوردنی این دوره را ارائه نکرد."
           }
         },
         "fi" : {
@@ -35349,7 +35349,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health پروتئین، کربوهیدرات و چربی این دوره را ارائه نکرد."
+            "value" : "‏Apple Health پروتئین، کربوهیدرات و چربی این دوره را ارائه نکرد."
           }
         },
         "fi" : {
@@ -35563,7 +35563,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health هنوز قد و وزن ندارد. آن‌ها را اینجا وارد کنید یا در برنامه Health اضافه کنید."
+            "value" : "‏Apple Health هنوز قد و وزن ندارد. آن‌ها را اینجا وارد کنید یا در برنامه Health اضافه کنید."
           }
         },
         "fi" : {
@@ -40485,7 +40485,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMI %.1f · چربی بدن و زمینه کالری در داخل."
+            "value" : "‏BMI %.1f · چربی بدن و زمینه کالری در داخل."
           }
         },
         "fi" : {
@@ -40503,7 +40503,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMI ‏%.1f · אחוז שומן והקשר קלורי בפנים."
+            "value" : "‏BMI ‏%.1f · אחוז שומן והקשר קלורי בפנים."
           }
         },
         "hi" : {
@@ -40699,7 +40699,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMI از قد و وزن همگام‌شده از Apple Health."
+            "value" : "‏BMI از قد و وزن همگام‌شده از Apple Health."
           }
         },
         "fi" : {
@@ -40717,7 +40717,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMI לפי גובה ומשקל שסונכרנו מבריאות."
+            "value" : "‏BMI לפי גובה ומשקל שסונכרנו מבריאות."
           }
         },
         "hi" : {
@@ -40913,7 +40913,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMI از قد و وزنی که وارد می‌کنید."
+            "value" : "‏BMI از قد و وزنی که وارد می‌کنید."
           }
         },
         "fi" : {
@@ -40931,7 +40931,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMI לפי הגובה והמשקל שהזנת."
+            "value" : "‏BMI לפי הגובה והמשקל שהזנת."
           }
         },
         "hi" : {
@@ -41127,7 +41127,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMI یک مرجع ساده بر پایه قد و وزن است و تشخیص پزشکی نیست. ممکن است توده عضلانی، بارداری، سن یا شرایط سلامت فردی را نشان ندهد."
+            "value" : "‏BMI یک مرجع ساده بر پایه قد و وزن است و تشخیص پزشکی نیست. ممکن است توده عضلانی، بارداری، سن یا شرایط سلامت فردی را نشان ندهد."
           }
         },
         "fi" : {
@@ -41145,7 +41145,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMI הוא מדד פשוט של גובה ומשקל ואינו אבחנה. הוא עשוי לא לשקף מסת שריר, היריון, גיל או מצב בריאותי אישי."
+            "value" : "‏BMI הוא מדד פשוט של גובה ומשקל ואינו אבחנה. הוא עשוי לא לשקף מסת שריר, היריון, גיל או מצב בריאותי אישי."
           }
         },
         "hi" : {
@@ -41341,7 +41341,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMI، قد و وزن"
+            "value" : "‏BMI، قد و وزن"
           }
         },
         "fi" : {
@@ -41359,7 +41359,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMI, גובה ומשקל"
+            "value" : "‏BMI, גובה ומשקל"
           }
         },
         "hi" : {
@@ -62076,7 +62076,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ اليومي"
+            "value" : "‏%@ اليومي"
           }
         },
         "cs" : {
@@ -62118,7 +62118,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ روزانه"
+            "value" : "‏%@ روزانه"
           }
         },
         "fi" : {
@@ -62136,7 +62136,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ יומי"
+            "value" : "‏%@ יומי"
           }
         },
         "hi" : {
@@ -67902,7 +67902,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@–%2$@ گرم وارد کنید."
+            "value" : "‏%1$@–%2$@ گرم وارد کنید."
           }
         },
         "fi" : {
@@ -77110,7 +77110,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMI رایگان از Apple Health، به‌علاوه چربی بدن و زمینه کالری."
+            "value" : "‏BMI رایگان از Apple Health، به‌علاوه چربی بدن و زمینه کالری."
           }
         },
         "fi" : {
@@ -77128,7 +77128,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMI חינם מבריאות, ובנוסף אחוז שומן והקשר קלורי."
+            "value" : "‏BMI חינם מבריאות, ובנוסף אחוז שומן והקשר קלורי."
           }
         },
         "hi" : {
@@ -89006,7 +89006,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ را از میانگین‌ها کنار بگذارید"
+            "value" : "‏%@ را از میانگین‌ها کنار بگذارید"
           }
         },
         "fi" : {
@@ -96716,7 +96716,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PDF خلاصه ماهانه"
+            "value" : "‏PDF خلاصه ماهانه"
           }
         },
         "fi" : {
@@ -96930,7 +96930,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "kcal خالص"
+            "value" : "‏kcal خالص"
           }
         },
         "fi" : {
@@ -108534,7 +108534,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Total Calories را باز کنید تا داده‌های سلامت بارگذاری شود."
+            "value" : "‏Total Calories را باز کنید تا داده‌های سلامت بارگذاری شود."
           }
         },
         "fi" : {
@@ -108748,7 +108748,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Total Calories را باز کنید تا داده‌های سلامت شما بارگذاری شود."
+            "value" : "‏Total Calories را باز کنید تا داده‌های سلامت شما بارگذاری شود."
           }
         },
         "fi" : {
@@ -111530,7 +111530,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ گذشته، هر روز."
+            "value" : "‏%@ گذشته، هر روز."
           }
         },
         "fi" : {
@@ -111548,7 +111548,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ אחרונים, כל יום."
+            "value" : "‏%@ אחרונים, כל יום."
           }
         },
         "hi" : {
@@ -111744,7 +111744,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ گذشته، همان روز هفته امروز."
+            "value" : "‏%@ گذشته، همان روز هفته امروز."
           }
         },
         "fi" : {
@@ -111762,7 +111762,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ אחרונים, אותו יום בשבוע כמו היום."
+            "value" : "‏%@ אחרונים, אותו יום בשבוע כמו היום."
           }
         },
         "hi" : {
@@ -123348,7 +123348,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld%% صرفه‌جویی"
+            "value" : "‏%lld%% صرفه‌جویی"
           }
         },
         "fi" : {
@@ -137864,7 +137864,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE وBMR"
+            "value" : "‏TDEE وBMR"
           }
         },
         "cs" : {
@@ -137906,7 +137906,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE و BMR"
+            "value" : "‏TDEE و BMR"
           }
         },
         "fi" : {
@@ -137924,7 +137924,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE ו־BMR"
+            "value" : "‏TDEE ו־BMR"
           }
         },
         "hi" : {
@@ -138292,7 +138292,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE وBMR من متوسطات صحتي"
+            "value" : "‏TDEE وBMR من متوسطات صحتي"
           }
         },
         "cs" : {
@@ -138334,7 +138334,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE و BMR از میانگین‌های Apple Health شما"
+            "value" : "‏TDEE و BMR از میانگین‌های Apple Health شما"
           }
         },
         "fi" : {
@@ -138352,7 +138352,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE ו־BMR מממוצעי בריאות"
+            "value" : "‏TDEE ו־BMR מממוצעי בריאות"
           }
         },
         "hi" : {
@@ -138506,7 +138506,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE وBMR بمتوسط آخر 30 يومًا من بياناتك."
+            "value" : "‏TDEE وBMR بمتوسط آخر 30 يومًا من بياناتك."
           }
         },
         "cs" : {
@@ -138548,7 +138548,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE و BMR میانگین ۳۰ روز اخیر از داده‌های خودتان."
+            "value" : "‏TDEE و BMR میانگین ۳۰ روز اخیر از داده‌های خودتان."
           }
         },
         "fi" : {
@@ -138566,7 +138566,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE ו־BMR בממוצע על פני 30 הימים האחרונים מהנתונים שלך."
+            "value" : "‏TDEE ו־BMR בממוצע על פני 30 הימים האחרונים מהנתונים שלך."
           }
         },
         "hi" : {
@@ -138976,7 +138976,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE و BMR سوخت شما را برآورد می‌کنند. BMI و چربی بدن به شکل‌گیری مشخصات بدن کمک می‌کنند."
+            "value" : "‏TDEE و BMR سوخت شما را برآورد می‌کنند. BMI و چربی بدن به شکل‌گیری مشخصات بدن کمک می‌کنند."
           }
         },
         "fi" : {
@@ -138994,7 +138994,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE ו־BMR מעריכים את השריפה שלך. BMI ואחוז שומן משלימים את פרופיל הגוף."
+            "value" : "‏TDEE ו־BMR מעריכים את השריפה שלך. BMI ואחוז שומן משלימים את פרופיל הגוף."
           }
         },
         "hi" : {
@@ -139362,7 +139362,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE هو حرقك للحفاظ على الوزن، وBMR حرقك أثناء الراحة، وكلاهما بمتوسط آخر 30 يومًا من بيانات صحتي الخاصة بك. هما أرقام مرجعية وليسا أهدافًا."
+            "value" : "‏TDEE هو حرقك للحفاظ على الوزن، وBMR حرقك أثناء الراحة، وكلاهما بمتوسط آخر 30 يومًا من بيانات صحتي الخاصة بك. هما أرقام مرجعية وليسا أهدافًا."
           }
         },
         "cs" : {
@@ -139404,7 +139404,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE سوخت نگهداری و BMR سوخت استراحت شماست، هر کدام میانگین ۳۰ روز اخیر داده‌های خود Apple Health شما. این‌ها ارقام مرجع‌اند، نه هدف."
+            "value" : "‏TDEE سوخت نگهداری و BMR سوخت استراحت شماست، هر کدام میانگین ۳۰ روز اخیر داده‌های خود Apple Health شما. این‌ها ارقام مرجع‌اند، نه هدف."
           }
         },
         "fi" : {
@@ -139422,7 +139422,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE הוא שריפת השמירה שלך ו־BMR הוא שריפת המנוחה, שניהם בממוצע של 30 הימים האחרונים של נתוני הבריאות שלך. אלה נתוני ייחוס, לא יעדים."
+            "value" : "‏TDEE הוא שריפת השמירה שלך ו־BMR הוא שריפת המנוחה, שניהם בממוצע של 30 הימים האחרונים של נתוני הבריאות שלך. אלה נתוני ייחוס, לא יעדים."
           }
         },
         "hi" : {
@@ -139576,7 +139576,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE وBMR ومقارنات الفترات"
+            "value" : "‏TDEE وBMR ومقارنات الفترات"
           }
         },
         "cs" : {
@@ -139618,7 +139618,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE، BMR و مقایسه دوره‌ها"
+            "value" : "‏TDEE، BMR و مقایسه دوره‌ها"
           }
         },
         "fi" : {
@@ -139636,7 +139636,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TDEE, BMR והשוואות תקופות"
+            "value" : "‏TDEE, BMR והשוואות תקופות"
           }
         },
         "hi" : {
@@ -145610,7 +145610,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Total Calories انرژی فعال، انرژی پایه و تعداد قدم را از Apple Health فقط در حالت خواندنی می‌خواند."
+            "value" : "‏Total Calories انرژی فعال، انرژی پایه و تعداد قدم را از Apple Health فقط در حالت خواندنی می‌خواند."
           }
         },
         "fi" : {
@@ -145628,7 +145628,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Total Calories קורא אנרגיה פעילה, אנרגיית מנוחה וספירת צעדים מבריאות במצב קריאה בלבד."
+            "value" : "‏Total Calories קורא אנרגיה פעילה, אנרגיית מנוחה וספירת צעדים מבריאות במצב קריאה בלבד."
           }
         },
         "hi" : {
@@ -145824,7 +145824,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Total Calories داده‌های Apple Health را فقط در حالت خواندنی می‌خواند و داده‌های سلامت شما را روی دستگاهتان نگه می‌دارد."
+            "value" : "‏Total Calories داده‌های Apple Health را فقط در حالت خواندنی می‌خواند و داده‌های سلامت شما را روی دستگاهتان نگه می‌دارد."
           }
         },
         "fi" : {
@@ -145842,7 +145842,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Total Calories קורא את נתוני בריאות במצב קריאה בלבד ושומר את נתוני הבריאות שלך במכשיר."
+            "value" : "‏Total Calories קורא את נתוני בריאות במצב קריאה בלבד ושומר את נתוני הבריאות שלך במכשיר."
           }
         },
         "hi" : {
@@ -150318,7 +150318,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "iPhone را باز کنید تا Total Calories بتواند اعداد امروز را از Health بخواند."
+            "value" : "‏iPhone را باز کنید تا Total Calories بتواند اعداد امروز را از Health بخواند."
           }
         },
         "fi" : {
@@ -153320,7 +153320,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals می‌تواند قد و وزنی را که در Apple Health ثبت کرده‌اید بخواند."
+            "value" : "‏Vitals می‌تواند قد و وزنی را که در Apple Health ثبت کرده‌اید بخواند."
           }
         },
         "fi" : {
@@ -153338,7 +153338,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals יכול לקרוא גובה ומשקל שנרשמו בבריאות."
+            "value" : "‏Vitals יכול לקרוא גובה ומשקל שנרשמו בבריאות."
           }
         },
         "hi" : {
@@ -153706,7 +153706,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+ نشط"
+            "value" : "‏Vitals+ نشط"
           }
         },
         "cs" : {
@@ -153748,7 +153748,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+ فعال"
+            "value" : "‏Vitals+ فعال"
           }
         },
         "fi" : {
@@ -153766,7 +153766,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+ פעיל"
+            "value" : "‏Vitals+ פעיל"
           }
         },
         "hi" : {
@@ -154134,7 +154134,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+ بخصم %lld%%"
+            "value" : "‏Vitals+ بخصم %lld%%"
           }
         },
         "cs" : {
@@ -154176,7 +154176,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+ با %lld%% تخفیف"
+            "value" : "‏Vitals+ با %lld%% تخفیف"
           }
         },
         "fi" : {
@@ -154194,7 +154194,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+ ב־%lld%% הנחה"
+            "value" : "‏Vitals+ ב־%lld%% הנחה"
           }
         },
         "hi" : {
@@ -154348,7 +154348,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+ بنصف السعر"
+            "value" : "‏Vitals+ بنصف السعر"
           }
         },
         "cs" : {
@@ -154390,7 +154390,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+ به نیم‌قیمت"
+            "value" : "‏Vitals+ به نیم‌قیمت"
           }
         },
         "fi" : {
@@ -154408,7 +154408,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+ בחצי מחיר"
+            "value" : "‏Vitals+ בחצי מחיר"
           }
         },
         "hi" : {
@@ -154776,7 +154776,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+: اختر أي نطاق تواريخ"
+            "value" : "‏Vitals+: اختر أي نطاق تواريخ"
           }
         },
         "cs" : {
@@ -154818,7 +154818,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+: هر بازه تاریخ را انتخاب کنید"
+            "value" : "‏Vitals+: هر بازه تاریخ را انتخاب کنید"
           }
         },
         "fi" : {
@@ -154836,7 +154836,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+: כל טווח תאריכים"
+            "value" : "‏Vitals+: כל טווח תאריכים"
           }
         },
         "hi" : {
@@ -161326,7 +161326,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld روز پیاپی به هدف رسیدید. این پایداری همه‌چیز است."
+            "value" : "‏%lld روز پیاپی به هدف رسیدید. این پایداری همه‌چیز است."
           }
         },
         "fi" : {
@@ -164348,7 +164348,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMI شما رایگان می‌ماند."
+            "value" : "‏BMI شما رایگان می‌ماند."
           }
         },
         "fi" : {
@@ -164562,7 +164562,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BMI شما، رایگان، از قد و وزنی که در Apple Health دارید محاسبه می‌شود. داده Health ندارید؟ به‌جایش دستی وارد کنید."
+            "value" : "‏BMI شما، رایگان، از قد و وزنی که در Apple Health دارید محاسبه می‌شود. داده Health ندارید؟ به‌جایش دستی وارد کنید."
           }
         },
         "fi" : {
@@ -169704,7 +169704,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "kcal ثبت‌شده"
+            "value" : "‏kcal ثبت‌شده"
           }
         },
         "fi" : {
@@ -170346,7 +170346,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ درصد کاهش نسبت به دوره قبل"
+            "value" : "‏%@ درصد کاهش نسبت به دوره قبل"
           }
         },
         "fi" : {
@@ -171416,7 +171416,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "kcal خالص"
+            "value" : "‏kcal خالص"
           }
         },
         "fi" : {
@@ -173306,7 +173306,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "الخطوات"
+            "value" : "خطوة"
           }
         },
         "cs" : {
@@ -173562,7 +173562,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ درصد افزایش نسبت به دوره قبل"
+            "value" : "‏%@ درصد افزایش نسبت به دوره قبل"
           }
         },
         "fi" : {
@@ -176136,7 +176136,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "· %lld مستثنا"
+            "value" : "‏· %lld مستثنا"
           }
         },
         "fi" : {
@@ -176154,7 +176154,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "· %lld הוחרגו"
+            "value" : "‏· %lld הוחרגו"
           }
         },
         "hi" : {
@@ -176956,7 +176956,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "➡️ %@: ثابت"
+            "value" : "‏➡️ %@: ثابت"
           }
         },
         "cs" : {
@@ -176998,7 +176998,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "➡️ %@: ثابت"
+            "value" : "‏➡️ %@: ثابت"
           }
         },
         "fi" : {
@@ -177016,7 +177016,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "➡️ %@: יציב"
+            "value" : "‏➡️ %@: יציב"
           }
         },
         "hi" : {
@@ -177170,7 +177170,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "⬜️ %@: يلزم مزيد من البيانات"
+            "value" : "‏⬜️ %@: يلزم مزيد من البيانات"
           }
         },
         "cs" : {
@@ -177212,7 +177212,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "⬜️ %@: داده بیشتری لازم است"
+            "value" : "‏⬜️ %@: داده بیشتری لازم است"
           }
         },
         "fi" : {
@@ -177230,7 +177230,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "⬜️ %@: צריך עוד נתונים"
+            "value" : "‏⬜️ %@: צריך עוד נתונים"
           }
         },
         "hi" : {
