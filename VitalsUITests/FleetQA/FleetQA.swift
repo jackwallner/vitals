@@ -125,14 +125,22 @@ enum QA {
         }
     }
 
-    /// A horizontal swipe across the element. `XCUIElement.swipeLeft()` lands
-    /// as a vertical drag on an unfolded iPhone Duo, whose inner display is
-    /// rotated against the device; a drag between element coordinates works on
-    /// every device.
-    static func swipe(_ element: XCUIElement, left: Bool = true) {
-        let from = element.coordinate(withNormalizedOffset: CGVector(dx: left ? 0.85 : 0.15, dy: 0.5))
-        let to = element.coordinate(withNormalizedOffset: CGVector(dx: left ? 0.1 : 0.9, dy: 0.5))
-        from.press(forDuration: 0.05, thenDragTo: to, withVelocity: .fast, thenHoldForDuration: 0)
+    enum Direction { case left, right, up, down }
+
+    /// A swipe across the element (`.up` scrolls content up, like `swipeUp()`).
+    /// XCTest's own swipes land rotated on an unfolded iPhone Duo, whose inner
+    /// display is turned against the device; a drag between element
+    /// coordinates works on every device.
+    static func swipe(_ element: XCUIElement, _ direction: Direction = .left) {
+        let (from, to): (CGVector, CGVector) = switch direction {
+        case .left: (CGVector(dx: 0.85, dy: 0.5), CGVector(dx: 0.1, dy: 0.5))
+        case .right: (CGVector(dx: 0.15, dy: 0.5), CGVector(dx: 0.9, dy: 0.5))
+        case .up: (CGVector(dx: 0.5, dy: 0.8), CGVector(dx: 0.5, dy: 0.25))
+        case .down: (CGVector(dx: 0.5, dy: 0.25), CGVector(dx: 0.5, dy: 0.8))
+        }
+        element.coordinate(withNormalizedOffset: from)
+            .press(forDuration: 0.05, thenDragTo: element.coordinate(withNormalizedOffset: to),
+                   withVelocity: .fast, thenHoldForDuration: 0)
     }
 
     /// Kills and relaunches without reinstalling: state must survive this.
@@ -541,7 +549,7 @@ enum Audit {
 extension Audit {
     /// WCAG contrast of the text drawn in `frame` (points): the commonest color is the
     /// background, and the text is what stands furthest from it among the pixels that
-    /// differ (90th percentile, so edge antialiasing does not count). Nil when nothing
+    /// differ (98th percentile: thin glyphs are mostly antialiased edge). Nil when nothing
     /// is drawn there.
     static func contrast(in frame: CGRect, _ image: (data: [UInt8], width: Int, height: Int), scale: CGFloat) -> Double? {
         let box = CGRect(x: frame.minX * scale, y: frame.minY * scale, width: frame.width * scale,
@@ -563,7 +571,7 @@ extension Audit {
         let background = luminance(channel(8), channel(4), channel(0))
         let ink = lums.map { (max($0, background) + 0.05) / (min($0, background) + 0.05) }.filter { $0 > 1.15 }.sorted()
         guard !ink.isEmpty else { return nil }
-        return ink[min(ink.count - 1, Int(Double(ink.count) * 0.9))]
+        return ink[min(ink.count - 1, Int(Double(ink.count) * 0.98))]
     }
 
     static func luminance(_ r: UInt8, _ g: UInt8, _ b: UInt8) -> Double {
