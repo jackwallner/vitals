@@ -68,6 +68,7 @@ enum ExitOffer {
         static let shownAt = "conv.exitOffer.shownAt"
         static let outcome = "conv.exitOffer.outcome"
         static let pending = "conv.exitOffer.pending"
+        static let welcomeEnded = "conv.exitOffer.welcomeEnded"
     }
 
     /// Same suite as `ConversionDiagnostics`, so its test reset clears this too.
@@ -149,6 +150,32 @@ enum ExitOffer {
         #endif
     }
 
+    /// Forgets an earlier showing whose window has closed, so a forced arm (App
+    /// Review) gets the offer and its window afresh on a device that saw it in
+    /// an earlier review. Never called for a real customer.
+    static func resetEndedShowingForReview(now: Date = .now) {
+        guard windowStart != nil, welcomeEndsAt(now: now) == nil else { return }
+        defaults.removeObject(forKey: Key.shownAt)
+        defaults.removeObject(forKey: Key.welcomeEnded)
+        #if DEBUG
+        shownThisRun = nil
+        welcomeEndedThisRun = false
+        #else
+        ShownAtKeychain.delete()
+        #endif
+    }
+
+    /// When the welcome window opened. Debug builds count only this run's
+    /// showing: the record outlives the app, and one UI test's offer must not
+    /// leave the next test at the welcome price.
+    static var windowStart: Date? {
+        #if DEBUG
+        return shownThisRun
+        #else
+        return shownAt
+        #endif
+    }
+
     /// How long the half price stays on every paywall after the offer first
     /// came up. It ends for good: nothing resets it, and it never comes back.
     static var welcomeWindow: TimeInterval {
@@ -160,16 +187,33 @@ enum ExitOffer {
 
     /// When the welcome price ends, while it still stands. nil before the offer
     /// was shown and after the window closed.
+    /// Once seen ended it stays ended, so setting the clock back never reopens
+    /// it, and a clock set before the showing reads as ended too.
     static func welcomeEndsAt(now: Date = .now) -> Date? {
-        #if DEBUG
-        // Only this run's showing: the record outlives the app, and one UI
-        // test's offer must not leave the next test at the welcome price.
-        guard let shownAt = shownThisRun else { return nil }
-        #else
-        guard let shownAt else { return nil }
-        #endif
-        let ends = shownAt.addingTimeInterval(welcomeWindow)
-        return now < ends ? ends : nil
+        guard let start = windowStart, !welcomeEnded else { return nil }
+        let ends = start.addingTimeInterval(welcomeWindow)
+        guard now >= start, now < ends else {
+            welcomeEnded = true
+            return nil
+        }
+        return ends
+    }
+
+    private static var welcomeEnded: Bool {
+        get {
+            #if DEBUG
+            return welcomeEndedThisRun
+            #else
+            return defaults.bool(forKey: Key.welcomeEnded)
+            #endif
+        }
+        set {
+            #if DEBUG
+            welcomeEndedThisRun = newValue
+            #else
+            defaults.set(newValue, forKey: Key.welcomeEnded)
+            #endif
+        }
     }
 
     /// "Welcome price, ends in 31 hours." Whole hours down to 90 minutes, then
@@ -222,6 +266,7 @@ enum ExitOffer {
     /// When this process first showed the offer; the welcome window's start in
     /// debug builds. Tests reset it.
     nonisolated(unsafe) static var shownThisRun: Date?
+    nonisolated(unsafe) static var welcomeEndedThisRun = false
 
     /// `-exitOffer.force` puts this run in the offer arm and ignores "shown
     /// before", for captures and review of the screen.

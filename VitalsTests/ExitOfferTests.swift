@@ -11,6 +11,7 @@ final class ExitOfferTests: XCTestCase {
         suite = UserDefaults(suiteName: "exit.tests.\(UUID().uuidString)")!
         ConversionDiagnostics.defaultsOverride = suite
         ExitOffer.shownThisRun = nil
+        ExitOffer.welcomeEndedThisRun = false
     }
 
     override func tearDown() {
@@ -134,6 +135,36 @@ final class ExitOfferTests: XCTestCase {
         // A second showing must not restart it.
         ExitOffer.recordShown(now: ends)
         XCTAssertNil(ExitOffer.welcomeEndsAt(now: ends.addingTimeInterval(60)))
+    }
+
+    func testSettingTheClockBackNeverReopensTheWelcomePrice() {
+        let shown = Date(timeIntervalSince1970: 1_800_000_000)
+        ExitOffer.recordShown(now: shown)
+        XCTAssertNil(ExitOffer.welcomeEndsAt(now: shown.addingTimeInterval(49 * 3600)))
+        XCTAssertNil(ExitOffer.welcomeEndsAt(now: shown.addingTimeInterval(3600)), "seen ended, stays ended")
+    }
+
+    func testAClockBeforeTheShowingReadsAsEnded() {
+        let shown = Date(timeIntervalSince1970: 1_800_000_000)
+        ExitOffer.recordShown(now: shown)
+        XCTAssertNil(ExitOffer.welcomeEndsAt(now: shown.addingTimeInterval(-3600)))
+        XCTAssertNil(ExitOffer.welcomeEndsAt(now: shown.addingTimeInterval(3600)))
+    }
+
+    /// A forced arm on a device that saw the offer in an earlier review gets it
+    /// again; an open window is left alone.
+    func testReviewResetForgetsOnlyAnEndedShowing() {
+        let shown = Date(timeIntervalSince1970: 1_800_000_000)
+        _ = ExitOffer.shouldOffer(onCloseOf: "paywall", arm: .offer, offerLoaded: true, isPro: false, now: shown)
+        ExitOffer.recordShown(now: shown)
+        ExitOffer.resetEndedShowingForReview(now: shown.addingTimeInterval(3600))
+        XCTAssertNotNil(ExitOffer.windowStart, "open window kept")
+        let later = shown.addingTimeInterval(72 * 3600)
+        ExitOffer.resetEndedShowingForReview(now: later)
+        XCTAssertNil(ExitOffer.windowStart)
+        XCTAssertTrue(ExitOffer.shouldOffer(onCloseOf: "paywall", arm: .offer, offerLoaded: true, isPro: false, now: later))
+        ExitOffer.recordShown(now: later)
+        XCTAssertEqual(ExitOffer.welcomeEndsAt(now: later), later.addingTimeInterval(48 * 3600))
     }
 
     func testWelcomeLineCountsDownInHoursThenMinutes() {

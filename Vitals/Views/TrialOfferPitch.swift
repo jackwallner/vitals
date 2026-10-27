@@ -100,14 +100,18 @@ struct TrialOfferPitchSheet: View {
     /// The half-price plan: on the exit offer's own sheet, and on every pitch
     /// while the welcome price stands. See `ExitOffer`.
     private var exitOfferPackage: Package? {
-        request.isExitOffer ? store.exitOfferPackage : store.welcomePackage
+        guard request.isExitOffer, ExitOffer.windowStart == nil else { return store.welcomePackage }
+        return store.exitOfferPackage
     }
 
     /// When the half price ends. The offer's own sheet comes up before the
-    /// window opens (its tiles open it), so it counts from now.
+    /// window opens (its tiles open it), so until then it counts from now.
+    /// Once open, only the real deadline counts, so it never restarts.
     private var welcomeEndsAt: Date? {
         guard exitOfferPackage != nil else { return nil }
-        return store.welcomePriceEndsAt ?? (request.isExitOffer ? Date.now.addingTimeInterval(ExitOffer.welcomeWindow) : nil)
+        if let endsAt = store.welcomePriceEndsAt { return endsAt }
+        guard request.isExitOffer, ExitOffer.windowStart == nil else { return nil }
+        return Date.now.addingTimeInterval(ExitOffer.welcomeWindow)
     }
 
     /// The offer's headline, unless a feature tap or the user's own data
@@ -170,6 +174,8 @@ struct TrialOfferPitchSheet: View {
             // The exit offer's tiles report its impression when they appear.
             if !request.isExitOffer { store.trackPaywallImpression(id: request.impressionID) }
         }
+        // The welcome price ending mid-pitch puts the regular plan back here too.
+        .onChange(of: store.welcomePriceEndsAt) { snapshot = store.conversionPackage }
     }
 
     private func pitch(now: Date) -> some View {
