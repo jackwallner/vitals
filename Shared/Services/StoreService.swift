@@ -271,9 +271,14 @@ final class StoreService: NSObject, ObservableObject {
     @Published private(set) var welcomePriceEndsAt: Date?
     private var welcomePriceExpiry: Task<Void, Never>?
     @Published private(set) var currentOffering: Offering? {
-        didSet { CTAExperiment.offeringArm = CTAExperiment.from(metadata: currentOffering?.metadata) }
+        didSet {
+            CTAExperiment.offeringArm = CTAExperiment.from(metadata: currentOffering?.metadata)
+            TrialNote.offeringArm = TrialNote.from(metadata: currentOffering?.metadata)
+        }
     }
     @Published private(set) var customerInfo: CustomerInfo?
+    /// The trial note's promise: ask what to fix once its trial stops renewing.
+    @Published private(set) var whatToFixDue = false
     @Published private(set) var entitlementStatus = EntitlementStatus(
         cachedPro: StoreService.cachedProDefaults?.bool(forKey: StoreService.cachedProKey) ?? false
     )
@@ -724,6 +729,7 @@ final class StoreService: NSObject, ObservableObject {
         // Trial CTA wording arm. Sent with the funnel record, so only
         // customers who were actually shown a pitch carry it.
         attributes[CTAExperiment.attributeKey] = CTAExperiment.arm.rawValue
+        attributes[TrialNote.attributeKey] = TrialNote.arm.rawValue
         if let offering = currentOffering?.identifier {
             attributes["offering_id"] = offering
         }
@@ -862,6 +868,16 @@ final class StoreService: NSObject, ObservableObject {
         logger.info("Applied customerInfo — active: [\(activeKeys, privacy: .public)] all: [\(allKeys, privacy: .public)]")
         let hasActiveSubscription = customerInfo.hasVitalsProEntitlement
         resolveEntitlement(isPro: hasActiveSubscription)
+        let entitlement = customerInfo.entitlements.active.values.first
+        whatToFixDue = TrialNote.whatToFixDue(
+            inTrial: entitlement?.periodType == .trial,
+            willRenew: entitlement.map { $0.willRenew || $0.billingIssueDetectedAt != nil } ?? true
+        )
+    }
+
+    func whatToFixShown() {
+        TrialNote.markAsked()
+        whatToFixDue = false
     }
 
     private func resolveEntitlement(isPro: Bool) {

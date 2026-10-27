@@ -33,6 +33,8 @@ enum ReviewPromptDismissOutcome: Sendable {
 /// `requestReview()` directly at a positive moment, with no question in front
 /// of it (App Review 5.6.1), so this sheet never mentions the App Store.
 struct ReviewPromptSheet: View {
+    /// The trial note's "tell us what to fix", asked when its trial stops renewing.
+    var asksWhatToFix = false
     let onFinish: (ReviewPromptDismissOutcome) -> Void
 
     @Environment(\.dismiss) private var dismiss
@@ -56,7 +58,13 @@ struct ReviewPromptSheet: View {
 
     private var feedbackContent: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("What would make Total Calories work better for you?")
+            Group {
+                if asksWhatToFix {
+                    Text("Your trial won't renew. What should we fix?")
+                } else {
+                    Text("What would make Total Calories work better for you?")
+                }
+            }
                 .font(.system(.subheadline, design: .rounded))
                 .foregroundStyle(Theme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)

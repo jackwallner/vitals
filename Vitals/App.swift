@@ -581,6 +581,7 @@ struct MainTabView: View {
     @State private var trialPitch: TrialPitchRequest?
     @Environment(\.requestReview) private var requestReview
     @State private var showReviewPrompt = false
+    @State private var reviewPromptAsksWhatToFix = false
     @State private var reviewPromptShownThisSession = false
     /// One WidgetKit query per session is plenty; the moment itself is one-shot.
     @State private var widgetMomentEvaluated = false
@@ -998,6 +999,22 @@ struct MainTabView: View {
 
     private func handleReviewPromptFinish(_ outcome: ReviewPromptDismissOutcome) {
         showReviewPrompt = false
+        reviewPromptAsksWhatToFix = false
+    }
+
+    /// The trial note promised "tell us what to fix": once its trial stops
+    /// renewing, ask that on Today when nothing else is up. See `TrialNote`.
+    private func presentWhatToFixWhenClear() async {
+        var clearFor = 0
+        while store.whatToFixDue, !Task.isCancelled {
+            try? await Task.sleep(for: .seconds(1))
+            clearFor = isTodayClear ? clearFor + 1 : 0
+            guard clearFor >= 2 else { continue }
+            store.whatToFixShown()
+            reviewPromptAsksWhatToFix = true
+            showReviewPrompt = true
+            return
+        }
     }
 
     private func presentFeedbackSheet() {
@@ -1380,6 +1397,7 @@ struct MainTabView: View {
         }
         .onChange(of: store.products.count) { _, _ in evaluateTrialOffer() }
         .task(id: store.exitOfferDue) { await presentExitOfferWhenClear() }
+        .task(id: store.whatToFixDue) { await presentWhatToFixWhenClear() }
         .onChange(of: scenePhase) { _, phase in
             if phase == .background { wasBackgrounded = true }
             if phase == .active, wasBackgrounded {
@@ -1568,7 +1586,7 @@ struct MainTabView: View {
             .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $showReviewPrompt) {
-            ReviewPromptSheet(onFinish: handleReviewPromptFinish)
+            ReviewPromptSheet(asksWhatToFix: reviewPromptAsksWhatToFix, onFinish: handleReviewPromptFinish)
         }
         .sheet(isPresented: $showWeeklyRecap, onDismiss: {
             // They opened their week and read it. One of the better-disposed

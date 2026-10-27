@@ -22,8 +22,9 @@ import XCTest
 ///    have an obvious way out. The goals page had neither.
 final class OnboardingFlowUITests: XCTestCase {
 
-    private func launchOnboarding() -> XCUIApplication {
+    private func launchOnboarding(arguments: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
+        app.launchArguments += arguments
         app.launchEnvironment["VITALS_SCREENSHOT_MODE"] = "1"
         app.launchEnvironment["VITALS_SCREENSHOT_SCENE"] = "onboarding"
         app.launch()
@@ -217,8 +218,34 @@ final class OnboardingFlowUITests: XCTestCase {
         XCTAssertTrue(gap < 100, "soft exit is \(gap)pt above the CTA, too far for the 1.7.5 stack")
     }
 
-    private func onboardingAtPitch() -> XCUIApplication {
-        let app = launchOnboarding()
+    /// The `trial_note` test: the control pitch has no note, the indie arm
+    /// shows it under the four rows, and the CTA does not move between them.
+    func testTrialNoteArms() {
+        let note = "We're a small indie studio. Your trial helps us keep building. Not for you? Cancel anytime and tell us what to fix."
+        var ctaFrames: [CGRect] = []
+        for arm in ["none", "indie"] {
+            let app = onboardingAtPitch(arguments: ["-trialNote.arm", arm])
+            XCTAssertTrue(app.staticTexts["Go further with Vitals+"].waitForExistence(timeout: 25))
+            let trialCTA = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "trial")).firstMatch
+            XCTAssertTrue(trialCTA.waitForExistence(timeout: 25), "\(arm): trial CTA never rendered")
+            ctaFrames.append(trialCTA.frame)
+            XCTAssertEqual(app.staticTexts[note].exists, arm == "indie", "\(arm): note presence")
+            if arm == "indie" {
+                XCTAssertTrue(app.staticTexts["Summary reports"].isHittable, "indie: last row pushed off screen")
+                XCTAssertLessThan(app.staticTexts[note].frame.maxY, app.buttons["Get Started"].frame.minY,
+                                  "indie: note runs into the footer")
+            }
+            let shot = XCTAttachment(screenshot: app.screenshot())
+            shot.name = "trial_note_\(arm)"
+            shot.lifetime = .keepAlways
+            add(shot)
+            app.terminate()
+        }
+        XCTAssertEqual(ctaFrames.first, ctaFrames.last, "CTA moved between arms")
+    }
+
+    private func onboardingAtPitch(arguments: [String] = []) -> XCUIApplication {
+        let app = launchOnboarding(arguments: arguments)
         advance(app, from: "welcome")
         sleep(3)
         dismissSystemSheetIfPresent()

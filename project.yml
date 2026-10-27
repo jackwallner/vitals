@@ -165,6 +165,7 @@ targets:
       - path: Shared/Utilities/VitalsConversionCopy.swift
       - path: Shared/Utilities/LocalizedText.swift
       - path: Shared/Utilities/CTAExperiment.swift
+      - path: Shared/Utilities/TrialNote.swift
       - path: Shared/Utilities/UnfoldedSplit.swift
       - path: Shared/Utilities/PaywallUIVariant.swift
       - path: Shared/Utilities/DebugLaunchConfig.swift

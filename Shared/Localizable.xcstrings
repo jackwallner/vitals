@@ -32726,6 +32726,86 @@
           }
         }
       }
+    },
+    "We're a small indie studio. Your trial helps us keep building. Not for you? Cancel anytime and tell us what to fix." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wir sind ein kleines Indie-Studio. Dein Testzeitraum hilft uns, weiterzubauen. Nichts für dich? Kündige jederzeit und sag uns, was wir verbessern sollen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Somos un pequeño estudio independiente. Tu prueba nos ayuda a seguir construyendo. ¿No es para ti? Cancela cuando quieras y dinos qué mejorar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nous sommes un petit studio indépendant. Votre essai nous aide à continuer. Pas pour vous ? Annulez à tout moment et dites-nous quoi améliorer."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siamo un piccolo studio indipendente. La tua prova ci aiuta a continuare. Non fa per te? Annulla quando vuoi e dicci cosa migliorare."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "私たちは小さなインディースタジオです。トライアルが開発の支えになります。合わなければいつでも解約して、改善点を教えてください。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我们是一家小型独立工作室。你的试用帮助我们继续打磨。不适合你？随时取消，并告诉我们该改进什么。"
+          }
+        }
+      }
+    },
+    "Your trial won't renew. What should we fix?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Testzeitraum wird nicht verlängert. Was sollen wir verbessern?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu prueba no se renovará. ¿Qué deberíamos mejorar?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre essai ne sera pas renouvelé. Que devrions-nous améliorer ?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La tua prova non si rinnoverà. Cosa dovremmo migliorare?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トライアルは更新されません。何を改善すべきでしょうか？"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你的试用不会续订。我们该改进什么？"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
