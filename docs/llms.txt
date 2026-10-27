@@ -1,0 +1,24 @@
+# Total Calories - Daily Tracker
+
+> Total Calories is a total calories burned app for iPhone and Apple Watch. It adds active and resting calories from Apple Health into one number. Free, private.
+
+## App
+
+- [Total Calories Burned App for Apple Watch | Total Calories](https://jackwallner.com/ios/vitals/index.html.md): Total Calories is a total calories burned app for iPhone and Apple Watch. It adds active and resting calories from Apple Health into one number. Free, private.
+
+## Guides
+
+- [Active vs Resting Calories on Apple Watch: Total Burn Explained](https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html.md): What active and resting energy mean on Apple Watch, why the Move ring shows only part of your burn, and how to see your total calories burned for the day.
+- [Best App to Track Calories Burned on Apple Watch (2026)](https://jackwallner.com/ios/vitals/best-app-to-track-calories-burned-apple-watch.html.md): Five iPhone apps for tracking calories burned compared: Total Calories, ActivityTracker, TDEE, TDEE Calculator and Dynamic TDEE Tracker, as of October 2026.
+- [BMR Calculator: Basal Metabolic Rate Explained](https://jackwallner.com/ios/vitals/bmr-calculator.html.md): Free BMR calculator (Mifflin-St Jeor), what basal metabolic rate means, what changes it, and how Apple Watch resting energy compares.
+- [Calorie burn guides: TDEE, BMR and Apple Watch energy](https://jackwallner.com/ios/vitals/guides.html.md): Short guides on calories burned: TDEE, BMR, and how Apple Watch measures active and resting energy.
+- [How Many Calories Do I Burn a Day? Averages and Your Number](https://jackwallner.com/ios/vitals/how-many-calories-do-i-burn-a-day.html.md): How many calories you burn a day: average daily needs by age and sex from the Dietary Guidelines, the resting-only number, and how to measure your own.
+- [TDEE Calculator: Total Daily Energy Expenditure Explained](https://jackwallner.com/ios/vitals/tdee-calculator.html.md): Free TDEE calculator using Mifflin-St Jeor, what total daily energy expenditure means, and how to measure your real daily burn with an Apple Watch.
+
+## Optional
+
+- [Total Calories for Android Privacy Policy](https://jackwallner.github.io/vitals/android-privacy.html.md): Total Calories (published on Google Play by E3 Apps) reads calories burned and steps from Health Connect and shows them on your phone. It does not require an account.
+- [Total Calories for Android Terms of Use](https://jackwallner.github.io/vitals/android-terms.html.md): By using Total Calories on Android, you agree to these Terms of Use and to the Google Play Terms of Service.
+- [Total Calories Privacy Policy](https://jackwallner.com/ios/vitals/privacy-policy.html.md): Total Calories reads selected Apple Health data to display calories, steps, trends, and optional body-profile context. It does not require an account.
+- [Total Calories - Support](https://jackwallner.com/ios/vitals/support.html.md): Total Calories is a personal health tracker for iPhone and Apple Watch that displays your daily calories burned and step count using Apple Health data.
+- [Total Calories Terms of Use](https://jackwallner.com/ios/vitals/terms.html.md): By using Total Calories, you agree to these Terms of Use and Apple's Standard Licensed Application End User License Agreement.

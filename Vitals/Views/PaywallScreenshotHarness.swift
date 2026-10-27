@@ -52,7 +52,7 @@ struct PaywallScreenshotHarness: View {
         if let offer = store.exitOfferPackage {
             TrialOfferSheet(
                 focus: nil,
-                headlineOverride: ExitOfferPriceTiles.headline(offer: offer, regular: store.yearlyPackage),
+                headlineOverride: ExitOfferPriceTiles.headline(offer: offer, regular: store.regularYearlyPackage),
                 offerLabel: offer.vitalsIntroOfferLabel,
                 priceLabel: offer.vitalsPriceLabel,
                 ctaTitle: store.ctaLabel(for: offer),
@@ -67,7 +67,7 @@ struct PaywallScreenshotHarness: View {
                 onStartTrial: {},
                 onDismiss: {},
                 exitOffer: offer,
-                exitOfferRegular: store.yearlyPackage
+                exitOfferRegular: store.regularYearlyPackage
             )
         } else {
             // A non-empty view, so `.task` below runs and loads the plan.

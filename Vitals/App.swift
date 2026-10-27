@@ -1382,6 +1382,7 @@ struct MainTabView: View {
             if phase == .active, wasBackgrounded {
                 wasBackgrounded = false
                 activatedAt = .now
+                store.refreshWelcomePrice()
             }
         }
         // First-launch users complete onboarding *after* the .task /
@@ -2206,6 +2207,9 @@ struct TrialOfferSheet: View {
     var exitOffer: Package?
     /// The regular yearly plan, struck through beside the offer.
     var exitOfferRegular: Package?
+    /// The offer's own sheet, where the tiles appearing is the impression.
+    /// False when a later pitch carries the welcome price.
+    var recordsExitOfferImpression = true
 
     /// One detent, sized to hold the whole pitch. It used to open at 0.68 with
     /// a `.large` companion: the third benefit was clipped by the footer, so the
@@ -2405,7 +2409,7 @@ struct TrialOfferSheet: View {
                 }
 
                 if let exitOffer {
-                    ExitOfferPriceTiles(offer: exitOffer, regular: exitOfferRegular)
+                    ExitOfferPriceTiles(offer: exitOffer, regular: exitOfferRegular, recordsImpression: recordsExitOfferImpression)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 } else if !planOptions.isEmpty {
                     VStack(spacing: 6) {

@@ -97,9 +97,25 @@ struct TrialOfferPitchSheet: View {
     /// Set only on the used-trial pitch, where the user picks a plan. nil means
     /// "the one-tap trial target", which is always yearly.
     @State private var selectedPlanID: String?
-    /// The half-price plan, on the exit offer's own sheet only. See `ExitOffer`.
+    /// The half-price plan: on the exit offer's own sheet, and on every pitch
+    /// while the welcome price stands. See `ExitOffer`.
     private var exitOfferPackage: Package? {
-        request.isExitOffer ? store.exitOfferPackage : nil
+        request.isExitOffer ? store.exitOfferPackage : store.welcomePackage
+    }
+
+    /// When the half price ends. The offer's own sheet comes up before the
+    /// window opens (its tiles open it), so it counts from now.
+    private var welcomeEndsAt: Date? {
+        guard exitOfferPackage != nil else { return nil }
+        return store.welcomePriceEndsAt ?? (request.isExitOffer ? Date.now.addingTimeInterval(ExitOffer.welcomeWindow) : nil)
+    }
+
+    /// The offer's headline, unless a feature tap or the user's own data
+    /// already named one.
+    private var headline: String? {
+        if let headline = request.headline { return headline }
+        guard let exitOfferPackage, request.isExitOffer || request.focus == nil else { return nil }
+        return ExitOfferPriceTiles.headline(offer: exitOfferPackage, regular: store.regularYearlyPackage)
     }
 
     private var package: Package? {
@@ -140,7 +156,10 @@ struct TrialOfferPitchSheet: View {
     }
 
     var body: some View {
-        pitch
+        // Ticks so the welcome price's "ends in" stays true while the sheet is up.
+        TimelineView(.everyMinute) { context in
+            pitch(now: context.date)
+        }
         .presentationDetents([TrialOfferSheet.pitchDetent])
         .presentationDragIndicator(.visible)
         .presentationContentInteraction(.resizes)
@@ -153,12 +172,11 @@ struct TrialOfferPitchSheet: View {
         }
     }
 
-    private var pitch: some View {
+    private func pitch(now: Date) -> some View {
         TrialOfferSheet(
             focus: request.focus,
-            headlineOverride: exitOfferPackage.map { ExitOfferPriceTiles.headline(offer: $0, regular: store.yearlyPackage) }
-                ?? request.headline,
-            subheadlineOverride: request.subheadline,
+            headlineOverride: headline,
+            subheadlineOverride: welcomeEndsAt.flatMap { ExitOffer.welcomeLine(endsAt: $0, now: now) } ?? request.subheadline,
             logsFood: goals.logsFoodInHealth,
             // Trial language only when this Apple ID is still eligible —
             // otherwise the sheet frames a straight yearly purchase.
@@ -178,7 +196,7 @@ struct TrialOfferPitchSheet: View {
             // subhead too is the same number twice in one glance. Under the
             // exit offer it is the half price's, never the regular plan's.
             perWeekLabel: planOptions.isEmpty
-                ? (exitOfferPackage ?? store.yearlyPackage)?.vitalsPricePerWeekLabel
+                ? (exitOfferPackage ?? store.regularYearlyPackage)?.vitalsPricePerWeekLabel
                 : nil,
             // The tiles carry the exit offer's deal; a yearly-vs-monthly
             // "SAVE 37%" above "HALF OFF" would be two discounts at once.
@@ -187,7 +205,8 @@ struct TrialOfferPitchSheet: View {
             selectedPlanID: selectedPlanID ?? planOptions.first?.id,
             onSelectPlan: { selectedPlanID = $0 },
             exitOffer: exitOfferPackage,
-            exitOfferRegular: store.yearlyPackage
+            exitOfferRegular: store.regularYearlyPackage,
+            recordsExitOfferImpression: request.isExitOffer
         )
     }
 

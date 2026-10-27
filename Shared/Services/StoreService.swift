@@ -257,12 +257,19 @@ extension Offering {
 final class StoreService: NSObject, ObservableObject {
     static let shared = StoreService()
 
+    /// The plans every paywall lists. While the welcome price stands, the
+    /// half-price plan takes the regular yearly plan's place.
     @Published private(set) var products: [Package] = []
+    /// The current offering's plans as loaded, before that swap.
+    private var offeringPackages: [Package] = []
     /// The half-price yearly plan, from the `exit_offer` offering (never the
-    /// current one). Kept out of `products` so no plan list or yearly lookup
-    /// can pick it up: its product id contains the yearly one.
+    /// current one). Out of `products` until the offer has been shown: its
+    /// product id contains the yearly one, so any yearly lookup would take it.
     @Published private(set) var exitOfferPackage: Package?
     private var exitOffering: Offering?
+    /// When the welcome price ends, while it stands. See `ExitOffer.welcomeWindow`.
+    @Published private(set) var welcomePriceEndsAt: Date?
+    private var welcomePriceExpiry: Task<Void, Never>?
     @Published private(set) var currentOffering: Offering? {
         didSet { CTAExperiment.offeringArm = CTAExperiment.from(metadata: currentOffering?.metadata) }
     }
@@ -336,6 +343,7 @@ final class StoreService: NSObject, ObservableObject {
         #if DEBUG
         if DebugLaunchConfig.failProductLoad {
             currentOffering = nil
+            offeringPackages = []
             products = []
             lastError = String(localized: "Couldn't load subscription options. Check your connection and try again.")
             return
@@ -346,9 +354,10 @@ final class StoreService: NSObject, ObservableObject {
             let offerings = try await Purchases.shared.offerings()
             let offering = offerings.vitalsPaywallOffering
             currentOffering = offering
-            products = offering?.vitalsSortedPackages ?? []
+            offeringPackages = offering?.vitalsSortedPackages ?? []
             exitOffering = offerings.offering(identifier: ExitOffer.offeringID)
             exitOfferPackage = exitOffering?.package(identifier: ExitOffer.packageID)
+            refreshWelcomePrice()
             lastError = nil
             await refreshIntroEligibility()
         } catch {
@@ -424,6 +433,37 @@ final class StoreService: NSObject, ObservableObject {
         return isEligibleForIntroOffer(yearly)
     }
 
+    /// Puts the half-price plan in the yearly plan's place while the welcome
+    /// window is open, and puts the regular one back the moment it closes.
+    /// Called on load, when the offer first shows, and on every return.
+    func refreshWelcomePrice(now: Date = .now) {
+        let welcome = isPro ? nil : exitOfferPackage
+        let endsAt = welcome == nil ? nil : ExitOffer.welcomeEndsAt(now: now)
+        if welcomePriceEndsAt != endsAt { welcomePriceEndsAt = endsAt }
+        products = offeringPackages.map { package in
+            guard endsAt != nil, let welcome, package.vitalsPackageKind == .yearly else { return package }
+            return welcome
+        }
+        welcomePriceExpiry?.cancel()
+        guard let endsAt else { return }
+        welcomePriceExpiry = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(max(1, endsAt.timeIntervalSinceNow)))
+            guard !Task.isCancelled else { return }
+            self?.refreshWelcomePrice()
+        }
+    }
+
+    /// The half-price plan while the welcome price stands, else nil.
+    var welcomePackage: Package? {
+        welcomePriceEndsAt == nil ? nil : exitOfferPackage
+    }
+
+    /// The regular yearly plan, even while the welcome price stands in for it:
+    /// the struck-through price beside the half price.
+    var regularYearlyPackage: Package? {
+        offeringPackages.first { $0.vitalsPackageKind == .yearly }
+    }
+
     /// The yearly package — the one-tap conversion target. StoreKit applies the
     /// free trial automatically when eligible; ineligible users pay the yearly
     /// price on the same product. nil until `fetchProducts` completes.
@@ -443,8 +483,9 @@ final class StoreService: NSObject, ObservableObject {
     /// Annual saving vs. paying monthly for a year, as a whole percent. nil
     /// unless both plans are loaded and annual is actually cheaper — the badge
     /// it drives must never quote a number we can't stand behind.
+    /// Always the regular yearly plan's: the welcome price says its own discount.
     var annualSavingsPercent: Int? {
-        guard let yearly = yearlyPackage, let monthly = monthlyPackage else { return nil }
+        guard let yearly = regularYearlyPackage, let monthly = monthlyPackage else { return nil }
         let annualized = (monthly.vitalsPriceAmount as NSDecimalNumber).doubleValue * 12
         let yearlyPrice = (yearly.vitalsPriceAmount as NSDecimalNumber).doubleValue
         guard annualized > 0, yearlyPrice > 0 else { return nil }
