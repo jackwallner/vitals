@@ -89,7 +89,7 @@ enum QA {
                 Paywall.check(app, leaves, rendered, context: context)
             }
             // Apple's audit re-renders the app at other text sizes; its motion is not the app's.
-            system("audit", journey: context.journey) { Audit.run(app, context: context) }
+            system("audit", journey: context.journey) { Audit.run(app, shot: shot, context: context) }
             Idle.check(app, first: shot, ambient: leaves.filter { ambient.contains($0.label) || ambient.contains($0.identifier) },
                        context: context)
             // Data that lands a few seconds late still jumps under the user's eye, so
@@ -123,6 +123,16 @@ enum QA {
             _ = app.wait(for: .runningForeground, timeout: 15)
             sleep(1)  // the springboard zoom outlasts the state change
         }
+    }
+
+    /// A horizontal swipe across the element. `XCUIElement.swipeLeft()` lands
+    /// as a vertical drag on an unfolded iPhone Duo, whose inner display is
+    /// rotated against the device; a drag between element coordinates works on
+    /// every device.
+    static func swipe(_ element: XCUIElement, left: Bool = true) {
+        let from = element.coordinate(withNormalizedOffset: CGVector(dx: left ? 0.85 : 0.15, dy: 0.5))
+        let to = element.coordinate(withNormalizedOffset: CGVector(dx: left ? 0.1 : 0.9, dy: 0.5))
+        from.press(forDuration: 0.05, thenDragTo: to, withVelocity: .fast, thenHoldForDuration: 0)
     }
 
     /// Kills and relaunches without reinstalling: state must survive this.
@@ -494,7 +504,8 @@ enum Audit {
         }
     }
 
-    static func run(_ app: XCUIApplication, context: QA.Context) {
+    static func run(_ app: XCUIApplication, shot: UIImage, context: QA.Context) {
+        let pixels = Idle.pixels(shot)
         do {
             var checked = 0
             // Dynamic Type and clipped-text checks re-render the app at other text
@@ -508,13 +519,59 @@ enum Audit {
                     if !(target.exists && target.isHittable) { return true }
                 }
                 let element = issue.element.map { $0.identifier.isEmpty ? $0.label : $0.identifier } ?? ""
+                var measured = ""
+                if issue.auditType == .contrast, let target = issue.element, let pixels {
+                    // The audit flags text that passes (white on a dark brand color, iOS's own
+                    // headers); a finding stands only when the drawn pixels fail WCAG too.
+                    guard let ratio = contrast(in: target.frame, pixels, scale: CGFloat(pixels.width) / shot.size.width)
+                    else { return true }
+                    if ratio >= (target.frame.height >= 24 ? 3 : 4.5) { return true }
+                    measured = String(format: " (measured %.1f:1)", ratio)
+                }
                 QA.record(context, "a11y-" + name(issue.auditType), severity(issue.auditType), element,
-                          "\(issue.compactDescription)\(element.isEmpty ? "" : ": \"\(element)\"")")
+                          "\(issue.compactDescription)\(measured)\(element.isEmpty ? "" : ": \"\(element)\"")")
                 return true
             }
         } catch {
             QA.record(context, "a11y-audit", "P3", "", "audit could not run: \(error.localizedDescription)")
         }
+    }
+}
+
+extension Audit {
+    /// WCAG contrast of the text drawn in `frame` (points): the commonest color is the
+    /// background, and the text is what stands furthest from it among the pixels that
+    /// differ (90th percentile, so edge antialiasing does not count). Nil when nothing
+    /// is drawn there.
+    static func contrast(in frame: CGRect, _ image: (data: [UInt8], width: Int, height: Int), scale: CGFloat) -> Double? {
+        let box = CGRect(x: frame.minX * scale, y: frame.minY * scale, width: frame.width * scale,
+                         height: frame.height * scale).integral
+            .intersection(CGRect(x: 0, y: 0, width: image.width, height: image.height))
+        guard box.width >= 4, box.height >= 4 else { return nil }
+        var counts: [Int: Int] = [:]
+        var lums: [Double] = []
+        for y in stride(from: Int(box.minY), to: Int(box.maxY), by: 1) {
+            for x in stride(from: Int(box.minX), to: Int(box.maxX), by: 1) {
+                let i = (y * image.width + x) * 4
+                let r = image.data[i], g = image.data[i + 1], b = image.data[i + 2]
+                counts[Int(r >> 4) << 8 | Int(g >> 4) << 4 | Int(b >> 4), default: 0] += 1
+                lums.append(luminance(r, g, b))
+            }
+        }
+        guard let mode = counts.max(by: { $0.value < $1.value })?.key else { return nil }
+        let channel = { (shift: Int) in UInt8(((mode >> shift) & 0xF) * 17) }
+        let background = luminance(channel(8), channel(4), channel(0))
+        let ink = lums.map { (max($0, background) + 0.05) / (min($0, background) + 0.05) }.filter { $0 > 1.15 }.sorted()
+        guard !ink.isEmpty else { return nil }
+        return ink[min(ink.count - 1, Int(Double(ink.count) * 0.9))]
+    }
+
+    static func luminance(_ r: UInt8, _ g: UInt8, _ b: UInt8) -> Double {
+        func linear(_ value: UInt8) -> Double {
+            let c = Double(value) / 255
+            return c <= 0.03928 ? c / 12.92 : pow((c + 0.055) / 1.055, 2.4)
+        }
+        return 0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b)
     }
 }
 
