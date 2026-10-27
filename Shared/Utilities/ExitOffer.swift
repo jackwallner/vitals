@@ -152,7 +152,7 @@ enum ExitOffer {
 
     /// Forgets an earlier showing whose window has closed, so a forced arm (App
     /// Review) gets the offer and its window afresh on a device that saw it in
-    /// an earlier review. Never called for a real customer.
+    /// an earlier review. Called only on a sandbox receipt.
     static func resetEndedShowingForReview(now: Date = .now) {
         guard windowStart != nil, welcomeEndsAt(now: now) == nil else { return }
         defaults.removeObject(forKey: Key.shownAt)
@@ -240,6 +240,11 @@ enum ExitOffer {
     }
 
     static var hasClosed: Bool { defaults.object(forKey: Key.closedAt) != nil }
+
+    /// The arm recorded at the first close on this install. A reinstall wipes it.
+    static var recordedArm: Arm? {
+        defaults.string(forKey: Key.arm).flatMap(Arm.init(rawValue:))
+    }
 
     /// Rides with the funnel attributes in `StoreService.syncConversionAttributes`.
     static var subscriberAttributes: [String: String] {

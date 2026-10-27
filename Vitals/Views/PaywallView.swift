@@ -811,6 +811,7 @@ struct PaywallView: View {
                 // Unlabelled, VoiceOver read this as "xmark circle fill", which
                 // is the only way off the paywall for a nonvisual user.
                 .accessibilityLabel("Close")
+                .accessibilityIdentifier("paywall-close")
             }
             Spacer()
         }

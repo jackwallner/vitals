@@ -21,7 +21,7 @@ final class ReleaseJourneysUITests: XCTestCase {
 
     /// Found by identifier, not label: the german persona runs these with the
     /// app in German.
-    static let pitchDismiss = NSPredicate(format: "identifier == 'trial-pitch-dismiss' OR label == 'Close'")
+    static let pitchDismiss = NSPredicate(format: "identifier IN {'trial-pitch-dismiss', 'paywall-close'}")
 
     func testFirstRunOnboardingToPitch() {
         continueAfterFailure = false

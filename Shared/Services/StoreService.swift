@@ -440,7 +440,10 @@ final class StoreService: NSObject, ObservableObject {
     /// window is open, and puts the regular one back the moment it closes.
     /// Called on load, when the offer first shows, and on every return.
     func refreshWelcomePrice(now: Date = .now) {
-        let welcome = isPro || exitOfferArm != .offer ? nil : exitOfferPackage
+        // The arm recorded at the first close keeps a window it opened, so
+        // clearing `force` or a later `offer_pct` change never cuts it short.
+        let inOffer = exitOfferArm == .offer || ExitOffer.recordedArm == .offer
+        let welcome = isPro || !inOffer ? nil : exitOfferPackage
         let endsAt = welcome == nil ? nil : ExitOffer.welcomeEndsAt(now: now)
         if welcomePriceEndsAt != endsAt { welcomePriceEndsAt = endsAt }
         products = offeringPackages.map { package in
@@ -611,7 +614,11 @@ final class StoreService: NSObject, ObservableObject {
             return
         }
         #endif
-        if exitOfferSkipsWait { ExitOffer.resetEndedShowingForReview() }
+        // Sandbox only (App Review, TestFlight): a live customer whose window
+        // ended never gets a second one, even while `force` is set.
+        if exitOfferSkipsWait && isConfigured && Purchases.shared.isSandbox {
+            ExitOffer.resetEndedShowingForReview()
+        }
         let show = ExitOffer.shouldOffer(
             onCloseOf: surface,
             arm: exitOfferArm,
