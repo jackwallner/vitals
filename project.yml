@@ -14,7 +14,7 @@ settings:
     DEVELOPMENT_TEAM: YXG4MP6W39
     CODE_SIGN_STYLE: Automatic
     MARKETING_VERSION: "1.9.1"
-    CURRENT_PROJECT_VERSION: "233"
+    CURRENT_PROJECT_VERSION: "234"
     GENERATE_INFOPLIST_FILE: NO
     # UI copy lives in Shared/Localizable.xcstrings (en, de, fr, es, it, ja,
     # zh-Hans); HealthKit purpose strings in each app's InfoPlist.xcstrings.
