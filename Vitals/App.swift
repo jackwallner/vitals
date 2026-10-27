@@ -2384,7 +2384,6 @@ struct TrialOfferSheet: View {
                         .font(.system(.footnote, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
                         .multilineTextAlignment(.center)
-                        .lineLimit(3)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.horizontal, 8)
                 }
@@ -2449,7 +2448,8 @@ struct TrialOfferSheet: View {
                             .font(.system(.caption2, design: .rounded))
                             .foregroundStyle(Theme.textSecondary)
                             .multilineTextAlignment(.center)
-                            .lineLimit(3)
+                            // Never truncated: the renewal terms are the 3.1.2 disclosure,
+                            // and AX3 German needs five lines.
                             .fixedSize(horizontal: false, vertical: true)
                     }
 
