@@ -1,13 +1,3 @@
-New Large Home Screen widget with your week of calories at a glance.
+Total Calories now speaks German, French, Spanish, Italian, Japanese and Simplified Chinese.
 
-Ask Siri for the calories you've burned today, or your steps.
-
-Optional Goal Reached notification when you hit your daily goal.
-
-If your calorie goal has been out of reach, Today suggests one that fits your typical day.
-
-Evening Reminder for Vitals+ members.
-
-On iPhone Duo, unfold to see Today and History side by side.
-
-Fixes a crash when opening a notification.
+Plus smoother screens and fixes.

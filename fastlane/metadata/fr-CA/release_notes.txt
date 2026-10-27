@@ -1,1 +1,3 @@
-Améliorations en coulisses et corrections de bugs pour que Total Calories reste fluide. Merci d'être là.
+Total Calories est désormais offert en français.
+
+Ainsi que des écrans plus fluides et des corrections.

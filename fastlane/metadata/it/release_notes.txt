@@ -1,1 +1,3 @@
-Miglioramenti dietro le quinte e correzioni di bug per far funzionare Total Calories senza intoppi. Grazie di esserci.
+Total Calories ora è disponibile in italiano.
+
+In più, schermate più fluide e correzioni.

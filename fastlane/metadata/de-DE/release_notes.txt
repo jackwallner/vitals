@@ -1,1 +1,3 @@
-Verbesserungen und Fehlerbehebungen im Hintergrund, damit Total Calories reibungslos läuft. Danke, dass du dabei bist.
+Total Calories gibt es jetzt auf Deutsch.
+
+Dazu flüssigere Bildschirme und Fehlerbehebungen.
