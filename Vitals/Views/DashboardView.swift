@@ -4214,7 +4214,6 @@ private struct SettingsSheet: View {
                     Text("Steps")
                 } footer: {
                     Text("Counted by your iPhone and Apple Watch in Apple Health.")
-                        .foregroundStyle(Theme.textSecondary)
                 }
 
                 // Pacing & Projections — the "how am I tracking today" family.
