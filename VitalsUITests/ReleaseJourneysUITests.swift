@@ -23,6 +23,12 @@ final class ReleaseJourneysUITests: XCTestCase {
     /// app in German.
     static let pitchDismiss = NSPredicate(format: "identifier IN {'trial-pitch-dismiss', 'paywall-close'}")
 
+    /// The app's own translations of the controls without an identifier, from
+    /// `Localizable.xcstrings`; the english and german personas need two of each.
+    static let calorieRing = NSPredicate(format: "label IN {'Calorie progress', 'Kalorienfortschritt', 'Progreso de calorías', 'Progression des calories', 'Progresso calorie', 'カロリーの進捗', '卡路里进度'}")
+    static let settingsButton = NSPredicate(format: "label IN {'Settings', 'Einstellungen', 'Ajustes', 'Réglages', 'Impostazioni', '設定', '设置'}")
+    static let doneButton = NSPredicate(format: "label IN {'Done', 'Fertig', 'Listo', 'OK', 'Fine', '完了', '完成'}")
+
     func testFirstRunOnboardingToPitch() {
         continueAfterFailure = false
         let app = XCUIApplication()
@@ -106,6 +112,53 @@ final class ReleaseJourneysUITests: XCTestCase {
         QA.checkpoint(app, "after-relaunch")
     }
 
+    /// The core loop: set a daily calorie target in Settings and see Today's
+    /// ring measure against it. Values are read from the ring's accessibility
+    /// value as bare digits (grouping separators stripped, so 2,500 and 2.500
+    /// compare equal). The controls without an identifier are found by the
+    /// field's placeholder or the app's own translations, so the german and Duo
+    /// personas run it unchanged.
+    ///
+    /// The goal is not asserted after the relaunch: screenshot mode re-seeds
+    /// the 2,500 and 10,000 fixture goals every launch (`GoalSettings`), so a
+    /// kept goal cannot be observed here. The relaunch asserts Today draws the
+    /// day's calories again.
+    func testCoreLoopCalorieGoalShowsOnTodayRing() {
+        let app = launchDashboard()
+        clearTrialPitch(app)
+        let ring = app.descendants(matching: .any).matching(Self.calorieRing).firstMatch
+        XCTAssertTrue(ring.waitForExistence(timeout: 20), "calorie ring never rendered")
+        XCTAssertTrue(Self.ringReads(ring, calories: "2400", goal: "2500"), "fixture ring reads \(ringValue(ring))")
+        QA.checkpoint(app, "today-before")
+
+        let gear = app.buttons.matching(Self.settingsButton).firstMatch
+        XCTAssertTrue(gear.waitForExistence(timeout: 10), "Settings button missing")
+        gear.tap()
+        XCTAssertTrue(app.descendants(matching: .any)["settings-list"].waitForExistence(timeout: 20), "Settings never presented")
+        let field = app.textFields.matching(NSPredicate(format: "placeholderValue == '2500'")).firstMatch
+        scrollToHittable(field, in: app.descendants(matching: .any)["settings-list"])
+        XCTAssertTrue(field.isHittable, "calorie target field never reachable")
+        QA.checkpoint(app, "settings-goal")
+
+        replaceText(in: field, with: "3000")
+        XCTAssertEqual(field.value as? String, "3000", "typed target not in the field")
+        let done = app.navigationBars.buttons.matching(Self.doneButton).firstMatch
+        XCTAssertTrue(done.waitForExistence(timeout: 10), "Settings Done button missing")
+        done.tap()
+        XCTAssertTrue(app.descendants(matching: .any)["settings-list"].waitForNonExistence(timeout: 20), "Settings never closed")
+        clearTrialPitch(app)
+        XCTAssertTrue(ring.waitForExistence(timeout: 20), "calorie ring missing after Settings")
+        XCTAssertTrue(Self.ringReads(ring, calories: "2400", goal: "3000"), "ring did not take the new target: \(ringValue(ring))")
+        QA.checkpoint(app, "today-new-goal")
+
+        QA.relaunch(app)
+        clearTrialPitch(app)
+        let reloaded = app.descendants(matching: .any).matching(Self.calorieRing).firstMatch
+        XCTAssertTrue(reloaded.waitForExistence(timeout: 20), "calorie ring missing after relaunch")
+        XCTAssertTrue(ringValue(reloaded).contains("2400"), "ring lost the day's calories after relaunch: \(ringValue(reloaded))")
+        QA.checkpoint(app, "today-after-relaunch")
+    }
+
     // MARK: - Helpers
 
     private func launchDashboard() -> XCUIApplication {
@@ -124,6 +177,39 @@ final class ReleaseJourneysUITests: XCTestCase {
             if dismiss.isHittable { dismiss.tap() }
             _ = dismiss.waitForNonExistence(timeout: 3)
         }
+    }
+
+    /// The ring's value with grouping separators removed (2,400, 2.400, 2 400),
+    /// so the numbers compare as bare digits in every language.
+    private func ringValue(_ ring: XCUIElement) -> String {
+        Self.ungrouped(ring.value as? String ?? "")
+    }
+
+    private static func ungrouped(_ text: String) -> String {
+        text.filter { !",.\u{00A0}\u{202F}\u{2009}'’".contains($0) }
+    }
+
+    /// The ring reads "<calories> of <goal> calories" in the app's language, so
+    /// only the digits are compared: the calories first, the goal after them.
+    private static func ringReads(_ ring: XCUIElement, calories: String, goal: String) -> Bool {
+        let value = ungrouped(ring.value as? String ?? "")
+        guard let first = value.range(of: calories) else { return false }
+        return value[first.upperBound...].contains(goal)
+    }
+
+    private func scrollToHittable(_ element: XCUIElement, in list: XCUIElement) {
+        for _ in 0..<4 where !element.isHittable {
+            QA.swipe(list, .up)
+        }
+    }
+
+    /// Number pads have no select-all: put the caret at the end, then delete
+    /// whatever is there and type the replacement.
+    private func replaceText(in field: XCUIElement, with text: String) {
+        field.coordinate(withNormalizedOffset: CGVector(dx: 0.98, dy: 0.5)).tap()
+        let current = field.value as? String ?? ""
+        field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: current.count + 2))
+        field.typeText(text)
     }
 
     private func dismissSystemSheet() {
