@@ -93,4 +93,4 @@ To oszacowanie modelu, a nie pomiar. Apple liczy energię spoczynkową z wagi, w
 
 Total Calories odczytuje energię aktywną i spoczynkową z aplikacji Zdrowie i pokazuje Twoją prawdziwą sumę dzienną na iPhonie, Apple Watch i w widżetach. Darmowy start.
 
-[Pobierz Total Calories](https://apps.apple.com/pl/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-apple-watch-active-vs-resting-pl&mt=8)
+[Pobierz Total Calories](https://apps.apple.com/pl/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-apple-watch-active-vs-resti-pl&mt=8)

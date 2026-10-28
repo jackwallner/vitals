@@ -93,4 +93,4 @@ Próximas em média. Nos testes de laboratório da Apple, caminhada, corrida e t
 
 O Total Calories lê energia ativa e em repouso do Saúde e mostra seu total diário real no iPhone, no Apple Watch e nos widgets. Grátis para começar.
 
-[Baixar o Total Calories](https://apps.apple.com/br/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-apple-watch-active-vs-resting-pt-BR&mt=8)
+[Baixar o Total Calories](https://apps.apple.com/br/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-apple-watch-active-vs-re-pt-br&mt=8)

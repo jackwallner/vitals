@@ -93,4 +93,4 @@ Im Schnitt nah dran. In Apples Labortests lagen Gehen, Laufen und Wandern im Mit
 
 Total Calories liest aktive und Ruheenergie aus Health und zeigt deine echte Tagessumme auf iPhone, Apple Watch und in Widgets. Kostenlos zum Start.
 
-[Total Calories laden](https://apps.apple.com/de/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-apple-watch-active-vs-resting-de&mt=8)
+[Total Calories laden](https://apps.apple.com/de/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-apple-watch-active-vs-resti-de&mt=8)

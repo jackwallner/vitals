@@ -93,4 +93,4 @@ Apple標準のコンプリケーションでは見られません。表示され
 
 Total Caloriesはヘルスケアからアクティブエネルギーと安静時エネルギーを読み取り、実際の1日の合計をiPhone、Apple Watch、ウィジェットに表示します。無料で始められます。
 
-[Total Caloriesをダウンロード](https://apps.apple.com/jp/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-apple-watch-active-vs-resting-ja&mt=8)
+[Total Caloriesをダウンロード](https://apps.apple.com/jp/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-apple-watch-active-vs-resti-ja&mt=8)

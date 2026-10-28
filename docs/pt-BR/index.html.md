@@ -10,7 +10,7 @@ O Total Calories é um app de calorias totais queimadas para Apple Watch e iPhon
 
 iPhone · Apple Watch · Widgets
 
-[Baixar grátis](https://apps.apple.com/br/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-home-pt-BR&mt=8)
+[Baixar grátis](https://apps.apple.com/br/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-home-pt-br&mt=8)
 
 ## O que o Total Calories faz?
 
@@ -140,4 +140,4 @@ Sim. Ele lê o Saúde somente em modo de leitura e seus dados de saúde ficam no
 
 Grátis na App Store e no Google Play. Sem necessidade de conta. Faça upgrade para o Vitals+ quando quiser.
 
-[Baixar grátis](https://apps.apple.com/br/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-home-pt-BR&mt=8)
+[Baixar grátis](https://apps.apple.com/br/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-home-pt-br&mt=8)

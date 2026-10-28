@@ -93,4 +93,4 @@ Apple 内置的复杂功能做不到，它们只显示活动圆环。Total Calor
 
 Total Calories 从健康 App 读取活动能量和静息能量，并在 iPhone、Apple Watch 和小组件上显示你真实的每日总量。免费开始使用。
 
-[下载 Total Calories](https://apps.apple.com/cn/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-apple-watch-active-vs-resting-zh-Hans&mt=8)
+[下载 Total Calories](https://apps.apple.com/cn/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-apple-watch-active-vs-zh-hans&mt=8)

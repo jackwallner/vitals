@@ -10,7 +10,7 @@ Total Calories 是一款适用于 Apple Watch 和 iPhone 的总卡路里消耗�
 
 iPhone · Apple Watch · 小组件
 
-[免费下载](https://apps.apple.com/cn/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-home-zh-Hans&mt=8)
+[免费下载](https://apps.apple.com/cn/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-home-zh-hans&mt=8)
 
 ## Total Calories 能做什么？
 
@@ -140,4 +140,4 @@ Total Calories 从 HealthKit 读取你的活动能量和步数，计算出一个
 
 在 App Store 和 Google Play 免费获取。无需账户。随时可升级到 Vitals+。
 
-[免费下载](https://apps.apple.com/cn/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-home-zh-Hans&mt=8)
+[免费下载](https://apps.apple.com/cn/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-home-zh-hans&mt=8)

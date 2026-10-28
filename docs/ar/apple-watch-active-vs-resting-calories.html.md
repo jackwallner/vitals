@@ -93,4 +93,4 @@ Web page: https://jackwallner.com/ios/vitals/ar/apple-watch-active-vs-resting-ca
 
 يقرأ Total Calories الطاقة النشطة وطاقة الراحة من صحتي ويعرض إجماليك اليومي الحقيقي على iPhone وApple Watch والودجات. مجاني للبدء.
 
-[نزّل Total Calories](https://apps.apple.com/sa/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-apple-watch-active-vs-resting-ar&mt=8)
+[نزّل Total Calories](https://apps.apple.com/sa/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-apple-watch-active-vs-resti-ar&mt=8)

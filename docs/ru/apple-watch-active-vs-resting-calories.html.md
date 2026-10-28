@@ -93,4 +93,4 @@ Web page: https://jackwallner.com/ios/vitals/ru/apple-watch-active-vs-resting-ca
 
 Total Calories читает активную энергию и энергию покоя из «Здоровья» и показывает ваш реальный дневной итог на iPhone, Apple Watch и в виджетах. Бесплатный старт.
 
-[Скачать Total Calories](https://apps.apple.com/ru/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-apple-watch-active-vs-resting-ru&mt=8)
+[Скачать Total Calories](https://apps.apple.com/ru/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-apple-watch-active-vs-resti-ru&mt=8)
