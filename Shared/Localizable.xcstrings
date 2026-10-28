@@ -247,7 +247,7 @@
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : " سلسلة تحقيق الهدف: %lld يوم."
+                  "value" : " سلسلة تحقيق الهدف: %lld يومان."
                 }
               },
               "zero" : {
@@ -346,7 +346,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : " Série de %lld jours consécutifs avec un objectif atteint."
+            "value" : " Série d’objectifs de %lld jours."
           }
         },
         "he" : {
@@ -4842,7 +4842,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ PÄIVÄÄ ILMAISEKSI"
+            "value" : "%@ PV ILMAISEKSI"
           }
         },
         "fr" : {
@@ -4908,7 +4908,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PERCUMA %@ HARI"
+            "value" : "%@ HARI PERCUMA"
           }
         },
         "nb" : {
@@ -7220,7 +7220,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ ei tietoja"
+            "value" : "%@: ei tietoja"
           }
         },
         "fr" : {
@@ -8416,7 +8416,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ шагов"
+            "value" : "Шаги: %@"
           }
         },
         "sk" : {
@@ -9248,7 +9248,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ – %2$@"
+            "value" : "%1$@ - %2$@"
           }
         },
         "nl" : {
@@ -9504,7 +9504,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@%2$lld%% по сравнению с прошлой неделей"
+            "value" : "%1$@%2$lld%% к прошлой неделе"
           }
         },
         "sk" : {
@@ -9974,7 +9974,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@, chúng tôi tặng bạn."
+            "value" : "Tặng bạn %@."
           }
         },
         "zh-Hans" : {
@@ -10391,7 +10391,7 @@
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@."
+            "value" : "%@"
           }
         },
         "tr" : {
@@ -11974,7 +11974,7 @@
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "‏%lld يوم مستبعد"
+                  "value" : "‏%lld يومان مستبعدان"
                 }
               },
               "zero" : {
@@ -12422,7 +12422,7 @@
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "‏%lld يوم نشط"
+                  "value" : "‏%lld يومان نشطان"
                 }
               },
               "zero" : {
@@ -15002,7 +15002,7 @@
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "‏%lld يوم"
+                  "value" : "‏%lld يومان"
                 }
               },
               "zero" : {
@@ -16379,7 +16379,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "데이터가 있는 %lld일"
+            "value" : "데이터가 있는 날 %lld일"
           }
         },
         "lv" : {
@@ -19869,7 +19869,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld%% KEDVEZMÉNY"
+            "value" : "-%lld%%"
           }
         },
         "id" : {
@@ -19929,13 +19929,13 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld%% DE DESCONTO"
+            "value" : "%lld%% OFF"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld%% DE DESCONTO"
+            "value" : "-%lld%%"
           }
         },
         "ro" : {
@@ -20032,7 +20032,7 @@
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "‏%lld يوم مجانًا"
+                  "value" : "‏%lld يومان مجانًا"
                 }
               },
               "zero" : {
@@ -20077,7 +20077,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prøveperiode: %lld døgn gratis"
+            "value" : "%lld dages gratis prøveperiode"
           }
         },
         "de" : {
@@ -20092,13 +20092,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Δωρεάν δοκιμή για %lld ημέρα"
+                  "value" : "Δωρεάν δοκιμή %lld ημέρας"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Δωρεάν δοκιμή για %lld ημέρες"
+                  "value" : "Δωρεάν δοκιμή %lld ημερών"
                 }
               }
             }
@@ -20293,7 +20293,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Teste grátis de %lld dias"
+            "value" : "Avaliação gratuita de %lld dias"
           }
         },
         "ro" : {
@@ -20944,7 +20944,7 @@
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "‏%lld شهر مجانًا"
+                  "value" : "‏%lld شهران مجانًا"
                 }
               },
               "zero" : {
@@ -20989,7 +20989,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prøveperiode: %lld mdr. gratis"
+            "value" : "%lld måneders gratis prøveperiode"
           }
         },
         "de" : {
@@ -21157,7 +21157,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gratis prøveperiode: %lld mnd."
+            "value" : "Gratis prøveperiode på %lld måneder"
           }
         },
         "nl" : {
@@ -21205,7 +21205,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Teste grátis de %lld meses"
+            "value" : "Avaliação gratuita de %lld meses"
           }
         },
         "ro" : {
@@ -21392,7 +21392,7 @@
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "‏%lld سنة مجانًا"
+                  "value" : "‏%lld سنتان مجانًا"
                 }
               },
               "zero" : {
@@ -21437,7 +21437,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prøveperiode: %lld år gratis"
+            "value" : "%lld års gratis prøveperiode"
           }
         },
         "de" : {
@@ -21653,7 +21653,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Teste grátis de %lld anos"
+            "value" : "Avaliação gratuita de %lld anos"
           }
         },
         "ro" : {
@@ -24705,7 +24705,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "데이터가 있는 1일"
+            "value" : "데이터가 있는 날 1일"
           }
         },
         "lv" : {
@@ -27959,7 +27959,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Teste grátis de 7 dias"
+            "value" : "Avaliação gratuita de 7 dias"
           }
         },
         "ro" : {
@@ -30963,7 +30963,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "CALORII / ZI, ÎN MEDIE"
+            "value" : "MEDIE CALORII / ZI"
           }
         },
         "ru" : {
@@ -31391,7 +31391,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PAȘI / ZI, ÎN MEDIE"
+            "value" : "MEDIE PAȘI / ZI"
           }
         },
         "ru" : {
@@ -31485,7 +31485,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unos %@"
+            "value" : "Aprox. %@"
           }
         },
         "et" : {
@@ -31629,7 +31629,7 @@
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "เกี่ยวกับ%@"
+            "value" : "เกี่ยวกับ %@"
           }
         },
         "tr" : {
@@ -32109,7 +32109,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktive"
+            "value" : "Aktiv"
           }
         },
         "de" : {
@@ -32145,7 +32145,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktiiviset"
+            "value" : "Aktiivinen"
           }
         },
         "fr" : {
@@ -32217,7 +32217,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktive"
+            "value" : "Aktiv"
           }
         },
         "nl" : {
@@ -32265,7 +32265,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktiva"
+            "value" : "Aktiv"
           }
         },
         "th" : {
@@ -32359,7 +32359,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktiiviset kalorit + lepoenergia"
+            "value" : "Aktiivi- ja lepoenergia"
           }
         },
         "fr" : {
@@ -32479,7 +32479,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktiva + vila"
+            "value" : "Aktivitet + vila"
           }
         },
         "th" : {
@@ -32573,7 +32573,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktiivisten kalorien ja lepoenergian erittely"
+            "value" : "Aktiivi- ja lepoenergian erittely"
           }
         },
         "fr" : {
@@ -32693,7 +32693,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fördelning aktiva + vila"
+            "value" : "Fördelning aktivitet + vila"
           }
         },
         "th" : {
@@ -32817,7 +32817,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktív kalóriák"
+            "value" : "Aktív kalória"
           }
         },
         "id" : {
@@ -32965,7 +32965,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktiv forbrænding vs. hvileforbrænding"
+            "value" : "Aktiv- vs. hvileforbrænding"
           }
         },
         "de" : {
@@ -33001,7 +33001,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktiiviset kalorit vs. lepoenergia"
+            "value" : "Aktiivi- ja lepoenergia"
           }
         },
         "fr" : {
@@ -33121,7 +33121,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktiva vs. vila"
+            "value" : "Aktivitet vs. vila"
           }
         },
         "th" : {
@@ -34077,7 +34077,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tous les jours"
+            "value" : "Tout l’historique"
           }
         },
         "he" : {
@@ -34101,7 +34101,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Minden nap"
+            "value" : "Összes nap"
           }
         },
         "id" : {
@@ -34119,7 +34119,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "すべての日"
+            "value" : "全期間"
           }
         },
         "ko" : {
@@ -34197,7 +34197,7 @@
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ทุกวัน"
+            "value" : "ทั้งหมด"
           }
         },
         "tr" : {
@@ -34227,7 +34227,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "所有日子"
+            "value" : "全部"
           }
         }
       }
@@ -34981,7 +34981,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "건강"
+            "value" : "건강 앱"
           }
         },
         "lv" : {
@@ -35053,7 +35053,7 @@
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "สุขภาพ"
+            "value" : "แอปสุขภาพ"
           }
         },
         "tr" : {
@@ -37953,7 +37953,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Átlagok szüneteltetve ettől: %@"
+            "value" : "Átlagok szüneteltetve %@ óta"
           }
         },
         "id" : {
@@ -38079,7 +38079,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "自 %@ 起暫停平均值"
+            "value" : "平均值自 %@ 起已暫停"
           }
         }
       }
@@ -38935,7 +38935,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "平均記錄的熱量"
+            "value" : "平均記錄卡路里"
           }
         }
       }
@@ -39149,7 +39149,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "平均記錄的熱量"
+            "value" : "平均記錄卡路里"
           }
         }
       }
@@ -39879,7 +39879,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "LEGJOBB HIÁNY"
+            "value" : "LEGNAGYOBB HIÁNY"
           }
         },
         "id" : {
@@ -39927,7 +39927,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BESTE TEKORT"
+            "value" : "GROOTSTE TEKORT"
           }
         },
         "pl" : {
@@ -40093,7 +40093,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "LEGJOBB AJÁNLAT"
+            "value" : "LEGKEDVEZŐBB"
           }
         },
         "id" : {
@@ -40135,7 +40135,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BESTE VERDI"
+            "value" : "BESTE KJØP"
           }
         },
         "nl" : {
@@ -40165,7 +40165,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "CEA MAI BUNĂ OFERTĂ"
+            "value" : "PREȚ AVANTAJOS"
           }
         },
         "ru" : {
@@ -40207,7 +40207,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ƯU ĐÃI NHẤT"
+            "value" : "GIÁ TỐT NHẤT"
           }
         },
         "zh-Hans" : {
@@ -40222,7 +40222,8 @@
             "value" : "最划算"
           }
         }
-      }
+      },
+      "comment" : "Paywall badge on a plan row. Short ALL-CAPS pill; must fit about 14 characters."
     },
     "BIGGEST BURN" : {
       "localizations" : {
@@ -42845,7 +42846,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kehon rasva"
+            "value" : "Rasvaprosentti"
           }
         },
         "fr" : {
@@ -43155,7 +43156,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Índice de Massa Corporal"
+            "value" : "Índice de massa corporal"
           }
         },
         "ro" : {
@@ -45259,7 +45260,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tiek aprēķināts 30 dienu vidējais rādītājs"
+            "value" : "Aprēķina 30 dienu vidējo"
           }
         },
         "ms" : {
@@ -45277,7 +45278,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gemiddelde van 30 dagen wordt opgebouwd"
+            "value" : "30-daags gemiddelde in opbouw"
           }
         },
         "pl" : {
@@ -45931,7 +45932,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Opbouwen: %1$lld/%2$lld dagen"
+            "value" : "Opbouw: %1$lld/%2$lld dagen"
           }
         },
         "pl" : {
@@ -45943,7 +45944,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Reunindo: %1$lld/%2$lld dias"
+            "value" : "Coletando: %1$lld/%2$lld dias"
           }
         },
         "pt-PT" : {
@@ -46703,7 +46704,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "هدف کالری محقق شد"
+            "value" : "رسیدن به هدف کالری"
           }
         },
         "fi" : {
@@ -48327,7 +48328,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalorimål nått"
+            "value" : "Kalorimålet nått"
           }
         },
         "th" : {
@@ -48541,7 +48542,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalorimål nått!"
+            "value" : "Kalorimålet nått!"
           }
         },
         "th" : {
@@ -49361,7 +49362,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Spalone dziś"
+            "value" : "Kalorie spalone dziś"
           }
         },
         "pt-BR" : {
@@ -49391,7 +49392,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalórie spálené dnes"
+            "value" : "Dnes spálené kalórie"
           }
         },
         "sv" : {
@@ -50377,7 +50378,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalóriák az elmúlt 7 napban"
+            "value" : "Kalória, elmúlt 7 nap"
           }
         },
         "id" : {
@@ -50401,7 +50402,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "칼로리, 최근 7일"
+            "value" : "최근 7일 칼로리"
           }
         },
         "lv" : {
@@ -51299,7 +51300,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hidratos de carbono"
+            "value" : "Hidratos"
           }
         },
         "ro" : {
@@ -51375,13 +51376,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Změnit"
+            "value" : "Změna"
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skift"
+            "value" : "Ændring"
           }
         },
         "de" : {
@@ -51399,13 +51400,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cambiar"
+            "value" : "Cambio"
           }
         },
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Muuda"
+            "value" : "Muutus"
           }
         },
         "fa" : {
@@ -51417,7 +51418,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vaihda"
+            "value" : "Muutos"
           }
         },
         "fr" : {
@@ -51435,25 +51436,25 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "बदलें"
+            "value" : "बदलाव"
           }
         },
         "hr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Promijeni"
+            "value" : "Promjena"
           }
         },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Módosítás"
+            "value" : "Változás"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ubah"
+            "value" : "Perubahan"
           }
         },
         "it" : {
@@ -51465,115 +51466,115 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "変更"
+            "value" : "変化"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "변경"
+            "value" : "변화"
           }
         },
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mainīt"
+            "value" : "Izmaiņas"
           }
         },
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tukar"
+            "value" : "Perubahan"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Endre"
+            "value" : "Endring"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wijzig"
+            "value" : "Verandering"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zmień"
+            "value" : "Zmiana"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alterar"
+            "value" : "Variação"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alterar"
+            "value" : "Variação"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Schimbă"
+            "value" : "Variație"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Изменить"
+            "value" : "Изменение"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zmeniť"
+            "value" : "Zmena"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ändra"
+            "value" : "Förändring"
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "เปลี่ยน"
+            "value" : "เปลี่ยนแปลง"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Değiştir"
+            "value" : "Değişim"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Змінити"
+            "value" : "Зміна"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đổi"
+            "value" : "Thay đổi"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "更改"
+            "value" : "变化"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "更改"
+            "value" : "變化"
           }
         }
       }
@@ -51619,7 +51620,7 @@
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kontrolli Tervise õigusi"
+            "value" : "Kontrolli juurdepääsu Tervisele"
           }
         },
         "fa" : {
@@ -51691,7 +51692,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pārbaudīt piekļuvi lietotnes Veselība datiem"
+            "value" : "Pārbaudīt piekļuvi Veselībai"
           }
         },
         "ms" : {
@@ -51769,7 +51770,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Перевірити доступ до програми «Здоров’я»"
+            "value" : "Перевірити доступ до «Здоров’я»"
           }
         },
         "vi" : {
@@ -52231,7 +52232,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vybrat data"
+            "value" : "Vybrat období"
           }
         },
         "da" : {
@@ -52595,7 +52596,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выбрать в Настройках"
+            "value" : "Выбрать в настройках"
           }
         },
         "sk" : {
@@ -53177,7 +53178,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "1日をやり切ろう"
+            "value" : "1日をしめくくろう"
           }
         },
         "ko" : {
@@ -53219,7 +53220,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Feche o seu dia"
+            "value" : "Encerre o seu dia"
           }
         },
         "pt-PT" : {
@@ -53237,7 +53238,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Завершите свой день"
+            "value" : "Подведите итоги дня"
           }
         },
         "sk" : {
@@ -53521,7 +53522,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sammenlign hver periode"
+            "value" : "Sammenlign alle perioder"
           }
         },
         "de" : {
@@ -53629,7 +53630,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sammenlign hver periode"
+            "value" : "Sammenlign alle perioder"
           }
         },
         "nl" : {
@@ -53641,7 +53642,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Porównuj każdy okres"
+            "value" : "Porównuj dowolne okresy"
           }
         },
         "pt-BR" : {
@@ -54271,7 +54272,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sambung app Kesihatan"
+            "value" : "Sambungkan Kesihatan"
           }
         },
         "nb" : {
@@ -54413,7 +54414,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تماس با Elsa"
+            "value" : "تماس با السا"
           }
         },
         "fi" : {
@@ -54449,7 +54450,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lépj kapcsolatba Elsával"
+            "value" : "Kapcsolat Elsával"
           }
         },
         "id" : {
@@ -54717,7 +54718,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kontakt z pomocą"
+            "value" : "Napisz do nas"
           }
         },
         "pt-BR" : {
@@ -57773,7 +57774,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Không thể đọc dữ liệu về các chất dinh dưỡng đa lượng"
+            "value" : "Không thể đọc dữ liệu dinh dưỡng đa lượng"
           }
         },
         "zh-Hans" : {
@@ -58027,7 +58028,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Health-Daten nicht aktualisiert"
+            "value" : "Health-Daten konnten nicht aktualisiert werden"
           }
         },
         "el" : {
@@ -60269,7 +60270,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gjeldende"
+            "value" : "Nåværende"
           }
         },
         "nl" : {
@@ -60424,7 +60425,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "מותאם אישית"
+            "value" : "מותאם"
           }
         },
         "hi" : {
@@ -61162,7 +61163,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Свои итоги"
+            "value" : "Итоги за период"
           }
         },
         "sk" : {
@@ -61440,7 +61441,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vlastní plány"
+            "value" : "Plány na míru"
           }
         },
         "da" : {
@@ -61482,7 +61483,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mukautetut suunnitelmat"
+            "value" : "Yksilölliset suunnitelmat"
           }
         },
         "fr" : {
@@ -61512,7 +61513,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Egyéni edzéstervek"
+            "value" : "Egyéni tervek"
           }
         },
         "id" : {
@@ -61566,7 +61567,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Własne plany"
+            "value" : "Indywidualne plany"
           }
         },
         "pt-BR" : {
@@ -61590,13 +61591,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Свои планы"
+            "value" : "Персональные планы"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vlastné plány"
+            "value" : "Plány na mieru"
           }
         },
         "sv" : {
@@ -61916,7 +61917,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rapports sur une période personnalisée"
+            "value" : "Rapports personnalisés"
           }
         },
         "he" : {
@@ -62076,7 +62077,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "‏%@ اليومي"
+            "value" : "‏%@ يوميًا"
           }
         },
         "cs" : {
@@ -62606,13 +62607,13 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "일일 매크로"
+            "value" : "일일 3대 영양소"
           }
         },
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dienas makroelementi"
+            "value" : "Dienas makrouzturvielas"
           }
         },
         "ms" : {
@@ -62850,7 +62851,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deficyt dzienny"
+            "value" : "Deficyt netto dziennie"
           }
         },
         "pt-BR" : {
@@ -65138,7 +65139,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "प्रदर्शन इकाइयाँ"
+            "value" : "माप की इकाइयाँ"
           }
         },
         "hr" : {
@@ -65180,7 +65181,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rādāmās vienības"
+            "value" : "Mērvienības"
           }
         },
         "ms" : {
@@ -65258,7 +65259,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Одиниці"
+            "value" : "Одиниці виміру"
           }
         },
         "vi" : {
@@ -65460,7 +65461,7 @@
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "เสร็จ"
+            "value" : "เสร็จสิ้น"
           }
         },
         "tr" : {
@@ -66672,7 +66673,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "건강 접근 허용"
+            "value" : "건강 앱 접근 허용"
           }
         },
         "lv" : {
@@ -66684,7 +66685,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Benarkan akses kepada Kesihatan"
+            "value" : "Benarkan Kesihatan"
           }
         },
         "nb" : {
@@ -67224,7 +67225,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prognose for dagens slutresultat"
+            "value" : "Dagsprognose"
           }
         },
         "de" : {
@@ -67416,7 +67417,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "今日結束時的預測"
+            "value" : "今日總量預估"
           }
         }
       }
@@ -67438,7 +67439,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prognoser for dagens slutresultat"
+            "value" : "Dagsprognoser"
           }
         },
         "de" : {
@@ -67630,7 +67631,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "今日結束時的預測"
+            "value" : "今日總量預估"
           }
         }
       }
@@ -67878,7 +67879,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Καταχωρίστε %1$@–%2$@ g."
+            "value" : "Καταχωρίστε %1$@-%2$@ g."
           }
         },
         "en" : {
@@ -67956,7 +67957,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@〜%2$@ gで入力してください。"
+            "value" : "%1$@〜%2$@ gの範囲で入力してください。"
           }
         },
         "ko" : {
@@ -68098,7 +68099,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Καταχωρίστε 100–500.000 βήματα."
+            "value" : "Καταχωρίστε 100-500.000 βήματα."
           }
         },
         "es" : {
@@ -68170,7 +68171,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "100〜500,000歩で入力してください。"
+            "value" : "100〜500,000歩の範囲で入力してください。"
           }
         },
         "ko" : {
@@ -68312,7 +68313,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Καταχωρίστε 500–50.000 θερμίδες."
+            "value" : "Καταχωρίστε 500-50.000 θερμίδες."
           }
         },
         "es" : {
@@ -68384,7 +68385,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "500〜50,000カロリーで入力してください。"
+            "value" : "500〜50,000カロリーの範囲で入力してください。"
           }
         },
         "ko" : {
@@ -69092,7 +69093,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Введите реальный рост."
+            "value" : "Введите корректный рост."
           }
         },
         "sk" : {
@@ -69306,7 +69307,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Введите реальный вес."
+            "value" : "Введите корректный вес."
           }
         },
         "sk" : {
@@ -71446,7 +71447,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Не учитывать при расчёте средних"
+            "value" : "Не учитывать в средних"
           }
         },
         "sk" : {
@@ -73472,7 +73473,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "خروجی ناموفق بود"
+            "value" : "خروجی گرفتن ناموفق بود"
           }
         },
         "fi" : {
@@ -74298,7 +74299,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eksportér data for en valgfri periode"
+            "value" : "Eksportér en valgfri periode"
           }
         },
         "de" : {
@@ -74358,7 +74359,7 @@
         "hr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Izvezite podatke za bilo koji raspon datuma"
+            "value" : "Izvezite bilo koji raspon datuma"
           }
         },
         "hu" : {
@@ -74394,7 +74395,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eksportēt atskaiti par jebkuru datumu diapazonu"
+            "value" : "Eksportējiet jebkuru periodu"
           }
         },
         "ms" : {
@@ -74406,7 +74407,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eksporter en hvilken som helst periode"
+            "value" : "Eksporter valgfri periode"
           }
         },
         "nl" : {
@@ -74418,7 +74419,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eksport danych z dowolnego zakresu dat"
+            "value" : "Eksportuj dowolny zakres dat"
           }
         },
         "pt-BR" : {
@@ -75434,7 +75435,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Böjt mód"
+            "value" : "Böjtmód"
           }
         },
         "id" : {
@@ -76398,7 +76399,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Калорії їжі"
+            "value" : "Калорії з їжі"
           }
         },
         "vi" : {
@@ -76748,7 +76749,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ēdiena dati nav pieejami"
+            "value" : "Uztura dati nav pieejami"
           }
         },
         "ms" : {
@@ -76760,7 +76761,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Matdata utilgjengelige"
+            "value" : "Matdata ikke tilgjengelig"
           }
         },
         "nl" : {
@@ -76832,7 +76833,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Không thể truy cập dữ liệu bữa ăn"
+            "value" : "Không có dữ liệu thực phẩm"
           }
         },
         "zh-Hans" : {
@@ -77556,7 +77557,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "מבריאות"
+            "value" : "מאפליקציית בריאות"
           }
         },
         "hi" : {
@@ -77598,13 +77599,13 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple 건강에서"
+            "value" : "건강 앱에서"
           }
         },
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No lietotnes Apple Veselība"
+            "value" : "No lietotnes Veselība"
           }
         },
         "ms" : {
@@ -77640,7 +77641,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Da app Saúde"
+            "value" : "Da Apple Saúde"
           }
         },
         "ro" : {
@@ -77652,13 +77653,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Из приложения «Здоровье»"
+            "value" : "Из «Здоровья»"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Z apky Zdravie"
+            "value" : "Z aplikácie Zdravie"
           }
         },
         "sv" : {
@@ -77676,7 +77677,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sağlık uygulamasından"
+            "value" : "Apple Sağlık'tan"
           }
         },
         "uk" : {
@@ -79012,7 +79013,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hilfe erhalten"
+            "value" : "Hilfe anfordern"
           }
         },
         "el" : {
@@ -79060,7 +79061,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "मदद पाएँ"
+            "value" : "मदद लें"
           }
         },
         "hr" : {
@@ -79144,7 +79145,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Obțineți ajutor"
+            "value" : "Ajutor"
           }
         },
         "ru" : {
@@ -80076,7 +80077,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gå videre med Vitals+"
+            "value" : "Få mere med Vitals+"
           }
         },
         "de" : {
@@ -80232,7 +80233,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Få ut mer av Vitals+"
+            "value" : "Få ut mer med Vitals+"
           }
         },
         "th" : {
@@ -80302,7 +80303,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ο στόχος επιτεύχθηκε"
+            "value" : "Επίτευξη στόχου"
           }
         },
         "es" : {
@@ -80320,7 +80321,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "هدف محقق شد"
+            "value" : "رسیدن به هدف"
           }
         },
         "fi" : {
@@ -80712,7 +80713,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Série dnů se splněným cílem"
+            "value" : "Série splněných cílů"
           }
         },
         "da" : {
@@ -80778,7 +80779,7 @@
         "hr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Niz dana s ostvarenim ciljem"
+            "value" : "Niz ostvarenih ciljeva"
           }
         },
         "hu" : {
@@ -80790,13 +80791,13 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rangkaian Target"
+            "value" : "Target Beruntun"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Serie di obiettivi"
+            "value" : "Serie di obiettivi raggiunti"
           }
         },
         "ja" : {
@@ -80968,7 +80969,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tavoitteeseen yltäneet päivät"
+            "value" : "Päivät tavoitteessa"
           }
         },
         "fr" : {
@@ -81140,7 +81141,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Série dnů se splněnými cíli"
+            "value" : "Série splněných cílů"
           }
         },
         "da" : {
@@ -81218,13 +81219,13 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rangkaian target"
+            "value" : "Target beruntun"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Serie di obiettivi"
+            "value" : "Serie di obiettivi raggiunti"
           }
         },
         "ja" : {
@@ -82448,7 +82449,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MITAD DE PRECIO"
+            "value" : "50 % DTO."
           }
         },
         "et" : {
@@ -82466,7 +82467,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PUOLEEN HINTAAN"
+            "value" : "50% ALE"
           }
         },
         "fr" : {
@@ -82556,7 +82557,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "METADE DO PREÇO"
+            "value" : "MEIO PREÇO"
           }
         },
         "pt-PT" : {
@@ -82568,7 +82569,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "JUMĂTATE DE PREȚ"
+            "value" : "REDUCERE 50%"
           }
         },
         "ru" : {
@@ -83008,7 +83009,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Povolenia pre apku Zdravie"
+            "value" : "Povolenia pre Zdravie"
           }
         },
         "sv" : {
@@ -83382,7 +83383,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nepieciešama piekļuve Veselības datiem"
+            "value" : "Nepieciešama piekļuve lietotnei Veselība"
           }
         },
         "ms" : {
@@ -83430,7 +83431,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Нужен доступ к данным приложения «Здоровье»"
+            "value" : "Нужен доступ к «Здоровью»"
           }
         },
         "sk" : {
@@ -83650,7 +83651,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Povolenia pre apku Zdravie"
+            "value" : "Povolenia pre Zdravie"
           }
         },
         "sv" : {
@@ -84820,13 +84821,13 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Auta meitä kehittämään appia"
+            "value" : "Auta meitä kehittämään sovellusta"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aidez-nous à progresser"
+            "value" : "Aidez-nous à nous améliorer"
           }
         },
         "he" : {
@@ -85052,7 +85053,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "छिपा"
+            "value" : "छिपा हुआ"
           }
         },
         "hr" : {
@@ -85160,7 +85161,7 @@
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ซ่อน"
+            "value" : "ซ่อนอยู่"
           }
         },
         "tr" : {
@@ -85664,7 +85665,7 @@
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tolli"
+            "value" : "Tollid"
           }
         },
         "fa" : {
@@ -87890,7 +87891,7 @@
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hoia oma seeriat"
+            "value" : "Ära lase seerial katkeda"
           }
         },
         "fa" : {
@@ -87938,7 +87939,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pertahankan rangkaian Anda"
+            "value" : "Pertahankan rentetan Anda"
           }
         },
         "it" : {
@@ -88544,7 +88545,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tiedä, mihin tämä päivä päätyy"
+            "value" : "Näe, mihin päiväsi päätyy"
           }
         },
         "fr" : {
@@ -88694,7 +88695,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "知道今天的最终数值"
+            "value" : "预知今天的最终总量"
           }
         },
         "zh-Hant" : {
@@ -90220,7 +90221,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hele perioden"
+            "value" : "Livstid"
           }
         },
         "de" : {
@@ -90238,25 +90239,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todo el historial"
+            "value" : "De por vida"
           }
         },
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kogu aeg"
+            "value" : "Eluaegne"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "از ابتدا"
+            "value" : "مادام‌العمر"
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Koko ajalta"
+            "value" : "Elinikäinen"
           }
         },
         "fr" : {
@@ -90274,7 +90275,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "अब तक"
+            "value" : "आजीवन"
           }
         },
         "hr" : {
@@ -90286,19 +90287,19 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Örökös"
+            "value" : "Életre szóló"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sepanjang Waktu"
+            "value" : "Seumur Hidup"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Da sempre"
+            "value" : "A vita"
           }
         },
         "ja" : {
@@ -90328,7 +90329,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hele perioden"
+            "value" : "Livstid"
           }
         },
         "nl" : {
@@ -90376,13 +90377,13 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Totalt"
+            "value" : "Livstid"
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ทั้งหมด"
+            "value" : "ตลอดชีพ"
           }
         },
         "tr" : {
@@ -90394,7 +90395,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Назавжди"
+            "value" : "Довічна"
           }
         },
         "vi" : {
@@ -90415,7 +90416,8 @@
             "value" : "終身"
           }
         }
-      }
+      },
+      "comment" : "Paywall plan name for the one-time lifetime purchase (pay once, keep forever). Not a date range."
     },
     "Light" : {
       "localizations" : {
@@ -92134,13 +92136,13 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "نظرة إلى الوراء"
+            "value" : "فترة المقارنة"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ohlédnutí"
+            "value" : "Zpětné období"
           }
         },
         "da" : {
@@ -92152,7 +92154,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rückblick"
+            "value" : "Zeitraum"
           }
         },
         "el" : {
@@ -92170,7 +92172,7 @@
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vaata tagasi"
+            "value" : "Ajavahemik"
           }
         },
         "fa" : {
@@ -92182,7 +92184,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Katso taaksepäin"
+            "value" : "Tarkastelujakso"
           }
         },
         "fr" : {
@@ -92200,7 +92202,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "पीछे देखें"
+            "value" : "पिछली अवधि"
           }
         },
         "hr" : {
@@ -92212,13 +92214,13 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nézz vissza"
+            "value" : "Visszatekintés"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lihat kembali"
+            "value" : "Periode acuan"
           }
         },
         "it" : {
@@ -92236,19 +92238,19 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "돌아보기"
+            "value" : "참고 기간"
           }
         },
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Atskatīties"
+            "value" : "Atskata periods"
           }
         },
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lihat rekod terdahulu"
+            "value" : "Tempoh rujukan"
           }
         },
         "nb" : {
@@ -92260,43 +92262,43 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kijk terug"
+            "value" : "Terugkijken"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Spójrz wstecz"
+            "value" : "Okres analizy"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Retrospectiva"
+            "value" : "Período"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ver histórico"
+            "value" : "Período de análise"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Priviți în urmă"
+            "value" : "Perioadă analizată"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Оглянуться назад"
+            "value" : "Период"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pohľad späť"
+            "value" : "Spätné obdobie"
           }
         },
         "sv" : {
@@ -92314,13 +92316,13 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Geriye bakın"
+            "value" : "Geriye bakış"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Погляд у минуле"
+            "value" : "Період аналізу"
           }
         },
         "vi" : {
@@ -92332,13 +92334,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "回顾"
+            "value" : "回溯范围"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "回顧"
+            "value" : "回溯期間"
           }
         }
       }
@@ -92456,7 +92458,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MAKROELEMENTI"
+            "value" : "MAKROUZTURVIELAS"
           }
         },
         "ms" : {
@@ -92604,7 +92606,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "کالری نگهدارنده"
+            "value" : "کالری نگهداری"
           }
         },
         "fi" : {
@@ -92640,7 +92642,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "FENNTARTÁS"
+            "value" : "SÚLYTARTÁS"
           }
         },
         "id" : {
@@ -92676,7 +92678,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PENYELENGGARAAN"
+            "value" : "PENGEKALAN"
           }
         },
         "nb" : {
@@ -92800,7 +92802,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ΠΕΡΙΣΣΟΤΕΡΑ ΒΗΜΑΤΑ"
+            "value" : "ΜΕΓΙΣΤΑ ΒΗΜΑΤΑ"
           }
         },
         "es" : {
@@ -92836,7 +92838,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "הכי הרבה צעדים"
+            "value" : "שיא צעדים"
           }
         },
         "hi" : {
@@ -93098,7 +93100,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Makroelements"
+            "value" : "Makrouzturviela"
           }
         },
         "ms" : {
@@ -93176,13 +93178,13 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Макрос"
+            "value" : "Макронутрієнт"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dinh dưỡng đa lượng"
+            "value" : "Chất đa lượng"
           }
         },
         "zh-Hans" : {
@@ -93312,7 +93314,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Makroelementu mērķi"
+            "value" : "Makrouzturvielu mērķi"
           }
         },
         "ms" : {
@@ -93396,7 +93398,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mục tiêu dinh dưỡng đa lượng"
+            "value" : "Mục tiêu chất đa lượng"
           }
         },
         "zh-Hans" : {
@@ -93526,7 +93528,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Makroelementi"
+            "value" : "Makrouzturvielas"
           }
         },
         "ms" : {
@@ -93610,7 +93612,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dinh dưỡng đa lượng"
+            "value" : "Chất đa lượng"
           }
         },
         "zh-Hans" : {
@@ -94102,7 +94104,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "کالری نگهدارنده"
+            "value" : "کالری نگهداری"
           }
         },
         "fi" : {
@@ -94138,7 +94140,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fenntartás"
+            "value" : "Súlytartás"
           }
         },
         "id" : {
@@ -94174,7 +94176,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Penyelenggaraan"
+            "value" : "Pengekalan"
           }
         },
         "nb" : {
@@ -94316,7 +94318,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "کالری نگهدارنده (TDEE)"
+            "value" : "کالری نگهداری (TDEE)"
           }
         },
         "fi" : {
@@ -94352,7 +94354,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fenntartás (TDEE)"
+            "value" : "Súlytartás (TDEE)"
           }
         },
         "id" : {
@@ -94388,7 +94390,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Penyelenggaraan (TDEE)"
+            "value" : "Pengekalan (TDEE)"
           }
         },
         "nb" : {
@@ -94750,7 +94752,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "کالری نگهدارنده · میانگین ۳۰ روزه"
+            "value" : "کالری نگهداری · میانگین ۳۰ روزه"
           }
         },
         "fi" : {
@@ -94786,7 +94788,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fenntartás · 30 napos átl."
+            "value" : "Súlytartás · 30 napos átl."
           }
         },
         "id" : {
@@ -94822,7 +94824,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Penyelenggaraan · purata 30 hari"
+            "value" : "Pengekalan · purata 30 hari"
           }
         },
         "nb" : {
@@ -94876,7 +94878,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Underhåll · 30-dagarsmedelvärde"
+            "value" : "Underhåll · snitt 30 dagar"
           }
         },
         "th" : {
@@ -95678,7 +95680,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kemasukan Manual"
+            "value" : "Input Manual"
           }
         },
         "nb" : {
@@ -96468,7 +96470,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kuukausittain"
+            "value" : "Kuukausitilaus"
           }
         },
         "fr" : {
@@ -96576,7 +96578,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ежемесячно"
+            "value" : "Месяц"
           }
         },
         "sk" : {
@@ -96606,7 +96608,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Щомісяця"
+            "value" : "Щомісячна"
           }
         },
         "vi" : {
@@ -97110,7 +97112,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "NETTO KCAL"
+            "value" : "NETTO-KCAL"
           }
         },
         "fr" : {
@@ -97770,7 +97772,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Coach gesucht"
+            "value" : "Coaching"
           }
         },
         "el" : {
@@ -103554,7 +103556,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Δεν υπάρχουν ενεργές μετρήσεις."
+            "value" : "Δεν υπάρχουν ενεργές μετρήσεις"
           }
         },
         "es" : {
@@ -103768,7 +103770,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Δεν έχει επιλεγεί καμία μέτρηση."
+            "value" : "Δεν έχει επιλεγεί καμία μέτρηση"
           }
         },
         "es" : {
@@ -104000,7 +104002,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "هفته قبل وجود ندارد"
+            "value" : "داده‌ای از هفته قبل نیست"
           }
         },
         "fi" : {
@@ -104464,7 +104466,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Köszönöm, nem"
+            "value" : "Nem, köszönöm"
           }
         },
         "id" : {
@@ -104660,7 +104662,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "שום דבר לא הוחרג"
+            "value" : "אין ימים מוחרגים"
           }
         },
         "hi" : {
@@ -106146,7 +106148,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ravitsemustuki"
+            "value" : "Ravitsemusohjaus"
           }
         },
         "fr" : {
@@ -106302,7 +106304,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "營養支援"
+            "value" : "營養指導"
           }
         }
       }
@@ -107918,7 +107920,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Atvērt Veselību"
+            "value" : "Atvērt lietotni Veselība"
           }
         },
         "ms" : {
@@ -108008,7 +108010,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "打开健康"
+            "value" : "打开 Apple 健康"
           }
         },
         "zh-Hant" : {
@@ -108060,7 +108062,7 @@
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ava Seaded"
+            "value" : "Ava seaded"
           }
         },
         "fa" : {
@@ -108078,7 +108080,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ouvrir Réglages"
+            "value" : "Ouvrir les réglages"
           }
         },
         "he" : {
@@ -108180,7 +108182,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Открыть Настройки"
+            "value" : "Открыть настройки"
           }
         },
         "sk" : {
@@ -108210,7 +108212,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Відкрити Параметри"
+            "value" : "Відкрити параметри"
           }
         },
         "vi" : {
@@ -109142,7 +109144,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avaa appi"
+            "value" : "Avaa sovellus"
           }
         },
         "fr" : {
@@ -109356,7 +109358,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avaa historia: %@"
+            "value" : "Avaa historian: %@"
           }
         },
         "fr" : {
@@ -110058,7 +110060,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Atver makroelementu vēsturi"
+            "value" : "Atver makrouzturvielu vēsturi"
           }
         },
         "ms" : {
@@ -110142,7 +110144,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mở lịch sử dinh dưỡng đa lượng"
+            "value" : "Mở lịch sử chất đa lượng"
           }
         },
         "zh-Hans" : {
@@ -111134,7 +111136,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Berat berlebihan"
+            "value" : "Berat badan berlebihan"
           }
         },
         "nb" : {
@@ -111240,7 +111242,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PDF zpráva"
+            "value" : "Zpráva v PDF"
           }
         },
         "da" : {
@@ -111396,7 +111398,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PDF správa"
+            "value" : "Správa v PDF"
           }
         },
         "sv" : {
@@ -111758,7 +111760,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "過去%@のすべての日"
+            "value" : "過去%@を1日ずつ。"
           }
         },
         "ko" : {
@@ -116604,19 +116606,19 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Trước"
+            "value" : "Kỳ trước"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "上一个"
+            "value" : "上期"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "上一個"
+            "value" : "上一期"
           }
         }
       }
@@ -119172,7 +119174,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ĐANG DIỄN RA"
+            "value" : "ĐANG CHẠY"
           }
         },
         "zh-Hans" : {
@@ -119426,7 +119428,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sæt op til %@"
+            "value" : "Hæv til %@"
           }
         },
         "de" : {
@@ -119676,7 +119678,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Arvostele appi"
+            "value" : "Arvostele sovellus"
           }
         },
         "fr" : {
@@ -120306,7 +120308,7 @@
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Loeb Tervisest"
+            "value" : "Loeb andmeid Tervisest"
           }
         },
         "fa" : {
@@ -120318,7 +120320,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lukee tietoja Terveys-apista"
+            "value" : "Lukee tietoja Terveys-sovelluksesta"
           }
         },
         "fr" : {
@@ -120378,7 +120380,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lasa no lietotnes Apple Veselība"
+            "value" : "Lasa no lietotnes Veselība"
           }
         },
         "ms" : {
@@ -120408,7 +120410,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lê dados do Apple Saúde"
+            "value" : "Lê dados do app Saúde"
           }
         },
         "pt-PT" : {
@@ -120532,7 +120534,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Viimeaikaiset päivät"
+            "value" : "Viimeisimmät päivät"
           }
         },
         "fr" : {
@@ -121382,7 +121384,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "یادآوری در"
+            "value" : "زمان یادآوری"
           }
         },
         "fi" : {
@@ -121400,7 +121402,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "תזכורת ב־"
+            "value" : "שעת תזכורת"
           }
         },
         "hi" : {
@@ -121418,7 +121420,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Emlékeztetés ekkor:"
+            "value" : "Emlékeztetés időpontja"
           }
         },
         "id" : {
@@ -121560,7 +121562,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zprávu se nepodařilo vytvořit."
+            "value" : "Zprávu se nepodařilo vytvořit"
           }
         },
         "da" : {
@@ -121584,7 +121586,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Error en el informe"
+            "value" : "Error al crear el informe"
           }
         },
         "et" : {
@@ -121602,7 +121604,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Raportti epäonnistui"
+            "value" : "Raportin luonti epäonnistui"
           }
         },
         "fr" : {
@@ -121632,13 +121634,13 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A jelentés sikertelen"
+            "value" : "A jelentés nem készült el"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Laporan Gagal"
+            "value" : "Gagal Membuat Laporan"
           }
         },
         "it" : {
@@ -121656,7 +121658,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "리포트 실패"
+            "value" : "리포트 생성 실패"
           }
         },
         "lv" : {
@@ -121668,7 +121670,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Laporan Gagal"
+            "value" : "Laporan Gagal Dijana"
           }
         },
         "nb" : {
@@ -121758,7 +121760,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "報告失敗"
+            "value" : "無法產生報告"
           }
         }
       }
@@ -121936,7 +121938,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vila"
+            "value" : "Vilande"
           }
         },
         "th" : {
@@ -122822,7 +122824,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "恢复"
+            "value" : "继续"
           }
         },
         "zh-Hant" : {
@@ -123064,7 +123066,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prøv at hente madens kalorier igen"
+            "value" : "Hent kalorier fra mad igen"
           }
         },
         "de" : {
@@ -123154,19 +123156,19 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "음식 칼로리 재시도"
+            "value" : "음식 칼로리 다시 불러오기"
           }
         },
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vēlreiz ielādēt kaloriju datus"
+            "value" : "Vēlreiz ielādēt uztura kalorijas"
           }
         },
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cuba semula pengiraan kalori makanan"
+            "value" : "Muat semula kalori makanan"
           }
         },
         "nb" : {
@@ -123196,13 +123198,13 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tentar obter calorias dos alimentos novamente"
+            "value" : "Recarregar calorias ingeridas"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Reîncercați încărcarea caloriilor din alimente"
+            "value" : "Reîncărcați caloriile din alimente"
           }
         },
         "ru" : {
@@ -123244,7 +123246,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Thử lại calo thức ăn"
+            "value" : "Tải lại calo thức ăn"
           }
         },
         "zh-Hans" : {
@@ -123256,7 +123258,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "重試飲食熱量"
+            "value" : "重新載入飲食熱量"
           }
         }
       }
@@ -123278,7 +123280,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prøv at hente makroer igen"
+            "value" : "Hent makroer igen"
           }
         },
         "de" : {
@@ -123368,19 +123370,19 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "매크로 재시도"
+            "value" : "매크로 다시 불러오기"
           }
         },
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vēlreiz ielādēt makroelementus"
+            "value" : "Vēlreiz ielādēt makrouzturvielas"
           }
         },
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cuba semula pengiraan makro"
+            "value" : "Muat semula makro"
           }
         },
         "nb" : {
@@ -123410,13 +123412,13 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tentar obter macros novamente"
+            "value" : "Recarregar macros"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Reîncercați încărcarea macrourilor"
+            "value" : "Reîncărcați macrourile"
           }
         },
         "ru" : {
@@ -123458,7 +123460,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Thử lại dữ liệu chất đa lượng"
+            "value" : "Tải lại chất đa lượng"
           }
         },
         "zh-Hans" : {
@@ -123470,7 +123472,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "重試營養素"
+            "value" : "重新載入營養素"
           }
         }
       }
@@ -123570,7 +123572,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "RISPARMIA IL %lld%%"
+            "value" : "RISPARMIA %lld%%"
           }
         },
         "ja" : {
@@ -123582,7 +123584,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld%% 절약"
+            "value" : "%lld%% 할인"
           }
         },
         "lv" : {
@@ -123612,7 +123614,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OSZCZĘDZASZ %lld%%"
+            "value" : "OSZCZĘDŹ %lld%%"
           }
         },
         "pt-BR" : {
@@ -123687,7 +123689,8 @@
             "value" : "省 %lld%%"
           }
         }
-      }
+      },
+      "comment" : "Paywall badge on a plan row. Short ALL-CAPS pill; must fit about 14 characters."
     },
     "STEP GOAL HIT" : {
       "localizations" : {
@@ -123736,7 +123739,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "هدف قدم محقق شد"
+            "value" : "تحقق هدف قدم"
           }
         },
         "fi" : {
@@ -124100,7 +124103,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BƯỚC"
+            "value" : "SỐ BƯỚC"
           }
         },
         "zh-Hans" : {
@@ -126054,7 +126057,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zjistěte svůj udržovací výdej"
+            "value" : "Zjistěte svůj udržovací příjem"
           }
         },
         "da" : {
@@ -126102,7 +126105,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Voyez vos calories de maintien"
+            "value" : "Découvrez vos calories de maintien"
           }
         },
         "he" : {
@@ -126126,7 +126129,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nézd meg, mennyi kalória kell a súlytartáshoz."
+            "value" : "Nézd meg, mennyi kalória kell a súlytartáshoz"
           }
         },
         "id" : {
@@ -126162,7 +126165,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lihat kalori penyelenggaraan anda"
+            "value" : "Lihat kalori pengekalan anda"
           }
         },
         "nb" : {
@@ -126174,7 +126177,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zie je onderhoudscalorieën"
+            "value" : "Bekijk je onderhoudscalorieën"
           }
         },
         "pl" : {
@@ -126210,7 +126213,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zistite svoj udržiavací výdaj"
+            "value" : "Zistite svoj udržiavací príjem"
           }
         },
         "sv" : {
@@ -127702,7 +127705,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Рассказать друзьям"
+            "value" : "Поделиться с друзьями"
           }
         },
         "sk" : {
@@ -128082,7 +128085,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rādīt makroelementus"
+            "value" : "Rādīt makrouzturvielas"
           }
         },
         "ms" : {
@@ -128272,7 +128275,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tampilkan Proyeksi"
+            "value" : "Tampilkan Laju"
           }
         },
         "it" : {
@@ -128368,7 +128371,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Temponuzu Göster"
+            "value" : "Tempoyu Göster"
           }
         },
         "uk" : {
@@ -129324,7 +129327,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "दिख रहा"
+            "value" : "दिख रहा है"
           }
         },
         "hr" : {
@@ -129432,7 +129435,7 @@
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "แสดง"
+            "value" : "แสดงอยู่"
           }
         },
         "tr" : {
@@ -131012,7 +131015,7 @@
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alusta"
+            "value" : "Algus"
           }
         },
         "fa" : {
@@ -131024,7 +131027,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aloita"
+            "value" : "Alkaa"
           }
         },
         "fr" : {
@@ -131042,7 +131045,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "शुरू करें"
+            "value" : "शुरुआत"
           }
         },
         "hr" : {
@@ -131054,7 +131057,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Indítás"
+            "value" : "Kezdő dátum"
           }
         },
         "id" : {
@@ -131084,7 +131087,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sākt"
+            "value" : "Sākums"
           }
         },
         "ms" : {
@@ -131114,19 +131117,19 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Iniciar"
+            "value" : "Início"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Iniciar"
+            "value" : "Início"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Începe"
+            "value" : "Început"
           }
         },
         "ru" : {
@@ -131144,7 +131147,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Starta"
+            "value" : "Start"
           }
         },
         "th" : {
@@ -131156,7 +131159,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Başla"
+            "value" : "Başlangıç"
           }
         },
         "uk" : {
@@ -132844,7 +132847,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Начать пробный период"
+            "value" : "Начните пробный период"
           }
         },
         "sk" : {
@@ -133712,7 +133715,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stegmål nått"
+            "value" : "Stegmålet nått"
           }
         },
         "th" : {
@@ -133926,7 +133929,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stegmål nått!"
+            "value" : "Stegmålet nått!"
           }
         },
         "th" : {
@@ -134592,7 +134595,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bước"
+            "value" : "Số bước"
           }
         },
         "zh-Hans" : {
@@ -134870,7 +134873,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تعداد قدم‌ها روزبه‌روز ثابت ماند."
+            "value" : "تعداد قدم‌های روزانه ثابت ماند."
           }
         },
         "fi" : {
@@ -134984,7 +134987,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Шаги стабильны изо дня в день."
+            "value" : "Число шагов почти не менялось день ото дня."
           }
         },
         "sk" : {
@@ -135014,7 +135017,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Кроки стабільні день у день."
+            "value" : "Кроки стабільні з дня на день."
           }
         },
         "vi" : {
@@ -135246,7 +135249,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "步數，近 7 天"
+            "value" : "近 7 天步數"
           }
         }
       }
@@ -135684,7 +135687,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "الاستمرارية والتوقعات"
+            "value" : "سلاسل الأهداف والتوقعات"
           }
         },
         "cs" : {
@@ -135852,7 +135855,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Serier och prognoser"
+            "value" : "Målserier och prognoser"
           }
         },
         "th" : {
@@ -137082,7 +137085,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Segerakkan data daripada app Kesihatan"
+            "value" : "Segerakkan daripada app Kesihatan"
           }
         },
         "nb" : {
@@ -137124,7 +137127,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Синхронизировать данные из приложения «Здоровье»"
+            "value" : "Синхронизировать со «Здоровьем»"
           }
         },
         "sk" : {
@@ -137510,7 +137513,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Menyegerak…"
+            "value" : "Menyegerakkan…"
           }
         },
         "nb" : {
@@ -140364,7 +140367,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ЗАГАЛЬНИЙ ЧИСТИЙ ДЕФІЦИТ"
+            "value" : "ЗАГАЛЬНИЙ ДЕФІЦИТ"
           }
         },
         "vi" : {
@@ -142938,7 +142941,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Chủ đề"
+            "value" : "Giao diện"
           }
         },
         "zh-Hans" : {
@@ -144536,7 +144539,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mai kalória- és lépésszám."
+            "value" : "A mai kalóriák és lépések."
           }
         },
         "id" : {
@@ -145320,7 +145323,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dnes spálené kalorie celkem."
+            "value" : "Celkem dnes spálených kalorií."
           }
         },
         "da" : {
@@ -147396,7 +147399,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Отслеживайте и вы: %@"
+            "value" : "Попробуйте сами: %@"
           }
         },
         "sk" : {
@@ -148210,7 +148213,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cuba ciri pengecualian hari"
+            "value" : "Cuba Hari Dikecualikan"
           }
         },
         "nb" : {
@@ -148222,7 +148225,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Probeer uitgesloten dagen"
+            "value" : "Probeer dagen uit te sluiten"
           }
         },
         "pl" : {
@@ -149500,7 +149503,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Undervektig"
+            "value" : "Undervekt"
           }
         },
         "nl" : {
@@ -149702,7 +149705,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vienības"
+            "value" : "Mērvienības"
           }
         },
         "ms" : {
@@ -150070,7 +150073,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avaa Vitals+"
+            "value" : "Hanki Vitals+"
           }
         },
         "fr" : {
@@ -150178,7 +150181,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Открыть Vitals+"
+            "value" : "Получить Vitals+"
           }
         },
         "sk" : {
@@ -151236,7 +151239,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Atualizar"
+            "value" : "Desbloquear"
           }
         },
         "ro" : {
@@ -151366,7 +151369,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "להשתמש בבריאות במקום"
+            "value" : "להשתמש בבריאות במקום זאת"
           }
         },
         "hi" : {
@@ -151408,7 +151411,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "대신 Apple 건강 사용하기"
+            "value" : "Apple 건강으로 전환"
           }
         },
         "lv" : {
@@ -151456,13 +151459,13 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Folosiți în schimb Sănătate"
+            "value" : "Folosiți datele din Sănătate"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вместо этого использовать приложение «Здоровье»"
+            "value" : "Использовать «Здоровье»"
           }
         },
         "sk" : {
@@ -151492,7 +151495,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Натомість використовувати програму «Здоров’я»"
+            "value" : "Використовувати «Здоров’я»"
           }
         },
         "vi" : {
@@ -151824,7 +151827,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hari biasa adalah"
+            "value" : "Hari biasa berdasarkan"
           }
         },
         "it" : {
@@ -151842,7 +151845,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "평소 하루:"
+            "value" : "평소 기준"
           }
         },
         "lv" : {
@@ -151920,7 +151923,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Olağan bir günde"
+            "value" : "Olağan gün"
           }
         },
         "uk" : {
@@ -151938,7 +151941,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "平时一天："
+            "value" : "对比基准"
           }
         },
         "zh-Hant" : {
@@ -152858,7 +152861,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Virtuaaliset tapaamiset"
+            "value" : "Etätapaamiset"
           }
         },
         "fr" : {
@@ -153014,7 +153017,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "線上課程"
+            "value" : "線上諮詢"
           }
         }
       }
@@ -153928,7 +153931,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+ aktiivinen"
+            "value" : "Vitals+ käytössä"
           }
         },
         "fr" : {
@@ -153982,7 +153985,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+ 활성"
+            "value" : "Vitals+ 사용 중"
           }
         },
         "lv" : {
@@ -154320,7 +154323,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+ til %lld%% rabat"
+            "value" : "Vitals+ med %lld%% rabat"
           }
         },
         "de" : {
@@ -154666,7 +154669,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vitals+ a metade do preço"
+            "value" : "Vitals+ a meio preço"
           }
         },
         "ro" : {
@@ -155206,7 +155209,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "در انتظار دسترسی به Health"
+            "value" : "در انتظار دسترسی به Apple Health"
           }
         },
         "fi" : {
@@ -155320,13 +155323,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ожидание доступа к данным приложения «Здоровье»"
+            "value" : "Ожидание доступа к «Здоровью»"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Čakáme na prístup k údajom v aplikácii Zdravie"
+            "value" : "Čaká sa na prístup k Zdraviu"
           }
         },
         "sv" : {
@@ -155350,13 +155353,13 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Очікування доступу до даних програми «Здоров’я»"
+            "value" : "Очікування доступу до програми «Здоров’я»"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đang chờ quyền truy cập vào ứng dụng Sức khỏe"
+            "value" : "Đang chờ quyền truy cập Sức khỏe"
           }
         },
         "zh-Hans" : {
@@ -156218,7 +156221,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ 这一周"
+            "value" : "%@ 起的一周"
           }
         },
         "zh-Hant" : {
@@ -159746,7 +159749,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vuosittain"
+            "value" : "Vuositilaus"
           }
         },
         "fr" : {
@@ -164510,7 +164513,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tu IMC sigue gratis."
+            "value" : "Tu IMC sigue siendo gratis."
           }
         },
         "et" : {
@@ -165194,7 +165197,7 @@
         "hr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kontekst vaših kalorija"
+            "value" : "Vaše kalorije u kontekstu"
           }
         },
         "hu" : {
@@ -166300,7 +166303,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jūsu makroelementi katru dienu"
+            "value" : "Jūsu makrouzturvielas katru dienu"
           }
         },
         "ms" : {
@@ -166912,7 +166915,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Az árad"
+            "value" : "A te árad"
           }
         },
         "id" : {
@@ -167126,7 +167129,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Az árad: %@"
+            "value" : "A te árad: %@"
           }
         },
         "id" : {
@@ -168422,7 +168425,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tinjauan minggu Anda"
+            "value" : "Rekap minggu Anda"
           }
         },
         "it" : {
@@ -168744,7 +168747,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Không"
+            "value" : "Số 0"
           }
         },
         "zh-Hans" : {
@@ -169242,7 +169245,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "aktiiviset"
+            "value" : "aktiivinen"
           }
         },
         "fr" : {
@@ -171442,7 +171445,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "makroelementi"
+            "value" : "makrouzturvielas"
           }
         },
         "ms" : {
@@ -171639,7 +171642,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Total kalori"
+            "value" : "Total Kalori"
           }
         },
         "it" : {
@@ -171955,7 +171958,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "чисті ккал"
+            "value" : "ккал нетто"
           }
         },
         "vi" : {
@@ -172169,7 +172172,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "чисті ккал"
+            "value" : "ккал нетто"
           }
         },
         "vi" : {
@@ -172597,7 +172600,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "із %lld, для яких є дані"
+            "value" : "із %lld відстежених"
           }
         },
         "vi" : {
@@ -172733,7 +172736,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "no visām makroelementu kalorijām"
+            "value" : "no visām makrouzturvielu kalorijām"
           }
         },
         "ms" : {
@@ -172769,13 +172772,13 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "de todas as calorias provenientes dos macros"
+            "value" : "de todas as calorias de macros"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "din totalul caloriilor provenite din macronutrienți"
+            "value" : "din totalul caloriilor din macrouri"
           }
         },
         "ru" : {
@@ -172947,7 +172950,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "no makroelementu kalorijām"
+            "value" : "no makrouzturvielu kalorijām"
           }
         },
         "ms" : {
@@ -172989,7 +172992,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "din caloriile provenite din macronutrienți"
+            "value" : "din caloriile din macrouri"
           }
         },
         "ru" : {
@@ -173655,7 +173658,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "vila"
+            "value" : "vilande"
           }
         },
         "th" : {
@@ -174153,7 +174156,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "κανονικά %@"
+            "value" : "συνήθως %@"
           }
         },
         "es" : {
@@ -174991,7 +174994,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "vs. předchozí rozsah"
+            "value" : "vs. předchozí období"
           }
         },
         "da" : {
@@ -175147,7 +175150,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "vs. predchádzajúci rozsah"
+            "value" : "vs. predchádzajúce obdobie"
           }
         },
         "sv" : {
@@ -176501,7 +176504,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "· %lld udeladt"
+            "value" : "· udeladt: %lld"
           }
         },
         "de" : {
@@ -176531,7 +176534,7 @@
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "‏· %lld مستثنا"
+            "value" : "‏· %lld روز مستثنا"
           }
         },
         "fi" : {
@@ -176579,7 +176582,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "· %lld esclusi"
+            "value" : "· esclusi: %lld"
           }
         },
         "ja" : {
@@ -177917,7 +177920,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "👟 Méd. de passos: %@"
+            "value" : "👟 Média de passos: %@"
           }
         },
         "pt-PT" : {
@@ -177965,7 +177968,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "👟 Сер. кроків: %@"
+            "value" : "👟 Кроків у середньому: %@"
           }
         },
         "vi" : {
@@ -178131,7 +178134,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "🔥 Méd. de calorias: %@"
+            "value" : "🔥 Média de calorias: %@"
           }
         },
         "pt-PT" : {
@@ -178149,7 +178152,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "🔥 Среднее число калорий: %@"
+            "value" : "🔥 Калории в среднем: %@"
           }
         },
         "sk" : {
@@ -178179,7 +178182,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "🔥 Сер. калорій: %@"
+            "value" : "🔥 Калорій у середньому: %@"
           }
         },
         "vi" : {
