@@ -149,9 +149,14 @@ extension Package {
     }
 
     private func formattedEquivalent(divisor: Decimal) -> String? {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = storeProduct.priceFormatter?.locale ?? Locale(identifier: "en_US")
+        // Copy the store's formatter so the currency matches the headline price;
+        // its locale alone falls back to the device currency (e.g. EUR next to USD).
+        let formatter = (storeProduct.priceFormatter?.copy() as? NumberFormatter) ?? {
+            let f = NumberFormatter()
+            f.numberStyle = .currency
+            f.locale = Locale(identifier: "en_US")
+            return f
+        }()
         return formatter.string(from: (vitalsPriceAmount / divisor) as NSDecimalNumber)
     }
 
