@@ -552,13 +552,16 @@ struct PaywallView: View {
                 Text(isRestoring ? "Restoring…" : String(localized: "Restore"))
                     .font(.system(.caption2, design: .rounded, weight: .semibold))
                     .foregroundStyle(Theme.textSecondary)
+                    .legalTapTarget()
             }
             .buttonStyle(.plain)
             .disabled(isRestoring || isPurchasing)
             if !typeSize.isAccessibilitySize { Text("·").foregroundStyle(Theme.textTertiary) }
             Link("Terms", destination: PaywallLinks.standardEULA)
+                .legalTapTarget()
             if !typeSize.isAccessibilitySize { Text("·").foregroundStyle(Theme.textTertiary) }
             Link("Privacy Policy", destination: PaywallLinks.privacyPolicy)
+                .legalTapTarget()
         }
         .font(.system(.caption2, design: .rounded))
         .foregroundStyle(Theme.textTertiary)

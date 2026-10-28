@@ -73,7 +73,12 @@ final class ReleaseJourneysUITests: XCTestCase {
         clearTrialPitch(app)
         // Unfolded on the Duo, History is the trailing pane and has no tab button.
         let historyTab = app.buttons["tab-history"]
-        if historyTab.exists { historyTab.tap() }
+        if historyTab.exists {
+            historyTab.tap()
+            // Today fades out as History fades in; its ring button is still
+            // in the tree for a beat and reads as a label with nothing drawn.
+            _ = app.descendants(matching: .any).matching(Self.calorieRing).firstMatch.waitForNonExistence(timeout: 5)
+        }
         QA.checkpoint(app, "history")
 
         clearTrialPitch(app)

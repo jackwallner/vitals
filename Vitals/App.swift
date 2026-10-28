@@ -2502,6 +2502,8 @@ struct TrialOfferSheet: View {
                         Text(exitOffer == nil ? String(localized: "Not now") : String(localized: "No thanks"))
                             .font(.system(.subheadline, design: .rounded, weight: .semibold))
                             .foregroundStyle(Theme.textSecondary)
+                            .frame(minWidth: 44, minHeight: 44)
+                            .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                     .disabled(isPurchasing)
@@ -2518,13 +2520,16 @@ struct TrialOfferSheet: View {
                     HStack(spacing: 4) {
                         Button(action: onRestore) {
                             Text(isRestoring ? "Restoring…" : String(localized: "Restore"))
+                                .legalTapTarget()
                         }
                         .buttonStyle(.plain)
                         .disabled(isRestoring || isPurchasing)
                         Text("·")
                         Link("Terms", destination: PaywallLinks.standardEULA)
+                            .legalTapTarget()
                         Text("·")
                         Link("Privacy Policy", destination: PaywallLinks.privacyPolicy)
+                            .legalTapTarget()
                     }
                     .font(.system(.caption2, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
@@ -2675,7 +2680,8 @@ private struct MilestoneCelebrationSheet: View {
                             .font(.system(.subheadline, design: .rounded, weight: .semibold))
                             .foregroundStyle(Theme.textSecondary)
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 8)
+                            .frame(minHeight: 44)
+                            .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                     .accessibilityIdentifier("trial-pitch-dismiss")
@@ -2912,7 +2918,7 @@ private struct TabButton: View {
                 Text(label)
                     .font(.system(size: 10, weight: .semibold, design: .rounded))
             }
-            .foregroundStyle(isSelected ? Theme.caloriesPrimary : Theme.textTertiary)
+            .foregroundStyle(isSelected ? Theme.caloriesText : Theme.textSecondary)
             .frame(width: 72, height: 44)
             .background(
                 isSelected ? Theme.caloriesPrimary.opacity(0.12) : .clear,

@@ -2211,6 +2211,12 @@ private struct PacingPill: View {
         return diff >= 0 ? .green : Color(red: 1.0, green: 0.42, blue: 0.42)
     }
 
+    /// The tint darkened for text; the capsule keeps the brand tint.
+    private var textTint: Color {
+        guard let diff else { return color }
+        return diff >= 0 ? Theme.positiveText : Theme.caloriesText
+    }
+
     private var icon: String {
         guard let diff else { return "chart.line.uptrend.xyaxis" }
         return diff >= 0 ? "arrow.up.right" : "arrow.down.right"
@@ -2244,7 +2250,7 @@ private struct PacingPill: View {
                     .opacity(0.7)
             }
         }
-        .foregroundStyle(tint)
+        .foregroundStyle(textTint)
         .lineLimit(1)
         .minimumScaleFactor(0.75)
         .padding(.horizontal, 12)
@@ -2648,6 +2654,7 @@ private struct OnboardingSheet: View {
 
     @ObservedObject var goals: GoalSettings
     @EnvironmentObject private var store: StoreService
+    @Environment(\.dynamicTypeSize) private var typeSize
     @Environment(\.dismiss) private var dismiss
     private let healthKit = HealthKitService.shared
 
@@ -3081,6 +3088,9 @@ private struct OnboardingSheet: View {
     @ViewBuilder
     private var aboveButtonContent: some View {
         switch step {
+        // The page says the same thing in its second card. At accessibility
+        // sizes the line only crowds the scrolling card above it.
+        case .welcome where typeSize.isAccessibilitySize: EmptyView()
         case .welcome: welcomeTrustLine.transition(Self.pageTransition)
         case .goals: EmptyView()
         case .trial: trialSoftExitAndError.transition(Self.pageTransition)
@@ -3229,8 +3239,8 @@ private struct OnboardingSheet: View {
             Text("Get Started")
                 .font(.system(.subheadline, design: .rounded, weight: .semibold))
                 .foregroundStyle(Theme.textSecondary)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 8)
+                .frame(maxWidth: .infinity, minHeight: 44)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier("onboarding-get-started")
@@ -3243,8 +3253,10 @@ private struct OnboardingSheet: View {
     private var legalFooter: some View {
         HStack(spacing: 14) {
             Link("Terms", destination: VitalsLinks.standardEULA)
+                .legalTapTarget()
             Link("Privacy", destination: VitalsLinks.privacyPolicy)
-            Button(isRestoring ? "Restoring…" : String(localized: "Restore")) {
+                .legalTapTarget()
+            Button {
                 // Fire-and-forget before: the task was unobserved, so a
                 // returning subscriber with nothing to restore tapped it and
                 // watched nothing happen. A success flips `isPro`, which
@@ -3258,6 +3270,9 @@ private struct OnboardingSheet: View {
                     trialError = store.lastError
                         ?? String(localized: "No active Vitals+ purchase was found for this Apple ID.")
                 }
+            } label: {
+                Text(isRestoring ? "Restoring…" : String(localized: "Restore"))
+                    .legalTapTarget()
             }
             .buttonStyle(.plain)
             .disabled(isRestoring)
