@@ -79,7 +79,7 @@
         "hr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Danas potrošene kalorije u ${applicationName}"
+            "value" : "Kalorije potrošene danas u ${applicationName}"
           }
         },
         "hu" : {
@@ -91,7 +91,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalori terbakar hari ini di ${applicationName}"
+            "value" : "Kalori yang terbakar hari ini di ${applicationName}"
           }
         },
         "it" : {
@@ -240,7 +240,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zeig meine Kalorien in ${applicationName}"
+            "value" : "Zeig mir meine Kalorien in ${applicationName}"
           }
         },
         "el" : {
@@ -455,7 +455,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zeig meine Schritte in ${applicationName}"
+            "value" : "Zeig mir meine Schritte in ${applicationName}"
           }
         },
         "el" : {
@@ -539,7 +539,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "${applicationName}에서 내 걸음 확인"
+            "value" : "${applicationName}에서 내 걸음 수 확인"
           }
         },
         "lv" : {
@@ -611,7 +611,7 @@
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ดูก้าวของฉันใน ${applicationName}"
+            "value" : "ดูจำนวนก้าวของฉันใน ${applicationName}"
           }
         },
         "tr" : {
@@ -760,7 +760,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cik kaloriju esmu sadedzinājis lietotnē ${applicationName}"
+            "value" : "Cik kaloriju es šodien sadedzināju lietotnē ${applicationName}"
           }
         },
         "ms" : {
@@ -832,7 +832,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "${applicationName} uygulamasında kaç kalori yaktım"
+            "value" : "${applicationName} uygulamasında kaç kalori yaktım?"
           }
         },
         "uk" : {
@@ -885,7 +885,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wie viele Schritte habe ich in ${applicationName} gemacht"
+            "value" : "Wie viele Schritte habe ich in ${applicationName} zurückgelegt"
           }
         },
         "el" : {
@@ -933,7 +933,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "${applicationName} में मैंने कितने कदम चले"
+            "value" : "${applicationName} में मैंने कितने कदम उठाए"
           }
         },
         "hr" : {
@@ -951,7 +951,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Berapa langkah yang sudah saya ambil di ${applicationName}"
+            "value" : "Berapa langkah yang sudah saya tempuh di ${applicationName}"
           }
         },
         "it" : {
@@ -975,7 +975,7 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cik soļu esmu nogājis lietotnē ${applicationName}"
+            "value" : "Cik soļu es šodien nogāju lietotnē ${applicationName}"
           }
         },
         "ms" : {
@@ -1047,7 +1047,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "${applicationName} uygulamasında kaç adım attım"
+            "value" : "${applicationName} uygulamasında kaç adım attım?"
           }
         },
         "uk" : {
@@ -1262,7 +1262,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "${applicationName} uygulamasında bugünkü adımlar"
+            "value" : "${applicationName} uygulamasında bugünkü adım sayısı"
           }
         },
         "uk" : {
