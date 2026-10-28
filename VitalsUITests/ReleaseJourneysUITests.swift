@@ -25,7 +25,7 @@ final class ReleaseJourneysUITests: XCTestCase {
 
     /// The app's own translations of the controls without an identifier, from
     /// `Localizable.xcstrings`; the english and german personas need two of each.
-    static let calorieRing = NSPredicate(format: "label IN {'Calorie progress', 'Kalorienfortschritt', 'Progreso de calorías', 'Progression des calories', 'Progresso calorie', 'カロリーの進捗', '卡路里进度'}")
+    static let calorieRing = NSPredicate(format: "label IN {'Calorie progress', 'Kalorienfortschritt', 'Fortschritt der Kalorien', 'Progreso de calorías', 'Progression des calories', 'Progresso calorie', 'カロリーの進捗', '卡路里进度'}")
     static let settingsButton = NSPredicate(format: "label IN {'Settings', 'Einstellungen', 'Ajustes', 'Réglages', 'Impostazioni', '設定', '设置'}")
     static let doneButton = NSPredicate(format: "label IN {'Done', 'Fertig', 'Listo', 'OK', 'Fine', '完了', '完成'}")
 

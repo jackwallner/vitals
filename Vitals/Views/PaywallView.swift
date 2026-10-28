@@ -505,7 +505,7 @@ struct PaywallView: View {
                         .font(.system(.caption2, design: .rounded))
                         .foregroundStyle(Theme.textTertiary)
                         .multilineTextAlignment(.center)
-                        .lineLimit(typeSize.isAccessibilitySize ? nil : 3)
+                        .lineLimit(typeSize.isAccessibilitySize ? nil : 4)
                         .minimumScaleFactor(0.9)
                         .frame(maxWidth: .infinity)
                 }
@@ -515,7 +515,7 @@ struct PaywallView: View {
             // At accessibility sizes the price and renewal terms cannot fit the
             // fixed slot, and 3.1.2 copy must be readable in full, so the slot
             // grows there; the plan list above scrolls to make room.
-            .frame(height: typeSize.isAccessibilitySize ? nil : 62, alignment: .top)
+            .frame(height: typeSize.isAccessibilitySize ? nil : 96, alignment: .top)
         }
         .padding(.horizontal, 22)
         .padding(.top, 8)

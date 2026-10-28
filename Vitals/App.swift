@@ -1336,6 +1336,7 @@ struct MainTabView: View {
                 }
                 .padding(.horizontal, 8)
                 .padding(.vertical, 6)
+                .background(Theme.background.opacity(0.7), in: Capsule())
                 .background(.ultraThinMaterial.opacity(0.8), in: Capsule())
                 .overlay(Capsule().stroke(Color(.separator).opacity(0.3), lineWidth: 0.5))
                 .readableWidth(420)
