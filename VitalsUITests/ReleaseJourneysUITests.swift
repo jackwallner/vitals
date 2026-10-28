@@ -65,7 +65,9 @@ final class ReleaseJourneysUITests: XCTestCase {
         QA.checkpoint(app, "today-launch")
 
         clearTrialPitch(app)
-        app.buttons["tab-history"].tap()
+        // Unfolded on the Duo, History is the trailing pane and has no tab button.
+        let historyTab = app.buttons["tab-history"]
+        if historyTab.exists { historyTab.tap() }
         QA.checkpoint(app, "history")
 
         clearTrialPitch(app)
