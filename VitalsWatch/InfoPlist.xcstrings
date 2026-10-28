@@ -25,7 +25,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Total Calories liest Aktive Energie, Grundumsatz, Schritte und (auf dem iPhone) Nahrungsenergie aus Apple Health, um deinen Tagesfortschritt anzuzeigen. Total Calories schreibt niemals Gesundheitsdaten in Apple Health."
+            "value" : "Total Calories liest Aktive Energie, Ruheenergie, Schritte und (auf dem iPhone) Nahrungsenergie aus Apple Health, um deinen Tagesfortschritt anzuzeigen. Total Calories schreibt niemals Gesundheitsdaten in Apple Health."
           }
         },
         "el" : {
@@ -139,7 +139,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Total Calories leest je actieve energie, basale energie en aantal stappen uit Apple Gezondheid, en (op iPhone) ook je voedingsenergie om je dagelijkse voortgang te tonen. Total Calories schrijft nooit gegevens naar Gezondheid."
+            "value" : "Total Calories leest je actieve energie, energie in rust en aantal stappen uit Apple Gezondheid, en (op iPhone) ook je voedingsenergie om je dagelijkse voortgang te tonen. Total Calories schrijft nooit gegevens naar Gezondheid."
           }
         },
         "pl" : {

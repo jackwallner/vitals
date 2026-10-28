@@ -981,7 +981,7 @@
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Berapa langkah yang telah saya ambil dalam ${applicationName}"
+            "value" : "Berapa langkah yang telah saya tempuh dalam ${applicationName}"
           }
         },
         "nb" : {
