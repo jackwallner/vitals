@@ -760,15 +760,24 @@ struct PaywallView: View {
                 .lineLimit(focus == nil ? 1 : 2)
                 .minimumScaleFactor(0.85)
             // Ticks so the welcome price's "ends in" stays true while it's open.
-            TimelineView(.everyMinute) { context in
-                Text(welcomeLine(now: context.date) ?? focus?.intentSubheadline ?? upgradeTabHeaderSubheadline)
-                    .font(.system(compact ? .footnote : .subheadline, design: .rounded))
-                    .foregroundStyle(Theme.textSecondary)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(compact ? 2 : nil)
-                    .minimumScaleFactor(compact ? 0.9 : 1)
+            // Without a welcome price the line is static, so no timeline redraws it.
+            if store.welcomePriceEndsAt != nil {
+                TimelineView(.everyMinute) { context in
+                    subheadline(now: context.date, compact: compact)
+                }
+            } else {
+                subheadline(now: Date(), compact: compact)
             }
         }
+    }
+
+    private func subheadline(now: Date, compact: Bool) -> some View {
+        Text(welcomeLine(now: now) ?? focus?.intentSubheadline ?? upgradeTabHeaderSubheadline)
+            .font(.system(compact ? .footnote : .subheadline, design: .rounded))
+            .foregroundStyle(Theme.textSecondary)
+            .multilineTextAlignment(.center)
+            .lineLimit(compact ? 2 : nil)
+            .minimumScaleFactor(compact ? 0.9 : 1)
     }
 
     private func welcomeLine(now: Date) -> String? {
