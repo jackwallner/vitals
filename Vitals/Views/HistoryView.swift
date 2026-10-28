@@ -721,7 +721,7 @@ struct HistoryView: View {
                                     color: Theme.caloriesPrimary
                                 )
                                 AverageCard(
-                                    label: String(localized: "Total Calories"),
+                                    label: String(localized: "metric.totalCalories", defaultValue: "Total Calories"),
                                     value: totalCalories.formatted(.number.precision(.fractionLength(0))),
                                     color: Theme.caloriesPrimary
                                 )
@@ -1770,7 +1770,7 @@ struct HistoryView: View {
                         PeakCard(label: String(localized: "Best Day"), value: peak.totalCalories.formatted(.number.precision(.fractionLength(0))), date: peak.date, color: Theme.caloriesPrimary)
                     }
                 }
-                WideTotalCard(label: String(localized: "Total Calories"), value: totalCalories.formatted(.number.precision(.fractionLength(0))), color: Theme.caloriesPrimary)
+                WideTotalCard(label: String(localized: "metric.totalCalories", defaultValue: "Total Calories"), value: totalCalories.formatted(.number.precision(.fractionLength(0))), color: Theme.caloriesPrimary)
             }
         case .steps:
             VStack(spacing: 12) {
@@ -2295,7 +2295,7 @@ struct HistoryView: View {
         formatter.dateFormat = "yyyy-MM-dd"
 
         let includeNet = store.isPro && goals.showNetCalories
-        var columns = [String(localized: "Date"), String(localized: "Active Calories"), String(localized: "Resting Calories"), String(localized: "Total Calories"), String(localized: "Steps")]
+        var columns = [String(localized: "Date"), String(localized: "Active Calories"), String(localized: "Resting Calories"), String(localized: "metric.totalCalories", defaultValue: "Total Calories"), String(localized: "Steps")]
         if includeNet {
             columns += [String(localized: "Food Calories"), String(localized: "Net Deficit")]
         }

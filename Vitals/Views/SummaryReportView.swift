@@ -169,7 +169,7 @@ struct SummaryReportView: View {
     }
 
     private var caloriesChart: some View {
-        ReportChartCard(title: String(localized: "Total Calories"), color: reportCalorieColor, compact: isCompact) {
+        ReportChartCard(title: String(localized: "metric.totalCalories", defaultValue: "Total Calories"), color: reportCalorieColor, compact: isCompact) {
             Chart(report.days) { day in
                 BarMark(
                     x: .value("Date", day.date, unit: .day),
