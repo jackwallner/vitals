@@ -9830,7 +9830,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@, veloituksetta."
+            "value" : "%@ meidän piikkiin."
           }
         },
         "fr" : {
@@ -9866,7 +9866,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@, gratis."
+            "value" : "%@, dari kami."
           }
         },
         "it" : {
@@ -9890,13 +9890,13 @@
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ bez maksas."
+            "value" : "%@ no mums."
           }
         },
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@, percuma untuk anda."
+            "value" : "%@, daripada kami."
           }
         },
         "nb" : {
@@ -9914,7 +9914,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ gratis."
+            "value" : "%@ od nas."
           }
         },
         "pt-BR" : {
@@ -9944,7 +9944,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ zdarma."
+            "value" : "%@ od nás."
           }
         },
         "sv" : {
@@ -9956,7 +9956,7 @@
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ ฟรี"
+            "value" : "%@ จากเรา"
           }
         },
         "tr" : {
@@ -90214,19 +90214,19 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Celé období"
+            "value" : "Doživotně"
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hele perioden"
+            "value" : "Livstid"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gesamt"
+            "value" : "Lebenslang"
           }
         },
         "el" : {
@@ -90244,7 +90244,7 @@
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kogu aeg"
+            "value" : "Eluaegne"
           }
         },
         "fa" : {
@@ -90256,7 +90256,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Koko ajalta"
+            "value" : "Elinikäinen"
           }
         },
         "fr" : {
@@ -90268,7 +90268,7 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "כל הזמנים"
+            "value" : "לכל החיים"
           }
         },
         "hi" : {
@@ -90280,13 +90280,13 @@
         "hr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sve vrijeme"
+            "value" : "Doživotno"
           }
         },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Teljes időszak"
+            "value" : "Élethosszig"
           }
         },
         "id" : {
@@ -90352,19 +90352,19 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desde sempre"
+            "value" : "Vitalício"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tot timpul"
+            "value" : "Pe viață"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "За всё время"
+            "value" : "Навсегда"
           }
         },
         "sk" : {
