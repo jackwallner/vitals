@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="256x256" href="../icon_256.png">
+<link rel="apple-touch-icon" href="../icon_256.png">
+<title>Apple Watch 卡路里消耗 | Total Calories</title>
+<meta name="description" content="Total Calories 在 Apple Watch 和 iPhone 上显示总卡路里消耗。把健康 App 中的活动与静息卡路里合成一个数字。免费，注重隐私。">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://jackwallner.com/ios/vitals/zh-Hans/">
+    <link rel="alternate" hreflang="en" href="https://jackwallner.com/ios/vitals/">
+    <link rel="alternate" hreflang="de" href="https://jackwallner.com/ios/vitals/de/">
+    <link rel="alternate" hreflang="ja" href="https://jackwallner.com/ios/vitals/ja/">
+    <link rel="alternate" hreflang="fr" href="https://jackwallner.com/ios/vitals/fr/">
+    <link rel="alternate" hreflang="zh-Hans" href="https://jackwallner.com/ios/vitals/zh-Hans/">
+    <link rel="alternate" hreflang="es" href="https://jackwallner.com/ios/vitals/es/">
+    <link rel="alternate" hreflang="pl" href="https://jackwallner.com/ios/vitals/pl/">
+    <link rel="alternate" hreflang="ru" href="https://jackwallner.com/ios/vitals/ru/">
+    <link rel="alternate" hreflang="it" href="https://jackwallner.com/ios/vitals/it/">
+    <link rel="alternate" hreflang="pt-BR" href="https://jackwallner.com/ios/vitals/pt-BR/">
+    <link rel="alternate" hreflang="ar" href="https://jackwallner.com/ios/vitals/ar/">
+    <link rel="alternate" hreflang="x-default" href="https://jackwallner.com/ios/vitals/">
+<script>if(location.hostname==="jackwallner.github.io"){var c=document.querySelector('link[rel="canonical"]');if(c&&c.href.indexOf("https://jackwallner.com/")===0)location.replace(c.href)}</script>
+<meta name="apple-itunes-app" content="app-id=6761743504">
+
+<meta property="og:title" content="Apple Watch 与 iPhone 总卡路里消耗应用">
+<meta property="og:description" content="总卡路里消耗（活动加静息）、步数和趋势，显示在 Apple Watch 表盘、小组件和 iPhone 上，全部来自健康 App。免费，注重隐私。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jackwallner.com/ios/vitals/zh-Hans/">
+<meta property="og:image" content="https://jackwallner.github.io/vitals/og-preview.png">
+<meta property="og:video" content="https://jackwallner.github.io/vitals/preview.mp4">
+<meta property="og:video:secure_url" content="https://jackwallner.github.io/vitals/preview.mp4">
+<meta property="og:video:type" content="video/mp4">
+<meta property="og:video:width" content="1080">
+<meta property="og:video:height" content="1080">
+<meta property="og:site_name" content="Jack Wallner">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Apple Watch 与 iPhone 总卡路里消耗应用">
+<meta name="twitter:description" content="总卡路里消耗（活动加静息）、步数和趋势，显示在 Apple Watch 表盘、小组件和 iPhone 上，全部来自健康 App。免费，注重隐私。">
+<meta name="twitter:image" content="https://jackwallner.github.io/vitals/appstore-screenshot-01.png">
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "MobileApplication",
+            "dateModified": "2026-10-28",
+            "@id": "https://jackwallner.com/ios/vitals/zh-Hans/#app",
+            "name": "Total Calories - Daily Tracker",
+            "alternateName": "Total Calories",
+            "description": "Total Calories 是一款适用于 iPhone 和 Apple Watch 的总卡路里消耗应用。它把健康 App 中的活动与静息卡路里加成一个每日数字，显示在 Apple Watch 复杂功能、主屏幕和锁定屏幕小组件，以及含步数和趋势的仪表盘上。它不是饮食记录应用。Vitals+ 增加 TDEE 和 BMR 参考值、活动与静息明细，以及使用其他饮食应用食物能量的净缺口。",
+            "applicationCategory": "HealthApplication",
+            "operatingSystem": "iOS 17+, watchOS 10+, Android",
+            "url": "https://jackwallner.com/ios/vitals/zh-Hans/",
+            "downloadUrl": "https://apps.apple.com/cn/app/id6761743504",
+            "installUrl": [
+                "https://apps.apple.com/cn/app/id6761743504",
+                "https://play.google.com/store/apps/details?id=com.jackwallner.vitals"
+            ],
+            "sameAs": [
+                "https://apps.apple.com/cn/app/id6761743504",
+                "https://play.google.com/store/apps/details?id=com.jackwallner.vitals"
+            ],
+            "screenshot": [
+                "https://jackwallner.github.io/vitals/appstore-screenshot-01.png",
+                "https://jackwallner.github.io/vitals/appstore-screenshot-02.png",
+                "https://jackwallner.github.io/vitals/appstore-screenshot-03.png",
+                "https://jackwallner.github.io/vitals/appstore-screenshot-04.png"
+            ],
+            "featureList": [
+                "来自健康 App 的总卡路里消耗（活动加静息）",
+                "圆形、矩形、内嵌和角落样式的 Apple Watch 复杂功能",
+                "主屏幕和锁定屏幕小组件",
+                "每日步数，附卡路里和步数目标",
+                "7、30、90 和 365 天历史，支持 CSV 导出",
+                "Vitals+：TDEE 和 BMR 参考值、净缺口和 PDF 报告"
+            ],
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "5",
+                "ratingCount": "11",
+                "bestRating": "5"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "Jack Wallner",
+                "url": "https://jackwallner.com/"
+            },
+            "publisher": {
+                "@type": "Person",
+                "name": "Jack Wallner",
+                "url": "https://jackwallner.com/"
+            }
+        },
+        {
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "有没有能在 Apple Watch 上显示总卡路里消耗的应用？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "有。Total Calories 会把你的总卡路里消耗（活动加静息）作为复杂功能添加到 Apple Watch 表盘，支持圆形、矩形、内嵌和角落样式，并包含完整的手表 App。"
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "如何在 Apple Watch 表盘上看到总卡路里消耗？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "在 iPhone 上安装 Total Calories，然后把它的复杂功能添加到任何带复杂功能位置的表盘上。Apple 的活动圆环只统计活动卡路里，而这款 App 显示活动加静息。"
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "活动卡路里和静息卡路里有什么区别？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "活动卡路里是你通过运动和锻炼消耗的，静息卡路里是身体静止时为维持运转消耗的。Total Calories 从健康 App 读取两者并相加得出每日总量，Vitals+ 还会显示活动与静息的明细。"
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "能在 App 中看到我的 TDEE 和 BMR 吗？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "可以。Vitals+ 会显示 TDEE 和 BMR 参考值，即来自健康 App 的 30 天维持能量和静息能量平均值。本站还有免费的 TDEE 和 BMR 计算器指南。"
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Total Calories 是饮食记录或卡路里计数应用吗？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "不是。它是卡路里消耗应用，不记录餐食。使用 Vitals+ 时，净缺口会减去其他饮食应用（如 MyFitnessPal 或 Lose It）已写入健康 App 的食物能量。"
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Total Calories 免费吗？需要账户吗？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "核心应用可免费下载，无需账户。追踪、小组件和 Apple Watch App 免费，可选的 Vitals+ 升级在购买前会在 App 内标明价格，因地区而异。"
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Total Calories 会保护我的健康数据隐私吗？",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "会。它以只读模式读取健康 App，你的健康数据留在设备上。没有广告，没有追踪，也没有账户。"
+                    }
+                }
+            ]
+        },
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Jack Wallner",
+                    "item": "https://jackwallner.com/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "iOS 应用",
+                    "item": "https://jackwallner.com/ios/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Total Calories",
+                    "item": "https://jackwallner.com/ios/vitals/zh-Hans/"
+                }
+            ]
+        }
+    ]
+}</script>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+            color: #1d1d1f;
+            background: #fafafa;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Nav */
+        nav {
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            background: rgba(250,250,250,0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        nav .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #1d1d1f;
+        }
+
+        .nav-brand img {
+            width: 32px;
+            height: 32px;
+            border-radius: 7px;
+        }
+
+        .nav-brand span {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .nav-link {
+            font-size: 14px;
+            text-decoration: none;
+            background: #1d1d1f;
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 980px;
+            font-weight: 500;
+            transition: opacity 0.15s;
+        }
+
+        .nav-link:hover { opacity: 0.85; }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 100px 24px 64px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            line-height: 1.08;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 span {
+            color: #db340e;
+        }
+
+        .hero .tagline {
+            font-size: 19px;
+            color: #6e6e73;
+            line-height: 1.5;
+            max-width: 440px;
+            margin: 0 auto 12px;
+        }
+
+        .hero .platforms {
+            font-size: 13px;
+            color: #6e6e73;
+            letter-spacing: 0.3px;
+            margin-bottom: 36px;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: #1d1d1f;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 14px 36px;
+            border-radius: 980px;
+            text-decoration: none;
+            transition: opacity 0.15s;
+        }
+
+        .download-btn:hover { opacity: 0.85; }
+
+        /* Screenshot showcase */
+        .showcase {
+            padding: 0 0 80px;
+        }
+
+        .showcase-scroll {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 0 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            scrollbar-width: none;
+        }
+
+        .showcase-scroll::-webkit-scrollbar { display: none; }
+
+        .showcase-card {
+            flex-shrink: 0;
+            scroll-snap-align: center;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 16px 48px rgba(0,0,0,0.08);
+        }
+
+        .showcase-card img {
+            width: auto;
+            height: 540px;
+            display: block;
+        }
+
+        /* Features */
+        .features {
+            padding: 80px 0;
+            background: #fff;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        .features-header h2 {
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .features-header p {
+            font-size: 17px;
+            color: #6e6e73;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: rgba(0,0,0,0.06);
+            border-top: 1px solid rgba(0,0,0,0.06);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .feature-card {
+            background: #fff;
+            padding: 36px 32px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: #6e6e73;
+            line-height: 1.55;
+        }
+
+        /* Privacy */
+        .privacy {
+            padding: 80px 0;
+        }
+
+        .privacy .container {
+            max-width: 640px;
+            text-align: center;
+        }
+
+        .privacy .lockup {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #f5f5f7;
+            margin-bottom: 20px;
+        }
+
+        .privacy .lockup svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: #1d1d1f;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .privacy h2 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .privacy p {
+            font-size: 17px;
+            color: #6e6e73;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .privacy a {
+            font-size: 15px;
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .privacy a:hover { text-decoration: underline; }
+
+        /* More Info */
+        .more-info {
+            padding: 64px 24px;
+            background: #fff;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .more-info-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .more-info-header h2 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .more-info-header p {
+            font-size: 17px;
+            color: #6e6e73;
+        }
+
+        .more-info-content {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .more-info-section {
+            margin-bottom: 40px;
+        }
+
+        .more-info-section h3 {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #6e6e73;
+            margin-bottom: 12px;
+        }
+
+        .more-info-section p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #1d1d1f;
+            margin-bottom: 12px;
+        }
+
+        .more-info-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .more-info-section strong {
+            font-weight: 600;
+        }
+
+        .specs-table {
+            width: 100%;
+            font-size: 14px;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        .specs-table td {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .specs-table td:first-child {
+            color: #6e6e73;
+            width: 140px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* FAQ */
+        .faq-list { margin-top: 4px; }
+        .faq-list details { border-bottom: 1px solid rgba(0,0,0,0.06); padding: 14px 0; }
+        .faq-list summary { font-size: 15px; font-weight: 600; color: #1d1d1f; cursor: pointer; list-style: none; line-height: 1.4; }
+        .faq-list summary::-webkit-details-marker { display: none; }
+        .faq-list summary::after { content: "+"; float: right; color: #6e6e73; font-weight: 400; margin-left: 12px; }
+        .faq-list details[open] summary::after { content: "\2212"; }
+        .faq-list details p { font-size: 15px; line-height: 1.6; color: #6e6e73; margin: 10px 0 0; }
+
+        /* CTA */
+        .cta {
+            text-align: center;
+            padding: 64px 24px 80px;
+            background: #fff;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .cta h2 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .cta p {
+            font-size: 15px;
+            color: #6e6e73;
+            margin-bottom: 28px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px 24px;
+            font-size: 12px;
+            color: #6e6e73;
+        }
+
+        footer a { display: inline-block; padding: 6px 0;
+            color: #6e6e73;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover { color: #1d1d1f; }
+
+        footer .divider { margin: 4px 0; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero { padding: 72px 20px 48px; }
+            .hero h1 { font-size: 36px; letter-spacing: -1px; }
+            .hero .tagline { font-size: 17px; }
+
+            .showcase-card img { height: 400px; }
+
+            .features-grid { grid-template-columns: 1fr; }
+
+            .features-header h2 { font-size: 28px; }
+            .privacy h2, .cta h2 { font-size: 26px; }
+        }
+
+        @media (max-width: 480px) {
+            .showcase-card img { height: 360px; }
+        }
+        .feature-card .tier {
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #db340e;
+        }
+    
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.nav-actions .nav-link, .nav-brand span { white-space: nowrap; }
+@media (max-width: 480px) { .nav-actions { gap: 6px; } .nav-actions .nav-link { padding: 7px 12px; font-size: 13px; } }
+.nav-link-play { background: transparent; color: #1d1d1f; box-shadow: inset 0 0 0 1px #1d1d1f; }
+.store-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; }
+.play-badge { display: inline-block; line-height: 0; margin: -11px -12px; }
+.play-badge img { height: 69px; width: auto; display: block; }
+.cta-box .play-badge { margin: -10px -11px; }
+.cta-box .play-badge img { height: 64px; }
+        summary > h2.faq-q { display: inline; margin: 0; font: inherit; letter-spacing: inherit; color: inherit; }
+</style>
+</head>
+<body>
+<nav>
+<div class="container">
+<a class="nav-brand" href="./" aria-label="Total Calories">
+<img src="../icon_64.webp" alt="" width="32" height="32">
+<span>Total Calories</span>
+</a>
+<span class="nav-actions"><a class="nav-link" href="https://apps.apple.com/cn/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-home-zh-Hans&amp;mt=8">下载</a><a class="nav-link nav-link-play" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener">Google Play</a></span>
+</div>
+</nav>
+<section class="hero">
+<h1>了解你的<span>总消耗</span></h1>
+<p class="tagline">Total Calories 是一款适用于 Apple Watch 和 iPhone 的总卡路里消耗应用。活动加静息卡路里、步数、趋势和目标，全部来自健康 App，全部留在你的设备上。免费开始使用。</p>
+<p class="platforms">iPhone · Apple Watch · 小组件</p>
+<div class="store-row"><a class="download-btn" href="https://apps.apple.com/cn/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-home-zh-Hans&amp;mt=8">免费下载</a><a class="play-badge" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener"><img src="../google-play-badge.webp" alt="在 Google Play 上获取"></a></div>
+</section>
+<section class="showcase">
+<div class="showcase-scroll">
+<div class="showcase-card">
+<img src="../appstore-screenshot-02.webp" srcset="../appstore-screenshot-02-360.webp 360w, ../appstore-screenshot-02-540.webp 540w, ../appstore-screenshot-02.webp 720w" sizes="(max-width: 480px) 166px, (max-width: 768px) 185px, 250px" alt="看清你的规律。含趋势的 30 天卡路里和步数历史" loading="lazy" decoding="async" width="720" height="1558">
+</div>
+<div class="showcase-card">
+<img src="../appstore-screenshot-03.webp" srcset="../appstore-screenshot-03-360.webp 360w, ../appstore-screenshot-03-540.webp 540w, ../appstore-screenshot-03.webp 720w" sizes="(max-width: 480px) 166px, (max-width: 768px) 185px, 250px" alt="就在手腕上。Apple Watch 复杂功能和手表 App" loading="lazy" decoding="async" width="720" height="1558">
+</div>
+<div class="showcase-card">
+<img src="../appstore-screenshot-01.webp" srcset="../appstore-screenshot-01-360.webp 360w, ../appstore-screenshot-01-540.webp 540w, ../appstore-screenshot-01.webp 720w" sizes="(max-width: 480px) 166px, (max-width: 768px) 185px, 250px" alt="净缺口。来自健康 App 的消耗减去摄入" loading="lazy" decoding="async" width="720" height="1558">
+</div>
+<div class="showcase-card">
+<img src="../appstore-screenshot-05.webp" srcset="../appstore-screenshot-05-360.webp 360w, ../appstore-screenshot-05-540.webp 540w, ../appstore-screenshot-05.webp 720w" sizes="(max-width: 480px) 166px, (max-width: 768px) 185px, 250px" alt="总卡路里，每一天。Vitals+ 订阅与高级功能" loading="lazy" decoding="async" width="720" height="1558">
+</div>
+<div class="showcase-card">
+<img src="../appstore-screenshot-04.webp" srcset="../appstore-screenshot-04-360.webp 360w, ../appstore-screenshot-04-540.webp 540w, ../appstore-screenshot-04.webp 720w" sizes="(max-width: 480px) 166px, (max-width: 768px) 185px, 250px" alt="更进一步。Vitals+ PDF 报告与深度趋势" loading="lazy" decoding="async" width="720" height="1558">
+</div>
+</div>
+</section>
+<section class="features">
+<div class="container">
+<div class="features-header">
+<h2>Total Calories 能做什么？</h2>
+<p>它把健康 App 中的活动与静息卡路里加成一个每日数字。免费，无需账户。Vitals+ 增加净缺口、PDF 报告和深度趋势。</p>
+</div>
+</div>
+<div class="features-grid">
+<div class="feature-card">
+<h3>每日总卡路里</h3>
+<p>在一个简洁的圆环中查看活动与静息卡路里。轻点查看明细。</p>
+</div>
+<div class="feature-card">
+<h3>长期趋势</h3>
+<p>查看 7 天、30 天、90 天、整整一年或任意自定义范围。随时导出为 CSV。</p>
+</div>
+<div class="feature-card">
+<h3>进度圆环</h3>
+<p>用动态圆环设置每日卡路里和步数目标。也可以关闭目标，把它当作计数器使用。</p>
+</div>
+<div class="feature-card">
+<h3>消耗减摄入</h3>
+<p>把 MyFitnessPal 等饮食应用连接到健康 App，即可实时查看净卡路里平衡。</p>
+<p class="tier">包含在 Vitals+ 中</p>
+</div>
+<div class="feature-card">
+<h3>月度摘要</h3>
+<p>适合打印的 PDF 报告，可选任意日期范围。每月自动生成，也可自定义快照与医生分享。</p>
+<p class="tier">包含在 Vitals+ 中</p>
+</div>
+<div class="feature-card">
+<h3>主屏幕 &amp; 锁定屏幕</h3>
+<p>无需打开 App，就能在主屏幕或锁定屏幕上看到卡路里和步数。</p>
+</div>
+<div class="feature-card">
+<h3>周期对比</h3>
+<p>比较本周与上周、本月与上月。看看有什么变化，变化多少。</p>
+<p class="tier">包含在 Vitals+ 中</p>
+</div>
+<div class="feature-card">
+<h3>复杂功能</h3>
+<p>全天在表盘上显示你的数据，支持圆形、矩形、内嵌和角落样式。附带完整的手表 App。</p>
+</div>
+</div>
+</section>
+<section class="privacy">
+<div class="container">
+<div class="lockup">
+<svg viewbox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+</div>
+<h2>Total Calories 注重隐私吗？</h2>
+<p>是的。Total Calories 以只读模式读取健康 App。无账户、无广告、无追踪。你的健康数据留在设备上，绝不上传。App 唯一的网络请求是发给 Apple 和我们的账单服务商 RevenueCat，用于检查订阅状态。两者都不会收到你的健康数据。</p>
+<a href="../privacy-policy.html">隐私政策 →</a>
+</div>
+</section>
+<section class="more-info">
+<div class="container">
+<div class="more-info-header">
+<h2>更多信息</h2>
+<p>它是如何构建的。</p>
+</div>
+<div class="more-info-content">
+<div class="more-info-section">
+<h3>创意</h3>
+<p>大多数卡路里记录应用要求你手动记录每一餐，还要创建账户。我想要的是直接显示健康 App 已经掌握的信息。</p>
+<p>Total Calories 从 HealthKit 读取你的活动能量和步数，计算出一个简单的总数，并显示在你的手腕上。无需注册，无云端，无追踪。核心应用免费。</p>
+</div>
+<div class="more-info-section">
+<h3>Vitals+</h3>
+<p>为想深入了解的人提供的可选升级。可按月、按年订阅，或一次性买断终身使用，订阅享 7 天免费试用。价格在购买前显示在 App 内，因地区而异。</p>
+<p><strong>净缺口。</strong>消耗的卡路里减去来自健康 App 的食物能量。支持 MyFitnessPal、Lose It 以及任何写入健康 App 的饮食记录应用。显示在仪表盘、历史图表、小组件和 Apple Watch 上。</p>
+<p><strong>PDF 报告。</strong>适合打印的月度摘要和自定义范围报告。包含卡路里趋势、步数趋势、目标达成情况、峰值日、周期间变化。在设备上生成，不会上传任何内容。</p>
+<p><strong>深度趋势。</strong>把任意周期与前一周期比较。准确看到你的活动逐周或逐月如何变化，包括卡路里和步数。</p>
+<p><strong>活动与静息明细。</strong>直接在仪表盘上看到你的消耗中有多少来自运动，多少来自新陈代谢。</p>
+</div>
+<div class="more-info-section">
+<h3>指南</h3>
+<p><a href="../tdee-calculator.html">TDEE 计算器</a>、<a href="../bmr-calculator.html">BMR 计算器</a>，以及 <a href="apple-watch-active-vs-resting-calories.html">Apple Watch 上的活动与静息卡路里</a>：数字的含义和手表如何测量。另有对比：<a href="../how-many-calories-do-i-burn-a-day.html">我每天消耗多少卡路里</a>，以及 <a href="../best-app-to-track-calories-burned-apple-watch.html">在 Apple Watch 上追踪卡路里消耗的最佳应用</a>。</p>
+</div>
+<div class="more-info-section faq-list" id="faq">
+<h3>常见问题</h3>
+<details><summary><h2 class="faq-q">有没有能在 Apple Watch 上显示总卡路里消耗的应用？</h2></summary><p>有。Total Calories 会把你的总卡路里消耗（活动加静息）作为复杂功能添加到 Apple Watch 表盘，支持圆形、矩形、内嵌和角落样式，并包含完整的手表 App。</p></details>
+<details><summary><h2 class="faq-q">如何在 Apple Watch 表盘上看到总卡路里消耗？</h2></summary><p>在 iPhone 上安装 Total Calories，然后把它的复杂功能添加到任何带复杂功能位置的表盘上。Apple 的活动圆环只统计活动卡路里，而这款 App 显示活动加静息。</p></details>
+<details><summary><h2 class="faq-q">活动卡路里和静息卡路里有什么区别？</h2></summary><p>活动卡路里是你通过运动和锻炼消耗的，静息卡路里是身体静止时为维持运转消耗的。Total Calories 从健康 App 读取两者并相加得出每日总量，Vitals+ 还会显示活动与静息的明细。</p></details>
+<details><summary><h2 class="faq-q">能在 App 中看到我的 TDEE 和 BMR 吗？</h2></summary><p>可以。Vitals+ 会显示 TDEE 和 BMR 参考值，即来自健康 App 的 30 天维持能量和静息能量平均值。本站还有免费的 TDEE 和 BMR 计算器指南。</p></details>
+<details><summary><h2 class="faq-q">Total Calories 是饮食记录或卡路里计数应用吗？</h2></summary><p>不是。它是卡路里消耗应用，不记录餐食。使用 Vitals+ 时，净缺口会减去其他饮食应用（如 MyFitnessPal 或 Lose It）已写入健康 App 的食物能量。</p></details>
+<details><summary><h2 class="faq-q">Total Calories 免费吗？需要账户吗？</h2></summary><p>核心应用可免费下载，无需账户。追踪、小组件和 Apple Watch App 免费，可选的 Vitals+ 升级在购买前会在 App 内标明价格，因地区而异。</p></details>
+<details><summary><h2 class="faq-q">Total Calories 会保护我的健康数据隐私吗？</h2></summary><p>会。它以只读模式读取健康 App，你的健康数据留在设备上。没有广告，没有追踪，也没有账户。</p></details>
+</div>
+<div class="more-info-section">
+<h3>规格</h3>
+<table class="specs-table">
+<tr><td>平台</td><td>iOS 17+, watchOS 10+</td></tr>
+<tr><td>语言</td><td>Swift 6，严格并发</td></tr>
+<tr><td>框架</td><td>SwiftUI · HealthKit · WidgetKit</td></tr>
+<tr><td>数据</td><td>HealthKit 只读访问，仅限本地</td></tr>
+<tr><td>存储</td><td>通过 App Group 共享的 SwiftData 缓存</td></tr>
+<tr><td>小组件</td><td>主屏幕、锁定屏幕、待机显示、watchOS 复杂功能</td></tr>
+</table>
+</div>
+<div class="more-info-section">
+<h3>重点所在</h3>
+<p><strong>零配置。</strong>打开 App，授予 HealthKit 权限，完成。没有引导流程，没有教程，不用创建账户。第一个屏幕立即显示昨天的数据。</p>
+<p><strong>手表优先的设计。</strong>Apple Watch App 是主要界面。iPhone App 用于查看详细历史和设置。两者通过 App Group 共享 SwiftData 缓存。</p>
+<p><strong>小组件的可靠性。</strong>小组件按时间线刷新，而不是在打开时刷新。后台任务让缓存保持最新。复杂功能会在 HealthKit 变化后 15 分钟内更新。</p>
+<p><strong>隐私。</strong>无分析，无崩溃报告，无账户。App 不知道你是谁。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="cta">
+<h2>今天就开始记录</h2>
+<p>在 App Store 和 Google Play 免费获取。无需账户。随时可升级到 Vitals+。</p>
+<div class="store-row"><a class="download-btn" href="https://apps.apple.com/cn/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-home-zh-Hans&amp;mt=8">免费下载</a><a class="play-badge" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener"><img src="../google-play-badge.webp" alt="在 Google Play 上获取"></a></div>
+</section>
+<footer>
+<div class="divider">© 2026 Jack Wallner · 最后更新 <time datetime="2026-10-28" data-updated>2026年10月28日</time></div>
+<div>
+<a href="../guides.html">指南</a>
+<a href="../support.html">支持</a>
+<a href="../privacy-policy.html">隐私</a>
+<a href="https://jackwallner.com/ios/">Jack Wallner 的更多 App</a>
+</div>
+<div class="related-apps">Jack 的其他 App： <a href="https://jackwallner.com/ios/vo2max/">VO2 Max &amp; Cardio Fitness</a> <a href="https://jackwallner.com/ios/fitness-streaks/">Fitness Habit Tracker</a></div>
+        <div class="lang-switch"><a href="../" hreflang="en" lang="en">English</a> <a href="../de/" hreflang="de" lang="de">Deutsch</a> <a href="../ja/" hreflang="ja" lang="ja">日本語</a> <a href="../fr/" hreflang="fr" lang="fr">Français</a> <span lang="zh-Hans">简体中文</span> <a href="../es/" hreflang="es" lang="es">Español</a> <a href="../pl/" hreflang="pl" lang="pl">Polski</a> <a href="../ru/" hreflang="ru" lang="ru">Русский</a> <a href="../it/" hreflang="it" lang="it">Italiano</a> <a href="../pt-BR/" hreflang="pt-BR" lang="pt-BR">Português (Brasil)</a> <a href="../ar/" hreflang="ar" lang="ar">العربية</a></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Apple Watchのアクティブエネルギーと安静時エネルギーの意味、ムーブリングが消費の一部しか示さない理由、1日の総消費カロリーの確認方法を解説します。">
+<link rel="icon" type="image/png" sizes="256x256" href="../icon_256.png">
+<link rel="apple-touch-icon" href="../icon_256.png">
+<title>Apple Watchのアクティブと安静時カロリー:総消費を解説</title>
+<link rel="canonical" href="https://jackwallner.com/ios/vitals/ja/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="en" href="https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="de" href="https://jackwallner.com/ios/vitals/de/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ja" href="https://jackwallner.com/ios/vitals/ja/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="fr" href="https://jackwallner.com/ios/vitals/fr/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="zh-Hans" href="https://jackwallner.com/ios/vitals/zh-Hans/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="es" href="https://jackwallner.com/ios/vitals/es/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="pl" href="https://jackwallner.com/ios/vitals/pl/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ru" href="https://jackwallner.com/ios/vitals/ru/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="it" href="https://jackwallner.com/ios/vitals/it/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://jackwallner.com/ios/vitals/pt-BR/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ar" href="https://jackwallner.com/ios/vitals/ar/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="x-default" href="https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html">
+<script>if(location.hostname==="jackwallner.github.io"){var c=document.querySelector('link[rel="canonical"]');if(c&&c.href.indexOf("https://jackwallner.com/")===0)location.replace(c.href)}</script>
+<meta property="og:title" content="Apple Watchのアクティブカロリーと安静時カロリー">
+<meta property="og:description" content="Apple Watchのアクティブエネルギーと安静時エネルギーの意味、ムーブリングが消費の一部しか示さない理由、1日の総消費カロリーの確認方法を解説します。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://jackwallner.com/ios/vitals/ja/apple-watch-active-vs-resting-calories.html">
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Apple Watchのアクティブカロリーと安静時カロリー",
+    "description": "Apple Watchのアクティブエネルギーと安静時エネルギーの意味、ムーブリングが消費の一部しか示さない理由、1日の総消費カロリーの確認方法を解説します。",
+    "author": {
+        "@type": "Person",
+        "name": "Jack Wallner"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Total Calories"
+    },
+    "mainEntityOfPage": "https://jackwallner.com/ios/vitals/ja/apple-watch-active-vs-resting-calories.html",
+    "dateModified": "2026-10-28"
+}</script>
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": "Apple Watchは安静時カロリーを数えますか?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "はい。安静時エネルギーは一日中ヘルスケアに記録されますが、フィットネスAppのムーブリングに表示されるのはアクティブエネルギーだけです。総消費は2つを足してください。"
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Apple Watchで消費カロリーが400しかないのはなぜですか?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "それはアクティブの半分です。安静時エネルギー(通常1,200~2,000kcal)は、ヘルスケアAppで別に記録されています。実際の1日の合計は両方の和です。"
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Apple Watchの文字盤で総消費カロリーを見られますか?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Apple標準のコンプリケーションでは見られません。表示されるのはムーブリングだけです。Total Caloriesは、アクティブ+安静時を1つの数字で示すコンプリケーションとウィジェットを追加します。"
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "アクティブカロリーと総カロリーのどちらを基準にすべきですか?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "食べる量を決めるときは、その日の消費全体である総カロリー(アクティブ+安静時)を基準にしてください。アクティブカロリー(ムーブリング)は活動目標には向いていますが、それだけでは体が安静時に使う1,200~2,000kcalが抜けてしまいます。1日だけではばらつきが大きいので、合計は7日以上の平均を取りましょう。"
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Apple Watchの安静時エネルギーはどのくらい正確ですか?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "測定ではなくモデルによる推定です。Appleは、ヘルスケアのプロフィールにある体重、身長、年齢、性別から安静時エネルギーを算出し、現在の活動に応じてわずかに調整しますが、精度の数値は公表していません。安静時エネルギーは体重から算出されるため、ヘルスケアの体重を最新に保ってください。"
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "ワークアウト中のApple Watchのカロリーはどのくらい正確ですか?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "平均では近い値です。Appleの実験室テストでは、ウォーキング、ランニング、ハイキングの平均誤差は0%でばらつきは9%、水泳やヨガのような測りにくい種目ではばらつきが約20%でした。"
+            }
+        }
+    ]
+}</script>
+<style>* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif; color: #1d1d1f; background: #fafafa; -webkit-font-smoothing: antialiased; }
+.container { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+nav { padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.06); background: rgba(250,250,250,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 10; }
+nav .container { display: flex; align-items: center; justify-content: space-between; max-width: 980px; }
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1d1d1f; }
+.nav-brand img { width: 32px; height: 32px; border-radius: 7px; }
+.nav-brand span { font-size: 15px; font-weight: 600; }
+.nav-link { font-size: 14px; text-decoration: none; background: #1d1d1f; color: #fff; padding: 8px 18px; border-radius: 980px; font-weight: 500; }
+.nav-link:hover { opacity: 0.85; }
+article { padding: 64px 0 48px; }
+h1 { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
+.updated { font-size: 14px; color: #6e6e73; margin-bottom: 12px; }
+.lede { font-size: 19px; color: #6e6e73; line-height: 1.5; margin-bottom: 36px; }
+h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.4px; margin: 40px 0 12px; }
+p, li { font-size: 17px; line-height: 1.6; margin-bottom: 14px; }
+ul, ol { padding-left: 22px; }
+li { margin-bottom: 6px; }
+a { color: #1d1d1f; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 20px; font-size: 16px; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid rgba(0,0,0,0.08); }
+th { font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px; color: #6e6e73; font-weight: 600; }
+.formula { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; padding: 16px 18px; font-family: "SF Mono", Menlo, monospace; font-size: 15px; line-height: 1.7; margin: 8px 0 20px; overflow-x: auto; }
+.calc { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 18px; padding: 24px; margin: 20px 0 28px; }
+.calc h2 { margin: 0 0 16px; font-size: 20px; }
+.calc .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.calc label { display: block; font-size: 13px; color: #6e6e73; margin-bottom: 6px; }
+.calc input, .calc select { width: 100%; font: inherit; font-size: 17px; padding: 10px 12px; border: 1px solid rgba(0,0,0,0.14); border-radius: 10px; background: #fafafa; color: #1d1d1f; }
+.calc .seg { display: flex; gap: 8px; }
+.calc .seg button { flex: 1; font: inherit; font-size: 15px; padding: 9px 0; border-radius: 10px; border: 1px solid rgba(0,0,0,0.14); background: #fafafa; cursor: pointer; }
+.calc .seg button[aria-pressed="true"] { background: #1d1d1f; color: #fff; border-color: #1d1d1f; }
+.result { margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.08); }
+.result .big { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1; }
+.result .big small { font-size: 16px; font-weight: 500; color: #6e6e73; letter-spacing: 0; margin-left: 6px; }
+.result .sub { font-size: 15px; color: #6e6e73; margin-top: 8px; }
+.cta { text-align: center; padding: 48px 24px 56px; border-top: 1px solid rgba(0,0,0,0.06); margin-top: 24px; }
+.cta h2 { margin: 0 0 8px; }
+.cta p { color: #6e6e73; max-width: 440px; margin: 0 auto 22px; }
+.download-btn { display: inline-block; background: #1d1d1f; color: #fff; font-size: 15px; font-weight: 500; padding: 14px 36px; border-radius: 980px; text-decoration: none; }
+.download-btn:hover { opacity: 0.85; }
+.related { padding: 24px 0 8px; }
+.related h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: #6e6e73; margin-bottom: 10px; }
+.related a { display: block; font-size: 16px; text-decoration: none; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+footer { text-align: center; padding: 20px 24px 40px; font-size: 12px; color: #6e6e73; }
+footer a { display: inline-block; padding: 6px 0; color: #6e6e73; text-decoration: none; margin: 0 10px; }
+footer .divider { margin: 4px 0; }
+.note { font-size: 14px; color: #6e6e73; line-height: 1.5; }
+@media (max-width: 520px) { h1 { font-size: 32px; } .calc .row { grid-template-columns: 1fr; } }
+
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.nav-actions .nav-link, .nav-brand span { white-space: nowrap; }
+@media (max-width: 480px) { .nav-actions { gap: 6px; } .nav-actions .nav-link { padding: 7px 12px; font-size: 13px; } }
+.nav-link-play { background: transparent; color: #1d1d1f; box-shadow: inset 0 0 0 1px #1d1d1f; }
+.store-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; }
+.play-badge { display: inline-block; line-height: 0; margin: -11px -12px; }
+.play-badge img { height: 69px; width: auto; display: block; }
+.cta-box .play-badge { margin: -10px -11px; }
+.cta-box .play-badge img { height: 64px; }
+</style>
+</head>
+<body>
+<nav>
+<div class="container">
+<a class="nav-brand" href="./" aria-label="Total Calories"><img src="../icon_64.webp" alt="" width="32" height="32"><span>Total Calories</span></a>
+<span class="nav-actions"><a class="nav-link" href="https://apps.apple.com/jp/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-apple-watch-active-vs-resting-ja&amp;mt=8">ダウンロード</a><a class="nav-link nav-link-play" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener">Google Play</a></span>
+</div>
+</nav>
+<article>
+<div class="container">
+<h1>Apple Watchのアクティブカロリーと安静時カロリー</h1>
+<p class="updated">最終更新 <time datetime="2026-10-28" data-updated>2026年10月28日</time></p>
+<p class="lede">アクティブエネルギーは安静時の消費を超えて動きで消費するカロリー、安静時エネルギーは生きているだけで体が使うカロリーです。ムーブリングが示すのは消費の一部にすぎません。ここでは、ヘルスケアでのアクティブエネルギーと安静時エネルギーの意味、合計の確認方法、そして食事を考えるうえで合計が大切な理由を紹介します。</p>
+<h2>アクティブカロリーと安静時カロリーの違いは何ですか?</h2>
+<p>安静時エネルギーは体が生命を維持するために消費する分で、アクティブエネルギーはそれを超えるすべて、歩行からワークアウトまでを指します。ヘルスケアは一日中、カロリーを2つの別々の項目として記録します。</p>
+<ul>
+<li><strong>安静時エネルギー</strong>は、Watchが推定する基礎代謝、つまり体が生命を維持するために使うカロリーです。Appleは、ヘルスケアのプロフィールにある体重、身長、年齢、性別(および車椅子の有無)から算出し、そのときの活動に応じてわずかに変動します。ほとんどの成人では1日1,200~2,000kcal、1時間あたりおよそ50~85kcalになります。</li>
+<li><strong>アクティブエネルギー</strong>は、安静時を超えるすべてです。歩行、ワークアウト、家事、そわそわした動きなども含まれます。Watchは一日中、モーションセンサーと心拍数から推定し、ワークアウト中はGPS、高度、ワークアウトの種類も加えます。これがムーブリングに表示される数字です。</li>
+</ul>
+<p>Apple自身の定義は、<a href="https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf">2024年11月の熱量測定ホワイトペーパー</a>にあります。アクティブカロリーは基礎(安静時)カロリーを超えて消費したカロリー、総カロリーはその両方を合わせたものです。その日の総消費カロリーは、この2つを足しただけです。安静時が1,700kcalの日にムーブリングが500kcalなら、総計は2,200kcalです。</p>
+<h2>ムーブリングの数字が低く見えるのはなぜですか?</h2>
+<p>ムーブリングはアクティブエネルギーだけを表示し、安静時の消費を含まないからです。フィットネスAppは活動を中心に作られているため、アクティブエネルギーを前面に出し、安静時エネルギーはヘルスケアAppの「ブラウズ」の「アクティビティ」に置かれます。ムーブの合計480kcalをTDEE計算機の2,400kcalと比べて、Watchが壊れていると思う人もいますが、そうではありません。数字の半分しか見ていないのです。</p>
+<h2>総消費カロリーはどうやって確認しますか?</h2>
+<p>ヘルスケアAppで安静時エネルギーとアクティブエネルギーを足すか、足してくれるアプリを使います。</p>
+<ol>
+<li>ヘルスケアAppを開き、「ブラウズ」、「アクティビティ」の順にタップします。安静時エネルギーとアクティブエネルギーは別の行になっているので、今日の分を足してください。</li>
+<li>1回のワークアウトについては、フィットネスAppで開いてください。ワークアウトのサマリーに、アクティブカロリーと総カロリーが並んで表示されます。</li>
+<li>または、足し算をして履歴も保存してくれるアプリを使います。Total Caloriesは、合計の数字をiPhone、Apple Watchのコンプリケーション、ホーム画面やロック画面のウィジェットに表示し、その下にアクティブと安静時の内訳を示します。</li>
+</ol>
+<h2>Apple Watchのカロリーはどのくらい正確ですか?</h2>
+<p>ワークアウトでは、Appleのテストで平均誤差はほぼゼロ、ばらつきは種目によって約9~20%でした。Appleは、呼吸から消費量を測る実験室の機器である代謝カートとApple Watchを比較しました。Appleの2024年11月のホワイトペーパーによる平均誤差とばらつきは次のとおりです。</p>
+<table>
+<thead><tr><th>ワークアウト</th><th>平均誤差</th><th>ばらつき(SD)</th></tr></thead>
+<tbody>
+<tr><td>ウォーキング、ランニング、ハイキング</td><td>0%</td><td>9%</td></tr>
+<tr><td>屋外サイクリング</td><td>5%</td><td>13%</td></tr>
+<tr><td>エリプティカル</td><td>0%</td><td>15%</td></tr>
+<tr><td>ローイング</td><td>-2%</td><td>15%</td></tr>
+<tr><td>HIITと屋内サイクリング</td><td>-2%</td><td>14%</td></tr>
+<tr><td>筋力トレーニングとピラティス</td><td>2%</td><td>17%</td></tr>
+<tr><td>水泳</td><td>5%</td><td>20%</td></tr>
+<tr><td>ヨガと太極拳</td><td>3%</td><td>20%</td></tr>
+</tbody>
+</table>
+<p>つまり、1回のウォーキングは前後約10%ずれることがありますが、誤差は1週間でおおむね打ち消し合います。一日を通した安静時エネルギーについて、Appleは精度の数値を公表していません。これは測定ではなくモデルで、どのBMR計算機とも同じ限界があります。それでも1日の合計は、実際の行動を数えるため、固定のTDEE推定値より実際の消費に近くなります。</p>
+<h2>カロリーの合計をより役立てるには?</h2>
+<p>体重を最新に保ち、Watchを一日中着け、7日間の平均を使いましょう。</p>
+<ul>
+<li>ヘルスケアのプロフィールの体重を最新に保ちましょう。安静時エネルギーはそこから算出されます。</li>
+<li>ワークアウト以外でもWatchを一日中着けて、アクティブエネルギーが歩数や家事も捉えられるようにしましょう。</li>
+<li>7日以上の平均を取りましょう。1日だけではばらつきが大きく、平均がそのまま実用的な総エネルギー消費量になります。</li>
+<li>ヘルスケアに書き込むアプリで食事を記録していれば、消費から摂取を引くだけで、手計算なしにその日のネット赤字がわかります。</li>
+</ul>
+<p class="note">情報提供のみを目的としており、医学的助言ではありません。</p>
+<h2>よくある質問</h2>
+<h3 style="font-size:18px;margin:18px 0 6px">Apple Watchは安静時カロリーを数えますか?</h3><p>はい。安静時エネルギーは一日中ヘルスケアに記録されますが、フィットネスAppのムーブリングに表示されるのはアクティブエネルギーだけです。総消費は2つを足してください。</p><h3 style="font-size:18px;margin:18px 0 6px">Apple Watchで消費カロリーが400しかないのはなぜですか?</h3><p>それはアクティブの半分です。安静時エネルギー(通常1,200~2,000kcal)は、ヘルスケアAppで別に記録されています。実際の1日の合計は両方の和です。</p><h3 style="font-size:18px;margin:18px 0 6px">Apple Watchの文字盤で総消費カロリーを見られますか?</h3><p>Apple標準のコンプリケーションでは見られません。表示されるのはムーブリングだけです。Total Caloriesは、アクティブ+安静時を1つの数字で示すコンプリケーションとウィジェットを追加します。</p><h3 style="font-size:18px;margin:18px 0 6px">アクティブカロリーと総カロリーのどちらを基準にすべきですか?</h3><p>食べる量を決めるときは、その日の消費全体である総カロリー(アクティブ+安静時)を基準にしてください。アクティブカロリー(ムーブリング)は活動目標には向いていますが、それだけでは体が安静時に使う1,200~2,000kcalが抜けてしまいます。1日だけではばらつきが大きいので、合計は7日以上の平均を取りましょう。</p><h3 style="font-size:18px;margin:18px 0 6px">Apple Watchの安静時エネルギーはどのくらい正確ですか?</h3><p>測定ではなくモデルによる推定です。Appleは、ヘルスケアのプロフィールにある体重、身長、年齢、性別から安静時エネルギーを算出し、現在の活動に応じてわずかに調整しますが、精度の数値は公表していません。安静時エネルギーは体重から算出されるため、ヘルスケアの体重を最新に保ってください。</p>
+<h3 style="font-size:18px;margin:18px 0 6px">ワークアウト中のApple Watchのカロリーはどのくらい正確ですか?</h3><p>平均では近い値です。Appleの実験室テストでは、ウォーキング、ランニング、ハイキングの平均誤差は0%でばらつきは9%、水泳やヨガのような測りにくい種目ではばらつきが約20%でした。</p><div class="related"><h3>関連ガイド</h3><a href="../tdee-calculator.html">TDEE計算機:1日の総消費</a><a href="../bmr-calculator.html">BMR計算機:安静時の消費</a></div>
+</div>
+</article>
+<section class="cta">
+<h2>推定ではなく、実際の消費を見よう</h2>
+<p>Total Caloriesはヘルスケアからアクティブエネルギーと安静時エネルギーを読み取り、実際の1日の合計をiPhone、Apple Watch、ウィジェットに表示します。無料で始められます。</p>
+<div class="store-row"><a class="download-btn" href="https://apps.apple.com/jp/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-apple-watch-active-vs-resting-ja&amp;mt=8">Total Caloriesをダウンロード</a><a class="play-badge" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener"><img src="../google-play-badge.webp" alt="Google Playで手に入れよう"></a></div>
+</section>
+<footer>
+<div class="divider">© 2026 Jack Wallner</div>
+<div><a href="./">ホーム</a><a href="../guides.html">ガイド</a><a href="../support.html">サポート</a><a href="../privacy-policy.html">プライバシー</a></div>
+        <div class="lang-switch"><a href="../apple-watch-active-vs-resting-calories.html" hreflang="en" lang="en">English</a> <a href="../de/apple-watch-active-vs-resting-calories.html" hreflang="de" lang="de">Deutsch</a> <span lang="ja">日本語</span> <a href="../fr/apple-watch-active-vs-resting-calories.html" hreflang="fr" lang="fr">Français</a> <a href="../zh-Hans/apple-watch-active-vs-resting-calories.html" hreflang="zh-Hans" lang="zh-Hans">简体中文</a> <a href="../es/apple-watch-active-vs-resting-calories.html" hreflang="es" lang="es">Español</a> <a href="../pl/apple-watch-active-vs-resting-calories.html" hreflang="pl" lang="pl">Polski</a> <a href="../ru/apple-watch-active-vs-resting-calories.html" hreflang="ru" lang="ru">Русский</a> <a href="../it/apple-watch-active-vs-resting-calories.html" hreflang="it" lang="it">Italiano</a> <a href="../pt-BR/apple-watch-active-vs-resting-calories.html" hreflang="pt-BR" lang="pt-BR">Português (Brasil)</a> <a href="../ar/apple-watch-active-vs-resting-calories.html" hreflang="ar" lang="ar">العربية</a></div>
+</footer>
+</body>
+</html>

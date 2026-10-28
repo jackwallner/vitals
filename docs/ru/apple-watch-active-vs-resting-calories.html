@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Что значат активная энергия и энергия покоя на Apple Watch, почему кольцо «Движение» показывает лишь часть расхода и как увидеть общие калории.">
+<link rel="icon" type="image/png" sizes="256x256" href="../icon_256.png">
+<link rel="apple-touch-icon" href="../icon_256.png">
+<title>Активные и базовые калории Apple Watch: общий расход</title>
+<link rel="canonical" href="https://jackwallner.com/ios/vitals/ru/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="en" href="https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="de" href="https://jackwallner.com/ios/vitals/de/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ja" href="https://jackwallner.com/ios/vitals/ja/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="fr" href="https://jackwallner.com/ios/vitals/fr/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="zh-Hans" href="https://jackwallner.com/ios/vitals/zh-Hans/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="es" href="https://jackwallner.com/ios/vitals/es/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="pl" href="https://jackwallner.com/ios/vitals/pl/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ru" href="https://jackwallner.com/ios/vitals/ru/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="it" href="https://jackwallner.com/ios/vitals/it/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://jackwallner.com/ios/vitals/pt-BR/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ar" href="https://jackwallner.com/ios/vitals/ar/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="x-default" href="https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html">
+<script>if(location.hostname==="jackwallner.github.io"){var c=document.querySelector('link[rel="canonical"]');if(c&&c.href.indexOf("https://jackwallner.com/")===0)location.replace(c.href)}</script>
+<meta property="og:title" content="Активные и базовые калории на Apple Watch">
+<meta property="og:description" content="Что значат активная энергия и энергия покоя на Apple Watch, почему кольцо «Движение» показывает лишь часть расхода и как увидеть общие калории.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://jackwallner.com/ios/vitals/ru/apple-watch-active-vs-resting-calories.html">
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Активные и базовые калории на Apple Watch",
+    "description": "Что значат активная энергия и энергия покоя на Apple Watch, почему кольцо «Движение» показывает лишь часть расхода и как увидеть общие калории.",
+    "author": {
+        "@type": "Person",
+        "name": "Jack Wallner"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Total Calories"
+    },
+    "mainEntityOfPage": "https://jackwallner.com/ios/vitals/ru/apple-watch-active-vs-resting-calories.html",
+    "dateModified": "2026-10-28"
+}</script>
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": "Считают ли Apple Watch калории покоя?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Да. Энергия покоя записывается в «Здоровье» весь день, но кольцо «Движение» в приложении «Фитнес» показывает только активную энергию. Сложите обе для общего расхода."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Почему мои Apple Watch показывают, что я сжёг только 400 калорий?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Это активная половина. Ваша энергия покоя, обычно от 1 200 до 2 000 ккал, отслеживается отдельно в приложении «Здоровье». Ваш реальный дневной итог это сумма."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Можно ли увидеть общие сожжённые калории на циферблате Apple Watch?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Во встроенных усложнениях Apple нельзя, они показывают только кольцо «Движение». Total Calories добавляет усложнение и виджеты, которые показывают активную плюс энергию покоя как одно число."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Ориентироваться на активные или на общие калории?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Ориентируйтесь на общие калории, активные плюс покоя, когда решаете, сколько есть, потому что это весь ваш расход за день. Активные калории (кольцо «Движение») хорошая цель по активности, но сами по себе они не учитывают от 1 200 до 2 000 ккал, которые тело тратит в покое. Усредняйте итог за 7 дней и больше, так как любой отдельный день шумный."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Насколько точна энергия покоя Apple Watch?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Это оценка модели, а не измерение. Apple считает энергию покоя по весу, росту, возрасту и полу из вашего профиля в «Здоровье» с небольшой поправкой на текущую активность и не публикует показателя точности. Держите вес в «Здоровье» актуальным, потому что энергия покоя считается по нему."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Насколько точны калории Apple Watch во время тренировок?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "В среднем близки. В лабораторных тестах Apple ходьба, бег и походы показали среднюю ошибку 0% при разбросе 9%, а трудно измеримые виды активности, такие как плавание и йога, имели разброс около 20%."
+            }
+        }
+    ]
+}</script>
+<style>* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif; color: #1d1d1f; background: #fafafa; -webkit-font-smoothing: antialiased; }
+.container { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+nav { padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.06); background: rgba(250,250,250,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 10; }
+nav .container { display: flex; align-items: center; justify-content: space-between; max-width: 980px; }
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1d1d1f; }
+.nav-brand img { width: 32px; height: 32px; border-radius: 7px; }
+.nav-brand span { font-size: 15px; font-weight: 600; }
+.nav-link { font-size: 14px; text-decoration: none; background: #1d1d1f; color: #fff; padding: 8px 18px; border-radius: 980px; font-weight: 500; }
+.nav-link:hover { opacity: 0.85; }
+article { padding: 64px 0 48px; }
+h1 { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
+.updated { font-size: 14px; color: #6e6e73; margin-bottom: 12px; }
+.lede { font-size: 19px; color: #6e6e73; line-height: 1.5; margin-bottom: 36px; }
+h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.4px; margin: 40px 0 12px; }
+p, li { font-size: 17px; line-height: 1.6; margin-bottom: 14px; }
+ul, ol { padding-left: 22px; }
+li { margin-bottom: 6px; }
+a { color: #1d1d1f; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 20px; font-size: 16px; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid rgba(0,0,0,0.08); }
+th { font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px; color: #6e6e73; font-weight: 600; }
+.formula { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; padding: 16px 18px; font-family: "SF Mono", Menlo, monospace; font-size: 15px; line-height: 1.7; margin: 8px 0 20px; overflow-x: auto; }
+.calc { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 18px; padding: 24px; margin: 20px 0 28px; }
+.calc h2 { margin: 0 0 16px; font-size: 20px; }
+.calc .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.calc label { display: block; font-size: 13px; color: #6e6e73; margin-bottom: 6px; }
+.calc input, .calc select { width: 100%; font: inherit; font-size: 17px; padding: 10px 12px; border: 1px solid rgba(0,0,0,0.14); border-radius: 10px; background: #fafafa; color: #1d1d1f; }
+.calc .seg { display: flex; gap: 8px; }
+.calc .seg button { flex: 1; font: inherit; font-size: 15px; padding: 9px 0; border-radius: 10px; border: 1px solid rgba(0,0,0,0.14); background: #fafafa; cursor: pointer; }
+.calc .seg button[aria-pressed="true"] { background: #1d1d1f; color: #fff; border-color: #1d1d1f; }
+.result { margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.08); }
+.result .big { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1; }
+.result .big small { font-size: 16px; font-weight: 500; color: #6e6e73; letter-spacing: 0; margin-left: 6px; }
+.result .sub { font-size: 15px; color: #6e6e73; margin-top: 8px; }
+.cta { text-align: center; padding: 48px 24px 56px; border-top: 1px solid rgba(0,0,0,0.06); margin-top: 24px; }
+.cta h2 { margin: 0 0 8px; }
+.cta p { color: #6e6e73; max-width: 440px; margin: 0 auto 22px; }
+.download-btn { display: inline-block; background: #1d1d1f; color: #fff; font-size: 15px; font-weight: 500; padding: 14px 36px; border-radius: 980px; text-decoration: none; }
+.download-btn:hover { opacity: 0.85; }
+.related { padding: 24px 0 8px; }
+.related h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: #6e6e73; margin-bottom: 10px; }
+.related a { display: block; font-size: 16px; text-decoration: none; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+footer { text-align: center; padding: 20px 24px 40px; font-size: 12px; color: #6e6e73; }
+footer a { display: inline-block; padding: 6px 0; color: #6e6e73; text-decoration: none; margin: 0 10px; }
+footer .divider { margin: 4px 0; }
+.note { font-size: 14px; color: #6e6e73; line-height: 1.5; }
+@media (max-width: 520px) { h1 { font-size: 32px; } .calc .row { grid-template-columns: 1fr; } }
+
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.nav-actions .nav-link, .nav-brand span { white-space: nowrap; }
+@media (max-width: 480px) { .nav-actions { gap: 6px; } .nav-actions .nav-link { padding: 7px 12px; font-size: 13px; } }
+.nav-link-play { background: transparent; color: #1d1d1f; box-shadow: inset 0 0 0 1px #1d1d1f; }
+.store-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; }
+.play-badge { display: inline-block; line-height: 0; margin: -11px -12px; }
+.play-badge img { height: 69px; width: auto; display: block; }
+.cta-box .play-badge { margin: -10px -11px; }
+.cta-box .play-badge img { height: 64px; }
+</style>
+</head>
+<body>
+<nav>
+<div class="container">
+<a class="nav-brand" href="./" aria-label="Total Calories"><img src="../icon_64.webp" alt="" width="32" height="32"><span>Total Calories</span></a>
+<span class="nav-actions"><a class="nav-link" href="https://apps.apple.com/ru/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-apple-watch-active-vs-resting-ru&amp;mt=8">Скачать</a><a class="nav-link nav-link-play" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener">Google Play</a></span>
+</div>
+</nav>
+<article>
+<div class="container">
+<h1>Активные и базовые калории на Apple Watch</h1>
+<p class="updated">Обновлено <time datetime="2026-10-28" data-updated>28.10.2026</time></p>
+<p class="lede">Активная энергия это расход калорий от движения сверх вашего уровня покоя, а энергия покоя это то, что тело тратит просто на поддержание жизни. Кольцо «Движение» показывает лишь часть того, что вы сжигаете. Здесь рассказано, что значат активная энергия и энергия покоя в Здоровье, как увидеть общую сумму и почему именно общая сумма важна для питания.</p>
+<h2>В чём разница между активными и базовыми калориями?</h2>
+<p>Энергия покоя это то, что тело сжигает на поддержание жизни, а активная энергия это всё сверх этого, от ходьбы до тренировок. Здоровье записывает калории в двух отдельных полях в течение всего дня.</p>
+<ul>
+<li><strong>Энергия покоя</strong> это оценка часов вашего базового обмена веществ, калорий, которые тело тратит на поддержание жизни. Apple считает её по весу, росту, возрасту и полу из вашего профиля в Здоровье (плюс статус пользователя инвалидной коляски), и она слегка меняется в зависимости от того, чем вы заняты. У большинства взрослых это составляет от 1 200 до 2 000 ккал в день, примерно от 50 до 85 ккал в час.</li>
+<li><strong>Активная энергия</strong> это всё сверх покоя: ходьба, тренировки, домашние дела, ёрзанье. Часы оценивают её весь день по датчикам движения и пульсу, а на тренировках добавляют GPS, высоту и тип тренировки. Это число на вашем кольце «Движение».</li>
+</ul>
+<p>Собственное определение Apple из <a href="https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf">белой книги по калориметрии за ноябрь 2024 года</a>: активные калории это калории, сожжённые сверх базовых (калорий покоя), а общие калории это обе величины вместе. Общее число сожжённых за день калорий это просто сумма двух. Кольцо «Движение» на 500 ккал в день с 1 700 ккал покоя даёт в сумме 2 200 ккал.</p>
+<h2>Почему кольцо «Движение» показывает мало?</h2>
+<p>Потому что оно показывает только активную энергию, а не расход в покое. Приложение «Фитнес» построено вокруг активности, поэтому выводит на первый план активную энергию, а энергию покоя оставляет в приложении «Здоровье» в разделе «Обзор», «Активность». Люди сравнивают итог «Движения» в 480 ккал с калькулятором TDEE, который говорит 2 400, и считают, что часы сломаны. Это не так. Они смотрят на половину числа.</p>
+<h2>Как увидеть общие сожжённые калории?</h2>
+<p>Сложите энергию покоя и активную энергию в приложении «Здоровье» или используйте приложение, которое сложит их за вас.</p>
+<ol>
+<li>Откройте приложение «Здоровье», нажмите «Обзор», затем «Активность». Энергия покоя и активная энергия это отдельные строки, сложите их за сегодня.</li>
+<li>Для одной тренировки откройте её в приложении «Фитнес». В сводке тренировки рядом указаны активные и общие калории.</li>
+<li>Или используйте приложение, которое делает сложение и хранит историю. Total Calories показывает общее число на iPhone, как усложнение Apple Watch и в виджете экрана «Домой» или экрана блокировки, а ниже разбивку на активные и базовые.</li>
+</ol>
+<h2>Насколько точны калории Apple Watch?</h2>
+<p>Для тренировок тесты Apple дают среднюю ошибку около нуля при разбросе примерно от 9 до 20% в зависимости от активности. Apple сравнила Apple Watch с метаболической тележкой, лабораторным прибором, измеряющим расход по дыханию. Средняя ошибка и разброс из белой книги Apple за ноябрь 2024 года:</p>
+<table>
+<thead><tr><th>Тренировка</th><th>Средняя ошибка</th><th>Разброс (СО)</th></tr></thead>
+<tbody>
+<tr><td>Ходьба, бег, поход</td><td>0%</td><td>9%</td></tr>
+<tr><td>Велосипед на улице</td><td>5%</td><td>13%</td></tr>
+<tr><td>Эллипс</td><td>0%</td><td>15%</td></tr>
+<tr><td>Гребля</td><td>-2%</td><td>15%</td></tr>
+<tr><td>HIIT и велотренажёр</td><td>-2%</td><td>14%</td></tr>
+<tr><td>Силовые и пилатес</td><td>2%</td><td>17%</td></tr>
+<tr><td>Плавание</td><td>5%</td><td>20%</td></tr>
+<tr><td>Йога и тайцзи</td><td>3%</td><td>20%</td></tr>
+</tbody>
+</table>
+<p>Так что одна прогулка может ошибаться примерно на 10% в любую сторону, но за неделю ошибки в основном взаимно гасятся. Apple не публикует показателя точности для энергии покоя за весь день, которая является моделью, а не измерением, и имеет те же ограничения, что и любой калькулятор BMR. Дневной итог всё равно ближе к вашему реальному расходу, чем статичная оценка TDEE, потому что учитывает то, что вы реально делали.</p>
+<h2>Как сделать итог калорий полезнее?</h2>
+<p>Держите вес актуальным, носите часы весь день и используйте среднее за 7 дней.</p>
+<ul>
+<li>Держите вес в профиле «Здоровья» актуальным. Энергия покоя считается по нему.</li>
+<li>Носите часы весь день, в том числе вне тренировок, чтобы активная энергия учитывала шаги и домашние дела.</li>
+<li>Усредняйте 7 дней и больше. Любой отдельный день шумный, среднее это ваш рабочий общий суточный расход энергии.</li>
+<li>Если вы записываете еду в приложении, которое пишет в «Здоровье», расход минус потребление даёт чистый дефицит за день без ручных вычислений.</li>
+</ul>
+<p class="note">Только для информации, не является медицинской рекомендацией.</p>
+<h2>Частые вопросы</h2>
+<h3 style="font-size:18px;margin:18px 0 6px">Считают ли Apple Watch калории покоя?</h3><p>Да. Энергия покоя записывается в «Здоровье» весь день, но кольцо «Движение» в приложении «Фитнес» показывает только активную энергию. Сложите обе для общего расхода.</p><h3 style="font-size:18px;margin:18px 0 6px">Почему мои Apple Watch показывают, что я сжёг только 400 калорий?</h3><p>Это активная половина. Ваша энергия покоя, обычно от 1 200 до 2 000 ккал, отслеживается отдельно в приложении «Здоровье». Ваш реальный дневной итог это сумма.</p><h3 style="font-size:18px;margin:18px 0 6px">Можно ли увидеть общие сожжённые калории на циферблате Apple Watch?</h3><p>Во встроенных усложнениях Apple нельзя, они показывают только кольцо «Движение». Total Calories добавляет усложнение и виджеты, которые показывают активную плюс энергию покоя как одно число.</p><h3 style="font-size:18px;margin:18px 0 6px">Ориентироваться на активные или на общие калории?</h3><p>Ориентируйтесь на общие калории, активные плюс покоя, когда решаете, сколько есть, потому что это весь ваш расход за день. Активные калории (кольцо «Движение») хорошая цель по активности, но сами по себе они не учитывают от 1 200 до 2 000 ккал, которые тело тратит в покое. Усредняйте итог за 7 дней и больше, так как любой отдельный день шумный.</p><h3 style="font-size:18px;margin:18px 0 6px">Насколько точна энергия покоя Apple Watch?</h3><p>Это оценка модели, а не измерение. Apple считает энергию покоя по весу, росту, возрасту и полу из вашего профиля в «Здоровье» с небольшой поправкой на текущую активность и не публикует показателя точности. Держите вес в «Здоровье» актуальным, потому что энергия покоя считается по нему.</p>
+<h3 style="font-size:18px;margin:18px 0 6px">Насколько точны калории Apple Watch во время тренировок?</h3><p>В среднем близки. В лабораторных тестах Apple ходьба, бег и походы показали среднюю ошибку 0% при разбросе 9%, а трудно измеримые виды активности, такие как плавание и йога, имели разброс около 20%.</p><div class="related"><h3>Похожие руководства</h3><a href="../tdee-calculator.html">Калькулятор TDEE: ваш полный суточный расход</a><a href="../bmr-calculator.html">Калькулятор BMR: ваш расход в покое</a></div>
+</div>
+</article>
+<section class="cta">
+<h2>Смотрите реальный расход, а не оценку</h2>
+<p>Total Calories читает активную энергию и энергию покоя из «Здоровья» и показывает ваш реальный дневной итог на iPhone, Apple Watch и в виджетах. Бесплатный старт.</p>
+<div class="store-row"><a class="download-btn" href="https://apps.apple.com/ru/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-apple-watch-active-vs-resting-ru&amp;mt=8">Скачать Total Calories</a><a class="play-badge" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener"><img src="../google-play-badge.webp" alt="Доступно в Google Play"></a></div>
+</section>
+<footer>
+<div class="divider">© 2026 Jack Wallner</div>
+<div><a href="./">Главная</a><a href="../guides.html">Руководства</a><a href="../support.html">Поддержка</a><a href="../privacy-policy.html">Конфиденциальность</a></div>
+        <div class="lang-switch"><a href="../apple-watch-active-vs-resting-calories.html" hreflang="en" lang="en">English</a> <a href="../de/apple-watch-active-vs-resting-calories.html" hreflang="de" lang="de">Deutsch</a> <a href="../ja/apple-watch-active-vs-resting-calories.html" hreflang="ja" lang="ja">日本語</a> <a href="../fr/apple-watch-active-vs-resting-calories.html" hreflang="fr" lang="fr">Français</a> <a href="../zh-Hans/apple-watch-active-vs-resting-calories.html" hreflang="zh-Hans" lang="zh-Hans">简体中文</a> <a href="../es/apple-watch-active-vs-resting-calories.html" hreflang="es" lang="es">Español</a> <a href="../pl/apple-watch-active-vs-resting-calories.html" hreflang="pl" lang="pl">Polski</a> <span lang="ru">Русский</span> <a href="../it/apple-watch-active-vs-resting-calories.html" hreflang="it" lang="it">Italiano</a> <a href="../pt-BR/apple-watch-active-vs-resting-calories.html" hreflang="pt-BR" lang="pt-BR">Português (Brasil)</a> <a href="../ar/apple-watch-active-vs-resting-calories.html" hreflang="ar" lang="ar">العربية</a></div>
+</footer>
+</body>
+</html>
