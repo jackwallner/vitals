@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="256x256" href="../icon_256.png">
+<link rel="apple-touch-icon" href="../icon_256.png">
+<title>Kalorienverbrauch Apple Watch | Total Calories</title>
+<meta name="description" content="Total Calories zeigt den Kalorienverbrauch auf Apple Watch und iPhone. Aktive und Ruhekalorien aus Health in einer Zahl. Kostenlos, privat.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://jackwallner.com/ios/vitals/de/">
+    <link rel="alternate" hreflang="en" href="https://jackwallner.com/ios/vitals/">
+    <link rel="alternate" hreflang="de" href="https://jackwallner.com/ios/vitals/de/">
+    <link rel="alternate" hreflang="ja" href="https://jackwallner.com/ios/vitals/ja/">
+    <link rel="alternate" hreflang="fr" href="https://jackwallner.com/ios/vitals/fr/">
+    <link rel="alternate" hreflang="zh-Hans" href="https://jackwallner.com/ios/vitals/zh-Hans/">
+    <link rel="alternate" hreflang="es" href="https://jackwallner.com/ios/vitals/es/">
+    <link rel="alternate" hreflang="pl" href="https://jackwallner.com/ios/vitals/pl/">
+    <link rel="alternate" hreflang="ru" href="https://jackwallner.com/ios/vitals/ru/">
+    <link rel="alternate" hreflang="it" href="https://jackwallner.com/ios/vitals/it/">
+    <link rel="alternate" hreflang="pt-BR" href="https://jackwallner.com/ios/vitals/pt-BR/">
+    <link rel="alternate" hreflang="ar" href="https://jackwallner.com/ios/vitals/ar/">
+    <link rel="alternate" hreflang="x-default" href="https://jackwallner.com/ios/vitals/">
+<script>if(location.hostname==="jackwallner.github.io"){var c=document.querySelector('link[rel="canonical"]');if(c&&c.href.indexOf("https://jackwallner.com/")===0)location.replace(c.href)}</script>
+<meta name="apple-itunes-app" content="app-id=6761743504">
+
+<meta property="og:title" content="Kalorienverbrauch Apple Watch und iPhone: Total Calories">
+<meta property="og:description" content="Gesamter Kalorienverbrauch (aktiv + Ruhe), Schritte und Trends auf Apple Watch Zifferblatt, Widgets und iPhone, alles aus Health. Kostenlos und privat.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jackwallner.com/ios/vitals/de/">
+<meta property="og:image" content="https://jackwallner.github.io/vitals/og-preview.png">
+<meta property="og:video" content="https://jackwallner.github.io/vitals/preview.mp4">
+<meta property="og:video:secure_url" content="https://jackwallner.github.io/vitals/preview.mp4">
+<meta property="og:video:type" content="video/mp4">
+<meta property="og:video:width" content="1080">
+<meta property="og:video:height" content="1080">
+<meta property="og:site_name" content="Jack Wallner">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kalorienverbrauch Apple Watch und iPhone: Total Calories">
+<meta name="twitter:description" content="Gesamter Kalorienverbrauch (aktiv + Ruhe), Schritte und Trends auf Apple Watch Zifferblatt, Widgets und iPhone, alles aus Health. Kostenlos und privat.">
+<meta name="twitter:image" content="https://jackwallner.github.io/vitals/appstore-screenshot-01.png">
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "MobileApplication",
+            "dateModified": "2026-10-28",
+            "@id": "https://jackwallner.com/ios/vitals/de/#app",
+            "name": "Total Calories - Daily Tracker",
+            "alternateName": "Total Calories",
+            "description": "Total Calories ist eine App für den gesamten Kalorienverbrauch auf iPhone und Apple Watch. Sie addiert deine aktiven und Ruhekalorien aus Health zu einer Tageszahl, die auf Apple Watch Komplikationen, Home- und Sperrbildschirm-Widgets und in einem Dashboard mit Schritten und Trends erscheint. Sie ist kein Ernährungstagebuch. Vitals+ ergänzt TDEE- und BMR-Referenzwerte, eine Aufschlüsselung in aktiv und Ruhe sowie ein Netto-Defizit mit Nahrungsenergie aus einer anderen Ernährungs-App.",
+            "applicationCategory": "HealthApplication",
+            "operatingSystem": "iOS 17+, watchOS 10+, Android",
+            "url": "https://jackwallner.com/ios/vitals/de/",
+            "downloadUrl": "https://apps.apple.com/de/app/id6761743504",
+            "installUrl": [
+                "https://apps.apple.com/de/app/id6761743504",
+                "https://play.google.com/store/apps/details?id=com.jackwallner.vitals"
+            ],
+            "sameAs": [
+                "https://apps.apple.com/de/app/id6761743504",
+                "https://play.google.com/store/apps/details?id=com.jackwallner.vitals"
+            ],
+            "screenshot": [
+                "https://jackwallner.github.io/vitals/appstore-screenshot-01.png",
+                "https://jackwallner.github.io/vitals/appstore-screenshot-02.png",
+                "https://jackwallner.github.io/vitals/appstore-screenshot-03.png",
+                "https://jackwallner.github.io/vitals/appstore-screenshot-04.png"
+            ],
+            "featureList": [
+                "Gesamter Kalorienverbrauch (aktiv plus Ruhe) aus Health",
+                "Apple Watch Komplikationen in runden, rechteckigen, Inline- und Eckformaten",
+                "Widgets für Home-Bildschirm und Sperrbildschirm",
+                "Tägliche Schrittzahl mit Kalorien- und Schrittzielen",
+                "Verlauf über 7, 30, 90 und 365 Tage mit CSV-Export",
+                "Vitals+: TDEE- und BMR-Referenzwerte, Netto-Defizit und PDF-Berichte"
+            ],
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "5",
+                "ratingCount": "11",
+                "bestRating": "5"
+            },
+            "author": {
+                "@type": "Person",
+                "name": "Jack Wallner",
+                "url": "https://jackwallner.com/"
+            },
+            "publisher": {
+                "@type": "Person",
+                "name": "Jack Wallner",
+                "url": "https://jackwallner.com/"
+            }
+        },
+        {
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "Gibt es eine App, die den gesamten Kalorienverbrauch auf der Apple Watch zeigt?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Ja. Total Calories bringt deinen gesamten Kalorienverbrauch (aktiv plus Ruhe) als Komplikation in runden, rechteckigen, Inline- und Eckformaten auf dein Apple Watch Zifferblatt und enthält eine vollständige Watch App."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Wie sehe ich den gesamten Kalorienverbrauch auf meinem Apple Watch Zifferblatt?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Installiere Total Calories auf deinem iPhone und füge die Komplikation dann einem Zifferblatt mit Komplikationsplatz hinzu. Der Bewegen-Ring von Apple zählt nur aktive Kalorien, diese App zeigt aktive plus Ruhekalorien."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Was ist der Unterschied zwischen aktiven und Ruhekalorien?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Aktive Kalorien verbrennst du durch Bewegung und Training, Ruhekalorien verbraucht dein Körper in Ruhe, um zu funktionieren. Total Calories liest beides aus Health und addiert sie zu deinem Tageswert, und Vitals+ zeigt die Aufschlüsselung in aktiv und Ruhe."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Kann ich meinen TDEE und BMR in der App sehen?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Ja. Vitals+ zeigt TDEE- und BMR-Referenzwerte, also deine 30-Tage-Durchschnitte für Erhaltungs- und Ruheenergie aus Health. Die Website bietet auch kostenlose Ratgeber zu TDEE- und BMR-Rechnern."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Ist Total Calories ein Ernährungstagebuch oder Kalorienzähler?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Nein. Es ist eine App für den Kalorienverbrauch und erfasst keine Mahlzeiten. Mit Vitals+ zieht das Netto-Defizit die Nahrungsenergie ab, die eine andere Ernährungs-App wie MyFitnessPal oder Lose It bereits in Health schreibt."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Ist Total Calories kostenlos, und brauche ich ein Konto?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Die Kern-App ist kostenlos zu laden und braucht kein Konto. Tracking, Widgets und die Apple Watch App sind kostenlos, und das optionale Upgrade Vitals+ wird vor dem Kauf in der App mit Preis angezeigt und variiert je nach Region."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Hält Total Calories meine Gesundheitsdaten privat?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Ja. Die App liest Health nur lesend, und deine Gesundheitsdaten bleiben auf deinem Gerät. Es gibt keine Werbung, kein Tracking und keine Konten."
+                    }
+                }
+            ]
+        },
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Jack Wallner",
+                    "item": "https://jackwallner.com/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "iOS-Apps",
+                    "item": "https://jackwallner.com/ios/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Total Calories",
+                    "item": "https://jackwallner.com/ios/vitals/de/"
+                }
+            ]
+        }
+    ]
+}</script>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+            color: #1d1d1f;
+            background: #fafafa;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Nav */
+        nav {
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            background: rgba(250,250,250,0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        nav .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #1d1d1f;
+        }
+
+        .nav-brand img {
+            width: 32px;
+            height: 32px;
+            border-radius: 7px;
+        }
+
+        .nav-brand span {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .nav-link {
+            font-size: 14px;
+            text-decoration: none;
+            background: #1d1d1f;
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 980px;
+            font-weight: 500;
+            transition: opacity 0.15s;
+        }
+
+        .nav-link:hover { opacity: 0.85; }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 100px 24px 64px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            line-height: 1.08;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 span {
+            color: #db340e;
+        }
+
+        .hero .tagline {
+            font-size: 19px;
+            color: #6e6e73;
+            line-height: 1.5;
+            max-width: 440px;
+            margin: 0 auto 12px;
+        }
+
+        .hero .platforms {
+            font-size: 13px;
+            color: #6e6e73;
+            letter-spacing: 0.3px;
+            margin-bottom: 36px;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: #1d1d1f;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 14px 36px;
+            border-radius: 980px;
+            text-decoration: none;
+            transition: opacity 0.15s;
+        }
+
+        .download-btn:hover { opacity: 0.85; }
+
+        /* Screenshot showcase */
+        .showcase {
+            padding: 0 0 80px;
+        }
+
+        .showcase-scroll {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 0 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            scrollbar-width: none;
+        }
+
+        .showcase-scroll::-webkit-scrollbar { display: none; }
+
+        .showcase-card {
+            flex-shrink: 0;
+            scroll-snap-align: center;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 16px 48px rgba(0,0,0,0.08);
+        }
+
+        .showcase-card img {
+            width: auto;
+            height: 540px;
+            display: block;
+        }
+
+        /* Features */
+        .features {
+            padding: 80px 0;
+            background: #fff;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        .features-header h2 {
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .features-header p {
+            font-size: 17px;
+            color: #6e6e73;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: rgba(0,0,0,0.06);
+            border-top: 1px solid rgba(0,0,0,0.06);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .feature-card {
+            background: #fff;
+            padding: 36px 32px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: #6e6e73;
+            line-height: 1.55;
+        }
+
+        /* Privacy */
+        .privacy {
+            padding: 80px 0;
+        }
+
+        .privacy .container {
+            max-width: 640px;
+            text-align: center;
+        }
+
+        .privacy .lockup {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #f5f5f7;
+            margin-bottom: 20px;
+        }
+
+        .privacy .lockup svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: #1d1d1f;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .privacy h2 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .privacy p {
+            font-size: 17px;
+            color: #6e6e73;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .privacy a {
+            font-size: 15px;
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .privacy a:hover { text-decoration: underline; }
+
+        /* More Info */
+        .more-info {
+            padding: 64px 24px;
+            background: #fff;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .more-info-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .more-info-header h2 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .more-info-header p {
+            font-size: 17px;
+            color: #6e6e73;
+        }
+
+        .more-info-content {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .more-info-section {
+            margin-bottom: 40px;
+        }
+
+        .more-info-section h3 {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #6e6e73;
+            margin-bottom: 12px;
+        }
+
+        .more-info-section p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #1d1d1f;
+            margin-bottom: 12px;
+        }
+
+        .more-info-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .more-info-section strong {
+            font-weight: 600;
+        }
+
+        .specs-table {
+            width: 100%;
+            font-size: 14px;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        .specs-table td {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .specs-table td:first-child {
+            color: #6e6e73;
+            width: 140px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* FAQ */
+        .faq-list { margin-top: 4px; }
+        .faq-list details { border-bottom: 1px solid rgba(0,0,0,0.06); padding: 14px 0; }
+        .faq-list summary { font-size: 15px; font-weight: 600; color: #1d1d1f; cursor: pointer; list-style: none; line-height: 1.4; }
+        .faq-list summary::-webkit-details-marker { display: none; }
+        .faq-list summary::after { content: "+"; float: right; color: #6e6e73; font-weight: 400; margin-left: 12px; }
+        .faq-list details[open] summary::after { content: "\2212"; }
+        .faq-list details p { font-size: 15px; line-height: 1.6; color: #6e6e73; margin: 10px 0 0; }
+
+        /* CTA */
+        .cta {
+            text-align: center;
+            padding: 64px 24px 80px;
+            background: #fff;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .cta h2 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .cta p {
+            font-size: 15px;
+            color: #6e6e73;
+            margin-bottom: 28px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px 24px;
+            font-size: 12px;
+            color: #6e6e73;
+        }
+
+        footer a { display: inline-block; padding: 6px 0;
+            color: #6e6e73;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover { color: #1d1d1f; }
+
+        footer .divider { margin: 4px 0; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero { padding: 72px 20px 48px; }
+            .hero h1 { font-size: 36px; letter-spacing: -1px; }
+            .hero .tagline { font-size: 17px; }
+
+            .showcase-card img { height: 400px; }
+
+            .features-grid { grid-template-columns: 1fr; }
+
+            .features-header h2 { font-size: 28px; }
+            .privacy h2, .cta h2 { font-size: 26px; }
+        }
+
+        @media (max-width: 480px) {
+            .showcase-card img { height: 360px; }
+        }
+        .feature-card .tier {
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #db340e;
+        }
+    
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.nav-actions .nav-link, .nav-brand span { white-space: nowrap; }
+@media (max-width: 480px) { .nav-actions { gap: 6px; } .nav-actions .nav-link { padding: 7px 12px; font-size: 13px; } }
+.nav-link-play { background: transparent; color: #1d1d1f; box-shadow: inset 0 0 0 1px #1d1d1f; }
+.store-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; }
+.play-badge { display: inline-block; line-height: 0; margin: -11px -12px; }
+.play-badge img { height: 69px; width: auto; display: block; }
+.cta-box .play-badge { margin: -10px -11px; }
+.cta-box .play-badge img { height: 64px; }
+        summary > h2.faq-q { display: inline; margin: 0; font: inherit; letter-spacing: inherit; color: inherit; }
+</style>
+</head>
+<body>
+<nav>
+<div class="container">
+<a class="nav-brand" href="./" aria-label="Total Calories">
+<img src="../icon_64.webp" alt="" width="32" height="32">
+<span>Total Calories</span>
+</a>
+<span class="nav-actions"><a class="nav-link" href="https://apps.apple.com/de/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-home-de&amp;mt=8">Laden</a><a class="nav-link nav-link-play" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener">Google Play</a></span>
+</div>
+</nav>
+<section class="hero">
+<h1>Kenne deinen <span>Gesamtverbrauch</span></h1>
+<p class="tagline">Total Calories ist eine Kalorienverbrauchs-App für Apple Watch und iPhone. Aktive plus Ruhekalorien, Schritte, Trends und Ziele, alles aus Health und alles auf deinem Gerät. Kostenlos zum Start.</p>
+<p class="platforms">iPhone · Apple Watch · Widgets</p>
+<div class="store-row"><a class="download-btn" href="https://apps.apple.com/de/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-home-de&amp;mt=8">Kostenlos laden</a><a class="play-badge" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener"><img src="../google-play-badge.webp" alt="Jetzt bei Google Play"></a></div>
+</section>
+<section class="showcase">
+<div class="showcase-scroll">
+<div class="showcase-card">
+<img src="../appstore-screenshot-02.webp" srcset="../appstore-screenshot-02-360.webp 360w, ../appstore-screenshot-02-540.webp 540w, ../appstore-screenshot-02.webp 720w" sizes="(max-width: 480px) 166px, (max-width: 768px) 185px, 250px" alt="Erkenne deine Muster. 30-Tage-Verlauf für Kalorien und Schritte mit Trends" loading="lazy" decoding="async" width="720" height="1558">
+</div>
+<div class="showcase-card">
+<img src="../appstore-screenshot-03.webp" srcset="../appstore-screenshot-03-360.webp 360w, ../appstore-screenshot-03-540.webp 540w, ../appstore-screenshot-03.webp 720w" sizes="(max-width: 480px) 166px, (max-width: 768px) 185px, 250px" alt="Am Handgelenk. Komplikationen und Watch App für die Apple Watch" loading="lazy" decoding="async" width="720" height="1558">
+</div>
+<div class="showcase-card">
+<img src="../appstore-screenshot-01.webp" srcset="../appstore-screenshot-01-360.webp 360w, ../appstore-screenshot-01-540.webp 540w, ../appstore-screenshot-01.webp 720w" sizes="(max-width: 480px) 166px, (max-width: 768px) 185px, 250px" alt="Netto-Defizit. Verbrannt minus gegessen, aus Health" loading="lazy" decoding="async" width="720" height="1558">
+</div>
+<div class="showcase-card">
+<img src="../appstore-screenshot-05.webp" srcset="../appstore-screenshot-05-360.webp 360w, ../appstore-screenshot-05-540.webp 540w, ../appstore-screenshot-05.webp 720w" sizes="(max-width: 480px) 166px, (max-width: 768px) 185px, 250px" alt="Gesamtkalorien. Jeden Tag. Vitals+ Abo und Premium-Funktionen" loading="lazy" decoding="async" width="720" height="1558">
+</div>
+<div class="showcase-card">
+<img src="../appstore-screenshot-04.webp" srcset="../appstore-screenshot-04-360.webp 360w, ../appstore-screenshot-04-540.webp 540w, ../appstore-screenshot-04.webp 720w" sizes="(max-width: 480px) 166px, (max-width: 768px) 185px, 250px" alt="Geh weiter. Vitals+ PDF-Berichte und tiefe Trends" loading="lazy" decoding="async" width="720" height="1558">
+</div>
+</div>
+</section>
+<section class="features">
+<div class="container">
+<div class="features-header">
+<h2>Was macht Total Calories?</h2>
+<p>Die App addiert deine aktiven und Ruhekalorien aus Health zu einer Tageszahl. Kostenlos und ohne Konto. Vitals+ ergänzt Netto-Defizit, PDF-Berichte und tiefe Trends.</p>
+</div>
+</div>
+<div class="features-grid">
+<div class="feature-card">
+<h3>Gesamte Tageskalorien</h3>
+<p>Sieh deine aktiven und Ruhekalorien in einem übersichtlichen Ring. Tippe für die Aufschlüsselung.</p>
+</div>
+<div class="feature-card">
+<h3>Trends im Zeitverlauf</h3>
+<p>Zeige 7 Tage, 30 Tage, 90 Tage, ein ganzes Jahr oder einen beliebigen Zeitraum an. Jederzeit als CSV exportieren.</p>
+</div>
+<div class="feature-card">
+<h3>Fortschrittsringe</h3>
+<p>Lege tägliche Kalorien- und Schrittziele mit animierten Ringen fest. Oder schalte Ziele aus und nutze die App als Zähler.</p>
+</div>
+<div class="feature-card">
+<h3>Verbrannt minus gegessen</h3>
+<p>Verbinde eine Ernährungs-App wie MyFitnessPal mit Health und sieh deine Netto-Kalorienbilanz in Echtzeit.</p>
+<p class="tier">In Vitals+ enthalten</p>
+</div>
+<div class="feature-card">
+<h3>Monatsübersichten</h3>
+<p>Druckfertige PDF-Berichte für jeden Zeitraum. Monatlich automatisch erstellt oder als eigene Schnappschüsse, die du mit deinem Arzt teilen kannst.</p>
+<p class="tier">In Vitals+ enthalten</p>
+</div>
+<div class="feature-card">
+<h3>Home- &amp; Sperrbildschirm</h3>
+<p>Kalorien und Schritte auf deinem Home-Bildschirm oder Sperrbildschirm, ohne die App zu öffnen.</p>
+</div>
+<div class="feature-card">
+<h3>Periode im Vergleich</h3>
+<p>Vergleiche diese Woche mit der letzten, diesen Monat mit dem Vormonat. Sieh, was sich ändert und um wie viel.</p>
+<p class="tier">In Vitals+ enthalten</p>
+</div>
+<div class="feature-card">
+<h3>Komplikationen</h3>
+<p>Deine Daten den ganzen Tag auf dem Zifferblatt, in runden, rechteckigen, Inline- und Eckformaten. Komplette Watch App inklusive.</p>
+</div>
+</div>
+</section>
+<section class="privacy">
+<div class="container">
+<div class="lockup">
+<svg viewbox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+</div>
+<h2>Ist Total Calories privat?</h2>
+<p>Ja. Total Calories liest Health nur lesend. Keine Konten, keine Werbung, kein Tracking. Deine Gesundheitsdaten bleiben auf deinem Gerät und werden nie hochgeladen. Die App ruft nur Apple und RevenueCat, unseren Abrechnungsanbieter, auf, um deinen Abostatus zu prüfen. Keiner von beiden erhält jemals deine Gesundheitsdaten.</p>
+<a href="../privacy-policy.html">Datenschutzerklärung →</a>
+</div>
+</section>
+<section class="more-info">
+<div class="container">
+<div class="more-info-header">
+<h2>Mehr Infos</h2>
+<p>So ist es gebaut.</p>
+</div>
+<div class="more-info-content">
+<div class="more-info-section">
+<h3>Die Idee</h3>
+<p>Die meisten Kalorien-Tracker verlangen, jede Mahlzeit von Hand zu erfassen und ein Konto anzulegen. Ich wollte etwas, das einfach zeigt, was Health ohnehin schon weiß.</p>
+<p>Total Calories liest deine aktive Energie und Schritte aus HealthKit, berechnet eine einfache Summe und zeigt sie an deinem Handgelenk. Keine Anmeldung, keine Cloud, kein Tracking. Die Kern-App ist kostenlos.</p>
+</div>
+<div class="more-info-section">
+<h3>Vitals+</h3>
+<p>Ein optionales Upgrade für alle, die tiefer einsteigen wollen. Verfügbar als Monats- oder Jahresabo oder als einmaliger Lifetime-Kauf, bei Abos mit 7 Tagen kostenloser Testphase. Die Preise siehst du in der App vor dem Kauf, sie variieren je nach Region.</p>
+<p><strong>Netto-Defizit.</strong> Verbrannte Kalorien minus Nahrungsenergie aus Health. Funktioniert mit MyFitnessPal, Lose It und jedem Ernährungs-Tracker, der in Health schreibt. Erscheint auf deinem Dashboard, in Verlaufsdiagrammen, Widgets und auf der Apple Watch.</p>
+<p><strong>PDF-Berichte.</strong> Druckfertige Monatsübersichten und Berichte für beliebige Zeiträume. Kalorientrends, Schritttrends, Zielerreichung, Spitzentage, Veränderungen im Periodenvergleich. Auf dem Gerät erzeugt, nichts wird hochgeladen.</p>
+<p><strong>Tiefe Trends.</strong> Vergleiche jeden Zeitraum mit dem davor. Sieh genau, wie sich deine Aktivität von Woche zu Woche oder von Monat zu Monat verändert, in Kalorien und Schritten.</p>
+<p><strong>Aufschlüsselung aktiv vs. Ruhe.</strong> Sieh direkt im Dashboard, wie viel deines Verbrauchs aus Bewegung und wie viel aus dem Stoffwechsel stammt.</p>
+</div>
+<div class="more-info-section">
+<h3>Ratgeber</h3>
+<p><a href="../tdee-calculator.html">TDEE-Rechner</a>, <a href="../bmr-calculator.html">BMR-Rechner</a> und <a href="apple-watch-active-vs-resting-calories.html">aktive vs. Ruhekalorien auf der Apple Watch</a>: was die Zahlen bedeuten und wie die Watch sie misst. Außerdem im Vergleich: <a href="../how-many-calories-do-i-burn-a-day.html">wie viele Kalorien verbrenne ich am Tag</a> und <a href="../best-app-to-track-calories-burned-apple-watch.html">die beste App, um den Kalorienverbrauch auf der Apple Watch zu verfolgen</a>.</p>
+</div>
+<div class="more-info-section faq-list" id="faq">
+<h3>Häufig gestellte Fragen</h3>
+<details><summary><h2 class="faq-q">Gibt es eine App, die den gesamten Kalorienverbrauch auf der Apple Watch zeigt?</h2></summary><p>Ja. Total Calories bringt deinen gesamten Kalorienverbrauch (aktiv plus Ruhe) als Komplikation in runden, rechteckigen, Inline- und Eckformaten auf dein Apple Watch Zifferblatt und enthält eine vollständige Watch App.</p></details>
+<details><summary><h2 class="faq-q">Wie sehe ich den gesamten Kalorienverbrauch auf meinem Apple Watch Zifferblatt?</h2></summary><p>Installiere Total Calories auf deinem iPhone und füge die Komplikation dann einem Zifferblatt mit Komplikationsplatz hinzu. Der Bewegen-Ring von Apple zählt nur aktive Kalorien, diese App zeigt aktive plus Ruhekalorien.</p></details>
+<details><summary><h2 class="faq-q">Was ist der Unterschied zwischen aktiven und Ruhekalorien?</h2></summary><p>Aktive Kalorien verbrennst du durch Bewegung und Training, Ruhekalorien verbraucht dein Körper in Ruhe, um zu funktionieren. Total Calories liest beides aus Health und addiert sie zu deinem Tageswert, und Vitals+ zeigt die Aufschlüsselung in aktiv und Ruhe.</p></details>
+<details><summary><h2 class="faq-q">Kann ich meinen TDEE und BMR in der App sehen?</h2></summary><p>Ja. Vitals+ zeigt TDEE- und BMR-Referenzwerte, also deine 30-Tage-Durchschnitte für Erhaltungs- und Ruheenergie aus Health. Die Website bietet auch kostenlose Ratgeber zu TDEE- und BMR-Rechnern.</p></details>
+<details><summary><h2 class="faq-q">Ist Total Calories ein Ernährungstagebuch oder Kalorienzähler?</h2></summary><p>Nein. Es ist eine App für den Kalorienverbrauch und erfasst keine Mahlzeiten. Mit Vitals+ zieht das Netto-Defizit die Nahrungsenergie ab, die eine andere Ernährungs-App wie MyFitnessPal oder Lose It bereits in Health schreibt.</p></details>
+<details><summary><h2 class="faq-q">Ist Total Calories kostenlos, und brauche ich ein Konto?</h2></summary><p>Die Kern-App ist kostenlos zu laden und braucht kein Konto. Tracking, Widgets und die Apple Watch App sind kostenlos, und das optionale Upgrade Vitals+ wird vor dem Kauf in der App mit Preis angezeigt und variiert je nach Region.</p></details>
+<details><summary><h2 class="faq-q">Hält Total Calories meine Gesundheitsdaten privat?</h2></summary><p>Ja. Die App liest Health nur lesend, und deine Gesundheitsdaten bleiben auf deinem Gerät. Es gibt keine Werbung, kein Tracking und keine Konten.</p></details>
+</div>
+<div class="more-info-section">
+<h3>Technische Daten</h3>
+<table class="specs-table">
+<tr><td>Plattform</td><td>iOS 17+, watchOS 10+</td></tr>
+<tr><td>Sprache</td><td>Swift 6 mit strikter Nebenläufigkeit</td></tr>
+<tr><td>Framework</td><td>SwiftUI · HealthKit · WidgetKit</td></tr>
+<tr><td>Daten</td><td>Nur lesender HealthKit-Zugriff, nur lokal</td></tr>
+<tr><td>Speicher</td><td>SwiftData-Cache über App Group geteilt</td></tr>
+<tr><td>Widgets</td><td>Home-Bildschirm, Sperrbildschirm, StandBy, watchOS-Komplikationen</td></tr>
+</table>
+</div>
+<div class="more-info-section">
+<h3>Was zählte</h3>
+<p><strong>Einrichtung ohne Konfiguration.</strong> App öffnen, HealthKit-Zugriff erlauben, fertig. Kein Onboarding, kein Tutorial, keine Kontoerstellung. Der erste Bildschirm zeigt sofort die Daten von gestern.</p>
+<p><strong>Watch-first-Design.</strong> Die Apple Watch App ist die Hauptoberfläche. Die iPhone App gibt es für den detaillierten Verlauf und die Einstellungen. Beide teilen sich einen SwiftData-Cache über App Group.</p>
+<p><strong>Zuverlässige Widgets.</strong> Widgets aktualisieren sich nach einem Zeitplan, nicht beim Öffnen. Hintergrundaufgaben halten den Cache aktuell. Die Komplikation aktualisiert sich innerhalb von 15 Minuten nach Änderungen in HealthKit.</p>
+<p><strong>Datenschutz.</strong> Keine Analyse, keine Absturzberichte, keine Konten. Die App weiß nicht, wer du bist.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="cta">
+<h2>Starte heute mit dem Tracking</h2>
+<p>Kostenlos im App Store und bei Google Play. Kein Konto nötig. Upgrade auf Vitals+ jederzeit möglich.</p>
+<div class="store-row"><a class="download-btn" href="https://apps.apple.com/de/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-home-de&amp;mt=8">Kostenlos laden</a><a class="play-badge" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener"><img src="../google-play-badge.webp" alt="Jetzt bei Google Play"></a></div>
+</section>
+<footer>
+<div class="divider">© 2026 Jack Wallner · Zuletzt aktualisiert <time datetime="2026-10-28" data-updated>28. Oktober 2026</time></div>
+<div>
+<a href="../guides.html">Ratgeber</a>
+<a href="../support.html">Support</a>
+<a href="../privacy-policy.html">Datenschutz</a>
+<a href="https://jackwallner.com/ios/">Weitere Apps von Jack Wallner</a>
+</div>
+<div class="related-apps">Auch von Jack: <a href="https://jackwallner.com/ios/vo2max/">VO2 Max &amp; Cardio Fitness</a> <a href="https://jackwallner.com/ios/fitness-streaks/">Fitness Habit Tracker</a></div>
+        <div class="lang-switch"><a href="../" hreflang="en" lang="en">English</a> <span lang="de">Deutsch</span> <a href="../ja/" hreflang="ja" lang="ja">日本語</a> <a href="../fr/" hreflang="fr" lang="fr">Français</a> <a href="../zh-Hans/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a> <a href="../es/" hreflang="es" lang="es">Español</a> <a href="../pl/" hreflang="pl" lang="pl">Polski</a> <a href="../ru/" hreflang="ru" lang="ru">Русский</a> <a href="../it/" hreflang="it" lang="it">Italiano</a> <a href="../pt-BR/" hreflang="pt-BR" lang="pt-BR">Português (Brasil)</a> <a href="../ar/" hreflang="ar" lang="ar">العربية</a></div>
+</footer>
+</body>
+</html>

@@ -6,7 +6,7 @@ Web page: https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calor
 
 ## Active vs resting calories on Apple Watch
 
-Last updated October 25, 2026
+Last updated October 28, 2026
 
 Active energy is the calorie burn that comes from movement above your resting rate, and resting energy is what your body spends just staying alive. Your Move ring shows only part of what you burn. Here is what active and resting energy mean in Apple Health, how to see your total, and why the total is the number that matters for eating.
 
@@ -14,25 +14,39 @@ Active energy is the calorie burn that comes from movement above your resting ra
 
 Resting energy is what your body burns staying alive, and active energy is everything above that, from walking to workouts. Apple Health records calories in two separate fields all day.
 
-- **Resting energy** is the Watch's estimate of your basal metabolism, the calories your body spends staying alive. It is based on the height, weight, age and sex in your Health profile and accrues steadily, around 50 to 85 kcal an hour for most adults.
-- **Active energy** is everything above resting: walking, workouts, chores, fidgeting. The Watch estimates it from your heart rate, arm motion and step count. This is the number on your Move ring.
+- **Resting energy** is the Watch's estimate of your basal metabolism, the calories your body spends staying alive. Apple computes it from the weight, height, age and sex in your Health profile (plus wheelchair status), and it shifts slightly with what you are doing. For most adults it adds up to 1,200 to 2,000 kcal a day, roughly 50 to 85 kcal an hour.
+- **Active energy** is everything above resting: walking, workouts, chores, fidgeting. The Watch estimates it from motion sensors and heart rate all day, and in workouts it adds GPS, elevation and the workout type. This is the number on your Move ring.
 
-Total calories burned for the day is simply the two added together. A 500 kcal Move ring on a 1,700 kcal resting day is a 2,200 kcal total.
+Apple's own definition, from its [November 2024 calorimetry white paper](https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf): active calories are the calories burned above basal (resting) calories, and total calories are the two combined. Total calories burned for the day is simply the two added together. A 500 kcal Move ring on a 1,700 kcal resting day is a 2,200 kcal total.
 
 ## Why does the Move ring read low?
 
-Because it shows only active energy, not your resting burn. The Fitness app is built around activity, so it headlines active energy and buries resting energy in Health under Browse, Activity, Resting Energy. People compare a 480 kcal Move total to a TDEE calculator saying 2,400 and assume the Watch is broken. It is not. They are looking at half the number.
+Because it shows only active energy, not your resting burn. The Fitness app is built around activity, so it headlines active energy and leaves resting energy in the Health app under Browse, Activity. People compare a 480 kcal Move total to a TDEE calculator saying 2,400 and assume the Watch is broken. It is not. They are looking at half the number.
 
 ## How do you see your total calories burned?
 
 Add Resting Energy and Active Energy in the Health app, or use an app that adds them for you.
 
 1. Open the Health app, tap Browse, then Activity. Resting Energy and Active Energy are separate rows; add them for today.
-2. Or use an app that does the addition and keeps the history. Total Calories shows the combined number on your iPhone, as an Apple Watch complication and in a home or lock screen widget, with the active and resting split underneath.
+2. For a single workout, open it in the Fitness app. The workout summary lists Active Calories and Total Calories side by side.
+3. Or use an app that does the addition and keeps the history. Total Calories shows the combined number on your iPhone, as an Apple Watch complication and in a home or lock screen widget, with the active and resting split underneath.
 
 ## How accurate are Apple Watch calories?
 
-Apple Watch active energy is typically within 10 to 20% for walking and running, and less reliable for cycling, strength work and anything that keeps your wrist still. Independent tests put it among the better wrist trackers. Resting energy is a formula, so it carries the same limits as any BMR calculator. The daily total is still far closer to your real burn than a static TDEE estimate, because it includes what you actually did.
+For workouts, Apple's tests put the average error near zero, with a spread of about 9 to 20% depending on the activity. Apple checked Apple Watch against a metabolic cart, the lab instrument that measures burn from your breathing. Mean error and spread, from Apple's November 2024 white paper:
+
+| Workout | Mean error | Spread (SD) |
+| --- | --- | --- |
+| Walk, run, hike | 0% | 9% |
+| Outdoor cycling | 5% | 13% |
+| Elliptical | 0% | 15% |
+| Rowing | -2% | 15% |
+| HIIT and indoor cycling | -2% | 14% |
+| Strength and pilates | 2% | 17% |
+| Swimming | 5% | 20% |
+| Yoga and tai chi | 3% | 20% |
+
+So one walk can be off by about 10% either way, but the errors mostly cancel out over a week. Apple publishes no accuracy figure for all-day resting energy, which is a model, not a measurement, and carries the same limits as any BMR calculator. The daily total is still closer to your real burn than a static TDEE estimate, because it counts what you actually did.
 
 ## How do you make your calorie total more useful?
 
@@ -65,7 +79,11 @@ Go by total calories, active plus resting, when you decide how much to eat, beca
 
 ### How accurate is Apple Watch resting energy?
 
-It is a formula estimate, not a measurement. The Watch calculates resting energy from the height, weight, age and sex in your Health profile, so it carries the same limits as any BMR calculator. Keep your weight current in Health, because resting energy is computed from it.
+It is a model estimate, not a measurement. Apple calculates resting energy from the weight, height, age and sex in your Health profile, adjusted slightly for your current activity, and publishes no accuracy figure for it. Keep your weight current in Health, because resting energy is computed from it.
+
+### How accurate are Apple Watch calories during workouts?
+
+Close on average. In Apple's lab tests, walking, running and hiking averaged 0% error with a 9% spread, and harder-to-measure activities like swimming and yoga had a spread near 20%.
 
 ### Related guides
 

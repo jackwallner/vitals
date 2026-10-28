@@ -1,0 +1,46 @@
+{
+ "en": {
+  "name": "Total Calories - Daily Tracker",
+  "subtitle": "TDEE Burn on Watch & Widget"
+ },
+ "de": {
+  "name": "Kalorienzähler – Tagestracker",
+  "subtitle": "TDEE Verbrennung Uhr Widget"
+ },
+ "ja": {
+  "name": "カロリー計算 - 毎日のトラッカー",
+  "subtitle": "TDEE消費 腕時計＆ウィジェット"
+ },
+ "fr": {
+  "name": "Compteur Calories - Suivi",
+  "subtitle": "TDEE Brûlure Montre Widget"
+ },
+ "zh-Hans": {
+  "name": "卡路里计算 - 每日追踪",
+  "subtitle": "TDEE消耗 手表与小组件"
+ },
+ "es": {
+  "name": "Contador de Calorías - Diario",
+  "subtitle": "TDEE Quema Reloj y Widget"
+ },
+ "pl": {
+  "name": "Suma Kalorii - Codzienny",
+  "subtitle": "TDEE Spalanie Zegarek"
+ },
+ "ru": {
+  "name": "Счетчик Калорий - Ежедневно",
+  "subtitle": "TDEE Сжигание Часы Виджет"
+ },
+ "it": {
+  "name": "Contacalorie - Tracker",
+  "subtitle": "TDEE Bruciatura Orologio"
+ },
+ "pt-BR": {
+  "name": "Calorias - Contador Diário",
+  "subtitle": "TDEE Queima Relógio Widget"
+ },
+ "ar": {
+  "name": "عداد السعرات الحرارية - يومي",
+  "subtitle": "TDEE حرق ساعة وودجت"
+ }
+}

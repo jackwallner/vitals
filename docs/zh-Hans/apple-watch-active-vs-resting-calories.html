@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Apple Watch 上活动能量和静息能量的含义，为什么活动圆环只显示部分消耗，以及如何查看当天的总卡路里消耗。">
+<link rel="icon" type="image/png" sizes="256x256" href="../icon_256.png">
+<link rel="apple-touch-icon" href="../icon_256.png">
+<title>Apple Watch 活动与静息卡路里：总消耗详解</title>
+<link rel="canonical" href="https://jackwallner.com/ios/vitals/zh-Hans/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="en" href="https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="de" href="https://jackwallner.com/ios/vitals/de/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ja" href="https://jackwallner.com/ios/vitals/ja/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="fr" href="https://jackwallner.com/ios/vitals/fr/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="zh-Hans" href="https://jackwallner.com/ios/vitals/zh-Hans/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="es" href="https://jackwallner.com/ios/vitals/es/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="pl" href="https://jackwallner.com/ios/vitals/pl/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ru" href="https://jackwallner.com/ios/vitals/ru/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="it" href="https://jackwallner.com/ios/vitals/it/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://jackwallner.com/ios/vitals/pt-BR/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ar" href="https://jackwallner.com/ios/vitals/ar/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="x-default" href="https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html">
+<script>if(location.hostname==="jackwallner.github.io"){var c=document.querySelector('link[rel="canonical"]');if(c&&c.href.indexOf("https://jackwallner.com/")===0)location.replace(c.href)}</script>
+<meta property="og:title" content="Apple Watch 上的活动与静息卡路里">
+<meta property="og:description" content="Apple Watch 上活动能量和静息能量的含义，为什么活动圆环只显示部分消耗，以及如何查看当天的总卡路里消耗。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://jackwallner.com/ios/vitals/zh-Hans/apple-watch-active-vs-resting-calories.html">
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Apple Watch 上的活动与静息卡路里",
+    "description": "Apple Watch 上活动能量和静息能量的含义，为什么活动圆环只显示部分消耗，以及如何查看当天的总卡路里消耗。",
+    "author": {
+        "@type": "Person",
+        "name": "Jack Wallner"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Total Calories"
+    },
+    "mainEntityOfPage": "https://jackwallner.com/ios/vitals/zh-Hans/apple-watch-active-vs-resting-calories.html",
+    "dateModified": "2026-10-28"
+}</script>
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": "Apple Watch 会统计静息卡路里吗？",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "会。静息能量全天记录在健康 App 中，但健身 App 的活动圆环只显示活动能量。把两者相加就是你的总消耗。"
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "为什么我的 Apple Watch 显示只消耗了 400 卡路里？",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "那只是活动的一半。你的静息能量通常为 1,200 到 2,000 千卡，在健康 App 中单独记录。你真实的每日总量是两者之和。"
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "能在 Apple Watch 表盘上看到总卡路里消耗吗？",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Apple 内置的复杂功能做不到，它们只显示活动圆环。Total Calories 提供复杂功能和小组件，把活动加静息能量显示为一个数字。"
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "应该看活动卡路里还是总卡路里？",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "决定吃多少时请看总卡路里，也就是活动加静息，因为那才是你一天的全部消耗。活动卡路里（活动圆环）适合做活动目标，但单独看会漏掉身体静息时消耗的 1,200 到 2,000 千卡。取 7 天或更多天的总量平均值，因为单独一天波动较大。"
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Apple Watch 的静息能量有多准确？",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "它是模型估算，不是测量。Apple 根据你健康资料中的体重、身高、年龄和性别计算静息能量，并根据当前活动略作调整，没有公布准确度数据。请在健康 App 中保持体重为最新，因为静息能量由它计算。"
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Apple Watch 在锻炼时的卡路里有多准确？",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "平均而言很接近。在 Apple 的实验室测试中，步行、跑步和徒步的平均误差为 0%，离散度为 9%，而游泳和瑜伽等更难测量的活动离散度接近 20%。"
+            }
+        }
+    ]
+}</script>
+<style>* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif; color: #1d1d1f; background: #fafafa; -webkit-font-smoothing: antialiased; }
+.container { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+nav { padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.06); background: rgba(250,250,250,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 10; }
+nav .container { display: flex; align-items: center; justify-content: space-between; max-width: 980px; }
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1d1d1f; }
+.nav-brand img { width: 32px; height: 32px; border-radius: 7px; }
+.nav-brand span { font-size: 15px; font-weight: 600; }
+.nav-link { font-size: 14px; text-decoration: none; background: #1d1d1f; color: #fff; padding: 8px 18px; border-radius: 980px; font-weight: 500; }
+.nav-link:hover { opacity: 0.85; }
+article { padding: 64px 0 48px; }
+h1 { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
+.updated { font-size: 14px; color: #6e6e73; margin-bottom: 12px; }
+.lede { font-size: 19px; color: #6e6e73; line-height: 1.5; margin-bottom: 36px; }
+h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.4px; margin: 40px 0 12px; }
+p, li { font-size: 17px; line-height: 1.6; margin-bottom: 14px; }
+ul, ol { padding-left: 22px; }
+li { margin-bottom: 6px; }
+a { color: #1d1d1f; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 20px; font-size: 16px; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid rgba(0,0,0,0.08); }
+th { font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px; color: #6e6e73; font-weight: 600; }
+.formula { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; padding: 16px 18px; font-family: "SF Mono", Menlo, monospace; font-size: 15px; line-height: 1.7; margin: 8px 0 20px; overflow-x: auto; }
+.calc { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 18px; padding: 24px; margin: 20px 0 28px; }
+.calc h2 { margin: 0 0 16px; font-size: 20px; }
+.calc .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.calc label { display: block; font-size: 13px; color: #6e6e73; margin-bottom: 6px; }
+.calc input, .calc select { width: 100%; font: inherit; font-size: 17px; padding: 10px 12px; border: 1px solid rgba(0,0,0,0.14); border-radius: 10px; background: #fafafa; color: #1d1d1f; }
+.calc .seg { display: flex; gap: 8px; }
+.calc .seg button { flex: 1; font: inherit; font-size: 15px; padding: 9px 0; border-radius: 10px; border: 1px solid rgba(0,0,0,0.14); background: #fafafa; cursor: pointer; }
+.calc .seg button[aria-pressed="true"] { background: #1d1d1f; color: #fff; border-color: #1d1d1f; }
+.result { margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.08); }
+.result .big { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1; }
+.result .big small { font-size: 16px; font-weight: 500; color: #6e6e73; letter-spacing: 0; margin-left: 6px; }
+.result .sub { font-size: 15px; color: #6e6e73; margin-top: 8px; }
+.cta { text-align: center; padding: 48px 24px 56px; border-top: 1px solid rgba(0,0,0,0.06); margin-top: 24px; }
+.cta h2 { margin: 0 0 8px; }
+.cta p { color: #6e6e73; max-width: 440px; margin: 0 auto 22px; }
+.download-btn { display: inline-block; background: #1d1d1f; color: #fff; font-size: 15px; font-weight: 500; padding: 14px 36px; border-radius: 980px; text-decoration: none; }
+.download-btn:hover { opacity: 0.85; }
+.related { padding: 24px 0 8px; }
+.related h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: #6e6e73; margin-bottom: 10px; }
+.related a { display: block; font-size: 16px; text-decoration: none; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+footer { text-align: center; padding: 20px 24px 40px; font-size: 12px; color: #6e6e73; }
+footer a { display: inline-block; padding: 6px 0; color: #6e6e73; text-decoration: none; margin: 0 10px; }
+footer .divider { margin: 4px 0; }
+.note { font-size: 14px; color: #6e6e73; line-height: 1.5; }
+@media (max-width: 520px) { h1 { font-size: 32px; } .calc .row { grid-template-columns: 1fr; } }
+
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.nav-actions .nav-link, .nav-brand span { white-space: nowrap; }
+@media (max-width: 480px) { .nav-actions { gap: 6px; } .nav-actions .nav-link { padding: 7px 12px; font-size: 13px; } }
+.nav-link-play { background: transparent; color: #1d1d1f; box-shadow: inset 0 0 0 1px #1d1d1f; }
+.store-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; }
+.play-badge { display: inline-block; line-height: 0; margin: -11px -12px; }
+.play-badge img { height: 69px; width: auto; display: block; }
+.cta-box .play-badge { margin: -10px -11px; }
+.cta-box .play-badge img { height: 64px; }
+</style>
+</head>
+<body>
+<nav>
+<div class="container">
+<a class="nav-brand" href="./" aria-label="Total Calories"><img src="../icon_64.webp" alt="" width="32" height="32"><span>Total Calories</span></a>
+<span class="nav-actions"><a class="nav-link" href="https://apps.apple.com/cn/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-apple-watch-active-vs-zh-hans&amp;mt=8">下载</a><a class="nav-link nav-link-play" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener">Google Play</a></span>
+</div>
+</nav>
+<article>
+<div class="container">
+<h1>Apple Watch 上的活动与静息卡路里</h1>
+<p class="updated">最后更新 <time datetime="2026-10-28" data-updated>2026年10月28日</time></p>
+<p class="lede">活动能量是高于静息水平的运动所产生的卡路里消耗，静息能量是身体仅为维持生命所消耗的能量。你的活动圆环只显示消耗的一部分。这里介绍健康 App 中活动能量和静息能量的含义、如何查看总量，以及为什么在饮食上总量才是关键数字。</p>
+<h2>活动卡路里和静息卡路里有什么区别？</h2>
+<p>静息能量是身体维持生命所燃烧的，活动能量是在此之上的一切，从走路到锻炼。健康 App 全天把卡路里记录在两个独立的字段中。</p>
+<ul>
+<li><strong>静息能量</strong>是手表对你基础代谢的估算，即身体维持生命所消耗的卡路里。Apple 根据你健康资料中的体重、身高、年龄和性别（以及轮椅状态）计算，并会随你正在做的事情略有变化。对大多数成年人来说，每天合计 1,200 到 2,000 千卡，大约每小时 50 到 85 千卡。</li>
+<li><strong>活动能量</strong>是高于静息的一切：走路、锻炼、做家务、坐立不安。手表全天根据运动传感器和心率估算，锻炼时还会加入 GPS、海拔和锻炼类型。这就是你活动圆环上的数字。</li>
+</ul>
+<p>Apple 自己的定义来自其<a href="https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf">2024 年 11 月热量测定白皮书</a>：活动卡路里是高于基础（静息）卡路里所消耗的卡路里，总卡路里是两者之和。当天的总卡路里消耗就是两者相加。静息为 1,700 千卡的一天里，活动圆环 500 千卡，总量就是 2,200 千卡。</p>
+<h2>为什么活动圆环的数字偏低？</h2>
+<p>因为它只显示活动能量，不包含静息消耗。健身 App 以活动为核心，所以突出活动能量，而静息能量放在健康 App 的“浏览”中的“活动”下。有人把 480 千卡的活动总量和 TDEE 计算器给出的 2,400 比较，就以为手表坏了。其实没有，他们只是看了数字的一半。</p>
+<h2>如何查看总卡路里消耗？</h2>
+<p>在健康 App 中把静息能量和活动能量相加，或使用帮你相加的应用。</p>
+<ol>
+<li>打开健康 App，轻点“浏览”，再点“活动”。静息能量和活动能量是单独的两行，把今天的相加即可。</li>
+<li>对于单次锻炼，在健身 App 中打开它。锻炼摘要会并排列出活动卡路里和总卡路里。</li>
+<li>或者使用会帮你相加并保存历史记录的应用。Total Calories 会在 iPhone、Apple Watch 复杂功能以及主屏幕或锁定屏幕小组件上显示合计数字，下方附活动与静息的拆分。</li>
+</ol>
+<h2>Apple Watch 的卡路里有多准确？</h2>
+<p>对于锻炼，Apple 的测试显示平均误差接近零，离散度约为 9% 到 20%，取决于活动类型。Apple 将 Apple Watch 与代谢车做了对比，这是一种通过呼吸测量消耗的实验室仪器。以下是 Apple 2024 年 11 月白皮书中的平均误差和离散度：</p>
+<table>
+<thead><tr><th>锻炼</th><th>平均误差</th><th>离散度（标准差）</th></tr></thead>
+<tbody>
+<tr><td>步行、跑步、徒步</td><td>0%</td><td>9%</td></tr>
+<tr><td>户外骑行</td><td>5%</td><td>13%</td></tr>
+<tr><td>椭圆机</td><td>0%</td><td>15%</td></tr>
+<tr><td>划船</td><td>-2%</td><td>15%</td></tr>
+<tr><td>HIIT 和室内骑行</td><td>-2%</td><td>14%</td></tr>
+<tr><td>力量训练和普拉提</td><td>2%</td><td>17%</td></tr>
+<tr><td>游泳</td><td>5%</td><td>20%</td></tr>
+<tr><td>瑜伽和太极</td><td>3%</td><td>20%</td></tr>
+</tbody>
+</table>
+<p>所以单次步行可能上下偏差约 10%，但一周下来误差大多会互相抵消。Apple 没有公布全天静息能量的准确度数据，它是模型而非测量，与任何 BMR 计算器有同样的局限。不过每日总量仍比固定的 TDEE 估算更接近你的真实消耗，因为它统计了你实际做过的事。</p>
+<h2>如何让卡路里总量更有用？</h2>
+<p>保持体重数据最新，全天佩戴手表，并使用 7 天平均值。</p>
+<ul>
+<li>保持健康资料中的体重为最新。静息能量由它计算得出。</li>
+<li>全天佩戴手表，包括锻炼之外的时间，这样活动能量能记录步数和家务。</li>
+<li>取 7 天或更多天的平均值。单独一天波动较大，平均值才是你实用的每日总能量消耗。</li>
+<li>如果你在写入健康 App 的应用里记录饮食，消耗减去摄入就是当天的净缺口，无需手动计算。</li>
+</ul>
+<p class="note">仅供参考，不构成医疗建议。</p>
+<h2>常见问题</h2>
+<h3 style="font-size:18px;margin:18px 0 6px">Apple Watch 会统计静息卡路里吗？</h3><p>会。静息能量全天记录在健康 App 中，但健身 App 的活动圆环只显示活动能量。把两者相加就是你的总消耗。</p><h3 style="font-size:18px;margin:18px 0 6px">为什么我的 Apple Watch 显示只消耗了 400 卡路里？</h3><p>那只是活动的一半。你的静息能量通常为 1,200 到 2,000 千卡，在健康 App 中单独记录。你真实的每日总量是两者之和。</p><h3 style="font-size:18px;margin:18px 0 6px">能在 Apple Watch 表盘上看到总卡路里消耗吗？</h3><p>Apple 内置的复杂功能做不到，它们只显示活动圆环。Total Calories 提供复杂功能和小组件，把活动加静息能量显示为一个数字。</p><h3 style="font-size:18px;margin:18px 0 6px">应该看活动卡路里还是总卡路里？</h3><p>决定吃多少时请看总卡路里，也就是活动加静息，因为那才是你一天的全部消耗。活动卡路里（活动圆环）适合做活动目标，但单独看会漏掉身体静息时消耗的 1,200 到 2,000 千卡。取 7 天或更多天的总量平均值，因为单独一天波动较大。</p><h3 style="font-size:18px;margin:18px 0 6px">Apple Watch 的静息能量有多准确？</h3><p>它是模型估算，不是测量。Apple 根据你健康资料中的体重、身高、年龄和性别计算静息能量，并根据当前活动略作调整，没有公布准确度数据。请在健康 App 中保持体重为最新，因为静息能量由它计算。</p>
+<h3 style="font-size:18px;margin:18px 0 6px">Apple Watch 在锻炼时的卡路里有多准确？</h3><p>平均而言很接近。在 Apple 的实验室测试中，步行、跑步和徒步的平均误差为 0%，离散度为 9%，而游泳和瑜伽等更难测量的活动离散度接近 20%。</p><div class="related"><h3>相关指南</h3><a href="../tdee-calculator.html">TDEE 计算器：你完整的每日消耗</a><a href="../bmr-calculator.html">BMR 计算器：你的静息消耗</a></div>
+</div>
+</article>
+<section class="cta">
+<h2>看到你的真实消耗，而不是估算</h2>
+<p>Total Calories 从健康 App 读取活动能量和静息能量，并在 iPhone、Apple Watch 和小组件上显示你真实的每日总量。免费开始使用。</p>
+<div class="store-row"><a class="download-btn" href="https://apps.apple.com/cn/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-apple-watch-active-vs-zh-hans&amp;mt=8">下载 Total Calories</a><a class="play-badge" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener"><img src="../google-play-badge.webp" alt="在 Google Play 上获取"></a></div>
+</section>
+<footer>
+<div class="divider">© 2026 Jack Wallner</div>
+<div><a href="./">首页</a><a href="../guides.html">指南</a><a href="../support.html">支持</a><a href="../privacy-policy.html">隐私</a></div>
+        <div class="lang-switch"><a href="../apple-watch-active-vs-resting-calories.html" hreflang="en" lang="en">English</a> <a href="../de/apple-watch-active-vs-resting-calories.html" hreflang="de" lang="de">Deutsch</a> <a href="../ja/apple-watch-active-vs-resting-calories.html" hreflang="ja" lang="ja">日本語</a> <a href="../fr/apple-watch-active-vs-resting-calories.html" hreflang="fr" lang="fr">Français</a> <span lang="zh-Hans">简体中文</span> <a href="../es/apple-watch-active-vs-resting-calories.html" hreflang="es" lang="es">Español</a> <a href="../pl/apple-watch-active-vs-resting-calories.html" hreflang="pl" lang="pl">Polski</a> <a href="../ru/apple-watch-active-vs-resting-calories.html" hreflang="ru" lang="ru">Русский</a> <a href="../it/apple-watch-active-vs-resting-calories.html" hreflang="it" lang="it">Italiano</a> <a href="../pt-BR/apple-watch-active-vs-resting-calories.html" hreflang="pt-BR" lang="pt-BR">Português (Brasil)</a> <a href="../ar/apple-watch-active-vs-resting-calories.html" hreflang="ar" lang="ar">العربية</a></div>
+</footer>
+</body>
+</html>
