@@ -169,7 +169,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dnes spálené kalórie v ${applicationName}"
+            "value" : "Kalórie spálené dnes v aplikácii ${applicationName}"
           }
         },
         "sv" : {
@@ -384,7 +384,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ukáž moje kalórie v ${applicationName}"
+            "value" : "Ukáž moje kalórie v aplikácii ${applicationName}"
           }
         },
         "sv" : {
@@ -599,7 +599,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ukáž moje kroky v ${applicationName}"
+            "value" : "Ukáž moje kroky v aplikácii ${applicationName}"
           }
         },
         "sv" : {
@@ -682,7 +682,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cuántas calorías he quemado en ${applicationName}"
+            "value" : "¿Cuántas calorías he quemado en ${applicationName}?"
           }
         },
         "et" : {
@@ -754,7 +754,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "${applicationName}에서 칼로리 얼마나 소모했어"
+            "value" : "${applicationName}에서 내가 칼로리를 얼마나 태웠어?"
           }
         },
         "lv" : {
@@ -784,7 +784,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ile kalorii spaliłem w ${applicationName}"
+            "value" : "Ile kalorii udało mi się spalić w ${applicationName}"
           }
         },
         "pt-BR" : {
@@ -808,13 +808,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Сколько калорий я сжёг в ${applicationName}"
+            "value" : "Сколько калорий сожжено в ${applicationName}"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Koľko kalórií som spálil v ${applicationName}"
+            "value" : "Koľko kalórií mám spálených v aplikácii ${applicationName}"
           }
         },
         "sv" : {
@@ -826,7 +826,7 @@
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "วันนี้ฉันเผาผลาญไปกี่แคลอรีใน ${applicationName}"
+            "value" : "ฉันเผาผลาญไปกี่แคลอรีใน ${applicationName}"
           }
         },
         "tr" : {
@@ -838,7 +838,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скільки калорій я спалив у ${applicationName}"
+            "value" : "Скільки калорій спалено в ${applicationName}"
           }
         },
         "vi" : {
@@ -897,7 +897,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cuántos pasos he dado en ${applicationName}"
+            "value" : "¿Cuántos pasos he dado en ${applicationName}?"
           }
         },
         "et" : {
@@ -969,7 +969,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "${applicationName}에서 몇 걸음 걸었어"
+            "value" : "${applicationName}에서 내가 몇 걸음 걸었어?"
           }
         },
         "lv" : {
@@ -999,7 +999,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ile kroków zrobiłem w ${applicationName}"
+            "value" : "Ile kroków udało mi się zrobić w ${applicationName}"
           }
         },
         "pt-BR" : {
@@ -1023,13 +1023,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Сколько шагов я прошёл в ${applicationName}"
+            "value" : "Сколько шагов пройдено в ${applicationName}"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Koľko krokov som prešiel v ${applicationName}"
+            "value" : "Koľko krokov mám zaznamenaných v aplikácii ${applicationName}"
           }
         },
         "sv" : {
@@ -1041,7 +1041,7 @@
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "วันนี้ฉันเดินไปกี่ก้าวใน ${applicationName}"
+            "value" : "ฉันเดินไปกี่ก้าวใน ${applicationName}"
           }
         },
         "tr" : {
@@ -1053,7 +1053,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Скільки кроків я пройшов у ${applicationName}"
+            "value" : "Скільки кроків пройдено в ${applicationName}"
           }
         },
         "vi" : {
@@ -1136,7 +1136,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pas d’aujourd’hui dans ${applicationName}"
+            "value" : "Pas du jour dans ${applicationName}"
           }
         },
         "he" : {
@@ -1244,7 +1244,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dnešné kroky v ${applicationName}"
+            "value" : "Dnešné kroky v aplikácii ${applicationName}"
           }
         },
         "sv" : {
