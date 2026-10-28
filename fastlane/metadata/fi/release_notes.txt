@@ -1,1 +1,3 @@
-Taustaparannuksia ja virhekorjauksia, jotta Total Calories toimii sujuvasti. Kiitos, että olet mukana.
+Total Calories on nyt saatavilla suomeksi ja 35 muulla kielellä.
+
+Lisäksi sujuvammat näkymät ja korjauksia.

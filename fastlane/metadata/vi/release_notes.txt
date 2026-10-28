@@ -1,1 +1,3 @@
-Cải tiến phía sau và sửa lỗi để Total Calories chạy mượt mà. Cảm ơn bạn đã đồng hành.
+Total Calories nay đã có tiếng Việt cùng 35 ngôn ngữ khác.
+
+Kèm theo màn hình mượt mà hơn và các bản sửa lỗi.

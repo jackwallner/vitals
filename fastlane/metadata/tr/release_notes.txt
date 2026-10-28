@@ -1,1 +1,3 @@
-Total Calories'ın sorunsuz çalışması için arka planda iyileştirmeler ve hata düzeltmeleri. Burada olduğun için teşekkürler.
+Total Calories artık Türkçe ve 35 dilde daha kullanılabiliyor.
+
+Ayrıca daha akıcı ekranlar ve hata düzeltmeleri.

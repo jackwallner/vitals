@@ -1,1 +1,3 @@
-Izboljšave v ozadju in popravki napak, da Total Calories deluje gladko. Hvala, da ste z nami.
+Total Calories je zdaj na voljo v 36 jezikih.
+
+Poleg tega bolj tekoči zasloni in popravki.

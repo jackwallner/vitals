@@ -1,1 +1,3 @@
-Vylepšenia na pozadí a opravy chýb, aby Total Calories fungoval hladko. Ďakujeme, že ste tu.
+Total Calories je teraz v slovenčine a v ďalších 35 jazykoch.
+
+K tomu plynulejšie obrazovky a opravy chýb.

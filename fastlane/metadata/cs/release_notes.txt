@@ -1,1 +1,3 @@
-Vylepšení na pozadí a opravy chyb, aby Total Calories běžel hladce. Děkujeme, že jste tu.
+Total Calories je nyní v češtině a v dalších 35 jazycích.
+
+K tomu plynulejší obrazovky a opravy chyb.

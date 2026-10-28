@@ -1,1 +1,3 @@
-Forbedringer bak kulissene og feilrettinger så Total Calories fungerer problemfritt. Takk for at du er her.
+Total Calories finnes nå på norsk og 35 andre språk.
+
+I tillegg jevnere skjermer og feilrettinger.

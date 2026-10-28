@@ -1,1 +1,3 @@
-Forbedringer bag kulisserne og fejlrettelser, så Total Calories kører glat. Tak fordi du er her.
+Total Calories findes nu på dansk og 35 andre sprog.
+
+Desuden mere flydende skærme og fejlrettelser.

@@ -1,1 +1,3 @@
-Verbeteringen achter de schermen en bugfixes zodat Total Calories soepel werkt. Bedankt dat je er bent.
+Total Calories is nu beschikbaar in het Nederlands en 35 andere talen.
+
+Plus soepelere schermen en verbeteringen.

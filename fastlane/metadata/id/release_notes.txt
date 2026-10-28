@@ -1,1 +1,3 @@
-Peningkatan di balik layar dan perbaikan bug agar Total Calories berjalan lancar. Terima kasih telah hadir.
+Total Calories kini tersedia dalam bahasa Indonesia dan 35 bahasa lainnya.
+
+Ditambah layar yang lebih mulus dan perbaikan.

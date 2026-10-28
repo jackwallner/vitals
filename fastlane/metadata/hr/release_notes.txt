@@ -1,1 +1,3 @@
-Poboljšanja u pozadini i ispravci grešaka kako bi Total Calories radio glatko. Hvala što ste tu.
+Total Calories sada je dostupan na hrvatskom i na još 35 jezika.
+
+Uz to, glađi zasloni i ispravci.

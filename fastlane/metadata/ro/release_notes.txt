@@ -1,1 +1,3 @@
-Îmbunătățiri și remedieri pentru ca Total Calories să funcționeze mai bine. Mulțumim că ești aici.
+Total Calories este acum disponibil în limba română și în alte 35 de limbi.
+
+Plus ecrane mai fluide și remedieri.

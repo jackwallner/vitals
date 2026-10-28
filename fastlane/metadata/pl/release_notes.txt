@@ -1,1 +1,3 @@
-Ulepszenia w tle i poprawki błędów, aby Total Calories działał płynnie. Dziękujemy, że jesteś.
+Aplikacja Total Calories jest teraz dostępna po polsku i w 35 innych językach.
+
+Do tego płynniejsze ekrany i poprawki.

@@ -4,7 +4,19 @@ Total Calories reads calorie and step data from Apple Health (HealthKit) in read
 
 WHAT CHANGED IN THIS VERSION
 
-1.8.7 is a bug-fix release for Excluded Days, the Vitals+ feature added in 1.8.6 (Settings > Averages > Excluded Days). The History tab no longer slows down while Pause Averages is on, and the Excluded Days screen shows the correct dates when the device uses a non-Gregorian calendar (for example Buddhist or Japanese). Anyone can open the Excluded Days screen; without a subscription, tapping a day or the pause switch shows the Vitals+ offer, which can be dismissed with "Not now". No new features, permissions, or data collection.
+1.9.1 translates the app into 35 languages and adds an introductory offer.
+
+HOW TO FIND THE NEW IN-APP PURCHASE (Vitals+ Yearly, com.jackwallner.vitals.yearly.exit, $14.99/year)
+
+It is a half-price yearly plan offered once to people who decline Vitals+. It is switched on for every review device. Please use a sandbox account with no Vitals+ purchase, and do not start a trial before step 3: subscribers never see the offer.
+
+1. Delete any earlier install, then install and launch the app.
+2. Tap Continue, allow Health access, then set or skip goals.
+3. On the Vitals+ screen that follows, do not buy. Tap "Get Started" at the bottom.
+4. Stay on the Today tab for about 5 seconds. The offer sheet opens on its own: regular yearly price struck through, $14.99/year, 7-day free trial, renewal terms. Tap the button to buy it with the sandbox account, or "No thanks" to close it.
+5. For 48 hours after it first appears, the Upgrade tab also sells this plan, with a line saying when the price ends.
+
+No new permissions or data collection.
 
 HEALTHKIT SETUP - PLEASE GRANT ACCESS WHEN PROMPTED
 
@@ -22,27 +34,20 @@ If access is denied or not yet granted, the app shows a banner explaining that H
 
 iPHONE FEATURES
 
-- Dashboard with animated calorie ring and step progress bar
-- Tap to reveal active vs. resting calorie breakdown
-- Pacing indicator: current day vs. configurable rolling average (default: 30 days, same weekday) at the same time of day
-- History tab: bar charts for 7D / 30D / 90D / 1Y / custom range
-- Trend arrows and peak day highlights
-- CSV data export
-- Home screen widgets (small, medium) and lock screen widgets (circular, rectangular)
-- Settings: goals, display toggles, appearance (system / light / dark)
+- Today: calorie ring, step bar, active vs. resting breakdown, pacing against a rolling average
+- History: charts for 7D / 30D / 90D / 1Y / custom range, trends, CSV export
+- Home and lock screen widgets
 
 APPLE WATCH
 
-The watch experience is delivered primarily through watch face complications (circular, rectangular, inline, corner). These show live calorie and step data. The companion watch app provides a today view and serves as the complication container.
+Watch face complications show live calories and steps; the watch app shows today's totals.
 
 PRIVACY
 
 - Read-only HealthKit (never writes)
 - Health data is stored on the device and is never uploaded
 - No analytics, no ads, no tracking, no accounts
-- The only network calls are to Apple and to RevenueCat, for purchase and
-  subscription status. Neither receives HealthKit data, and RevenueCat sees only
-  an anonymous app user ID with purchase and entitlement status.
+- Network calls go only to Apple and RevenueCat, for purchase status
 - Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 
 Privacy Policy and Support links are accessible in the iPhone Settings sheet and Apple Watch Help sheet.

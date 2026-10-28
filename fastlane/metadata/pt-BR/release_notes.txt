@@ -1,1 +1,3 @@
-Melhorias nos bastidores e correções de erros para o Total Calories funcionar melhor. Obrigado por estar aqui.
+O Total Calories agora está em português e em mais 35 idiomas.
+
+Além de telas mais fluidas e correções.

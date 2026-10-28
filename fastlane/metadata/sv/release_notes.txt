@@ -1,1 +1,3 @@
-Förbättringar bakom kulisserna och buggfixar så att Total Calories fungerar smidigt. Tack för att du är här.
+Total Calories finns nu på svenska och 35 andra språk.
+
+Dessutom smidigare skärmar och buggfixar.

@@ -1,1 +1,3 @@
-Millores internes i correccions d'errors perquè Total Calories funcioni bé. Gràcies per ser aquí.
+Total Calories ara parla 36 idiomes.
+
+A més, pantalles més fluides i correccions.

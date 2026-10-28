@@ -1,1 +1,3 @@
-Háttérbeli fejlesztések és hibajavítások, hogy a Total Calories gördülékenyen működjön. Köszönjük, hogy itt vagy.
+A Total Calories mostantól magyarul és további 35 nyelven is elérhető.
+
+Emellett gördülékenyebb képernyők és hibajavítások.
