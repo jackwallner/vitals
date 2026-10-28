@@ -428,7 +428,11 @@ enum Layout {
                 // so neither label is found: that counts too, when something is drawn in
                 // the overlap that no cleanly read element accounts for.
                 let readA = Render.presence(a, rendered), readB = Render.presence(b, rendered)
-                let partly = readA >= 0.3 && readB >= 0.3 && min(readA, readB) < 0.9
+                // Partly drawn counts only the words each label does not share with the
+                // other, or a line covered by a card reads as drawn through the card's own words.
+                let ownA = Render.presence(a, rendered, excluding: b.label)
+                let ownB = Render.presence(b, rendered, excluding: a.label)
+                let partly = ownA >= 0.3 && ownB >= 0.3 && min(readA, readB) < 0.9
                 let garbled = max(readA, readB) < 0.9 && Render.unexplained(in: overlap, rendered, leaves: leaves)
                 guard partly || garbled, visible(app, a), visible(app, b) else { continue }
                 reported.insert(pair)
@@ -447,7 +451,13 @@ enum Layout {
         let query = leaf.identifier.isEmpty
             ? app.descendants(matching: leaf.type).matching(NSPredicate(format: "label == %@", leaf.label))
             : app.descendants(matching: leaf.type).matching(identifier: leaf.identifier)
-        let element = query.element(boundBy: index)
+        // The same label can sit inside a button the leaf walk stops at (a list row
+        // repeating a card's line), so the index alone can name the wrong copy.
+        let near = { (frame: CGRect) in
+            abs(frame.minX - leaf.frame.minX) < 1 && abs(frame.minY - leaf.frame.minY) < 1
+                && abs(frame.width - leaf.frame.width) < 1 && abs(frame.height - leaf.frame.height) < 1
+        }
+        let element = query.allElementsBoundByIndex.first { near($0.frame) } ?? query.element(boundBy: index)
         return element.exists && element.isHittable
     }
 
@@ -679,8 +689,9 @@ enum Render {
 
     /// Share of the element's words that are drawn inside its frame: 0 for a
     /// hidden element, 1 for text that reads cleanly.
-    static func presence(_ leaf: Leaf, _ lines: [Line]) -> Double {
-        let wanted = words(leaf.label)
+    static func presence(_ leaf: Leaf, _ lines: [Line], excluding other: String = "") -> Double {
+        let shared = Set(words(other))
+        let wanted = words(leaf.label).filter { !shared.contains($0) }
         guard !wanted.isEmpty else { return 1 }
         let drawn = lines.filter { leaf.frame.insetBy(dx: -4, dy: -4).intersects($0.frame) }.map { $0.text.lowercased() }.joined(separator: " ")
         return Double(wanted.filter { drawn.contains($0) }.count) / Double(wanted.count)
@@ -693,7 +704,13 @@ enum Render {
         return lines.contains { line in
             guard line.frame.intersects(region), !words(line.text).isEmpty else { return false }
             let middle = CGPoint(x: line.frame.midX, y: line.frame.midY)
-            return !clean.contains { $0.frame.insetBy(dx: -4, dy: -4).contains(middle) && line.text.lowercased().contains(words($0.label)[0]) }
+            // A wrapped label's later lines miss its first word, so match on the line's own words.
+            let drawn = words(line.text)
+            return !clean.contains { leaf in
+                let label = Set(words(leaf.label))
+                return leaf.frame.insetBy(dx: -4, dy: -4).contains(middle)
+                    && drawn.filter { label.contains($0) }.count * 2 >= drawn.count
+            }
         }
     }
 
