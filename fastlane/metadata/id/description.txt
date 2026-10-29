@@ -1,4 +1,4 @@
-Total Calories menampilkan kalori harian yang terbakar (aktif + istirahat) dan jumlah langkah tepat di tempat yang Anda butuhkan — Layar Utama iPhone, Layar Kunci, dan tampilan Apple Watch — gratis. Tanpa langganan untuk fitur dasar. Tanpa akun. Data kesehatan Anda tidak keluar dari ponsel.
+Total Calories menampilkan kalori harian yang terbakar (aktif + istirahat) dan jumlah langkah tepat di tempat yang Anda butuhkan – Layar Utama iPhone, Layar Kunci, dan tampilan Apple Watch – gratis. Tanpa langganan untuk fitur dasar. Tanpa akun. Data kesehatan Anda tidak keluar dari ponsel.
 
 Jika Anda pernah berharap tampilan Apple Watch hanya menampilkan total kalori harian yang terbakar, inilah aplikasinya.
 
@@ -33,7 +33,7 @@ RIWAYAT (GRATIS)
 
 TARGET YANG FLEKSIBEL
 - Target harian kalori dan langkah opsional.
-- Atau tanpa target dan gunakan sebagai penghitung bersih — terserah Anda.
+- Atau tanpa target dan gunakan sebagai penghitung bersih – terserah Anda.
 - Perbandingan kecepatan: hari kerja sama vs semua hari, periode kilas balik dapat diatur (14 / 30 / 90 hari / 1 tahun).
 
 Vitals+ (OPSIONAL)

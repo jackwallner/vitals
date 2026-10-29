@@ -9,7 +9,7 @@ ON YOUR APPLE WATCH (FREE)
 - Goals you set on iPhone sync straight to the watch.
 
 ON YOUR HOME SCREEN & LOCK SCREEN (FREE)
-- Home Screen widgets in small and medium sizes.
+- Home Screen widgets in small, medium and large sizes.
 - Lock Screen widgets in circular and rectangular layouts.
 - Widgets follow the metrics you’ve enabled and the goals you’ve set.
 - Full daily totals visible without opening the app.
@@ -18,7 +18,9 @@ THE DASHBOARD (FREE)
 - Total daily calories burned on one clean ring.
 - Daily steps with progress bar and goal.
 - Pacing indicator: see if you’re ahead or behind your usual day at this time.
-- Pull to refresh. Tap the gear for settings.
+- Ask Siri for today's calories or steps.
+- Optional alert when you hit your daily goal.
+- iPhone Duo: Today and History side by side.
 
 BODY PROFILE & BMI (FREE)
 - Your BMI, worked out from the height and weight already in Apple Health.
@@ -39,7 +41,7 @@ HISTORY (FREE)
 
 GOALS THAT WORK FOR YOU
 - Optional daily calorie and step goals.
-- Or skip goals and use it as a simple counter, it’s up to you.
+- Or skip goals and use it as a simple counter. It’s up to you.
 - Pacing comparison: same weekday vs all days, configurable lookback (14 / 30 / 90 days / 1 year).
 
 Vitals+ (OPTIONAL)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate App Store metadata limits and keyword collisions for selected locales."""
+"""Validate App Store metadata limits and keyword collisions for all locales."""
 
 from __future__ import annotations
 
@@ -10,11 +10,6 @@ import unicodedata
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_LOCALES = [
-    "en-US", "en-GB", "en-AU", "en-CA", "de-DE", "fr-FR", "fr-CA",
-    "es-ES", "es-MX", "ja", "pl", "it", "nl-NL", "zh-Hans", "pt-BR",
-    "sv", "ar-SA", "ru",
-]
 LIMITS = {
     "name": 30,
     "subtitle": 30,
@@ -47,6 +42,8 @@ def validate_locale(locale: str) -> list[str]:
         raw = path.read_text(encoding="utf-8")
         value = raw.rstrip("\n")
         values[field] = value
+        if len(raw) - len(value) > 1:
+            errors.append(f"{field} has trailing blank lines")
         if not value:
             errors.append(f"{field} is empty")
         if value != value.strip():
@@ -61,7 +58,7 @@ def validate_locale(locale: str) -> list[str]:
         tokens = [token.strip() for token in raw_tokens]
         if any(not token for token in tokens):
             errors.append("keywords contains an empty token")
-        if any(any(char.isspace() for char in token) for token in tokens):
+        if any(any(char.isspace() for char in token) for token in raw_tokens):
             errors.append("keywords contains whitespace inside a token")
         normalized = [normalize(token) for token in tokens if token]
         repeated = sorted({token for token in normalized if normalized.count(token) > 1})
@@ -94,7 +91,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("locales", nargs="*", help="locale folders to validate")
     args = parser.parse_args()
-    locales = args.locales or DEFAULT_LOCALES
+    metadata = ROOT / "fastlane" / "metadata"
+    locales = args.locales or sorted(
+        path.name for path in metadata.iterdir()
+        if path.is_dir() and path.name != "review_information"
+    )
     failed = False
 
     for locale in locales:
@@ -105,6 +106,13 @@ def main() -> int:
                 print(f"FAIL {locale}: {error}")
         else:
             print(f"OK {locale}")
+
+        keywords = metadata / locale / "keywords.txt"
+        if keywords.is_file():
+            value = keywords.read_text(encoding="utf-8").rstrip("\n")
+            byte_count = len(value.encode("utf-8"))
+            if byte_count > 100:
+                print(f"BYTES {locale}: {len(value)} characters, {byte_count} bytes")
 
     return 1 if failed else 0
 

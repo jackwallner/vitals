@@ -9,7 +9,7 @@ ON YOUR APPLE WATCH (FREE)
 - Goals you set on iPhone sync right to the watch.
 
 ON YOUR HOME SCREEN & LOCK SCREEN (FREE)
-- Home Screen widgets in small and medium sizes.
+- Home Screen widgets in small, medium and large sizes.
 - Lock Screen widgets in circular and rectangular layouts.
 - Widgets follow the metrics you’ve enabled and the goals you’ve set.
 - View full daily totals without opening the app.
@@ -18,7 +18,9 @@ THE DASHBOARD (FREE)
 - Total daily calories burned on a single clean ring.
 - Daily steps with progress bar and goal.
 - Pacing indicator: see if you’re ahead or behind a usual day at this time.
-- Pull to refresh. Tap the gear for settings.
+- Ask Siri for today's calories or steps.
+- Optional alert when you hit your daily goal.
+- iPhone Duo: Today and History side by side.
 
 BODY PROFILE & BMI (FREE)
 - Your BMI, calculated from the height and weight already in Apple Health.
@@ -39,7 +41,7 @@ HISTORY (FREE)
 
 GOALS THAT WORK FOR YOU
 - Optional daily calorie and step goals.
-- Or skip goals and use it as a clean counter, your choice.
+- Or skip goals and use it as a clean counter. Your choice.
 - Pacing comparison: same weekday vs. all days, with configurable lookback (14 / 30 / 90 days / 1 year).
 
 Vitals+ (OPTIONAL)
@@ -52,14 +54,15 @@ A small monthly, yearly, or lifetime upgrade unlocks:
 - Monthly Summary PDFs ready to share
 - Custom date-range PDF reports
 - Deep Trends: period-over-period comparison cards
+- Evening reminder
 A free trial is available to new subscribers.
 
 PRIVATE BY DESIGN
 - Read-only Apple Health access. The app never writes to your health records.
 - Your health data is stored on your device and is never uploaded.
 - Reports are generated on-device.
-- No ads. No tracking. No accounts. No sign-up.
-- Subscriptions are handled by Apple and by RevenueCat, our billing provider, which sees only purchase and subscription status. Neither ever receives your health data.
+- No ads, tracking or accounts.
+- Purchases are processed by Apple and RevenueCat, which never receive your health data.
 
 Total Calories is not a medical device and is not intended to diagnose, treat, or prevent any medical condition. Always consult a healthcare professional for medical advice.
 

@@ -33,7 +33,7 @@ HISTORIQUE (GRATUIT)
 
 DES OBJECTIFS QUI VOUS CONVIENNENT
 - Objectifs quotidiens facultatifs de calories et de pas.
-- Ou ignorez les objectifs et utilisez l’app comme un simple compteur, à vous de choisir.
+- Ou ignorez les objectifs et utilisez l’app comme un simple compteur. À vous de choisir.
 - Comparaison de rythme : même jour de semaine ou tous les jours, période configurable (14 / 30 / 90 jours / 1 an).
 
 Vitals+ (OPTIONNEL)

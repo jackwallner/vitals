@@ -1,3 +1,4 @@
 # ASO reports
 
-- [2026-10-28 App Store ASO pass](2026-10-28-aso-pass.md): per-locale metadata, autocomplete, live rank evidence, and risks.
+- [2026-10-28 ASO review](2026-10-28-aso-pass.md): current fields, validation, and outstanding evidence and copy issues.
+- [2026-10-28 first pass, historical](2026-10-28-first-pass-historical.md): superseded proposal and unverified research.

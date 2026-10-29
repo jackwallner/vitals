@@ -1,4 +1,4 @@
-Total Calories prikazuje vaše dnevno potrošene kalorije (aktivne + mirovanje) i broj koraka točno ondje gdje vam trebaju — na početnom zaslonu iPhone uređaja, zaključanom zaslonu i brojčaniku Apple Watch sata — besplatno. Osnovne funkcije bez pretplate. Nema računa. Zdravstveni podaci ne napuštaju vaš telefon.
+Total Calories prikazuje vaše dnevno potrošene kalorije (aktivne + mirovanje) i broj koraka točno ondje gdje vam trebaju – na početnom zaslonu iPhone uređaja, zaključanom zaslonu i brojčaniku Apple Watch sata – besplatno. Osnovne funkcije bez pretplate. Nema računa. Zdravstveni podaci ne napuštaju vaš telefon.
 
 Ako ste ikada poželjeli da brojčanik Apple Watch sata samo prikazuje vaše ukupno potrošene kalorije za dan, ovo je ta aplikacija.
 
@@ -33,7 +33,7 @@ POVIJEST (BESPLATNO)
 
 CILJEVI PRILAGOĐENI VAMA
 - Neobvezni dnevni ciljevi za kalorije i korake.
-- Ili preskočite ciljeve i koristite aplikaciju samo kao čist brojač — po vašem izboru.
+- Ili preskočite ciljeve i koristite aplikaciju samo kao čist brojač – po vašem izboru.
 - Usporedba tempa: isti dan u tjednu u odnosu na sve dane, s podesivim razdobljem praćenja (14 / 30 / 90 dana / 1 godina).
 
 Vitals+ (NEOBVEZNO)

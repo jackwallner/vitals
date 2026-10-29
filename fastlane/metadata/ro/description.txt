@@ -1,4 +1,4 @@
-Total Calories îți afișează caloriile totale arse pe zi (active + în repaus) și numărul de pași chiar acolo unde ai nevoie de ele — pe ecranul principal și ecranul blocat al iPhone și pe cadranul Apple Watch — gratuit. Fără abonament pentru funcțiile de bază. Fără cont. Datele tale de sănătate nu părăsesc telefonul.
+Total Calories îți afișează caloriile totale arse pe zi (active + în repaus) și numărul de pași chiar acolo unde ai nevoie de ele – pe ecranul principal și ecranul blocat al iPhone și pe cadranul Apple Watch – gratuit. Fără abonament pentru funcțiile de bază. Fără cont. Datele tale de sănătate nu părăsesc telefonul.
 
 Dacă ți-ai dorit vreodată ca ecranul Apple Watch să arate doar caloriile totale arse în ziua curentă, aceasta este aplicația.
 
@@ -33,7 +33,7 @@ ISTORIC (GRATUIT)
 
 OBIECTIVE CARE ȚI SE POTRIVESC
 - Obiective zilnice opționale pentru calorii și pași.
-- Sau renunți la obiective și îl folosești ca simplu contor — alegerea ta.
+- Sau renunți la obiective și îl folosești ca simplu contor – alegerea ta.
 - Comparație de ritm: aceeași zi a săptămânii vs. toate zilele, cu interval de analiză configurabil (14 / 30 / 90 de zile / 1 an).
 
 Vitals+ (OPȚIONAL)

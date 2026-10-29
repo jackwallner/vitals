@@ -1,4 +1,4 @@
-Total Calories మీ రోజువారీ కాలరీలు (active + resting) మరియు step count ను మీకు కావాల్సిన చోటే చూపిస్తుంది — iPhone Home Screen, Lock Screen, Apple Watch face — పూర్తిగా ఉచితం. ప్రాథమిక features కు subscription అవసరం లేదు. account లేదు. ఆరోగ్య data phone నుండి బయటకు రాదు.
+Total Calories మీ రోజువారీ కాలరీలు (active + resting) మరియు step count ను మీకు కావాల్సిన చోటే చూపిస్తుంది – iPhone Home Screen, Lock Screen, Apple Watch face – పూర్తిగా ఉచితం. ప్రాథమిక features కు subscription అవసరం లేదు. account లేదు. ఆరోగ్య data phone నుండి బయటకు రాదు.
 
 Apple Watch face ఈ రోజు total calories burned స్పష్టంగా చూపించాలని మీరు కోరుకుంటే, ఇదే ఆ app.
 
