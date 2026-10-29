@@ -147,8 +147,6 @@ enum DailyNudgePlanner {
         let stepGap = stepShortfall(steps: steps, goal: stepGoal)
         guard calGap != nil || stepGap != nil else { return nil }
 
-        let calText = calGap.map { String(localized: "about \(formatCalories($0)) active cal") }
-        let stepText = stepGap.map { String(localized: "\(formatSteps($0)) steps") }
         let walk = stepGap.flatMap(walkMinutes(forSteps:))
 
         let savedStreak = streakToSave(
@@ -156,32 +154,51 @@ enum DailyNudgePlanner {
             stepStreak: stepGap == nil ? 0 : stepStreak
         )
         if case let (metric, days)? = savedStreak {
-            let gaps = [stepText, calText].compactMap { $0 }.formatted(.list(type: .and))
-            var body = String(localized: "\(capitalizedFirst(gaps)) to go today")
-            if let walk, metric == .steps { body += String(localized: ", about a \(walk) min walk") }
+            let body: String
+            if let calGap, let stepGap {
+                if let walk, metric == .steps {
+                    body = String(localized: "About \(formatCalories(calGap)) active calories and \(formatSteps(stepGap)) steps to go today. A \(walk.formatted(.number))-minute walk may help with the steps.")
+                } else {
+                    body = String(localized: "About \(formatCalories(calGap)) active calories and \(formatSteps(stepGap)) steps to go today.")
+                }
+            } else if let calGap {
+                body = String(localized: "About \(formatCalories(calGap)) active calories to go today.")
+            } else if let stepGap {
+                if let walk, metric == .steps {
+                    body = String(localized: "About a \(walk.formatted(.number))-minute walk closes out your step goal.")
+                } else {
+                    body = String(localized: "About \(formatSteps(stepGap)) steps to go today.")
+                }
+            } else {
+                return nil
+            }
             return NudgeContent(
                 title: metric == .steps
                     ? String(localized: "Keep your \(days)-day step streak")
                     : String(localized: "Keep your \(days)-day calorie streak"),
-                body: String(localized: "\(body).", comment: "Sentence end punctuation"),
+                body: body,
                 link: .today
             )
         }
 
-        switch (calText, stepText) {
+        switch (calGap, stepGap) {
         case let (cal?, steps?):
             return NudgeContent(
                 title: String(localized: "Today's goals are still open"),
-                body: String(localized: "\(steps) and \(cal) to go."),
+                body: String(localized: "About \(formatCalories(cal)) active calories and \(formatSteps(steps)) steps to go today."),
                 link: .today
             )
         case let (nil, steps?):
-            let body = walk.map { String(localized: "About a \($0) min walk closes out your step goal.") }
+            let body = walk.map { String(localized: "About a \($0.formatted(.number))-minute walk closes out your step goal.") }
                 ?? String(localized: "Still time to close out your step goal.")
-            return NudgeContent(title: String(localized: "\(capitalizedFirst(steps)) to go"), body: body, link: .today)
+            return NudgeContent(
+                title: String(localized: "\(formatSteps(steps)) steps to go"),
+                body: body,
+                link: .today
+            )
         case let (cal?, nil):
             return NudgeContent(
-                title: String(localized: "\(capitalizedFirst(cal)) to go"),
+                title: String(localized: "About \(formatCalories(cal)) active calories to go"),
                 body: String(localized: "A little more movement closes out your calorie goal."),
                 link: .today
             )
@@ -208,8 +225,4 @@ enum DailyNudgePlanner {
         value.formatted(.number)
     }
 
-    private static func capitalizedFirst(_ text: String) -> String {
-        guard let first = text.first else { return text }
-        return first.uppercased() + text.dropFirst()
-    }
 }

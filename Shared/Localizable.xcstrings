@@ -32734,216 +32734,216 @@
         }
       }
     },
-    "Active Calories" : {
+    "Active Energy" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "السعرات النشطة"
+            "value" : "الطاقة النشطة"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktivní kalorie"
+            "value" : "Aktivní energie"
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktive kalorier"
+            "value" : "Aktiv energi"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktivkalorien"
+            "value" : "Aktive Energie"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ενεργές θερμίδες"
+            "value" : "Ενεργή ενέργεια"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calorías activas"
+            "value" : "Energía activa"
           }
         },
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktiivsed kalorid"
+            "value" : "Aktiivne energia"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "کالری فعال"
+            "value" : "انرژی فعال"
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktiiviset kalorit"
+            "value" : "Aktiivinen energia"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calories actives"
+            "value" : "Énergie active"
           }
         },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "קלוריות פעילות"
+            "value" : "אנרגיה פעילה"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "सक्रिय कैलोरी"
+            "value" : "सक्रिय ऊर्जा"
           }
         },
         "hr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktivne kalorije"
+            "value" : "Aktivna energija"
           }
         },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktív kalória"
+            "value" : "Aktív energia"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalori Aktif"
+            "value" : "Energi Aktif"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calorie attive"
+            "value" : "Energia attiva"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "アクティブカロリー"
+            "value" : "アクティブエネルギー"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "활동 칼로리"
+            "value" : "활동 에너지"
           }
         },
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktīvās kalorijas"
+            "value" : "Aktīvā enerģija"
           }
         },
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalori Aktif"
+            "value" : "Tenaga Aktif"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktive kalorier"
+            "value" : "Aktiv energi"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Actieve calorieën"
+            "value" : "Actieve energie"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalorie aktywne"
+            "value" : "Energia aktywna"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calorias ativas"
+            "value" : "Energia Ativa"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calorias ativas"
+            "value" : "Energia ativa"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calorii active"
+            "value" : "Energie activă"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Активные калории"
+            "value" : "Активная энергия"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktívne kalórie"
+            "value" : "Aktívna energia"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktiva kalorier"
+            "value" : "Aktiv energi"
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "แคลอรีจากกิจกรรม"
+            "value" : "พลังงานจากกิจกรรม"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktif Kalori"
+            "value" : "Aktif Enerji"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Активні калорії"
+            "value" : "Активна енергія"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calo hoạt động"
+            "value" : "Năng lượng hoạt động"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "活动卡路里"
+            "value" : "活动能量"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "活動卡路里"
+            "value" : "活動能量"
           }
         }
       }
@@ -66138,7 +66138,7 @@
         }
       }
     },
-    "Enable Active Energy, Basal Energy,\nand Step Count for Total Calories." : {
+    "Enable Active Energy, Resting Energy,\nand Step Count for Total Calories." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -81986,204 +81986,204 @@
         }
       }
     },
-    "Grant Apple Health access so Total Calories can load your active calories, resting calories, and steps." : {
+    "Grant Apple Health access so Total Calories can load your active energy, resting energy, and steps." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "اسمح بالوصول إلى صحتي ليتمكن Total Calories من تحميل سعراتك النشطة وسعرات الراحة وخطواتك."
+            "value" : "اسمح بالوصول إلى صحتي ليتمكن Total Calories من تحميل الطاقة النشطة وطاقة الراحة وخطواتك."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Povolte aplikaci Total Calories přístup ke Zdraví, aby mohla načíst aktivní kalorie, klidové kalorie a kroky."
+            "value" : "Povolte aplikaci Total Calories přístup ke Zdraví, aby mohla načíst aktivní energii, klidovou energii a kroky."
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Giv adgang til Sundhed, så Total Calories kan indlæse dine aktive kalorier, hvilekalorier og skridt."
+            "value" : "Giv adgang til Sundhed, så Total Calories kan indlæse aktiv energi, hvileenergi og skridt."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erlaube den Zugriff auf Apple Health, damit Total Calories deine Aktivkalorien, Ruhekalorien und Schritte laden kann."
+            "value" : "Erlaube den Zugriff auf Apple Health, damit Total Calories deine aktive Energie, Ruheenergie und Schritte laden kann."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Επιτρέψτε στο Total Calories να διαβάζει από την Υγεία τις ενεργές θερμίδες, τις θερμίδες ηρεμίας και τα βήματα."
+            "value" : "Επιτρέψτε στο Total Calories να διαβάζει από την Υγεία την ενεργή ενέργεια, την ενέργεια ηρεμίας και τα βήματα."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Permite el acceso a Apple Salud para que Total Calories cargue tus calorías activas, en reposo y tus pasos."
+            "value" : "Permite el acceso a Apple Salud para que Total Calories cargue tu energía activa, la energía en reposo y tus pasos."
           }
         },
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anna rakendusele Total Calories juurdepääs rakenduse Tervis andmetele, et see saaks lugeda sinu aktiiv- ja puhkeenergiat ning samme."
+            "value" : "Anna rakendusele Total Calories juurdepääs Tervise andmetele, et see saaks laadida aktiivset energiat, puhkeenergiat ja samme."
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "به Total Calories اجازه دهید کالری‌های فعال، کالری‌های استراحت و قدم‌هایتان را از Apple Health بخواند."
+            "value" : "به Total Calories اجازه دهید انرژی فعال، انرژی پایه و قدم‌هایتان را از Apple Health بخواند."
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anna Total Calories -sovellukselle pääsy Terveys-apin tietoihin, jotta se voi hakea aktiiviset kalorit, lepokalorit ja askeleet."
+            "value" : "Anna Total Calories -sovellukselle pääsy Terveys-apin tietoihin, jotta se voi hakea aktiivisen energian, lepoenergian ja askeleet."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autorisez l’accès à Apple Santé pour que Total Calories charge vos calories actives, vos calories au repos et vos pas."
+            "value" : "Autorisez l’accès à Apple Santé pour que Total Calories charge votre énergie active, votre énergie au repos et vos pas."
           }
         },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "יש לאשר גישה לבריאות כדי ש־Total Calories יטען קלוריות פעילות, קלוריות מנוחה וצעדים."
+            "value" : "יש לאשר גישה לבריאות כדי ש־Total Calories יטען אנרגיה פעילה, אנרגיית מנוחה וצעדים."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "सेहत ऐप का ऐक्सेस दें ताकि Total Calories आपकी सक्रिय कैलोरी, विश्राम कैलोरी और कदम लोड कर सके।"
+            "value" : "सेहत ऐप का ऐक्सेस दें ताकि Total Calories आपकी सक्रिय ऊर्जा, बेसल ऊर्जा और कदम लोड कर सके।"
           }
         },
         "hr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dopustite pristup aplikaciji Zdravlje za učitavanje aktivnih kalorija, kalorija u mirovanju i koraka."
+            "value" : "Dopustite pristup aplikaciji Zdravlje kako bi Total Calories učitao aktivnu energiju, energiju mirovanja i korake."
           }
         },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adj hozzáférést az Apple Egészséghez, hogy a Total Calories betölthesse az aktív kalóriáidat, nyugalmi kalóriáidat és lépéseidet."
+            "value" : "Adj hozzáférést az Apple Egészséghez, hogy a Total Calories betölthesse az aktív energiát, a nyugalmi energiát és a lépéseket."
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beri akses ke app Kesehatan agar Total Calories dapat memuat kalori aktif, kalori istirahat, dan langkah Anda."
+            "value" : "Beri akses ke app Kesehatan agar Total Calories dapat memuat Energi Aktif, Energi Basal, dan langkah Anda."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Consenti l’accesso ad Apple Salute così Total Calories può caricare calorie attive, a riposo e passi."
+            "value" : "Consenti l’accesso ad Apple Salute così Total Calories può caricare energia attiva, energia a riposo e passi."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Total Caloriesがアクティブカロリー、安静時カロリー、歩数を読み込めるよう、ヘルスケアへのアクセスを許可してください。"
+            "value" : "Total Caloriesがアクティブエネルギー、安静時エネルギー、歩数を読み込めるよう、ヘルスケアへのアクセスを許可してください。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Total Calories가 활동 칼로리, 휴식 칼로리, 걸음 수를 불러오도록 Apple 건강 데이터 접근을 허용하세요."
+            "value" : "Total Calories가 활동 에너지, 휴식 에너지, 걸음 수를 불러오도록 Apple 건강 데이터 접근을 허용하세요."
           }
         },
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Piešķiriet lietotnei Total Calories piekļuvi Apple Veselības datiem, lai tā varētu ielādēt aktīvās kalorijas, kalorijas miera stāvoklī un soļus."
+            "value" : "Piešķiriet lietotnei Total Calories piekļuvi Veselības datiem, lai tā varētu ielādēt aktīvo enerģiju, bazālo enerģiju un soļus."
           }
         },
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beri akses kepada Kesihatan supaya Total Calories boleh memuatkan kalori aktif, kalori rehat dan langkah anda."
+            "value" : "Beri akses kepada Kesihatan supaya Total Calories boleh memuatkan Tenaga Aktif, Tenaga Basal dan langkah anda."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gi Total Calories tilgang til Helse for å hente aktive kalorier, hvilekalorier og skritt."
+            "value" : "Gi Total Calories tilgang til Helse for å hente aktiv energi, hvileenergi og skritt."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Geef toegang tot Gezondheid zodat Total Calories je actieve calorieën, rustcalorieën en stappen kan laden."
+            "value" : "Geef toegang tot Gezondheid zodat Total Calories je actieve energie, energie in rust en stappen kan laden."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Przyznaj aplikacji Total Calories dostęp do danych w aplikacji Zdrowie, aby mogła wczytać kalorie aktywne, spoczynkowe i liczbę kroków."
+            "value" : "Przyznaj aplikacji Total Calories dostęp do danych w aplikacji Zdrowie, aby mogła wczytać energię aktywną, energię spoczynkową i kroki."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Permita o acesso ao Apple Saúde para que o Total Calories carregue suas calorias ativas, calorias em repouso e passos."
+            "value" : "Permita o acesso ao app Saúde para que o Total Calories carregue sua Energia Ativa, Energia em Repouso e passos."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Conceda acesso à app Saúde para que o Total Calories carregue as suas calorias ativas, calorias em repouso e passos."
+            "value" : "Conceda acesso à app Saúde para que o Total Calories carregue a sua Energia ativa, Energia em repouso e passos."
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acordați acces la aplicația Sănătate pentru ca Total Calories să încarce caloriile active, caloriile de repaus și pașii."
+            "value" : "Acordați acces la aplicația Sănătate pentru ca Total Calories să încarce energia activă, energia de repaus și pașii."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Разрешите доступ к данным приложения «Здоровье», чтобы приложение Total Calories могло загрузить активные калории, калории покоя и шаги."
+            "value" : "Разрешите доступ к данным приложения «Здоровье», чтобы приложение Total Calories могло загрузить активную энергию, энергию покоя и шаги."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Povoľte prístup k apke Zdravie, aby aplikácia Total Calories mohla načítať aktívne kalórie, pokojové kalórie a kroky."
+            "value" : "Povoľte prístup k apke Zdravie, aby aplikácia Total Calories mohla načítať aktívnu energiu, pokojovú energiu a kroky."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ge åtkomst till Apple Hälsa så att Total Calories kan läsa in dina aktiva kalorier, vilokalorier och steg."
+            "value" : "Ge åtkomst till Apple Hälsa så att Total Calories kan läsa in aktiv energi, vilande energi och steg."
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ให้สิทธิ์เข้าถึงแอปสุขภาพเพื่อให้ Total Calories โหลดแคลอรีจากกิจกรรม แคลอรีขณะพัก และจำนวนก้าวของคุณได้"
+            "value" : "ให้สิทธิ์เข้าถึงแอปสุขภาพเพื่อให้ Total Calories โหลดพลังงานจากกิจกรรม พลังงานพื้นฐาน และจำนวนก้าวของคุณได้"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Total Calories'in aktif kalorilerinizi, dinlenme kalorilerinizi ve adımlarınızı yükleyebilmesi için Sağlık uygulamasındaki verilere erişim izni verin."
+            "value" : "Total Calories'in aktif enerjinizi, dinlenme enerjisini ve adımlarınızı yükleyebilmesi için Sağlık uygulamasındaki verilere erişim izni verin."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Надайте Total Calories доступ до програми «Здоров’я», щоб завантажити активні калорії, калорії спокою й кроки."
+            "value" : "Надайте Total Calories доступ до програми «Здоров’я», щоб завантажити активну енергію, енергію спокою й кроки."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cấp quyền truy cập Sức khỏe để Total Calories tải calo hoạt động, calo nghỉ và số bước của bạn."
+            "value" : "Cấp quyền truy cập Sức khỏe để Total Calories tải năng lượng hoạt động, năng lượng cơ bản và số bước của bạn."
           }
         },
         "zh-Hans" : {
@@ -82195,7 +82195,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "請授權 Total Calories 讀取 Apple 健康資料，以載入你的活動熱量、靜息熱量和步數。"
+            "value" : "請授權 Total Calories 讀取 Apple 健康資料，以載入你的活動能量、靜息能量和步數。"
           }
         }
       }
@@ -100317,204 +100317,204 @@
         }
       }
     },
-    "Next we’ll ask permission to read your active and resting calories and steps. The app only reads; it never writes anything back." : {
+    "Next we’ll ask permission to read active energy, resting energy, and steps. The app only reads; it never writes anything back." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "سنطلب بعد ذلك إذنًا لقراءة سعراتك النشطة وسعرات الراحة وخطواتك. يقرأ التطبيق فقط، ولا يكتب أي شيء أبدًا."
+            "value" : "سنطلب بعد ذلك إذنًا لقراءة الطاقة النشطة وطاقة الراحة وخطواتك. يقرأ التطبيق البيانات فقط ولا يكتب أي شيء إليها أبدًا."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Teď vás požádáme o povolení číst aktivní a klidové kalorie a kroky. Aplikace data jen čte, nikdy nic nezapisuje."
+            "value" : "Dále vás požádáme o povolení číst aktivní energii, klidovou energii a kroky. Aplikace data jen čte a nikdy nic nezapisuje."
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Som det næste beder appen om tilladelse til at læse dine aktive kalorier, hvilekalorier og skridt. Appen læser kun data og skriver aldrig til Sundhed."
+            "value" : "Som det næste beder appen om tilladelse til at læse aktiv energi, hvileenergi og skridt. Appen læser kun data og skriver aldrig noget tilbage."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Als Nächstes bitten wir dich um Erlaubnis, deine Aktiv- und Ruhekalorien sowie deine Schritte zu lesen. Die App liest nur, sie schreibt nie etwas zurück."
+            "value" : "Als Nächstes bitten wir dich um Erlaubnis, aktive Energie, Ruheenergie und Schritte zu lesen. Die App liest nur Daten und schreibt nie etwas zurück."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Στη συνέχεια θα ζητήσουμε άδεια να διαβάζουμε τις ενεργές θερμίδες, τις θερμίδες ηρεμίας και τα βήματα. Η εφαρμογή διαβάζει μόνο τα δεδομένα σας και δεν γράφει ποτέ τίποτα στην Υγεία."
+            "value" : "Στη συνέχεια θα ζητήσουμε άδεια να διαβάζουμε την ενεργή ενέργεια, την ενέργεια ηρεμίας και τα βήματα. Η εφαρμογή διαβάζει μόνο δεδομένα και δεν γράφει ποτέ τίποτα πίσω."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A continuación te pediremos permiso para leer tus calorías activas y en reposo y tus pasos. La app solo lee; nunca escribe nada."
+            "value" : "A continuación te pediremos permiso para leer la energía activa, la energía en reposo y los pasos. La app solo lee datos y nunca escribe nada."
           }
         },
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Järgmisena küsime luba aktiivenergia, puhkeenergia ja sammude andmete lugemiseks. Rakendus loeb andmeid ega kirjuta neid kunagi tagasi."
+            "value" : "Järgmisena küsime luba sinu aktiivse energia, puhkeenergia ja sammude lugemiseks. Rakendus ainult loeb andmeid ega kirjuta midagi tagasi."
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "در مرحله بعد، برای خواندن کالری‌های فعال، کالری‌های استراحت و قدم‌هایتان اجازه می‌گیریم. برنامه فقط داده‌ها را می‌خواند و هیچ داده‌ای را در Apple Health ثبت نمی‌کند."
+            "value" : "در مرحله بعد برای خواندن انرژی فعال، انرژی پایه و قدم‌هایتان اجازه می‌گیریم. برنامه فقط داده‌ها را می‌خواند و هیچ چیزی را بازنویسی نمی‌کند."
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seuraavaksi pyydämme lupaa lukea aktiiviset kalorit, lepokalorit ja askeleet. Appi vain lukee tietoja eikä koskaan kirjoita niitä takaisin."
+            "value" : "Seuraavaksi pyydämme lupaa lukea aktiivisen energian, lepoenergian ja askeleet. Appi vain lukee tietoja eikä koskaan kirjoita niitä takaisin."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nous allons ensuite demander l’autorisation de lire vos calories actives, vos calories au repos et vos pas. L’app lit seulement, elle n’écrit jamais rien."
+            "value" : "Nous allons ensuite demander l’autorisation de lire votre énergie active, votre énergie au repos et vos pas. L’app lit seulement les données et n’écrit jamais rien."
           }
         },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "עכשיו נבקש הרשאה לקרוא את הקלוריות הפעילות, קלוריות המנוחה והצעדים שלך. האפליקציה רק קוראת, ואף פעם לא כותבת דבר."
+            "value" : "בהמשך נבקש רשות לקרוא את האנרגיה הפעילה, אנרגיית המנוחה והצעדים שלך. האפליקציה קוראת בלבד ולא כותבת שום דבר בחזרה."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "आगे हम आपकी सक्रिय और विश्राम कैलोरी तथा कदम पढ़ने की अनुमति माँगेंगे। ऐप सिर्फ़ पढ़ता है; कभी कुछ वापस नहीं लिखता।"
+            "value" : "आगे हम सक्रिय ऊर्जा, बेसल ऊर्जा और कदम पढ़ने की अनुमति माँगेंगे। ऐप सिर्फ़ डेटा पढ़ता है; कभी कुछ वापस नहीं लिखता।"
           }
         },
         "hr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sljedeće ćemo zatražiti dopuštenje za čitanje aktivnih kalorija, kalorija u mirovanju i koraka. Aplikacija samo čita, nikad ništa ne zapisuje."
+            "value" : "Sljedeće ćemo zatražiti dopuštenje za čitanje aktivne energije, energije mirovanja i koraka. Aplikacija samo čita podatke i nikad ništa ne zapisuje."
           }
         },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Következő lépésként engedélyt kérünk az aktív és nyugalmi kalóriáid és a lépéseid olvasásához. Az app csak olvas; soha nem ír vissza semmit."
+            "value" : "Következő lépésként engedélyt kérünk az aktív energia, a nyugalmi energia és a lépések olvasásához. Az app csak olvas, soha nem ír vissza semmit."
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Selanjutnya kami akan meminta izin untuk membaca kalori aktif dan istirahat serta langkah Anda. App hanya membaca data dari Kesehatan, tidak pernah menulis data ke sana."
+            "value" : "Selanjutnya kami akan meminta izin untuk membaca Energi Aktif, Energi Basal, dan langkah Anda. App hanya membaca data dan tidak pernah menulis kembali."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Poi ti chiederemo il permesso di leggere calorie attive, a riposo e passi. L’app legge soltanto e non scrive mai nulla."
+            "value" : "Poi ti chiederemo il permesso di leggere l’energia attiva, l’energia a riposo e i passi. L’app legge soltanto i dati e non scrive mai nulla."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "次に、アクティブカロリー、安静時カロリー、歩数を読み取る許可をお願いします。読み取るだけで、書き込むことはありません。"
+            "value" : "次に、アクティブエネルギー、安静時エネルギー、歩数を読み取る許可をお願いします。アプリは読み取るだけで、データを書き込むことはありません。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "이제 활동 칼로리, 휴식 칼로리, 걸음 수를 읽을 수 있도록 권한을 요청할게요. 앱은 읽기만 하고 아무것도 기록하지 않아요."
+            "value" : "이제 활동 에너지, 휴식 에너지, 걸음 수를 읽을 수 있도록 권한을 요청할게요. 앱은 읽기만 하고 아무것도 기록하지 않아요."
           }
         },
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tālāk lūgsim atļauju nolasīt jūsu aktīvās kalorijas, kalorijas miera stāvoklī un soļu skaitu. Lietotne tikai nolasa datus, neko tajos neierakstot."
+            "value" : "Tālāk lūgsim atļauju nolasīt aktīvo enerģiju, bazālo enerģiju un soļu skaitu. Lietotne tikai nolasa datus un nekad neko tajos neieraksta."
           }
         },
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seterusnya kami akan meminta kebenaran untuk membaca kalori aktif dan rehat serta langkah anda. App hanya membaca data daripada Kesihatan; ia tidak pernah menulis data ke Kesihatan."
+            "value" : "Seterusnya kami akan meminta kebenaran untuk membaca Tenaga Aktif, Tenaga Basal dan langkah anda. App hanya membaca data dan tidak pernah menulis semula."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Neste steg er å be om tillatelse til å lese aktive kalorier, hvilekalorier og skritt. Appen leser bare data og skriver aldri noe tilbake."
+            "value" : "Neste steg ber vi om tillatelse til å lese aktiv energi, hvileenergi og skritt. Appen leser bare data og skriver aldri noe tilbake."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hierna vragen we toestemming om je actieve en rustcalorieën en stappen te lezen. De app leest alleen; er wordt nooit iets teruggeschreven."
+            "value" : "Hierna vragen we toestemming om je actieve energie, energie in rust en stappen te lezen. De app leest alleen; er wordt nooit iets teruggeschreven."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Teraz poprosimy o zgodę na odczyt kalorii aktywnych, spoczynkowych i kroków. Aplikacja tylko odczytuje dane, nigdy niczego nie zapisuje."
+            "value" : "Teraz poprosimy o zgodę na odczyt energii aktywnej, energii spoczynkowej i kroków. Aplikacja tylko odczytuje dane i nigdy niczego nie zapisuje."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A seguir, vamos pedir permissão para ler suas calorias ativas e em repouso e seus passos. O app só lê os dados; nunca os altera."
+            "value" : "A seguir, vamos pedir permissão para ler sua energia ativa, energia basal e passos. O app só lê os dados e nunca os altera."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A seguir, vamos pedir autorização para ler as suas calorias ativas e em repouso e os seus passos. A app só lê os dados; nunca os altera."
+            "value" : "A seguir, vamos pedir autorização para ler a sua energia ativa, energia basal e os passos. A app só lê os dados e nunca os altera."
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apoi vă vom cere permisiunea de a citi caloriile active și de repaus, precum și pașii. Aplicația doar citește datele, nu scrie nimic în aplicația Sănătate."
+            "value" : "Apoi vă vom cere permisiunea de a citi energia activă, energia de repaus și pașii. Aplicația doar citește datele și nu scrie nimic înapoi."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Далее мы попросим разрешение на чтение данных об активных калориях, калориях покоя и шагах. Приложение только читает данные и никогда ничего не записывает."
+            "value" : "Далее мы попросим разрешение на чтение активной энергии, энергии покоя и шагов. Приложение только читает данные и никогда ничего не записывает."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Teraz vás požiadame o povolenie čítať aktívne a pokojové kalórie a kroky. Aplikácia údaje len číta, nikdy nič nezapisuje."
+            "value" : "Teraz vás požiadame o povolenie čítať aktívnu energiu, pokojovú energiu a kroky. Aplikácia údaje len číta a nikdy nič nezapisuje."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Härnäst ber vi om tillstånd att läsa dina aktiva kalorier, vilokalorier och steg. Appen läser bara; den skriver aldrig något tillbaka."
+            "value" : "Härnäst ber vi om tillstånd att läsa aktiv energi, vilande energi och steg. Appen läser bara data och skriver aldrig något tillbaka."
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ถัดไปเราจะขออนุญาตอ่านแคลอรีจากกิจกรรม แคลอรีขณะพัก และจำนวนก้าวของคุณ แอปอ่านข้อมูลอย่างเดียวและไม่บันทึกข้อมูลกลับไป"
+            "value" : "ถัดไปเราจะขออนุญาตอ่านพลังงานจากกิจกรรม พลังงานพื้นฐาน และจำนวนก้าวของคุณ แอปอ่านข้อมูลอย่างเดียวและไม่เขียนข้อมูลกลับ"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sırada aktif ve dinlenme kalorilerinizi ve adımlarınızı okumak için izin isteyeceğiz. Uygulama yalnızca verileri okur, Sağlık uygulamasına hiçbir veri yazmaz."
+            "value" : "Sırada aktif enerjinizi, dinlenme enerjisini ve adımlarınızı okumak için izin isteyeceğiz. Uygulama yalnızca verileri okur ve hiçbir şeyi geri yazmaz."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Далі ми попросимо дозвіл читати активні калорії, калорії спокою й кроки. Програма лише читає дані й ніколи нічого не записує."
+            "value" : "Далі ми попросимо дозвіл читати активну енергію, енергію спокою й кроки. Програма лише читає дані й ніколи нічого не записує."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tiếp theo chúng tôi sẽ xin quyền đọc calo hoạt động, calo nghỉ và số bước của bạn. Ứng dụng chỉ đọc, không bao giờ ghi dữ liệu ngược lại."
+            "value" : "Tiếp theo chúng tôi sẽ xin quyền đọc năng lượng hoạt động, năng lượng cơ bản và số bước của bạn. Ứng dụng chỉ đọc, không bao giờ ghi dữ liệu ngược lại."
           }
         },
         "zh-Hans" : {
@@ -100526,7 +100526,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "接下來我們會請求你授權 App 讀取活動熱量、靜息熱量和步數。App 只會讀取資料，不會寫入任何資料。"
+            "value" : "接下來我們會請求你授權 App 讀取活動能量、靜息能量和步數。App 只會讀取資料，不會寫入任何資料。"
           }
         }
       }
@@ -121979,216 +121979,216 @@
         }
       }
     },
-    "Resting Calories" : {
+    "Resting Energy" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "سعرات الراحة"
+            "value" : "طاقة الراحة"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Klidové kalorie"
+            "value" : "Klidová energie"
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hvilekalorier"
+            "value" : "Hvileenergi"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ruhekalorien"
+            "value" : "Ruheenergie"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Θερμίδες ηρεμίας"
+            "value" : "Ενέργεια ηρεμίας"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calorías en reposo"
+            "value" : "Energía en reposo"
           }
         },
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Puhkeoleku kalorid"
+            "value" : "Puhkeenergia"
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "کالری استراحت"
+            "value" : "انرژی پایه"
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lepokalorit"
+            "value" : "Lepoenergia"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calories au repos"
+            "value" : "Énergie au repos"
           }
         },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "קלוריות במנוחה"
+            "value" : "אנרגיית מנוחה"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "आराम की कैलोरी"
+            "value" : "बेसल ऊर्जा"
           }
         },
         "hr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalorije u mirovanju"
+            "value" : "Energija mirovanja"
           }
         },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nyugalmi kalóriák"
+            "value" : "Nyugalmi energia"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalori Istirahat"
+            "value" : "Energi Basal"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calorie a riposo"
+            "value" : "Energia a riposo"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "安静時カロリー"
+            "value" : "安静時エネルギー"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "휴식 칼로리"
+            "value" : "휴식 에너지"
           }
         },
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Miera kalorijas"
+            "value" : "Bazālā enerģija"
           }
         },
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalori Rehat"
+            "value" : "Tenaga Basal"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hvilekalorier"
+            "value" : "Hvileenergi"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rustcalorieën"
+            "value" : "Energie in rust"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalorie spoczynkowe"
+            "value" : "Energia spoczynkowa"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calorias em repouso"
+            "value" : "Energia Basal"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calorias em repouso"
+            "value" : "Energia basal"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calorii de repaus"
+            "value" : "Energie bazală"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Калории покоя"
+            "value" : "Энергия покоя"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalórie v pokoji"
+            "value" : "Pokojová energia"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vilokalorier"
+            "value" : "Vilande energi"
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "แคลอรีขณะพัก"
+            "value" : "พลังงานพื้นฐาน"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dinlenme Kalorileri"
+            "value" : "Dinlenme Enerjisi"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Калорії у стані спокою"
+            "value" : "Енергія спокою"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calo nghỉ"
+            "value" : "Năng lượng cơ bản"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "静息卡路里"
+            "value" : "静息能量"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "靜息卡路里"
+            "value" : "靜息能量"
           }
         }
       }
@@ -145740,7 +145740,7 @@
         }
       }
     },
-    "Total Calories reads Active Energy, Basal Energy, and Step Count from Apple Health in read-only mode." : {
+    "Total Calories reads Active Energy, Resting Energy, and Step Count from Apple Health in read-only mode." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -151149,7 +151149,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Passer à Vitals+"
+            "value" : "Vitals+"
           }
         },
         "he" : {
@@ -151173,7 +151173,7 @@
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Váltás Vitals+-ra"
+            "value" : "Vitals+"
           }
         },
         "id" : {
@@ -151185,7 +151185,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Passa a Vitals+"
+            "value" : "Vitals+"
           }
         },
         "ja" : {
@@ -158465,7 +158465,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tervetuloa Total Calories -sovellukseen"
+            "value" : "Tervetuloa Total Caloriesiin"
           }
         },
         "fr" : {
@@ -178629,6 +178629,3446 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "你的試用不會續訂。我們該改進什麼？"
+          }
+        }
+      }
+    },
+    "%@ steps to go" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏بقي %@ خطوة"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zbývá %@ kroků"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der mangler %@ skridt"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch %@ Schritte"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Απομένουν %@ βήματα"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te faltan %@ pasos"
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veel on vaja teha %@ sammu"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏‏%@ قدم باقی مانده"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vielä %@ askelta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encore %@ pas"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏נותרו %@ צעדים"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अभी %@ कदम बाकी"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nedostaje još %@ koraka"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Még %@ lépés"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kurang %@ langkah"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ancora %@ passi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あと%@歩"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앞으로 %@걸음"
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vēl %@ soļu"
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kurang %@ langkah"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mangler %@ skritt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nog %@ stappen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozostało %@ kroków"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faltam %@ passos"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faltam %@ passos"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mai ai %@ de pași"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Осталось %@ шагов"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zostáva %@ krokov"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Återstår %@ steg"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "เหลืออีก %@ ก้าว"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalan %@ adım"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Залишилося %@ кроків"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Còn %@ bước"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还差 %@ 步"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "還差 %@ 步"
+          }
+        }
+      }
+    },
+    "About %@ active calories and %@ steps to go today." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏بقي نحو %@ سعرة حرارية نشطة و%@ خطوة اليوم."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dnes zbývá asi %@ aktivních kcal a %@ kroků."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der mangler cirka %@ aktive kcal og %@ skridt i dag."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heute fehlen noch etwa %@ aktive kcal und %@ Schritte."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σήμερα απομένουν περίπου %@ ενεργές θερμίδες και %@ βήματα."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoy te faltan unas %@ calorías activas y %@ pasos."
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Täna on veel puudu umbes %@ aktiivset kcal ja %@ sammu."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏امروز حدود %@ کالری فعال و %@ قدم باقی مانده است."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tänään tavoitteesta puuttuu noin %@ aktiivista kcal ja %@ askelta."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il vous reste environ %@ kcal actives et %@ pas aujourd’hui."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏נותרו היום כ־%@ קלוריות פעילות ו־%@ צעדים."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज लगभग %@ सक्रिय कैलोरी और %@ कदम बाकी हैं।"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Danas ti nedostaje oko %@ aktivnih kcal i %@ koraka."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ma még körülbelül %@ aktív kcal és %@ lépés hiányzik."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hari ini masih kurang sekitar %@ kalori aktif dan %@ langkah."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oggi ti mancano circa %@ kcal attive e %@ passi."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日はアクティブエネルギーが約%@ kcal、歩数が%@歩不足しています。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘 활동 에너지 %@kcal와 %@걸음이 남았어요."
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šodien vēl trūkst apmēram %@ aktīvo kcal un %@ soļu."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hari ini masih kurang kira-kira %@ kcal aktif dan %@ langkah."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I dag mangler du omtrent %@ aktive kcal og %@ skritt."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vandaag ontbreken er nog ongeveer %@ actieve kcal en %@ stappen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dziś brakuje jeszcze około %@ aktywnych kcal i %@ kroków."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoje faltam cerca de %@ kcal ativas e %@ passos."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoje faltam cerca de %@ kcal ativas e %@ passos."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Astăzi mai ai de făcut aproximativ %@ kcal active și %@ de pași."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сегодня осталось около %@ активных ккал и %@ шагов."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dnes ešte chýba približne %@ aktívnych kcal a %@ krokov."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I dag saknas cirka %@ aktiva kcal och %@ steg."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "วันนี้ยังขาดพลังงานขณะเคลื่อนไหวประมาณ %@ kcal และอีก %@ ก้าว"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bugün yaklaşık %@ aktif kcal ve %@ adım kaldı."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сьогодні залишилося приблизно %@ активних ккал і %@ кроків."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hôm nay bạn còn thiếu khoảng %@ kcal hoạt động và %@ bước."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天还差约 %@ 千卡活动能量和 %@ 步。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天還差約 %@ 大卡活動能量和 %@ 步。"
+          }
+        }
+      }
+    },
+    "About %@ active calories and %@ steps to go today. A %@-minute walk may help with the steps." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏بقي نحو %@ سعرة حرارية نشطة و%@ خطوة اليوم. قد تساعدك نزهة لمدة %@ دقيقة على إكمال الخطوات."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dnes zbývá asi %@ aktivních kcal a %@ kroků. S kroky může pomoct %@minutová procházka."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der mangler cirka %@ aktive kcal og %@ skridt i dag. En gåtur på %@ minutter kan hjælpe med skridtene."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heute fehlen noch etwa %@ aktive kcal und %@ Schritte. Ein %@-minütiger Spaziergang kann bei den Schritten helfen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σήμερα απομένουν περίπου %@ ενεργές θερμίδες και %@ βήματα. Ένας περίπατος %@ λεπτών μπορεί να βοηθήσει."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoy te faltan unas %@ calorías activas y %@ pasos. Un paseo de %@ minutos puede ayudarte con los pasos."
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Täna on veel puudu umbes %@ aktiivset kcal ja %@ sammu. %@-minutiline jalutuskäik aitab samme täis saada."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏امروز حدود %@ کالری فعال و %@ قدم باقی مانده است. پیاده‌روی %@ دقیقه‌ای می‌تواند به تکمیل قدم‌ها کمک کند."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tänään tavoitteesta puuttuu noin %@ aktiivista kcal ja %@ askelta. %@ minuutin kävely voi auttaa askelissa."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il vous reste environ %@ kcal actives et %@ pas aujourd’hui. Une marche de %@ minutes peut vous aider."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏נותרו היום כ־%@ קלוריות פעילות ו־%@ צעדים. הליכה של %@ דקות יכולה לעזור להשלים את הצעדים."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज लगभग %@ सक्रिय कैलोरी और %@ कदम बाकी हैं। %@ मिनट की सैर कदम पूरे करने में मदद कर सकती है।"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Danas ti nedostaje oko %@ aktivnih kcal i %@ koraka. Šetnja od %@ minuta može pomoći s koracima."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ma még körülbelül %@ aktív kcal és %@ lépés hiányzik. Egy %@ perces séta segíthet a lépésekben."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hari ini masih kurang sekitar %@ kalori aktif dan %@ langkah. Jalan kaki selama %@ menit dapat membantu mencapai target langkah."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oggi ti mancano circa %@ kcal attive e %@ passi. Una camminata di %@ minuti può aiutarti con i passi."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日はアクティブエネルギーが約%@ kcal、歩数が%@歩不足しています。%@分の散歩で歩数を補えます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘 활동 에너지 %@kcal와 %@걸음이 남았어요. %@분 걷기가 걸음 수를 채우는 데 도움이 될 수 있어요."
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šodien vēl trūkst apmēram %@ aktīvo kcal un %@ soļu. %@ minūšu pastaiga var palīdzēt sasniegt soļu mērķi."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hari ini masih kurang kira-kira %@ kcal aktif dan %@ langkah. Berjalan selama %@ minit boleh membantu mencapai sasaran langkah."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I dag mangler du omtrent %@ aktive kcal og %@ skritt. En gåtur på %@ minutter kan hjelpe deg med skrittene."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vandaag ontbreken er nog ongeveer %@ actieve kcal en %@ stappen. Een wandeling van %@ minuten kan helpen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dziś brakuje jeszcze około %@ aktywnych kcal i %@ kroków. Spacer przez %@ minut może pomóc uzupełnić kroki."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoje faltam cerca de %@ kcal ativas e %@ passos. Uma caminhada de %@ minutos pode ajudar a completar os passos."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoje faltam cerca de %@ kcal ativas e %@ passos. Uma caminhada de %@ minutos pode ajudar a completar os passos."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Astăzi mai ai de făcut aproximativ %@ kcal active și %@ de pași. O plimbare de %@ minute poate ajuta la pași."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сегодня осталось около %@ активных ккал и %@ шагов. Прогулка на %@ минут поможет добрать шаги."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dnes ešte chýba približne %@ aktívnych kcal a %@ krokov. %@-minútová prechádzka môže pomôcť s krokmi."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I dag saknas cirka %@ aktiva kcal och %@ steg. En promenad på %@ minuter kan hjälpa dig att nå stegmålet."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "วันนี้ยังขาดพลังงานขณะเคลื่อนไหวประมาณ %@ kcal และอีก %@ ก้าว การเดิน %@ นาทีอาจช่วยให้ครบเป้าหมายก้าว"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bugün yaklaşık %@ aktif kcal ve %@ adım kaldı. %@ dakikalık yürüyüş adımları tamamlamaya yardımcı olabilir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сьогодні залишилося приблизно %@ активних ккал і %@ кроків. Прогулянка на %@ хвилин може допомогти набрати кроки."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hôm nay bạn còn thiếu khoảng %@ kcal hoạt động và %@ bước. Đi bộ %@ phút có thể giúp bạn đạt mục tiêu bước chân."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天还差约 %@ 千卡活动能量和 %@ 步。步行 %@ 分钟有助于完成步数目标。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天還差約 %@ 大卡活動能量和 %@ 步。步行 %@ 分鐘有助於完成步數目標。"
+          }
+        }
+      }
+    },
+    "About %@ active calories to go" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏بقي نحو %@ سعرة حرارية نشطة"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zbývá asi %@ aktivních kcal"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der mangler cirka %@ aktive kcal"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch etwa %@ aktive kcal"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Απομένουν περίπου %@ ενεργές θερμίδες"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te faltan unas %@ calorías activas"
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puudu on umbes %@ aktiivset kcal"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏حدود %@ کالری فعال باقی مانده"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noin %@ aktiivista kcal jäljellä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il reste environ %@ kcal actives"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏נותרו כ־%@ קלוריות פעילות"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "लगभग %@ सक्रिय कैलोरी बाकी"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preostaje oko %@ aktivnih kcal"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Még körülbelül %@ aktív kcal"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kurang sekitar %@ kalori aktif"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restano circa %@ kcal attive"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アクティブエネルギーが約%@ kcal不足"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "활동 에너지 %@kcal 남음"
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atlikušas apmēram %@ aktīvās kcal"
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Baki kira-kira %@ kcal aktif"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cirka %@ aktive kcal igjen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nog ongeveer %@ actieve kcal"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozostało około %@ aktywnych kcal"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faltam cerca de %@ kcal ativas"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faltam cerca de %@ kcal ativas"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mai ai aproximativ %@ kcal active"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Осталось около %@ активных ккал"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zostáva približne %@ aktívnych kcal"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cirka %@ aktiva kcal kvar"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "เหลือพลังงานขณะเคลื่อนไหวประมาณ %@ kcal"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yaklaşık %@ aktif kcal kaldı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Залишилося приблизно %@ активних ккал"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Còn khoảng %@ kcal hoạt động"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还差约 %@ 千卡活动能量"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "還差約 %@ 大卡活動能量"
+          }
+        }
+      }
+    },
+    "About %@ active calories to go today." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏بقي نحو %@ سعرة حرارية نشطة اليوم."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dnes zbývá asi %@ aktivních kcal."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der mangler cirka %@ aktive kcal i dag."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heute fehlen noch etwa %@ aktive kcal."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σήμερα απομένουν περίπου %@ ενεργές θερμίδες."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoy te faltan unas %@ calorías activas."
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Täna on veel puudu umbes %@ aktiivset kcal."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏امروز حدود %@ کالری فعال باقی مانده است."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tänään puuttuu noin %@ aktiivista kcal."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il vous reste environ %@ kcal actives aujourd’hui."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏נותרו היום כ־%@ קלוריות פעילות."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "היום נותרו בערך %@ קלוריות פעילות."
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Danas ti nedostaje oko %@ aktivnih kcal."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ma még körülbelül %@ aktív kcal hiányzik."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hari ini masih kurang sekitar %@ kalori aktif."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oggi ti mancano circa %@ kcal attive."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日はアクティブエネルギーが約%@ kcal不足しています。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘 활동 에너지 %@kcal가 남았어요."
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šodien vēl trūkst apmēram %@ aktīvo kcal."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hari ini masih kurang kira-kira %@ kcal aktif."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I dag mangler du omtrent %@ aktive kcal."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vandaag ontbreken er nog ongeveer %@ actieve kcal."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dziś brakuje jeszcze około %@ aktywnych kcal."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoje faltam cerca de %@ kcal ativas."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoje faltam cerca de %@ kcal ativas."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Astăzi mai ai de făcut aproximativ %@ kcal active."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сегодня осталось около %@ активных ккал."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dnes ešte chýba približne %@ aktívnych kcal."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I dag saknas cirka %@ aktiva kcal."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "วันนี้ยังขาดพลังงานขณะเคลื่อนไหวประมาณ %@ kcal"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bugün yaklaşık %@ aktif kcal kaldı."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сьогодні залишилося приблизно %@ активних ккал."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hôm nay bạn còn thiếu khoảng %@ kcal hoạt động."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天还差约 %@ 千卡活动能量。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天還差約 %@ 大卡活動能量。"
+          }
+        }
+      }
+    },
+    "About %@ steps to go today." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏بقي نحو %@ خطوة اليوم."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dnes zbývá asi %@ kroků."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der mangler cirka %@ skridt i dag."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heute fehlen noch etwa %@ Schritte."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σήμερα απομένουν περίπου %@ βήματα."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoy te faltan unos %@ pasos."
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Täna on veel puudu umbes %@ sammu."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏امروز حدود %@ قدم باقی مانده است."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tänään puuttuu noin %@ askelta."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il vous reste environ %@ pas aujourd’hui."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏נותרו היום כ־%@ צעדים."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आज लगभग %@ कदम बाकी हैं।"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Danas ti nedostaje oko %@ koraka."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ma még körülbelül %@ lépés hiányzik."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hari ini masih kurang sekitar %@ langkah."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oggi ti mancano circa %@ passi."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日はあと%@歩です。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오늘 %@걸음이 남았어요."
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šodien vēl trūkst apmēram %@ soļu."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hari ini masih kurang kira-kira %@ langkah."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I dag mangler du omtrent %@ skritt."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vandaag ontbreken er nog ongeveer %@ stappen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dziś brakuje jeszcze około %@ kroków."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoje faltam cerca de %@ passos."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoje faltam cerca de %@ passos."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Astăzi mai ai de făcut aproximativ %@ de pași."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сегодня осталось около %@ шагов."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dnes ešte chýba približne %@ krokov."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I dag saknas cirka %@ steg."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "วันนี้ยังขาดอีกประมาณ %@ ก้าว"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bugün yaklaşık %@ adım kaldı."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сьогодні залишилося приблизно %@ кроків."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hôm nay bạn còn thiếu khoảng %@ bước."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天还差约 %@ 步。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今天還差約 %@ 步。"
+          }
+        }
+      }
+    },
+    "About a %@-minute walk closes out your step goal." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏تُكمل نزهة مدتها %@ دقيقة هدف خطواتك."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cíl kroků splní procházka dlouhá %@ minut."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En gåtur på %@ minutter når dit skridtmål."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein %@-minütiger Spaziergang erreicht dein Schrittziel."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ένας περίπατος %@ λεπτών ολοκληρώνει τον στόχο βημάτων σου."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un paseo de %@ minutos completa tu objetivo de pasos."
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinu sammueesmärgi täidab %@-minutiline jalutuskäik."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏پیاده‌روی %@ دقیقه‌ای هدف قدم‌هایت را کامل می‌کند."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ minuutin kävely täyttää askeltavoitteesi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une marche de %@ minutes complète votre objectif de pas."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏הליכה של %@ דקות משלימה את יעד הצעדים שלך."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कदमों का लक्ष्य %@ मिनट की सैर से पूरा हो जाएगा।"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šetnja od %@ minuta ispunjava tvoj cilj koraka."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Egy %@ perces séta teljesíti a lépéscélodat."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jalan kaki selama %@ menit akan memenuhi target langkahmu."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una camminata di %@ minuti completa il tuo obiettivo di passi."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@分の散歩で歩数目標を達成できます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@분 걸으면 걸음 목표를 채울 수 있어요."
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ minūšu pastaiga sasniegs tavu soļu mērķi."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berjalan selama %@ minit akan mencapai sasaran langkah anda."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En gåtur på %@ minutter fullfører stegmålet ditt."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Met een wandeling van %@ minuten haal je je stappendoel."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spacer przez %@ minut pozwoli osiągnąć cel kroków."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma caminhada de %@ minutos completa sua meta de passos."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma caminhada de %@ minutos completa o teu objetivo de passos."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O plimbare de %@ minute îți îndeplinește obiectivul de pași."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прогулка на %@ минут поможет достичь цели по шагам."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prechádzka dlhá %@ minút splní tvoj cieľ v počte krokov."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En promenad på %@ minuter uppfyller ditt stegmål."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "เดิน %@ นาทีจะช่วยให้ครบเป้าหมายก้าว"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ dakikalık yürüyüş adım hedefini tamamlar."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прогулянка на %@ хвилин допоможе досягти цілі за кроками."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đi bộ %@ phút sẽ hoàn thành mục tiêu bước chân."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "步行 %@ 分钟即可完成步数目标。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "步行 %@ 分鐘即可完成步數目標。"
+          }
+        }
+      }
+    },
+    "Excluded day %@: %@ calories and %@ steps." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏اليوم المستبعد %@: ‏%@ سعرة حرارية و%@ خطوة."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyřazený den %@: %@ kcal a %@ kroků."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udeladt dag %@: %@ kcal og %@ skridt."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgeschlossener Tag %@: %@ kcal und %@ Schritte."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εξαιρεμένη ημέρα %@: %@ θερμίδες και %@ βήματα."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día excluido %@: %@ calorías y %@ pasos."
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Välja jäetud päev %@: %@ kcal ja %@ sammu."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏روز مستثنا %@: ‏%@ کالری و %@ قدم."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ohitettu päivä %@: %@ kcal ja %@ askelta."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Journée exclue %@ : %@ kcal et %@ pas."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏יום שהוחרג %@: ‏%@ קלוריות ו־%@ צעדים."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "गणना से बाहर रखा गया दिन %@: %@ कैलोरी और %@ कदम।"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isključeni dan %@: %@ kcal i %@ koraka."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kizárt nap %@: %@ kcal és %@ lépés."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hari yang dikecualikan %@: %@ kalori dan %@ langkah."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giorno escluso %@: %@ kcal e %@ passi."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "除外日%@：%@ kcal、%@歩。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제외한 날짜 %@: %@kcal, %@걸음."
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izslēgtā diena %@: %@ kcal un %@ soļu."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hari dikecualikan %@: %@ kcal dan %@ langkah."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utelatt dag %@: %@ kcal og %@ skritt."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uitgesloten dag %@: %@ kcal en %@ stappen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wykluczony dzień %@: %@ kcal i %@ kroków."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dia excluído %@: %@ kcal e %@ passos."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dia excluído %@: %@ kcal e %@ passos."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zi exclusă %@: %@ kcal și %@ de pași."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Исключённый день %@: %@ ккал и %@ шагов."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vynechaný deň %@: %@ kcal a %@ krokov."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utesluten dag %@: %@ kcal och %@ steg."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "วันที่ไม่นับ %@: %@ kcal และ %@ ก้าว"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hariç tutulan gün %@: %@ kcal ve %@ adım."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виключений день %@: %@ ккал і %@ кроків."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ngày đã loại trừ %@: %@ kcal và %@ bước."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已排除日期 %@：%@ 千卡、%@ 步。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已排除日期 %@：%@ 大卡、%@ 步。"
+          }
+        }
+      }
+    },
+    "Excluded day: %@." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏يوم مستبعد: %@."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyřazený den: %@."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udeladt dag: %@."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgeschlossener Tag: %@."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εξαιρεμένη ημέρα: %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día excluido: %@."
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Välja jäetud päev: %@."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏روز مستثنا: %@."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ohitettu päivä: %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Journée exclue : %@."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏יום שהוחרג: %@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "गणना से बाहर रखा गया दिन: %@।"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isključeni dan: %@."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kizárt nap: %@."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hari yang dikecualikan: %@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giorno escluso: %@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "除外日：%@。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제외한 날짜: %@."
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izslēgtā diena: %@."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hari dikecualikan: %@."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utelatt dag: %@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uitgesloten dag: %@."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wykluczony dzień: %@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dia excluído: %@."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dia excluído: %@."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zi exclusă: %@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Исключённый день: %@."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vynechaný deň: %@."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utesluten dag: %@."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "วันที่ไม่นับ: %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hariç tutulan gün: %@."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виключений день: %@."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ngày đã loại trừ: %@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已排除日期：%@。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已排除日期：%@。"
+          }
+        }
+      }
+    },
+    "Restoring…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏جارٍ الاستعادة…"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obnovování…"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gendanner…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wird wiederhergestellt…"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Γίνεται επαναφορά…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurando…"
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taastamine…"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏در حال بازیابی…"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palautetaan…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restauration…"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏משחזר…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रीस्टोर हो रहा है…"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vraćanje…"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visszaállítás…"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Memulihkan…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ripristino…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "復元中…"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "복원 중…"
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notiek atjaunošana…"
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sedang memulihkan…"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gjenoppretter…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herstellen…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przywracanie…"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurando…"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A restaurar…"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se restaurează…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Восстановление…"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obnovuje sa…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Återställer…"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "กำลังกู้คืน…"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geri yükleniyor…"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відновлення…"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đang khôi phục…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在恢复…"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在回復…"
+          }
+        }
+      }
+    },
+    "net" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏الصافي"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "čistý"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "netto"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "netto"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "καθαρό"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "neto"
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "neto"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏خالص"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "netto"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "net"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏נטו"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "नेट"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "neto"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nettó"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bersih"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "netto"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "差し引き"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "순"
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "neto"
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bersih"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "netto"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "netto"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "netto"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "saldo"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "saldo"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "net"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "нетто"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "netto"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "netto"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "สุทธิ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "net"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "нетто"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ròng"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "净值"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "淨值"
+          }
+        }
+      }
+    },
+    "Calories: %@ of %@. Active Energy: %@, Resting Energy: %@. Goal streak: %@." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏إجمالي %@ من %@ سعرة حرارية. الطاقة النشطة %@، وطاقة الراحة %@. سلسلة تحقيق الهدف: %@."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Celkem %@ z %@ kcal. Aktivní energie %@, klidová energie %@. Série splněného cíle: %@."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I alt %@ af %@ kcal. Aktiv energi %@, hvileenergi %@. Målstreak: %@."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Insgesamt %@ von %@ kcal. Aktive Energie %@, Ruheenergie %@. Zielserie: %@."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σύνολο %@ από %@ θερμίδες. Ενεργή ενέργεια %@, ενέργεια ηρεμίας %@. Σερί στόχου: %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@ de %@ calorías. Energía activa %@, energía en reposo %@. Racha de objetivos: %@."
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kokku %@ / %@ kcal. Aktiivne energia %@, puhkeenergia %@. Eesmärgiseeria: %@."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏مجموع %@ از %@ کالری. انرژی فعال %@، انرژی پایه %@. زنجیره هدف: %@."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhteensä %@ / %@ kcal. Aktiivinen energia %@, lepoenergia %@. Tavoiteputki: %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total : %@ sur %@ kcal. Énergie active %@, énergie au repos %@. Série d’objectifs : %@."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏סה״כ %@ מתוך %@ קלוריות. אנרגיה פעילה %@, אנרגיית מנוחה %@. רצף יעדים: %@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कुल %@ में से %@ कैलोरी। सक्रिय ऊर्जा %@, विश्राम ऊर्जा %@। लक्ष्य की लड़ी: %@।"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukupno %@ od %@ kcal. Aktivna energija %@, energija mirovanja %@. Niz ciljeva: %@."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Összesen %@ / %@ kcal. Aktív energia %@, nyugalmi energia %@. Célstreak: %@."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total %@ dari %@ kalori. Energi aktif %@, energi istirahat %@. Rangkaian target: %@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totale: %@ su %@ kcal. Energia attiva %@, energia a riposo %@. Serie di obiettivi: %@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合計%@ / %@ kcal。アクティブエネルギー%@、安静時エネルギー%@。目標達成連続日数：%@。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "총 %@ / %@kcal. 활동 에너지 %@, 휴식 에너지 %@. 목표 연속 달성: %@."
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopā %@ no %@ kcal. Aktīvā enerģija %@, miera enerģija %@. Mērķa sērija: %@."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jumlah %@ daripada %@ kcal. Tenaga aktif %@, tenaga rehat %@. Rentetan matlamat: %@."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt %@ av %@ kcal. Aktiv energi %@, hvileenergi %@. Målrekke: %@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totaal %@ van %@ kcal. Actieve energie %@, rustenergie %@. Doelreeks: %@."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Łącznie %@ z %@ kcal. Energia aktywna %@, energia spoczynkowa %@. Seria celów: %@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@ de %@ kcal. Energia ativa %@, energia em repouso %@. Sequência de metas: %@."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@ de %@ kcal. Energia ativa %@, energia em repouso %@. Sequência de objetivos: %@."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total %@ din %@ kcal. Energie activă %@, energie de repaus %@. Serie de obiective: %@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Всего %@ из %@ ккал. Активная энергия %@, энергия покоя %@. Серия целей: %@."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spolu %@ z %@ kcal. Aktívna energia %@, pokojová energia %@. Séria cieľov: %@."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt %@ av %@ kcal. Aktiv energi %@, vilenergi %@. Målserie: %@."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รวม %@ จาก %@ kcal พลังงานขณะเคลื่อนไหว %@ พลังงานขณะพัก %@ เป้าหมายต่อเนื่อง %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toplam %@ / %@ kcal. Aktif enerji %@, dinlenme enerjisi %@. Hedef serisi: %@."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Усього %@ з %@ ккал. Активна енергія %@, енергія спокою %@. Серія цілей: %@."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tổng %@ trên %@ kcal. Năng lượng hoạt động %@, năng lượng nghỉ %@. Chuỗi mục tiêu: %@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "总计 %@ / %@ 千卡。活动能量 %@，静息能量 %@。目标连续达成：%@。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "總計 %@ / %@ 大卡。活動能量 %@，靜止能量 %@。目標連續達成：%@。"
+          }
+        }
+      }
+    },
+    "Calories: %@. Active Energy: %@, Resting Energy: %@. Goal streak: %@." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏إجمالي %@ سعرة حرارية. الطاقة النشطة %@، وطاقة الراحة %@. سلسلة تحقيق الهدف: %@."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Celkem %@ kcal. Aktivní energie %@, klidová energie %@. Série splněného cíle: %@."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I alt %@ kcal. Aktiv energi %@, hvileenergi %@. Målstreak: %@."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Insgesamt %@ kcal. Aktive Energie %@, Ruheenergie %@. Zielserie: %@."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σύνολο %@ θερμίδες. Ενεργή ενέργεια %@, ενέργεια ηρεμίας %@. Σερί στόχου: %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@ calorías. Energía activa %@, energía en reposo %@. Racha de objetivos: %@."
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kokku %@ kcal. Aktiivne energia %@, puhkeenergia %@. Eesmärgiseeria: %@."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏مجموع %@ کالری. انرژی فعال %@، انرژی پایه %@. زنجیره هدف: %@."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhteensä %@ kcal. Aktiivinen energia %@, lepoenergia %@. Tavoiteputki: %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total : %@ kcal. Énergie active %@, énergie au repos %@. Série d’objectifs : %@."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏סה״כ %@ קלוריות. אנרגיה פעילה %@, אנרגיית מנוחה %@. רצף יעדים: %@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कुल %@ कैलोरी। सक्रिय ऊर्जा %@, विश्राम ऊर्जा %@। लक्ष्य की लड़ी: %@।"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukupno %@ kcal. Aktivna energija %@, energija mirovanja %@. Niz ciljeva: %@."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Összesen %@ kcal. Aktív energia %@, nyugalmi energia %@. Célstreak: %@."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total %@ kalori. Energi aktif %@, energi istirahat %@. Rangkaian target: %@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totale: %@ kcal. Energia attiva %@, energia a riposo %@. Serie di obiettivi: %@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合計%@ kcal。アクティブエネルギー%@、安静時エネルギー%@。目標達成連続日数：%@。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "총 %@kcal. 활동 에너지 %@, 휴식 에너지 %@. 목표 연속 달성: %@."
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopā %@ kcal. Aktīvā enerģija %@, miera enerģija %@. Mērķa sērija: %@."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jumlah %@ kcal. Tenaga aktif %@, tenaga rehat %@. Rentetan matlamat: %@."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt %@ kcal. Aktiv energi %@, hvileenergi %@. Målrekke: %@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totaal %@ kcal. Actieve energie %@, rustenergie %@. Doelreeks: %@."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Łącznie %@ kcal. Energia aktywna %@, energia spoczynkowa %@. Seria celów: %@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@ kcal. Energia ativa %@, energia em repouso %@. Sequência de metas: %@."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@ kcal. Energia ativa %@, energia em repouso %@. Sequência de objetivos: %@."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total %@ kcal. Energie activă %@, energie de repaus %@. Serie de obiective: %@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Всего %@ ккал. Активная энергия %@, энергия покоя %@. Серия целей: %@."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spolu %@ kcal. Aktívna energia %@, pokojová energia %@. Séria cieľov: %@."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt %@ kcal. Aktiv energi %@, vilenergi %@. Målserie: %@."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รวม %@ kcal พลังงานขณะเคลื่อนไหว %@ พลังงานขณะพัก %@ เป้าหมายต่อเนื่อง %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toplam %@ kcal. Aktif enerji %@, dinlenme enerjisi %@. Hedef serisi: %@."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Усього %@ ккал. Активна енергія %@, енергія спокою %@. Серія цілей: %@."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tổng %@ kcal. Năng lượng hoạt động %@, năng lượng nghỉ %@. Chuỗi mục tiêu: %@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "总计 %@ 千卡。活动能量 %@，静息能量 %@。目标连续达成：%@。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "總計 %@ 大卡。活動能量 %@，靜止能量 %@。目標連續達成：%@。"
+          }
+        }
+      }
+    },
+    "Calories: %@ of %@. Goal streak: %@." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏إجمالي %@ من %@ سعرة حرارية. سلسلة تحقيق الهدف: %@."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Celkem %@ z %@ kcal. Série splněného cíle: %@."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I alt %@ af %@ kcal. Målstreak: %@."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Insgesamt %@ von %@ kcal. Zielserie: %@."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σύνολο %@ από %@ θερμίδες. Σερί στόχου: %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@ de %@ calorías. Racha de objetivos: %@."
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kokku %@ / %@ kcal. Eesmärgiseeria: %@."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏مجموع %@ از %@ کالری. زنجیره هدف: %@."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhteensä %@ / %@ kcal. Tavoiteputki: %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total : %@ sur %@ kcal. Série d’objectifs : %@."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏סה״כ %@ מתוך %@ קלוריות. רצף יעדים: %@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कुल %@ में से %@ कैलोरी। लक्ष्य की लड़ी: %@।"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukupno %@ od %@ kcal. Niz ciljeva: %@."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Összesen %@ / %@ kcal. Célstreak: %@."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total %@ dari %@ kalori. Rangkaian target: %@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totale: %@ su %@ kcal. Serie di obiettivi: %@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合計%@ / %@ kcal。目標達成連続日数：%@。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "총 %@ / %@kcal. 목표 연속 달성: %@."
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopā %@ no %@ kcal. Mērķa sērija: %@."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jumlah %@ daripada %@ kcal. Rentetan matlamat: %@."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt %@ av %@ kcal. Målrekke: %@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totaal %@ van %@ kcal. Doelreeks: %@."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Łącznie %@ z %@ kcal. Seria celów: %@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@ de %@ kcal. Sequência de metas: %@."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@ de %@ kcal. Sequência de objetivos: %@."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total %@ din %@ kcal. Serie de obiective: %@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Всего %@ из %@ ккал. Серия целей: %@."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spolu %@ z %@ kcal. Séria cieľov: %@."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt %@ av %@ kcal. Målserie: %@."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รวม %@ จาก %@ kcal เป้าหมายต่อเนื่อง %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toplam %@ / %@ kcal. Hedef serisi: %@."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Усього %@ з %@ ккал. Серія цілей: %@."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tổng %@ trên %@ kcal. Chuỗi mục tiêu: %@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "总计 %@ / %@ 千卡。目标连续达成：%@。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "總計 %@ / %@ 大卡。目標連續達成：%@。"
+          }
+        }
+      }
+    },
+    "Calories: %@. Goal streak: %@." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏إجمالي %@ سعرة حرارية. سلسلة تحقيق الهدف: %@."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Celkem %@ kcal. Série splněného cíle: %@."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I alt %@ kcal. Målstreak: %@."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Insgesamt %@ kcal. Zielserie: %@."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σύνολο %@ θερμίδες. Σερί στόχου: %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@ calorías. Racha de objetivos: %@."
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kokku %@ kcal. Eesmärgiseeria: %@."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏مجموع %@ کالری. زنجیره هدف: %@."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhteensä %@ kcal. Tavoiteputki: %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total : %@ kcal. Série d’objectifs : %@."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏סה״כ %@ קלוריות. רצף יעדים: %@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कुल %@ कैलोरी। लक्ष्य की लड़ी: %@।"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukupno %@ kcal. Niz ciljeva: %@."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Összesen %@ kcal. Célstreak: %@."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total %@ kalori. Rangkaian target: %@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totale: %@ kcal. Serie di obiettivi: %@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合計%@ kcal。目標達成連続日数：%@。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "총 %@kcal. 목표 연속 달성: %@."
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopā %@ kcal. Mērķa sērija: %@."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jumlah %@ kcal. Rentetan matlamat: %@."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt %@ kcal. Målrekke: %@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totaal %@ kcal. Doelreeks: %@."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Łącznie %@ kcal. Seria celów: %@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@ kcal. Sequência de metas: %@."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@ kcal. Sequência de objetivos: %@."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total %@ kcal. Serie de obiective: %@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Всего %@ ккал. Серия целей: %@."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spolu %@ kcal. Séria cieľov: %@."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt %@ kcal. Målserie: %@."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รวม %@ kcal เป้าหมายต่อเนื่อง %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toplam %@ kcal. Hedef serisi: %@."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Усього %@ ккал. Серія цілей: %@."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tổng %@ kcal. Chuỗi mục tiêu: %@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "总计 %@ 千卡。目标连续达成：%@。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "總計 %@ 大卡。目標連續達成：%@。"
+          }
+        }
+      }
+    },
+    "Steps: %@. Goal streak: %@." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏إجمالي %@ خطوة. سلسلة تحقيق الهدف: %@."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Celkem %@ kroků. Série splněného cíle: %@."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I alt %@ skridt. Målstreak: %@."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Insgesamt %@ Schritte. Zielserie: %@."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σύνολο %@ βήματα. Σερί στόχου: %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@ pasos. Racha de objetivos: %@."
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kokku %@ sammu. Eesmärgiseeria: %@."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏مجموع %@ قدم. زنجیره هدف: %@."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhteensä %@ askelta. Tavoiteputki: %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total : %@ pas. Série d’objectifs : %@."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏סה״כ %@ צעדים. רצף יעדים: %@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कुल %@ कदम। लक्ष्य की लड़ी: %@।"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukupno %@ koraka. Niz ciljeva: %@."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Összesen %@ lépés. Célstreak: %@."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total %@ langkah. Rangkaian target: %@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totale: %@ passi. Serie di obiettivi: %@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合計%@歩。目標達成連続日数：%@。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "총 %@걸음. 목표 연속 달성: %@."
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopā %@ soļu. Mērķa sērija: %@."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jumlah %@ langkah. Rentetan matlamat: %@."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt %@ skritt. Målrekke: %@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totaal %@ stappen. Doelreeks: %@."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Łącznie %@ kroków. Seria celów: %@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@ passos. Sequência de metas: %@."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total: %@ passos. Sequência de objetivos: %@."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total %@ de pași. Serie de obiective: %@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Всего %@ шагов. Серия целей: %@."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spolu %@ krokov. Séria cieľov: %@."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totalt %@ steg. Målserie: %@."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "รวม %@ ก้าว เป้าหมายต่อเนื่อง %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toplam %@ adım. Hedef serisi: %@."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Усього %@ кроків. Серія цілей: %@."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tổng %@ bước. Chuỗi mục tiêu: %@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "总计 %@ 步。目标连续达成：%@。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "總計 %@ 步。目標連續達成：%@。"
           }
         }
       }

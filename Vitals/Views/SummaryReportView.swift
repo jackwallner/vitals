@@ -360,7 +360,7 @@ private struct TrendBadge: View {
             ? Color.gray
             : (isUp ? Color(red: 0.20, green: 0.68, blue: 0.45) : Color(red: 0.85, green: 0.42, blue: 0.40))
         HStack(spacing: 2) {
-            Image(systemName: isFlat ? "arrow.right" : (isUp ? "arrow.up.right" : "arrow.down.right"))
+            Image(systemName: isFlat ? "arrow.forward" : (isUp ? "arrow.up.forward" : "arrow.down.forward"))
                 .font(.system(size: 8, weight: .bold))
             Text("\(abs(Int(pct.rounded())))%")
                 .font(.system(size: 9, weight: .semibold, design: .rounded))
