@@ -12,7 +12,7 @@ struct WeeklyRecapView: View {
 
     private static let dayFmt: DateFormatter = {
         let f = DateFormatter()
-        f.dateFormat = "EEEE"
+        f.setLocalizedDateFormatFromTemplate("EEEE")
         return f
     }()
 

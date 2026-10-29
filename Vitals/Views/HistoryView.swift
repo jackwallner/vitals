@@ -1637,7 +1637,7 @@ struct HistoryView: View {
             Button {
                 dismiss()
             } label: {
-                Image(systemName: "chevron.left")
+                Image(systemName: "chevron.backward")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(Theme.textPrimary)
                     .frame(width: 22, height: 22)
@@ -2295,7 +2295,7 @@ struct HistoryView: View {
         formatter.dateFormat = "yyyy-MM-dd"
 
         let includeNet = store.isPro && goals.showNetCalories
-        var columns = [String(localized: "Date"), String(localized: "Active Calories"), String(localized: "Resting Calories"), String(localized: "metric.totalCalories", defaultValue: "Total Calories"), String(localized: "Steps")]
+        var columns = [String(localized: "Date"), String(localized: "Active Energy"), String(localized: "Resting Energy"), String(localized: "metric.totalCalories", defaultValue: "Total Calories"), String(localized: "Steps")]
         if includeNet {
             columns += [String(localized: "Food Calories"), String(localized: "Net Deficit")]
         }
@@ -2761,7 +2761,7 @@ struct DeepTrendInsightRow: View {
                 }
                 Spacer(minLength: 0)
                 HStack(spacing: 4) {
-                    Image(systemName: insight.isFlat ? "arrow.right" : (insight.isUp ? "arrow.up.right" : "arrow.down.right"))
+                    Image(systemName: insight.isFlat ? "arrow.forward" : (insight.isUp ? "arrow.up.forward" : "arrow.down.forward"))
                     Text(insight.percent)
                 }
                 .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
@@ -3114,7 +3114,7 @@ private struct ChartCard<Content: View>: View {
                         Text(title)
                             .font(.headline)
                             .foregroundStyle(Theme.textPrimary)
-                        Image(systemName: "chevron.right")
+                        Image(systemName: "chevron.forward")
                             .font(.caption.weight(.semibold))
                             .foregroundStyle(Theme.textTertiary)
                         Spacer(minLength: 0)

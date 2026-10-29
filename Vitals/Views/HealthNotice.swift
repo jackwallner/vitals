@@ -29,7 +29,7 @@ enum HealthNotice: Equatable {
     var message: String {
         switch self {
         case .accessNeeded:
-            String(localized: "Grant Apple Health access so Total Calories can load your active calories, resting calories, and steps.")
+            String(localized: "Grant Apple Health access so Total Calories can load your active energy, resting energy, and steps.")
         case .noData:
             String(localized: "Apple Health may still be syncing. Check that your watch or fitness app has added data, or check Health access.")
         case .loadError:
