@@ -51,4 +51,14 @@ struct LocalizationTests {
             #expect(value.contains(expectedText), "Unexpected Arabic plural for \(count): \(value)")
         }
     }
+
+    @Test func arabicStepsSelectPluralForms() throws {
+        let arabic = try #require(bundle("ar"))
+        let locale = Locale(identifier: "ar")
+        let cases: [(Int, String)] = [(1, "خطوة"), (2, "خطوتان"), (3, "خطوات"), (11, "خطوة")]
+        for (count, expectedText) in cases {
+            let value = String(localized: "\(count) steps", bundle: arabic, locale: locale)
+            #expect(value.contains(expectedText), "Unexpected Arabic steps plural for \(count): \(value)")
+        }
+    }
 }

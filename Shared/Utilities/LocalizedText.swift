@@ -7,12 +7,11 @@ extension String {
         Bundle.main.preferredLocalizations.first ?? "en"
     }
 
-    /// Start-of-sentence form of a label like "7-day free trial". English keeps
-    /// its title case; other languages only raise the first letter.
+    /// Start-of-sentence form, using the app language for the first letter.
     var leadingCapitalized: String {
-        if String.appLanguage.hasPrefix("en") { return capitalized }
         guard let first else { return self }
-        return first.uppercased() + dropFirst()
+        let locale = Locale(identifier: String.appLanguage)
+        return String(first).uppercased(with: locale) + dropFirst()
     }
 
     /// Mid-sentence form of a label like "Protein" or "30 days". German nouns

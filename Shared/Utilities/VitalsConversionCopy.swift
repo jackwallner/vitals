@@ -81,9 +81,8 @@ enum VitalsConversionCopy {
     /// saving is the honest deal — and only when both plans are loaded to
     /// compute it. Never invents a number.
     static func badgeText(trialLabel: String?, eligibleForTrial: Bool, annualSavingsPercent: Int?) -> String {
-        if eligibleForTrial, let trialLabel,
-           let days = trialLabel.split(whereSeparator: { !$0.isNumber }).first, !days.isEmpty {
-            return String(localized: "\(days) DAYS FREE")
+        if eligibleForTrial, let trialLabel, !trialLabel.isEmpty {
+            return trialLabel
         }
         if !eligibleForTrial, let annualSavingsPercent, annualSavingsPercent > 0 {
             return String(localized: "SAVE \(annualSavingsPercent)%")

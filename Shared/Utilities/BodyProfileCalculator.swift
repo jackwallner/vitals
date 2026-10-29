@@ -62,19 +62,24 @@ enum BodyProfileCalculator {
 
     /// Parses decimal input from the device locale, with a comma fallback for
     /// pasted values on devices that use a dot decimal separator.
-    static func parseDecimal(_ text: String) -> Double? {
+    static func parseDecimal(_ text: String, locale: Locale = .current) -> Double? {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return nil }
         if let value = Double(trimmed) { return value }
 
-        let separator = Locale.current.decimalSeparator ?? "."
+        let separator = locale.decimalSeparator ?? "."
         var normalized = trimmed
         if separator != "." {
             normalized = normalized.replacingOccurrences(of: separator, with: ".")
         } else if !normalized.contains(".") {
             normalized = normalized.replacingOccurrences(of: ",", with: ".")
         }
-        return Double(normalized)
+        if let value = Double(normalized) { return value }
+        let formatter = NumberFormatter()
+        formatter.locale = locale
+        formatter.numberStyle = .decimal
+        formatter.usesGroupingSeparator = false
+        return formatter.number(from: trimmed)?.doubleValue
     }
 
     /// Returns (feet, inches) for a height in meters, inches rounded to nearest.
@@ -131,11 +136,11 @@ enum BodyProfileCalculator {
     /// stable placeholder.
     static func formattedBMI(_ value: Double?) -> String {
         guard let value, value.isFinite else { return "—" }
-        return String(format: "%.1f", value)
+        return value.formatted(.number.precision(.fractionLength(1)).grouping(.never))
     }
 
     static func formattedBodyFat(_ percent: Double?) -> String {
         guard let percent, percent.isFinite else { return "—" }
-        return String(format: "%.1f%%", percent)
+        return (percent / 100).formatted(.percent.precision(.fractionLength(1)).grouping(.never))
     }
 }

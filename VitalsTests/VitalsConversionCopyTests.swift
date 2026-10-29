@@ -106,7 +106,7 @@ final class VitalsConversionCopyTests: XCTestCase {
                 trialLabel: "7-day free trial",
                 eligibleForTrial: true
             ),
-            "7-Day Free Trial, on us."
+            "7-day free trial, on us."
         )
     }
 
@@ -144,14 +144,25 @@ final class VitalsConversionCopyTests: XCTestCase {
         XCTAssertEqual(text, "You've already seen what Vitals+ adds. Keep it on.")
     }
 
-    func testBadgeUsesTrialDaysWhenEligible() {
+    func testBadgeUsesLocalizedTrialLabelWhenEligible() {
         XCTAssertEqual(
             VitalsConversionCopy.badgeText(
                 trialLabel: "7-day free trial",
                 eligibleForTrial: true,
                 annualSavingsPercent: 64
             ),
-            "7 DAYS FREE"
+            "7-day free trial"
+        )
+    }
+
+    func testBadgePreservesTrialPeriod() {
+        XCTAssertEqual(
+            VitalsConversionCopy.badgeText(
+                trialLabel: "1-month free trial",
+                eligibleForTrial: true,
+                annualSavingsPercent: nil
+            ),
+            "1-month free trial"
         )
     }
 

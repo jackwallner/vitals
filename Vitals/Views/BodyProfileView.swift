@@ -306,7 +306,7 @@ struct BodyProfileView: View {
 
     private func metricColumn(label: String, value: String) -> some View {
         VStack(spacing: 3) {
-            Text(label.uppercased())
+            Text(label)
                 .font(.system(size: 10, weight: .bold, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
             Text(value)
@@ -528,15 +528,15 @@ struct BodyProfileView: View {
             let (feet, inches) = BodyProfileCalculator.feetInches(fromMeters: meters)
             return "\(feet)′\(inches)″"
         }
-        return String(format: "%.0f cm", BodyProfileCalculator.centimeters(fromMeters: meters))
+        return Measurement(value: BodyProfileCalculator.centimeters(fromMeters: meters), unit: UnitLength.centimeters).formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(0))))
     }
 
     private var weightDisplay: String {
         guard let kg = resolved.weightKilograms else { return "—" }
         if unitSystem == .us {
-            return String(format: "%.0f lb", BodyProfileCalculator.pounds(fromKilograms: kg))
+            return Measurement(value: BodyProfileCalculator.pounds(fromKilograms: kg), unit: UnitMass.pounds).formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(0))))
         }
-        return String(format: "%.1f kg", kg)
+        return Measurement(value: kg, unit: UnitMass.kilograms).formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(1))))
     }
 
     private var bmiAccessibilityLabel: String {
@@ -652,21 +652,21 @@ struct BodyProfileView: View {
             let (feet, inches) = BodyProfileCalculator.feetInches(fromMeters: meters)
             feetText = String(feet)
             inchesText = String(inches)
-            cmText = String(format: "%.0f", BodyProfileCalculator.centimeters(fromMeters: meters))
+            cmText = BodyProfileCalculator.centimeters(fromMeters: meters).formatted(.number.precision(.fractionLength(0)).grouping(.never))
         } else {
             feetText = ""
             inchesText = ""
             cmText = ""
         }
         if let kg = bodyProfile.manualWeightKilograms {
-            poundsText = String(format: "%.0f", BodyProfileCalculator.pounds(fromKilograms: kg))
-            kgText = String(format: "%.1f", kg)
+            poundsText = BodyProfileCalculator.pounds(fromKilograms: kg).formatted(.number.precision(.fractionLength(0)).grouping(.never))
+            kgText = kg.formatted(.number.precision(.fractionLength(1)).grouping(.never))
         } else {
             poundsText = ""
             kgText = ""
         }
         if let pct = bodyProfile.manualBodyFatPercent {
-            bodyFatText = String(format: "%.1f", pct)
+            bodyFatText = pct.formatted(.number.precision(.fractionLength(1)).grouping(.never))
         } else {
             bodyFatText = ""
         }

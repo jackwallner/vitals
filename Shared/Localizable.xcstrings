@@ -19163,9 +19163,45 @@
     "%lld steps" : {
       "localizations" : {
         "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "‏%lld خطوة"
+          "variations" : {
+            "plural" : {
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "‏%lld خطوة"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "‏%lld خطوة"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "‏%lld خطوتان"
+                }
+              },
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "‏%lld خطوات"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "‏%lld خطوة"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "‏%lld خطوة"
+                }
+              }
+            }
           }
         },
         "cs" : {
@@ -176082,7 +176118,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "deinem Durchschnitt an vergangenen %1$@en der letzten %2$@"
+            "value" : "deinem Durchschnitt an Wochentagen wie %1$@ während der letzten %2$@"
           }
         },
         "el" : {

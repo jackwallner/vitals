@@ -53,6 +53,7 @@ final class BodyProfileCalculatorTests: XCTestCase {
     func testDecimalParsingSupportsDotAndComma() {
         XCTAssertEqual(BodyProfileCalculator.parseDecimal("1.75"), 1.75)
         XCTAssertEqual(BodyProfileCalculator.parseDecimal("1,75"), 1.75)
+        XCTAssertEqual(BodyProfileCalculator.parseDecimal("٧٥٫٣", locale: Locale(identifier: "ar")), 75.3)
         XCTAssertNil(BodyProfileCalculator.parseDecimal(""))
     }
 
