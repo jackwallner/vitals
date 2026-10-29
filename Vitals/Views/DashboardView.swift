@@ -682,14 +682,7 @@ struct DashboardView: View {
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Calorie progress")
                 .accessibilityHint("Opens calorie history")
-                .accessibilityValue((showActiveResting
-                    ? (calorieProgress != nil
-                        ? String(localized: "\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories. Active \(Int(activeCalories)), resting \(Int(restingCalories)).")
-                        : String(localized: "\(Int(totalCalories)) calories. Active \(Int(activeCalories)), resting \(Int(restingCalories))."))
-                    : (calorieProgress != nil
-                        ? String(localized: "\(Int(totalCalories)) of \(Int(goals.calorieGoal ?? 0)) calories")
-                        : String(localized: "\(Int(totalCalories)) calories")))
-                    + (showCalorieStreak ? String(localized: " \(calorieStreak) day goal streak.") : ""))
+                .accessibilityValue(calorieAccessibilityValue())
 
                 // Active/Resting breakdown is a Vitals+ feature. Toggle lives in Settings.
                 if showActiveResting {
@@ -735,7 +728,7 @@ struct DashboardView: View {
                                 .foregroundStyle(Theme.textSecondary)
                                 .textCase(.uppercase)
                                 .tracking(1.5)
-                            Image(systemName: "chevron.right")
+                            Image(systemName: "chevron.forward")
                                 .font(.caption.weight(.semibold))
                                 .foregroundStyle(Theme.textTertiary)
                         }
@@ -765,8 +758,7 @@ struct DashboardView: View {
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel("Steps")
-                    .accessibilityValue("\(steps) steps"
-                        + (showStepStreak ? String(localized: ". \(stepStreak) day goal streak.") : ""))
+                    .accessibilityValue(stepsAccessibilityValue())
                     .opacity(animateContent ? 1 : 0)
                     .scaleEffect(animateContent || reduceMotion ? 1 : 0.9)
                 } else {
@@ -796,7 +788,7 @@ struct DashboardView: View {
                             if showStepStreak {
                                 streakBadge(count: stepStreak, metric: "step", compact: true)
                             }
-                            Image(systemName: "chevron.right")
+                            Image(systemName: "chevron.forward")
                                 .font(.caption.weight(.semibold))
                                 .foregroundStyle(Theme.textTertiary)
                         }
@@ -827,8 +819,7 @@ struct DashboardView: View {
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel("Steps")
-                    .accessibilityValue("\(steps) steps"
-                        + (showStepStreak ? String(localized: ". \(stepStreak) day goal streak.") : ""))
+                    .accessibilityValue(stepsAccessibilityValue())
                     .padding(Theme.cardPadding)
                     .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
                     .padding(.horizontal, 24)
@@ -971,6 +962,46 @@ struct DashboardView: View {
         .accessibilityLabel(metric == "step" ? "\(count) day step goal streak" : "\(count) day calorie goal streak")
     }
 
+    private func calorieAccessibilityValue() -> String {
+        let total = Int(totalCalories).formatted(.number)
+        let streak = calorieStreak.formatted(.number)
+
+        if showCalorieStreak {
+            if showActiveResting {
+                let active = Int(activeCalories).formatted(.number)
+                let resting = Int(restingCalories).formatted(.number)
+                if let goal = goals.calorieGoal {
+                    return String(localized: "Calories: \(total) of \(Int(goal).formatted(.number)). Active Energy: \(active), Resting Energy: \(resting). Goal streak: \(streak).")
+                }
+                return String(localized: "Calories: \(total). Active Energy: \(active), Resting Energy: \(resting). Goal streak: \(streak).")
+            }
+            if let goal = goals.calorieGoal {
+                return String(localized: "Calories: \(total) of \(Int(goal).formatted(.number)). Goal streak: \(streak).")
+            }
+            return String(localized: "Calories: \(total). Goal streak: \(streak).")
+        }
+
+        if showActiveResting {
+            let active = Int(activeCalories).formatted(.number)
+            let resting = Int(restingCalories).formatted(.number)
+            if let goal = goals.calorieGoal {
+                return String(localized: "\(total) of \(Int(goal).formatted(.number)) calories. Active \(active), resting \(resting).")
+            }
+            return String(localized: "\(total) calories. Active \(active), resting \(resting).")
+        }
+        if let goal = goals.calorieGoal {
+            return String(localized: "\(total) of \(Int(goal).formatted(.number)) calories")
+        }
+        return String(localized: "\(total) calories")
+    }
+
+    private func stepsAccessibilityValue() -> String {
+        if showStepStreak {
+            return String(localized: "Steps: \(steps.formatted(.number)). Goal streak: \(stepStreak.formatted(.number)).")
+        }
+        return String(localized: "\(steps) steps")
+    }
+
     private func netDeficitDisplayText(_ value: Double) -> String {
         let r = Int(value.rounded())
         if r > 0 {
@@ -1045,7 +1076,7 @@ struct DashboardView: View {
                             .foregroundStyle(Theme.textSecondary)
                             .textCase(.uppercase)
                             .tracking(1.5)
-                        Image(systemName: "chevron.right")
+                        Image(systemName: "chevron.forward")
                             .font(.caption.weight(.semibold))
                             .foregroundStyle(Theme.textTertiary)
                     }
@@ -1069,11 +1100,11 @@ struct DashboardView: View {
                                 .font(Theme.bigNumber(netNumberSize))
                                 .foregroundStyle(Theme.textTertiary)
                         }
-                        Text(netDeficitNumericReady ? netDeficitWord : "net")
+                        Text(netDeficitNumericReady ? netDeficitWord : String(localized: "net"))
                             .font(.system(.callout, design: .rounded, weight: .medium))
                             .foregroundStyle(netDeficitNumericReady ? netDeficitColor : Theme.textTertiary)
                         Spacer(minLength: 8)
-                        Image(systemName: "chevron.right")
+                        Image(systemName: "chevron.forward")
                             .font(.caption.weight(.semibold))
                             .foregroundStyle(Theme.textTertiary)
                     }
@@ -1163,7 +1194,7 @@ struct DashboardView: View {
                     .foregroundStyle(Theme.textSecondary)
                     .textCase(.uppercase)
                     .tracking(1.5)
-                Image(systemName: "chevron.right")
+                Image(systemName: "chevron.forward")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(Theme.textTertiary)
                 Spacer(minLength: 8)
@@ -1404,7 +1435,7 @@ struct DashboardView: View {
                     Text("/ \(goal, format: .number.precision(.fractionLength(0))) cal")
                         .font(.system(.caption, design: .rounded))
                         .foregroundStyle(Theme.textSecondary)
-                    Image(systemName: "chevron.right")
+                    Image(systemName: "chevron.forward")
                         .font(.caption2.weight(.semibold))
                         .foregroundStyle(Theme.textTertiary)
                 }
@@ -1415,7 +1446,7 @@ struct DashboardView: View {
                         .foregroundStyle(Theme.textSecondary)
                         .textCase(.uppercase)
                         .tracking(1.5)
-                    Image(systemName: "chevron.right")
+                    Image(systemName: "chevron.forward")
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(Theme.textTertiary)
                 }
@@ -2965,7 +2996,7 @@ private struct OnboardingSheet: View {
                     icon: "heart.fill",
                     color: Theme.caloriesPrimary,
                     title: String(localized: "Reads from Apple Health"),
-                    detail: String(localized: "Next we’ll ask permission to read your active and resting calories and steps. The app only reads; it never writes anything back.")
+                    detail: String(localized: "Next we’ll ask permission to read active energy, resting energy, and steps. The app only reads; it never writes anything back.")
                 )
                 WelcomePoint(
                     icon: "lock.fill",
@@ -3271,7 +3302,7 @@ private struct OnboardingSheet: View {
                         ?? String(localized: "No active Vitals+ purchase was found for this Apple ID.")
                 }
             } label: {
-                Text(isRestoring ? "Restoring…" : String(localized: "Restore"))
+                Text(isRestoring ? String(localized: "Restoring…") : String(localized: "Restore"))
                     .legalTapTarget()
             }
             .buttonStyle(.plain)
@@ -4589,7 +4620,7 @@ private struct SettingsSheet: View {
                                     .lineLimit(2)
                             }
                             Spacer(minLength: 0)
-                            Image(systemName: "chevron.right")
+                            Image(systemName: "chevron.forward")
                                 .font(.caption.weight(.semibold))
                                 .foregroundStyle(Theme.textTertiary)
                         }

@@ -357,7 +357,7 @@ struct CaloriesCornerView: View {
             .font(.title3)
             .foregroundStyle(Theme.caloriesPrimary)
             .widgetLabel {
-                Text(ComplicationFormat.shortCalories(entry.totalCalories, family: family) + " cal")
+                Text(String(localized: "\(ComplicationFormat.shortCalories(entry.totalCalories, family: family)) cal"))
             }
             .containerBackground(.fill.tertiary, for: .widget)
     }
@@ -463,7 +463,7 @@ struct StepsCornerView: View {
             .font(.title3)
             .foregroundStyle(Theme.stepsPrimary)
             .widgetLabel {
-                Text(ComplicationFormat.shortSteps(entry.steps, family: family) + " steps")
+                Text(String(localized: "\(ComplicationFormat.shortSteps(entry.steps, family: family)) steps"))
             }
             .containerBackground(.fill.tertiary, for: .widget)
     }
@@ -587,7 +587,7 @@ struct NetDeficitCornerView: View {
             .font(.title3)
             .foregroundStyle(Theme.netDeficitBrand)
             .widgetLabel {
-                Text(ComplicationFormat.shortNetDeficit(entry.netDeficit, family: family) + " net")
+                Text(String(localized: "\(ComplicationFormat.shortNetDeficit(entry.netDeficit, family: family)) net"))
             }
             .containerBackground(.fill.tertiary, for: .widget)
     }

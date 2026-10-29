@@ -549,7 +549,7 @@ struct PaywallView: View {
             : AnyLayout(HStackLayout(spacing: 6))
         return layout {
             Button(action: startRestore) {
-                Text(isRestoring ? "Restoring…" : String(localized: "Restore"))
+                Text(isRestoring ? String(localized: "Restoring…") : String(localized: "Restore"))
                     .font(.system(.caption2, design: .rounded, weight: .semibold))
                     .foregroundStyle(Theme.textSecondary)
                     .legalTapTarget()

@@ -97,7 +97,7 @@ private struct UnfoldedPaneBackHeader: ViewModifier {
             Button {
                 dismiss()
             } label: {
-                Image(systemName: "chevron.left")
+                Image(systemName: "chevron.backward")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(Theme.textPrimary)
                     .frame(width: 22, height: 22)

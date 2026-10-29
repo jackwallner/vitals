@@ -739,7 +739,7 @@ struct MainTabView: View {
                                 .font(.system(.caption2, design: .rounded))
                                 .foregroundStyle(Theme.textSecondary)
                         }
-                        Image(systemName: "chevron.right")
+                        Image(systemName: "chevron.forward")
                             .font(.system(size: 10, weight: .semibold))
                             .foregroundStyle(Theme.textTertiary)
                     }
@@ -2159,7 +2159,7 @@ private struct PremiumAccountRow: View {
             if showsActivity {
                 ProgressView().tint(Theme.textTertiary)
             } else {
-                Image(systemName: "chevron.right")
+                Image(systemName: "chevron.forward")
                     .font(.system(size: 12, weight: .bold))
                     .foregroundStyle(Theme.textTertiary)
             }
@@ -2520,7 +2520,7 @@ struct TrialOfferSheet: View {
 
                     HStack(spacing: 4) {
                         Button(action: onRestore) {
-                            Text(isRestoring ? "Restoring…" : String(localized: "Restore"))
+                            Text(isRestoring ? String(localized: "Restoring…") : String(localized: "Restore"))
                                 .legalTapTarget()
                         }
                         .buttonStyle(.plain)
@@ -2704,7 +2704,7 @@ private struct MilestoneCelebrationSheet: View {
         comps.day = 1
         comps.year = Int(parts[0])
         let formatter = DateFormatter()
-        formatter.dateFormat = "LLLL"
+        formatter.setLocalizedDateFormatFromTemplate("LLLL")
         if let date = Calendar.current.date(from: comps) {
             return formatter.string(from: date)
         }

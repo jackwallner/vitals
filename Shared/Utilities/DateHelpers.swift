@@ -49,13 +49,13 @@ enum DateHelpers {
 
     private static let shortMonthFormatter: DateFormatter = {
         let f = DateFormatter()
-        f.dateFormat = "MMM"
+        f.setLocalizedDateFormatFromTemplate("MMM")
         return f
     }()
 
     private static let dayOfWeekFormatter: DateFormatter = {
         let f = DateFormatter()
-        f.dateFormat = "EEE"
+        f.setLocalizedDateFormatFromTemplate("EEE")
         return f
     }()
 

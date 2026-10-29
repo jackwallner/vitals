@@ -403,9 +403,11 @@ struct ExcludedDaysView: View {
     }
 
     private func accessibilityLabel(for date: Date) -> String {
-        let base = Self.rowDateFormatter.string(from: date) + String(localized: ", excluded")
-        guard let stats = statsByKey[ExcludedDays.key(for: date)] else { return base }
-        return String(localized: "\(base), \(Int(stats.calories)) calories, \(stats.steps) steps")
+        let formattedDate = Self.rowDateFormatter.string(from: date)
+        guard let stats = statsByKey[ExcludedDays.key(for: date)] else {
+            return String(localized: "Excluded day: \(formattedDate).")
+        }
+        return String(localized: "Excluded day \(formattedDate): \(Int(stats.calories)) calories and \(stats.steps) steps.")
     }
 
     /// One query covering the oldest excluded day through today. Cheaper and

@@ -72,7 +72,7 @@ final class DailyNudgePlannerTests: XCTestCase {
             calorieStreak: 0, stepStreak: 0, now: evening, calendar: calendar
         ))
         XCTAssertEqual(content.title, "2,100 steps to go")
-        XCTAssertEqual(content.body, "About a 25 min walk closes out your step goal.")
+        XCTAssertEqual(content.body, "About a 25-minute walk closes out your step goal.")
         XCTAssertEqual(content.link, .today)
     }
 
@@ -82,7 +82,7 @@ final class DailyNudgePlannerTests: XCTestCase {
             calorieStreak: 0, stepStreak: 12, now: evening, calendar: calendar
         ))
         XCTAssertEqual(content.title, "Keep your 12-day step streak")
-        XCTAssertEqual(content.body, "2,100 steps to go today, about a 25 min walk.")
+        XCTAssertEqual(content.body, "About a 25-minute walk closes out your step goal.")
     }
 
     func testStreakOnAMetGoalIsNotMentioned() throws {
@@ -91,7 +91,7 @@ final class DailyNudgePlannerTests: XCTestCase {
             active: 400, resting: 1_140, steps: 11_000, calorieGoal: 2_500, stepGoal: 10_000,
             calorieStreak: 0, stepStreak: 30, now: evening, calendar: calendar
         ))
-        XCTAssertEqual(content.title, "About 660 active cal to go")
+        XCTAssertEqual(content.title, "About 660 active calories to go")
     }
 
     func testCalorieStreakReminder() throws {
@@ -100,7 +100,7 @@ final class DailyNudgePlannerTests: XCTestCase {
             calorieStreak: 5, stepStreak: 0, now: evening, calendar: calendar
         ))
         XCTAssertEqual(content.title, "Keep your 5-day calorie streak")
-        XCTAssertEqual(content.body, "About 660 active cal to go today.")
+        XCTAssertEqual(content.body, "About 660 active calories to go today.")
     }
 
     func testBothOpenWithoutStreak() throws {
@@ -109,7 +109,7 @@ final class DailyNudgePlannerTests: XCTestCase {
             calorieStreak: 1, stepStreak: 1, now: evening, calendar: calendar
         ))
         XCTAssertEqual(content.title, "Today's goals are still open")
-        XCTAssertEqual(content.body, "2,100 steps and about 660 active cal to go.")
+        XCTAssertEqual(content.body, "About 660 active calories and 2,100 steps to go today.")
     }
 
     func testNothingToSayWhenEveryGoalIsMet() {

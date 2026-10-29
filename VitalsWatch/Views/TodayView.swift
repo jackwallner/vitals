@@ -226,7 +226,7 @@ struct TodayView: View {
                                     .tint(Theme.caloriesPrimary)
                                 }
                                 if healthNotice == .accessBlocked {
-                                    Text("Enable Active Energy, Basal Energy,\nand Step Count for Total Calories.")
+                                    Text("Enable Active Energy, Resting Energy,\nand Step Count for Total Calories.")
                                         .font(.system(size: 9, design: .rounded))
                                         .foregroundStyle(Theme.textTertiary)
                                         .multilineTextAlignment(.center)
@@ -803,7 +803,7 @@ private struct WatchHelpView: View {
                 }
 
                 Section("Health Data") {
-                    Text("Total Calories reads Active Energy, Basal Energy, and Step Count from Apple Health in read-only mode.")
+                    Text("Total Calories reads Active Energy, Resting Energy, and Step Count from Apple Health in read-only mode.")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                 }

@@ -507,7 +507,7 @@ struct BodyProfileView: View {
                         .foregroundStyle(Theme.textSecondary)
                 }
                 Spacer(minLength: 0)
-                Image(systemName: "chevron.right")
+                Image(systemName: "chevron.forward")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(Theme.textTertiary)
             }
