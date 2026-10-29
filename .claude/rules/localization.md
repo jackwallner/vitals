@@ -1,80 +1,96 @@
 ---
 paths:
+  - "Shared/**/*.swift"
+  - "Vitals/**/*.swift"
+  - "VitalsWidget/**/*.swift"
+  - "VitalsWatch/**/*.swift"
+  - "VitalsWatchWidget/**/*.swift"
+  - "Vitals/Info.plist"
+  - "VitalsWidget/Info.plist"
+  - "VitalsWatch/Info.plist"
+  - "VitalsWatchWidget/Info.plist"
   - "Shared/Localizable.xcstrings"
   - "Vitals/InfoPlist.xcstrings"
   - "VitalsWatch/InfoPlist.xcstrings"
   - "Vitals/AppShortcuts.xcstrings"
   - "Vitals/Intents/**"
   - "Shared/Utilities/LocalizedText.swift"
+  - "Tools/Localization/**"
   - "project.yml"
 ---
 
-# Vitals: UI localization (2026-10-26, 1.9.1; 29 more languages 2026-10-27)
+# Vitals: UI localization (2026-10-28)
 
-The app ships in en plus 35 languages: de, fr, es, it, ja, zh-Hans (10-26) and
-ar, cs, da, el, et, fa, fi, he, hi, hr, hu, id, ko, lv, ms, nb, nl, pl, pt-BR,
-pt-PT, ro, ru, sk, sv, th, tr, uk, vi, zh-Hant (10-27, every region with 2+ new
-customers in 30 days). Why: RevenueCat data showed non-English rich markets
-trialing at about 6% against 15 to 19% for UK/US/CA/AU at the same price, while
-the App Store pages were already translated, so the drop was inside the app.
+The app, iOS widgets, Watch app, Watch complications, App Intents, and
+notifications ship in English plus 35 languages: ar, cs, da, de, el, es, et,
+fa, fi, fr, he, hi, hr, hu, id, it, ja, ko, lv, ms, nb, nl, pl, pt-BR, pt-PT,
+ro, ru, sk, sv, th, tr, uk, vi, zh-Hans, and zh-Hant. The 31 priority locales
+are de, fr, es, ja, ar, pl, it, nl, zh-Hans, pt-BR, sv, he, th, da, fi, vi,
+ru, zh-Hant, id, hu, nb, ro, cs, uk, tr, el, pt-PT, ko, sk, ms, and hr. Keep
+the existing et, fa, hi, and lv translations too.
 
-- One catalog, `Shared/Localizable.xcstrings`, is compiled into all four
-  targets. HealthKit purpose strings live in each app's `InfoPlist.xcstrings`;
-  Siri/Shortcuts phrases in `Vitals/AppShortcuts.xcstrings` (each keeps
-  `${applicationName}` exactly once, uninflected). XcodeGen derives
-  `knownRegions` from the catalogs.
-- Plurals: Slavic, Baltic, Arabic, Hebrew and Romanian use catalog plural
-  variations on single-`%lld` keys. Keys with two or more numbers are phrased
-  so no agreement is needed ("Dny s daty: %1$lld z %2$lld").
-- The trial label (`%lld-day free trial`) is inserted into "Start %@" (the
-  paywall button), "%@, on us." and "%1$@, then %2$@. %3$@": translate it as a
-  phrase that reads in all three ("7 Tage gratis" + "%@ testen").
-- `Text("literal")` localizes on its own. Any copy held in a `String`
-  (view params, enums, copy helpers, notifications, App Intents) must be
-  `String(localized:)`. Logs, analytics, RC metadata, support-mail diagnostics
-  and identifiers stay plain.
-- Write whole sentences as keys. Never build copy from fragments
-  ("\(n) \(dayWord)", "\(noun) goal", "ahead of"/"behind"): branch and give
-  each variant its own key. Singular/plural is a branch (`n == 1`).
-- `.capitalized` and `.lowercased()` break German nouns: use
-  `leadingCapitalized` and `midSentence` from `LocalizedText.swift`.
-- Dates use `setLocalizedDateFormatFromTemplate`, never a fixed `dateFormat`
-  (except the en_US_POSIX CSV date).
-- Prices only ever come from `storeProduct.localizedPriceString`
-  (`vitalsPriceLabel` and friends). No currency literal in UI code.
-- "Vitals+", "Total Calories", "TDEE", "BMR" and "VITALS+" stay untranslated
-  (`trialBadgeText != "VITALS+"` compares against the literal).
-- Brand of the health app per language: Apple's own name (de keeps Apple
-  Health; Apple Santé, Apple Salud, Apple Salute, ヘルスケア, Apple 健康, Apple
-  Здоровье, Apple Zdrowie, Apple Sağlık, صحتي, בריאות, Apple 건강, Apple สุขภาพ,
-  Apple स्वास्थ्य and so on). et, fa and lv have no iOS
-  Health localization, so they keep "Apple Health" and the English HealthKit
-  type and MyFitnessPal menu names. "cal" is kcal (千卡 zh-Hans, 大卡 zh-Hant,
-  ккал ru/uk, kcal elsewhere). No bare `%` a key lacks ("HALF OFF" is words).
+## Setup
 
-## Adding or changing copy
+- `Shared/Localizable.xcstrings` is the UI catalog. `Shared/` is included in
+  all four app and widget targets, so every target compiles the same strings.
+- HealthKit purpose text lives in `Vitals/InfoPlist.xcstrings` and
+  `VitalsWatch/InfoPlist.xcstrings`. Shortcut phrases live in
+  `Vitals/AppShortcuts.xcstrings`; each phrase keeps `${applicationName}` once,
+  unchanged and uninflected.
+- XcodeGen 2.39 or later reads String Catalog locales into `knownRegions`.
+  Every target Info.plist lists `en` and all 35 translated locales in
+  `CFBundleLocalizations`.
+- Run `python3 Tools/Localization/check.py` from the repo root. It checks
+  localizable Swift literals, every catalog's locale coverage, format
+  specifiers, shortcut application-name tokens, and Info.plist localization
+  declarations. It does not need Xcode.
+- `VitalsTests/LocalizationTests.swift` checks that the 31 priority locale
+  bundles ship and that Russian plural forms resolve for one, few, and many.
 
-1. Build once (any destination). `SWIFT_EMIT_LOC_STRINGS` writes
-   `.stringsdata` files into DerivedData.
-2. Sync the catalog:
-   `xcrun xcstringstool sync Shared/Localizable.xcstrings --stringsdata <each
-   Vitals.build/**/*.stringsdata>`. New keys arrive untranslated.
-3. Translate all 35 languages before shipping; an untranslated key shows
-   English in that language. No Xcode at hand: edit the JSON directly
-   (sourceLanguage en, `extractionState` manual for new keys) and check every
-   key has every language with matching format specifiers.
-4. Format specifiers must match the key; reorder with positional `%1$@`.
-5. A `String` parameter of a custom view helper (`primaryLabel`,
-   `unfoldedPaneBackHeader`) is not auto-localized; pass
-   `String(localized:)` at the call site.
+## Copy rules
 
-## Simulator checks
+- SwiftUI text literals localize automatically. Any copy stored in a `String`,
+  including model values, view parameters, errors, notifications, and App
+  Intent dialogs, must use `String(localized:)`. App Intent titles and
+  descriptions use `LocalizedStringResource` and `IntentDescription`.
+- Use complete messages as keys. Do not concatenate translated pieces or
+  assemble a sentence from translated fragments. Branch and provide a complete
+  key for each variant. Use String Catalog plural variations for counts.
+- Keep locale-sensitive numbers, dates, units, and durations in Foundation
+  formatters. Dates use `setLocalizedDateFormatFromTemplate` or `formatted()`.
+  Prices come only from StoreKit's localized price strings.
+- Do not call `.capitalized` or `.lowercased()` on translated text. Use
+  `leadingCapitalized` and `midSentence` from `LocalizedText.swift` where
+  needed.
+- Keep the brand names `Vitals+` and `Total Calories`, and the abbreviations
+  TDEE and BMR. Calorie values are kcal: use 千卡 in zh-Hans, 大卡 in zh-Hant,
+  and ккал in ru and uk. Use Apple's localized Health app name and its
+  localized energy and step terms in each market.
+- German uses informal `du`. Keep tight labels short, especially in German,
+  Finnish, and Russian. Arabic and Hebrew must retain right-to-left layout and
+  use semantic leading/trailing placement and forward/backward symbols.
+- Health copy remains descriptive and must not imply treatment, diagnosis, or
+  prevention.
 
-- Launch with `-AppleLanguages "(de)" -AppleLocale de_DE`; add
-  `-PaywallSnapshot yearly|trial|exit-sheet` for the paywalls and
-  `-ScreenshotScene onboarding` for onboarding. Check ar/he for RTL mirroring.
-- The RevenueCat test store takes the currency code from the device region
-  but the price string from the dashboard (USD), so per-week figures read
-  "¥1" under ja_JP. Pair a language with `-AppleLocale en_US` to check them.
-- Pool devices can be left at a large Dynamic Type size; reset with
-  `xcrun simctl ui <udid> content_size large` before judging layout.
+## Adding strings
+
+1. Route visible copy through a SwiftUI text API or `String(localized:)`.
+   String parameters to custom view helpers are not localized automatically.
+2. Use a complete message key and preserve every format argument. Add catalog
+   translations for all 35 languages, including correct plural variations.
+3. Keep `sourceLanguage` set to `en`, mark manually added entries with
+   `extractionState: manual`, then run `python3 Tools/Localization/check.py`.
+4. Regenerate the Xcode project after changing `project.yml` or adding/removing
+   Swift files. Do not edit `project.pbxproj` by hand.
+
+## Verification
+
+- `gh-sim test` runs the Vitals unit suite and the localization bundle/plural
+  checks on GitHub's Macs.
+- For screenshots, pass one `--screen` per locale with both
+  `-AppleLanguages (<language>)` and `-AppleLocale <locale>`. Use the seeded
+  scenes in `Shared/Utilities/ScreenshotConfig.swift` for onboarding and the
+  main screen, and `-PaywallSnapshot trial` for the trial page. Capture the
+  actual Home Screen widget through `VitalsUITests/AuditFeaturesUITests.swift`
+  (`testLargeWidgetAddAndTap`); it has no app launch scene. Inspect RTL,
+  German, Finnish, and Russian first for mirroring and tight-label fit.

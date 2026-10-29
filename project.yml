@@ -6,7 +6,8 @@ options:
     watchOS: "10.0"
   xcodeVersion: "16.0"
   developmentLanguage: en
-  minimumXcodeGenVersion: "2.38"
+  # XcodeGen 2.39+ reads localized String Catalogs into knownRegions.
+  minimumXcodeGenVersion: "2.39.0"
 
 settings:
   base:
@@ -17,8 +18,8 @@ settings:
     CURRENT_PROJECT_VERSION: "239"
     GENERATE_INFOPLIST_FILE: NO
     # UI copy lives in Shared/Localizable.xcstrings (en plus 35 languages, see
-    # .claude/rules/localization.md); HealthKit purpose strings in each app's
-    # InfoPlist.xcstrings.
+    # .claude/rules/localization.md); HealthKit purpose strings in the app and
+    # Watch InfoPlist.xcstrings catalogs.
     LOCALIZATION_PREFERS_STRING_CATALOGS: YES
     SWIFT_EMIT_LOC_STRINGS: YES
 
@@ -148,6 +149,8 @@ targets:
     platform: iOS
     sources:
       - path: VitalsTests
+      - path: Shared/Localizable.xcstrings
+        buildPhase: resources
       - path: Vitals/Views/HealthNotice.swift
       - path: Shared/Utilities/EntitlementStatus.swift
       - path: Shared/Models/CalorieTrendSummary.swift
