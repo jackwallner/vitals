@@ -1,6 +1,5 @@
 Suma Kalorii pokazuje dzienne spalone kalorie (aktywne + spoczynkowe) oraz liczbę kroków z Apple Zdrowie na ekranie głównym iPhone’a, ekranie blokady oraz tarczy Apple Watch. Podstawowe funkcje są bezpłatne, bez subskrypcji i konta. Twoje dane zdrowotne pozostają na telefonie.
 
-Jeśli kiedykolwiek chciałeś, aby tarcza Apple Watch pokazywała po prostu całkowitą liczbę spalonych dziennie kalorii, to jest ta aplikacja.
 
 NA APPLE WATCH (ZA DARMO)
 - Komplikacje z całkowitymi spalonymi kaloriami dla każdego typu tarczy: okrągłe, prostokątne, w wierszu i narożne.
@@ -20,9 +19,11 @@ PULPIT (ZA DARMO)
 - Wskaźnik tempa: jesteś przed czy za swoim typowym dniem o tej porze?
 - Pociągnij, aby odświeżyć. Stuknij w koło zębate, aby przejść do ustawień.
 
+PROFIL CIAŁA I BMI (BEZPŁATNIE)
+- BMI obliczane jest ze wzrostu i masy ciała zapisanych w Zdrowiu. Możesz też wpisać je ręcznie. Opis wyjaśnia, jak interpretować BMI. Procent tkanki tłuszczowej i kontekst kaloryczny są częścią Vitals+.
+
 MAKRO (VITALS+)
 - Białko, węglowodany i tłuszcze obok kalorii, odczytane z aplikacji, która i tak zapisuje jedzenie do Apple Health.
-- Nic nie wpisujesz dwa razy. Co jest w Health, jest tutaj.
 - Śledź wszystkie trzy albo tylko to makro, które naprawdę liczysz.
 - Opcjonalne cele w gramach, średnie, wykresy, kolumny CSV i raporty PDF.
 
@@ -38,7 +39,9 @@ CELE DOPASOWANE DO CIEBIE
 
 Vitals+ (OPCJONALNE)
 Niewielka opłata miesięczna, roczna lub jednorazowa dożywotnia odblokowuje:
-- Makro: białko, węglowodany i tłuszcze z jedzenia zapisanego w Apple Health
+- TDEE i BMR: średnie z 30 dni dla całkowitego i spoczynkowego wydatku energii ze Zdrowia
+- Procent tkanki tłuszczowej obok BMI
+- Wieczorne przypomnienie
 - Podział kalorii aktywnych vs. spoczynkowych
 - Bilans netto: kalorie spalone minus energia z jedzenia z Apple Health
 - Miesięczne podsumowania PDF gotowe do udostępniania

@@ -1,6 +1,5 @@
 Kalorienzähler zeigt deinen täglichen Kalorienverbrauch (aktiv + in Ruhe) und deine Schritte aus Apple Health auf dem iPhone-Home-Bildschirm, Sperrbildschirm und Apple-Watch-Zifferblatt. Die Grundfunktionen sind kostenlos, ohne Abo oder Konto. Deine Gesundheitsdaten bleiben auf deinem iPhone.
 
-Wenn du dir je gewünscht hast, dass dein Apple Watch Zifferblatt einfach nur deine gesamten Tageskalorien anzeigt, ist dies die passende App.
 
 AUF DER APPLE WATCH (KOSTENLOS)
 - Komplikationen für insgesamt verbrannte Kalorien für jeden Zifferblatt-Stil: rund, rechteckig, inline und Ecke.
@@ -20,9 +19,11 @@ DAS DASHBOARD (KOSTENLOS)
 - Tempomesser: Liegst du vor oder hinter einem üblichen Tag zu dieser Zeit?
 - Zum Aktualisieren nach unten ziehen. Zahnradsymbol für Einstellungen tippen.
 
+KÖRPERPROFIL & BMI (KOSTENLOS)
+- Dein BMI aus Größe und Gewicht in Apple Health. Du kannst beide Werte auch manuell eingeben. Eine Einordnung erklärt, was der BMI aussagt. Körperfettanteil und Kalorienkontext gehören zu Vitals+.
+
 MAKROS (VITALS+)
 - Protein, Kohlenhydrate und Fett neben deinen Kalorien, gelesen aus der App, die dein Essen ohnehin in Apple Health schreibt.
-- Nichts doppelt eintragen. Was in Health steht, steht hier.
 - Verfolge alle drei oder nur den Makro, den du wirklich zählst.
 - Optionale Gramm-Ziele, dazu Makro-Durchschnitte, Diagramme, CSV-Spalten und PDF-Berichte.
 
@@ -34,11 +35,12 @@ VERLAUF (KOSTENLOS)
 ZIELE, DIE ZU DIR PASSEN
 - Optionale tägliche Kalorien- und Schrittziele.
 - Oder Ziele überspringen und die App nur als klaren Zähler verwenden – du entscheidest.
-- Tempovergleich: gleicher Wochentag vs. alle Tage, konfigurierbarer Rückblick (14 / 30 / 90 Tage / 1 Jahr).
 
 Vitals+ (OPTIONAL)
 Ein kleines monatliches, jährliches oder lebenslanges Upgrade schaltet frei:
-- Makros: Protein, Kohlenhydrate und Fett aus dem Essen, das du ohnehin in Apple Health protokollierst
+- TDEE und BMR: 30-Tage-Durchschnitte für Gesamtverbrauch und Ruheenergie aus Apple Health
+- Körperfettanteil neben deinem BMI
+- Erinnerung am Abend
 - Aufschlüsselung in aktive vs. Ruhekalorien
 - Nettodefizit: verbrannte Kalorien minus Nahrungsenergie aus Apple Health
 - Monatliche Zusammenfassungen als PDFs, bereit zum Teilen

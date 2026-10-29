@@ -20,6 +20,9 @@ DASHBOARD (GRATIS)
 - Tempomätare: ligger du före eller efter en vanlig dag vid den här tiden?
 - Dra för att uppdatera. Tryck på kugghjulet för inställningar.
 
+KROPPSPROFIL OCH BMI (GRATIS)
+- Ditt BMI beräknas med längd och vikt från Hälsa. Du kan också ange värdena manuellt. En förklaring hjälper dig att tolka BMI. Kroppsfettprocent och kalorikontext ingår i Vitals+.
+
 MAKROS (VITALS+)
 - Protein, kolhydrater och fett bredvid dina kalorier, lästa från appen som redan skriver din mat till Apple Health.
 - Inget matas in två gånger. Står det i Health står det här.
@@ -39,6 +42,9 @@ MÅL SOM PASSAR DIG
 Vitals+ (VALFRITT)
 En liten månads-, års- eller livstidsuppgradering låser upp:
 - Makros: protein, kolhydrater och fett från maten du redan loggar i Apple Health
+- TDEE och BMR: 30-dagarsgenomsnitt för total och vilande energiförbrukning från Hälsa
+- Kroppsfettprocent bredvid ditt BMI
+- Påminnelse på kvällen
 - Uppdelning aktiva vs. vilande kalorier
 - Net Deficit: förbrända kalorier minus energi från mat i Apple Health
 - Månadssammanfattningar i PDF redo att dela

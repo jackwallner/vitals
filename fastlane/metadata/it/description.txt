@@ -1,6 +1,5 @@
 Contacalorie mostra le calorie totali bruciate ogni giorno (attive + a riposo) e i passi da Salute su iPhone e sul quadrante Apple Watch. Le funzioni base sono gratuite, senza abbonamento né account. I tuoi dati sanitari restano sul telefono.
 
-Se hai mai desiderato che il quadrante Apple Watch mostrasse solo le calorie totali bruciate nella giornata, questa è l’app che fa per te.
 
 SU APPLE WATCH (GRATIS)
 - Complicazioni con calorie totali bruciate per ogni stile di quadrante: circolare, rettangolare, in linea e angolare.
@@ -20,9 +19,11 @@ LA DASHBOARD (GRATIS)
 - Indicatore di ritmo: sei in anticipo o in ritardo rispetto al tuo solito a quest’ora?
 - Trascina per aggiornare. Tocca l’ingranaggio per le impostazioni.
 
+PROFILO CORPOREO E BMI (GRATIS)
+- Il BMI viene calcolato da altezza e peso presenti in Salute. Puoi anche inserirli a mano. Una spiegazione aiuta a interpretare il BMI. La percentuale di grasso corporeo e il contesto calorico sono inclusi in Vitals+.
+
 MACRO (VITALS+)
 - Proteine, carboidrati e grassi accanto alle tue calorie, letti dall'app che registra già i tuoi pasti in Apple Health.
-- Niente da inserire due volte. Quello che c'è in Health c'è qui.
 - Seguili tutti e tre, o solo il macro che conti davvero.
 - Obiettivi in grammi facoltativi, medie, grafici, colonne CSV e report PDF.
 
@@ -38,7 +39,9 @@ OBIETTIVI SU MISURA PER TE
 
 Vitals+ (OPZIONALE)
 Un piccolo upgrade mensile, annuale o a vita sblocca:
-- Macro: proteine, carboidrati e grassi da Apple Health
+- TDEE e BMR: medie di 30 giorni del dispendio totale e a riposo da Salute
+- Percentuale di grasso corporeo accanto al BMI
+- Promemoria serale
 - Dettaglio calorie attive vs a riposo
 - Deficit netto: calorie bruciate meno energia dal cibo da Apple Health
 - Riepiloghi mensili in PDF pronti da condividere
@@ -46,7 +49,7 @@ Un piccolo upgrade mensile, annuale o a vita sblocca:
 - Deep Trends: schede di confronto periodo su periodo
 Una prova gratuita è offerta ai nuovi abbonati.
 
-PRIVATA PER PROGETTAZIONE
+LA TUA PRIVACY
 - Accesso in sola lettura a Apple Health. L’app non scrive mai nei tuoi dati sanitari.
 - I tuoi dati sanitari restano sul dispositivo e non vengono mai caricati.
 - I report sono generati sul dispositivo.

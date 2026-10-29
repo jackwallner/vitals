@@ -1,6 +1,5 @@
 O app Calorias mostra seu gasto calórico diário (calorias ativas + em repouso) e seus passos da Saúde na Tela de Início, Tela Bloqueada e mostrador do Apple Watch. O básico é gratuito, sem assinatura nem conta. Seus dados de saúde permanecem no iPhone.
 
-Se você já quis que o mostrador do Apple Watch exibisse apenas o total de calorias queimadas no dia, este é o app.
 
 NO APPLE WATCH (GRÁTIS)
 - Complicações de calorias totais queimadas para todos os estilos de mostrador: circular, retangular, em linha e de canto.
@@ -20,9 +19,11 @@ O PAINEL (GRÁTIS)
 - Indicador de ritmo: você está adiantado ou atrasado em relação ao seu dia típico neste horário?
 - Puxe para atualizar. Toque na engrenagem para ajustes.
 
+PERFIL CORPORAL E IMC (GRÁTIS)
+- Seu IMC é calculado com a altura e o peso do app Saúde. Você também pode inseri-los manualmente. Uma explicação ajuda a interpretar o IMC. O percentual de gordura corporal e o contexto calórico fazem parte do Vitals+.
+
 MACROS (VITALS+)
 - Proteínas, carboidratos e gorduras ao lado das suas calorias, lidos do app que já registra sua comida no Apple Health.
-- Nada para anotar duas vezes. O que está no Health está aqui.
 - Acompanhe os três, ou só o macro que você realmente conta.
 - Metas em gramas opcionais, médias, gráficos, colunas CSV e relatórios em PDF.
 
@@ -38,7 +39,9 @@ METAS QUE FUNCIONAM PARA VOCÊ
 
 Vitals+ (OPCIONAL)
 Um pequeno upgrade mensal, anual ou vitalício desbloqueia:
-- Macros: proteínas, carboidratos e gorduras direto do Apple Health
+- TDEE e BMR: médias de 30 dias do gasto total e em repouso no app Saúde
+- Percentual de gordura corporal ao lado do IMC
+- Lembrete à noite
 - Detalhamento de calorias ativas vs. em repouso
 - Déficit líquido: calorias queimadas menos energia dos alimentos do Apple Health
 - PDFs de resumo mensal prontos para compartilhar

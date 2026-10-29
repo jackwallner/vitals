@@ -1,6 +1,5 @@
 Contador de Calorías muestra tu gasto calórico diario (calorías activas + en reposo) y tus pasos desde Salud, en la pantalla de inicio y de bloqueo del iPhone y en la esfera del Apple Watch. Las funciones básicas son gratis, sin suscripción ni cuenta. Tus datos de salud se quedan en el teléfono.
 
-Si alguna vez has querido que la esfera de tu Apple Watch mostrara solo tus calorías totales quemadas del día, esta es la app.
 
 EN TU APPLE WATCH (GRATIS)
 - Complicaciones de calorías totales quemadas para todos los estilos de esfera: circular, rectangular, en línea y de esquina.
@@ -20,9 +19,11 @@ EL PANEL (GRATIS)
 - Indicador de ritmo: ¿vas por delante o por detrás de tu día habitual a esta hora?
 - Desliza hacia abajo para actualizar. Toca el engranaje para los ajustes.
 
+PERFIL CORPORAL E IMC (GRATIS)
+- Tu IMC se calcula con la altura y el peso de Salud. También puedes introducirlos manualmente. Una explicación te ayuda a interpretar el IMC. El porcentaje de grasa corporal y el contexto calórico forman parte de Vitals+.
+
 MACROS (VITALS+)
 - Proteínas, carbohidratos y grasas junto a tus calorías, leídos de la app que ya registra tu comida en Apple Health.
-- Nada que apuntar dos veces. Lo que está en Health, está aquí.
 - Sigue los tres, o solo el macro que de verdad cuentas.
 - Objetivos en gramos opcionales, medias, gráficos, columnas CSV e informes PDF.
 
@@ -34,11 +35,12 @@ HISTORIAL (GRATIS)
 OBJETIVOS ADAPTADOS A TI
 - Objetivos diarios opcionales de calorías y pasos.
 - O sáltate los objetivos y úsala solo como contador limpio: tú decides.
-- Comparación de ritmo: mismo día de la semana frente a todos los días, con periodo de referencia configurable (14 / 30 / 90 días / 1 año).
 
 Vitals+ (OPCIONAL)
 Una pequeña mejora mensual, anual o de por vida desbloquea:
-- Macros: proteínas, carbohidratos y grasas desde Apple Health
+- TDEE y BMR: medias de 30 días del gasto total y en reposo de Salud
+- Porcentaje de grasa corporal junto a tu IMC
+- Recordatorio por la noche
 - Desglose de calorías activas y en reposo
 - Déficit neto: calorías quemadas menos energía de alimentos de Apple Health
 - Resúmenes mensuales en PDF listos para compartir
@@ -46,7 +48,7 @@ Una pequeña mejora mensual, anual o de por vida desbloquea:
 - Tendencias avanzadas: tarjetas de comparación periodo a periodo
 Se ofrece una prueba gratuita a las nuevas suscripciones.
 
-PRIVACIDAD POR DISEÑO
+TU PRIVACIDAD
 - Acceso de solo lectura a Apple Health. La app nunca escribe en tus registros de salud.
 - Tus datos de salud se guardan en tu dispositivo y nunca se suben.
 - Los informes se generan en el dispositivo.

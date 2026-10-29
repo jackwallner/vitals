@@ -1,6 +1,5 @@
 Compteur Calories affiche vos calories brûlées chaque jour (actives + au repos) et vos pas depuis Santé, sur l’écran d’accueil, l’écran verrouillé et le cadran de votre Apple Watch. Les fonctions de base sont gratuites, sans abonnement ni compte. Vos données de santé restent sur votre téléphone.
 
-Si vous avez déjà souhaité que votre cadran Apple Watch affiche simplement vos calories totales brûlées dans la journée, c’est l’app qu’il vous faut.
 
 SUR VOTRE APPLE WATCH (GRATUIT)
 - Complications de calories totales brûlées pour tous les styles de cadrans : circulaire, rectangulaire, en ligne et d’angle.
@@ -20,9 +19,11 @@ TABLEAU DE BORD (GRATUIT)
 - Indicateur de rythme : en avance ou en retard sur votre journée habituelle ?
 - Tirez pour actualiser.
 
+PROFIL CORPOREL ET IMC (GRATUIT)
+- Votre IMC est calculé à partir de votre taille et de votre poids dans Santé. Vous pouvez aussi les saisir manuellement. Un texte explique comment interpréter l’IMC. Le pourcentage de masse grasse et le contexte calorique sont inclus dans Vitals+.
+
 MACROS (VITALS+)
 - Protéines, glucides et lipides à côté de vos calories, lus depuis l'app qui enregistre déjà vos repas dans Apple Health.
-- Rien à saisir deux fois. Ce qui est dans Health est ici.
 - Suivez les trois, ou seulement le macro que vous comptez.
 - Objectifs en grammes facultatifs, moyennes, graphiques, colonnes CSV et rapports PDF.
 
@@ -34,11 +35,12 @@ HISTORIQUE (GRATUIT)
 DES OBJECTIFS QUI VOUS CONVIENNENT
 - Objectifs quotidiens facultatifs de calories et de pas.
 - Ou ignorez les objectifs et utilisez l’app comme un simple compteur. À vous de choisir.
-- Comparaison de rythme : même jour de semaine ou tous les jours, période configurable (14 / 30 / 90 jours / 1 an).
 
 Vitals+ (OPTIONNEL)
 Un petit forfait mensuel, annuel ou à vie débloque :
-- Macros : protéines, glucides et lipides depuis Apple Health
+- TDEE et BMR : moyennes sur 30 jours des dépenses totales et au repos depuis Santé
+- Pourcentage de masse grasse à côté de votre IMC
+- Rappel en soirée
 - Détail calories actives vs au repos
 - Déficit net : calories brûlées moins énergie alimentaire provenant d’Apple Health
 - Résumés mensuels en PDF prêts à partager
@@ -56,7 +58,7 @@ CONFIDENTIALITÉ AVANT TOUT
 Total Calories n’est pas un dispositif médical et n’est pas destiné à diagnostiquer, traiter ou prévenir une maladie. Demandez toujours l’avis d’un professionnel de la santé pour toute question médicale.
 
 Détails d’abonnement
-Vitals+ est offert en abonnement à renouvellement automatique (mensuel ou annuel, les deux avec 7 jours d'essai gratuit) ou en achat unique Lifetime. Les prix sont affichés dans l'app avant l'achat et varient selon la région. Le paiement est débité de ton compte Apple ID à la confirmation. Les abonnements se renouvellent automatiquement sauf annulation au moins 24 heures avant la fin de la période en cours. Gère ou annule à tout moment dans Réglages → Apple ID → Abonnements.
+Vitals+ est offert en abonnement à renouvellement automatique (mensuel ou annuel, les deux avec 7 jours d'essai gratuit) ou en achat unique Lifetime. Les prix sont affichés dans l'app avant l'achat et varient selon la région. Le paiement est débité de votre compte Apple ID à la confirmation. Les abonnements se renouvellent automatiquement sauf annulation au moins 24 heures avant la fin de la période en cours. Gérez ou annulez à tout moment dans Réglages → Apple ID → Abonnements.
 
 Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
