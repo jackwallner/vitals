@@ -1,4 +1,4 @@
-Total Calories mostra suas calorias diárias queimadas (ativas + em repouso) e a contagem de passos exatamente onde você precisa — na Tela de Início e Tela Bloqueada do iPhone e no mostrador do Apple Watch — de graça. Sem assinatura para o básico. Sem conta. Seus dados de saúde não saem do seu iPhone.
+O app Calorias mostra seu gasto calórico diário (calorias ativas + em repouso) e seus passos da Saúde na Tela de Início, Tela Bloqueada e mostrador do Apple Watch. O básico é gratuito, sem assinatura nem conta. Seus dados de saúde permanecem no iPhone.
 
 Se você já quis que o mostrador do Apple Watch exibisse apenas o total de calorias queimadas no dia, este é o app.
 
@@ -33,7 +33,7 @@ HISTÓRICO (GRÁTIS)
 
 METAS QUE FUNCIONAM PARA VOCÊ
 - Metas diárias opcionais de calorias e passos.
-- Ou ignore metas e use como um contador simples — você decide.
+- Ou ignore metas e use como um contador simples, você decide.
 - Comparação de ritmo: mesmo dia da semana vs. todos os dias, janela configurável (14 / 30 / 90 dias / 1 ano).
 
 Vitals+ (OPCIONAL)

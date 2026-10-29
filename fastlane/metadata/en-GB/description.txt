@@ -1,4 +1,4 @@
-Total Calories shows your daily burn and total calories burned (active + resting) plus step count on your Apple Watch face, Home Screen widgets, and Lock Screen — for free. No subscription needed for the basics. No account. Your health data never leaves your phone.
+Total Calories shows your total calories burnt each day (active + resting) and step count from Apple Health on your iPhone Home Screen, Lock Screen and Apple Watch face. The basics are free, with no subscription or account. Your health data stays on your phone.
 
 If you've ever wished your Apple Watch face just showed your total calories burned for the day, this is that app.
 
@@ -39,7 +39,7 @@ HISTORY (FREE)
 
 GOALS THAT WORK FOR YOU
 - Optional daily calorie and step goals.
-- Or skip goals and use it as a clean counter — your call.
+- Or skip goals and use it as a clean counter, your call.
 - Pacing comparison: same weekday vs. all days, configurable lookback (14 / 30 / 90 days / 1 year).
 
 VITALS+ (OPTIONAL)

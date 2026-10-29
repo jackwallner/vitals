@@ -1,1 +1,1 @@
-pedômetro,bmr,complicação,déficit,repouso,ativo,ritmo,queimadas,caminhar,healthkit,kcal,bmi,macros
+pedômetro,bmr,complicação,déficit,repouso,ativo,ritmo,queimadas,caminhar,healthkit,relógio,macros

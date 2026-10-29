@@ -1,4 +1,4 @@
-Total Calories toont je totale verbrande calorieën (actief + rust) en je aantal stappen precies waar je ze nodig hebt — op je iPhone-beginscherm, vergrendelscherm en Apple Watch-wijzerplaat — gratis. Geen abonnement nodig voor de basis. Geen account. Je gezondheidsgegevens verlaten je telefoon niet.
+Calorieënteller toont je totale calorieverbruik van vandaag (actief + rust) en je stappen vanuit Apple Gezondheid op je iPhone-beginscherm, toegangsscherm en Apple Watch-wijzerplaat. De basisfuncties zijn gratis, zonder abonnement of account. Je gezondheidsgegevens blijven op je telefoon.
 
 Als je ooit hebt gewenst dat je Apple Watch-wijzerplaat gewoon je totale verbrande calorieën van de dag toont, dan is dit de app.
 
@@ -33,7 +33,7 @@ GESCHIEDENIS (GRATIS)
 
 DOELEN DIE BIJ JOU PASSEN
 - Optionele dagelijkse calorie- en stappendoelen.
-- Of sla doelen over en gebruik het als een strakke teller — jij beslist.
+- Of sla doelen over en gebruik het als een strakke teller, jij beslist.
 - Tempovergelijking: zelfde weekdag vs. alle dagen, instelbare terugkijkperiode (14 / 30 / 90 dagen / 1 jaar).
 
 Vitals+ (OPTIONEEL)

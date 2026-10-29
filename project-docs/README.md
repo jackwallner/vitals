@@ -21,6 +21,10 @@ Developer notes and historical audits for this repository. The published site re
 - [ONBOARDING-RESTORE-1.8.5.md](experiments/ONBOARDING-RESTORE-1.8.5.md): Onboarding restore (1.8.5)
 - [UPGRADE-TAB-EXPERIMENT.md](experiments/UPGRADE-TAB-EXPERIMENT.md): Upgrade-tab layout experiment (1.8.3+)
 
+## ASO
+
+- [2026-10-28-aso-pass.md](aso/2026-10-28-aso-pass.md): App Store metadata changes and live search evidence.
+
 ## Releases
 
 - [RELEASE-1.8.3.md](releases/RELEASE-1.8.3.md): Vitals 1.8.3 release staging

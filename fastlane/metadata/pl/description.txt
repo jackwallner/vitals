@@ -1,4 +1,4 @@
-Total Calories pokazuje Twoje dzienne spalone kalorie (aktywne + spoczynkowe) oraz liczbę kroków dokładnie tam, gdzie ich potrzebujesz — na ekranie początkowym iPhone’a, Ekranie blokady oraz na tarczy Apple Watch — za darmo. Podstawy bez subskrypcji. Bez konta. Dane zdrowotne nie opuszczają Twojego telefonu.
+Suma Kalorii pokazuje dzienne spalone kalorie (aktywne + spoczynkowe) oraz liczbę kroków z Apple Zdrowie na ekranie głównym iPhone’a, ekranie blokady oraz tarczy Apple Watch. Podstawowe funkcje są bezpłatne, bez subskrypcji i konta. Twoje dane zdrowotne pozostają na telefonie.
 
 Jeśli kiedykolwiek chciałeś, aby tarcza Apple Watch pokazywała po prostu całkowitą liczbę spalonych dziennie kalorii, to jest ta aplikacja.
 
@@ -33,7 +33,7 @@ HISTORIA (ZA DARMO)
 
 CELE DOPASOWANE DO CIEBIE
 - Opcjonalne dzienne cele kalorii i kroków.
-- Albo pomiń cele i używaj aplikacji jako prostego licznika — jak wolisz.
+- Albo pomiń cele i używaj aplikacji jako prostego licznika, jak wolisz.
 - Porównanie tempa: ten sam dzień tygodnia vs. wszystkie dni, konfigurowany okres wstecz (14 / 30 / 90 dni / 1 rok).
 
 Vitals+ (OPCJONALNE)

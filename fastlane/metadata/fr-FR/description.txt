@@ -1,4 +1,4 @@
-Total Calories affiche vos calories quotidiennes brûlées (actives + au repos) et votre nombre de pas exactement là où vous en avez besoin — sur l’écran d’accueil et l’écran verrouillé de votre iPhone, ainsi que sur le cadran de votre Apple Watch — gratuitement. Aucun abonnement nécessaire pour l’essentiel. Aucun compte. Vos données de santé ne quittent pas votre téléphone.
+Compteur Calories affiche vos calories totales brûlées chaque jour (actives + au repos) et vos pas depuis Santé, sur l’écran d’accueil et l’écran verrouillé de l’iPhone ainsi que sur le cadran de l’Apple Watch. Les fonctions de base sont gratuites, sans abonnement ni compte. Vos données de santé restent sur votre téléphone.
 
 Si vous avez déjà souhaité que le cadran de votre Apple Watch affiche simplement vos calories totales brûlées dans la journée, c’est l’app qu’il vous faut.
 
@@ -33,7 +33,7 @@ HISTORIQUE (GRATUIT)
 
 DES OBJECTIFS QUI VOUS CONVIENNENT
 - Objectifs quotidiens facultatifs de calories et de pas.
-- Ou ignorez les objectifs et utilisez-le comme simple compteur — à vous de choisir.
+- Ou ignorez les objectifs et utilisez-le comme simple compteur, à vous de choisir.
 - Comparaison de rythme : même jour de semaine ou tous les jours, période configurable (14 / 30 / 90 jours / 1 an).
 
 Vitals+ (OPTIONNEL)
