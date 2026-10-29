@@ -78,6 +78,7 @@
 		3ABF8CF7F090457EFB99E73B /* VitalsAppIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9790EDD451E0514314B465 /* VitalsAppIntents.swift */; };
 		3B7AACBB2CD09E4F77AAFE54 /* SupportMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5DAB758DDA2F38199CF3E /* SupportMail.swift */; };
 		3BB32C907E3FE10EE1F3BC2C /* GoalRecalibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292C63911A7E258A1952BF35 /* GoalRecalibration.swift */; };
+		3CAA772E15307CD6057F7CB5 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = DB98F962FC1D26612E3252AA /* Localizable.xcstrings */; };
 		3CCD75E1FA3C81E847625602 /* WhatsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDEB69876935A084FB689CF /* WhatsNew.swift */; };
 		3D72025D8830CB4E05FE21EF /* TodaySnapshotResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F084D67C16DE5A62199BD0 /* TodaySnapshotResolver.swift */; };
 		3E117A2E26452CA1E9090603 /* LargeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922476FBD72680F18C44DD25 /* LargeWidgetView.swift */; };
@@ -151,6 +152,7 @@
 		764A0B6420616E3DF6CF40D9 /* VitalsConversionCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1FB17511E85720FB3545D /* VitalsConversionCopy.swift */; };
 		772DF822ECADEC7F4D23EB90 /* SupportMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5DAB758DDA2F38199CF3E /* SupportMail.swift */; };
 		7751DCFF58386558C37157C7 /* ExcludedDaysPitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C255483C346AE93483286EF /* ExcludedDaysPitch.swift */; };
+		7946E509965D49FDA603E402 /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331925EA739B9B0BFB4C04F2 /* LocalizationTests.swift */; };
 		7BE25998320CC0F732219A25 /* LocalizedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4406B9765BF2E9305EB0A48D /* LocalizedText.swift */; };
 		7C25259525E950D6EC868595 /* CTAExperiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B072EBD43DD5F3F382AFEB85 /* CTAExperiment.swift */; };
 		7DE03846B38547D81722040A /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37181B9FB18AF45A44299F0F /* HealthKitService.swift */; };
@@ -399,6 +401,7 @@
 		2CE1D53501A4D1A71FF7C708 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
 		2E891A2F146A996DD48C13CD /* VitalsWatchWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VitalsWatchWidget.entitlements; sourceTree = "<group>"; };
 		30EBEC3933AF5D264CED0A69 /* PaywallScreenshotMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallScreenshotMode.swift; sourceTree = "<group>"; };
+		331925EA739B9B0BFB4C04F2 /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
 		33416D7373E0428E45A13334 /* EntitlementStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitlementStatusTests.swift; sourceTree = "<group>"; };
 		33D5592097926B5086A3CF36 /* PaywallFunnelUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallFunnelUITests.swift; sourceTree = "<group>"; };
 		34A3B62274436A07B3C3554E /* MilestoneCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneCalculatorTests.swift; sourceTree = "<group>"; };
@@ -701,6 +704,7 @@
 				83C5DB218E2D480B2A3C877E /* ExitOfferTests.swift */,
 				D9AF21BD00FB8CAEEFA36434 /* GoalRecalibrationTests.swift */,
 				9C05F0D9486D0B94ED7E69AA /* HealthNoticeTests.swift */,
+				331925EA739B9B0BFB4C04F2 /* LocalizationTests.swift */,
 				E2EDD6A929AC5CB3DFDD1844 /* MacroGoalSelectionTests.swift */,
 				BB4287B137F6F3AD1263CD07 /* MacroTotalsTests.swift */,
 				34A3B62274436A07B3C3554E /* MilestoneCalculatorTests.swift */,
@@ -927,6 +931,7 @@
 			buildConfigurationList = 7EC310382ED2851563314C65 /* Build configuration list for PBXNativeTarget "VitalsTests" */;
 			buildPhases = (
 				8BB0A15AAA47A51F3CB75BEA /* Sources */,
+				C34FAEB73CEE5D6F5EA8819A /* Resources */,
 			);
 			buildRules = (
 			);
@@ -1087,6 +1092,14 @@
 				D42655D9F6D82C72FA0F5694 /* Localizable.xcstrings in Resources */,
 				906DF508C80FAF1F80DCF0FC /* PrivacyInfo.xcprivacy in Resources */,
 				4F22514B219ED34BF056FB0B /* Vitals.storekit in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C34FAEB73CEE5D6F5EA8819A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3CAA772E15307CD6057F7CB5 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1298,6 +1311,7 @@
 				459F4FE6382F5129F4814FE9 /* HealthNotice.swift in Sources */,
 				6F2EEA8C8714F18929DAA95F /* HealthNoticeTests.swift in Sources */,
 				C0ED7A3AC0364B181E667DC1 /* HealthRecord.swift in Sources */,
+				7946E509965D49FDA603E402 /* LocalizationTests.swift in Sources */,
 				E0F31E31DD45FB9E43114700 /* LocalizedText.swift in Sources */,
 				E05F8EF1DEF21E25F3E7D9F6 /* MacroGoalSelectionTests.swift in Sources */,
 				602FAE5FA1371FA6A1510FB9 /* MacroTotals.swift in Sources */,
@@ -1535,7 +1549,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 237;
+				CURRENT_PROJECT_VERSION = 238;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1684,7 +1698,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 237;
+				CURRENT_PROJECT_VERSION = 238;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
