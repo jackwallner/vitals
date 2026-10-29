@@ -128,6 +128,10 @@ final class AuditFeaturesUITests: XCTestCase {
 
     func springShot(_ name: String) {
         let screenshot = XCUIScreen.main.screenshot()
+        let attachment = XCTAttachment(screenshot: screenshot)
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
         try? screenshot.pngRepresentation.write(to: URL(fileURLWithPath: Self.dir + "/shot-\(name).png"))
     }
 
@@ -504,7 +508,7 @@ final class AuditFeaturesUITests: XCTestCase {
     /// Feature 5: add the large widget to the Home Screen, then tap each metric into its history.
     func testLargeWidgetAddAndTap() {
         let app = launch(dumpNotifications: false)
-        waitForToday(app)
+        waitForToday(app, reload: true)
         XCUIDevice.shared.press(.home)
         sleep(2)
         let sb = springboard
