@@ -37,7 +37,7 @@ XcodeGen project/scheme: `Vitals`, sim lease owner `vitals`.
 - Paywall CTA wording ("Start 7-day free trial" control vs my/your, picked by RC offering metadata `trial_cta`): `.claude/rules/cta-wording-test.md`.
 - Trial pitch indie note test (`trial_note` offering metadata, RC Experiment, "what to fix" ask after a trial cancel): `.claude/rules/trial-note.md`.
 - Paywall exit offer (half-price yearly once on a deliberate close, 50/50 hashed holdout, `exit_offer` offering): `.claude/rules/exit-offer.md`.
-- UI localization (en + 35 languages incl. RTL ar/he/fa; String Catalog rules, plurals, adding copy): `.claude/rules/localization.md`.
+- UI localization (en + 35 languages, 31 priority locales, RTL and String Catalog rules): `.claude/rules/localization.md`.
 - iPhone Duo unfolded split (Today and History either side of the fold), simulator recipe, App Store set: `.claude/rules/iphone-duo.md`.
 - Android port (Health Connect, Compose, Play, RevenueCat, emulator on Pro, Console answers): `.claude/rules/android.md`.
 - Astro ASO: `./scripts/astro-setup.sh` (`--extra "phrase"` for app-specific terms); local MCP `http://127.0.0.1:8089/mcp`; playbook `~/ios/aso/astro-setup-process.md`; re-sync keywords `./scripts/sync-astro-keywords.sh`.
