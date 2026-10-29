@@ -960,7 +960,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$@ avanti rispetto al tuo ritmo abituale"
+            "value" : "%1$@ %2$@ in più rispetto al tuo ritmo abituale"
           }
         },
         "ja" : {
@@ -1180,7 +1180,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ %2$@ indietro rispetto al tuo ritmo abituale"
+            "value" : "%1$@ %2$@ in meno rispetto al tuo ritmo abituale"
           }
         },
         "ja" : {
@@ -46403,7 +46403,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Förbränning minus matintag loggat i Apple Hälsa"
+            "value" : "Förbränning minus matintag som loggats i Apple Hälsa"
           }
         },
         "th" : {
@@ -46617,7 +46617,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Förbränning minus matintag loggat i Apple Hälsa uppdateras under dagen."
+            "value" : "Förbränning minus matintag som loggats i Apple Hälsa, uppdateras under dagen."
           }
         },
         "th" : {
