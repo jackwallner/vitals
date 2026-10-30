@@ -64,5 +64,5 @@ Vitals+（オプション）
 サブスクリプションについて
 Vitals+ は自動更新サブスクリプション（月額または年額、どちらも7日間の無料トライアル付き）、または買い切りの Lifetime としてご利用いただけます。価格は購入前にアプリ内に表示され、地域によって異なります。購入確定時に Apple ID に請求されます。現在の期間が終了する24時間以上前に解約しない限り、サブスクリプションは自動更新されます。設定 → Apple ID → サブスクリプションでいつでも管理・解約できます。
 
-Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

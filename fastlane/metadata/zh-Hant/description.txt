@@ -58,5 +58,5 @@ Vitals＋（選購）
 訂閱方案說明
 Vitals+ 提供自動續訂訂閱（每月或每年，兩者皆含 7 天免費試用）或一次買斷 Lifetime。價格會在購買前顯示於 App 內，並因地區而異。確認購買時將由你的 Apple ID 扣款。除非在目前週期結束前至少 24 小時取消，否則訂閱會自動續訂。你可隨時在「設定 → Apple ID → 訂閱項目」中管理或取消。
 
-Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

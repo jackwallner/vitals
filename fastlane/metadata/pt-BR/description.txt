@@ -61,5 +61,5 @@ Total Calories não é um dispositivo médico e não se destina a diagnosticar, 
 Detalhes da assinatura
 O Vitals+ está disponível como assinatura de renovação automática (mensal ou anual, ambas com 7 dias de teste grátis) ou como compra única Lifetime. Os preços aparecem no app antes da compra e variam conforme a região. O pagamento é cobrado no seu Apple ID na confirmação. As assinaturas se renovam automaticamente, a menos que sejam canceladas ao menos 24 horas antes do fim do período atual. Gerencie ou cancele quando quiser em Ajustes → Apple ID → Assinaturas.
 
-Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

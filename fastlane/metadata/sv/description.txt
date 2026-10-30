@@ -64,5 +64,5 @@ Total Calories är inte en medicinteknisk produkt och är inte avsedd att diagno
 Prenumerationsinfo
 Vitals+ finns som en prenumeration med automatisk förnyelse (månadsvis eller årsvis, båda med 7 dagars gratis provperiod) eller som ett engångsköp av Lifetime. Priserna visas i appen innan du köper och varierar mellan regioner. Betalningen dras från ditt Apple-ID vid bekräftelsen. Prenumerationer förnyas automatiskt om de inte sägs upp minst 24 timmar före den aktuella periodens slut. Hantera eller säg upp när som helst under Inställningar → Apple-ID → Prenumerationer.
 
-Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

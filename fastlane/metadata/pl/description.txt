@@ -61,5 +61,5 @@ Total Calories nie jest wyrobem medycznym i nie służy do diagnozowania, leczen
 Szczegóły subskrypcji
 Vitals+ jest dostępny w automatycznie odnawianej subskrypcji (miesięcznej lub rocznej, obie z 7-dniowym bezpłatnym okresem próbnym) albo jako jednorazowy zakup Lifetime. Ceny są widoczne w aplikacji przed zakupem i różnią się w zależności od regionu. Płatność jest pobierana z Apple ID przy potwierdzeniu. Subskrypcje odnawiają się automatycznie, o ile nie zostaną anulowane co najmniej 24 godziny przed końcem bieżącego okresu. Zarządzaj nimi lub anuluj w dowolnej chwili w Ustawienia → Apple ID → Subskrypcje.
 
-Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

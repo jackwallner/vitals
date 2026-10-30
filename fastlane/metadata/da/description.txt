@@ -58,5 +58,5 @@ Total Calories er ikke et medicinsk udstyr og er ikke beregnet til at diagnostic
 Abonnementsoplysninger
 Vitals+ fås som et abonnement med automatisk fornyelse (månedligt eller årligt, begge med 7 dages gratis prøveperiode) eller som et engangskøb af Lifetime. Priserne vises i appen, inden du køber, og varierer fra region til region. Betalingen trækkes på dit Apple ID ved bekræftelse. Abonnementer fornyes automatisk, medmindre de opsiges mindst 24 timer før den aktuelle periode slutter. Administrer eller opsig når som helst i Indstillinger → Apple ID → Abonnementer.
 
-Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

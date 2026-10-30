@@ -58,5 +58,5 @@ Total Calories कोई मेडिकल डिवाइस नहीं ह�
 सब्सक्रिप्शन विवरण
 Vitals+ ऑटो-रिन्यू होने वाली सदस्यता के रूप में (मासिक या वार्षिक, दोनों में 7 दिन का मुफ़्त ट्रायल) या एक बार की Lifetime खरीद के रूप में उपलब्ध है। कीमतें खरीदने से पहले ऐप में दिखती हैं और क्षेत्र के अनुसार अलग होती हैं। पुष्टि पर आपके Apple ID से भुगतान लिया जाता है। मौजूदा अवधि खत्म होने से कम से कम 24 घंटे पहले रद्द न करने पर सदस्यता अपने आप रिन्यू हो जाती है। कभी भी Settings → Apple ID → Subscriptions में प्रबंधित करें या रद्द करें।
 
-Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

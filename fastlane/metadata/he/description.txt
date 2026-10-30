@@ -58,5 +58,5 @@ Total Calories אינה מכשיר רפואי ואינה מיועדת לאבחן
 פרטי המנוי
 ‏Vitals+ זמין כמנוי מתחדש אוטומטית (חודשי או שנתי, שניהם עם 7 ימי ניסיון בחינם) או כרכישה חד-פעמית Lifetime. המחירים מוצגים באפליקציה לפני הרכישה ומשתנים לפי אזור. התשלום נגבה מה-Apple ID שלך בעת האישור. המנויים מתחדשים אוטומטית אלא אם מבטלים אותם לפחות 24 שעות לפני תום התקופה הנוכחית. אפשר לנהל או לבטל בכל עת דרך הגדרות ← Apple ID ← מנויים.
 
-Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

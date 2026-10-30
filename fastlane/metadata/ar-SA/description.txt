@@ -64,5 +64,5 @@ Vitals+‎ (اختياري)
 تفاصيل الاشتراك
 ‏Vitals+ متاح باشتراك يتجدد تلقائيًا (شهري أو سنوي، وكلاهما مع تجربة مجانية لمدة 7 أيام) أو بشراء Lifetime لمرة واحدة. تظهر الأسعار داخل التطبيق قبل الشراء وتختلف حسب المنطقة. يُخصم المبلغ من حساب Apple ID عند التأكيد. تتجدد الاشتراكات تلقائيًا ما لم يتم إلغاؤها قبل 24 ساعة على الأقل من نهاية الفترة الحالية. يمكنك الإدارة أو الإلغاء في أي وقت من الإعدادات ← Apple ID ← الاشتراكات.
 
-سياسة الخصوصية: https://jackwallner.github.io/vitals/privacy-policy.html
+سياسة الخصوصية: https://jackwallner.com/ios/vitals/privacy-policy.html
 شروط الاستخدام (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

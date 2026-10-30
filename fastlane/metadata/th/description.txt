@@ -58,5 +58,5 @@ Total Calories ไม่ใช่อุปกรณ์ทางการแพ�
 รายละเอียดการสมัครสมาชิก
 Vitals+ มีให้บริการแบบสมัครสมาชิกต่ออายุอัตโนมัติ (รายเดือนหรือรายปี ทั้งสองแบบมีทดลองใช้ฟรี 7 วัน) หรือแบบซื้อครั้งเดียว Lifetime ราคาจะแสดงในแอปก่อนซื้อและแตกต่างกันไปตามภูมิภาค ระบบจะเรียกเก็บเงินจาก Apple ID ของคุณเมื่อยืนยัน การสมัครสมาชิกจะต่ออายุอัตโนมัติ เว้นแต่จะยกเลิกอย่างน้อย 24 ชั่วโมงก่อนสิ้นสุดรอบปัจจุบัน จัดการหรือยกเลิกได้ทุกเมื่อที่ การตั้งค่า → Apple ID → การสมัครใช้บริการ
 
-Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

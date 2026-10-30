@@ -58,5 +58,5 @@ Total Calories ei ole lääkinnällinen laite, eikä sitä ole tarkoitettu mink�
 Tilaustiedot
 Vitals+ on saatavana automaattisesti uusiutuvana tilauksena (kuukausi tai vuosi, molemmissa 7 päivän ilmainen kokeilu) tai kertaostoksena Lifetime. Hinnat näkyvät apissa ennen ostoa ja vaihtelevat alueittain. Maksu veloitetaan Apple ID:ltäsi vahvistuksen yhteydessä. Tilaukset uusiutuvat automaattisesti, ellei niitä peruuteta vähintään 24 tuntia ennen kuluvan jakson päättymistä. Voit hallita tai peruuttaa milloin tahansa: Asetukset → Apple ID → Tilaukset.
 
-Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

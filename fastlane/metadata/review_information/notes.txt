@@ -48,6 +48,6 @@ PRIVACY
 - Health data is stored on the device and is never uploaded
 - No analytics, no ads, no tracking, no accounts
 - Network calls go only to Apple and RevenueCat, for purchase status
-- Privacy Policy: https://jackwallner.github.io/vitals/privacy-policy.html
+- Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 
 Privacy Policy and Support links are accessible in the iPhone Settings sheet and Apple Watch Help sheet.
