@@ -108,7 +108,9 @@ enum SummaryReportGenerator {
         calorieGoal: Double?,
         stepGoal: Int?,
         netDeficitFastingMode: Bool = false,
-        macroKinds: [MacroKind] = MacroKind.allCases
+        macroKinds: [MacroKind] = MacroKind.allCases,
+        now: Date = .now,
+        calendar: Calendar = .current
     ) -> SummaryReport {
         // Every figure below reads `days`, so shadowing it with the counted days
         // keeps excluded ones out of all of them; only the charts see `allDays`.
@@ -130,12 +132,16 @@ enum SummaryReportGenerator {
         let peakCal = days.max(by: { $0.totalCalories < $1.totalCalories })
         let peakStep = days.max(by: { $0.steps < $1.steps })
 
+        // Both sides of the trend average the same way: completed days with
+        // data. Today is still partial and a day the watch sat on the charger
+        // is no reading, so either would drag the current side down.
+        let completedDays = days.filter { !calendar.isDate($0.date, inSameDayAs: now) }
         let calorieTrend = trendPct(
-            current: avgCalories,
+            current: averageCalories(in: completedDays),
             previous: averageCalories(in: previousDays)
         )
         let stepTrend = trendPct(
-            current: Double(avgSteps),
+            current: averageSteps(in: completedDays),
             previous: averageSteps(in: previousDays)
         )
 
@@ -208,7 +214,7 @@ enum SummaryReportGenerator {
     }
 
     private static func trendPct(current: Double, previous: Double) -> Double? {
-        guard previous > 0 else { return nil }
+        guard previous > 0, current > 0 else { return nil }
         return ((current - previous) / previous) * 100
     }
 }

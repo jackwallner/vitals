@@ -51,6 +51,7 @@
 		24C428045488DE342D4E49C3 /* InteractivePopGestureEnabler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DABF18D30A514919DE529CB /* InteractivePopGestureEnabler.swift */; };
 		24F4080F6DB0C660608D8421 /* DayWindows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0D14078AA78BC384CB72A2 /* DayWindows.swift */; };
 		26627B4D2028C35C5EF6C4A8 /* TrialNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058C18F5B6A17B0302D702CD /* TrialNote.swift */; };
+		26AEB856474B93AD30FDD790 /* SummaryReportGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B24F616BC26BFF25C64684 /* SummaryReportGenerator.swift */; };
 		278E85BDB4CA7095FAC506BF /* EnergyAveragesCacheReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29693CF9343830E2D9DE2029 /* EnergyAveragesCacheReaderTests.swift */; };
 		29862E0766FD3EBF416326D0 /* ConversionDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC6717A33895256B9C16964 /* ConversionDiagnostics.swift */; };
 		2AF09EA61DCA3638F6CAA7DB /* CTAExperiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B072EBD43DD5F3F382AFEB85 /* CTAExperiment.swift */; };
@@ -207,6 +208,7 @@
 		AC9FF372460EE54FE7F7183D /* ScreenshotConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4334C2CE63928C06983EA7 /* ScreenshotConfig.swift */; };
 		ACEC9933380F15560FFFD8F2 /* VitalsConversionCopyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32F8EB584C5A7B0BD4CA64 /* VitalsConversionCopyTests.swift */; };
 		AD560B74ECBF3CAD26A75026 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689672535A7B63A46F54C799 /* Theme.swift */; };
+		ADEF060819776E792B198B28 /* SummaryReportTrendTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1950F301FFCB4FC5DBA454 /* SummaryReportTrendTests.swift */; };
 		AE79C4EF14DDEFF19FE3342E /* HealthRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70507ABFBBE3C03F1CFC9053 /* HealthRecord.swift */; };
 		B14EECB571FFDF30E7C391BE /* PerformanceBudgetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2894F9E0A71987AF0C1A320 /* PerformanceBudgetTests.swift */; };
 		B19D140773617085D5DD3705 /* EnergyAveragesCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B9D5B798B90EA3B5158572 /* EnergyAveragesCalculator.swift */; };
@@ -416,6 +418,7 @@
 		47E5A948D4ECA79121753114 /* VitalsWatchWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VitalsWatchWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E1B3A87ED318421E4268708 /* NetDeficitTrendSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetDeficitTrendSummary.swift; sourceTree = "<group>"; };
 		4E7DCA825A17AEC469980F76 /* TrialOfferPitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrialOfferPitch.swift; sourceTree = "<group>"; };
+		4F1950F301FFCB4FC5DBA454 /* SummaryReportTrendTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryReportTrendTests.swift; sourceTree = "<group>"; };
 		5067457F6627E7ABFE38988A /* Vitals.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Vitals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52147499747F8CEC3CAABE45 /* ExitOffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitOffer.swift; sourceTree = "<group>"; };
 		5A524F44F2C81B258D1BBE67 /* HealthKitLabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitLabUITests.swift; sourceTree = "<group>"; };
@@ -714,6 +717,7 @@
 				7896892E56FE0D79E979DEE7 /* ProjectionCalculatorTests.swift */,
 				2A44C7A591373EE7FB91D88F /* ReviewPromptTrackerTests.swift */,
 				96C94BF0069C1CB87ADF04D7 /* ScreenshotFixturesTests.swift */,
+				4F1950F301FFCB4FC5DBA454 /* SummaryReportTrendTests.swift */,
 				8984606AC7BF0325F5B42DA3 /* TodaySnapshotResolverTests.swift */,
 				CADA89CDD5ECB0D56E671B1A /* TrialNoteTests.swift */,
 				EE50AD19693E7CA1B41AD998 /* UnfoldedSplitTests.swift */,
@@ -1330,6 +1334,8 @@
 				201690E9207EE09A9777340F /* ScreenshotConfig.swift in Sources */,
 				39FC9CB90D989E00A2D4F705 /* ScreenshotFixturesTests.swift in Sources */,
 				395FBEEB454541B074B31DB4 /* StepTrendSummary.swift in Sources */,
+				26AEB856474B93AD30FDD790 /* SummaryReportGenerator.swift in Sources */,
+				ADEF060819776E792B198B28 /* SummaryReportTrendTests.swift in Sources */,
 				772DF822ECADEC7F4D23EB90 /* SupportMail.swift in Sources */,
 				3D72025D8830CB4E05FE21EF /* TodaySnapshotResolver.swift in Sources */,
 				3402F7B7DC2076C4156C6BD4 /* TodaySnapshotResolverTests.swift in Sources */,
@@ -1549,7 +1555,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 238;
+				CURRENT_PROJECT_VERSION = 240;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1698,7 +1704,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 238;
+				CURRENT_PROJECT_VERSION = 240;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
