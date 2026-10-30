@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="How Total Calories works out your daily burn: which Apple Health and Health Connect records it reads, how it adds them, and where the numbers come from.">
+    <link rel="icon" type="image/png" sizes="256x256" href="icon_256.png">
+    <link rel="apple-touch-icon" href="icon_256.png">
+    <title>How Total Calories Counts Calories Burned: Methodology</title>
+    <link rel="canonical" href="https://jackwallner.com/ios/vitals/how-total-calories-works.html">
+    <script>if(location.hostname==="jackwallner.github.io"){var c=document.querySelector('link[rel="canonical"]');if(c&&c.href.indexOf("https://jackwallner.com/")===0)location.replace(c.href)}</script>
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta property="og:title" content="How Total Calories Counts Calories Burned: Methodology">
+    <meta property="og:description" content="How Total Calories works out your daily burn: which Apple Health and Health Connect records it reads, how it adds them, and where the numbers come from.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://jackwallner.com/ios/vitals/how-total-calories-works.html">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "How Total Calories counts your calories burned", "description": "How Total Calories works out your daily burn: which Apple Health and Health Connect records it reads, how it adds them, and where the numbers come from.", "author": {"@type": "Person", "name": "Jack Wallner"}, "publisher": {"@type": "Organization", "name": "Total Calories"}, "mainEntityOfPage": "https://jackwallner.com/ios/vitals/how-total-calories-works.html", "dateModified": "2026-10-30"}</script>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How does Total Calories calculate calories burned?", "acceptedAnswer": {"@type": "Answer", "text": "It adds Active Energy and Resting Energy from Apple Health for each day, from midnight to now. On Android it reads the same records from Health Connect."}}, {"@type": "Question", "name": "Does Total Calories double count my iPhone and Apple Watch?", "acceptedAnswer": {"@type": "Answer", "text": "No. It uses Apple Health's statistics query, which merges overlapping sources by your source priority, the same way the Health app does."}}, {"@type": "Question", "name": "Will the total match the Health app?", "acceptedAnswer": {"@type": "Answer", "text": "It should. It reads the same records, so it matches the sum of the Active Energy and Resting Energy rows in the Health app for the same day."}}]}</script>
+    <style>* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif; color: #1d1d1f; background: #fafafa; -webkit-font-smoothing: antialiased; }
+.container { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+nav { padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.06); background: rgba(250,250,250,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 10; }
+nav .container { display: flex; align-items: center; justify-content: space-between; max-width: 980px; }
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1d1d1f; }
+.nav-brand img { width: 32px; height: 32px; border-radius: 7px; }
+.nav-brand span { font-size: 15px; font-weight: 600; }
+.nav-link { font-size: 14px; text-decoration: none; background: #1d1d1f; color: #fff; padding: 8px 18px; border-radius: 980px; font-weight: 500; }
+.nav-link:hover { opacity: 0.85; }
+article { padding: 64px 0 48px; }
+h1 { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
+.updated { font-size: 14px; color: #6e6e73; margin-bottom: 12px; }
+.lede { font-size: 19px; color: #6e6e73; line-height: 1.5; margin-bottom: 36px; }
+h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.4px; margin: 40px 0 12px; }
+p, li { font-size: 17px; line-height: 1.6; margin-bottom: 14px; }
+ul, ol { padding-left: 22px; }
+li { margin-bottom: 6px; }
+a { color: #1d1d1f; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 20px; font-size: 16px; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid rgba(0,0,0,0.08); }
+th { font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px; color: #6e6e73; font-weight: 600; }
+.formula { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; padding: 16px 18px; font-family: "SF Mono", Menlo, monospace; font-size: 15px; line-height: 1.7; margin: 8px 0 20px; overflow-x: auto; }
+.calc { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 18px; padding: 24px; margin: 20px 0 28px; }
+.calc h2 { margin: 0 0 16px; font-size: 20px; }
+.calc .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.calc label { display: block; font-size: 13px; color: #6e6e73; margin-bottom: 6px; }
+.calc input, .calc select { width: 100%; font: inherit; font-size: 17px; padding: 10px 12px; border: 1px solid rgba(0,0,0,0.14); border-radius: 10px; background: #fafafa; color: #1d1d1f; }
+.calc .seg { display: flex; gap: 8px; }
+.calc .seg button { flex: 1; font: inherit; font-size: 15px; padding: 9px 0; border-radius: 10px; border: 1px solid rgba(0,0,0,0.14); background: #fafafa; cursor: pointer; }
+.calc .seg button[aria-pressed="true"] { background: #1d1d1f; color: #fff; border-color: #1d1d1f; }
+.result { margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.08); }
+.result .big { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1; }
+.result .big small { font-size: 16px; font-weight: 500; color: #6e6e73; letter-spacing: 0; margin-left: 6px; }
+.result .sub { font-size: 15px; color: #6e6e73; margin-top: 8px; }
+.cta { text-align: center; padding: 48px 24px 56px; border-top: 1px solid rgba(0,0,0,0.06); margin-top: 24px; }
+.cta h2 { margin: 0 0 8px; }
+.cta p { color: #6e6e73; max-width: 440px; margin: 0 auto 22px; }
+.download-btn { display: inline-block; background: #1d1d1f; color: #fff; font-size: 15px; font-weight: 500; padding: 14px 36px; border-radius: 980px; text-decoration: none; }
+.download-btn:hover { opacity: 0.85; }
+.related { padding: 24px 0 8px; }
+.related h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: #6e6e73; margin-bottom: 10px; }
+.related a { display: block; font-size: 16px; text-decoration: none; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+footer { text-align: center; padding: 20px 24px 40px; font-size: 12px; color: #6e6e73; }
+footer a { display: inline-block; padding: 6px 0; color: #6e6e73; text-decoration: none; margin: 0 10px; }
+footer .divider { margin: 4px 0; }
+.note { font-size: 14px; color: #6e6e73; line-height: 1.5; }
+@media (max-width: 520px) { h1 { font-size: 32px; } .calc .row { grid-template-columns: 1fr; } }
+
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.nav-actions .nav-link, .nav-brand span { white-space: nowrap; }
+@media (max-width: 480px) { .nav-actions { gap: 6px; } .nav-actions .nav-link { padding: 7px 12px; font-size: 13px; } }
+.nav-link-play { background: transparent; color: #1d1d1f; box-shadow: inset 0 0 0 1px #1d1d1f; }
+.store-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; }
+.play-badge { display: inline-block; line-height: 0; margin: -11px -12px; }
+.play-badge img { height: 69px; width: auto; display: block; }
+.cta-box .play-badge { margin: -10px -11px; }
+.cta-box .play-badge img { height: 64px; }
+</style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a class="nav-brand" href="./" aria-label="Total Calories"><img src="icon_64.webp" alt="" width="32" height="32"><span>Total Calories</span></a>
+            <span class="nav-actions"><a class="nav-link" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-methodology&amp;mt=8">Download</a><a class="nav-link nav-link-play" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener">Google Play</a></span>
+        </div>
+    </nav>
+    <article>
+        <div class="container">
+            <h1>How Total Calories counts your calories burned</h1>
+            <p class="updated">Last updated <time datetime="2026-10-30" data-updated>October 30, 2026</time></p>
+            <p class="lede">Total Calories does not estimate your burn itself. It reads the energy records your watch and phone already write to Apple Health or Health Connect, adds active and resting energy for the day, and shows the result. This page explains exactly which records it reads and how the math works.</p>
+
+<h2>What it reads</h2>
+<ul>
+<li><strong>iPhone and Apple Watch:</strong> Active Energy, Resting Energy and Steps from Apple Health. If you open the body profile, it reads height and weight for BMI. With Vitals+ net deficit or macros turned on, it also reads the dietary energy and macros another app logs to Health.</li>
+<li><strong>Android:</strong> active calories, total calories, basal metabolic rate and steps from Health Connect.</li>
+</ul>
+<p>Every permission is read-only. The app never writes to Health, has no account and keeps your data on your device.</p>
+<h2>How the daily total is calculated</h2>
+<div class="formula">total calories = Active Energy + Resting Energy<br>for each day, midnight to now</div>
+<ul>
+<li>Each field is summed with Apple Health's statistics query. When two sources record the same minutes, such as your iPhone and your Apple Watch, Health merges them using your source priority instead of counting them twice.</li>
+<li>Days are bucketed by your local midnight. A sample that crosses midnight, such as a late workout, is split between the two days by time, so Today and History always agree.</li>
+<li>If Steps permission is off, calories still show; steps are optional.</li>
+</ul>
+<h2>Where the numbers come from</h2>
+<p>Resting energy is Apple's estimate of your basal metabolism, computed from the weight, height, age and sex in your Health profile. Active energy comes from motion and heart rate. In Apple's lab tests against a metabolic cart, workout calories averaged near zero error with a spread of about 9 to 20% by activity, and Apple publishes no accuracy figure for resting energy. Total Calories passes those numbers through unchanged, so your total matches what you get by adding the two rows in the Health app. <a href="apple-watch-active-vs-resting-calories.html">More on accuracy</a>.</p>
+<h2>Averages: TDEE and BMR (Vitals+)</h2>
+<p>TDEE is your average daily total over the last 30 days of your own data, and BMR is your average resting energy over the same days. Days you exclude, such as a sick day or a day the watch stayed on the charger, are left out of every average, total and streak.</p>
+<h2>Keeping the numbers useful</h2>
+<ul>
+<li>Keep your weight current in Health; resting energy is computed from it.</li>
+<li>Wear the watch all day so active energy includes walking and chores.</li>
+<li>Use a 7-day or 30-day average for decisions. Any single day is noisy.</li>
+</ul>
+<p class="note">Total Calories is a personal tracking tool, not a medical device. Informational only, not medical advice.</p>
+
+            <h2>Common questions</h2>
+            <h3 style='font-size:18px;margin:18px 0 6px'>How does Total Calories calculate calories burned?</h3><p>It adds Active Energy and Resting Energy from Apple Health for each day, from midnight to now. On Android it reads the same records from Health Connect.</p><h3 style='font-size:18px;margin:18px 0 6px'>Does Total Calories double count my iPhone and Apple Watch?</h3><p>No. It uses Apple Health&#x27;s statistics query, which merges overlapping sources by your source priority, the same way the Health app does.</p><h3 style='font-size:18px;margin:18px 0 6px'>Will the total match the Health app?</h3><p>It should. It reads the same records, so it matches the sum of the Active Energy and Resting Energy rows in the Health app for the same day.</p><div class="related"><h3>Related guides</h3><a href="apple-watch-active-vs-resting-calories.html">Active vs resting calories on Apple Watch</a><a href="tdee-calculator.html">TDEE calculator</a></div>
+        </div>
+    </article>
+    <section class="cta">
+        <h2>See your real burn, counted the same way Health does</h2>
+        <p>Total Calories reads active and resting energy from Apple Health or Health Connect and shows your daily total. Free to start, no account.</p>
+        <div class="store-row"><a class="download-btn" href="https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-methodology&amp;mt=8">Download Total Calories</a><a class="play-badge" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener"><img src="google-play-badge.webp" alt="Get it on Google Play"></a></div>
+    </section>
+    <footer>
+        <div class="divider">&copy; 2026 Jack Wallner</div>
+        <div><a href="./">Home</a><a href="guides.html">Guides</a><a href="support.html">Support</a><a href="privacy-policy.html">Privacy</a></div>
+    </footer>
+</body>
+</html>
