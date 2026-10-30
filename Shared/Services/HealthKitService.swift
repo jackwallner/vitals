@@ -547,12 +547,29 @@ final class HealthKitService: ObservableObject {
         }
 
         let interval = DateComponents(day: 1)
+        let hour = DateComponents(hour: 1)
+        // Hourly buckets for recent days teach the calculator when in the day
+        // this user usually burns and walks.
+        let hourlyDays = min(lookbackDays, PacingCalculator.intradayDays)
+        let hourlyStart = Calendar.current.date(byAdding: .day, value: -hourlyDays, to: window.today) ?? window.windowStart
 
         async let activeMap = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: window.windowStart, end: window.today, interval: interval)
         async let restingMap = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: window.windowStart, end: window.today, interval: interval)
         async let stepsMap = queryStatisticsCollection(.stepCount, unit: .count(), start: window.windowStart, end: window.today, interval: interval)
+        async let activeHourly = queryStatisticsCollection(.activeEnergyBurned, unit: .kilocalorie(), start: hourlyStart, end: window.today, interval: hour)
+        async let restingHourly = queryStatisticsCollection(.basalEnergyBurned, unit: .kilocalorie(), start: hourlyStart, end: window.today, interval: hour)
+        async let stepsHourly = queryStatisticsCollection(.stepCount, unit: .count(), start: hourlyStart, end: window.today, interval: hour)
 
         let (active, resting, steps) = try await (activeMap, restingMap, stepsMap)
+        // Hourly data only sharpens the comparison; without it pacing falls
+        // back to the share of the clock day.
+        let activeByHour = (try? await activeHourly) ?? [:]
+        let restingByHour = (try? await restingHourly) ?? [:]
+        let stepsByHour = (try? await stepsHourly) ?? [:]
+        let intraday = PacingCalculator.IntradayHistory(
+            calories: activeByHour.merging(restingByHour, uniquingKeysWith: +),
+            steps: stepsByHour
+        )
 
         let result = PacingCalculator.compute(
             calories: { self.statisticValue(active, for: $0) + self.statisticValue(resting, for: $0) },
@@ -560,7 +577,8 @@ final class HealthKitService: ObservableObject {
             comparison: comparison,
             lookbackDays: lookbackDays,
             excluded: excludedDayKeys,
-            now: now
+            now: now,
+            intraday: intraday
         )
         let calorieSampleDays = result.calorieSampleDays
         let stepSampleDays = result.stepSampleDays
