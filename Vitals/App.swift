@@ -902,10 +902,32 @@ struct MainTabView: View {
         guard !widgetMomentEvaluated else { return }
         widgetMomentEvaluated = true
         Task { @MainActor in
-            guard await hasInstalledWidget else { return }
-            guard ReviewPromptTracker.recordOneShotPositiveMoment(key: "widget_installed") else { return }
+            let widget = await hasInstalledWidget
+            let complication = hasComplicationOnWatchFace
+            var recorded = false
+            if widget, ReviewPromptTracker.recordOneShotPositiveMoment(key: "widget_installed") {
+                recorded = true
+            }
+            if complication, ReviewPromptTracker.recordOneShotPositiveMoment(key: "complication_on_watch_face") {
+                recorded = true
+            }
+            guard recorded else { return }
             scheduleReviewPromptAfterPositiveMoment()
         }
+    }
+
+    /// `WidgetCenter` only sees iPhone widgets. The watch face is where most
+    /// people use the app, and WatchConnectivity reports it from the phone.
+    /// Before activation completes this reads false; the next launch asks again.
+    private var hasComplicationOnWatchFace: Bool {
+        #if canImport(WatchConnectivity)
+        guard WCSession.isSupported() else { return false }
+        let session = WCSession.default
+        guard session.activationState == .activated, session.isPaired, session.isWatchAppInstalled else { return false }
+        return session.isComplicationEnabled
+        #else
+        return false
+        #endif
     }
 
     /// `getCurrentConfigurations` throws when the user has never granted the
