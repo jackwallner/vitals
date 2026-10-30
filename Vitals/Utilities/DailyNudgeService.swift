@@ -127,10 +127,10 @@ enum DailyNudgeService {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [eveningReminderID])
     }
 
-    /// Per-metric streaks ending yesterday, from the same 90-day cache window
-    /// the dashboard badges use.
+    /// Per-metric streaks ending yesterday, from the same cache window the
+    /// dashboard badges use.
     private static func currentStreaks(goals: GoalSettings) -> (calories: Int, steps: Int) {
-        guard let history = try? HealthKitService.shared.fetchCachedHistory(days: 90) else { return (0, 0) }
+        guard let history = try? HealthKitService.shared.fetchCachedHistory(days: MilestoneCalculator.streakHistoryDays) else { return (0, 0) }
         let days = history.map { MilestoneDay(date: $0.date, calories: $0.active + $0.resting, steps: $0.steps) }
         let excluded = goals.excludedDayKeys
         let calories = goals.calorieGoal.map { goal in

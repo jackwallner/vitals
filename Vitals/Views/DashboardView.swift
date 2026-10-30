@@ -1931,7 +1931,7 @@ struct DashboardView: View {
                 do {
                     try await healthKit.refreshHistoryCache(days: 90)
                     checkGoalStreakMilestone(
-                        history: (try? healthKit.fetchCachedHistory(days: 90)) ?? []
+                        history: (try? healthKit.fetchCachedHistory(days: MilestoneCalculator.streakHistoryDays)) ?? []
                     )
                 } catch {
                     dashboardLogger.error("Background history cache sync failed: \(String(describing: error), privacy: .public)")

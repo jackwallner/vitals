@@ -43,6 +43,11 @@ enum MilestoneCalculator {
     /// is wide enough that consecutive celebrations don't feel piled-on.
     static let celebratedStreaks: [Int] = [7, 14, 30, 60, 100]
 
+    /// Cached days a streak caller reads. A walk stops at the first missing
+    /// row, so a 90-day window capped every streak at 89 and the 100-day tier
+    /// could never fire.
+    static let streakHistoryDays = 400
+
     /// How far back a streak walk will go before giving up. Only reached when
     /// every day on the way is user-excluded, which cannot loop forever anyway
     /// (the excluded set is finite), so this is a belt-and-braces bound.

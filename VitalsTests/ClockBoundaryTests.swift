@@ -339,6 +339,24 @@ final class ClockBoundaryTests: XCTestCase {
         XCTAssertEqual(broken, 1)
     }
 
+    // Overnight report F04: the callers read `streakHistoryDays` of cache, so a
+    // 120-day streak reads 120 (not 89) and the 100-day tier can fire.
+    func testStreakWindowReachesPastNinetyDays() throws {
+        let today = try at(2026, 10, 30, 9)
+        let todayStart = la.startOfDay(for: today)
+        var rows: [String: CachedHistoryWindow.Row] = [:]
+        for offset in 1...120 {
+            let day = try XCTUnwrap(la.date(byAdding: .day, value: -offset, to: todayStart))
+            rows[key(day)] = (date: day, active: 500, resting: 2_000, steps: 0)
+        }
+        let start = try XCTUnwrap(la.date(byAdding: .day, value: -(MilestoneCalculator.streakHistoryDays - 1), to: todayStart))
+        let window = CachedHistoryWindow.fill(rows: rows, from: start, to: todayStart, calendar: la)
+        let days = window.map { MilestoneDay(date: $0.date, calories: $0.active + $0.resting, steps: $0.steps) }
+        let streak = MilestoneCalculator.currentStreak(records: days, today: today, calendar: la) { $0.calories >= 2_000 }
+        XCTAssertEqual(streak, 120)
+        XCTAssertEqual(MilestoneCalculator.unfiredStreakMilestone(currentStreak: streak, firedIds: [])?.id, "streak_100")
+    }
+
     // Overnight report F02: cache keys follow the current time zone after the
     // process has already used another one (travel with the app resident).
     func testDayKeysFollowATimeZoneChangeInARunningProcess() throws {
