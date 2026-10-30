@@ -793,7 +793,15 @@ final class StoreService: NSObject, ObservableObject {
         defer { purchaseInFlight = false }
 
         let startedTrial = isEligibleForIntroOffer(product)
-        let result = try await Purchases.shared.purchase(package: product)
+        let result: PurchaseResultData
+        do {
+            result = try await Purchases.shared.purchase(package: product)
+        } catch where Self.isDeferredPurchase(error) {
+            // RevenueCat throws for Ask to Buy and other StoreKit `.pending`
+            // results instead of returning them, so they surface here.
+            syncConversionAttributes()
+            return .pending
+        }
         apply(customerInfo: result.customerInfo)
         if result.userCancelled {
             return .cancelled
@@ -819,6 +827,14 @@ final class StoreService: NSObject, ObservableObject {
         )
         syncConversionAttributes()
         return .purchased
+    }
+
+    /// Whether a thrown purchase error is StoreKit deferring the transaction
+    /// (Ask to Buy, SCA), which the purchase surfaces show as pending.
+    nonisolated static func isDeferredPurchase(_ error: Error) -> Bool {
+        if let code = error as? ErrorCode { return code == .paymentPendingError }
+        let nsError = error as NSError
+        return nsError.domain == ErrorCode.errorDomain && nsError.code == ErrorCode.paymentPendingError.rawValue
     }
 
     /// Re-checks RevenueCat customer info so cancellations / billing failures flip `isPro` off promptly.
