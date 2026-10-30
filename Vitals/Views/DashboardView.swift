@@ -3430,7 +3430,7 @@ private struct OnboardingSheet: View {
                 }
             } catch {
                 await store.refreshIntroEligibility()
-                trialError = store.lastError ?? store.purchaseFailedMessage(for: package)
+                trialError = store.purchaseFailedMessage(for: package)
             }
         }
     }

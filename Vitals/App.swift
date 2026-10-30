@@ -1983,7 +1983,8 @@ private struct PremiumFeaturesView: View {
 
     private func previousWindow(start: Date, end: Date, days: Int?) async -> [(date: Date, active: Double, resting: Double, steps: Int)] {
         let calendar = Calendar.current
-        let lengthDays = days ?? max(1, calendar.dateComponents([.day], from: start, to: end).day ?? 1)
+        // Inclusive of both ends, as History counts a custom range.
+        let lengthDays = days ?? max(1, calendar.dateComponents([.day], from: start, to: end).day ?? 0) + 1
         let priorEnd = calendar.date(byAdding: .day, value: -1, to: start) ?? start
         let priorStart = calendar.date(byAdding: .day, value: -(lengthDays - 1), to: priorEnd) ?? priorEnd
         return (try? await healthKit.fetchHistory(from: priorStart, to: priorEnd)) ?? []
