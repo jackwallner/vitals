@@ -30,6 +30,10 @@ for each day, midnight to now
 
 Resting energy is Apple's estimate of your basal metabolism, computed from the weight, height, age and sex in your Health profile. Active energy comes from motion and heart rate. In Apple's lab tests against a metabolic cart, workout calories averaged near zero error with a spread of about 9 to 20% by activity, and Apple publishes no accuracy figure for resting energy. Total Calories passes those numbers through unchanged, so your total matches what you get by adding the two rows in the Health app. [More on accuracy](https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html).
 
+## Tested on 30,000+ data points
+
+Total Calories is built and checked against its developer's own Apple Watch history: more than 30,000 step data points, compared with the totals in the Health app.
+
 ## Averages: TDEE and BMR (Vitals+)
 
 TDEE is your average daily total over the last 30 days of your own data, and BMR is your average resting energy over the same days. Days you exclude, such as a sick day or a day the watch stayed on the charger, are left out of every average, total and streak.
