@@ -1,6 +1,5 @@
 import Foundation
 import Testing
-@testable import Vitals
 
 @Suite("Localization")
 struct LocalizationTests {
