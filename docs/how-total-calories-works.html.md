@@ -32,7 +32,7 @@ Resting energy is Apple's estimate of your basal metabolism, computed from the w
 
 ## Tested on 30,000+ data points
 
-Total Calories is built and checked against its developer's own Apple Watch history: more than 30,000 step data points, compared with the totals in the Health app.
+Total Calories is built and checked against its developer's own Apple Watch history: more than 30,000 step data points, compared with the totals in the Health app. Since its April 2026 launch it has passed 2,900 downloads and averages 4.9 stars across 22 App Store ratings worldwide.
 
 ## Averages: TDEE and BMR (Vitals+)
 
