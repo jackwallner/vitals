@@ -8,8 +8,6 @@ Web page: https://jackwallner.com/ios/vitals/
 
 Total Calories is a total calories burned app for Apple Watch and iPhone. Active plus resting calories, steps, trends, and goals, all from Apple Health and all on your device. Free to start.
 
-iPhone · Apple Watch · Widgets
-
 4.9★ on the App Store · 2,900+ downloads
 
 [Download for free](https://apps.apple.com/us/app/total-calories-daily-tracker/id6761743504?pt=128748779&ct=jw-vitals-home&mt=8)
