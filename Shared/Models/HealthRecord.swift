@@ -23,7 +23,13 @@ final class DailyHealthRecord {
         MacroTotals(protein: proteinGrams, carbs: carbGrams, fat: fatGrams)
     }
 
-    private static let gregorian = Calendar(identifier: .gregorian)
+    /// Built per call: a stored `Calendar(identifier:)` keeps the time zone it
+    /// was created in, so after travel every key would land on the wrong day.
+    private static var gregorian: Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = Calendar.current.timeZone
+        return calendar
+    }
 
     init(date: Date, activeCalories: Double = 0, restingCalories: Double = 0, steps: Int = 0) {
         let normalized = Self.gregorian.startOfDay(for: date)

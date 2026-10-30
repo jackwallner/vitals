@@ -339,6 +339,25 @@ final class ClockBoundaryTests: XCTestCase {
         XCTAssertEqual(broken, 1)
     }
 
+    // Overnight report F02: cache keys follow the current time zone after the
+    // process has already used another one (travel with the app resident).
+    func testDayKeysFollowATimeZoneChangeInARunningProcess() throws {
+        let original = NSTimeZone.default
+        defer { NSTimeZone.default = original }
+        NSTimeZone.default = TimeZone(identifier: "America/Los_Angeles")!
+        _ = DailyHealthRecord.key(for: Date())
+        _ = DailyHealthRecord(date: Date())
+
+        let kiritimati = TimeZone(identifier: "Pacific/Kiritimati")!
+        NSTimeZone.default = kiritimati
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = kiritimati
+        let todayStart = calendar.startOfDay(for: Date())
+        XCTAssertEqual(DailyHealthRecord.key(for: todayStart), DailyHealthRecord.key(for: todayStart, timeZone: kiritimati))
+        XCTAssertEqual(DailyHealthRecord(date: todayStart.addingTimeInterval(3_600)).date, todayStart)
+        XCTAssertTrue(ExcludedDays.contains(todayStart, in: ExcludedDays.pausedKeys(since: todayStart, calendar: calendar)))
+    }
+
     // 8a500ea4: the recap windows are the 7 completed days before today. At
     // 00:00:01 the day that just ended is its newest day; the week straddling
     // the spring-forward change still has seven.
