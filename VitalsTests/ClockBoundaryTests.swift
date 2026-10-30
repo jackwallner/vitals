@@ -430,6 +430,79 @@ final class ClockBoundaryTests: XCTestCase {
         XCTAssertEqual(result.stepSampleDays, 13)
     }
 
+    /// Hourly buckets for each of the `days` days before `today`, `perHour` in
+    /// every hour from `from` up to (not including) `to`.
+    private func hourly(days: Int, before today: Date, perHour: Double, from: Int, to: Int) -> [Date: Double] {
+        var buckets: [Date: Double] = [:]
+        for offset in 1...days {
+            let day = la.date(byAdding: .day, value: -offset, to: today)!
+            for hour in from..<to {
+                buckets[day.addingTimeInterval(Double(hour) * 3_600)] = perHour
+            }
+        }
+        return buckets
+    }
+
+    // Overnight report F01: "usual by now" follows the user's own day. Someone
+    // who walks only after 17:00 has walked nothing by 08:00 on a usual day and
+    // everything by 20:00, whatever share of the clock day has gone by.
+    func testUsualByNowFollowsTheUsersOwnIntradayCurve() throws {
+        let today = try at(2026, 7, 22)
+        let intraday = PacingCalculator.IntradayHistory(
+            calories: hourly(days: 30, before: today, perHour: 100, from: 0, to: 24),
+            steps: hourly(days: 30, before: today, perHour: 3_000, from: 17, to: 20)
+        )
+        func pace(at hour: Int, _ minute: Int = 0) throws -> PacingResult {
+            PacingCalculator.compute(
+                calories: { _ in 2_400 }, steps: { _ in 9_000 },
+                comparison: .allDays, lookbackDays: 30, excluded: [],
+                now: try at(2026, 7, 22, hour, minute), calendar: la, intraday: intraday
+            )
+        }
+        XCTAssertEqual(try pace(at: 8).avgSteps, 0)
+        XCTAssertEqual(try pace(at: 20).avgSteps, 9_000)
+        // Inside an hour the current bucket counts pro rata.
+        XCTAssertEqual(try pace(at: 17, 30).avgSteps, 1_500)
+        XCTAssertEqual(try XCTUnwrap(try pace(at: 8).avgCalories), 800, accuracy: 0.001)
+        XCTAssertEqual(try pace(at: 8).avgStepsFullDay, 9_000)
+        XCTAssertEqual(ProjectionCalculator.projectedEndOfDay(
+            current: 800, usualByNow: Double(try XCTUnwrap(try pace(at: 8).avgSteps)), usualFullDay: 9_000
+        ), 9_800)
+    }
+
+    // With hourly history for only part of the lookback, the shape learned from
+    // those days scales the whole window's full-day average.
+    func testIntradayShapeScalesTheFullLookbackAverage() throws {
+        let now = try at(2026, 7, 22, 18)
+        let intraday = PacingCalculator.IntradayHistory(
+            calories: [:],
+            steps: hourly(days: 5, before: try at(2026, 7, 22), perHour: 1_000, from: 10, to: 20)
+        )
+        let result = PacingCalculator.compute(
+            calories: { _ in 2_000 }, steps: { _ in 12_000 },
+            comparison: .allDays, lookbackDays: 30, excluded: [],
+            now: now, calendar: la, intraday: intraday
+        )
+        // 8 of 10 walking hours are done by 18:00 on a usual day.
+        XCTAssertEqual(result.avgSteps, 9_600)
+        // No hourly calories: clock time, as before.
+        XCTAssertEqual(try XCTUnwrap(result.avgCalories), 1_500, accuracy: 0.001)
+    }
+
+    // Thin hourly history (one day) is not a usual day yet: keep clock time.
+    func testThinIntradayHistoryFallsBackToClockTime() throws {
+        let intraday = PacingCalculator.IntradayHistory(
+            calories: [:],
+            steps: hourly(days: 1, before: try at(2026, 7, 22), perHour: 3_000, from: 17, to: 20)
+        )
+        let result = PacingCalculator.compute(
+            calories: { _ in 2_400 }, steps: { _ in 9_000 },
+            comparison: .allDays, lookbackDays: 30, excluded: [],
+            now: try at(2026, 7, 22, 8), calendar: la, intraday: intraday
+        )
+        XCTAssertEqual(result.avgSteps, 3_000)
+    }
+
     // MARK: - Rollover and cache backfill
 
     // edded006: the day rollover finalizes exactly once, on the first wake after

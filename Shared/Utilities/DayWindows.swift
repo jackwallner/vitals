@@ -30,6 +30,65 @@ enum PacingCalculator {
         return min(now.timeIntervalSince(today) / end.timeIntervalSince(today), 1.0)
     }
 
+    /// Hourly HealthKit totals for recent days, keyed by the start of each hour.
+    /// They teach the calculator when in the day the user usually burns and
+    /// walks, so "usual by now" means usual by this time of day, not a share of
+    /// the clock day.
+    struct IntradayHistory {
+        let calories: [Date: Double]
+        let steps: [Date: Double]
+    }
+
+    /// How many recent days get hourly buckets. The shape they show scales the
+    /// whole lookback's full-day average.
+    static let intradayDays = 90
+
+    /// Fewer sample days with hourly data than this and the shape is not a usual
+    /// day yet, so the share of the clock day stands in.
+    static let minIntradayDays = 2
+
+    /// Running totals for the share of a usual day done by this time of day.
+    private struct Curve {
+        var byNow = 0.0
+        var fullDay = 0.0
+        var days = 0
+
+        mutating func add(_ buckets: [(start: Date, value: Double)]?, cutoff: Date) {
+            guard let buckets else { return }
+            let full = buckets.reduce(0) { $0 + $1.value }
+            guard full > 0 else { return }
+            byNow += buckets.reduce(0) { sum, bucket in
+                let done = min(max(cutoff.timeIntervalSince(bucket.start) / 3_600, 0), 1)
+                return sum + bucket.value * done
+            }
+            fullDay += full
+            days += 1
+        }
+
+        func share(fallback: Double) -> Double {
+            days >= PacingCalculator.minIntradayDays && fullDay > 0 ? byNow / fullDay : fallback
+        }
+    }
+
+    private static func groupByDay(
+        _ buckets: [Date: Double]?,
+        calendar: Calendar
+    ) -> [Date: [(start: Date, value: Double)]] {
+        guard let buckets else { return [:] }
+        return Dictionary(grouping: buckets.map { (start: $0.key, value: $0.value) }) {
+            calendar.startOfDay(for: $0.start)
+        }
+    }
+
+    /// The same local time of day as `now`, on `dayStart`'s day.
+    static func sameTimeOfDay(as now: Date, on dayStart: Date, calendar: Calendar = .current) -> Date {
+        let today = calendar.startOfDay(for: now)
+        let time = calendar.dateComponents([.hour, .minute, .second], from: now)
+        return calendar.date(
+            bySettingHour: time.hour ?? 0, minute: time.minute ?? 0, second: time.second ?? 0, of: dayStart
+        ) ?? dayStart.addingTimeInterval(now.timeIntervalSince(today))
+    }
+
     static func compute(
         calories: (Date) -> Double,
         steps: (Date) -> Double,
@@ -37,18 +96,21 @@ enum PacingCalculator {
         lookbackDays: Int,
         excluded: Set<String>,
         now: Date,
-        calendar: Calendar = .current
+        calendar: Calendar = .current,
+        intraday: IntradayHistory? = nil
     ) -> PacingResult {
         let today = calendar.startOfDay(for: now)
         let targetWeekday = calendar.component(.weekday, from: now)
         let fraction = dayFraction(now: now, calendar: calendar)
+        let hourlyCalories = groupByDay(intraday?.calories, calendar: calendar)
+        let hourlySteps = groupByDay(intraday?.steps, calendar: calendar)
 
-        var calorieWeighted = 0.0
-        var stepWeighted = 0.0
         var calorieFullDay = 0.0
         var stepFullDay = 0.0
         var calorieSampleDays = 0
         var stepSampleDays = 0
+        var calorieCurve = Curve()
+        var stepCurve = Curve()
 
         for dayOffset in 1...lookbackDays {
             guard let day = calendar.date(byAdding: .day, value: -dayOffset, to: today) else { continue }
@@ -59,19 +121,23 @@ enum PacingCalculator {
             // A day the user excluded is not a sample of their usual day.
             if ExcludedDays.contains(dayStart, in: excluded, timeZone: calendar.timeZone) { continue }
 
+            let cutoff = sameTimeOfDay(as: now, on: dayStart, calendar: calendar)
             let dayCal = calories(dayStart)
             let daySteps = steps(dayStart)
             if dayCal > 0 {
                 calorieSampleDays += 1
-                calorieWeighted += dayCal * fraction
                 calorieFullDay += dayCal
+                calorieCurve.add(hourlyCalories[dayStart], cutoff: cutoff)
             }
             if daySteps > 0 {
                 stepSampleDays += 1
-                stepWeighted += daySteps * fraction
                 stepFullDay += daySteps
+                stepCurve.add(hourlySteps[dayStart], cutoff: cutoff)
             }
         }
+
+        let calorieWeighted = calorieFullDay * calorieCurve.share(fallback: fraction)
+        let stepWeighted = stepFullDay * stepCurve.share(fallback: fraction)
 
         return PacingResult(
             avgCalories: calorieSampleDays > 0 ? calorieWeighted / Double(calorieSampleDays) : nil,
