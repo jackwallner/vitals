@@ -267,6 +267,147 @@ final class NewcomerAuditUITests: XCTestCase {
         shot(again, "t6-cold-return-settled")
     }
 
+    // MARK: - 7 First run, Don't Allow
+
+    /// The newcomer who declines the Health sheet. HealthKit never says whether a
+    /// read was refused, so Today sees an empty read; this records what it tells
+    /// them and where its recovery button leads. Run alone: the refusal sticks
+    /// to the simulator and would empty every other walk.
+    func test7_FirstRunDecliningHealthAccess() {
+        let app = launch(reset: true)
+        let cont = app.buttons["onboarding-continue"]
+        guard cont.waitForExistence(timeout: 30) else { return shot(app, "t7-no-welcome") }
+        sleep(1)
+        shot(app, "t7-welcome")
+        cont.tap()
+
+        let decline = app.buttons.matching(NSPredicate(format: "label == %@ OR identifier == %@", "Don't Allow", "UIA.Health.DontAllow.Button")).firstMatch
+        if decline.waitForExistence(timeout: 20) {
+            sleep(2)
+            shot(app, "t7-health-sheet", inventory: false)
+            decline.tap()
+            sleep(2)
+        } else {
+            note("t7: no Health sheet to decline within 20s")
+        }
+        guard app.staticTexts["Set your daily goals"].waitForExistence(timeout: 20) else { return shot(app, "t7-no-goals") }
+        shot(app, "t7-goals-after-declining")
+        app.buttons["onboarding-continue"].tap()
+
+        let soft = app.buttons["onboarding-get-started"]
+        guard soft.waitForExistence(timeout: 30) else { return shot(app, "t7-no-pitch") }
+        sleep(2)
+        // A newcomer who reads "Restore" and has nothing to restore.
+        let restore = app.buttons["Restore"]
+        if restore.exists, restore.isHittable {
+            note("t7: pitch Restore is \(restore.frame.size.debugDescription)")
+            restore.tap()
+            sleep(2)
+            shot(app, "t7-pitch-restore-2s", inventory: false)
+            sleep(5)
+            shot(app, "t7-pitch-restore-7s")
+        } else {
+            note("t7: no reachable Restore on the pitch")
+        }
+        soft.tap()
+        let left = Date()
+
+        let seconds = secondsToFirstNumber(app, since: left, limit: 12)
+        note("t7: calorie number after declining: \(seconds.map { "\(Int($0))s" } ?? "none within 12s")")
+        sleep(4)
+        shot(app, "t7-today-after-declining")
+        clearSheets(app, name: "t7")
+
+        // The recovery button in the banner, whichever one this build shows.
+        let recovery = app.buttons.matching(NSPredicate(format: "label IN {'Check Health Access','Enable Health','Open Health','Retry'}"))
+        note("t7: banner buttons: \((0..<recovery.count).map { recovery.element(boundBy: $0).label }.joined(separator: ", "))")
+        for label in ["Retry", "Check Health Access", "Enable Health"] {
+            let button = app.buttons[label]
+            guard button.exists, button.isHittable else { continue }
+            note("t7: '\(label)' is \(button.frame.size.debugDescription)")
+            button.tap()
+            sleep(4)
+            shot(app, "t7-after-\(label.replacingOccurrences(of: " ", with: "-").lowercased())", inventory: false)
+            if app.state != .runningForeground {
+                note("t7: '\(label)' left the app")
+                app.activate()
+                _ = app.wait(for: .runningForeground, timeout: 15)
+                sleep(2)
+            }
+        }
+        shot(app, "t7-today-after-recovery-taps")
+    }
+
+    // MARK: - 8 Empty Health tour
+
+    /// Everything a newcomer with no Health data opens next: Today, History,
+    /// Settings, the Upgrade tab. Named to run after test 7, so Health is still
+    /// refused and empty, and no seeding runs.
+    func test8_EmptyHealthTourOfTodayHistorySettingsUpgrade() {
+        let app = launch(skipOnboarding: true)
+        sleep(5)
+        clearSheets(app, name: "t8")
+        shot(app, "t8-today-empty")
+        audit(app, name: "t8-today-empty")
+
+        let history = app.buttons["tab-history"]
+        if history.waitForExistence(timeout: 10) {
+            history.tap()
+            sleep(4)
+            clearSheets(app, name: "t8")
+            shot(app, "t8-history-empty")
+            audit(app, name: "t8-history-empty")
+        }
+
+        let today = app.buttons["tab-today"]
+        if today.waitForExistence(timeout: 5) { today.tap(); sleep(2) }
+        openSettings(app, name: "t8")
+        let list = app.descendants(matching: .any)["settings-list"]
+        if list.waitForExistence(timeout: 15) {
+            sleep(1)
+            shot(app, "t8-settings-top")
+            audit(app, name: "t8-settings-top")
+            closeSettings(app)
+        }
+
+        let upgrade = app.buttons["tab-upgrade"]
+        if upgrade.waitForExistence(timeout: 10) {
+            upgrade.tap()
+            sleep(4)
+            shot(app, "t8-upgrade")
+            audit(app, name: "t8-upgrade")
+        }
+    }
+
+    // MARK: - 9 Exit offer after Get Started
+
+    /// The half-price sheet a newcomer in the offer arm meets after choosing the
+    /// free way out of the pitch. `-exitOffer.force` owes it at once; released
+    /// builds hold it until a return an hour later. Needs seeded Health, so run
+    /// it on a simulator that has not refused Health access.
+    func test9_ExitOfferAfterGetStarted() {
+        let app = launch(reset: true, seed: true, arguments: ["-exitOffer.force"])
+        _ = answerHealthSheet(app, name: "t9-launch")
+        guard let left = walkOnboarding(app, name: "t9") else { return }
+        let tiles = app.descendants(matching: .any)["exit-offer-tiles"]
+        let appeared = tiles.waitForExistence(timeout: 30)
+        note("t9: exit offer \(appeared ? "appeared \(Int(Date().timeIntervalSince(left)))s after Get Started" : "did not appear within 30s")")
+        sleep(1)
+        shot(app, "t9-exit-offer")
+        guard appeared else { return }
+        let noThanks = app.buttons["No thanks"]
+        note("t9: No thanks is \(noThanks.frame.size.debugDescription)")
+        noThanks.tap()
+        sleep(3)
+        shot(app, "t9-after-no-thanks")
+        let upgrade = app.buttons["tab-upgrade"]
+        if upgrade.waitForExistence(timeout: 5) {
+            upgrade.tap()
+            sleep(4)
+            shot(app, "t9-upgrade-after-offer")
+        }
+    }
+
     // MARK: - Walks
 
     /// Welcome, Health sheet, goals, pitch, Get Started. Returns the moment Get
@@ -344,8 +485,10 @@ final class NewcomerAuditUITests: XCTestCase {
 
     // MARK: - Moves
 
-    private func launch(reset: Bool = false, seed: Bool = false, skipOnboarding: Bool = false) -> XCUIApplication {
+    private func launch(reset: Bool = false, seed: Bool = false, skipOnboarding: Bool = false,
+                        arguments: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
+        app.launchArguments += arguments
         app.launchEnvironment["VITALS_RC_APP_USER_ID"] = Self.customer
         if reset { app.launchEnvironment["VITALS_RESET_STATE"] = "1" }
         if seed { app.launchEnvironment["VITALS_SEED_HEALTH"] = "1" }
@@ -453,6 +596,26 @@ final class NewcomerAuditUITests: XCTestCase {
     }
 
     // MARK: - Evidence
+
+    /// Apple's accessibility audit for what a thumb cares about: hit regions,
+    /// element descriptions and traits. Only elements on screen are kept, and a
+    /// finding never fails the test.
+    private func audit(_ app: XCUIApplication, name: String) {
+        var found: [String] = []
+        do {
+            try app.performAccessibilityAudit(for: [.hitRegion, .sufficientElementDescription, .trait]) { issue in
+                guard let target = issue.element, target.exists, target.isHittable else { return true }
+                let who = target.identifier.isEmpty ? target.label : target.identifier
+                found.append("\(issue.compactDescription): '\(who)' \(Int(target.frame.width))x\(Int(target.frame.height))")
+                return true
+            }
+        } catch {
+            found.append("audit could not run: \(error.localizedDescription)")
+        }
+        note("\(name) accessibility audit: \(found.isEmpty ? "no visible issues" : "\(found.count) issues")")
+        for line in found { note("  - \(line)") }
+    }
+
 
     private func note(_ text: String) {
         notes.append(text)
