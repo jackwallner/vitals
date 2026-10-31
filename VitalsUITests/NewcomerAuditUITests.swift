@@ -65,7 +65,7 @@ final class NewcomerAuditUITests: XCTestCase {
         let cont = app.buttons["onboarding-continue"]
         guard cont.waitForExistence(timeout: 30) else { return shot(app, "t2-no-welcome") }
         cont.tap()
-        _ = answerHealthSheet(app, name: "t2")
+        _ = answerHealthSheet(app, name: "t2", wait: 8)
         guard app.staticTexts["Set your daily goals"].waitForExistence(timeout: 20) else { return shot(app, "t2-no-goals") }
         sleep(1)
         shot(app, "t2-goals-idle")
@@ -113,7 +113,7 @@ final class NewcomerAuditUITests: XCTestCase {
         let app = launch(reset: true, seed: true)
         let began = Date()
         _ = answerHealthSheet(app, name: "t3-launch")
-        guard let left = walkOnboarding(app, name: "t3") else { return }
+        guard let left = walkOnboarding(app, name: "t3", sheetWait: 8) else { return }
         note("t3: launch to Get Started \(Int(left.timeIntervalSince(began)))s")
 
         let seconds = secondsToFirstNumber(app, since: left, limit: 40)
@@ -129,7 +129,7 @@ final class NewcomerAuditUITests: XCTestCase {
 
     func test4_LookAroundTodaySettingsHistoryUpgrade() {
         let app = launch(seed: true, skipOnboarding: true)
-        _ = answerHealthSheet(app, name: "t4")
+        _ = answerHealthSheet(app, name: "t4", wait: 25)
         _ = secondsToFirstNumber(app, since: Date(), limit: 40)
         clearSheets(app, name: "t4")
         shot(app, "t4-today")
@@ -201,7 +201,7 @@ final class NewcomerAuditUITests: XCTestCase {
     /// and what each of the ways out does.
     func test5_TrialSheetAndTheWayOut() {
         let app = launch(seed: true, skipOnboarding: true)
-        _ = answerHealthSheet(app, name: "t5")
+        _ = answerHealthSheet(app, name: "t5", wait: 6)
         _ = secondsToFirstNumber(app, since: Date(), limit: 40)
         let dismiss = app.buttons.matching(NSPredicate(format: "identifier == 'trial-pitch-dismiss' OR label IN {'Not now','No thanks','Maybe later'}")).firstMatch
         let started = Date()
@@ -233,7 +233,7 @@ final class NewcomerAuditUITests: XCTestCase {
 
     func test6_ReturnVisit() {
         let app = launch(seed: true, skipOnboarding: true)
-        _ = answerHealthSheet(app, name: "t6")
+        _ = answerHealthSheet(app, name: "t6", wait: 6)
         _ = secondsToFirstNumber(app, since: Date(), limit: 40)
         clearSheets(app, name: "t6")
         shot(app, "t6-first-visit")
@@ -413,7 +413,8 @@ final class NewcomerAuditUITests: XCTestCase {
 
     /// Welcome, Health sheet, goals, pitch, Get Started. Returns the moment Get
     /// Started was tapped, or nil when the walk could not finish.
-    private func walkOnboarding(_ app: XCUIApplication, name: String, expectHealthSheet: Bool = true) -> Date? {
+    private func walkOnboarding(_ app: XCUIApplication, name: String, expectHealthSheet: Bool = true,
+                                sheetWait: TimeInterval = 20) -> Date? {
         let cont = app.buttons["onboarding-continue"]
         guard cont.waitForExistence(timeout: 30) else {
             shot(app, "\(name)-no-welcome")
@@ -425,7 +426,7 @@ final class NewcomerAuditUITests: XCTestCase {
         note("\(name): welcome Continue is \(cont.frame.size.debugDescription)")
         cont.tap()
 
-        if expectHealthSheet { _ = answerHealthSheet(app, name: name) }
+        if expectHealthSheet { _ = answerHealthSheet(app, name: name, wait: sheetWait) }
         guard app.staticTexts["Set your daily goals"].waitForExistence(timeout: 20) else {
             shot(app, "\(name)-no-goals")
             note("\(name): goals page never rendered")
@@ -455,12 +456,12 @@ final class NewcomerAuditUITests: XCTestCase {
     /// Answers the HealthKit sheet the way a newcomer who wants numbers does:
     /// turn everything on, then Allow. False when no sheet came up.
     @discardableResult
-    private func answerHealthSheet(_ app: XCUIApplication, name: String) -> Bool {
+    private func answerHealthSheet(_ app: XCUIApplication, name: String, wait: TimeInterval = 20) -> Bool {
         let allow = app.buttons.matching(
             NSPredicate(format: "identifier == %@ OR label == %@", "UIA.Health.Allow.Button", "Allow")
         ).firstMatch
-        guard allow.waitForExistence(timeout: 20) else {
-            note("\(name): no Health sheet within 20s")
+        guard allow.waitForExistence(timeout: wait) else {
+            note("\(name): no Health sheet within \(Int(wait))s")
             return false
         }
         sleep(2)
