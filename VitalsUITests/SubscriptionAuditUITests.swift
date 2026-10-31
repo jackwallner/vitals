@@ -390,6 +390,56 @@ final class SubscriptionAuditUITests: XCTestCase {
         note("u7: 20s later: terms [\(terms(app))], restore text [\(restoreText(app))]")
     }
 
+    // MARK: - 8 The real Settings card, outside capture mode
+
+    /// Capture mode hides the Vitals+ card at the top of Settings, so no other
+    /// walk saw the upsell row. This runs the real first run (no capture
+    /// environment), opens Settings from Today and taps the upsell row. Run it
+    /// alone: it needs a first launch.
+    func test8_RealSettingsUpsellRowAsAFreeUser() {
+        let app = XCUIApplication()
+        app.launchEnvironment["VITALS_RC_APP_USER_ID"] = Self.customer
+        app.launch()
+        for page in ["welcome", "goals"] {
+            let next = app.buttons["onboarding-continue"]
+            guard next.waitForExistence(timeout: 40) else { return shot(app, "r8-no-\(page)") }
+            sleep(1)
+            next.tap()
+            dismissSystemSheet()
+            dismissSystemSheet()
+        }
+        let soft = app.buttons["onboarding-get-started"]
+        guard soft.waitForExistence(timeout: 40) else { return shot(app, "r8-no-pitch") }
+        soft.tap()
+        let offer = app.buttons["trial-pitch-dismiss"]
+        if offer.waitForExistence(timeout: 8) {
+            note("r8: a pitch sheet rose after Get Started, way out '\(Self.text(offer))' \(Self.size(offer))")
+            shot(app, "r8-after-get-started-sheet")
+            offer.tap()
+            sleep(2)
+        } else {
+            note("r8: no sheet within 8s of Get Started")
+        }
+
+        let gear = app.buttons["Settings"]
+        guard gear.waitForExistence(timeout: 40) else { return shot(app, "r8-no-gear") }
+        sleep(2)
+        shot(app, "r8-today")
+        gear.tap()
+        let list = app.descendants(matching: .any)["settings-list"]
+        guard list.waitForExistence(timeout: 20) else { return shot(app, "r8-no-settings") }
+        sleep(2)
+        shot(app, "r8-settings-top")
+        audit(app, name: "r8-settings-top")
+
+        let unlock = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'Unlock Vitals+'")).firstMatch
+        guard unlock.waitForExistence(timeout: 5) else { return note("r8: no 'Unlock Vitals+' row on the first screen") }
+        note("r8: upsell row '\(Self.text(unlock))' \(Self.size(unlock))")
+        unlock.tap()
+        readPitch(app, name: "r8-unlock-row")
+        shot(app, "r8-settings-after-pitch", inventory: false)
+    }
+
     // MARK: - Moves
 
     /// A Settings switch row by its label. Its frame spans the whole row; the
