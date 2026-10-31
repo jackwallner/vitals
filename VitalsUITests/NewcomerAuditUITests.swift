@@ -383,12 +383,13 @@ final class NewcomerAuditUITests: XCTestCase {
 
     /// The half-price sheet a newcomer in the offer arm meets after choosing the
     /// free way out of the pitch. `-exitOffer.force` owes it at once; released
-    /// builds hold it until a return an hour later. Needs seeded Health, so run
-    /// it on a simulator that has not refused Health access.
+    /// builds hold it until a return an hour later. Runs on the screenshot
+    /// fixtures, as the exit offer tests do, so Health state does not matter.
     func test9_ExitOfferAfterGetStarted() {
-        let app = launch(reset: true, seed: true, arguments: ["-exitOffer.force"])
-        _ = answerHealthSheet(app, name: "t9-launch")
-        guard let left = walkOnboarding(app, name: "t9") else { return }
+        let app = launch(reset: true, arguments: ["-exitOffer.force"], environment: [
+            "VITALS_SCREENSHOT_MODE": "1", "VITALS_SCREENSHOT_SCENE": "onboarding", "VITALS_SCREENSHOT_KEEP_APPEARANCE": "1",
+        ])
+        guard let left = walkOnboarding(app, name: "t9", expectHealthSheet: false) else { return }
         let tiles = app.descendants(matching: .any)["exit-offer-tiles"]
         let appeared = tiles.waitForExistence(timeout: 30)
         note("t9: exit offer \(appeared ? "appeared \(Int(Date().timeIntervalSince(left)))s after Get Started" : "did not appear within 30s")")
@@ -412,7 +413,7 @@ final class NewcomerAuditUITests: XCTestCase {
 
     /// Welcome, Health sheet, goals, pitch, Get Started. Returns the moment Get
     /// Started was tapped, or nil when the walk could not finish.
-    private func walkOnboarding(_ app: XCUIApplication, name: String) -> Date? {
+    private func walkOnboarding(_ app: XCUIApplication, name: String, expectHealthSheet: Bool = true) -> Date? {
         let cont = app.buttons["onboarding-continue"]
         guard cont.waitForExistence(timeout: 30) else {
             shot(app, "\(name)-no-welcome")
@@ -424,7 +425,7 @@ final class NewcomerAuditUITests: XCTestCase {
         note("\(name): welcome Continue is \(cont.frame.size.debugDescription)")
         cont.tap()
 
-        _ = answerHealthSheet(app, name: name)
+        if expectHealthSheet { _ = answerHealthSheet(app, name: name) }
         guard app.staticTexts["Set your daily goals"].waitForExistence(timeout: 20) else {
             shot(app, "\(name)-no-goals")
             note("\(name): goals page never rendered")
@@ -486,9 +487,10 @@ final class NewcomerAuditUITests: XCTestCase {
     // MARK: - Moves
 
     private func launch(reset: Bool = false, seed: Bool = false, skipOnboarding: Bool = false,
-                        arguments: [String] = []) -> XCUIApplication {
+                        arguments: [String] = [], environment: [String: String] = [:]) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments += arguments
+        for (key, value) in environment { app.launchEnvironment[key] = value }
         app.launchEnvironment["VITALS_RC_APP_USER_ID"] = Self.customer
         if reset { app.launchEnvironment["VITALS_RESET_STATE"] = "1" }
         if seed { app.launchEnvironment["VITALS_SEED_HEALTH"] = "1" }
