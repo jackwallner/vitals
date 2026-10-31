@@ -1,73 +1,60 @@
-Total Calories shows your daily burn and total calories burned (active + resting) plus step count on your Apple Watch face, Home Screen widgets, and Lock Screen for free. No subscription needed for the basics. No account. Your health data never leaves your phone.
+Total Calories shows the total calories you burn each day, active plus resting, and your step count on your Apple Watch face, iPhone Home Screen and Lock Screen. The watch complications, widgets and daily dashboard are free, with no account, and your health data stays on your iPhone.
 
-If you've ever wished your Apple Watch face just showed your total calories burned for the day, this is that app.
+Apple Watch's Move goal counts active calories only. Total Calories adds your resting burn from Apple Health, so you see the full number you burn in a day.
 
-ON YOUR APPLE WATCH (FREE)
-- Total calories burned complications for every watch face style: circular, rectangular, inline, and corner.
-- Live step count complication too.
-- Watch app shows today at a glance plus 30-day trends.
-- Goals you set on iPhone sync straight to the watch.
+ON YOUR APPLE WATCH
+• Total calories complications for circular, rectangular, inline and corner slots on any watch face that supports them
+• A step count complication
+• A watch app with today's totals and the last 30 days
+• Goals you set on iPhone sync to the watch
 
-ON YOUR HOME SCREEN & LOCK SCREEN (FREE)
-- Home Screen widgets in small, medium, and large sizes.
-- Lock Screen widgets in circular and rectangular layouts.
-- Widgets respect the metrics you've turned on and the goals you've set.
-- Full daily totals visible without opening the app.
+HOME SCREEN AND LOCK SCREEN WIDGETS
+• Small, medium and large Home Screen widgets
+• Circular and rectangular Lock Screen widgets
+• Widgets show the metrics and goals you turned on, and a tap opens the app
 
-THE DASHBOARD (FREE)
-- Total daily calories burned on one clean ring.
-- Daily steps with progress bar and goal.
-- Pacing indicator: are you ahead or behind your usual day at this time?
-- Ask Siri for today's calories or steps.
-- Optional alert when you hit your daily goal.
-- iPhone Duo: Today and History side by side.
+TODAY
+• Total calories burned on one ring, with steps and a goal bar
+• A pace check that compares now with your usual day at this time
+• Ask Siri for today's calories or steps
+• An optional alert when you reach your daily goal
 
-BODY PROFILE & BMI (FREE)
-- Your BMI, calculated from the height and weight already in Apple Health.
-- No Health data? Enter height and weight by hand instead.
-- BMI category reference, with a plain-English note on what the number does and doesn't mean.
-- Body fat percentage and calorie context are part of Vitals+.
+HISTORY
+• 7-day, 30-day, 90-day and 1-year views with bar charts, trend arrows and peak days
+• CSV export of your daily data
 
-MACROS (VITALS+)
-- Protein, carbs, and fat beside your calories, read from the app that already logs your food to Apple Health.
-- Nothing to log twice. If it is in Health, it is here.
-- Track all three, or only the macro you actually count.
-- Optional gram goals, plus macro averages, charts, CSV columns, and PDF reports.
+BMI
+• Your BMI from the height and weight already in Apple Health, or entered by hand
+• A plain note on what the number does and does not tell you
 
-HISTORY (FREE)
-- 7 / 30 / 90 / 365-day views and any custom date range.
-- Trend arrows, peak days, and clean bar charts.
-- CSV data export.
+GOALS
+• Optional daily calorie and step goals, or no goals at all
+• Pace compared with the same weekday or all days, over the last 14 days, 30 days, 90 days or year
 
-GOALS THAT WORK FOR YOU
-- Optional daily calorie and step goals.
-- Or skip goals and use it as a clean counter. Your call.
-- Pacing comparison: same weekday vs. all days, configurable lookback (14 / 30 / 90 days / 1 year).
+FREE AND VITALS+
+Everything above is free and does not expire. Vitals+ is an optional upgrade, as a monthly or yearly subscription, each with a 7-day free trial for eligible new subscribers, or a one-time lifetime purchase. Vitals+ adds:
+• Active vs. resting: how much of today's burn came from activity
+• Net Deficit: calories burned minus the food energy logged in Apple Health
+• Macros: protein, carbs and fat from the food app that already writes to Apple Health, with optional gram goals
+• TDEE and BMR: your 30-day maintenance and resting burn averages from Apple Health
+• End-of-day projections for calories and steps at your current pace
+• Goal streaks and a Sunday recap of this week against last week
+• Custom date ranges in History, with summary PDF reports
+• Deep Trends: any period compared with the one before it
+• Body fat and calorie context next to your BMI
+• Excluded days, to keep sick days and days off the wrist out of your averages
+• An evening reminder when a goal is still open
 
-VITALS+ (OPTIONAL)
-A small monthly, yearly, or lifetime upgrade unlocks:
-- Macros: protein, carbs, and fat from the food you already log to Apple Health
-- TDEE and BMR reference figures: your 30-day maintenance and resting energy averages, straight from Apple Health
-- Body fat percentage alongside your BMI
-- Active vs. resting calorie breakdown
-- Net Deficit: calories burned minus food energy from Apple Health
-- Monthly Summary PDFs ready to share
-- Custom date-range PDF reports
-- Deep Trends: period-over-period comparison cards
-- Evening reminder
-A free trial is offered to new subscribers.
+PRIVACY
+• Apple Health access is read only. The app never writes to your health records
+• Your health data is stored on your iPhone and never uploaded
+• Reports are generated on your iPhone
+• No ads, no tracking and no account
+• Purchases are processed by Apple and RevenueCat, which never receive your health data
 
-PRIVATE BY DESIGN
-- Read-only Apple Health access. The app never writes to your health records.
-- Your health data is stored on your device and is never uploaded.
-- Reports are generated on-device.
-- No ads. No tracking. No accounts.
-- Purchases are processed by Apple and RevenueCat, which never receive your health data.
+Prices are shown in the app before you buy and vary by region. Payment is charged to your Apple ID at confirmation. Subscriptions renew automatically unless canceled at least 24 hours before the end of the current period. Manage or cancel in Settings > Apple ID > Subscriptions.
 
-Total Calories is not a medical device and is not intended to diagnose, treat, or prevent any medical condition. Always consult a healthcare professional for medical advice.
-
-Subscription Details
-Vitals+ is available as an auto-renewing subscription (Monthly or Yearly, both with a 7-day free trial) or as a one-time Lifetime purchase. Prices are shown in the app before you buy and vary by region. Payment is charged to your Apple ID at confirmation. Subscriptions renew automatically unless canceled at least 24 hours before the end of the current period. Manage or cancel anytime in Settings → Apple ID → Subscriptions.
+Total Calories is not a medical device and is not intended to diagnose, treat or prevent any medical condition. Talk with a healthcare professional for medical advice.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
