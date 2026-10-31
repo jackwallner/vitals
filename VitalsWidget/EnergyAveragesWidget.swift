@@ -325,7 +325,7 @@ struct EnergyAveragesWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: EnergyAveragesProvider()) { entry in
             EnergyAveragesEntryView(entry: entry)
-                .widgetURL(DeepLink.metric(.calories).url)
+                .widgetURL(DeepLink.today.url)
         }
         .configurationDisplayName("Maintenance (TDEE)")
         .description("Your running 30-day TDEE and BMR average from Apple Health.")

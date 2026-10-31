@@ -157,14 +157,6 @@ struct VitalsEntry: TimelineEntry {
     var staleDate: Date? = nil
     /// Last seven days, oldest first, for the large widget.
     var week: [WidgetDay] = []
-
-    /// Where a tap on the whole widget goes: the first metric it shows.
-    var primaryLink: URL {
-        if showCalories { return DeepLink.metric(.calories).url }
-        if showSteps { return DeepLink.metric(.steps).url }
-        if showNetCalories { return DeepLink.metric(.net).url }
-        return DeepLink.today.url
-    }
 }
 
 struct WidgetDay: Hashable {
@@ -265,7 +257,7 @@ struct SmallWidgetView: View {
                         .foregroundStyle(Theme.textTertiary)
                 }
             }
-            .widgetURL(entry.primaryLink)
+            .widgetURL(DeepLink.today.url)
             .containerBackground(.fill.tertiary, for: .widget)
         } else {
             VStack(spacing: 8) {
@@ -319,7 +311,6 @@ struct MediumWidgetView: View {
                 HStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: columnSpacing) {
                     if entry.showCalories {
-                        Link(destination: DeepLink.metric(.calories).url) {
                         VStack(alignment: .leading, spacing: innerSpacing) {
                             Label("Calories", systemImage: "flame.fill")
                                 .font(.caption2)
@@ -337,10 +328,8 @@ struct MediumWidgetView: View {
                                 }
                             }
                         }
-                        }
                     }
                     if entry.showSteps {
-                        Link(destination: DeepLink.metric(.steps).url) {
                         VStack(alignment: .leading, spacing: innerSpacing) {
                             Label("Steps", systemImage: "figure.walk")
                                 .font(.caption2)
@@ -358,10 +347,8 @@ struct MediumWidgetView: View {
                                 }
                             }
                         }
-                        }
                     }
                     if entry.showNetCalories {
-                        Link(destination: DeepLink.metric(.net).url) {
                         VStack(alignment: .leading, spacing: innerSpacing) {
                             Label("Net Deficit", systemImage: "fork.knife")
                                 .font(.caption2)
@@ -371,7 +358,6 @@ struct MediumWidgetView: View {
                                 .foregroundStyle(entry.netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.6)
-                        }
                         }
                     }
                     if metricCount == 0 {
@@ -403,7 +389,7 @@ struct MediumWidgetView: View {
                 }
                 } // close inner HStack
             } // close outer VStack
-            .widgetURL(entry.primaryLink)
+            .widgetURL(DeepLink.today.url)
             .containerBackground(.fill.tertiary, for: .widget)
         } else {
             HStack(spacing: 12) {
@@ -442,7 +428,7 @@ struct CircularAccessoryView: View {
             .gaugeStyle(.accessoryCircular)
             .tint(Theme.caloriesPrimary)
             .opacity(staleOpacity)
-            .widgetURL(DeepLink.metric(.calories).url)
+            .widgetURL(DeepLink.today.url)
             .containerBackground(.fill.tertiary, for: .widget)
         } else {
             VStack(spacing: 1) {
@@ -456,7 +442,7 @@ struct CircularAccessoryView: View {
                     .foregroundStyle(.secondary)
             }
             .opacity(staleOpacity)
-            .widgetURL(DeepLink.metric(.calories).url)
+            .widgetURL(DeepLink.today.url)
             .containerBackground(.fill.tertiary, for: .widget)
         }
     }

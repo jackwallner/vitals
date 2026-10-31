@@ -1,9 +1,8 @@
 import SwiftUI
 import WidgetKit
 
-/// Today on top, the week underneath. Each metric is its own tap target into
-/// that metric's history; a goal-hit day draws its bar in full color so a
-/// streak reads at a glance (the StandBy and Home Screen view of the loop).
+/// Today on top, the week underneath; a tap opens Home. A goal-hit day draws
+/// its bar in full color so a streak reads at a glance (the StandBy and Home Screen view of the loop).
 struct LargeWidgetView: View {
     let entry: VitalsEntry
 
@@ -12,46 +11,40 @@ struct LargeWidgetView: View {
             VStack(alignment: .leading, spacing: 12) {
                 header
                 if entry.showCalories {
-                    Link(destination: DeepLink.metric(.calories).url) {
-                        MetricBlock(
-                            title: String(localized: "Calories"),
-                            icon: "flame.fill",
-                            tint: Theme.caloriesPrimary,
-                            value: entry.totalCalories.formatted(.number.precision(.fractionLength(0))),
-                            goalText: entry.calGoalEnabled ? entry.calorieGoal.formatted(.number.precision(.fractionLength(0))) : nil,
-                            progress: entry.calGoalEnabled ? entry.totalCalories / entry.calorieGoal : nil,
-                            bars: entry.week.map(\.calories),
-                            goal: entry.calGoalEnabled ? entry.calorieGoal : nil,
-                            days: entry.week.map(\.date)
-                        )
-                    }
+                    MetricBlock(
+                        title: String(localized: "Calories"),
+                        icon: "flame.fill",
+                        tint: Theme.caloriesPrimary,
+                        value: entry.totalCalories.formatted(.number.precision(.fractionLength(0))),
+                        goalText: entry.calGoalEnabled ? entry.calorieGoal.formatted(.number.precision(.fractionLength(0))) : nil,
+                        progress: entry.calGoalEnabled ? entry.totalCalories / entry.calorieGoal : nil,
+                        bars: entry.week.map(\.calories),
+                        goal: entry.calGoalEnabled ? entry.calorieGoal : nil,
+                        days: entry.week.map(\.date)
+                    )
                 }
                 if entry.showSteps {
-                    Link(destination: DeepLink.metric(.steps).url) {
-                        MetricBlock(
-                            title: String(localized: "Steps"),
-                            icon: "figure.walk",
-                            tint: Theme.stepsPrimary,
-                            value: entry.steps.formatted(.number),
-                            goalText: entry.stepGoalEnabled ? entry.stepGoal.formatted(.number) : nil,
-                            progress: entry.stepGoalEnabled ? Double(entry.steps) / Double(entry.stepGoal) : nil,
-                            bars: entry.week.map { Double($0.steps) },
-                            goal: entry.stepGoalEnabled ? Double(entry.stepGoal) : nil,
-                            days: entry.week.map(\.date)
-                        )
-                    }
+                    MetricBlock(
+                        title: String(localized: "Steps"),
+                        icon: "figure.walk",
+                        tint: Theme.stepsPrimary,
+                        value: entry.steps.formatted(.number),
+                        goalText: entry.stepGoalEnabled ? entry.stepGoal.formatted(.number) : nil,
+                        progress: entry.stepGoalEnabled ? Double(entry.steps) / Double(entry.stepGoal) : nil,
+                        bars: entry.week.map { Double($0.steps) },
+                        goal: entry.stepGoalEnabled ? Double(entry.stepGoal) : nil,
+                        days: entry.week.map(\.date)
+                    )
                 }
                 if entry.showNetCalories {
-                    Link(destination: DeepLink.metric(.net).url) {
-                        HStack {
-                            Label("Net Deficit", systemImage: "fork.knife")
-                                .font(.caption)
-                                .foregroundStyle(Theme.textSecondary)
-                            Spacer()
-                            Text(entry.netDeficit, format: .number.precision(.fractionLength(0)).sign(strategy: .always()))
-                                .font(Theme.bigNumber(22))
-                                .foregroundStyle(entry.netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
-                        }
+                    HStack {
+                        Label("Net Deficit", systemImage: "fork.knife")
+                            .font(.caption)
+                            .foregroundStyle(Theme.textSecondary)
+                        Spacer()
+                        Text(entry.netDeficit, format: .number.precision(.fractionLength(0)).sign(strategy: .always()))
+                            .font(Theme.bigNumber(22))
+                            .foregroundStyle(entry.netDeficit >= 0 ? Theme.netDeficitPositive : Theme.netDeficitNegative)
                     }
                 }
             }
