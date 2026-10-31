@@ -289,7 +289,114 @@ final class SubscriptionAuditUITests: XCTestCase {
         note("v5: manage or cancel words in Settings: \(manageWords(again))")
     }
 
+    // MARK: - 6 Locked rows, tapped where a thumb lands
+
+    /// Run 1 tapped the middle of each Settings row, which is dead space between
+    /// the label and the switch, so it never reached a pitch. This taps those dead
+    /// zones on purpose (label, middle), then the switch itself, then the info dot
+    /// that explains a locked row.
+    func test6_SettingsLockedRowsDeadZonesSwitchAndInfoDot() {
+        let app = launch(scene: "settings", keepAppearance: true)
+        let list = app.descendants(matching: .any)["settings-list"]
+        guard list.waitForExistence(timeout: 40) else { return shot(app, "s6-no-settings") }
+        sleep(2)
+
+        let netDeficit = switchRow(app, "Net Deficit")
+        guard netDeficit.waitForExistence(timeout: 5), netDeficit.isHittable else {
+            return note("s6: Net Deficit row not reachable on the first screen")
+        }
+        for (zone, dx) in [("label", 0.06), ("middle", 0.62)] {
+            netDeficit.coordinate(withNormalizedOffset: CGVector(dx: dx, dy: 0.5)).tap()
+            let reacted = app.buttons["trial-pitch-dismiss"].waitForExistence(timeout: 4)
+            note("s6: tap on the Net Deficit \(zone) (dx \(dx)): pitch \(reacted ? "appeared" : "did not appear within 4s"), switch value '\(netDeficit.value as? String ?? "?")'")
+            shot(app, "s6-net-deficit-\(zone)-tap", inventory: false)
+            if reacted {
+                app.buttons["trial-pitch-dismiss"].tap()
+                sleep(2)
+            }
+        }
+
+        for title in ["Net Deficit", "Show Macros", "TDEE & BMR"] {
+            let row = switchRow(app, title)
+            guard row.waitForExistence(timeout: 3), row.isHittable else {
+                note("s6: '\(title)' not reachable")
+                continue
+            }
+            let slug = title.lowercased()
+                .replacingOccurrences(of: " & ", with: "-and-")
+                .replacingOccurrences(of: " ", with: "-")
+            row.coordinate(withNormalizedOffset: CGVector(dx: 0.88, dy: 0.5)).tap()
+            readPitch(app, name: "s6-\(slug)")
+            note("s6: '\(title)' after the way out: switch value '\(row.value as? String ?? "?")', Settings still on screen \(list.exists)")
+        }
+
+        let about = app.buttons["About TDEE & BMR"]
+        if about.waitForExistence(timeout: 3), about.isHittable {
+            about.tap()
+            sleep(1)
+            shot(app, "s6-tdee-info")
+            note("s6: info dot on 'TDEE & BMR' opened a callout in place, no sheet: pitch visible \(app.buttons["trial-pitch-dismiss"].exists)")
+            about.tap()
+        } else {
+            note("s6: no reachable 'About TDEE & BMR' info dot")
+        }
+
+        for title in ["Evening Reminder", "Weekly Recap"] {
+            let row = switchRow(app, title)
+            for _ in 0..<8 where !(row.exists && row.isHittable) { list.swipeUp() }
+            guard row.exists, row.isHittable else {
+                note("s6: '\(title)' not reachable")
+                continue
+            }
+            let slug = title.lowercased().replacingOccurrences(of: " ", with: "-")
+            row.coordinate(withNormalizedOffset: CGVector(dx: 0.88, dy: 0.5)).tap()
+            readPitch(app, name: "s6-\(slug)")
+            note("s6: '\(title)' after the way out: switch value '\(row.value as? String ?? "?")'")
+        }
+    }
+
+    // MARK: - 7 How long the Restore answer replaces the renewal terms
+
+    /// Run 1 saw the renewal terms under "Start Free Trial" replaced by the Restore
+    /// answer. This checks how long that lasts: after leaving the tab, after a
+    /// plan change, and after waiting.
+    func test7_UpgradeTabRestoreAnswerReplacesTermsUntilNextTap() {
+        let app = launch(scene: "dashboard")
+        guard app.buttons["tab-upgrade"].waitForExistence(timeout: 40) else { return shot(app, "u7-no-tabs") }
+        clearSheets(app, name: "u7")
+        app.buttons["tab-upgrade"].tap()
+        let buy = app.buttons["paywall-purchase"]
+        guard buy.waitForExistence(timeout: 30) else { return shot(app, "u7-no-paywall") }
+        sleep(2)
+        note("u7: before Restore: CTA '\(Self.text(buy))', terms [\(terms(app))]")
+
+        let restore = app.buttons["Restore"]
+        guard restore.waitForExistence(timeout: 3) else { return note("u7: no Restore control") }
+        restore.tap()
+        _ = app.buttons["Restoring…"].waitForNonExistence(timeout: 20)
+        sleep(1)
+        note("u7: right after Restore: CTA '\(Self.text(buy))', terms [\(terms(app))], restore text [\(restoreText(app))]")
+        shot(app, "u7-after-restore", inventory: false)
+
+        app.buttons["tab-today"].tap()
+        sleep(2)
+        app.buttons["tab-upgrade"].tap()
+        sleep(2)
+        shot(app, "u7-after-leaving-and-returning")
+        note("u7: after Today and back: CTA '\(Self.text(buy))', terms [\(terms(app))], restore text [\(restoreText(app))]")
+
+        sleep(20)
+        shot(app, "u7-20s-later", inventory: false)
+        note("u7: 20s later: terms [\(terms(app))], restore text [\(restoreText(app))]")
+    }
+
     // MARK: - Moves
+
+    /// A Settings switch row by its label. Its frame spans the whole row; the
+    /// switch itself is a separate, unlabelled element at the trailing edge.
+    private func switchRow(_ app: XCUIApplication, _ title: String) -> XCUIElement {
+        app.switches.matching(NSPredicate(format: "label BEGINSWITH %@", title)).firstMatch
+    }
 
     private func launch(scene: String, arguments: [String] = [], keepAppearance: Bool = false) -> XCUIApplication {
         let app = XCUIApplication()
