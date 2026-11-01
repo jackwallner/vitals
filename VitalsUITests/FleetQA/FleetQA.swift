@@ -529,7 +529,12 @@ enum Audit {
             // Dynamic Type and clipped-text checks re-render the app at other text
             // sizes, which shows on video and moves the layout under the other
             // oracles. The accessibility persona measures what AX3 really draws instead.
-            try app.performAccessibilityAudit(for: XCUIAccessibilityAuditType.all.subtracting([.dynamicType, .textClipped])) { issue in
+            // On the unfolded Duo the contrast check outlives the audit's timeout on a
+            // dense split screen and keeps running in testmanagerd until the sim stalls.
+            // The phone personas check the same colors.
+            var types = XCUIAccessibilityAuditType.all.subtracting([.dynamicType, .textClipped])
+            if QA.persona == "duo" { types.remove(.contrast) }
+            try app.performAccessibilityAudit(for: types) { issue in
                 // The audit walks hidden tabs too. Skip what nobody can see,
                 // within a budget so a long screen cannot stall the gate.
                 if let target = issue.element, checked < 40 {
