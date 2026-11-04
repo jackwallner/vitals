@@ -1768,22 +1768,22 @@ struct HistoryView: View {
         case .calories:
             VStack(spacing: 12) {
                 CardRow {
-                    AverageCard(label: String(localized: "Avg Calories"), value: avgCalories.formatted(.number.precision(.fractionLength(0))), color: Theme.caloriesPrimary)
+                    AverageCard(label: String(localized: "Avg Calories"), value: avgCalories.formatted(.number.precision(.fractionLength(0))), color: Theme.caloriesText)
                     if let peak = peakCalorieDay {
-                        PeakCard(label: String(localized: "Best Day"), value: peak.totalCalories.formatted(.number.precision(.fractionLength(0))), date: peak.date, color: Theme.caloriesPrimary)
+                        PeakCard(label: String(localized: "Best Day"), value: peak.totalCalories.formatted(.number.precision(.fractionLength(0))), date: peak.date, color: Theme.caloriesText)
                     }
                 }
-                WideTotalCard(label: String(localized: "metric.totalCalories", defaultValue: "Total Calories"), value: totalCalories.formatted(.number.precision(.fractionLength(0))), color: Theme.caloriesPrimary)
+                WideTotalCard(label: String(localized: "metric.totalCalories", defaultValue: "Total Calories"), value: totalCalories.formatted(.number.precision(.fractionLength(0))), color: Theme.caloriesText)
             }
         case .steps:
             VStack(spacing: 12) {
                 CardRow {
-                    AverageCard(label: String(localized: "Avg Steps"), value: avgSteps.formatted(.number), color: Theme.stepsPrimary)
+                    AverageCard(label: String(localized: "Avg Steps"), value: avgSteps.formatted(.number), color: Theme.stepsText)
                     if let peak = peakStepDay {
-                        PeakCard(label: String(localized: "Best Day"), value: peak.steps.formatted(.number), date: peak.date, color: Theme.stepsPrimary)
+                        PeakCard(label: String(localized: "Best Day"), value: peak.steps.formatted(.number), date: peak.date, color: Theme.stepsText)
                     }
                 }
-                WideTotalCard(label: String(localized: "Total Steps"), value: totalSteps.formatted(.number), color: Theme.stepsPrimary)
+                WideTotalCard(label: String(localized: "Total Steps"), value: totalSteps.formatted(.number), color: Theme.stepsText)
             }
         case .net:
             if !netRecords.isEmpty {
@@ -1961,7 +1961,7 @@ struct HistoryView: View {
                 date: rec.date,
                 valueText: valueText,
                 delta: delta,
-                tint: metric.tint,
+                tint: metric.textTint,
                 isExcluded: isExcluded(rec)
             )
         }
@@ -3133,7 +3133,10 @@ private struct ChartCard<Content: View>: View {
                     .font(.headline)
                     .foregroundStyle(Theme.textPrimary)
             }
+            // The bars come out as one tiny element per day; the recent-days list
+            // below carries the same figures at a usable size.
             content
+                .accessibilityHidden(true)
         }
         .padding(Theme.cardPadding)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))

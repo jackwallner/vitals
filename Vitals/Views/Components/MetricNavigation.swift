@@ -27,6 +27,16 @@ enum HistoryMetric: String, Identifiable, Hashable {
         case .macros: return Theme.macrosBrand
         }
     }
+
+    /// The tint darkened for text on a card.
+    var textTint: Color {
+        switch self {
+        case .calories: return Theme.caloriesText
+        case .steps: return Theme.stepsText
+        case .net: return Theme.netDeficitBrand
+        case .macros: return Theme.macrosBrand
+        }
+    }
 }
 
 /// A muted, gently pulsing placeholder used to reserve layout space while data
