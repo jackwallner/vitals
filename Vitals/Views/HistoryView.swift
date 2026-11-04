@@ -300,7 +300,7 @@ struct HistoryView: View {
     /// days only. Daily bars draw every day and carry `excluded` so the bar can
     /// be dimmed. A missing bar would read as missing data, which is the one
     /// thing an exclusion must not look like.
-    private var calorieChartData: [(date: Date, value: Double, id: UUID, excluded: Bool)] {
+    private var calorieChartData: [(date: Date, value: Double, id: Date, excluded: Bool)] {
         if shouldAggregateByMonth {
             return aggregateByMonth(records: countedRecords).map { ($0.monthStart, $0.avgCalories, $0.id, false) }
         } else if shouldAggregateByWeek {
@@ -310,7 +310,7 @@ struct HistoryView: View {
         }
     }
 
-    private var stepsChartData: [(date: Date, value: Double, id: UUID, excluded: Bool)] {
+    private var stepsChartData: [(date: Date, value: Double, id: Date, excluded: Bool)] {
         if shouldAggregateByMonth {
             return aggregateByMonth(records: countedRecords).map { ($0.monthStart, Double($0.avgSteps), $0.id, false) }
         } else if shouldAggregateByWeek {
@@ -334,10 +334,10 @@ struct HistoryView: View {
 
     /// Daily bars keep excluded days (dimmed) like the calorie and step charts;
     /// week and month buckets average the counted days only.
-    private var netDeficitChartData: [(date: Date, value: Double, id: UUID, excluded: Bool)] {
+    private var netDeficitChartData: [(date: Date, value: Double, id: Date, excluded: Bool)] {
         if shouldAggregateByMonth {
             let months = aggregateByMonth(records: netRecords)
-            return months.map { month -> (Date, Double, UUID, Bool) in
+            return months.map { month -> (Date, Double, Date, Bool) in
                 let netVals = netRecords.filter {
                     Calendar.current.isDate($0.date, equalTo: month.monthStart, toGranularity: .month)
                 }.map { netDeficit(for: $0) }
@@ -346,7 +346,7 @@ struct HistoryView: View {
             }
         } else if shouldAggregateByWeek {
             let weeks = aggregateByWeek(records: netRecords)
-            return weeks.map { week -> (Date, Double, UUID, Bool) in
+            return weeks.map { week -> (Date, Double, Date, Bool) in
                 let netVals = netRecords.filter {
                     let weekStart = DateHelpers.startOfWeek($0.date)
                     return Calendar.current.isDate(weekStart, equalTo: week.weekStart, toGranularity: .day)
@@ -1978,7 +1978,7 @@ struct HistoryView: View {
         return .day
     }
 
-    private func selectedChartItem(for selectedDate: Date?, in data: [(date: Date, value: Double, id: UUID)]) -> (date: Date, value: Double, id: UUID)? {
+    private func selectedChartItem(for selectedDate: Date?, in data: [(date: Date, value: Double, id: Date)]) -> (date: Date, value: Double, id: Date)? {
         guard let selectedDate else { return nil }
         let calendar = Calendar.current
         if let exactBucket = data.first(where: { calendar.isDate($0.date, equalTo: selectedDate, toGranularity: chartDateGranularity) }) {
@@ -3138,7 +3138,9 @@ private struct ChartCard<Content: View>: View {
 }
 
 struct RecentDayRow: Identifiable {
-    let id = UUID()
+    /// The day, not a fresh UUID: these rows are rebuilt on every body pass, and
+    /// a new identity makes an animated refresh crossfade doubled rows.
+    var id: Date { date }
     let date: Date
     /// One tinted piece of the day's value. Single-number metrics have exactly
     /// one; macros have one per tracked macro so "155C" is drawn in the carb
@@ -3149,8 +3151,7 @@ struct RecentDayRow: Identifiable {
     /// Day the user took out of every figure. Still listed, drawn quieter.
     let isExcluded: Bool
 
-    struct Segment: Identifiable {
-        let id = UUID()
+    struct Segment {
         let text: String
         let color: Color
     }
@@ -3232,7 +3233,7 @@ private struct RecentDaysList: View {
                         }
                         Spacer()
                         HStack(spacing: 5) {
-                            ForEach(Array(row.segments.enumerated()), id: \.element.id) { segmentIndex, segment in
+                            ForEach(Array(row.segments.enumerated()), id: \.offset) { segmentIndex, segment in
                                 Text(segment.text)
                                     .foregroundStyle(segment.color)
                                 if segmentIndex < row.segments.count - 1 {
@@ -3281,7 +3282,7 @@ private struct RecentDaysList: View {
 }
 
 struct DayRecord: Identifiable {
-    let id = UUID()
+    var id: Date { date }
     let date: Date
     let activeCalories: Double
     let restingCalories: Double
@@ -3293,7 +3294,7 @@ struct DayRecord: Identifiable {
 // MARK: - Aggregated Data for Charts
 
 struct WeekRecord: Identifiable {
-    let id = UUID()
+    var id: Date { weekStart }
     let weekStart: Date
     let totalCalories: Double
     let avgCalories: Double
@@ -3303,7 +3304,7 @@ struct WeekRecord: Identifiable {
 }
 
 struct MonthRecord: Identifiable {
-    let id = UUID()
+    var id: Date { monthStart }
     let monthStart: Date
     let totalCalories: Double
     let avgCalories: Double
