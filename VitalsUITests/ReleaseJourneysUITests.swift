@@ -99,6 +99,29 @@ final class ReleaseJourneysUITests: XCTestCase {
         QA.checkpoint(app, "trial-sheet-dismissed")
     }
 
+    /// The Calories detail, and a range change on it, both draw from the cache
+    /// at once. The gate's video scores these two transitions for flicker, which
+    /// is what catches old and new values crossfading on top of each other
+    /// (QA ledger Q005). Recent Days must not blank out during the change.
+    func testCaloriesDetailRangeChange() {
+        let app = launchDashboard()
+        clearTrialPitch(app)
+        let historyTab = app.buttons["tab-history"]
+        if historyTab.exists { historyTab.tap() }
+        let link = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'chart-card-link-'")).firstMatch
+        XCTAssertTrue(link.waitForExistence(timeout: 20), "Calories link never rendered")
+        clearTrialPitch(app)
+        link.tap()
+        let row = app.descendants(matching: .any)["recent-day-row"].firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 5), "Calories detail arrived without Recent Days")
+        QA.checkpoint(app, "calories-detail")
+
+        clearTrialPitch(app)
+        app.buttons["detail-period-30D"].tap()
+        XCTAssertTrue(row.exists, "the range change blanked Recent Days")
+        QA.checkpoint(app, "calories-detail-30d")
+    }
+
     func testSettingsSheet() {
         continueAfterFailure = false
         let app = XCUIApplication()

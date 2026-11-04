@@ -843,6 +843,7 @@ struct HistoryView: View {
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             Task { await loadHistory() }
         }
+        .onAppear { primeFromCache() }
         .task {
             if ScreenshotConfig.wantsHistoryTab {
                 selectedPeriod = .month
@@ -1623,6 +1624,7 @@ struct HistoryView: View {
                         selectedPeriod = period
                     }
                 }
+                .accessibilityIdentifier("detail-period-\(period.rawValue)")
             }
         }
         .padding(3)
@@ -1727,6 +1729,7 @@ struct HistoryView: View {
         // away from this pane's title. The pane draws its own instead.
         .toolbar(isUnfoldedPane ? .hidden : .automatic, for: .navigationBar)
         .background(InteractivePopGestureEnabler())
+        .onAppear { primeFromCache() }
         .task { await loadHistory() }
         .onChange(of: selectedPeriod) { _, _ in
             if selectedPeriod != .custom {
@@ -2051,9 +2054,9 @@ struct HistoryView: View {
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
     }
 
-    /// Wipes view state so a period/range change shows a clean loading bar
-    /// instead of flashing the previous period's charts and trends until the
-    /// new fetch lands.
+    /// Wipes view state so a period/range change never flashes the previous
+    /// period's charts and trends, then paints the new period from the cache.
+    /// The loading bar only shows when the cache has nothing for it.
     private func resetForReload() {
         records = []
         previousRecords = []
@@ -2067,6 +2070,22 @@ struct HistoryView: View {
         selectedMacroDate = nil
         animateContent = false
         isLoading = true
+        primeFromCache()
+    }
+
+    /// Paints the selected period's cached days at once, with no fade, so the
+    /// screen never slides in or switches range over a blank pane. HealthKit
+    /// values replace these when they arrive. Custom ranges skip the cache.
+    private func primeFromCache() {
+        guard records.isEmpty, let days = selectedPeriod.days,
+              let cached = try? healthKit.fetchCachedHistory(days: days),
+              cached.contains(where: { $0.active > 0 || $0.resting > 0 || $0.steps > 0 })
+        else { return }
+        records = cached.map {
+            DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
+        }
+        isLoading = false
+        animateContent = true
     }
 
     private func loadHistory() async {
@@ -2086,22 +2105,7 @@ struct HistoryView: View {
         selectedMacroDate = nil
         loadErrorMessage = nil
 
-        // Cache prime: paint instantly from SwiftData when we have any cached
-        // data for this period. HealthKit refresh below overwrites with fresh
-        // values when they arrive, so the user never stares at a blank spinner
-        // on returning visits. Only applies to fixed periods — custom ranges
-        // skip the cache (uncommon path, not worth a from/to overload).
-        if records.isEmpty, let days = period.days,
-           let cached = try? healthKit.fetchCachedHistory(days: days),
-           cached.contains(where: { $0.active > 0 || $0.resting > 0 || $0.steps > 0 }) {
-            records = cached.map {
-                DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
-            }
-            isLoading = false
-            if !animateContent {
-                withAnimation(.easeOut(duration: reduceMotion ? 0.2 : 0.4)) { animateContent = true }
-            }
-        }
+        primeFromCache()
 
         let isFirstLoad = records.isEmpty
         if isFirstLoad { isLoading = true }
@@ -2170,15 +2174,15 @@ struct HistoryView: View {
                 }
             }
 
-            withAnimation(.easeOut(duration: 0.3)) {
-                records = history.map {
-                    DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
-                }
-                foodByDay = foodMap
-                macrosByDay = macroMap
-                macrosLoadFailed = macroFailed
-                foodLoadFailed = foodFailed
+            // Not animated: an animated swap crossfades every number and chart
+            // mark, drawing the old and new values on top of each other.
+            records = history.map {
+                DayRecord(date: $0.date, activeCalories: $0.active, restingCalories: $0.resting, steps: $0.steps)
             }
+            foodByDay = foodMap
+            macrosByDay = macroMap
+            macrosLoadFailed = macroFailed
+            foodLoadFailed = foodFailed
             // Persist the fetched history to the shared cache so the watch can read it.
             try? healthKit.saveHistoryToCache(history: history)
 
