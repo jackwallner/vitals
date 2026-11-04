@@ -22,9 +22,9 @@ paths:
 # Vitals: UI localization (2026-10-28)
 
 The app, iOS widgets, Watch app, Watch complications, App Intents, and
-notifications ship in English plus 35 languages: ar, cs, da, de, el, es, et,
-fa, fi, fr, he, hi, hr, hu, id, it, ja, ko, lv, ms, nb, nl, pl, pt-BR, pt-PT,
-ro, ru, sk, sv, th, tr, uk, vi, zh-Hans, and zh-Hant. The 31 priority locales
+notifications ship in English plus 39 languages: ar, bg, cs, da, de, el, es, et,
+fa, fi, fr, he, hi, hr, hu, id, it, ja, ka, ko, lt, lv, ms, nb, nl, pl, pt-BR, pt-PT,
+ro, ru, sk, sl, sv, th, tr, uk, vi, zh-Hans, and zh-Hant. The 31 priority locales
 are de, fr, es, ja, ar, pl, it, nl, zh-Hans, pt-BR, sv, he, th, da, fi, vi,
 ru, zh-Hant, id, hu, nb, ro, cs, uk, tr, el, pt-PT, ko, sk, ms, and hr. Keep
 the existing et, fa, hi, and lv translations too.

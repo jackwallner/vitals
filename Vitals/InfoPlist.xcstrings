@@ -10,6 +10,12 @@
             "value" : "يقرأ Total Calories الطاقة النشطة وطاقة الراحة وعدد الخطوات، واختياريًا طاقة الطعام والطول والوزن ونسبة الدهون من تطبيق صحتي لعرض تقدمك اليومي ومؤشر كتلة الجسم وملف جسمك. لا يكتب Total Calories أي بيانات في صحتي أبدًا."
           }
         },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Calories чете от Apple Health данни за вашата активна енергия, енергия в покой и брой стъпки, както и по избор данни за енергията от храната, ръста, теглото и телесните мазнини, за да показва дневния ви напредък, индекса на телесна маса (BMI) и телесния ви профил. Total Calories никога не записва здравни данни."
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -112,10 +118,22 @@
             "value" : "Total Caloriesは、毎日の進捗、BMI、からだのプロフィールを表示するために、ヘルスケアからアクティブエネルギー、安静時消費エネルギー、歩数、および任意で摂取エネルギー、身長、体重、体脂肪率を読み取ります。ヘルスケアにデータを書き込むことはありません。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Calories კითხულობს Apple Health-იდან თქვენს აქტიურ ენერგიას, მოსვენების ენერგიას, ნაბიჯების რაოდენობას, სურვილისამებრ, საკვებიდან მიღებულ ენერგიას და, სურვილისამებრ, სიმაღლის, წონისა და სხეულის ცხიმის მონაცემებს, რათა აჩვენოს თქვენი დღიური პროგრესი, სხეულის მასის ინდექსი (BMI) და სხეულის პროფილი. Total Calories არასოდეს წერს ჯანმრთელობის მონაცემებს."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Total Calories는 일일 진행 상황, BMI, 신체 프로필을 보여주기 위해 Apple 건강에서 활동 에너지, 휴식 에너지, 걸음 수와 선택적으로 식이 에너지, 키, 체중, 체지방 데이터를 읽어요. Total Calories는 Apple 건강에 데이터를 절대 기록하지 않아요."
+          }
+        },
+        "lt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Calories nuskaito iš Apple Health jūsų aktyviąją energiją, ramybės būsenos energiją, žingsnių skaičių ir, pasirinktinai, su maistu gautą energiją bei ūgio, svorio ir kūno riebalų duomenis, kad rodytų jūsų dienos pažangą, kūno masės indeksą (KMI) ir kūno profilį. Total Calories niekada neįrašo sveikatos duomenų."
           }
         },
         "lv" : {
@@ -178,6 +196,12 @@
             "value" : "Total Calories číta z aplikácie Zdravie aktívnu energiu, bazálnu energiu, počet krokov a prípadne aj energiu prijatú stravou a údaje o výške, hmotnosti a telesnom tuku. Zobrazuje váš denný pokrok, BMI a telesný profil a nikdy nezapisuje údaje do aplikácie Zdravie."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Calories bere podatke o vaši aktivni energiji, energiji v mirovanju in številu korakov ter po želji podatke o energiji iz hrane, višini, teži in telesni maščobi iz Apple Health, da prikaže vaš dnevni napredek, indeks telesne mase (BMI) in telesni profil. Total Calories nikoli ne zapisuje zdravstvenih podatkov."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -229,6 +253,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "لا يكتب Total Calories أي بيانات في تطبيق صحتي."
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Calories не записва никакви данни в Apple Health."
           }
         },
         "cs" : {
@@ -333,10 +363,22 @@
             "value" : "Total Caloriesはヘルスケアにデータを書き込みません。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Calories არ წერს მონაცემებს Apple Health-ში."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Total Calories는 Apple 건강에 어떤 데이터도 기록하지 않아요."
+          }
+        },
+        "lt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Calories neįrašo jokių duomenų į Apple Health."
           }
         },
         "lv" : {
@@ -397,6 +439,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Total Calories nezapisuje žiadne údaje do aplikácie Zdravie."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Calories ne zapisuje nobenih podatkov v Apple Health."
           }
         },
         "sv" : {

@@ -4,9 +4,9 @@ import Testing
 @Suite("Localization")
 struct LocalizationTests {
     static let languages = [
-        "ar", "cs", "da", "de", "el", "es", "fi", "fr", "he", "hr", "hu", "id", "it",
-        "ja", "ko", "ms", "nb", "nl", "pl", "pt-BR", "pt-PT", "ro", "ru", "sk", "sv",
-        "th", "tr", "uk", "vi", "zh-Hans", "zh-Hant",
+        "ar", "bg", "cs", "da", "de", "el", "es", "fi", "fr", "he", "hr", "hu", "id", "it",
+        "ja", "ka", "ko", "lt", "ms", "nb", "nl", "pl", "pt-BR", "pt-PT", "ro", "ru", "sk",
+        "sl", "sv", "th", "tr", "uk", "vi", "zh-Hans", "zh-Hant",
     ]
 
     private func bundle(_ language: String) -> Bundle? {

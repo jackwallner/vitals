@@ -10,6 +10,12 @@
             "value" : "السعرات المحروقة اليوم في ${applicationName}"
           }
         },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изгорени калории днес в приложението ${applicationName}"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -106,10 +112,22 @@
             "value" : "${applicationName}で今日の消費カロリー"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დღეს დაწვული კალორიები აპში ${applicationName}"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "${applicationName}에서 오늘 소모한 칼로리"
+          }
+        },
+        "lt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šiandien sudegintos kalorijos programėlėje ${applicationName}"
           }
         },
         "lv" : {
@@ -172,6 +190,12 @@
             "value" : "Kalórie spálené dnes v aplikácii ${applicationName}"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Danes porabljene kalorije v aplikaciji ${applicationName}"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -223,6 +247,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "اعرض سعراتي في ${applicationName}"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Провери калориите ми в приложението ${applicationName}"
           }
         },
         "cs" : {
@@ -321,10 +351,22 @@
             "value" : "${applicationName}でカロリーを確認"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეამოწმე ჩემი კალორიები აპში ${applicationName}"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "${applicationName}에서 내 칼로리 확인"
+          }
+        },
+        "lt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patikrink mano kalorijas programėlėje ${applicationName}"
           }
         },
         "lv" : {
@@ -387,6 +429,12 @@
             "value" : "Ukáž moje kalórie v aplikácii ${applicationName}"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preveri moje kalorije v aplikaciji ${applicationName}"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -438,6 +486,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "اعرض خطواتي في ${applicationName}"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Провери стъпките ми в приложението ${applicationName}"
           }
         },
         "cs" : {
@@ -536,10 +590,22 @@
             "value" : "${applicationName}で歩数を確認"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეამოწმე ჩემი ნაბიჯები აპში ${applicationName}"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "${applicationName}에서 내 걸음 수 확인"
+          }
+        },
+        "lt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patikrink mano žingsnius programėlėje ${applicationName}"
           }
         },
         "lv" : {
@@ -602,6 +668,12 @@
             "value" : "Ukáž moje kroky v aplikácii ${applicationName}"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preveri moje korake v aplikaciji ${applicationName}"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -653,6 +725,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "كم سعرة حرقت في ${applicationName}"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Колко калории съм изгорил в приложението ${applicationName}"
           }
         },
         "cs" : {
@@ -751,10 +829,22 @@
             "value" : "${applicationName}で消費カロリーを教えて"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "რამდენი კალორია დავწვი აპში ${applicationName}"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "${applicationName}에서 내가 칼로리를 얼마나 태웠어?"
+          }
+        },
+        "lt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kiek kalorijų sudeginau programėlėje ${applicationName}"
           }
         },
         "lv" : {
@@ -817,6 +907,12 @@
             "value" : "Koľko kalórií mám spálených v aplikácii ${applicationName}"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koliko kalorij sem porabil v aplikaciji ${applicationName}"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -868,6 +964,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "كم خطوة مشيت في ${applicationName}"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Колко стъпки съм направил в приложението ${applicationName}"
           }
         },
         "cs" : {
@@ -966,10 +1068,22 @@
             "value" : "${applicationName}で歩数を教えて"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "რამდენი ნაბიჯი გავიარე აპში ${applicationName}"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "${applicationName}에서 내가 몇 걸음 걸었어?"
+          }
+        },
+        "lt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kiek žingsnių nuėjau programėlėje ${applicationName}"
           }
         },
         "lv" : {
@@ -1032,6 +1146,12 @@
             "value" : "Koľko krokov mám zaznamenaných v aplikácii ${applicationName}"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koliko korakov sem naredil v aplikaciji ${applicationName}"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1083,6 +1203,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "خطوات اليوم في ${applicationName}"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стъпки днес в приложението ${applicationName}"
           }
         },
         "cs" : {
@@ -1181,10 +1307,22 @@
             "value" : "${applicationName}で今日の歩数"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დღევანდელი ნაბიჯები აპში ${applicationName}"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "${applicationName}에서 오늘 걸음 수"
+          }
+        },
+        "lt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šiandienos žingsniai programėlėje ${applicationName}"
           }
         },
         "lv" : {
@@ -1245,6 +1383,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dnešné kroky v aplikácii ${applicationName}"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Današnji koraki v aplikaciji ${applicationName}"
           }
         },
         "sv" : {

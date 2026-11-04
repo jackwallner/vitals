@@ -14,9 +14,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE_DIRS = ("Shared", "Vitals", "VitalsWidget", "VitalsWatch", "VitalsWatchWidget")
 SUPPORTED_LANGUAGES = (
-    "ar", "cs", "da", "de", "el", "es", "et", "fa", "fi", "fr", "he", "hi", "hr",
-    "hu", "id", "it", "ja", "ko", "lv", "ms", "nb", "nl", "pl", "pt-BR", "pt-PT",
-    "ro", "ru", "sk", "sv", "th", "tr", "uk", "vi", "zh-Hans", "zh-Hant",
+    "ar", "bg", "cs", "da", "de", "el", "es", "et", "fa", "fi", "fr", "he", "hi", "hr",
+    "hu", "id", "it", "ja", "ka", "ko", "lt", "lv", "ms", "nb", "nl", "pl", "pt-BR", "pt-PT",
+    "ro", "ru", "sk", "sl", "sv", "th", "tr", "uk", "vi", "zh-Hans", "zh-Hant",
 )
 CATALOGS = (
     "Shared/Localizable.xcstrings",
@@ -303,6 +303,14 @@ def main() -> int:
             if loose_format_key(key) not in shared_lookup:
                 line = source.count("\n", 0, match.start()) + 1
                 problems.append(f'{path.relative_to(ROOT)}:{line}: no shared catalog key for "{key}"')
+
+    # The paywall writes these price labels into a sentence that adds its own period.
+    strings = catalog_data.get("Shared/Localizable.xcstrings", {}).get("strings", {})
+    for key in ("%@ / day", "%@ / week", "%@ / month", "%@ / year"):
+        for language, localization in strings.get(key, {}).get("localizations", {}).items():
+            for unit in localization_values(localization):
+                if unit.get("value", "").endswith("."):
+                    problems.append(f'"{key}" [{language}] ends in a period and doubles it on the paywall')
 
     if problems:
         print("\n".join(problems))
