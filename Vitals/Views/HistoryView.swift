@@ -3133,10 +3133,12 @@ private struct ChartCard<Content: View>: View {
                     .font(.headline)
                     .foregroundStyle(Theme.textPrimary)
             }
-            // The bars come out as one tiny element per day; the recent-days list
+            // The bars come out as one tiny element per day; one element for the
+            // whole chart keeps its axis text reachable, and the recent-days list
             // below carries the same figures at a usable size.
             content
-                .accessibilityHidden(true)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(title)
         }
         .padding(Theme.cardPadding)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
