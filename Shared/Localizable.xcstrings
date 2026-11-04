@@ -7769,6 +7769,250 @@
         }
       }
     },
+    "%@ calories. Active %@, resting %@." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏%1$@ سعرة. نشطة %2$@، أثناء الراحة %3$@."
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ ккал. Активни: %2$@, в покой: %3$@."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kcal. Aktivní %2$@, klidové %3$@."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kalorier. Aktiv forbrænding: %2$@, hvileforbrænding: %3$@."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ Kalorien. Aktiv %2$@, Ruhe %3$@."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ θερμίδες. Ενεργές %2$@, ηρεμίας %3$@."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ calories. Active %2$@, resting %3$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ calorías. Activas %2$@, en reposo %3$@."
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kalorit. Aktiivsed kalorid: %2$@, puhkeoleku kalorid: %3$@."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏%1$@ کیلوکالری. فعال %2$@، استراحت %3$@."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kaloria. Aktiiviset kalorit: %2$@, lepoenergia: %3$@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ calories, dont %2$@ actives et %3$@ au repos."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏%1$@ קלוריות. פעילות %2$@, מנוחה %3$@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ कैलोरी। सक्रिय %2$@, विश्राम %3$@।"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kcal. Aktivne %2$@, u mirovanju %3$@."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kalória. Aktív %2$@, nyugalmi %3$@."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kalori. Aktif %2$@, istirahat %3$@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ calorie. Attive %2$@, a riposo %3$@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@カロリー。アクティブ%@、安静時%@。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ კკალ. აქტიური: %2$@, მოსვენების: %3$@."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@칼로리. 활동 %2$@, 휴식 %3$@."
+          }
+        },
+        "lt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kcal. Aktyviosios: %2$@, ramybės: %3$@."
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kcal. Aktīvās: %2$@, miera stāvoklī: %3$@."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kalori. Aktif %2$@, rehat %3$@."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kalorier. Aktive %2$@, hvile %3$@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ calorieën. Actief %2$@, rust %3$@."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kcal. Aktywne %2$@, spoczynkowe %3$@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ calorias. Ativas %2$@, em repouso %3$@."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ calorias. Ativas %2$@, em repouso %3$@."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calorii: %1$@. Active: %2$@, în repaus: %3$@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ ккал. Активные %2$@, в покое %3$@."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kcal. Aktívne %2$@, pokojové %3$@."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kcal. Aktivne %2$@, v mirovanju %3$@."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kalorier. Aktiva %2$@, i vila %3$@."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ แคลอรี (กิจกรรม %2$@, ขณะพัก %3$@)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ kalori. Aktif %2$@, dinlenme %3$@."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ ккал. Активні %2$@, у спокої %3$@."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ calo. Hoạt động %2$@, nghỉ %3$@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 卡路里。活动 %@，静息 %@。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ 大卡。活動 %2$@，靜息 %3$@。"
+          }
+        }
+      }
+    },
     "%@ net" : {
       "localizations" : {
         "ar" : {
@@ -8485,6 +8729,494 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "今天已消耗 %1$@ / %2$@ 大卡。"
+          }
+        }
+      }
+    },
+    "%@ of %@ calories" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏%1$@ من %2$@ سعرة"
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ от %2$@ ккал"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ z %2$@ kcal"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ af %2$@ kalorier"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ von %2$@ Kalorien"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ από %2$@ θερμίδες"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ of %2$@ calories"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ de %2$@ calorías"
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ / %2$@ kalorit"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏%1$@ از %2$@ کیلوکالری"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ / %2$@ kaloria"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ calories sur %2$@"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏%1$@ מתוך %2$@ קלוריות"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@ में से %1$@ कैलोरी"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ od %2$@ kcal"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ / %2$@ kalória"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ dari %2$@ kalori"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ di %2$@ calorie"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@カロリー中%1$@カロリー"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ / %2$@ კკალ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@칼로리 중 %1$@칼로리"
+          }
+        },
+        "lt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ iš %2$@ kcal"
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ no %2$@ kcal"
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ daripada %2$@ kalori"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ av %2$@ kalorier"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ van %2$@ calorieën"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ z %2$@ kcal"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ de %2$@ calorias"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ de %2$@ calorias"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calorii: %1$@ din %2$@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ из %2$@ ккал"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ z %2$@ kcal"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ od %2$@ kcal"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ av %2$@ kalorier"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ จาก %2$@ แคลอรี"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ / %2$@ kalori"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ з %2$@ ккал"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ trên %2$@ calo"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ / %@ 卡路里"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ / %2$@ 大卡"
+          }
+        }
+      }
+    },
+    "%@ of %@ calories. Active %@, resting %@." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏%1$@ من %2$@ سعرة. نشطة %3$@، أثناء الراحة %4$@."
+          }
+        },
+        "bg" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ от %2$@ ккал. Активни: %3$@, в покой: %4$@."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ z %2$@ kcal. Aktivní %3$@, klidové %4$@."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ af %2$@ kalorier. Aktiv forbrænding: %3$@, hvileforbrænding: %4$@."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ von %2$@ Kalorien. Aktiv %3$@, Ruhe %4$@."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ από %2$@ θερμίδες. Ενεργές %3$@, ηρεμίας %4$@."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ of %2$@ calories. Active %3$@, resting %4$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ de %2$@ calorías. Activas %3$@, en reposo %4$@."
+          }
+        },
+        "et" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ / %2$@ kalorit. Aktiivsed kalorid: %3$@, puhkeoleku kalorid: %4$@."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏%1$@ از %2$@ کیلوکالری. فعال %3$@، استراحت %4$@."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ / %2$@ kaloria. Aktiiviset kalorit: %3$@, lepoenergia: %4$@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ calories sur %2$@, dont %3$@ actives et %4$@ au repos."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "‏%1$@ מתוך %2$@ קלוריות. פעילות %3$@, מנוחה %4$@."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@ में से %1$@ कैलोरी। सक्रिय %3$@, विश्राम %4$@।"
+          }
+        },
+        "hr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ od %2$@ kcal. Aktivne %3$@, u mirovanju %4$@."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ / %2$@ kalória. Aktív %3$@, nyugalmi %4$@."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ dari %2$@ kalori. Aktif %3$@, istirahat %4$@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ di %2$@ calorie. Attive %3$@, a riposo %4$@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@カロリー中%1$@カロリー。アクティブ%3$@、安静時%4$@。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ / %2$@ კკალ. აქტიური: %3$@, მოსვენების: %4$@."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@칼로리 중 %1$@칼로리. 활동 %3$@, 휴식 %4$@."
+          }
+        },
+        "lt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ iš %2$@ kcal. Aktyviosios: %3$@, ramybės: %4$@."
+          }
+        },
+        "lv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ no %2$@ kcal. Aktīvās: %3$@, miera stāvoklī: %4$@."
+          }
+        },
+        "ms" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ daripada %2$@ kalori. Aktif %3$@, rehat %4$@."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ av %2$@ kalorier. Aktive %3$@, hvile %4$@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ van %2$@ calorieën. Actief %3$@, rust %4$@."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ z %2$@ kcal. Aktywne %3$@, spoczynkowe %4$@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ de %2$@ calorias. Ativas %3$@, em repouso %4$@."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ de %2$@ calorias. Ativas %3$@, em repouso %4$@."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calorii: %1$@ din %2$@. Active: %3$@, în repaus: %4$@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ из %2$@ ккал. Активные %3$@, в покое %4$@."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ z %2$@ kcal. Aktívne %3$@, pokojové %4$@."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ od %2$@ kcal. Aktivne %3$@, v mirovanju %4$@."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ av %2$@ kalorier. Aktiva %3$@, i vila %4$@."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ จาก %2$@ แคลอรี (กิจกรรม %3$@, ขณะพัก %4$@)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ / %2$@ kalori. Aktif %3$@, dinlenme %4$@."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ з %2$@ ккал. Активні %3$@, у спокої %4$@."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ trên %2$@ calo. Hoạt động %3$@, nghỉ %4$@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ / %@ 卡路里。活动 %@，静息 %@。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ / %2$@ 大卡。活動 %3$@，靜息 %4$@。"
           }
         }
       }
@@ -15905,250 +16637,6 @@
         }
       }
     },
-    "%lld calories. Active %lld, resting %lld." : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "‏%1$lld سعرة. نشطة %2$lld، أثناء الراحة %3$lld."
-          }
-        },
-        "bg" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld ккал. Активни: %2$lld, в покой: %3$lld."
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kcal. Aktivní %2$lld, klidové %3$lld."
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kalorier. Aktiv forbrænding: %2$lld, hvileforbrænding: %3$lld."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld Kalorien. Aktiv %2$lld, Ruhe %3$lld."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld θερμίδες. Ενεργές %2$lld, ηρεμίας %3$lld."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld calories. Active %2$lld, resting %3$lld."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld calorías. Activas %2$lld, en reposo %3$lld."
-          }
-        },
-        "et" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kalorit. Aktiivsed kalorid: %2$lld, puhkeoleku kalorid: %3$lld."
-          }
-        },
-        "fa" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "‏%1$lld کیلوکالری. فعال %2$lld، استراحت %3$lld."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kaloria. Aktiiviset kalorit: %2$lld, lepoenergia: %3$lld."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld calories, dont %2$lld actives et %3$lld au repos."
-          }
-        },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "‏%1$lld קלוריות. פעילות %2$lld, מנוחה %3$lld."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld कैलोरी। सक्रिय %2$lld, विश्राम %3$lld।"
-          }
-        },
-        "hr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kcal. Aktivne %2$lld, u mirovanju %3$lld."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kalória. Aktív %2$lld, nyugalmi %3$lld."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kalori. Aktif %2$lld, istirahat %3$lld."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld calorie. Attive %2$lld, a riposo %3$lld."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lldカロリー。アクティブ%lld、安静時%lld。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld კკალ. აქტიური: %2$lld, მოსვენების: %3$lld."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld칼로리. 활동 %2$lld, 휴식 %3$lld."
-          }
-        },
-        "lt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kcal. Aktyviosios: %2$lld, ramybės: %3$lld."
-          }
-        },
-        "lv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kcal. Aktīvās: %2$lld, miera stāvoklī: %3$lld."
-          }
-        },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kalori. Aktif %2$lld, rehat %3$lld."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kalorier. Aktive %2$lld, hvile %3$lld."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld calorieën. Actief %2$lld, rust %3$lld."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kcal. Aktywne %2$lld, spoczynkowe %3$lld."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld calorias. Ativas %2$lld, em repouso %3$lld."
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld calorias. Ativas %2$lld, em repouso %3$lld."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calorii: %1$lld. Active: %2$lld, în repaus: %3$lld."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld ккал. Активные %2$lld, в покое %3$lld."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kcal. Aktívne %2$lld, pokojové %3$lld."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kcal. Aktivne %2$lld, v mirovanju %3$lld."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kalorier. Aktiva %2$lld, i vila %3$lld."
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld แคลอรี (กิจกรรม %2$lld, ขณะพัก %3$lld)"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld kalori. Aktif %2$lld, dinlenme %3$lld."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld ккал. Активні %2$lld, у спокої %3$lld."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld calo. Hoạt động %2$lld, nghỉ %3$lld."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld 卡路里。活动 %lld，静息 %lld。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld 大卡。活動 %2$lld，靜息 %3$lld。"
-          }
-        }
-      }
-    },
     "%lld day calorie goal streak" : {
       "localizations" : {
         "ar" : {
@@ -20595,494 +21083,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "淨 %lld 大卡"
-          }
-        }
-      }
-    },
-    "%lld of %lld calories" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "‏%1$lld من %2$lld سعرة"
-          }
-        },
-        "bg" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld от %2$lld ккал"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld z %2$lld kcal"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld af %2$lld kalorier"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld von %2$lld Kalorien"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld από %2$lld θερμίδες"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld of %2$lld calories"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld de %2$lld calorías"
-          }
-        },
-        "et" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld / %2$lld kalorit"
-          }
-        },
-        "fa" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "‏%1$lld از %2$lld کیلوکالری"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld / %2$lld kaloria"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld calories sur %2$lld"
-          }
-        },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "‏%1$lld מתוך %2$lld קלוריות"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%2$lld में से %1$lld कैलोरी"
-          }
-        },
-        "hr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld od %2$lld kcal"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld / %2$lld kalória"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld dari %2$lld kalori"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld di %2$lld calorie"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%2$lldカロリー中%1$lldカロリー"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld / %2$lld კკალ"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%2$lld칼로리 중 %1$lld칼로리"
-          }
-        },
-        "lt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld iš %2$lld kcal"
-          }
-        },
-        "lv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld no %2$lld kcal"
-          }
-        },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld daripada %2$lld kalori"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld av %2$lld kalorier"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld van %2$lld calorieën"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld z %2$lld kcal"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld de %2$lld calorias"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld de %2$lld calorias"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calorii: %1$lld din %2$lld"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld из %2$lld ккал"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld z %2$lld kcal"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld od %2$lld kcal"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld av %2$lld kalorier"
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld จาก %2$lld แคลอรี"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld / %2$lld kalori"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld з %2$lld ккал"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld trên %2$lld calo"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld / %lld 卡路里"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld / %2$lld 大卡"
-          }
-        }
-      }
-    },
-    "%lld of %lld calories. Active %lld, resting %lld." : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "‏%1$lld من %2$lld سعرة. نشطة %3$lld، أثناء الراحة %4$lld."
-          }
-        },
-        "bg" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld от %2$lld ккал. Активни: %3$lld, в покой: %4$lld."
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld z %2$lld kcal. Aktivní %3$lld, klidové %4$lld."
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld af %2$lld kalorier. Aktiv forbrænding: %3$lld, hvileforbrænding: %4$lld."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld von %2$lld Kalorien. Aktiv %3$lld, Ruhe %4$lld."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld από %2$lld θερμίδες. Ενεργές %3$lld, ηρεμίας %4$lld."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld of %2$lld calories. Active %3$lld, resting %4$lld."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld de %2$lld calorías. Activas %3$lld, en reposo %4$lld."
-          }
-        },
-        "et" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld / %2$lld kalorit. Aktiivsed kalorid: %3$lld, puhkeoleku kalorid: %4$lld."
-          }
-        },
-        "fa" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "‏%1$lld از %2$lld کیلوکالری. فعال %3$lld، استراحت %4$lld."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld / %2$lld kaloria. Aktiiviset kalorit: %3$lld, lepoenergia: %4$lld."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld calories sur %2$lld, dont %3$lld actives et %4$lld au repos."
-          }
-        },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "‏%1$lld מתוך %2$lld קלוריות. פעילות %3$lld, מנוחה %4$lld."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%2$lld में से %1$lld कैलोरी। सक्रिय %3$lld, विश्राम %4$lld।"
-          }
-        },
-        "hr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld od %2$lld kcal. Aktivne %3$lld, u mirovanju %4$lld."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld / %2$lld kalória. Aktív %3$lld, nyugalmi %4$lld."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld dari %2$lld kalori. Aktif %3$lld, istirahat %4$lld."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld di %2$lld calorie. Attive %3$lld, a riposo %4$lld."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%2$lldカロリー中%1$lldカロリー。アクティブ%3$lld、安静時%4$lld。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld / %2$lld კკალ. აქტიური: %3$lld, მოსვენების: %4$lld."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%2$lld칼로리 중 %1$lld칼로리. 활동 %3$lld, 휴식 %4$lld."
-          }
-        },
-        "lt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld iš %2$lld kcal. Aktyviosios: %3$lld, ramybės: %4$lld."
-          }
-        },
-        "lv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld no %2$lld kcal. Aktīvās: %3$lld, miera stāvoklī: %4$lld."
-          }
-        },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld daripada %2$lld kalori. Aktif %3$lld, rehat %4$lld."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld av %2$lld kalorier. Aktive %3$lld, hvile %4$lld."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld van %2$lld calorieën. Actief %3$lld, rust %4$lld."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld z %2$lld kcal. Aktywne %3$lld, spoczynkowe %4$lld."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld de %2$lld calorias. Ativas %3$lld, em repouso %4$lld."
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld de %2$lld calorias. Ativas %3$lld, em repouso %4$lld."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calorii: %1$lld din %2$lld. Active: %3$lld, în repaus: %4$lld."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld из %2$lld ккал. Активные %3$lld, в покое %4$lld."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld z %2$lld kcal. Aktívne %3$lld, pokojové %4$lld."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld od %2$lld kcal. Aktivne %3$lld, v mirovanju %4$lld."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld av %2$lld kalorier. Aktiva %3$lld, i vila %4$lld."
-          }
-        },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld จาก %2$lld แคลอรี (กิจกรรม %3$lld, ขณะพัก %4$lld)"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld / %2$lld kalori. Aktif %3$lld, dinlenme %4$lld."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld з %2$lld ккал. Активні %3$lld, у спокої %4$lld."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld trên %2$lld calo. Hoạt động %3$lld, nghỉ %4$lld."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld / %lld 卡路里。活动 %lld，静息 %lld。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld / %2$lld 大卡。活動 %3$lld，靜息 %4$lld。"
           }
         }
       }
@@ -83605,241 +83605,241 @@
         }
       }
     },
-    "Excluded day %@: %@ calories and %@ steps." : {
+    "Excluded day %@: %lld calories and %lld steps." : {
       "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "‏اليوم المستبعد %@: ‏%@ سعرة حرارية و%@ خطوة."
+            "value" : "‏اليوم المستبعد %@: ‏%lld سعرة حرارية و%lld خطوة."
           }
         },
         "bg" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Изключен ден %@: %@ ккал. Стъпки: %@."
+            "value" : "Изключен ден %@: %lld ккал. Стъпки: %lld."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vyřazený den %@: %@ kcal a %@ kroků."
+            "value" : "Vyřazený den %@: %lld kcal a %lld kroků."
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Udeladt dag %@: %@ kcal og %@ skridt."
+            "value" : "Udeladt dag %@: %lld kcal og %lld skridt."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ausgeschlossener Tag %@: %@ kcal und %@ Schritte."
+            "value" : "Ausgeschlossener Tag %@: %lld kcal und %lld Schritte."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Εξαιρεμένη ημέρα %@: %@ θερμίδες και %@ βήματα."
+            "value" : "Εξαιρεμένη ημέρα %@: %lld θερμίδες και %lld βήματα."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Día excluido %@: %@ calorías y %@ pasos."
+            "value" : "Día excluido %@: %lld calorías y %lld pasos."
           }
         },
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Välja jäetud päev %@: %@ kcal ja %@ sammu."
+            "value" : "Välja jäetud päev %@: %lld kcal ja %lld sammu."
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "‏روز مستثنا %@: ‏%@ کالری و %@ قدم."
+            "value" : "‏روز مستثنا %@: ‏%lld کالری و %lld قدم."
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ohitettu päivä %@: %@ kcal ja %@ askelta."
+            "value" : "Ohitettu päivä %@: %lld kcal ja %lld askelta."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Journée exclue %@ : %@ kcal et %@ pas."
+            "value" : "Journée exclue %@ : %lld kcal et %lld pas."
           }
         },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "‏יום שהוחרג %@: ‏%@ קלוריות ו־%@ צעדים."
+            "value" : "‏יום שהוחרג %@: ‏%lld קלוריות ו־%lld צעדים."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "गणना से बाहर रखा गया दिन %@: %@ कैलोरी और %@ कदम।"
+            "value" : "गणना से बाहर रखा गया दिन %@: %lld कैलोरी और %lld कदम।"
           }
         },
         "hr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Isključeni dan %@: %@ kcal i %@ koraka."
+            "value" : "Isključeni dan %@: %lld kcal i %lld koraka."
           }
         },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kizárt nap %@: %@ kcal és %@ lépés."
+            "value" : "Kizárt nap %@: %lld kcal és %lld lépés."
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hari yang dikecualikan %@: %@ kalori dan %@ langkah."
+            "value" : "Hari yang dikecualikan %@: %lld kalori dan %lld langkah."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Giorno escluso %@: %@ kcal e %@ passi."
+            "value" : "Giorno escluso %@: %lld kcal e %lld passi."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "除外日%@：%@ kcal、%@歩。"
+            "value" : "除外日%@：%lld kcal、%lld歩。"
           }
         },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "გამორიცხული დღე %@: %@ კკალ და %@ ნაბიჯი."
+            "value" : "გამორიცხული დღე %@: %lld კკალ და %lld ნაბიჯი."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "제외한 날짜 %@: %@kcal, %@걸음."
+            "value" : "제외한 날짜 %@: %lldkcal, %lld걸음."
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Neįtraukta diena %@: %@ kcal, žingsnių: %@."
+            "value" : "Neįtraukta diena %@: %lld kcal, žingsnių: %lld."
           }
         },
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Izslēgtā diena %@: %@ kcal un %@ soļu."
+            "value" : "Izslēgtā diena %@: %lld kcal un %lld soļu."
           }
         },
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hari dikecualikan %@: %@ kcal dan %@ langkah."
+            "value" : "Hari dikecualikan %@: %lld kcal dan %lld langkah."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utelatt dag %@: %@ kcal og %@ skritt."
+            "value" : "Utelatt dag %@: %lld kcal og %lld skritt."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uitgesloten dag %@: %@ kcal en %@ stappen."
+            "value" : "Uitgesloten dag %@: %lld kcal en %lld stappen."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wykluczony dzień %@: %@ kcal i %@ kroków."
+            "value" : "Wykluczony dzień %@: %lld kcal i %lld kroków."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dia excluído %@: %@ kcal e %@ passos."
+            "value" : "Dia excluído %@: %lld kcal e %lld passos."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dia excluído %@: %@ kcal e %@ passos."
+            "value" : "Dia excluído %@: %lld kcal e %lld passos."
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zi exclusă %@: %@ kcal și %@ de pași."
+            "value" : "Zi exclusă %@: %lld kcal și %lld de pași."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Исключённый день %@: %@ ккал и %@ шагов."
+            "value" : "Исключённый день %@: %lld ккал и %lld шагов."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vynechaný deň %@: %@ kcal a %@ krokov."
+            "value" : "Vynechaný deň %@: %lld kcal a %lld krokov."
           }
         },
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Izključeni dan %@: %@ kcal, koraki: %@."
+            "value" : "Izključeni dan %@: %lld kcal, koraki: %lld."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utesluten dag %@: %@ kcal och %@ steg."
+            "value" : "Utesluten dag %@: %lld kcal och %lld steg."
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "วันที่ไม่นับ %@: %@ kcal และ %@ ก้าว"
+            "value" : "วันที่ไม่นับ %@: %lld kcal และ %lld ก้าว"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hariç tutulan gün %@: %@ kcal ve %@ adım."
+            "value" : "Hariç tutulan gün %@: %lld kcal ve %lld adım."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Виключений день %@: %@ ккал і %@ кроків."
+            "value" : "Виключений день %@: %lld ккал і %lld кроків."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ngày đã loại trừ %@: %@ kcal và %@ bước."
+            "value" : "Ngày đã loại trừ %@: %lld kcal và %lld bước."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已排除日期 %@：%@ 千卡、%@ 步。"
+            "value" : "已排除日期 %@：%lld 千卡、%lld 步。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已排除日期 %@：%@ 大卡、%@ 步。"
+            "value" : "已排除日期 %@：%lld 大卡、%lld 步。"
           }
         }
       }

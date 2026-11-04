@@ -992,7 +992,7 @@ struct DashboardView: View {
         if let goal = goals.calorieGoal {
             return String(localized: "\(total) of \(Int(goal).formatted(.number)) calories")
         }
-        return String(localized: "\(total) calories")
+        return String(localized: "\(Int(totalCalories)) calories")
     }
 
     private func stepsAccessibilityValue() -> String {
