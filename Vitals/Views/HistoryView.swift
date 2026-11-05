@@ -1566,10 +1566,13 @@ struct HistoryView: View {
                 } else {
                     // Three across, "AVG PROTEIN" is cut short on a narrow
                     // phone or an unfolded pane; then every card drops "Avg",
-                    // which the per-logged-day caption below already says.
+                    // which the per-logged-day caption below already says. A long
+                    // word ("KOHLENHYDRATE") still can't fit a third of the row,
+                    // so the last resort sizes each card to its own label.
                     ViewThatFits(in: .horizontal) {
                         macroAverageRow(summary, visible) { String(localized: "Avg \($0.label)") }
                         macroAverageRow(summary, visible) { $0.label }
+                        macroAverageRow(summary, visible, proportional: true) { $0.label }
                     }
                 }
                 macroAverageDenominatorCaption(summary)
@@ -1580,9 +1583,10 @@ struct HistoryView: View {
     private func macroAverageRow(
         _ summary: MacroSummary,
         _ visible: [MacroKind],
+        proportional: Bool = false,
         label: @escaping (MacroKind) -> String
     ) -> some View {
-        CardRow(equalColumns: true) {
+        CardRow(equalColumns: true, proportional: proportional) {
             ForEach(visible) { kind in
                 AverageCard(
                     label: label(kind),
@@ -1816,7 +1820,7 @@ struct HistoryView: View {
                         if let bestProtein {
                             PeakCard(
                                 label: String(localized: "Best Protein"),
-                                value: "\(Int(bestProtein.grams.rounded())) g",
+                                value: String(localized: "\(Int(bestProtein.grams.rounded())) g"),
                                 date: bestProtein.date,
                                 color: Theme.proteinPrimary
                             )
@@ -1941,7 +1945,7 @@ struct HistoryView: View {
                 let segments = visible.map { kind in
                     let grams = Int(day.grams(kind).rounded())
                     return RecentDayRow.Segment(
-                        text: visible.count == 1 ? "\(grams) g" : "\(grams)\(kind.initial)",
+                        text: visible.count == 1 ? String(localized: "\(grams) g") : "\(grams)\(kind.initial)",
                         color: Theme.macroColor(kind)
                     )
                 }
@@ -2944,13 +2948,60 @@ struct LoadingBar: View {
 private struct CardRow<Content: View>: View {
     @Environment(\.dynamicTypeSize) private var typeSize
     var equalColumns = false
+    var proportional = false
     @ViewBuilder let content: Content
 
+    private var rowLayout: AnyLayout {
+        if typeSize.isAccessibilitySize { return AnyLayout(VStackLayout(spacing: 12)) }
+        if proportional { return AnyLayout(ContentWeightedRow(spacing: 12)) }
+        return equalColumns ? AnyLayout(EqualColumnsRow(spacing: 12)) : AnyLayout(HStackLayout(spacing: 12))
+    }
+
     var body: some View {
-        let layout = typeSize.isAccessibilitySize
-            ? AnyLayout(VStackLayout(spacing: 12))
-            : equalColumns ? AnyLayout(EqualColumnsRow(spacing: 12)) : AnyLayout(HStackLayout(spacing: 12))
-        layout { content }
+        rowLayout { content }
+    }
+}
+
+/// Equal columns while the widest item fits one; otherwise each column gets its
+/// own width plus an even share of what's left, so a long word in one column
+/// ("Kohlenhydrate") borrows room from the short ones instead of being cut.
+struct ContentWeightedRow: Layout {
+    var spacing: CGFloat
+
+    private func columns(for width: CGFloat, ideals: [CGFloat]) -> [CGFloat] {
+        let count = CGFloat(ideals.count)
+        let available = width - spacing * (count - 1)
+        let total = ideals.reduce(0, +)
+        if (ideals.max() ?? 0) * count <= available {
+            return ideals.map { _ in available / count }
+        }
+        if total <= available {
+            return ideals.map { $0 + (available - total) / count }
+        }
+        return ideals.map { $0 * available / total }
+    }
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        guard !subviews.isEmpty else { return .zero }
+        let ideals = subviews.map { $0.sizeThatFits(.unspecified).width }
+        var width = proposal.width ?? .infinity
+        if !width.isFinite {
+            width = ideals.reduce(0, +) + spacing * CGFloat(subviews.count - 1)
+        }
+        let height = zip(subviews, columns(for: width, ideals: ideals))
+            .map { $0.sizeThatFits(ProposedViewSize(width: $1, height: proposal.height)).height }
+            .max() ?? 0
+        return CGSize(width: width, height: height)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        guard !subviews.isEmpty else { return }
+        let ideals = subviews.map { $0.sizeThatFits(.unspecified).width }
+        var x = bounds.minX
+        for (subview, column) in zip(subviews, columns(for: bounds.width, ideals: ideals)) {
+            subview.place(at: CGPoint(x: x, y: bounds.minY), proposal: ProposedViewSize(width: column, height: bounds.height))
+            x += column + spacing
+        }
     }
 }
 
