@@ -332,6 +332,56 @@ final class SeededHealthFlowUITests: XCTestCase {
         XCTAssertTrue(tiles.waitForNonExistence(timeout: 10), "\"No thanks\" did not close the offer")
     }
 
+    /// The Calories detail against real HealthKit reads, starting from the near
+    /// empty cache of a fresh install. Screenshot fixtures can't show this: they
+    /// answer the cache and the live path with the same days.
+    func testSeededCaloriesDetailRangeChangesShowRealDays() {
+        let app = launchSeeded(upgradeTab: "catalog")
+        grantHealthKitAccess(in: app)
+        dismissBlockingSheets(in: app)
+        // The passive trial sheet arrives on its own timer on a fresh install, so
+        // give it time to come up and clear it before driving the screen under it.
+        let notNow = app.buttons["Not now"]
+        if notNow.waitForExistence(timeout: 20) { notNow.tap() }
+        dismissTrialPitch(in: app)
+        app.buttons["tab-history"].tap()
+        if notNow.waitForExistence(timeout: 8) { notNow.tap() }
+        dismissTrialPitch(in: app)
+
+        let link = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'chart-card-link-'")).firstMatch
+        XCTAssertTrue(link.waitForExistence(timeout: 30), "Calories link never rendered")
+        link.tap()
+        let rows = app.descendants(matching: .any).matching(identifier: "recent-day-row")
+        XCTAssertTrue(rows.firstMatch.waitForExistence(timeout: 10), "Calories detail arrived without Recent Days")
+        assertSettled(app, rows, label: "7D")
+
+        for period in ["30D", "90D", "7D", "30D"] {
+            dismissTrialPitch(in: app)
+            app.buttons["detail-period-\(period)"].tap()
+            attach(app.screenshot(), name: "seeded-detail-\(period)-at-tap")
+            XCTAssertTrue(rows.firstMatch.waitForExistence(timeout: 10), "\(period) lost Recent Days")
+            assertSettled(app, rows, label: period)
+        }
+    }
+
+    /// Once loaded, rows are unique and yesterday reads what the seeder wrote.
+    private func assertSettled(_ app: XCUIApplication, _ rows: XCUIElementQuery, label: String) {
+        _ = app.buttons["nonexistent"].waitForExistence(timeout: 3)
+        let shown = rows.allElementsBoundByIndex.map { $0.label }
+        attach(app.screenshot(), name: "seeded-detail-\(label)-settled")
+        add(XCTAttachment(string: "\(label): " + shown.joined(separator: " | ")))
+        XCTAssertEqual(Set(shown).count, shown.count, "\(label) doubled a row: \(shown)")
+
+        let wobble = sin(1.0 / 3.2)
+        let yesterday = Int((1_620 + wobble * 40 + 520 + wobble * 160).rounded())
+        let accepted = (yesterday - 1...yesterday + 1).map { $0.formatted(.number) }
+        XCTAssertTrue(
+            shown.contains { row in accepted.contains { row.contains($0) } }
+                || accepted.contains { app.staticTexts[$0].exists },
+            "\(label) never showed yesterday's seeded \(yesterday): \(shown)"
+        )
+    }
+
     private func dismissRatingAlert(in app: XCUIApplication) {
         let prompt = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Enjoying")).firstMatch
         guard prompt.waitForExistence(timeout: 4) else { return }
