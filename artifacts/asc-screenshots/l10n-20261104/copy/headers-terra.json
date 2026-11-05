@@ -1,0 +1,1600 @@
+{
+ "ar-SA": {
+  "01": {
+   "first": "أرقامك على",
+   "second": "معصمك",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "اعرف إجمالي",
+   "second": "حرق السعرات",
+   "back": "Know your total calorie burn"
+  },
+  "03": {
+   "first": "قارن أكلك",
+   "second": "بحرق السعرات",
+   "back": "Compare your food with your calorie burn"
+  },
+  "04": {
+   "first": "تفاصيل",
+   "second": "حرق السعرات",
+   "back": "Details of calorie burn"
+  },
+  "05": {
+   "first": "اكتشف أنماطك",
+   "second": "كل يوم",
+   "back": "Discover your patterns each day"
+  },
+  "06": {
+   "first": "المحروقة",
+   "second": "مقابل المأكولة",
+   "back": "Burned compared with eaten"
+  },
+  "07": {
+   "first": "حدد أهداف",
+   "second": "العناصر",
+   "back": "Set nutrient goals"
+  },
+  "08": {
+   "first": "تابع أنماط",
+   "second": "العناصر",
+   "back": "Track nutrient patterns"
+  },
+  "09": {
+   "first": "اقرأ بالوضع",
+   "second": "الداكن",
+   "back": "Read in dark mode"
+  }
+ },
+ "cs": {
+  "01": {
+   "first": "Svůj přehled",
+   "second": "na zápěstí",
+   "back": "Your overview on your wrist"
+  },
+  "02": {
+   "first": "Poznej celý",
+   "second": "výdej kalorií",
+   "back": "Know your total calorie expenditure"
+  },
+  "03": {
+   "first": "Sleduj příjem",
+   "second": "i výdej",
+   "back": "Track intake and expenditure"
+  },
+  "04": {
+   "first": "Co tvoří tvůj",
+   "second": "výdej kalorií",
+   "back": "What makes up your calorie expenditure"
+  },
+  "05": {
+   "first": "Objev své",
+   "second": "denní vzorce",
+   "back": "Discover your daily patterns"
+  },
+  "06": {
+   "first": "Spáleno",
+   "second": "bez snědeného",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Nastav si",
+   "second": "cíle maker",
+   "back": "Set your macro goals"
+  },
+  "08": {
+   "first": "Sleduj vývoj",
+   "second": "svých maker",
+   "back": "Track the progression of your macros"
+  },
+  "09": {
+   "first": "Čti v tmavém",
+   "second": "režimu",
+   "back": "Read in dark mode"
+  }
+ },
+ "da": {
+  "01": {
+   "first": "Dine tal på",
+   "second": "dit håndled",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Se hele din",
+   "second": "forbrænding",
+   "back": "See your total burn"
+  },
+  "03": {
+   "first": "Se dit indtag",
+   "second": "og forbrug",
+   "back": "See your intake and expenditure"
+  },
+  "04": {
+   "first": "Se hvad du",
+   "second": "forbrænder",
+   "back": "See what you burn"
+  },
+  "05": {
+   "first": "Find mønstre",
+   "second": "dag for dag",
+   "back": "Find patterns day by day"
+  },
+  "06": {
+   "first": "Forbrændt",
+   "second": "minus spist",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Sæt dine",
+   "second": "makromål",
+   "back": "Set your macro goals"
+  },
+  "08": {
+   "first": "Se mønstre i",
+   "second": "dine makroer",
+   "back": "See patterns in your macros"
+  },
+  "09": {
+   "first": "Læs med",
+   "second": "mørkt tema",
+   "back": "Read with a dark theme"
+  }
+ },
+ "de-DE": {
+  "01": {
+   "first": "Deine Werte",
+   "second": "am Handgelenk",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Dein Verbrauch",
+   "second": "insgesamt",
+   "back": "Your total expenditure"
+  },
+  "03": {
+   "first": "Sieh Zufuhr",
+   "second": "und Verbrauch",
+   "back": "See intake and expenditure"
+  },
+  "04": {
+   "first": "Dein Verbrauch",
+   "second": "im Detail",
+   "back": "Your expenditure in detail"
+  },
+  "05": {
+   "first": "Erkenne deine",
+   "second": "Tagesmuster",
+   "back": "Recognize your daily patterns"
+  },
+  "06": {
+   "first": "Verbrannt",
+   "second": "minus gegessen",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Setze deine",
+   "second": "Makroziele",
+   "back": "Set your macro goals"
+  },
+  "08": {
+   "first": "Erkenne deine",
+   "second": "Makromuster",
+   "back": "Recognize your macro patterns"
+  },
+  "09": {
+   "first": "Lies im",
+   "second": "Dunkelmodus",
+   "back": "Read in dark mode"
+  }
+ },
+ "el": {
+  "01": {
+   "first": "Οι αριθμοί σου",
+   "second": "στον καρπό",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Δες όλη την",
+   "second": "καύση σου",
+   "back": "See all of your burn"
+  },
+  "03": {
+   "first": "Δες πρόσληψη",
+   "second": "και καύση",
+   "back": "See intake and burn"
+  },
+  "04": {
+   "first": "Ανάλυσε την",
+   "second": "καύση σου",
+   "back": "Break down your burn"
+  },
+  "05": {
+   "first": "Βρες τα μοτίβα",
+   "second": "κάθε μέρας",
+   "back": "Find each day’s patterns"
+  },
+  "06": {
+   "first": "Καύση μείον",
+   "second": "πρόσληψη",
+   "back": "Burn minus intake"
+  },
+  "07": {
+   "first": "Όρισε στόχους",
+   "second": "για τα μακρο",
+   "back": "Set goals for macros"
+  },
+  "08": {
+   "first": "Δες τα μοτίβα",
+   "second": "στα μακρο",
+   "back": "See patterns in macros"
+  },
+  "09": {
+   "first": "Διάβασε σε",
+   "second": "σκούρο θέμα",
+   "back": "Read in dark theme"
+  }
+ },
+ "es-ES": {
+  "01": {
+   "first": "Tus datos en",
+   "second": "la muñeca",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Conoce tu",
+   "second": "gasto total",
+   "back": "Know your total expenditure"
+  },
+  "03": {
+   "first": "Compara gasto",
+   "second": "e ingesta",
+   "back": "Compare expenditure and intake"
+  },
+  "04": {
+   "first": "Entiende tu",
+   "second": "gasto calórico",
+   "back": "Understand your calorie expenditure"
+  },
+  "05": {
+   "first": "Ve tus rutinas",
+   "second": "día tras día",
+   "back": "See your routines day after day"
+  },
+  "06": {
+   "first": "Quemadas menos",
+   "second": "ingeridas",
+   "back": "Burned minus consumed"
+  },
+  "07": {
+   "first": "Fija tus metas",
+   "second": "de macros",
+   "back": "Set your macro goals"
+  },
+  "08": {
+   "first": "Descubre tus",
+   "second": "patrones macro",
+   "back": "Discover your macro patterns"
+  },
+  "09": {
+   "first": "Léelo en",
+   "second": "modo oscuro",
+   "back": "Read it in dark mode"
+  }
+ },
+ "es-MX": {
+  "01": {
+   "first": "Tus datos en",
+   "second": "la muñeca",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Conoce tu",
+   "second": "gasto total",
+   "back": "Know your total expenditure"
+  },
+  "03": {
+   "first": "Compara gasto",
+   "second": "e ingesta",
+   "back": "Compare expenditure and intake"
+  },
+  "04": {
+   "first": "Entiende tu",
+   "second": "gasto calórico",
+   "back": "Understand your calorie expenditure"
+  },
+  "05": {
+   "first": "Ve tus rutinas",
+   "second": "día tras día",
+   "back": "See your routines day after day"
+  },
+  "06": {
+   "first": "Quemadas menos",
+   "second": "ingeridas",
+   "back": "Burned minus consumed"
+  },
+  "07": {
+   "first": "Fija tus metas",
+   "second": "de macros",
+   "back": "Set your macro goals"
+  },
+  "08": {
+   "first": "Descubre tus",
+   "second": "patrones macro",
+   "back": "Discover your macro patterns"
+  },
+  "09": {
+   "first": "Léelo en",
+   "second": "modo oscuro",
+   "back": "Read it in dark mode"
+  }
+ },
+ "fi": {
+  "01": {
+   "first": "Lukusi mukana",
+   "second": "ranteessa",
+   "back": "Your numbers with you on your wrist"
+  },
+  "02": {
+   "first": "Kalorien koko",
+   "second": "kulutus",
+   "back": "Total calorie expenditure"
+  },
+  "03": {
+   "first": "Vertaa saantia",
+   "second": "ja kulutusta",
+   "back": "Compare intake and expenditure"
+  },
+  "04": {
+   "first": "Mistä kulutus",
+   "second": "koostuu",
+   "back": "What expenditure consists of"
+  },
+  "05": {
+   "first": "Näe päivien",
+   "second": "omat kuviot",
+   "back": "See the patterns of your days"
+  },
+  "06": {
+   "first": "Poltettu",
+   "second": "miinus syöty",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Aseta omat",
+   "second": "makrojen arvot",
+   "back": "Set your macro values"
+  },
+  "08": {
+   "first": "Seuraa makroja",
+   "second": "päivä päivältä",
+   "back": "Track macros day by day"
+  },
+  "09": {
+   "first": "Lue näkymää",
+   "second": "tummalla",
+   "back": "Read the view in dark mode"
+  }
+ },
+ "fr-FR": {
+  "01": {
+   "first": "Vos chiffres",
+   "second": "au poignet",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Toute votre",
+   "second": "dépense",
+   "back": "Your total expenditure"
+  },
+  "03": {
+   "first": "Apport et",
+   "second": "dépense en vue",
+   "back": "Intake and expenditure in view"
+  },
+  "04": {
+   "first": "Comprenez",
+   "second": "votre dépense",
+   "back": "Understand your expenditure"
+  },
+  "05": {
+   "first": "Repérez vos",
+   "second": "habitudes",
+   "back": "Spot your habits"
+  },
+  "06": {
+   "first": "Brûlées moins",
+   "second": "consommées",
+   "back": "Burned minus consumed"
+  },
+  "07": {
+   "first": "Vos objectifs",
+   "second": "de macros",
+   "back": "Your macro goals"
+  },
+  "08": {
+   "first": "Les tendances",
+   "second": "de vos macros",
+   "back": "Your macro trends"
+  },
+  "09": {
+   "first": "Lisez en",
+   "second": "mode sombre",
+   "back": "Read in dark mode"
+  }
+ },
+ "fr-CA": {
+  "01": {
+   "first": "Vos chiffres",
+   "second": "au poignet",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Toute votre",
+   "second": "dépense",
+   "back": "Your total expenditure"
+  },
+  "03": {
+   "first": "Apport et",
+   "second": "dépense en vue",
+   "back": "Intake and expenditure in view"
+  },
+  "04": {
+   "first": "Comprenez",
+   "second": "votre dépense",
+   "back": "Understand your expenditure"
+  },
+  "05": {
+   "first": "Repérez vos",
+   "second": "habitudes",
+   "back": "Spot your habits"
+  },
+  "06": {
+   "first": "Brûlées moins",
+   "second": "consommées",
+   "back": "Burned minus consumed"
+  },
+  "07": {
+   "first": "Vos objectifs",
+   "second": "de macros",
+   "back": "Your macro goals"
+  },
+  "08": {
+   "first": "Les tendances",
+   "second": "de vos macros",
+   "back": "Your macro trends"
+  },
+  "09": {
+   "first": "Lisez en",
+   "second": "mode sombre",
+   "back": "Read in dark mode"
+  }
+ },
+ "he": {
+  "01": {
+   "first": "הנתונים שלך",
+   "second": "על פרק היד",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "כל שריפת",
+   "second": "הקלוריות שלך",
+   "back": "Your total calorie burn"
+  },
+  "03": {
+   "first": "השווה צריכה",
+   "second": "ושריפה",
+   "back": "Compare intake and burn"
+  },
+  "04": {
+   "first": "ממה מורכבת",
+   "second": "השריפה שלך",
+   "back": "What your burn consists of"
+  },
+  "05": {
+   "first": "גלה דפוסים",
+   "second": "מדי יום",
+   "back": "Discover patterns each day"
+  },
+  "06": {
+   "first": "נשרפו פחות",
+   "second": "נאכלו",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "הגדר את",
+   "second": "יעדי המאקרו",
+   "back": "Set your macro goals"
+  },
+  "08": {
+   "first": "גלה דפוסים",
+   "second": "במאקרו",
+   "back": "Discover macro patterns"
+  },
+  "09": {
+   "first": "קרא במצב",
+   "second": "כהה",
+   "back": "Read in dark mode"
+  }
+ },
+ "hi": {
+  "01": {
+   "first": "आपके आँकड़े",
+   "second": "कलाई पर",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "जानें कुल",
+   "second": "कैलोरी खर्च",
+   "back": "Know total calorie expenditure"
+  },
+  "03": {
+   "first": "देखें सेवन",
+   "second": "और खर्च",
+   "back": "See intake and expenditure"
+  },
+  "04": {
+   "first": "समझें अपना",
+   "second": "कैलोरी खर्च",
+   "back": "Understand your calorie expenditure"
+  },
+  "05": {
+   "first": "हर दिन के",
+   "second": "पैटर्न देखें",
+   "back": "See daily patterns"
+  },
+  "06": {
+   "first": "खर्च में से",
+   "second": "सेवन घटाएँ",
+   "back": "Subtract intake from expenditure"
+  },
+  "07": {
+   "first": "तय करें अपने",
+   "second": "मैक्रो लक्ष्य",
+   "back": "Set your macro goals"
+  },
+  "08": {
+   "first": "देखें मैक्रो",
+   "second": "के पैटर्न",
+   "back": "See macro patterns"
+  },
+  "09": {
+   "first": "देखें अब",
+   "second": "डार्क मोड में",
+   "back": "See it in dark mode"
+  }
+ },
+ "hr": {
+  "01": {
+   "first": "Tvoji podaci",
+   "second": "na zapešću",
+   "back": "Your data on your wrist"
+  },
+  "02": {
+   "first": "Upoznaj ukupnu",
+   "second": "potrošnju",
+   "back": "Know your total expenditure"
+  },
+  "03": {
+   "first": "Usporedi unos",
+   "second": "i potrošnju",
+   "back": "Compare intake and expenditure"
+  },
+  "04": {
+   "first": "Otkrij sastav",
+   "second": "potrošnje",
+   "back": "Discover the breakdown of expenditure"
+  },
+  "05": {
+   "first": "Pronađi svoje",
+   "second": "dnevne obrasce",
+   "back": "Find your daily patterns"
+  },
+  "06": {
+   "first": "Potrošeno",
+   "second": "manje pojedeno",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Odredi ciljeve",
+   "second": "za nutrijente",
+   "back": "Set nutrient goals"
+  },
+  "08": {
+   "first": "Prati obrasce",
+   "second": "unosa hranjiva",
+   "back": "Track nutrient intake patterns"
+  },
+  "09": {
+   "first": "Čitaj u",
+   "second": "tamnom načinu",
+   "back": "Read in dark mode"
+  }
+ },
+ "hu": {
+  "01": {
+   "first": "Adataid mindig",
+   "second": "a csuklódon",
+   "back": "Your data always on your wrist"
+  },
+  "02": {
+   "first": "Ismerd meg a",
+   "second": "teljes égetést",
+   "back": "Know your total burn"
+  },
+  "03": {
+   "first": "Bevitel és",
+   "second": "égetés együtt",
+   "back": "Intake and burn together"
+  },
+  "04": {
+   "first": "Lásd miből áll",
+   "second": "az égetés",
+   "back": "See what makes up your burn"
+  },
+  "05": {
+   "first": "Fedezd fel a",
+   "second": "napi mintáidat",
+   "back": "Discover your daily patterns"
+  },
+  "06": {
+   "first": "Égetés mínusz",
+   "second": "bevitel",
+   "back": "Burn minus intake"
+  },
+  "07": {
+   "first": "Állítsd be a",
+   "second": "makrócélokat",
+   "back": "Set your macro goals"
+  },
+  "08": {
+   "first": "Figyeld a",
+   "second": "makrók mintáit",
+   "back": "Watch macro patterns"
+  },
+  "09": {
+   "first": "Olvasd",
+   "second": "sötét módban",
+   "back": "Read in dark mode"
+  }
+ },
+ "id": {
+  "01": {
+   "first": "Angkamu di",
+   "second": "pergelangan",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Total kalori",
+   "second": "yang terbakar",
+   "back": "Total calories burned"
+  },
+  "03": {
+   "first": "Lihat asupan",
+   "second": "dan pembakaran",
+   "back": "See intake and burn"
+  },
+  "04": {
+   "first": "Pahami rincian",
+   "second": "pembakaran",
+   "back": "Understand the burn breakdown"
+  },
+  "05": {
+   "first": "Temukan pola",
+   "second": "harianmu",
+   "back": "Find your daily patterns"
+  },
+  "06": {
+   "first": "Terbakar minus",
+   "second": "dikonsumsi",
+   "back": "Burned minus consumed"
+  },
+  "07": {
+   "first": "Tentukan",
+   "second": "target makro",
+   "back": "Set macro targets"
+  },
+  "08": {
+   "first": "Lihat pola",
+   "second": "makromu",
+   "back": "See your macro patterns"
+  },
+  "09": {
+   "first": "Baca dalam",
+   "second": "mode gelap",
+   "back": "Read in dark mode"
+  }
+ },
+ "it": {
+  "01": {
+   "first": "I tuoi dati",
+   "second": "al polso",
+   "back": "Your data on your wrist"
+  },
+  "02": {
+   "first": "Calorie spese",
+   "second": "in totale",
+   "back": "Total calories burned"
+  },
+  "03": {
+   "first": "Confronta",
+   "second": "cibo e consumo",
+   "back": "Compare food and expenditure"
+  },
+  "04": {
+   "first": "Scopri cosa",
+   "second": "hai bruciato",
+   "back": "Discover what you burned"
+  },
+  "05": {
+   "first": "Scopri i ritmi",
+   "second": "di ogni giorno",
+   "back": "Discover daily patterns"
+  },
+  "06": {
+   "first": "Bruciate meno",
+   "second": "assunte",
+   "back": "Burned minus consumed"
+  },
+  "07": {
+   "first": "Obiettivi",
+   "second": "per i macro",
+   "back": "Goals for macros"
+  },
+  "08": {
+   "first": "Scopri i trend",
+   "second": "dei tuoi macro",
+   "back": "Discover your macro trends"
+  },
+  "09": {
+   "first": "Leggi in",
+   "second": "modalità scura",
+   "back": "Read in dark mode"
+  }
+ },
+ "ja": {
+  "01": {
+   "first": "いつもの数字を",
+   "second": "手首の上に",
+   "back": "Your familiar numbers on your wrist"
+  },
+  "02": {
+   "first": "消費カロリーの",
+   "second": "合計を知る",
+   "back": "Know your total calories burned"
+  },
+  "03": {
+   "first": "摂取と消費を",
+   "second": "見比べる",
+   "back": "Compare intake and expenditure"
+  },
+  "04": {
+   "first": "消費カロリーの",
+   "second": "内訳を見る",
+   "back": "See the breakdown of calories burned"
+  },
+  "05": {
+   "first": "日々の傾向を",
+   "second": "見つけよう",
+   "back": "Find daily patterns"
+  },
+  "06": {
+   "first": "消費から摂取を",
+   "second": "差し引いて",
+   "back": "Subtract intake from expenditure"
+  },
+  "07": {
+   "first": "マクロ目標を",
+   "second": "設定しよう",
+   "back": "Set macro goals"
+  },
+  "08": {
+   "first": "マクロの傾向を",
+   "second": "見つけよう",
+   "back": "Find macro patterns"
+  },
+  "09": {
+   "first": "ダークモードで",
+   "second": "見やすく",
+   "back": "Easy to view in dark mode"
+  }
+ },
+ "ko": {
+  "01": {
+   "first": "오늘의 기록",
+   "second": "손목에서",
+   "back": "Today’s stats on your wrist"
+  },
+  "02": {
+   "first": "오늘의 총",
+   "second": "칼로리 소모",
+   "back": "Today’s total calorie burn"
+  },
+  "03": {
+   "first": "소모와 비교한",
+   "second": "칼로리 섭취",
+   "back": "Calorie intake compared with burn"
+  },
+  "04": {
+   "first": "칼로리 소모",
+   "second": "구성 보기",
+   "back": "See what makes up calorie burn"
+  },
+  "05": {
+   "first": "매일의",
+   "second": "기록 살펴보기",
+   "back": "Explore daily history"
+  },
+  "06": {
+   "first": "소모에서",
+   "second": "섭취 빼기",
+   "back": "Subtract intake from burn"
+  },
+  "07": {
+   "first": "나만의",
+   "second": "매크로 목표",
+   "back": "Your macro goals"
+  },
+  "08": {
+   "first": "매크로",
+   "second": "변화 살펴보기",
+   "back": "Explore macro trends"
+  },
+  "09": {
+   "first": "편안하게 보는",
+   "second": "다크 모드",
+   "back": "View comfortably in dark mode"
+  }
+ },
+ "ms": {
+  "01": {
+   "first": "Pantau kalori",
+   "second": "di pergelangan",
+   "back": "Track calories on your wrist"
+  },
+  "02": {
+   "first": "Jumlah kalori",
+   "second": "yang terbakar",
+   "back": "Total calories burned"
+  },
+  "03": {
+   "first": "Bandingkan",
+   "second": "kalori dimakan",
+   "back": "Compare calories eaten"
+  },
+  "04": {
+   "first": "Pecahan kalori",
+   "second": "yang terbakar",
+   "back": "Breakdown of calories burned"
+  },
+  "05": {
+   "first": "Kenali corak",
+   "second": "harian anda",
+   "back": "Discover your daily patterns"
+  },
+  "06": {
+   "first": "Terbakar",
+   "second": "tolak dimakan",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Tetapkan",
+   "second": "sasaran makro",
+   "back": "Set macro goals"
+  },
+  "08": {
+   "first": "Lihat corak",
+   "second": "makro anda",
+   "back": "See your macro patterns"
+  },
+  "09": {
+   "first": "Baca dalam",
+   "second": "mod gelap",
+   "back": "Read in dark mode"
+  }
+ },
+ "no": {
+  "01": {
+   "first": "Dagens tall",
+   "second": "på håndleddet",
+   "back": "Today’s numbers on your wrist"
+  },
+  "02": {
+   "first": "Se totalt",
+   "second": "kaloriforbruk",
+   "back": "See total calorie expenditure"
+  },
+  "03": {
+   "first": "Se inntak mot",
+   "second": "forbruk",
+   "back": "See intake against expenditure"
+  },
+  "04": {
+   "first": "Se hva som",
+   "second": "forbrennes",
+   "back": "See what is burned"
+  },
+  "05": {
+   "first": "Finn daglige",
+   "second": "mønstre",
+   "back": "Find daily patterns"
+  },
+  "06": {
+   "first": "Forbrent",
+   "second": "minus spist",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Sett dine",
+   "second": "makromål",
+   "back": "Set your macro goals"
+  },
+  "08": {
+   "first": "Se mønstre",
+   "second": "i makroene",
+   "back": "See patterns in macros"
+  },
+  "09": {
+   "first": "Les i",
+   "second": "mørk modus",
+   "back": "Read in dark mode"
+  }
+ },
+ "nl-NL": {
+  "01": {
+   "first": "Je cijfers",
+   "second": "om je pols",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Je totale",
+   "second": "verbruik",
+   "back": "Your total expenditure"
+  },
+  "03": {
+   "first": "Vergelijk je",
+   "second": "inname",
+   "back": "Compare your intake"
+  },
+  "04": {
+   "first": "Bekijk je",
+   "second": "verbranding",
+   "back": "See your burn"
+  },
+  "05": {
+   "first": "Ontdek je",
+   "second": "dagpatronen",
+   "back": "Discover your daily patterns"
+  },
+  "06": {
+   "first": "Verbrand",
+   "second": "min gegeten",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Stel je",
+   "second": "macrodoelen",
+   "back": "Set your macro goals"
+  },
+  "08": {
+   "first": "Ontdek",
+   "second": "macropatronen",
+   "back": "Discover macro patterns"
+  },
+  "09": {
+   "first": "Lees in",
+   "second": "donkere modus",
+   "back": "Read in dark mode"
+  }
+ },
+ "pl": {
+  "01": {
+   "first": "Twoje wyniki",
+   "second": "na nadgarstku",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Poznaj całe",
+   "second": "spalanie",
+   "back": "Know your total burn"
+  },
+  "03": {
+   "first": "Porównaj",
+   "second": "spożycie",
+   "back": "Compare intake"
+  },
+  "04": {
+   "first": "Poznaj skład",
+   "second": "spalania",
+   "back": "Understand the makeup of your burn"
+  },
+  "05": {
+   "first": "Odkryj rytm",
+   "second": "każdego dnia",
+   "back": "Discover the rhythm of each day"
+  },
+  "06": {
+   "first": "Spalone minus",
+   "second": "zjedzone",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Ustal swoje",
+   "second": "cele makro",
+   "back": "Set your macro goals"
+  },
+  "08": {
+   "first": "Poznaj trendy",
+   "second": "makro",
+   "back": "Discover macro trends"
+  },
+  "09": {
+   "first": "Czytaj w",
+   "second": "trybie ciemnym",
+   "back": "Read in dark mode"
+  }
+ },
+ "pt-BR": {
+  "01": {
+   "first": "Seus dados",
+   "second": "no pulso",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Saiba sua",
+   "second": "queima total",
+   "back": "Know your total burn"
+  },
+  "03": {
+   "first": "Compare sua",
+   "second": "ingestão",
+   "back": "Compare your intake"
+  },
+  "04": {
+   "first": "Entenda sua",
+   "second": "queima",
+   "back": "Understand your burn"
+  },
+  "05": {
+   "first": "Veja padrões",
+   "second": "de cada dia",
+   "back": "See day to day patterns"
+  },
+  "06": {
+   "first": "Queimadas",
+   "second": "menos comidas",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Metas para",
+   "second": "seus macros",
+   "back": "Goals for your macros"
+  },
+  "08": {
+   "first": "Veja padrões",
+   "second": "dos macros",
+   "back": "See macro patterns"
+  },
+  "09": {
+   "first": "Leia no",
+   "second": "modo escuro",
+   "back": "Read in dark mode"
+  }
+ },
+ "pt-PT": {
+  "01": {
+   "first": "Os seus dados",
+   "second": "no pulso",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Saiba o seu",
+   "second": "gasto total",
+   "back": "Know your total expenditure"
+  },
+  "03": {
+   "first": "Compare a sua",
+   "second": "ingestão",
+   "back": "Compare your intake"
+  },
+  "04": {
+   "first": "Entenda o seu",
+   "second": "gasto",
+   "back": "Understand your expenditure"
+  },
+  "05": {
+   "first": "Veja padrões",
+   "second": "de cada dia",
+   "back": "See day to day patterns"
+  },
+  "06": {
+   "first": "Queimadas",
+   "second": "menos comidas",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Metas para",
+   "second": "os seus macros",
+   "back": "Goals for your macros"
+  },
+  "08": {
+   "first": "Veja padrões",
+   "second": "dos macros",
+   "back": "See macro patterns"
+  },
+  "09": {
+   "first": "Leia em",
+   "second": "modo escuro",
+   "back": "Read in dark mode"
+  }
+ },
+ "ro": {
+  "01": {
+   "first": "Datele tale",
+   "second": "la încheietură",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Află consumul",
+   "second": "total",
+   "back": "Know your total burn"
+  },
+  "03": {
+   "first": "Compară aport",
+   "second": "și consum",
+   "back": "Compare intake and expenditure"
+  },
+  "04": {
+   "first": "Descoperă",
+   "second": "consumul",
+   "back": "Discover your burn"
+  },
+  "05": {
+   "first": "Observă ritmul",
+   "second": "zilnic",
+   "back": "Observe your daily patterns"
+  },
+  "06": {
+   "first": "Arse minus",
+   "second": "consumate",
+   "back": "Burned minus consumed"
+  },
+  "07": {
+   "first": "Obiective",
+   "second": "pentru macro",
+   "back": "Goals for macros"
+  },
+  "08": {
+   "first": "Vezi tendințe",
+   "second": "în macrouri",
+   "back": "See macro trends"
+  },
+  "09": {
+   "first": "Citește în",
+   "second": "mod întunecat",
+   "back": "Read in dark mode"
+  }
+ },
+ "ru": {
+  "01": {
+   "first": "Ваши данные",
+   "second": "на запястье",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Узнайте общий",
+   "second": "расход калорий",
+   "back": "Know total calorie expenditure"
+  },
+  "03": {
+   "first": "Сравните",
+   "second": "потребление",
+   "back": "Compare intake"
+  },
+  "04": {
+   "first": "Из чего",
+   "second": "состоит расход",
+   "back": "What expenditure consists of"
+  },
+  "05": {
+   "first": "Замечайте",
+   "second": "ритм дня",
+   "back": "Notice daily patterns"
+  },
+  "06": {
+   "first": "Сожжено минус",
+   "second": "съедено",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Задайте цели",
+   "second": "по макросам",
+   "back": "Set macro goals"
+  },
+  "08": {
+   "first": "История",
+   "second": "ваших макросов",
+   "back": "Your macro history"
+  },
+  "09": {
+   "first": "Читайте в",
+   "second": "тёмном режиме",
+   "back": "Read in dark mode"
+  }
+ },
+ "sk": {
+  "01": {
+   "first": "Vaše údaje",
+   "second": "na zápästí",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Spoznajte",
+   "second": "celkový výdaj",
+   "back": "Know your total expenditure"
+  },
+  "03": {
+   "first": "Porovnajte",
+   "second": "príjem kalórií",
+   "back": "Compare calorie intake"
+  },
+  "04": {
+   "first": "Čo tvorí",
+   "second": "výdaj kalórií",
+   "back": "What makes up calorie expenditure"
+  },
+  "05": {
+   "first": "Sledujte svoj",
+   "second": "denný rytmus",
+   "back": "Follow your daily rhythm"
+  },
+  "06": {
+   "first": "Spálené mínus",
+   "second": "zjedené",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Nastavte si",
+   "second": "ciele makier",
+   "back": "Set your macro goals"
+  },
+  "08": {
+   "first": "Sledujte",
+   "second": "vývoj makier",
+   "back": "Follow macro trends"
+  },
+  "09": {
+   "first": "Čítajte v",
+   "second": "tmavom režime",
+   "back": "Read in dark mode"
+  }
+ },
+ "sv": {
+  "01": {
+   "first": "Dina siffror",
+   "second": "på handleden",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Se din totala",
+   "second": "förbränning",
+   "back": "See your total burn"
+  },
+  "03": {
+   "first": "Jämför ditt",
+   "second": "kaloriintag",
+   "back": "Compare your calorie intake"
+  },
+  "04": {
+   "first": "Förstå din",
+   "second": "förbränning",
+   "back": "Understand your burn"
+  },
+  "05": {
+   "first": "Se mönster",
+   "second": "dag för dag",
+   "back": "See patterns day by day"
+  },
+  "06": {
+   "first": "Förbränt minus",
+   "second": "intaget",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Sätt dina",
+   "second": "makromål",
+   "back": "Set your macro goals"
+  },
+  "08": {
+   "first": "Se mönster",
+   "second": "i dina makron",
+   "back": "See patterns in your macros"
+  },
+  "09": {
+   "first": "Läs i",
+   "second": "mörkt läge",
+   "back": "Read in dark mode"
+  }
+ },
+ "uk": {
+  "01": {
+   "first": "Ваші дані",
+   "second": "на зап’ясті",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Уся витрата",
+   "second": "калорій",
+   "back": "Total calorie expenditure"
+  },
+  "03": {
+   "first": "Порівняйте",
+   "second": "споживання",
+   "back": "Compare intake"
+  },
+  "04": {
+   "first": "Що формує",
+   "second": "вашу витрату",
+   "back": "What makes up your expenditure"
+  },
+  "05": {
+   "first": "Помічайте",
+   "second": "ритм дня",
+   "back": "Notice daily patterns"
+  },
+  "06": {
+   "first": "Спалено мінус",
+   "second": "з’їдено",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Задайте цілі",
+   "second": "за макросами",
+   "back": "Set macro goals"
+  },
+  "08": {
+   "first": "Історія",
+   "second": "ваших макросів",
+   "back": "Your macro history"
+  },
+  "09": {
+   "first": "Читайте в",
+   "second": "темному режимі",
+   "back": "Read in dark mode"
+  }
+ },
+ "vi": {
+  "01": {
+   "first": "Theo dõi ngay",
+   "second": "trên cổ tay",
+   "back": "Track right on your wrist"
+  },
+  "02": {
+   "first": "Biết tổng",
+   "second": "calo đã đốt",
+   "back": "Know total calories burned"
+  },
+  "03": {
+   "first": "So sánh",
+   "second": "calo nạp vào",
+   "back": "Compare calorie intake"
+  },
+  "04": {
+   "first": "Hiểu rõ",
+   "second": "calo đã đốt",
+   "back": "Understand calories burned"
+  },
+  "05": {
+   "first": "Khám phá",
+   "second": "nhịp mỗi ngày",
+   "back": "Discover daily patterns"
+  },
+  "06": {
+   "first": "Calo đã đốt",
+   "second": "trừ calo đã ăn",
+   "back": "Calories burned minus calories eaten"
+  },
+  "07": {
+   "first": "Đặt mục tiêu",
+   "second": "chất đa lượng",
+   "back": "Set macro goals"
+  },
+  "08": {
+   "first": "Xem xu hướng",
+   "second": "chất đa lượng",
+   "back": "See macro trends"
+  },
+  "09": {
+   "first": "Dễ đọc ở",
+   "second": "chế độ tối",
+   "back": "Easy to read in dark mode"
+  }
+ },
+ "zh-Hans": {
+  "01": {
+   "first": "今日数据",
+   "second": "就在手腕上",
+   "back": "Today’s numbers on your wrist"
+  },
+  "02": {
+   "first": "了解",
+   "second": "总消耗",
+   "back": "Know your total burn"
+  },
+  "03": {
+   "first": "对照消耗看",
+   "second": "卡路里摄入",
+   "back": "See calorie intake against burn"
+  },
+  "04": {
+   "first": "了解",
+   "second": "消耗的构成",
+   "back": "Understand the makeup of your burn"
+  },
+  "05": {
+   "first": "发现",
+   "second": "每日变化",
+   "back": "Discover daily patterns"
+  },
+  "06": {
+   "first": "消耗",
+   "second": "减去摄入",
+   "back": "Burned minus intake"
+  },
+  "07": {
+   "first": "设定",
+   "second": "宏量营养素目标",
+   "back": "Set macro goals"
+  },
+  "08": {
+   "first": "查看",
+   "second": "宏量营养素趋势",
+   "back": "See macro trends"
+  },
+  "09": {
+   "first": "使用",
+   "second": "深色模式",
+   "back": "Use dark mode"
+  }
+ },
+ "zh-Hant": {
+  "01": {
+   "first": "今日數據",
+   "second": "就在手腕上",
+   "back": "Today’s numbers on your wrist"
+  },
+  "02": {
+   "first": "了解",
+   "second": "總消耗",
+   "back": "Know your total burn"
+  },
+  "03": {
+   "first": "對照消耗看",
+   "second": "卡路里攝取",
+   "back": "See calorie intake against burn"
+  },
+  "04": {
+   "first": "了解",
+   "second": "消耗的組成",
+   "back": "Understand the makeup of your burn"
+  },
+  "05": {
+   "first": "發現",
+   "second": "每日變化",
+   "back": "Discover daily patterns"
+  },
+  "06": {
+   "first": "消耗",
+   "second": "減去攝取",
+   "back": "Burned minus intake"
+  },
+  "07": {
+   "first": "設定",
+   "second": "營養素目標",
+   "back": "Set nutrient goals"
+  },
+  "08": {
+   "first": "查看",
+   "second": "營養素趨勢",
+   "back": "See nutrient trends"
+  },
+  "09": {
+   "first": "使用",
+   "second": "深色模式",
+   "back": "Use dark mode"
+  }
+ },
+ "th": {
+  "01": {
+   "first": "ดูข้อมูลวันนี้",
+   "second": "บนข้อมือ",
+   "back": "See today’s data on your wrist"
+  },
+  "02": {
+   "first": "รู้ยอดรวม",
+   "second": "แคลอรีที่เผา",
+   "back": "Know total calories burned"
+  },
+  "03": {
+   "first": "เทียบยอดเผา",
+   "second": "กับยอดที่กิน",
+   "back": "Compare calories burned with calories eaten"
+  },
+  "04": {
+   "first": "ดูที่มาของ",
+   "second": "ยอดเผาผลาญ",
+   "back": "See what makes up your burn"
+  },
+  "05": {
+   "first": "ดูแนวโน้ม",
+   "second": "ในแต่ละวัน",
+   "back": "See day to day trends"
+  },
+  "06": {
+   "first": "ยอดเผาผลาญ",
+   "second": "ลบยอดที่กิน",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "ตั้งเป้าหมาย",
+   "second": "สารอาหารหลัก",
+   "back": "Set macro goals"
+  },
+  "08": {
+   "first": "ดูแนวโน้ม",
+   "second": "สารอาหารหลัก",
+   "back": "See macro trends"
+  },
+  "09": {
+   "first": "อ่านง่ายใน",
+   "second": "โหมดมืด",
+   "back": "Read easily in dark mode"
+  }
+ },
+ "tr": {
+  "01": {
+   "first": "Verilerin",
+   "second": "bileğinde",
+   "back": "Your numbers on your wrist"
+  },
+  "02": {
+   "first": "Toplam",
+   "second": "kalori yakımın",
+   "back": "Your total calorie burn"
+  },
+  "03": {
+   "first": "Karşılaştır",
+   "second": "kalori alımını",
+   "back": "Compare your calorie intake"
+  },
+  "04": {
+   "first": "Yakımını",
+   "second": "ayrıntılı gör",
+   "back": "See your burn in detail"
+  },
+  "05": {
+   "first": "Keşfet günlük",
+   "second": "düzenini",
+   "back": "Discover your daily patterns"
+  },
+  "06": {
+   "first": "Yakılan eksi",
+   "second": "yenen",
+   "back": "Burned minus eaten"
+  },
+  "07": {
+   "first": "Belirle",
+   "second": "makro hedefini",
+   "back": "Set your macro goal"
+  },
+  "08": {
+   "first": "Gör",
+   "second": "makro trendini",
+   "back": "See your macro trend"
+  },
+  "09": {
+   "first": "Oku",
+   "second": "koyu modda",
+   "back": "Read in dark mode"
+  }
+ }
+}

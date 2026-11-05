@@ -94,3 +94,17 @@ the existing et, fa, hi, and lv translations too.
   actual Home Screen widget through `VitalsUITests/AuditFeaturesUITests.swift`
   (`testLargeWidgetAddAndTap`); it has no app launch scene. Inspect RTL,
   German, Finnish, and Russian first for mirroring and tight-label fit.
+
+## Store screenshots (2026-11-04)
+
+`fastlane/screenshots/<locale>/` holds the 9-frame iPhone set for 35 store
+locales, captured from the app in that language. Catalog languages with no
+store locale (bg, et, fa, ka, lt, lv) have no set; es-MX and fr-CA are extra.
+Tools and copy live in `artifacts/asc-screenshots/l10n-20261104/`:
+`tools/capture.py` drives the `VITALS_SCREENSHOT_SCENE` scenes,
+`tools/headline.swift` draws headers with CoreText (Pillow here has no raqm),
+`tools/compose.py` builds the frames from `copy/headers.json`. ar-SA captures
+with region ar_AE, because ar_SA brings the Islamic calendar and Arabic-Indic
+digits. Frame 1's second watch is a localized Watch breakdown, since the English
+set's system watch face cannot be scripted in other languages. Watch and Duo
+sets stay en-US.

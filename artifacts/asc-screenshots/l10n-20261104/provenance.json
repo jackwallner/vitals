@@ -1,0 +1,2277 @@
+{
+ "ar-SA": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "أرقامك على",
+   "second": "معصمك",
+   "size": 202,
+   "sha256": "e12766942f4b3a3c03c7b5c580b34c15243525c1c3f9c2113f829b3b9ec32fbf"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "اعرف إجمالي",
+   "second": "حرق السعرات",
+   "size": 200,
+   "sha256": "2f26b5af90d0b74b391fbb4a777c1e4ff748850cd0a9b084362cfae8baaf51cb"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "قارن أكلك",
+   "second": "بحرق السعرات",
+   "size": 190,
+   "sha256": "3734c46e31464cd14c40a41546edcebbe4260d73a6842faf6a2df736c33009be"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "تفاصيل",
+   "second": "حرق السعرات",
+   "size": 200,
+   "sha256": "30629d23ba82dfda104d1c253b4a14683e4608db3f4a6816e5cf32949197f6b9"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "اكتشف أنماطك",
+   "second": "كل يوم",
+   "size": 188,
+   "sha256": "8ada3ba2eee4010b0ebfd3e43cc204d4a096a4a5d446dbbac6aff960e983aa4d"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "المحروقة ناقص",
+   "second": "المتناولة",
+   "size": 178,
+   "sha256": "a8a441f440c51172e82ee9c07da479eb0f43d1ccee827d1ed4d48c4ecd461696"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "حدد أهداف",
+   "second": "المغذيات الكبرى",
+   "size": 170,
+   "sha256": "63f23b78770523897acd91656ff106d20db03f20ef9c8b7ae44209a64b037ca9"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "تابع أنماط",
+   "second": "المغذيات الكبرى",
+   "size": 170,
+   "sha256": "7dbc4360710171fce0a4b66928460cb9a7d1f5707831f1ef8bd22d5a5575b035"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "واضح في",
+   "second": "الوضع الداكن",
+   "size": 202,
+   "sha256": "23b27300a3db878de17b268bb4b4dd3d0f17c1952c27a22d7fe96abbb2be5517"
+  }
+ ],
+ "cs": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Tvé údaje",
+   "second": "na zápěstí",
+   "size": 202,
+   "sha256": "a9cf7d44cb1fbacda856c60aa049e000135f5efa77c567e4bb94d40b05d00824"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Poznej celý",
+   "second": "výdej kalorií",
+   "size": 200,
+   "sha256": "3e50c637063f176b6bcd6879470cbe4e40e74034b35787336ef8aabc3d273cd6"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Sleduj příjem",
+   "second": "i výdej",
+   "size": 190,
+   "sha256": "082d24d6713da31762dddb5c4a920b5b7a2b358299d424726dcc03c8e3b274e0"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Co tvoří tvůj",
+   "second": "výdej kalorií",
+   "size": 200,
+   "sha256": "f2b13a4e5960ecdfcd56befd35e1fd9b82cde5578dd579f8380d2e31ff16d45e"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Objev své",
+   "second": "denní návyky",
+   "size": 182,
+   "sha256": "15e4acd862b39afd0bd03f60fae2f4f1169924d5d4b02757e51b86b788198564"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Spáleno minus",
+   "second": "snědeno",
+   "size": 166,
+   "sha256": "35a0c5fda4ecbd0da2e4d5428e0718ea6e49f92817ab5017b8383c21858da9ea"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Nastav si",
+   "second": "cíle maker",
+   "size": 202,
+   "sha256": "3b4b9be895d39526588a63d12b3ccdc29f6caed991414a60520c0459268cd44a"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Sleduj vývoj",
+   "second": "svých maker",
+   "size": 192,
+   "sha256": "b819036a106b1639a457767a86cdf0ce4c793a7ca6c14861fc3b19fbc2bc0717"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Přehledně i v",
+   "second": "tmavém režimu",
+   "size": 158,
+   "sha256": "b0171894d52fea1c3e16cf2189fa7335c5d854c4aa4d557a3167dc399e14f3ee"
+  }
+ ],
+ "da": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Dine tal på",
+   "second": "dit håndled",
+   "size": 202,
+   "sha256": "c479ebad1d284a7cd38c120b61d01d9e4bee25ba17bc3f2386040846c2773dba"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Se hele din",
+   "second": "forbrænding",
+   "size": 190,
+   "sha256": "069ca4a8b2ba6b2c624e7e146b507a752e636b89b5571b6ccbfe5c62ddf436b5"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Se indtag og",
+   "second": "forbrænding",
+   "size": 190,
+   "sha256": "23c48f60547ed3474ec2fe36cba835194fb8b5192ab093f298d6483514e9fccb"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Forbrænding",
+   "second": "i detaljer",
+   "size": 192,
+   "sha256": "718c82d357a63c873ba34fbb32fa484b498933366bf22f95d29ac9d1602a9183"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Find mønstre",
+   "second": "dag for dag",
+   "size": 188,
+   "sha256": "632034e5316a02306f0030e9974132fbc681f47d421ec2ebac7be358763809c4"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Forbrændt",
+   "second": "minus spist",
+   "size": 202,
+   "sha256": "fac4c1cfc7c312c615ff13046dee91c087c6a35aac6c517bd63f92992fc8a066"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Sæt dine",
+   "second": "makromål",
+   "size": 202,
+   "sha256": "8a406591e898e04e977f7c8e587b80777cc505b1489b2b1fffb30fc867b36b72"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Se mønstre i",
+   "second": "dine makroer",
+   "size": 180,
+   "sha256": "5affa50394693ad5722f3d993b9b1e6563b13400a9b925db5551a9d263616187"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Flot i",
+   "second": "mørk tilstand",
+   "size": 180,
+   "sha256": "0cecefffc0117542445f133e2e1ba4055eb9e482bd7461b13f82ad3c7b36f02a"
+  }
+ ],
+ "de-DE": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Deine Werte",
+   "second": "am Handgelenk",
+   "size": 154,
+   "sha256": "87f9837bd986443678b404ce0778d9b918be013a8e0eaf19c298eb99f2a5ccdb"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Dein Verbrauch",
+   "second": "insgesamt",
+   "size": 160,
+   "sha256": "0430f92be06b2259e4b2839c926454d1c45344fbc6aafc672642d885541aea44"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Zufuhr und",
+   "second": "Verbrauch",
+   "size": 202,
+   "sha256": "7cb47b440f8d21544131ae23b92ed686b9dd46c5a67f27aa7c4856e4902377c8"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Dein Verbrauch",
+   "second": "im Detail",
+   "size": 160,
+   "sha256": "654240f4b78ec8b3ea30a3ad78849354971c51bf58aa9162b6f01174eca02197"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Erkenne deine",
+   "second": "Gewohnheiten",
+   "size": 166,
+   "sha256": "87ec8a7777b6979827d11a1d37ff7a9b038782e2ee7e1f381912f4d1cfadf0e0"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Verbrannt",
+   "second": "minus gegessen",
+   "size": 148,
+   "sha256": "049ef3f99870b98acff6df5ce112e9d468d659abe0a3ee1d41610fbd98935057"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Setze deine",
+   "second": "Makroziele",
+   "size": 202,
+   "sha256": "a8119846a7a12181b661a4d1ce9db776709e32e4d2191d06b5a11903889fc1c3"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Deine Makros",
+   "second": "im Verlauf",
+   "size": 180,
+   "sha256": "eb2157c1cdc87a80c80873fbb5f173715c68282b224ec0dd26ee602c586ec069"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Stark im",
+   "second": "Dunkelmodus",
+   "size": 176,
+   "sha256": "f6c381ae2b96fbf821fda64677e1406322604c5e2118d2a6ef5bb43f71d3383f"
+  }
+ ],
+ "el": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Οι αριθμοί σου",
+   "second": "στον καρπό",
+   "size": 164,
+   "sha256": "284805ecbabf2a919eb053f5e258754775e7f07a5af7211da313ad01ad36de2b"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Δες όλη την",
+   "second": "καύση σου",
+   "size": 200,
+   "sha256": "1b309a302eb6d9e96eceb1cf64142378f44415643cc6f4b2d5fb0dc03b54f200"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Πρόσληψη",
+   "second": "και καύση μαζί",
+   "size": 160,
+   "sha256": "abd30f2263ac07eab1d6ad551387fbba86433d58f62a8f8aeff8742c95746dc7"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Ανάλυσε την",
+   "second": "καύση σου",
+   "size": 184,
+   "sha256": "92fe2bd77002fb2d3e7f0702bb494c697cec7ae02847acbfa5a687ab59a35fc2"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Βρες τα μοτίβα",
+   "second": "κάθε μέρας",
+   "size": 156,
+   "sha256": "3c555f289e1afb139715c7c598b2b4df2aa15985484b9fa70d321a1f75d6694f"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Καύση μείον",
+   "second": "πρόσληψη",
+   "size": 190,
+   "sha256": "f9df0417a2ce59327632fddf924cb1f107a0459ed8cb86af263eee7a90de479f"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Όρισε στόχους",
+   "second": "για τα μάκρο",
+   "size": 156,
+   "sha256": "b6c93d0bf4c78a88c552071f306a7e0822db3a42988f0e2608df4baa74e95ff7"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Δες τα μοτίβα",
+   "second": "στα μάκρο",
+   "size": 170,
+   "sha256": "440072c68216371f864e3166b07b7600e8cdfcf4477301a66d5cbe37201efc2b"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Άνετη ανάγνωση",
+   "second": "σε σκούρο θέμα",
+   "size": 138,
+   "sha256": "90cdca7981877a546334f33ad580038abe6048e4aed4bbee6e6e4dfe4e3ee3a9"
+  }
+ ],
+ "es-ES": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Tus datos en",
+   "second": "la muñeca",
+   "size": 194,
+   "sha256": "4f1a47383a78c1287e41cb5b500707dc5d91e24a684754e26ca9d48b55dafd90"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Conoce tu",
+   "second": "gasto total",
+   "size": 202,
+   "sha256": "e468520ac48fdeaf5a43b36c59baa48ed2fca7c2944d2cc19e45b98c4906b9c6"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Compara gasto",
+   "second": "e ingesta",
+   "size": 160,
+   "sha256": "24789300eb3e53f73c44ad880031c87c255bef28b27f07aef6aa2da624d8ec62"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Entiende tu",
+   "second": "gasto calórico",
+   "size": 170,
+   "sha256": "01e5ae883237f264b43153e0e8bb473735c862e7451a4206ef371c4302f8c265"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Ve tus rutinas",
+   "second": "día tras día",
+   "size": 180,
+   "sha256": "f4e8b5d0184e03f68ea3466ca488f2437f9daa230b7bc81987a4fa9d73df5b5e"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Quemadas menos",
+   "second": "ingeridas",
+   "size": 136,
+   "sha256": "6fb6153adb83cbe6e648f6378e91f5c4f3d2d900cbe012de0a6ce108889808d1"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Fija tus metas",
+   "second": "de macros",
+   "size": 180,
+   "sha256": "104c972a7b5604b56d79d3e323286149c7487075f6878fdd1b051149e1265c27"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Ve cómo varían",
+   "second": "tus macros",
+   "size": 162,
+   "sha256": "1feac790955f9951ac29dab5c68c0358e51fe5029c4535d5df09e62ad5cb16aa"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Se ve bien en",
+   "second": "modo oscuro",
+   "size": 184,
+   "sha256": "5cf3dcacd6b66d6d036f7521f615c7e6e6c59d93de9355c6fd4dea6c79779627"
+  }
+ ],
+ "es-MX": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Tus datos en",
+   "second": "la muñeca",
+   "size": 194,
+   "sha256": "56a7998731601d42059d7be282d591aa3a8d80425f7f29ece0b08678ca32ceed"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Conoce tu",
+   "second": "gasto total",
+   "size": 202,
+   "sha256": "10f25abefd3ede342646411e0466b1543ea17e5f9b16d0673a347cc1115cab09"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Compara gasto",
+   "second": "e ingesta",
+   "size": 160,
+   "sha256": "3f31f1fa785735e53f4d256e4be8aa8a043f1df0eacb91fa53a4085d20226271"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Entiende tu",
+   "second": "gasto calórico",
+   "size": 170,
+   "sha256": "6f0a7b16a0533587445a1b655b41e39fe763b5b67c003e48785bbe3265355d9a"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Ve tus rutinas",
+   "second": "día tras día",
+   "size": 180,
+   "sha256": "79e5c53e9b145f901ea8f2b70a340680ff7d3ec9a31b8183328adb614736f84f"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Quemadas menos",
+   "second": "ingeridas",
+   "size": 136,
+   "sha256": "1669633032c560a44f4c57dcc23298ec44ed33f59df060c00f545cf4357008df"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Fija tus metas",
+   "second": "de macros",
+   "size": 180,
+   "sha256": "714ca7e16c0208174f41105defafd16af72be36759ad9dcd7dcc9d7a7d937122"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Ve cómo varían",
+   "second": "tus macros",
+   "size": 162,
+   "sha256": "110948b8cd93e02ca345dc73c8d0553a3679a58a9470491f000c65676e6fd721"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Se ve bien en",
+   "second": "modo oscuro",
+   "size": 184,
+   "sha256": "b15477ea9faff6a98f33a7bc8be3c301ed887030a709d3f3f748401d260005b9"
+  }
+ ],
+ "fi": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Lukusi aina",
+   "second": "ranteessasi",
+   "size": 202,
+   "sha256": "e412969fb6bb01e06b8de8f4da917f29ad10b68edfdc81a6cf0d3378086db445"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Päivän koko",
+   "second": "kulutus",
+   "size": 202,
+   "sha256": "53a388ce28379bc72ec94f63be321b4bfdbdba1ce363926c57a9b61aea900cb1"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Vertaa saantia",
+   "second": "ja kulutusta",
+   "size": 172,
+   "sha256": "fae2392860f49174a4fa48c51b3d9a271509e81fc352a1fe6d56b4a3074ea5a9"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Mistä kulutus",
+   "second": "koostuu",
+   "size": 184,
+   "sha256": "0fea444546db3f02ed796e4c25ffa8fd8e417be187e282e503975f20c99e968c"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Tunnista",
+   "second": "arkesi rytmi",
+   "size": 202,
+   "sha256": "766371d24d7d1b30b3c3bc3c8b283690d44c7b8deae47c543e66e77525b1736e"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Poltettu",
+   "second": "miinus syöty",
+   "size": 188,
+   "sha256": "7abb0b3dfb9361993249db4c3ea9d8c662c0e2884eb96c4e9948f12d899f0c8f"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Aseta omat",
+   "second": "makrotavoitteet",
+   "size": 150,
+   "sha256": "f6056051618dedc812ff12c71384935a69c6557951f5c42ecefa753adabf49f7"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Seuraa makroja",
+   "second": "päivä päivältä",
+   "size": 158,
+   "sha256": "596bece9d57f886f13b00ff10872af82ce2de73f0b920e8ed04bf2a4b8acbb31"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Tumma tila",
+   "second": "näyttää hyvältä",
+   "size": 158,
+   "sha256": "39785d9e10106e26c003afa586fa9e777bb8cad3e80501c2348ad7baf96fd019"
+  }
+ ],
+ "fr-CA": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Vos chiffres",
+   "second": "au poignet",
+   "size": 202,
+   "sha256": "da73cac98f97066fb25c33dd85b4f26f0e6d9ecee6c74a96fee651b7d64e0d2b"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Votre dépense",
+   "second": "totale",
+   "size": 168,
+   "sha256": "6595378476c072f3aabbbc0d6bf652f76fd452bcfb1dac24cfc54453163dd59c"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Apport et",
+   "second": "dépense",
+   "size": 202,
+   "sha256": "7914fc7090786b2f1a3ef5f13912482df5890670888b46e05f52afead210e179"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Votre dépense",
+   "second": "en détail",
+   "size": 168,
+   "sha256": "9100fd681d386a5da64dc572bb3b31e6f9f72f1d2ccc4a707b29afba9f9d855d"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Repérez vos",
+   "second": "habitudes",
+   "size": 202,
+   "sha256": "f815c6c2f8844c8c9d78a43c5119e5cb7ecd232f7e940121ef268d95d4245f88"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Brûlées moins",
+   "second": "consommées",
+   "size": 174,
+   "sha256": "cd4d2d4510bdd8535580ab7ceefb4337e516155972a45331ca8270492606dde6"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Vos objectifs",
+   "second": "de macros",
+   "size": 190,
+   "sha256": "d76fe3bb62e1047690dc8c6c01c7c417ed8e22e80f31f298034fe86530e0d93e"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Les tendances",
+   "second": "de vos macros",
+   "size": 168,
+   "sha256": "cae7981f19b2e3292ddb69dccd3bc16d77470f93377a7ac93a94db02a1224545"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Lisible même",
+   "second": "en mode sombre",
+   "size": 144,
+   "sha256": "82322ad399f838fb31b3ae919c5fa92a720252e8858c531fdbdac2e04db29685"
+  }
+ ],
+ "fr-FR": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Vos chiffres",
+   "second": "au poignet",
+   "size": 202,
+   "sha256": "636a4c59a248f7050c96c92756d372e8628d94914092d3ff6ee133fbfb70503c"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Votre dépense",
+   "second": "totale",
+   "size": 168,
+   "sha256": "436611986c5982a08998ec2e506f52981e3a10729af5993f3b4f0292920ede11"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Apport et",
+   "second": "dépense",
+   "size": 202,
+   "sha256": "23e8e9bceada5729b881becb63a0d2a966c19db14af0bd67e66b0144cac9e3ca"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Votre dépense",
+   "second": "en détail",
+   "size": 168,
+   "sha256": "863f5f061545cc61f1e1a5769d518fd7d1bd04faeaf8acd1be6789b722cb6b07"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Repérez vos",
+   "second": "habitudes",
+   "size": 202,
+   "sha256": "054049cf0de48b9d7790336df9218f218b31b9e3b5618753303f2c75d0f3ff93"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Brûlées moins",
+   "second": "consommées",
+   "size": 174,
+   "sha256": "87337a177e22429cf2acd6e0136bdef9cfc2f375e9fd622333afcb66f661241d"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Vos objectifs",
+   "second": "de macros",
+   "size": 190,
+   "sha256": "488f9579e6ac800b5e839f7bd2c055888513e055bd7621c9ea12bd1f9420aac7"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Les tendances",
+   "second": "de vos macros",
+   "size": 168,
+   "sha256": "56d765726cc5faafe33d229db6ffb1a2e37ec8e4d2b221036f94ca9471ac327b"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Lisible même",
+   "second": "en mode sombre",
+   "size": 144,
+   "sha256": "7261b214a2b04ca504b752cb62bd3ca2833fdb51d72cb353e16051e58cee585d"
+  }
+ ],
+ "he": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "הנתונים שלך",
+   "second": "על פרק היד",
+   "size": 202,
+   "sha256": "bdbaf6f25d467bac3376d2faf8ee8abf4789474b16841c595028d4d9df6534bf"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "כל הקלוריות",
+   "second": "ששרפת היום",
+   "size": 202,
+   "sha256": "a9f6802f19e3de2e28427a663b79618b43c3d45f0f5bc71e89f6866ee108779e"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "השווה צריכה",
+   "second": "ושריפה",
+   "size": 202,
+   "sha256": "dd72940a5333b2fe3843af5e8c102a6340a6b797a8da9db053df61590d2141a6"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "ממה מורכבת",
+   "second": "השריפה שלך",
+   "size": 200,
+   "sha256": "49e411f372a379fff255538194b38c4a88c5627bd9d0fab4c572e8963ad73d46"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "גלה דפוסים",
+   "second": "מדי יום",
+   "size": 202,
+   "sha256": "d24a4e4924fb686d203094f77a297e01a035632b3bbc5962ab88efb311891d55"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "שריפה פחות",
+   "second": "צריכה",
+   "size": 202,
+   "sha256": "bccb376a8e867a38c7730cd0ea69454989e118b1e1642c6c85c5331d8f20c844"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "הגדר את",
+   "second": "יעדי המאקרו",
+   "size": 202,
+   "sha256": "1c6033d6c6d25678921890c2df98a96c237778a87933ea138bc6d7f1b3e3ea85"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "גלה דפוסים",
+   "second": "במאקרו",
+   "size": 202,
+   "sha256": "e706c9f494107815df0384decf266e3d5e5b41cad1f26911295ea498d50943b4"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "נראה טוב",
+   "second": "במצב כהה",
+   "size": 202,
+   "sha256": "feb328e2d99202a1095020b572c625e652d8091848a7ee2f73685348f3e71be4"
+  }
+ ],
+ "hi": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "आपके आँकड़े",
+   "second": "कलाई पर",
+   "size": 202,
+   "sha256": "0873507c540ee9ff2ac5720791471d1ebffdc8841df67b8cee9c356bdd2baca9"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "जानें कुल",
+   "second": "कैलोरी खर्च",
+   "size": 202,
+   "sha256": "3c06b120541b4c5ce87b3ae3a007e532f9ade87ffe89883bbead7bafb82d8dd0"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "देखें सेवन",
+   "second": "और खर्च",
+   "size": 202,
+   "sha256": "6fcbf452b19832b1040a25e86edaa25b9efb04dddbce1563ab2edf99ae69ee5f"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "समझें अपना",
+   "second": "कैलोरी खर्च",
+   "size": 202,
+   "sha256": "24fd3f3a91c36652f71905fb7cae1dbe0c1ec36ede98e42c190d83ccb4fa00cd"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "हर दिन के",
+   "second": "पैटर्न देखें",
+   "size": 202,
+   "sha256": "cc94d5751c734e9d3cd5d745c5df4c56dee94f7bb39a36b4dd4ba7fc79c3eb5e"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "खर्च में से",
+   "second": "सेवन घटाएँ",
+   "size": 202,
+   "sha256": "1d241bab5e489eb7eb45872b6444291e3616a8759b9e0da5b794be8f3de835bc"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "तय करें अपने",
+   "second": "मैक्रो लक्ष्य",
+   "size": 202,
+   "sha256": "4447432c6f34a02ce85a8f95909e718ef0a093bbb2c9c9814c85af8619de6a6f"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "मैक्रो के",
+   "second": "पैटर्न देखें",
+   "size": 202,
+   "sha256": "6cfa8af8b55ffb6d760b65c2bde6eb0c19fda77a6b0d69755ae767fed276bb1e"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "डार्क मोड में",
+   "second": "और भी सुंदर",
+   "size": 202,
+   "sha256": "7cec567f11485fa14cbf384ba57484f3e453e58fd5d5dff2b15e7f1ed5accda8"
+  }
+ ],
+ "hr": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Tvoji podaci",
+   "second": "na zapešću",
+   "size": 202,
+   "sha256": "6aa59a6aa098109bb5df57cab1462c3e3c48e6f7d6d7ae159f15d6e3db661b69"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Saznaj ukupnu",
+   "second": "potrošnju",
+   "size": 168,
+   "sha256": "5db085a2aa3e54e5f00f4cd86fe5d4a90e182ec100f94b31a1c9895c2da0a845"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Usporedi unos",
+   "second": "i potrošnju",
+   "size": 170,
+   "sha256": "746368cd146d40a762480d7e282112773107d2550eb214c5a659771b01c2aebb"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Što čini tvoju",
+   "second": "potrošnju",
+   "size": 194,
+   "sha256": "1cf87e559c1d758b58481507f726c1f5470f1a7fbc9e4465ef937cf5993fb580"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Pronađi svoje",
+   "second": "dnevne obrasce",
+   "size": 152,
+   "sha256": "2e4eb2979a75daf253d49c902a6d0a6d094a34e16ce0b40232620fb1e13ce9b7"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Potrošeno",
+   "second": "minus pojedeno",
+   "size": 150,
+   "sha256": "8b032e50919f46dec0260ab8266f4c155cde5f36bea070178fc622232b4b80e8"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Odredi ciljeve",
+   "second": "za makroe",
+   "size": 180,
+   "sha256": "115965d2c7dd7e4bdf93ad507d04ae9e08f53c73efd63f98f53773bbce97bb8b"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Prati obrasce",
+   "second": "unosa makroa",
+   "size": 172,
+   "sha256": "957e6c04d4f005739f24202550c66231d98879b0168c163bfaa51e4a320fb4f4"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Pregledno i u",
+   "second": "tamnom načinu",
+   "size": 156,
+   "sha256": "389603b92979218a129a50b13bfffc3cd83510ad7904fc83e7166d5b1b5ec96d"
+  }
+ ],
+ "hu": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Adataid mindig",
+   "second": "a csuklódon",
+   "size": 162,
+   "sha256": "3d2c6be9ae5dab8415f17db0c5710e708988e76543330672f7d315997017a7bc"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Teljes napi",
+   "second": "kalóriaégetés",
+   "size": 178,
+   "sha256": "6a49e11bbee26a5381f0d51adcf26ace2d046440f3baca7677387d7d3cf9985f"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Bevitel és",
+   "second": "égetés együtt",
+   "size": 174,
+   "sha256": "6b84d68b05cb85ec0403fe5b51251a596f8551c283f5033620b1c447923bd4d4"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Az égetés",
+   "second": "részletei",
+   "size": 202,
+   "sha256": "685a2d9468893e7e02d43e56585c0cc421f02166fe9f6d54ae9ad55178e267aa"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Fedezd fel a",
+   "second": "szokásaidat",
+   "size": 200,
+   "sha256": "88e5394347030894e8bb7c31618c1493cab80a7c49021e523330f403f34397a5"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Égetés mínusz",
+   "second": "bevitel",
+   "size": 170,
+   "sha256": "a56913dd72852aee7c10373e998e000b029df9f927e68e01b79691bf2d5ef586"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Állítsd be a",
+   "second": "makrócélokat",
+   "size": 176,
+   "sha256": "054b3f24f7e4cd68ba4fb4734e5da87a44dcfe7d76f83d64e4254baeeaab3d2f"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "A makrók",
+   "second": "alakulása",
+   "size": 202,
+   "sha256": "e8aadf1f69af65ba6ac433e7099859f2b77e9475f9413081c5a6e16d58ba9d23"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Jól látható",
+   "second": "sötét módban",
+   "size": 174,
+   "sha256": "44b7bc211198c1932cada446fc72a902745b4dfe2f2a71adf50dbc91f486a824"
+  }
+ ],
+ "id": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Angkamu di",
+   "second": "jam tanganmu",
+   "size": 166,
+   "sha256": "880e21b9a51f32a92f547bbb8467b23d7816296a3ec36e693b14702ba3c633f4"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Total kalori",
+   "second": "yang terbakar",
+   "size": 172,
+   "sha256": "059a803a2b7f3359fe052bb646da1fda159e5002699607f9db7577c093f384c8"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Lihat asupan",
+   "second": "dan pembakaran",
+   "size": 144,
+   "sha256": "e584c40245ff1f98ffcddad98c1b3aa9ae0dd732742fd914e4080caf766f25ff"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Rincian kalori",
+   "second": "yang terbakar",
+   "size": 172,
+   "sha256": "414d456bc8a629f7a026b469eede81480650b1e6efa32f9ce3f6d448ba6c3fcb"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Temukan pola",
+   "second": "harianmu",
+   "size": 178,
+   "sha256": "156d88ade5ea9c3a80185a70626270fde1046056124baa10ba07d50658e3eee7"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Terbakar minus",
+   "second": "dikonsumsi",
+   "size": 160,
+   "sha256": "af8f6d27238d03dd9a5965b65c6a772ffd73bc2305a12e0f1fd73103ab608226"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Tentukan",
+   "second": "target makro",
+   "size": 188,
+   "sha256": "7803384a72abf5719e1d93a3da335347e76908eaace18a002841b8c73ae3f6bd"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Lihat pola",
+   "second": "makromu",
+   "size": 202,
+   "sha256": "f59959585cf62a0e0539bfbfb213a3ed8fed7dddbff8ef797539367a9f507ae7"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Jelas dalam",
+   "second": "mode gelap",
+   "size": 202,
+   "sha256": "373b8378c173439afef6871f7ea571dc454ba43e3861eb8e16362ff007e919a4"
+  }
+ ],
+ "it": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "I tuoi dati",
+   "second": "al polso",
+   "size": 202,
+   "sha256": "49b93ae65e6e3942c05c11c8f18a089dafb816b673228fd81492805ec208f7fd"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Calorie totali",
+   "second": "bruciate",
+   "size": 196,
+   "sha256": "2faa1ca7e84b681300b58560042006f3368e003616abe28b8fede16ee5775f2a"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Calorie assunte",
+   "second": "e bruciate",
+   "size": 158,
+   "sha256": "cb5f5161c0dd0a6368d57caf995901cb8058471a25f5a7909083a3c81eeca549"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Il consumo",
+   "second": "nel dettaglio",
+   "size": 194,
+   "sha256": "0bcb00c0f200d474e4e81e192faff8c3635a500eb40ea3d1ff93a24a8210d573"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Scopri i ritmi",
+   "second": "di ogni giorno",
+   "size": 174,
+   "sha256": "be0615c4677fcb2b01de1b30cc4b482b9fb2380bfbe70f4c31685a9c5dad744d"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Bruciate meno",
+   "second": "assunte",
+   "size": 170,
+   "sha256": "bec0e20d7b0970cb8e5561a31f89391d08bbffd5098bba5b69b9857c43934054"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Obiettivi",
+   "second": "per i macro",
+   "size": 202,
+   "sha256": "3978b9d3d6f134491fd997206890909524ae7cd93e2f6f168f506637e333af7b"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Scopri i trend",
+   "second": "dei tuoi macro",
+   "size": 168,
+   "sha256": "e43bdd33cfd11e28ab925796db6f3bd58de5c46eae4e9e5b98a9f2266b127fad"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Leggibile in",
+   "second": "modalità scura",
+   "size": 162,
+   "sha256": "da57a67bb38b43178f09a9ecceb14296b4e69c7b3d2b980a605619de65d1d5d0"
+  }
+ ],
+ "ja": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "カロリーも",
+   "second": "歩数も手首に",
+   "size": 188,
+   "sha256": "6f7818c74043d44fc73229f0bd52f290c51d93b7c54255d1ace100bfcb15019e"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "消費カロリーの",
+   "second": "合計を知る",
+   "size": 160,
+   "sha256": "f5611dee58d1752f5c585116e052ea494d36475dd689c35f0434acd5976a1971"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "摂取と消費を",
+   "second": "見比べる",
+   "size": 186,
+   "sha256": "d73dab88ed04f6a734415147549ac39070d40ac7599f48c7cb01714db6f3c068"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "消費カロリーの",
+   "second": "内訳を見る",
+   "size": 160,
+   "sha256": "888a95a875c1f9642f74f190741c69804e6c3baf7ea153d38c50f914a9eed61f"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "日々の傾向を",
+   "second": "見つけよう",
+   "size": 190,
+   "sha256": "8bb41419450071045b0c891a7d07de47faa92a61e64e00625816489e5198f8b5"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "消費から摂取を",
+   "second": "差し引く",
+   "size": 160,
+   "sha256": "f363f5169e1516c138bf98f6136e673c9b49980baf70267b1e51031245c99cce"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "マクロ目標を",
+   "second": "設定しよう",
+   "size": 190,
+   "sha256": "443f49e5e7b753041a2788aaa34243db5f2d44ef45ff04cb38cc05202835d0bc"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "マクロの傾向を",
+   "second": "見つけよう",
+   "size": 162,
+   "sha256": "81c0f16ac6fc47d598f3bfc3b3cd99e56fa2f40b2756034a158ce8f410244e2b"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "ダークモードで",
+   "second": "見やすく",
+   "size": 160,
+   "sha256": "9a3744b8469575ab07f41cc638ba4e985e7aab8acff064fcdb0cb7aae5fe839d"
+  }
+ ],
+ "ko": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "칼로리와 걸음",
+   "second": "손목에서 확인",
+   "size": 202,
+   "sha256": "627714c15be37833bcc968e32611967a2eedc2771dfa6a2057c1849d0a411129"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "오늘의 총",
+   "second": "칼로리 소모",
+   "size": 202,
+   "sha256": "5d9997a74c58378cd14913c600869a59a7040d71b4e666d201a734dad9861243"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "섭취와 소모",
+   "second": "한눈에 비교",
+   "size": 202,
+   "sha256": "68a214495e4b3f109d697ed65afca429cb13231e97d05b02619ae1d3daf4d35c"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "칼로리 소모",
+   "second": "구성 보기",
+   "size": 202,
+   "sha256": "4281bd443c85ff8671a548a4731f03e12b8853a375411e2056f8459f9f94bb4f"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "매일의",
+   "second": "패턴 살펴보기",
+   "size": 202,
+   "sha256": "daadc512ac7a9292315222bd066f1e51e44c188ec5f8d29943e2f1546b1dd64e"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "소모에서",
+   "second": "섭취 빼기",
+   "size": 202,
+   "sha256": "ef7c62aa343530da1208dde3cf2aaf00b6be7cfe9244d8cf9f8b18d0e76833be"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "나만의",
+   "second": "매크로 목표",
+   "size": 202,
+   "sha256": "ff770f1d277a25a2bdc1d2203b70aa5c15f757304d413e3a434967ba8341e18c"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "매크로",
+   "second": "변화 살펴보기",
+   "size": 202,
+   "sha256": "29426f5b1cfecabda2eeb4db2dfc06bcc2c1bfd80dce6bb8966d8b75a1ebf75b"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "다크 모드로",
+   "second": "편안하게 보기",
+   "size": 202,
+   "sha256": "f9a5f43c66009cc3cf726b9d2c2863a493044391957d90db926cad0b44fed2b5"
+  }
+ ],
+ "ms": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Di pergelangan",
+   "second": "tangan anda",
+   "size": 164,
+   "sha256": "c07c81276cb714ee4c572879a163c18dcd8bb41001995b077883880f1144dc01"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Jumlah kalori",
+   "second": "yang terbakar",
+   "size": 172,
+   "sha256": "9d865cf82fd6a9f1c60d594f7a6f9058f3175e283a9a8fec6f75f099e2104c34"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Bandingkan",
+   "second": "pengambilan",
+   "size": 184,
+   "sha256": "20aa4f3d924b2e97f893969df62895621b032033f0dcbd5b646be414ae1af8d8"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Pecahan kalori",
+   "second": "yang terbakar",
+   "size": 168,
+   "sha256": "b73facc5d2dd58bd8b8ae9440984a0b4c223561fee71642fc9b5a10a8ddb5d6f"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Kenali corak",
+   "second": "harian anda",
+   "size": 202,
+   "sha256": "ac04d6fd85c991f64ac72591d2c9591b028a7e4cdbe544cbe81f3feb79deec83"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Terbakar",
+   "second": "tolak dimakan",
+   "size": 174,
+   "sha256": "76590cce78966a9f5af3446cda40bc06d7bdb5a69868b54602d263e2ba9eb472"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Tetapkan",
+   "second": "sasaran makro",
+   "size": 164,
+   "sha256": "7e6a8987d7455c9d0e0896256b0ba719f9e4612f14b27a28784f2f013b163db8"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Lihat corak",
+   "second": "makro anda",
+   "size": 202,
+   "sha256": "ae61fc3fbff048ae86d7cd081310a9dd15580bf417ae5e61e1aa10cc5375f1f5"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Jelas dalam",
+   "second": "mod gelap",
+   "size": 202,
+   "sha256": "0d85627cbeb260e01d749ae6c690d85183d5b8504c2ebbb07305d3eae609d5b2"
+  }
+ ],
+ "nl-NL": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Je cijfers",
+   "second": "om je pols",
+   "size": 202,
+   "sha256": "68d1db6c547e2780d578150649ebd102bda220d27a793e0a72113469f015addb"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Je totale",
+   "second": "verbruik",
+   "size": 202,
+   "sha256": "a65ce0e1ad2876dd10737863bc1d588f700b100c8c2c3554b409a91bde4b98f1"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Vergelijk je",
+   "second": "inname",
+   "size": 202,
+   "sha256": "83ad04b4f82244fc48c71f8a1b2ba393383fd793f4f325cc263b9d7470e52b19"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Je verbruik",
+   "second": "uitgesplitst",
+   "size": 202,
+   "sha256": "2f6e07c6f456cffc0dfbed9a42671beaac9fab1f7cdcc813964449cdb10c3e7b"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Ontdek je",
+   "second": "dagpatronen",
+   "size": 188,
+   "sha256": "57abe49463a4de1bbd8bb26a5eb988a802ea0869491a819a44db679e9f843966"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Verbrand",
+   "second": "min gegeten",
+   "size": 192,
+   "sha256": "3ff908bf56561a00acf61afafe3bda1eab79c388e05d6fd0f50d6f6d36a62b2f"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Bepaal je",
+   "second": "macrodoelen",
+   "size": 184,
+   "sha256": "e528c6b5b11628f2c982044890f0aa2a3dbfa209fbd2d687dcf72d4e73ffd1fe"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Ontdek",
+   "second": "macropatronen",
+   "size": 156,
+   "sha256": "8d80dd23d72bcaa9f9673e44c6fab422ba1eac059c33137597810999e7574631"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Helder in",
+   "second": "donkere modus",
+   "size": 156,
+   "sha256": "c63e42494b769677e3bc25e0052067c1d1df2c0fd4951a5f07d86110434a6027"
+  }
+ ],
+ "no": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Dagens tall",
+   "second": "på håndleddet",
+   "size": 166,
+   "sha256": "0f539c4258bedc04291dc62a8d727d627ac7480db70c46df52dffda668a362cc"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Se totalt",
+   "second": "kaloriforbruk",
+   "size": 184,
+   "sha256": "2d717314de0a0038fbf1df70b994ed024ff52fc5e141da2fbff519c8fa3fa929"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Inntak målt",
+   "second": "mot forbruk",
+   "size": 202,
+   "sha256": "be32adb80e903898135755d24ffe4a46c274770911365fd77c62f81e70f2b771"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Slik fordeles",
+   "second": "forbruket ditt",
+   "size": 180,
+   "sha256": "3ec8fef4e44c13cd3bc9b9f32fa643431be8ef746d4b0746d14bea655843d965"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Finn daglige",
+   "second": "mønstre",
+   "size": 202,
+   "sha256": "e50e826af47794f18c026c96814a38577e7dae7444ad0bb004829024a19d7dfb"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Forbrent",
+   "second": "minus spist",
+   "size": 202,
+   "sha256": "4d5cab762baa3455220a92ca0c31da050115d353dd0cbf28be7b54270533f9bf"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Sett dine",
+   "second": "makromål",
+   "size": 202,
+   "sha256": "0167fd6074615c60483d1d00d94214cbe87880f07a56046791b34335c56f98aa"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Se mønstre",
+   "second": "i makroene",
+   "size": 202,
+   "sha256": "e842f854b374549ad2319052da38d9254bacbd725fce4b07fb012fb2eee3a5a4"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Lett å lese i",
+   "second": "mørk modus",
+   "size": 192,
+   "sha256": "6db4e2d13e337dda60e90a3a32ffd513d8c21dfe5514b84b6c4da47b66dd5460"
+  }
+ ],
+ "pl": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Twoje wyniki",
+   "second": "na nadgarstku",
+   "size": 168,
+   "sha256": "8cb8e21ffe885d1205b4c9c25b838864f9c05f04fcd65ed66536a9bcf4c5e489"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Zobacz łączne",
+   "second": "spalanie",
+   "size": 170,
+   "sha256": "54a4c267219119617162a79146f1f7dc7d33e987c03cbac533913f4cc36b657c"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Porównaj",
+   "second": "spożycie",
+   "size": 202,
+   "sha256": "c33d5af8759d7c06e5167a7e1feb1aad8e983b3f76e0d220069bb3049c241464"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Co składa się",
+   "second": "na spalanie",
+   "size": 186,
+   "sha256": "e8a251c2ed889cbb1c143734c5ab0cf2b821e08c4f7b7f8feb9694a3f7672398"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Odkryj rytm",
+   "second": "każdego dnia",
+   "size": 182,
+   "sha256": "92b4a24fcd63855e066eac38b15083c84cb0a343014ffd9179f358da93e5ae99"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Spalone minus",
+   "second": "zjedzone",
+   "size": 166,
+   "sha256": "ab242d141f91fca05f3ab5bfb17f3c2bef0d4f9c93a47ad1174528b3e961e7e5"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Ustal swoje",
+   "second": "cele makro",
+   "size": 202,
+   "sha256": "d8ab57d900bb6559faa41445727d26929fa5f5957fa21ab44d158574e493ecbc"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Poznaj trendy",
+   "second": "makro",
+   "size": 180,
+   "sha256": "02f51d66f84d68677a172f301b51703d8fc983534f0700af0b04fb433f963762"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Czytelnie w",
+   "second": "trybie ciemnym",
+   "size": 156,
+   "sha256": "1eb0cc402d1e75416516edf1bc77b3c7a11745eb2d971995da76ccf1e4e9dfe1"
+  }
+ ],
+ "pt-BR": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Seus dados",
+   "second": "no pulso",
+   "size": 202,
+   "sha256": "a04459e1a933f5e42460954f0808ebb7e686216fefd310d0caf6b9f0df7b977e"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Veja sua",
+   "second": "queima total",
+   "size": 192,
+   "sha256": "ac7c5f7765c7eb9d3db0cfa26a06be1a0b7cd9889a9f560a4d8530b982daecc8"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Compare sua",
+   "second": "ingestão",
+   "size": 186,
+   "sha256": "9e6bde3dd44e9c1127d6845ee2091789ee571429629ddbce3a34551e7f590ef0"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "De onde vem",
+   "second": "sua queima",
+   "size": 192,
+   "sha256": "16e9d9dd72903ce9d64409814190a399d92986b42889f71a6e02dc8afdd257f1"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Veja padrões",
+   "second": "de cada dia",
+   "size": 190,
+   "sha256": "749db7facfe7d254ccc6c5b45308d99a9629e358fabcb00eec65dc67d5f16a76"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Queimadas",
+   "second": "menos ingeridas",
+   "size": 144,
+   "sha256": "067d6c3591185a97acbd0c95d1ce4ea3a7eca3ed05728567fc8f179f8b0b5647"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Metas para",
+   "second": "seus macros",
+   "size": 190,
+   "sha256": "132add0b4117ca5de758751bf5e491a59c608171b5d145a2414bb9f4ee55223e"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Veja padrões",
+   "second": "dos macros",
+   "size": 190,
+   "sha256": "941806f28072e8a4978ff0e881af46c32365d29332adcb2c0e23d2ce51f65a09"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Tudo legível",
+   "second": "no modo escuro",
+   "size": 150,
+   "sha256": "2252e2719f881b5ad7549b5311711c053fc1e8e4d762f47416548a9081f3ed4c"
+  }
+ ],
+ "pt-PT": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Os seus dados",
+   "second": "no pulso",
+   "size": 168,
+   "sha256": "9c235234f37a2f4488272579ba6716c4a7a9d66c7969666b552b1396463f208d"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Saiba o seu",
+   "second": "gasto total",
+   "size": 202,
+   "sha256": "24e066ffba524df1f1112272439dd59f2759e38f4282b1f7d1093867c972c41e"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Compare a sua",
+   "second": "ingestão",
+   "size": 164,
+   "sha256": "755070fab956ed95e051375541a86abdea033cbfef3d3e84722eefb2402019aa"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "De onde vem",
+   "second": "o seu gasto",
+   "size": 192,
+   "sha256": "f73f905936119923a063a451e8c369b2589bb83d46a43f6d070e7a836a831276"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Veja padrões",
+   "second": "de cada dia",
+   "size": 190,
+   "sha256": "8e9626bfd423151d3dcb0c05990b245bf2f0d209d8955e55b1571af984c76221"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Queimadas",
+   "second": "menos ingeridas",
+   "size": 144,
+   "sha256": "0cc933f0c42ec888b2c511e3c82d2fc12eb578ec65f6465602ede75717b43ada"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Metas para",
+   "second": "os seus macros",
+   "size": 156,
+   "sha256": "e00e322b4cfe098ca27027c08db5617acede65af0e492906f600342734b58fdb"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Veja padrões",
+   "second": "dos macros",
+   "size": 190,
+   "sha256": "7e0319f1b80e25d72fffeb1a2a3285a28907571f4af789bc56ee84bd1e629cc9"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Tudo legível",
+   "second": "em modo escuro",
+   "size": 146,
+   "sha256": "d01b2aa03048d0240d210749a02e98d150085f35d67fcaab695730a373b945e9"
+  }
+ ],
+ "ro": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Datele tale",
+   "second": "la încheietură",
+   "size": 178,
+   "sha256": "a7827b99cea532d9c744959e04e99392edaee4a37d65eba5b817360dfb101224"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Află consumul",
+   "second": "total",
+   "size": 172,
+   "sha256": "ae592e416e5ea690508fd8e4a2c7610e03d03a4d6ce829123e7bbec817c98ca1"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Compară aportul",
+   "second": "cu consumul",
+   "size": 146,
+   "sha256": "85b4db1b74191cb6044400881a0f523e7c3532075dcc1d265e2617ec0633bf52"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Cum se împarte",
+   "second": "consumul",
+   "size": 156,
+   "sha256": "b18b67126c03db0f5d746aa6947a5d8b90ea7a497900b4d7b8964c1620b20fc4"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Observă ritmul",
+   "second": "zilnic",
+   "size": 168,
+   "sha256": "2c7f95a36aa0ca5e4c30363937cc7c781c02c08c0d9a298f6f5ed140e48d0f3a"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Arse minus",
+   "second": "consumate",
+   "size": 202,
+   "sha256": "700783634b4d567c7501eec6d2d821cd5aed0c47409f338ee9d7cafabfe5752f"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Setează",
+   "second": "obiective macro",
+   "size": 150,
+   "sha256": "2f2783e9c04a3f55c4e1dbe4e24003fe59c11cdfe34366285b17428cedbef148"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Vezi tendințe",
+   "second": "în macrouri",
+   "size": 188,
+   "sha256": "92c941f04ef2f91b039492c46fc6f75ab02e337a0b2c212ffceef9e0134f1420"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Clar în",
+   "second": "mod întunecat",
+   "size": 164,
+   "sha256": "a03e1c63429a9797d9927df8ae8e920b3ee7a49d50181b32134ddee6824753f2"
+  }
+ ],
+ "ru": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Ваши данные",
+   "second": "на запястье",
+   "size": 172,
+   "sha256": "7bbc02fc596c2fbc085e1f0eeb4faf62a9fa190ad9167b0d422c9b912db1f2a2"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Узнайте общий",
+   "second": "расход калорий",
+   "size": 144,
+   "sha256": "ed7c740f6e64e208151bd8564210be1302625ee5ae04cdcc0a4e0fe4d900a784"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Сравните",
+   "second": "потребление",
+   "size": 178,
+   "sha256": "63dfdc609ea420a0fffe11d8e609fe783b3eae7f84a8f117323a613b641ecffd"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Из чего",
+   "second": "состоит расход",
+   "size": 150,
+   "sha256": "ec712c3e46d91f178b70879a63b14f8c0ef84867a82c45ce4ce106543419de26"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Замечайте",
+   "second": "закономерности",
+   "size": 136,
+   "sha256": "43d5b85edb9f7e0f3828c386e45f56cc07191662259d244173d112144fd597b0"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Сожжено минус",
+   "second": "съедено",
+   "size": 142,
+   "sha256": "8e582088df5bb0de0e41e469b199aa81796d892b84168a2b6911d048ea01cd6d"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Задайте цели",
+   "second": "по макросам",
+   "size": 170,
+   "sha256": "893dd8aec2a9ddd4be66855b3acad58c16de11af1d6e2574542415d6cd9847d4"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "История",
+   "second": "ваших макросов",
+   "size": 140,
+   "sha256": "06db744c74940f7e20adbfb0958bc886b8e9496a84c39eb2adf8de388651b7b5"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Чётко видно в",
+   "second": "тёмном режиме",
+   "size": 144,
+   "sha256": "cb4604a2efadeec059e1bccdaeb17374b37151a25780da38158d924b1c078385"
+  }
+ ],
+ "sk": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Vaše údaje",
+   "second": "na zápästí",
+   "size": 202,
+   "sha256": "6e3edd829c19fc53b9ce13dc12ab03ad29c19948560ead5fd3ff315515d7061e"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Spoznajte",
+   "second": "celkový výdaj",
+   "size": 180,
+   "sha256": "674e9b78b536c93f29eb2a6e061b7a8d1e12af73740f35c2bf0ae52e227a73b1"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Porovnajte",
+   "second": "príjem kalórií",
+   "size": 180,
+   "sha256": "a20163d1e62dd7748fd01fd1ffdffbdf5a3e826d67d9ea263b9ada1d79953982"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Čo tvorí",
+   "second": "výdaj kalórií",
+   "size": 200,
+   "sha256": "5f8336353ffb26a3f0c81b6235dbed8804505b1ea52f514d52edf3aa20d07b32"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Sledujte svoj",
+   "second": "denný rytmus",
+   "size": 176,
+   "sha256": "815cb34cb4bf0b39e3607764c9bef72c64a5a92b76a7b2498e12b926ce479766"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Spálené mínus",
+   "second": "zjedené",
+   "size": 168,
+   "sha256": "2d2aa7074cac0aff824e7c70a20dbfd9ec540bcc9ba1eb4df1e0708bf8408a52"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Nastavte si",
+   "second": "ciele makier",
+   "size": 198,
+   "sha256": "83215144c672706e3b6f629dbe61ee01fdc11db3542a77b51bf21968a655a964"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Sledujte",
+   "second": "vývoj makier",
+   "size": 192,
+   "sha256": "73171104b526c2f52401aa57205d0b1caa948ebd2a798ddbee08c74a2a088250"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Čitateľné aj v",
+   "second": "tmavom režime",
+   "size": 158,
+   "sha256": "15cc4ee4b2e9aea1568d051cc104cd811636588f42c705ba0b0685bf3e5643d8"
+  }
+ ],
+ "sl-SI": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Tvoji podatki",
+   "second": "na zapestju",
+   "size": 194,
+   "sha256": "e7bfd2bf5cc316edb03c9cfa1693cd620a9277483919ebd649b3d8dfad4f21b6"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Spoznaj svojo",
+   "second": "skupno porabo",
+   "size": 160,
+   "sha256": "da7a0340a816984d3aa2d4eed2f90c413d4870aaa4838195127cd6522388810f"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Primerjaj vnos",
+   "second": "in porabo",
+   "size": 174,
+   "sha256": "caa8f67c08fb169d80dc8550a179276d414fb2d8109d8fa9dbd63591d8eb476d"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Kaj sestavlja",
+   "second": "tvojo porabo",
+   "size": 192,
+   "sha256": "af0136f1617e9a56f68e29a4c7b80b48b417477f5d5db60a409adfa853b2ae0b"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Odkrij svoje",
+   "second": "dnevne vzorce",
+   "size": 166,
+   "sha256": "bbc985016e0a562ab518bbe46f43dd6eed82b74576a647a40128920f2fd7d1e8"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Porabljeno",
+   "second": "minus zaužito",
+   "size": 174,
+   "sha256": "cdde026755c3727ee3568c1afdee893a18c6b097d9cd727b7c2311bc30cddf3c"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Nastavi cilje",
+   "second": "za makrohranila",
+   "size": 152,
+   "sha256": "cbaf2bc6dd634819c70618197b93b52d4eee64fb7b9ecac8290306eac5871c7d"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Spremljaj vzorce",
+   "second": "vnosa makrohranil",
+   "size": 136,
+   "sha256": "cc805e6c17c3e66d4338598555528b8635799eae207ac5a9f2cf09e4e2fe1bfe"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Pregledno tudi v",
+   "second": "temnem načinu",
+   "size": 152,
+   "sha256": "4eb50a4c9e39ec4e4d439327dd973bd9e5c9f5172b4ec7accfc9e6582bedf9c9"
+  }
+ ],
+ "sv": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Dina siffror",
+   "second": "på handleden",
+   "size": 176,
+   "sha256": "672743986a34601732404b5f1cadac749b75343cba72e5141639ea172c652956"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Se din totala",
+   "second": "förbränning",
+   "size": 200,
+   "sha256": "1e34def33e57a497f7a879a7a03867f4507bd3c4c538939084e1072b47de3d4b"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Jämför ditt",
+   "second": "kaloriintag",
+   "size": 202,
+   "sha256": "e566121c60c48cfe7ebb9171cca044c546ac69ce781da30863cd0a5c390f41aa"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Så fördelas",
+   "second": "förbränningen",
+   "size": 168,
+   "sha256": "1e1840021a5d6d96ff44e73d805a44e92f028726a8d1cf762d42b74cfd4cc3ec"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Se mönster",
+   "second": "dag för dag",
+   "size": 202,
+   "sha256": "612735722781a64abfb4531651ec1f113b86ea254d22731130e0f705ade5bf3d"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Förbränt minus",
+   "second": "intaget",
+   "size": 162,
+   "sha256": "938aa76bb764396c874d00fd985d7543d996dc7f308ff846151a19d5e3f3aa79"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Sätt dina",
+   "second": "makromål",
+   "size": 202,
+   "sha256": "ed153b456e90795b757848da26b4bb0f0cb959c27d95d22ba7ceee9c83d97bc0"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Se mönster",
+   "second": "i dina makron",
+   "size": 180,
+   "sha256": "c83124ba8b5603ae2510c932838f7990d56f91e10ec0122f3b2687e6efbf3fee"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Lättläst i",
+   "second": "mörkt läge",
+   "size": 202,
+   "sha256": "66ce74b094a30bdfadc9c6253c2611ae94137bf6b51fa6f7d2f596d897fdcf9f"
+  }
+ ],
+ "th": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "ดูข้อมูลวันนี้",
+   "second": "บนข้อมือ",
+   "size": 202,
+   "sha256": "d409c8e5fc0aa182fb3b00cbfeee20193fe9c58ae3ca75aac66a688b768efde3"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "ดูแคลอรี",
+   "second": "เผาผลาญทั้งหมด",
+   "size": 156,
+   "sha256": "256c7e2d16f4e30690109057624c4364bf707d188a16789b5ff5c6704688a64d"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "เทียบที่เผาผลาญ",
+   "second": "กับที่กิน",
+   "size": 164,
+   "sha256": "d73646ee89f4d435b7656ffa221b230ebb6ad93940019dcbd79e58b6062e3df3"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "ดูสัดส่วน",
+   "second": "การเผาผลาญ",
+   "size": 196,
+   "sha256": "cd803f77e84f314115342fbbc97716c5ada8a55f2cf386eccc3ac4aaa5eafb25"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "ดูแนวโน้ม",
+   "second": "ในแต่ละวัน",
+   "size": 202,
+   "sha256": "5ac565d96d470fcd370e635ba01b2699980ec46acc20ecd5169103b9021d857d"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "ยอดเผาผลาญ",
+   "second": "ลบยอดที่กิน",
+   "size": 188,
+   "sha256": "611c08fdce0e2bbb83327b36fb6405aaf51c57b74419892d97b4c55c71b0f5a8"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "ตั้งเป้าหมาย",
+   "second": "สารอาหารหลัก",
+   "size": 184,
+   "sha256": "325804714dbf44c3631c36d4f59f6285f2c76e0962622b3afcd8fb29bf561403"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "ดูแนวโน้ม",
+   "second": "สารอาหารหลัก",
+   "size": 184,
+   "sha256": "2074b3c13e102cff73e2be9ce3533494cc7442238ffa0cf34a98140ec776d573"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "อ่านง่ายใน",
+   "second": "โหมดมืด",
+   "size": 202,
+   "sha256": "5faed913002fea511258f81d5a76738e9318a2b57dabfbce11cde01a3ae92d83"
+  }
+ ],
+ "tr": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Verilerin",
+   "second": "bileğinde",
+   "size": 202,
+   "sha256": "de793b46717abdb1e1f3a794151399e532386bff5bfa5ab6c34d3dcc089371cf"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Toplam",
+   "second": "kalori yakımın",
+   "size": 174,
+   "sha256": "f217c804074f251be780a5fbcfb45873b16b7218c436a39b993904ffb6e33315"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Kalori alımını",
+   "second": "karşılaştır",
+   "size": 196,
+   "sha256": "43e6e07659f4de8da276675b8863429923e0e310f27f08dfc83b0051ab0a039a"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Yakımını",
+   "second": "ayrıntılı gör",
+   "size": 202,
+   "sha256": "8f49cdc3bcba63859439b612e8aad4462a5c0ae07f5fe791652a5685f51aff38"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Günlük",
+   "second": "düzenini keşfet",
+   "size": 158,
+   "sha256": "49aa4a959e1480366ce58ebf8f70d3389f71ab900302c5729ca87488ad95783c"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Yakılan eksi",
+   "second": "yenen",
+   "size": 202,
+   "sha256": "fd1edfa145c31d73b529e7467d3319d7704924339d78161a9ad45016417e0107"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Makro hedefini",
+   "second": "belirle",
+   "size": 166,
+   "sha256": "9c85560a933e869b5ca2c8b2bfb9e06757e0dc46008f0954399c3a7101643c62"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Makro trendini",
+   "second": "gör",
+   "size": 172,
+   "sha256": "8b34105c0a15e1b6bc3a70847ad40e6b6be3994032e6109d853e4ed894f1c8ac"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Koyu modda",
+   "second": "net görünüm",
+   "size": 188,
+   "sha256": "dbbfa15ed41b458e20bc6f23d3ba3d09702b927cdcdb6f0a31a187d08fee2fbe"
+  }
+ ],
+ "uk": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Ваші дані",
+   "second": "на зап’ясті",
+   "size": 202,
+   "sha256": "4fa3a334a1637eb2f255252d87008bd8e3dcf4f8e14e6bc24d7eef13d53d4ad7"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Загальні",
+   "second": "витрати калорій",
+   "size": 142,
+   "sha256": "932d3d48f7aa0d82e021ea34860c5f401fcc60d0804429d847e15a7c2f18a8ae"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "Порівняйте",
+   "second": "споживання",
+   "size": 188,
+   "sha256": "e9fe27569a999662dcba70457f45b54fbae00228a8ed37a81876ae6a2e698073"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Що формує",
+   "second": "ваші витрати",
+   "size": 178,
+   "sha256": "e327637b53cb7c81c4c035710b8fc3fa7620807095c860a1b10952aef395e35b"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Помічайте",
+   "second": "закономірності",
+   "size": 148,
+   "sha256": "e3db794f398a435d714968b198358c884b3effed8b1d44b4381b5a256eff31bf"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Спалено мінус",
+   "second": "з’їдено",
+   "size": 158,
+   "sha256": "04070054c79265b6b59cecf42fdb581f852a6b75c391a40f4b17c839c3f2afba"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Задайте цілі",
+   "second": "за макросами",
+   "size": 164,
+   "sha256": "617c2a57b55a2927783b14c0e51186e6a9b27effb152e79762acebc1b36fa647"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Історія",
+   "second": "ваших макросів",
+   "size": 144,
+   "sha256": "2520a83017e622533525bee0b56a59f2efb532418e27c14d4b6026dfd7583ac0"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Добре видно в",
+   "second": "темному режимі",
+   "size": 138,
+   "sha256": "04c6a293f25f5005e64cb93f4e05c67f2fdc90ba3d1672a059ecc40fa24d284a"
+  }
+ ],
+ "vi": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "Theo dõi ngay",
+   "second": "trên cổ tay",
+   "size": 174,
+   "sha256": "ac6d0307daa349c73802af126dfd0ed8841e650d2b4f540e31cd01a6bba91fa7"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "Xem tổng",
+   "second": "calo đã đốt",
+   "size": 202,
+   "sha256": "137df9f3e6526bda61a1baa65f279da9b866964cf15868d85d75de399e2270c8"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "So sánh",
+   "second": "calo nạp vào",
+   "size": 196,
+   "sha256": "dd61ce6e38870322a790d392e0c0e46c88662b93c955492aa33138061cefeb9b"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "Xem chi tiết",
+   "second": "calo đã đốt",
+   "size": 202,
+   "sha256": "9e9e912b16386e6a81d2e8946dee1c1e85ec06be40f15050d19d0916e3dda3d0"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "Xem xu hướng",
+   "second": "từng ngày",
+   "size": 170,
+   "sha256": "019b73b2362fa5fa22d77f1b339946942fca4e36727a0e0eac3b90cc3feee07e"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "Calo đốt trừ",
+   "second": "calo nạp vào",
+   "size": 196,
+   "sha256": "55a71ec7d8271dc279bc1dc6ac261b4380bbe94c5c515b17356efaa3fd9e7731"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "Đặt mục tiêu",
+   "second": "chất đa lượng",
+   "size": 176,
+   "sha256": "2d3e20ca81961318f01634700db16abeba18516a4363e793defeb0a02e6ad9ba"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "Xem xu hướng",
+   "second": "chất đa lượng",
+   "size": 170,
+   "sha256": "b1529ef3bbc33a0b921f7ff681e7a8cb41d1e23a0b36c75c620a6090cac85dad"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "Dễ đọc trong",
+   "second": "chế độ tối",
+   "size": 194,
+   "sha256": "6a3e15d03b9562c451e27c20c8f00d018493dc539f3749b00757eaa2a47cfb9a"
+  }
+ ],
+ "zh-Hans": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "今日数据",
+   "second": "就在手腕上",
+   "size": 202,
+   "sha256": "551879b13f3e5f77b9e5b5b7718c5cd8336d202941c9e384ef71edc575dfe685"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "了解",
+   "second": "总消耗",
+   "size": 202,
+   "sha256": "bab2e7e9cb92bf686aa44b9e99c70bb5327b0672dd48edbd23e48bb3e523b8cf"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "摄入与消耗",
+   "second": "一目了然",
+   "size": 202,
+   "sha256": "9eaf5a4aa3a71ace980a6cdb8a800ce70fcc87ea953bfbe7ca39383a6964f403"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "了解",
+   "second": "消耗的构成",
+   "size": 202,
+   "sha256": "f7eb9d50a6a9857826d158740cfc93d40be53be365a61def2a06a2b6e86664de"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "发现",
+   "second": "每日变化",
+   "size": 202,
+   "sha256": "ec57d7b62f148d83021445cc2dfd920eefea03b8f064861952fe677579187046"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "消耗",
+   "second": "减去摄入",
+   "size": 202,
+   "sha256": "36eadaaba68af5b3392ccb6b66f149d3b15fc670763bc8f0691d403db4bf0d97"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "设定",
+   "second": "宏量营养素目标",
+   "size": 160,
+   "sha256": "2d2c71535cc4c653a85f8ed8c806eeacf546d524901f4572705afce89fc5c419"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "查看",
+   "second": "宏量营养素趋势",
+   "size": 160,
+   "sha256": "588da2ce52bdb8a6366c70a83a3d276474deb3251a28d8e1431f611e087abe36"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "深色模式",
+   "second": "同样清晰",
+   "size": 202,
+   "sha256": "74c7d038ae58f70d264ae128d56fcd3de9f50e2910a507863fc1a966bf63294a"
+  }
+ ],
+ "zh-Hant": [
+  {
+   "file": "01_keep-it-on-your-wrist.png",
+   "first": "今日數據",
+   "second": "就在手腕上",
+   "size": 202,
+   "sha256": "c49ab8ff1956cd971c75c84e13d42df30e18f71b868eb11d40afa6a212433a9e"
+  },
+  {
+   "file": "02_know-your-total-burn.png",
+   "first": "了解",
+   "second": "總消耗",
+   "size": 202,
+   "sha256": "97f2a2285287ab3585b1263975f2dbf584dd6c97c4e419c2c28942e8e57a60a7"
+  },
+  {
+   "file": "03_see-your-calorie-intake.png",
+   "first": "攝取與消耗",
+   "second": "一目瞭然",
+   "size": 202,
+   "sha256": "2ef4d8c411c18b24fb69dcef59f31e8ef5ddaa094556a31ab89be546b9c25080"
+  },
+  {
+   "file": "04_see-what-makes-your-burn.png",
+   "first": "了解",
+   "second": "消耗的組成",
+   "size": 202,
+   "sha256": "b090f198ec0e4f4f61d740d4d4cbd1beee77e491aabeeeb8c3d14c405296cb3e"
+  },
+  {
+   "file": "05_find-your-daily-patterns.png",
+   "first": "發現",
+   "second": "每日變化",
+   "size": 202,
+   "sha256": "0797d33009bf1aef10e5ebe70c5a21928626f8049b3b2814820770f545d3b6b5"
+  },
+  {
+   "file": "06_burned-minus-eaten.png",
+   "first": "消耗",
+   "second": "減去攝取",
+   "size": 202,
+   "sha256": "206efc0091268f858ab12052d7c769c46ccb62face3c4f8729add90c6b35d025"
+  },
+  {
+   "file": "07_set-your-macro-goals.png",
+   "first": "設定",
+   "second": "營養素目標",
+   "size": 202,
+   "sha256": "0f76d813412c0e46866a880090ffe773b7d4b2fdd80f58d94c0e58e9c6a2f8b3"
+  },
+  {
+   "file": "08_spot-your-macro-patterns.png",
+   "first": "查看",
+   "second": "營養素趨勢",
+   "size": 202,
+   "sha256": "eef414e7206d3ccdda9eab71d64e403dc91c4117775243d8291513bbde4a9864"
+  },
+  {
+   "file": "09_read-it-in-dark-mode.png",
+   "first": "深色模式",
+   "second": "一樣清晰",
+   "size": 202,
+   "sha256": "8b7f7bf0685275cf446fb99383dde978b8a558ab4665ff682cfda3c41e3c5be2"
+  }
+ ]
+}
