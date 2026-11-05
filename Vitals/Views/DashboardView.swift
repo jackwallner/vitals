@@ -1017,7 +1017,7 @@ struct DashboardView: View {
     /// Everyday word for the current net value: people think "deficit" / "surplus",
     /// not "+500" / "-500".
     private var netDeficitWord: String {
-        netDeficit >= 0 ? "deficit" : "surplus"
+        netDeficit >= 0 ? String(localized: "deficit") : String(localized: "surplus")
     }
 
 
@@ -1194,6 +1194,9 @@ struct DashboardView: View {
                     .foregroundStyle(Theme.textSecondary)
                     .textCase(.uppercase)
                     .tracking(1.5)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+                    .layoutPriority(1)
                 Image(systemName: "chevron.forward")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(Theme.textTertiary)
@@ -1208,6 +1211,8 @@ struct DashboardView: View {
                     Text("\(Int(foodCalories.rounded()).formatted(.number)) cal logged")
                         .font(.system(.caption, design: .rounded).monospacedDigit())
                         .foregroundStyle(Theme.textTertiary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
                         .accessibilityLabel("\(Int(foodCalories.rounded())) calories logged in Health today")
                 }
             }
@@ -1304,12 +1309,31 @@ struct DashboardView: View {
     /// layout bug), or left-aligned under progress bars so it lines up with the
     /// macro labels above it.
     private func macroPillRow(_ kinds: [MacroKind], centered: Bool) -> some View {
-        HStack(spacing: 8) {
-            if centered && kinds.count == 1 { Spacer(minLength: 0) }
-            ForEach(kinds) { kind in
-                MacroPill(kind: kind, grams: macros.grams(kind), stretch: kinds.count > 1)
+        Group {
+            if kinds.count > 1 {
+                // Some languages can't fit three amounts and names on one line
+                // ("υδατάνθρακες"), so the names drop under their amounts.
+                ViewThatFits(in: .horizontal) {
+                    ContentWeightedRow(spacing: 8) {
+                        ForEach(kinds) { kind in
+                            MacroPill(kind: kind, grams: macros.grams(kind), stretch: true)
+                        }
+                    }
+                    ContentWeightedRow(spacing: 8) {
+                        ForEach(kinds) { kind in
+                            MacroPill(kind: kind, grams: macros.grams(kind), stretch: true, stacked: true)
+                        }
+                    }
+                }
+            } else {
+                HStack(spacing: 8) {
+                    if centered { Spacer(minLength: 0) }
+                    ForEach(kinds) { kind in
+                        MacroPill(kind: kind, grams: macros.grams(kind), stretch: false)
+                    }
+                    Spacer(minLength: 0)
+                }
             }
-            if kinds.count == 1 { Spacer(minLength: 0) }
         }
     }
 
@@ -2580,8 +2604,9 @@ private struct MacroPill: View {
     /// one capsule the full width of the card leaves a number marooned in the
     /// middle of it, so a single tracked macro keeps its natural width.
     var stretch: Bool = true
+    var stacked: Bool = false
 
-    var body: some View {
+    private var amount: some View {
         HStack(spacing: 4) {
             Text("\(Int(grams.rounded()))")
                 .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
@@ -2589,13 +2614,35 @@ private struct MacroPill: View {
             Text("g")
                 .font(.system(.caption2, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
-            Text(kind.label.midSentence)
-                .font(.system(.caption2, design: .rounded))
-                .foregroundStyle(Theme.textSecondary)
         }
+    }
+
+    private var name: some View {
+        Text(kind.label.midSentence)
+            .font(.system(.caption2, design: .rounded))
+            .foregroundStyle(Theme.textSecondary)
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        if stacked {
+            VStack(spacing: 1) {
+                amount
+                name
+            }
+        } else {
+            HStack(spacing: 4) {
+                amount
+                name
+            }
+        }
+    }
+
+    var body: some View {
+        content
         .lineLimit(1)
         .minimumScaleFactor(0.7)
-        .padding(.horizontal, stretch ? 0 : 16)
+        .padding(.horizontal, stretch ? 8 : 16)
         .frame(maxWidth: stretch ? .infinity : nil)
         .padding(.vertical, 8)
         // The pills live inside the macros card, so they need the lighter
@@ -2632,10 +2679,19 @@ private struct MacroBarRow: View {
 
     var body: some View {
         HStack(spacing: 10) {
-            Text(kind.label)
-                .font(.system(.caption, design: .rounded, weight: .medium))
-                .foregroundStyle(Theme.textSecondary)
-                .frame(width: 54, alignment: .leading)
+            // The column is as wide as the longest macro name, so every row's bar
+            // starts at the same x and "Kohlenhydrate" never breaks mid-word.
+            ZStack(alignment: .leading) {
+                ForEach(MacroKind.allCases) { other in
+                    Text(other.label).hidden()
+                }
+                Text(kind.label)
+            }
+            .font(.system(.caption, design: .rounded, weight: .medium))
+            .foregroundStyle(Theme.textSecondary)
+            .lineLimit(1)
+            .fixedSize(horizontal: true, vertical: false)
+            .frame(minWidth: 54, alignment: .leading)
 
             GeometryReader { geo in
                 ZStack(alignment: .leading) {

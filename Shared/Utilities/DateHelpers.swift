@@ -32,6 +32,9 @@ enum DateHelpers {
     private static let shortDateFormatter: DateFormatter = {
         let f = DateFormatter()
         f.setLocalizedDateFormatFromTemplate("Md")
+        // Islamic calendars spell the month out under "Md" ("25 ربيع الآخر"),
+        // too long for a chart axis, where those labels overlap. Keep it numeric.
+        if f.calendar.identifier.isIslamic { f.dateFormat = "d/M" }
         return f
     }()
 
@@ -89,5 +92,14 @@ enum DateHelpers {
     static func startOfMonth(_ date: Date, calendar: Calendar = .current) -> Date {
         let components = calendar.dateComponents([.year, .month], from: date)
         return calendar.date(from: components) ?? date
+    }
+}
+
+private extension Calendar.Identifier {
+    var isIslamic: Bool {
+        switch self {
+        case .islamic, .islamicCivil, .islamicTabular, .islamicUmmAlQura: true
+        default: false
+        }
     }
 }
