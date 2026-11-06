@@ -364,6 +364,93 @@ final class SeededHealthFlowUITests: XCTestCase {
         }
     }
 
+    /// The arrows show a past day's full total on the Today screen, from HealthKit.
+    func testTodayArrowsShowYesterdaysSeededTotal() {
+        let app = launchSeeded(upgradeTab: "catalog")
+        grantHealthKitAccess(in: app)
+        dismissBlockingSheets(in: app)
+        let notNow = app.buttons["Not now"]
+        if notNow.waitForExistence(timeout: 20) { notNow.tap() }
+        dismissTrialPitch(in: app)
+
+        let previous = app.buttons["today-previous-day"]
+        let next = app.buttons["today-next-day"]
+        let backToToday = app.buttons["today-back-to-today"]
+        XCTAssertTrue(previous.waitForExistence(timeout: 30), "Previous day arrow missing")
+        XCTAssertFalse(next.exists, "Today has no later day to step to")
+        attach(app.screenshot(), name: "arrows-today")
+
+        // The seeder writes after launch. Yesterday is only worth reading once
+        // its samples are in, which today's first figure signals.
+        let todayRing = app.buttons["Calorie progress"]
+        XCTAssertTrue(todayRing.waitForExistence(timeout: 10), "Calorie ring missing on today")
+        let seeded = Date.now.addingTimeInterval(60)
+        while Date.now < seeded, (todayRing.value as? String ?? "").hasPrefix("0 ") {
+            _ = app.buttons["nonexistent"].waitForExistence(timeout: 1)
+        }
+        XCTAssertFalse((todayRing.value as? String ?? "").hasPrefix("0 "), "Seed never reached Today")
+
+        previous.tap()
+        XCTAssertTrue(next.waitForExistence(timeout: 5), "Next day arrow missing on a past day")
+        XCTAssertTrue(backToToday.exists, "Today button missing on a past day")
+
+        // Steps are the one seeded figure no other app on a shared simulator
+        // writes to, so they prove the arrow reached yesterday's real HealthKit data.
+        let wobble = sin(1.0 / 3.2)
+        let seededSteps = Int((8_400 + wobble * 2_200).rounded())
+        let acceptedSteps = (seededSteps - 1...seededSteps + 1).flatMap { [$0.formatted(.number), String($0)] }
+        let stepsCard = app.buttons["Steps"]
+        XCTAssertTrue(stepsCard.waitForExistence(timeout: 10), "Steps card missing on a past day")
+        let deadline = Date.now.addingTimeInterval(20)
+        var shownSteps = ""
+        while Date.now < deadline {
+            shownSteps = stepsCard.value as? String ?? ""
+            if acceptedSteps.contains(where: { shownSteps.contains($0) }) { break }
+            _ = app.buttons["nonexistent"].waitForExistence(timeout: 0.5)
+        }
+        attach(app.screenshot(), name: "arrows-yesterday")
+        XCTAssertTrue(acceptedSteps.contains { shownSteps.contains($0) }, "Yesterday read \(shownSteps), seeded \(seededSteps)")
+
+        let ring = app.buttons["Calorie progress"]
+        XCTAssertTrue(ring.exists, "Calorie ring missing on a past day")
+        let ringValue = ring.value as? String ?? ""
+        let digits = ringValue.prefix { !$0.isLetter }.filter(\.isNumber)
+        let yesterdayCalories = try! XCTUnwrap(Int(digits), "No calorie figure in \(ringValue)")
+
+        previous.tap()
+        XCTAssertTrue(next.waitForExistence(timeout: 5))
+        attach(app.screenshot(), name: "arrows-two-days-back")
+        next.tap()
+        XCTAssertTrue(next.waitForExistence(timeout: 5), "Stepping forward to yesterday left the past days")
+        next.tap()
+        XCTAssertTrue(next.waitForNonExistence(timeout: 5), "Stepping forward into today kept the arrow")
+        XCTAssertFalse(backToToday.exists, "Today button stayed up on today")
+
+        previous.tap()
+        XCTAssertTrue(backToToday.waitForExistence(timeout: 5))
+        backToToday.tap()
+        XCTAssertTrue(next.waitForNonExistence(timeout: 5), "Today button did not return to today")
+
+        // The two screens read one day, so they must print one number for it.
+        dismissTrialPitch(in: app)
+        app.buttons["tab-history"].tap()
+        if notNow.waitForExistence(timeout: 8) { notNow.tap() }
+        dismissTrialPitch(in: app)
+        let link = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'chart-card-link-'")).firstMatch
+        XCTAssertTrue(link.waitForExistence(timeout: 30), "Calories link never rendered")
+        link.tap()
+        let rows = app.descendants(matching: .any).matching(identifier: "recent-day-row")
+        XCTAssertTrue(rows.firstMatch.waitForExistence(timeout: 10), "Calories detail arrived without Recent Days")
+        _ = app.buttons["nonexistent"].waitForExistence(timeout: 3)
+        attach(app.screenshot(), name: "arrows-history-agrees")
+        let accepted = (yesterdayCalories...yesterdayCalories + 1).map { $0.formatted(.number) }
+        let shown = rows.allElementsBoundByIndex.map { $0.label }
+        XCTAssertTrue(
+            shown.contains { row in accepted.contains { row.contains($0) } },
+            "Today's arrows showed \(yesterdayCalories), History shows \(shown)"
+        )
+    }
+
     /// Once loaded, rows are unique and yesterday reads what the seeder wrote.
     private func assertSettled(_ app: XCUIApplication, _ rows: XCUIElementQuery, label: String) {
         _ = app.buttons["nonexistent"].waitForExistence(timeout: 3)

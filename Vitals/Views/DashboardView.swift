@@ -40,6 +40,29 @@ private enum GoalCelebration {
     }
 }
 
+/// What the Today screen shows for a finished day.
+private struct PastDayFigures {
+    var active = 0.0
+    var resting = 0.0
+    var steps = 0
+    var statsFailed = false
+    var food = 0.0
+    var foodReady = false
+    var foodFailed = false
+    var macros = MacroTotals.zero
+    var macrosReady = false
+    var macrosFailed = false
+
+    var hasStats: Bool { active > 0 || resting > 0 || steps > 0 }
+}
+
+/// Reloads the viewed day when it changes or a section it reads is switched on.
+private struct PastDayRequest: Equatable {
+    let day: Date?
+    let food: Bool
+    let macros: Bool
+}
+
 struct DashboardView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -67,9 +90,15 @@ struct DashboardView: View {
         guard !isUnfoldedPane else { return 24 }
         return 90 + (store.isPro && goals.isAveragesPaused ? pausedBannerInset : 0)
     }
-    @State private var activeCalories: Double = 0
-    @State private var restingCalories: Double = 0
-    @State private var steps: Int = 0
+    // Today's figures. They keep updating while a past day is on screen, so the
+    // screen reads them through the display properties below, never directly.
+    @State private var todayActive: Double = 0
+    @State private var todayResting: Double = 0
+    @State private var todaySteps: Int = 0
+    /// The past day on screen. nil is today.
+    @State private var viewedDay: Date? = nil
+    /// That day's figures, non-nil exactly while `viewedDay` is.
+    @State private var pastDay: PastDayFigures? = nil
     @State private var pacingCalories: Double? = nil
     @State private var pacingSteps: Int? = nil
     @State private var isLoading = true
@@ -104,16 +133,16 @@ struct DashboardView: View {
     @State private var isRefreshing = false
     @State private var healthNotice: HealthNotice? = nil
     @State private var lastRefreshDate: Date? = nil
-    @State private var foodCalories: Double = 0
+    @State private var todayFood: Double = 0
     /// True after we’ve successfully read dietary energy at least once this session (while net is on).
-    @State private var dietaryEnergyReady = false
+    @State private var todayFoodReady = false
     /// True when the last dietary fetch failed (don’t treat as “0 kcal logged”).
-    @State private var dietaryEnergyFetchFailed = false
-    @State private var macros: MacroTotals = .zero
+    @State private var todayFoodFailed = false
+    @State private var todayMacros: MacroTotals = .zero
     /// True after a successful macro read this session (while Macros is on).
-    @State private var macrosReady = false
+    @State private var todayMacrosReady = false
     /// True when the last macro fetch failed (don’t treat as “0 g logged”).
-    @State private var macrosFetchFailed = false
+    @State private var todayMacrosFailed = false
     /// Transient celebration banner shown once per goal per day (paired with the haptic).
     @State private var celebrationMessage: String? = nil
     // Vitals+ energy averages: stable 30-day maintenance (TDEE) and resting (BMR)
@@ -124,6 +153,17 @@ struct DashboardView: View {
     /// Measured top safe-area inset (status bar / Dynamic Island height), used to
     /// size the mask that keeps scrolled content from colliding with the status bar.
     @State private var topSafeAreaInset: CGFloat = 0
+
+    private var isViewingPast: Bool { viewedDay != nil }
+    private var activeCalories: Double { pastDay?.active ?? todayActive }
+    private var restingCalories: Double { pastDay?.resting ?? todayResting }
+    private var steps: Int { pastDay?.steps ?? todaySteps }
+    private var foodCalories: Double { pastDay?.food ?? todayFood }
+    private var dietaryEnergyReady: Bool { pastDay?.foodReady ?? todayFoodReady }
+    private var dietaryEnergyFetchFailed: Bool { pastDay?.foodFailed ?? todayFoodFailed }
+    private var macros: MacroTotals { pastDay?.macros ?? todayMacros }
+    private var macrosReady: Bool { pastDay?.macrosReady ?? todayMacrosReady }
+    private var macrosFetchFailed: Bool { pastDay?.macrosFailed ?? todayMacrosFailed }
 
     private var totalCalories: Double { activeCalories + restingCalories }
 
@@ -172,20 +212,23 @@ struct DashboardView: View {
     }
 
     private var showCalorieStreak: Bool {
-        streaksUnlocked && goals.showCalories && goals.calorieGoal != nil && calorieStreak > 0
+        streaksUnlocked && !isViewingPast && goals.showCalories && goals.calorieGoal != nil && calorieStreak > 0
     }
 
     private var showStepStreak: Bool {
-        streaksUnlocked && goals.showSteps && goals.stepGoal != nil && stepStreak > 0
+        streaksUnlocked && !isViewingPast && goals.showSteps && goals.stepGoal != nil && stepStreak > 0
     }
 
     /// "Usual by now" feeding the pace clause of the pill, nil when pacing is off
     /// so the pill can still render a projection-only line.
-    private var calorieTypical: Double? { goals.showPacing ? pacingCalories : nil }
-    private var stepTypical: Double? { goals.showPacing ? pacingSteps.map(Double.init) : nil }
+    private var calorieTypical: Double? { showsPacing ? pacingCalories : nil }
+    private var stepTypical: Double? { showsPacing ? pacingSteps.map(Double.init) : nil }
+
+    /// Pace compares today so far against the usual, so a finished day has none.
+    private var showsPacing: Bool { goals.showPacing && !isViewingPast }
 
     private var projectedCalories: Double? {
-        guard isProjectionEnabled, goals.showCalories else { return nil }
+        guard isProjectionEnabled, !isViewingPast, goals.showCalories else { return nil }
         return ProjectionCalculator.projectedEndOfDay(
             current: totalCalories,
             usualByNow: usualCaloriesByNow,
@@ -194,7 +237,7 @@ struct DashboardView: View {
     }
 
     private var projectedSteps: Double? {
-        guard isProjectionEnabled, goals.showSteps else { return nil }
+        guard isProjectionEnabled, !isViewingPast, goals.showSteps else { return nil }
         return ProjectionCalculator.projectedEndOfDay(
             current: Double(steps),
             usualByNow: usualStepsByNow,
@@ -242,9 +285,9 @@ struct DashboardView: View {
         // beat later and faded the content in from nothing, so a launch showed
         // a blank screen for that long after the app had already drawn.
         guard let cached = Self.takeLaunchSnapshot() else { return }
-        _activeCalories = State(initialValue: cached.active)
-        _restingCalories = State(initialValue: cached.resting)
-        _steps = State(initialValue: cached.steps)
+        _todayActive = State(initialValue: cached.active)
+        _todayResting = State(initialValue: cached.resting)
+        _todaySteps = State(initialValue: cached.steps)
         _isLoading = State(initialValue: false)
         _animateContent = State(initialValue: true)
     }
@@ -305,7 +348,10 @@ struct DashboardView: View {
                                 .readableWidth()
                                 .frame(minHeight: geo.size.height)
                         }
-                        .refreshable { await refresh() }
+                        .refreshable {
+                            await refresh()
+                            await loadPastDay()
+                        }
                     }
                 }
             }
@@ -385,7 +431,12 @@ struct DashboardView: View {
                 Task { await DailyNudgeService.refreshEveningReminder() }
             }
         }
+        .task(id: PastDayRequest(day: viewedDay, food: isNetDeficitEnabled || isMacrosEnabled, macros: isMacrosEnabled)) {
+            await loadPastDay()
+        }
         .onChange(of: scenePhase) { _, newPhase in
+            // Opening the app always lands on today, however it was left.
+            if newPhase == .background { showDay(nil) }
             // Skip during first-launch onboarding — refresh() calls
             // synchronizeAuthorizationStateForFetching(), which would trigger
             // the HealthKit permission sheet before the user has even tapped
@@ -410,6 +461,7 @@ struct DashboardView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .vitalsPopToToday)) { _ in
             navPath = NavigationPath()
+            showDay(nil)
         }
         .onReceive(NotificationCenter.default.publisher(for: .vitalsEnableNetDeficitWithDietaryAuth)) { _ in
             beginEnableNetDeficitWithDietaryAuth()
@@ -594,11 +646,27 @@ struct DashboardView: View {
         return VStack(spacing: 0) {
             // Header
             VStack(alignment: .leading, spacing: 4) {
-                HStack {
-                    Text(Date.now, format: .dateTime.weekday(.wide).month(.wide).day())
-                        .font(.system(.title3, design: .rounded, weight: .bold))
-                        .foregroundStyle(Theme.textPrimary)
-                    Spacer()
+                HStack(spacing: 0) {
+                    dayArrow(
+                        systemName: "chevron.backward",
+                        label: String(localized: "Previous day"),
+                        identifier: "today-previous-day",
+                        target: DayBrowser.previous(of: viewedDay),
+                        enabled: DayBrowser.previous(of: viewedDay) != nil
+                    )
+                    // Lines the glyph, not its tap area, up with the page margin.
+                    .padding(.leading, -13)
+                    headerDate
+                    if let viewedDay {
+                        dayArrow(
+                            systemName: "chevron.forward",
+                            label: String(localized: "Next day"),
+                            identifier: "today-next-day",
+                            target: DayBrowser.next(of: viewedDay),
+                            enabled: true
+                        )
+                    }
+                    Spacer(minLength: 0)
                     Button {
                         showSettings = true
                     } label: {
@@ -612,7 +680,13 @@ struct DashboardView: View {
                     .accessibilityLabel("Settings")
                 }
                 HStack(spacing: 8) {
-                    if healthNotice == .accessNeeded {
+                    if isViewingPast {
+                        Button("Today") { showDay(nil) }
+                            .font(.system(.caption, design: .rounded, weight: .semibold))
+                            .foregroundStyle(Theme.caloriesText)
+                            .contentShape(Rectangle().inset(by: -12))
+                            .accessibilityIdentifier("today-back-to-today")
+                    } else if healthNotice == .accessNeeded {
                         Text("Waiting for Health access")
                             .font(.system(.caption2, design: .rounded))
                             .foregroundStyle(Theme.textTertiary)
@@ -628,6 +702,7 @@ struct DashboardView: View {
                             .foregroundStyle(Theme.textTertiary)
                     }
                 }
+                .padding(.leading, 23)
                 .animation(.easeInOut(duration: 0.2), value: isRefreshing)
             }
             .padding(.horizontal, 24)
@@ -635,12 +710,12 @@ struct DashboardView: View {
             .opacity(animateContent ? 1 : 0)
             .offset(y: animateContent || reduceMotion ? 0 : 10)
 
-            if let healthNotice {
-                healthNoticeBanner(healthNotice)
+            if let notice = visibleHealthNotice {
+                healthNoticeBanner(notice)
                     .opacity(animateContent ? 1 : 0)
             }
 
-            if let prompt, healthNotice == nil {
+            if let prompt, visibleHealthNotice == nil, !isViewingPast {
                 promptCard(prompt)
                     .padding(.horizontal, 24)
                     .padding(.top, 12)
@@ -749,7 +824,7 @@ struct DashboardView: View {
                                 lookback: goals.pacingLookback
                             )
                             .padding(.top, 8)
-                        } else if goals.showPacing && pacingStepsInsufficient {
+                        } else if showsPacing && pacingStepsInsufficient {
                             Text(pacingBuildingText(samples: pacingStepSamples))
                                 .font(.system(.caption2, design: .rounded))
                                 .foregroundStyle(Theme.textTertiary)
@@ -811,7 +886,7 @@ struct DashboardView: View {
                                 comparison: goals.pacingComparison,
                                 lookback: goals.pacingLookback
                             )
-                        } else if goals.showPacing && pacingStepsInsufficient {
+                        } else if showsPacing && pacingStepsInsufficient {
                             Text(pacingBuildingText(samples: pacingStepSamples))
                                 .font(.system(.caption2, design: .rounded))
                                 .foregroundStyle(Theme.textTertiary)
@@ -883,6 +958,103 @@ struct DashboardView: View {
         .padding(.bottom, bottomContentInset)
     }
 
+    /// A long date fits the header beside the arrows only on wide phones, so it
+    /// shortens rather than wrapping under them.
+    private var headerDate: some View {
+        let date = viewedDay ?? .now
+        return ViewThatFits(in: .horizontal) {
+            Text(date, format: .dateTime.weekday(.wide).month(.wide).day()).lineLimit(1)
+            Text(date, format: .dateTime.weekday(.abbreviated).month(.wide).day()).lineLimit(1)
+            Text(date, format: .dateTime.weekday(.abbreviated).month(.abbreviated).day())
+        }
+        .font(.system(.title3, design: .rounded, weight: .bold))
+        .foregroundStyle(Theme.textPrimary)
+    }
+
+    /// `target` nil means today.
+    private func dayArrow(
+        systemName: String,
+        label: String,
+        identifier: String,
+        target: Date?,
+        enabled: Bool
+    ) -> some View {
+        Button {
+            showDay(target)
+        } label: {
+            Image(systemName: systemName)
+                .font(.body.weight(.semibold))
+                .foregroundStyle(enabled ? Theme.textSecondary : Theme.textTertiary)
+                .frame(width: 36, height: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .disabled(!enabled)
+        .accessibilityLabel(label)
+        .accessibilityIdentifier(identifier)
+    }
+
+    private var visibleHealthNotice: HealthNotice? {
+        guard isViewingPast else { return healthNotice }
+        return pastDay?.statsFailed == true ? .loadError : nil
+    }
+
+    /// Swaps the figures in the same update as the date, so a new date never
+    /// sits over the previous day's numbers. The cached row is on hand for most
+    /// days; `loadPastDay` then replaces it with HealthKit's.
+    private func showDay(_ day: Date?) {
+        guard day != viewedDay else { return }
+        withAnimation(reduceMotion ? nil : .snappy(duration: 0.25)) {
+            viewedDay = day
+            pastDay = day.map(cachedFigures(for:))
+        }
+    }
+
+    private func cachedFigures(for day: Date) -> PastDayFigures {
+        var figures = PastDayFigures()
+        let key = DailyHealthRecord.key(for: day)
+        if let row = (try? healthKit.fetchCachedHistory(from: day, to: day))?
+            .first(where: { DailyHealthRecord.key(for: $0.date) == key }) {
+            figures.active = row.active
+            figures.resting = row.resting
+            figures.steps = row.steps
+        }
+        return figures
+    }
+
+    /// Reads the viewed day from the same queries History uses, so the two
+    /// screens can't disagree about a finished day.
+    private func loadPastDay() async {
+        guard let day = viewedDay else { return }
+        let key = DailyHealthRecord.key(for: day)
+        let wantsFood = isNetDeficitEnabled || isMacrosEnabled
+        let wantsMacros = isMacrosEnabled
+
+        async let statsRows = try? healthKit.fetchHistory(from: day, to: day)
+        async let foodRows = wantsFood ? (try? healthKit.fetchDietaryHistory(from: day, to: day)) : nil
+        async let macroRows = wantsMacros ? (try? healthKit.fetchMacroHistory(from: day, to: day)) : nil
+        let (stats, food, macroTotals) = await (statsRows, foodRows, macroRows)
+
+        guard !Task.isCancelled, viewedDay == day, var figures = pastDay else { return }
+        if let row = stats?.first(where: { DailyHealthRecord.key(for: $0.date) == key }) {
+            figures.active = row.active
+            figures.resting = row.resting
+            figures.steps = row.steps
+            figures.statsFailed = false
+        } else {
+            // A failed read keeps the cached row. Only a day with nothing to
+            // show says so, since zeros would read as a day without activity.
+            figures.statsFailed = !figures.hasStats
+        }
+        figures.food = food?.first { DailyHealthRecord.key(for: $0.date) == key }?.foodCalories ?? 0
+        figures.foodReady = wantsFood && food != nil
+        figures.foodFailed = wantsFood && food == nil
+        figures.macros = macroTotals?.first { DailyHealthRecord.key(for: $0.date) == key }?.macros ?? .zero
+        figures.macrosReady = wantsMacros && macroTotals != nil
+        figures.macrosFailed = wantsMacros && macroTotals == nil
+        withAnimation(reduceMotion ? nil : .snappy(duration: 0.25)) { pastDay = figures }
+    }
+
     /// TDEE/BMR averages row (Vitals+). A steady 30-day reference figure, visually
     /// distinct from the live "today" number above it. Shows a building state until
     /// enough sample days exist, mirroring how pacing reports its warm-up.
@@ -920,7 +1092,7 @@ struct DashboardView: View {
     @ViewBuilder
     private var calorieInsights: some View {
         let hasPill = calorieTypical != nil || projectedCalories != nil
-        let building = goals.showPacing && pacingCaloriesInsufficient && calorieTypical == nil
+        let building = showsPacing && pacingCaloriesInsufficient && calorieTypical == nil
         if hasPill || building {
             VStack(spacing: 8) {
                 if hasPill {
@@ -1140,6 +1312,7 @@ struct DashboardView: View {
                             // already determined (user must use Health permissions).
                             try? await healthKit.requestDietaryAuthorization()
                             await loadDietaryEnergy()
+                            await loadPastDay()
                         }
                     }
                     Button("Health permissions") {
@@ -1155,7 +1328,9 @@ struct DashboardView: View {
             // Loading state is conveyed by the skeleton pill in the breakdown row.
             EmptyView()
         } else if foodCalories <= 0 {
-            Text("No food calories logged in Apple Health today.")
+            Text(isViewingPast
+                 ? "No food calories logged in Apple Health for this day."
+                 : "No food calories logged in Apple Health today.")
                 .font(.system(.caption2, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
                 .multilineTextAlignment(align)
@@ -1213,7 +1388,9 @@ struct DashboardView: View {
                         .foregroundStyle(Theme.textTertiary)
                         .lineLimit(1)
                         .minimumScaleFactor(0.7)
-                        .accessibilityLabel("\(Int(foodCalories.rounded())) calories logged in Health today")
+                        .accessibilityLabel(isViewingPast
+                            ? String(localized: "\(Int(foodCalories.rounded()).formatted(.number)) cal logged")
+                            : String(localized: "\(Int(foodCalories.rounded())) calories logged in Health today"))
                 }
             }
 
@@ -1241,6 +1418,7 @@ struct DashboardView: View {
                         Task {
                             try? await healthKit.requestMacroAuthorization()
                             await loadMacros()
+                            await loadPastDay()
                         }
                     }
                     Button("Health permissions") {
@@ -1295,6 +1473,11 @@ struct DashboardView: View {
                     .font(.system(.caption2, design: .rounded, weight: .semibold))
                     .foregroundStyle(Theme.caloriesPrimary)
             }
+        } else if isViewingPast {
+            Text("No macros logged in Apple Health for this day.")
+                .font(.system(.caption2, design: .rounded))
+                .foregroundStyle(Theme.textTertiary)
+                .fixedSize(horizontal: false, vertical: true)
         } else {
             Text("No macros logged in Apple Health today. Log meals in a food app that writes protein, carbs, and fat to Health (MyFitnessPal, Cronometer, Lose It, and most others).")
                 .font(.system(.caption2, design: .rounded))
@@ -1381,23 +1564,23 @@ struct DashboardView: View {
 
     private func loadMacros() async {
         guard isMacrosEnabled else {
-            macros = .zero
-            macrosReady = false
-            macrosFetchFailed = false
+            todayMacros = .zero
+            todayMacrosReady = false
+            todayMacrosFailed = false
             return
         }
         do {
             let totals = try await healthKit.fetchMacrosToday()
-            macros = totals
+            todayMacros = totals
             // As with dietary energy, HealthKit hides read authorization, so a
             // successful fetch is the only signal we get. All-zero is a valid
             // result (nothing logged), not a failure.
-            macrosFetchFailed = false
-            macrosReady = true
+            todayMacrosFailed = false
+            todayMacrosReady = true
             try? healthKit.updateCachedMacros(totals)
         } catch {
-            macrosFetchFailed = true
-            macrosReady = false
+            todayMacrosFailed = true
+            todayMacrosReady = false
             dashboardLogger.error("Macro fetch failed: \(String(describing: error), privacy: .public)")
         }
     }
@@ -1435,7 +1618,7 @@ struct DashboardView: View {
         do {
             try await healthKit.requestMacroAuthorization()
         } catch {
-            macrosFetchFailed = true
+            todayMacrosFailed = true
             dashboardLogger.error("Macro auth request failed: \(String(describing: error), privacy: .public)")
         }
         await refresh()
@@ -1546,7 +1729,7 @@ struct DashboardView: View {
             let statusAfter = await healthKit.authorizationRequestStatus(includeDietaryEnergy: true)
             dashboardLogger.debug("NetDeficit dietary auth — status after: \(String(describing: statusAfter?.rawValue), privacy: .public)")
         } catch {
-            dietaryEnergyFetchFailed = true
+            todayFoodFailed = true
             dashboardLogger.error("NetDeficit dietary auth request failed: \(String(describing: error), privacy: .public)")
         }
         await refresh()
@@ -1580,9 +1763,9 @@ struct DashboardView: View {
     @State private var postedRealData = false
 
     private func applyStats(_ stats: (active: Double, resting: Double, steps: Int)) {
-        activeCalories = stats.active
-        restingCalories = stats.resting
-        steps = stats.steps
+        todayActive = stats.active
+        todayResting = stats.resting
+        todaySteps = stats.steps
 
         // Strategic value moment (Rev A): the first time the dashboard actually
         // has non-zero burned-calorie or step data on screen, signal it so the
@@ -1604,7 +1787,7 @@ struct DashboardView: View {
     /// of the same day are silent.
     private func celebrateGoalsIfNeeded() {
         let todayKey = DailyHealthRecord.key(for: Date())
-        let newTotal = activeCalories + restingCalories
+        let newTotal = todayActive + todayResting
 
         var crossedCalories = false
         var crossedSteps = false
@@ -1619,7 +1802,7 @@ struct DashboardView: View {
 
         if let stepGoal = goals.stepGoal,
            stepGoal > 0,
-           steps >= stepGoal,
+           todaySteps >= stepGoal,
            GoalCelebration.shouldCelebrateSteps(for: todayKey) {
             GoalCelebration.markStepsCelebrated(for: todayKey)
             crossedSteps = true
@@ -1733,19 +1916,19 @@ struct DashboardView: View {
     /// gets 0 and the generic empty state.
     private func loadDietaryEnergy() async {
         guard isNetDeficitEnabled || isMacrosEnabled else {
-            foodCalories = 0
-            dietaryEnergyReady = false
-            dietaryEnergyFetchFailed = false
+            todayFood = 0
+            todayFoodReady = false
+            todayFoodFailed = false
             return
         }
         do {
             let food = try await healthKit.fetchDietaryEnergyToday()
-            foodCalories = food
+            todayFood = food
             // Apple intentionally hides read authorization status; a successful
             // fetch is the only reliable signal. 0 kcal is a valid result
             // (no food logged), not an error. Display the numeric result.
-            dietaryEnergyFetchFailed = false
-            dietaryEnergyReady = true
+            todayFoodFailed = false
+            todayFoodReady = true
             // Only Net Deficit users' widgets read this; a Macros-only user who
             // never granted dietary energy would otherwise write a hollow 0 over
             // whatever the cache already holds.
@@ -1753,8 +1936,8 @@ struct DashboardView: View {
                 try? healthKit.updateCachedFoodCalories(food)
             }
         } catch {
-            dietaryEnergyFetchFailed = true
-            dietaryEnergyReady = false
+            todayFoodFailed = true
+            todayFoodReady = false
             dashboardLogger.error("Dietary energy fetch failed: \(String(describing: error), privacy: .public)")
         }
     }
@@ -1995,12 +2178,12 @@ struct DashboardView: View {
                 healthNotice = .loadError
             }
             clearPacing()
-            foodCalories = 0
-            dietaryEnergyReady = false
-            dietaryEnergyFetchFailed = false
-            macros = .zero
-            macrosReady = false
-            macrosFetchFailed = false
+            todayFood = 0
+            todayFoodReady = false
+            todayFoodFailed = false
+            todayMacros = .zero
+            todayMacrosReady = false
+            todayMacrosFailed = false
             showLoadedStateIfNeeded()
         }
     }

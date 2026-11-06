@@ -134,3 +134,15 @@ Nothing is deleted: excluded days stay in charts (dimmed), in Recent Days
   switches tabs; `DashboardView` pushes the metric onto its `NavigationPath`.
 - App Intents (`Vitals/Intents`): calories and steps today, live HealthKit with a
   cache fallback while locked. `INAlternativeAppNames` gives Siri "Total Calories".
+
+### Past days on Today
+
+The arrows beside Today's date show a finished day in the full view, up to 365
+days back (`DayBrowser`). Free, since History already shows those days free.
+`DashboardView` keeps today's figures in `today*` state, which keep updating
+while a past day is up, and the screen reads them through display properties
+that prefer `pastDay`. Goal celebrations read the `today*` values directly.
+Past days read the same queries as History, so the two screens can't disagree.
+Streak, pace and projection hide on a past day. Backgrounding the app, or a
+Today deep link, returns to today. Test:
+`SeededHealthFlowUITests.testTodayArrowsShowYesterdaysSeededTotal`.
