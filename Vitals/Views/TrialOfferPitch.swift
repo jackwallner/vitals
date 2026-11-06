@@ -19,9 +19,6 @@ struct TrialPitchRequest: Identifiable {
     var subheadline: String?
     /// The tap that raised this pitch, for settings `featureToEnable` can't name.
     var intent: TrialOfferCoordinator.Intent?
-    /// The exit offer's own sheet: the half-price plan instead of the trial
-    /// target. See `ExitOffer`.
-    var isExitOffer = false
 
     /// A feature tap. `impressionID` names the surface, not the feature, so the
     /// RevenueCat series stay comparable across builds.
@@ -48,13 +45,6 @@ struct TrialPitchRequest: Identifiable {
         focus = nil
         impressionID = passiveImpressionID
         featureToEnable = nil
-    }
-
-    /// The exit offer, raised a few seconds after a deliberate close.
-    static func exitOffer() -> TrialPitchRequest {
-        var request = TrialPitchRequest(passiveImpressionID: ExitOffer.impressionID)
-        request.isExitOffer = true
-        return request
     }
 
     /// Deep Trends and PDF export unlock with Pro itself and have no stored
@@ -97,33 +87,7 @@ struct TrialOfferPitchSheet: View {
     /// Set only on the used-trial pitch, where the user picks a plan. nil means
     /// "the one-tap trial target", which is always yearly.
     @State private var selectedPlanID: String?
-    /// The half-price plan: on the exit offer's own sheet, and on every pitch
-    /// while the welcome price stands. See `ExitOffer`.
-    private var exitOfferPackage: Package? {
-        guard request.isExitOffer, ExitOffer.windowStart == nil else { return store.welcomePackage }
-        return store.exitOfferPackage
-    }
-
-    /// When the half price ends. The offer's own sheet comes up before the
-    /// window opens (its tiles open it), so until then it counts from now.
-    /// Once open, only the real deadline counts, so it never restarts.
-    private var welcomeEndsAt: Date? {
-        guard exitOfferPackage != nil else { return nil }
-        if let endsAt = store.welcomePriceEndsAt { return endsAt }
-        guard request.isExitOffer, ExitOffer.windowStart == nil else { return nil }
-        return Date.now.addingTimeInterval(ExitOffer.welcomeWindow)
-    }
-
-    /// The offer's headline, unless a feature tap or the user's own data
-    /// already named one.
-    private var headline: String? {
-        if let headline = request.headline { return headline }
-        guard let exitOfferPackage, request.isExitOffer || request.focus == nil else { return nil }
-        return ExitOfferPriceTiles.headline(offer: exitOfferPackage, regular: store.regularYearlyPackage)
-    }
-
     private var package: Package? {
-        if let exitOfferPackage { return exitOfferPackage }
         guard let selectedPlanID else { return snapshot ?? store.conversionPackage }
         return store.products.first { $0.identifier == selectedPlanID }
             ?? snapshot
@@ -140,7 +104,7 @@ struct TrialOfferPitchSheet: View {
     /// a free trial should have exactly one thing to do; someone who has spent it
     /// is deciding on price, so give them the price ladder instead of one number.
     private var planOptions: [TrialPlanOption] {
-        guard !eligibleForTrial, exitOfferPackage == nil else { return [] }
+        guard !eligibleForTrial else { return [] }
         let ladder = store.products.filter { $0.vitalsPackageKind != .other }
         guard ladder.count > 1 else { return [] }
         let order: [RevenueCatPackageKind] = [.yearly, .monthly, .lifetime]
@@ -160,10 +124,7 @@ struct TrialOfferPitchSheet: View {
     }
 
     var body: some View {
-        // Ticks so the welcome price's "ends in" stays true while the sheet is up.
-        TimelineView(.everyMinute) { context in
-            pitch(now: context.date)
-        }
+        pitch
         .presentationDetents([TrialOfferSheet.pitchDetent])
         .presentationDragIndicator(.visible)
         .presentationContentInteraction(.resizes)
@@ -171,18 +132,15 @@ struct TrialOfferPitchSheet: View {
         .task {
             if store.products.isEmpty { await store.fetchProducts() }
             snapshot = store.conversionPackage
-            // The exit offer's tiles report its impression when they appear.
-            if !request.isExitOffer { store.trackPaywallImpression(id: request.impressionID) }
+            store.trackPaywallImpression(id: request.impressionID)
         }
-        // The welcome price ending mid-pitch puts the regular plan back here too.
-        .onChange(of: store.welcomePriceEndsAt) { snapshot = store.conversionPackage }
     }
 
-    private func pitch(now: Date) -> some View {
+    private var pitch: some View {
         TrialOfferSheet(
             focus: request.focus,
-            headlineOverride: headline,
-            subheadlineOverride: welcomeEndsAt.flatMap { ExitOffer.welcomeLine(endsAt: $0, now: now) } ?? request.subheadline,
+            headlineOverride: request.headline,
+            subheadlineOverride: request.subheadline,
             logsFood: goals.logsFoodInHealth,
             // Trial language only when this Apple ID is still eligible —
             // otherwise the sheet frames a straight yearly purchase.
@@ -194,36 +152,20 @@ struct TrialOfferPitchSheet: View {
             isPurchasing: isPurchasing,
             errorMessage: errorMessage,
             onStartTrial: startPurchase,
-            onDismiss: closeTapped,
+            onDismiss: onDismiss,
             onRestore: startRestore,
             isRestoring: isRestoring,
             restoreMessage: restoreMessage,
             // The ladder prints a per-week figure on every row; saying it in the
-            // subhead too is the same number twice in one glance. Under the
-            // exit offer it is the half price's, never the regular plan's.
+            // subhead too is the same number twice in one glance.
             perWeekLabel: planOptions.isEmpty
-                ? (exitOfferPackage ?? store.regularYearlyPackage)?.vitalsPricePerWeekLabel
+                ? store.yearlyPackage?.vitalsPricePerWeekLabel
                 : nil,
-            // The tiles carry the exit offer's deal; a yearly-vs-monthly
-            // "SAVE 37%" above "HALF OFF" would be two discounts at once.
-            annualSavingsPercent: exitOfferPackage == nil ? store.annualSavingsPercent : nil,
+            annualSavingsPercent: store.annualSavingsPercent,
             planOptions: planOptions,
             selectedPlanID: selectedPlanID ?? planOptions.first?.id,
-            onSelectPlan: { selectedPlanID = $0 },
-            exitOffer: exitOfferPackage,
-            exitOfferRegular: store.regularYearlyPackage,
-            recordsExitOfferImpression: request.isExitOffer
+            onSelectPlan: { selectedPlanID = $0 }
         )
-    }
-
-    /// "Not now" closes as normal; the exit offer, if owed, follows on its own.
-    private func closeTapped() {
-        if request.isExitOffer {
-            store.declineExitOffer()
-        } else {
-            store.exitOfferOnClose(surface: ConversionDiagnostics.surface(fromImpressionID: request.impressionID))
-        }
-        onDismiss()
     }
 
     /// CTA and disclosure follow the *selected* plan, not the yearly default —

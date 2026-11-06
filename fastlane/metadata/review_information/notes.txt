@@ -6,16 +6,6 @@ WHAT CHANGED IN THIS VERSION
 
 1.9.1 translates the app into 35 languages and adds an introductory offer.
 
-HOW TO FIND THE NEW IN-APP PURCHASE (Vitals+ Yearly, com.jackwallner.vitals.yearly.exit, $14.99/year)
-
-It is a half-price yearly plan offered once to people who decline Vitals+. It is switched on for every review device. Please use a sandbox account with no Vitals+ purchase, and do not start a trial before step 3: subscribers never see the offer.
-
-1. Delete any earlier install, then install and launch the app.
-2. Tap Continue, allow Health access, then set or skip goals.
-3. On the Vitals+ screen that follows, do not buy. Tap "Get Started" at the bottom.
-4. Stay on the Today tab for about 5 seconds. The offer sheet opens on its own: regular yearly price struck through, $14.99/year, 7-day free trial, renewal terms. Tap the button to buy it with the sandbox account, or "No thanks" to close it.
-5. For 48 hours after it first appears, the Upgrade tab also sells this plan, with a line saying when the price ends.
-
 No new permissions or data collection.
 
 HEALTHKIT SETUP - PLEASE GRANT ACCESS WHEN PROMPTED

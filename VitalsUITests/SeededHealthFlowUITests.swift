@@ -290,48 +290,6 @@ final class SeededHealthFlowUITests: XCTestCase {
         attach(app.screenshot(), name: "free-history-exclusion-after-purchase")
     }
 
-    /// The real trial sheet (`TrialOfferPitch`): "Not now" closes it as
-    /// normal, and the exit offer follows a few seconds later as its own sheet,
-    /// with the price tiles and a disclosure naming the half price. "No thanks"
-    /// closes it for good. Onboarding is in `ExitOfferUITests`.
-    func testTrialSheetNotNowLeadsToTheExitOffer() {
-        let app = launchSeeded(upgradeTab: "catalog", arguments: ["-exitOffer.force"])
-        grantHealthKitAccess(in: app)
-
-        let notNow = app.buttons["Not now"]
-        XCTAssertTrue(notNow.waitForExistence(timeout: 60), "the passive trial sheet never presented")
-        let cta = app.buttons["trial-pitch-cta"]
-        XCTAssertTrue(cta.waitForExistence(timeout: 15), "pitch CTA missing")
-        // The seeded steps clear the goal, and the goal-hit rating alert can
-        // land over the sheet and swallow the tap meant for "Not now".
-        dismissRatingAlert(in: app)
-        notNow.tap()
-
-        let tiles = app.descendants(matching: .any)["exit-offer-tiles"]
-        XCTAssertTrue(cta.waitForNonExistence(timeout: 10), "\"Not now\" did not close the sheet")
-        XCTAssertFalse(tiles.exists, "the offer came up on the closing sheet itself")
-        XCTAssertTrue(tiles.waitForExistence(timeout: 20), "the offer never followed on Today")
-        sleep(1)
-        attach(app.screenshot(), name: "trial-sheet-exit-offer")
-
-        let noThanks = app.buttons["No thanks"]
-        XCTAssertTrue(noThanks.exists, "the way out is not \"No thanks\"")
-        XCTAssertTrue(app.frame.contains(tiles.frame), "tiles (\(tiles.frame)) run off the screen")
-        XCTAssertTrue(tiles.frame.maxY <= cta.frame.minY, "tiles overlap the footer")
-
-        let price = tiles.label
-            .replacingOccurrences(of: "Your price, ", with: "")
-            .components(separatedBy: " a year").first ?? ""
-        XCTAssertFalse(price.isEmpty, "no price in the tiles label: \(tiles.label)")
-        XCTAssertTrue(
-            app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "\(price) / year")).firstMatch.exists,
-            "no disclosure quotes the offer price \(price) / year"
-        )
-
-        noThanks.tap()
-        XCTAssertTrue(tiles.waitForNonExistence(timeout: 10), "\"No thanks\" did not close the offer")
-    }
-
     /// The Calories detail against real HealthKit reads, starting from the near
     /// empty cache of a fresh install. Screenshot fixtures can't show this: they
     /// answer the cache and the live path with the same days.

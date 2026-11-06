@@ -262,19 +262,8 @@ extension Offering {
 final class StoreService: NSObject, ObservableObject {
     static let shared = StoreService()
 
-    /// The plans every paywall lists. While the welcome price stands, the
-    /// half-price plan takes the regular yearly plan's place.
+    /// The plans every paywall lists.
     @Published private(set) var products: [Package] = []
-    /// The current offering's plans as loaded, before that swap.
-    private var offeringPackages: [Package] = []
-    /// The half-price yearly plan, from the `exit_offer` offering (never the
-    /// current one). Out of `products` until the offer has been shown: its
-    /// product id contains the yearly one, so any yearly lookup would take it.
-    @Published private(set) var exitOfferPackage: Package?
-    private var exitOffering: Offering?
-    /// When the welcome price ends, while it stands. See `ExitOffer.welcomeWindow`.
-    @Published private(set) var welcomePriceEndsAt: Date?
-    private var welcomePriceExpiry: Task<Void, Never>?
     @Published private(set) var currentOffering: Offering? {
         didSet {
             CTAExperiment.offeringArm = CTAExperiment.from(metadata: currentOffering?.metadata)
@@ -353,7 +342,6 @@ final class StoreService: NSObject, ObservableObject {
         #if DEBUG
         if DebugLaunchConfig.failProductLoad {
             currentOffering = nil
-            offeringPackages = []
             products = []
             lastError = String(localized: "Couldn't load subscription options. Check your connection and try again.")
             return
@@ -364,10 +352,7 @@ final class StoreService: NSObject, ObservableObject {
             let offerings = try await Purchases.shared.offerings()
             let offering = offerings.vitalsPaywallOffering
             currentOffering = offering
-            offeringPackages = offering?.vitalsSortedPackages ?? []
-            exitOffering = offerings.offering(identifier: ExitOffer.offeringID)
-            exitOfferPackage = exitOffering?.package(identifier: ExitOffer.packageID)
-            refreshWelcomePrice()
+            products = offering?.vitalsSortedPackages ?? []
             lastError = nil
             await refreshIntroEligibility()
         } catch {
@@ -395,14 +380,14 @@ final class StoreService: NSObject, ObservableObject {
         #endif
         #if DEBUG && targetEnvironment(simulator)
         if RevenueCatConfig.apiKey.hasPrefix("test_") {
-            introEligibility = Dictionary(uniqueKeysWithValues: eligibilityPackages.compactMap { package in
+            introEligibility = Dictionary(uniqueKeysWithValues: products.compactMap { package in
                 package.vitalsIntroOfferLabel == nil ? nil : (package.storeProduct.productIdentifier, true)
             })
             introEligibilityResolved = true
             return
         }
         #endif
-        let identifiers = eligibilityPackages
+        let identifiers = products
             .filter { $0.storeProduct.introductoryDiscount != nil }
             .map { $0.storeProduct.productIdentifier }
         guard !identifiers.isEmpty else {
@@ -413,13 +398,6 @@ final class StoreService: NSObject, ObservableObject {
         let result = await Purchases.shared.checkTrialOrIntroDiscountEligibility(productIdentifiers: identifiers)
         introEligibility = result.mapValues { $0.status == .eligible }
         introEligibilityResolved = true
-    }
-
-    /// The offering's own plans, not `products`: while the welcome price
-    /// stands in for yearly, regular yearly still needs its answer for when it
-    /// comes back.
-    private var eligibilityPackages: [Package] {
-        offeringPackages + [exitOfferPackage].compactMap { $0 }
     }
 
     /// True when this package advertises a free trial AND the user is eligible
@@ -446,40 +424,6 @@ final class StoreService: NSObject, ObservableObject {
         return isEligibleForIntroOffer(yearly)
     }
 
-    /// Puts the half-price plan in the yearly plan's place while the welcome
-    /// window is open, and puts the regular one back the moment it closes.
-    /// Called on load, when the offer first shows, and on every return.
-    func refreshWelcomePrice(now: Date = .now) {
-        // The arm recorded at the first close keeps a window it opened, so
-        // clearing `force` or a later `offer_pct` change never cuts it short.
-        let inOffer = exitOfferArm == .offer || ExitOffer.recordedArm == .offer
-        let welcome = isPro || !inOffer ? nil : exitOfferPackage
-        let endsAt = welcome == nil ? nil : ExitOffer.welcomeEndsAt(now: now)
-        if welcomePriceEndsAt != endsAt { welcomePriceEndsAt = endsAt }
-        products = offeringPackages.map { package in
-            guard endsAt != nil, let welcome, package.vitalsPackageKind == .yearly else { return package }
-            return welcome
-        }
-        welcomePriceExpiry?.cancel()
-        guard let endsAt else { return }
-        welcomePriceExpiry = Task { [weak self] in
-            try? await Task.sleep(for: .seconds(max(1, endsAt.timeIntervalSinceNow)))
-            guard !Task.isCancelled else { return }
-            self?.refreshWelcomePrice()
-        }
-    }
-
-    /// The half-price plan while the welcome price stands, else nil.
-    var welcomePackage: Package? {
-        welcomePriceEndsAt == nil ? nil : exitOfferPackage
-    }
-
-    /// The regular yearly plan, even while the welcome price stands in for it:
-    /// the struck-through price beside the half price.
-    var regularYearlyPackage: Package? {
-        offeringPackages.first { $0.vitalsPackageKind == .yearly }
-    }
-
     /// The yearly package — the one-tap conversion target. StoreKit applies the
     /// free trial automatically when eligible; ineligible users pay the yearly
     /// price on the same product. nil until `fetchProducts` completes.
@@ -499,9 +443,8 @@ final class StoreService: NSObject, ObservableObject {
     /// Annual saving vs. paying monthly for a year, as a whole percent. nil
     /// unless both plans are loaded and annual is actually cheaper — the badge
     /// it drives must never quote a number we can't stand behind.
-    /// Always the regular yearly plan's: the welcome price says its own discount.
     var annualSavingsPercent: Int? {
-        guard let yearly = regularYearlyPackage, let monthly = monthlyPackage else { return nil }
+        guard let yearly = yearlyPackage, let monthly = monthlyPackage else { return nil }
         let annualized = (monthly.vitalsPriceAmount as NSDecimalNumber).doubleValue * 12
         let yearlyPrice = (yearly.vitalsPriceAmount as NSDecimalNumber).doubleValue
         guard annualized > 0, yearlyPrice > 0 else { return nil }
@@ -572,76 +515,6 @@ final class StoreService: NSObject, ObservableObject {
         if let manual = manualVariantOverride { return manual }
         #endif
         return currentOffering?.vitalsUpgradeTabVariant ?? .catalog
-    }
-
-    /// The exit offer arm this customer hashes to. nil means not in the test.
-    /// See `ExitOffer`.
-    var exitOfferArm: ExitOffer.Arm? {
-        #if DEBUG
-        if ExitOffer.isForced { return .offer }
-        #endif
-        guard isConfigured else { return nil }
-        return ExitOffer.arm(from: exitOffering?.metadata, appUserID: Purchases.shared.appUserID)
-    }
-
-    /// The arm is pinned by `force` (App Review) or `-exitOffer.force`, so the
-    /// offer follows the close instead of waiting for a return. See `ExitOffer`.
-    var exitOfferSkipsWait: Bool {
-        #if DEBUG
-        if ExitOffer.returnDelayOverride != nil { return false }
-        if ExitOffer.isForced { return true }
-        #endif
-        return exitOffering?.metadata["force"] as? String == ExitOffer.Arm.offer.rawValue
-    }
-
-    /// The exit offer is owed and has not been on screen yet. `MainTabView`
-    /// raises it on a return to the app once `ExitOffer.isReady`.
-    @Published private(set) var exitOfferDue = ExitOffer.isPending
-
-    /// "No thanks" on the offer: the customer saw the half price and left.
-    func declineExitOffer() {
-        ExitOffer.recordOutcome(.declined)
-        syncConversionAttributes()
-    }
-
-    /// The offer sheet is up, or no longer owed (already Vitals+).
-    func clearExitOfferDue() {
-        ExitOffer.isPending = false
-        exitOfferDue = false
-    }
-
-    /// A paywall was closed on purpose. The caller closes as normal; this
-    /// records the close for the test and, in the offer arm, marks the offer
-    /// due so it comes up as its own sheet on a later return.
-    func exitOfferOnClose(surface: String) {
-        #if DEBUG
-        if ScreenshotConfig.isEnabled && !ExitOffer.isForced { return }
-        if ExitOffer.isForced {
-            // Record like a real offer-arm close, but owe it on every close.
-            _ = ExitOffer.shouldOffer(onCloseOf: surface, arm: .offer, offerLoaded: true, isPro: isPro)
-            syncConversionAttributes()
-            if exitOfferPackage != nil && !isPro { markExitOfferDue() }
-            return
-        }
-        #endif
-        // Sandbox only (App Review, TestFlight): a live customer whose window
-        // ended never gets a second one, even while `force` is set.
-        if exitOfferSkipsWait && isConfigured && Purchases.shared.isSandbox {
-            ExitOffer.resetEndedShowingForReview()
-        }
-        let show = ExitOffer.shouldOffer(
-            onCloseOf: surface,
-            arm: exitOfferArm,
-            offerLoaded: exitOfferPackage != nil,
-            isPro: isPro
-        )
-        syncConversionAttributes()
-        if show { markExitOfferDue() }
-    }
-
-    private func markExitOfferDue() {
-        ExitOffer.isPending = true
-        exitOfferDue = true
     }
 
     #if DEBUG
@@ -738,7 +611,6 @@ final class StoreService: NSObject, ObservableObject {
         if let offering = currentOffering?.identifier {
             attributes["offering_id"] = offering
         }
-        attributes.merge(ExitOffer.subscriberAttributes) { _, new in new }
         Purchases.shared.attribution.setAttributes(attributes)
     }
 
@@ -816,11 +688,8 @@ final class StoreService: NSObject, ObservableObject {
         }
         // Freeze what the funnel looked like at the moment of sale: which
         // surface was last on screen, and how many pitches came before it.
-        if product.identifier == ExitOffer.packageID { ExitOffer.recordOutcome(.purchased) }
         ConversionDiagnostics.recordConversion(
-            plan: product.identifier == ExitOffer.packageID
-                ? "yearly_exit"
-                : String(describing: product.vitalsPackageKind),
+            plan: String(describing: product.vitalsPackageKind),
             startedTrial: startedTrial,
             variant: upgradeTabVariant.rawValue,
             offeringID: currentOffering?.identifier
@@ -904,11 +773,8 @@ final class StoreService: NSObject, ObservableObject {
     }
 
     private func resolveEntitlement(isPro: Bool) {
-        let wasPro = self.isPro
         entitlementStatus.resolve(isPro: isPro)
         reconcileCachedEntitlement(with: isPro)
-        // A purchase ends the welcome price at once, not at the next return.
-        if self.isPro != wasPro { refreshWelcomePrice() }
     }
 
     /// Only a resolved customer response overwrites the App Group mirror.

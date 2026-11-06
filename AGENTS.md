@@ -36,7 +36,7 @@ XcodeGen project/scheme: `Vitals`, sim lease owner `vitals`.
 - App Store Submission specifics: privacy policy at `docs/privacy-policy.html` (GitHub Pages: `https://jackwallner.github.io/vitals/privacy-policy.html`); privacy manifests `Vitals/PrivacyInfo.xcprivacy` + `VitalsWatch/PrivacyInfo.xcprivacy`; `healthkit` in required device capabilities; VoiceOver labels on all interactive elements; goal validation (calories 500-50,000, steps 100-500,000); HealthKit-denied state shows guidance + Settings link.
 - Paywall CTA wording ("Start 7-day free trial" control vs my/your, picked by RC offering metadata `trial_cta`): `.claude/rules/cta-wording-test.md`.
 - Trial pitch indie note test (`trial_note` offering metadata, RC Experiment, "what to fix" ask after a trial cancel): `.claude/rules/trial-note.md`.
-- Paywall exit offer (half-price yearly once on a deliberate close, 50/50 hashed holdout, `exit_offer` offering): `.claude/rules/exit-offer.md`.
+- Paywall exit offer (test ended 2026-11-06, code removed; keep the `exit_offer` offering and ASC plan live for 1.9.1-1.9.3 binaries): `.claude/rules/exit-offer.md`.
 - UI localization (en + 35 languages, 31 priority locales, RTL and String Catalog rules): `.claude/rules/localization.md`.
 - iPhone Duo unfolded split (Today and History either side of the fold), simulator recipe, App Store set: `.claude/rules/iphone-duo.md`.
 - Android port (Health Connect, Compose, Play, RevenueCat, emulator on Pro, Console answers): `.claude/rules/android.md`.

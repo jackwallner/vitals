@@ -47,25 +47,6 @@ final class ReleaseJourneysUITests: XCTestCase {
         QA.checkpoint(app, "pitch")
     }
 
-    /// The exit offer's own sheet, raised on Today a few seconds after "Get
-    /// Started" in the offer arm. Checked by the oracles like any other screen,
-    /// since it is one a new customer can land on.
-    func testOnboardingExitOffer() {
-        continueAfterFailure = false
-        let app = XCUIApplication()
-        QA.launch(app, environment: ["VITALS_RC_APP_USER_ID": Self.journeyCustomer, "VITALS_SCREENSHOT_MODE": "1", "VITALS_SCREENSHOT_KEEP_APPEARANCE": "1", "VITALS_SCREENSHOT_SCENE": "onboarding"], arguments: ["-exitOffer.force"])
-        for _ in 0..<2 {
-            XCTAssertTrue(app.buttons["onboarding-continue"].waitForExistence(timeout: 20), "onboarding stalled")
-            app.buttons["onboarding-continue"].tap()
-            dismissSystemSheet()
-        }
-        let softExit = app.buttons["onboarding-get-started"]
-        XCTAssertTrue(softExit.waitForExistence(timeout: 25), "pitch never rendered")
-        softExit.tap()
-        XCTAssertTrue(app.descendants(matching: .any)["exit-offer-tiles"].waitForExistence(timeout: 25), "offer never followed on Today")
-        QA.checkpoint(app, "exit-offer-sheet")
-    }
-
     func testTodayHistoryUpgradeAndBack() {
         let app = launchDashboard()
         QA.checkpoint(app, "today-launch")

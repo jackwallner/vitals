@@ -559,11 +559,6 @@ struct MainTabView: View {
     /// minutes after the onboarding trial step. Next cold launch can pitch at
     /// the strategic value moment.
     @State private var skipPassiveTrialThisSession = false
-    /// When the app last came back: this launch, or the latest return from the
-    /// background. The exit offer waits for one an hour after the close.
-    @State private var activatedAt = Date()
-    @State private var wasBackgrounded = false
-    @Environment(\.scenePhase) private var scenePhase
     /// Set when the Today dashboard posts that its data is on screen (even zeros).
     /// Gates the "What's New" announcement, which is fine over any dashboard state.
     @State private var dashboardDataLoaded = false
@@ -601,12 +596,7 @@ struct MainTabView: View {
         case launch
         case historyLoad
         case intent
-        case exitOffer
     }
-
-    /// How long Today has to sit clear, once the exit offer is ready, before it
-    /// comes up.
-    private static let exitOfferDelaySeconds = 3
 
     init() {
         if ScreenshotConfig.wantsHistoryTab {
@@ -844,8 +834,6 @@ struct MainTabView: View {
         // The What's New announcement owns the launch moment for users who just
         // updated; don't stack the passive trial pitch on top of it.
         guard !showWhatsNew else { return }
-        // An owed exit offer has this moment; see `presentExitOfferWhenClear`.
-        guard !store.exitOfferDue else { return }
         // Just finished onboarding this session — they already saw the trial step.
         // Re-pitch on a later cold launch at the value moment, not minutes later.
         guard !skipPassiveTrialThisSession else { return }
@@ -1060,32 +1048,9 @@ struct MainTabView: View {
               canPitchFreeTrial,
               selectedTab == 1,
               trialPitch == nil,
-              !showTrialPaywall,
-              !store.exitOfferDue
+              !showTrialPaywall
         else { return }
         presentPassiveTrialOffer(source: .historyLoad)
-    }
-
-    /// The exit offer follows a deliberate close as its own sheet, on the first
-    /// return to the app an hour or more later, once Today has sat clear for a
-    /// few seconds. The visit where they said no stays theirs, and the half
-    /// price lands with their numbers on screen. Owed across launches until it
-    /// has been up. See `ExitOffer`.
-    private func presentExitOfferWhenClear() async {
-        var clearFor = 0
-        while store.exitOfferDue, !Task.isCancelled {
-            try? await Task.sleep(for: .seconds(1))
-            if store.isPro {
-                store.clearExitOfferDue()
-                return
-            }
-            let ready = ExitOffer.isReady(activatedAt: activatedAt, skipsWait: store.exitOfferSkipsWait)
-            clearFor = ready && isTodayClear && store.exitOfferPackage != nil ? clearFor + 1 : 0
-            guard clearFor >= Self.exitOfferDelaySeconds else { continue }
-            store.clearExitOfferDue()
-            presentTrialOffer(source: .exitOffer, request: .exitOffer())
-            return
-        }
     }
 
     /// Records the last-shown timestamp for whichever trigger opened the offer.
@@ -1093,10 +1058,6 @@ struct MainTabView: View {
     /// cooldown then naturally suppresses passive surfaces while still letting
     /// intent taps fire on demand.
     private func markTrialOfferSeen() {
-        // The exit offer is not a trial pitch: stamping the cooldown would
-        // take the second-session pitch from the offer arm but not the
-        // holdout, and the test would measure that instead of the price.
-        guard trialOfferSource != .exitOffer else { return }
         let now = Date()
         goals.lastTrialOfferShownDate = now
         if trialOfferSource == .historyLoad {
@@ -1422,16 +1383,7 @@ struct MainTabView: View {
             if !maybeShowWhatsNew() { evaluateTrialOffer() }
         }
         .onChange(of: store.products.count) { _, _ in evaluateTrialOffer() }
-        .task(id: store.exitOfferDue) { await presentExitOfferWhenClear() }
         .task(id: store.whatToFixDue) { await presentWhatToFixWhenClear() }
-        .onChange(of: scenePhase) { _, phase in
-            if phase == .background { wasBackgrounded = true }
-            if phase == .active, wasBackgrounded {
-                wasBackgrounded = false
-                activatedAt = .now
-                store.refreshWelcomePrice()
-            }
-        }
         // First-launch users complete onboarding *after* the .task /
         // products-loaded evaluations have already bailed on
         // `hasCompletedSetup == false`. Mark this session so the passive
@@ -2250,15 +2202,6 @@ struct TrialOfferSheet: View {
     var planOptions: [TrialPlanOption] = []
     var selectedPlanID: String?
     var onSelectPlan: (String) -> Void = { _ in }
-    /// Set on the exit offer's own sheet: the price tiles take the plans'
-    /// place, the button buys this plan, and "Not now" becomes "No thanks".
-    /// See `ExitOffer`.
-    var exitOffer: Package?
-    /// The regular yearly plan, struck through beside the offer.
-    var exitOfferRegular: Package?
-    /// The offer's own sheet, where the tiles appearing is the impression.
-    /// False when a later pitch carries the welcome price.
-    var recordsExitOfferImpression = true
 
     /// One detent, sized to hold the whole pitch. It used to open at 0.68 with
     /// a `.large` companion: the third benefit was clipped by the footer, so the
@@ -2451,15 +2394,12 @@ struct TrialOfferSheet: View {
                             // there is nothing to contrast against, and three
                             // one-word pills waste the space they sit in, so the
                             // generic pitch shows what each feature actually does.
-                            compact: !planOptions.isEmpty || exitOffer != nil || (focus != nil && feature != focus)
+                            compact: !planOptions.isEmpty || (focus != nil && feature != focus)
                         )
                     }
                 }
 
-                if let exitOffer {
-                    ExitOfferPriceTiles(offer: exitOffer, regular: exitOfferRegular, recordsImpression: recordsExitOfferImpression)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                } else if !planOptions.isEmpty {
+                if !planOptions.isEmpty {
                     VStack(spacing: 6) {
                         ForEach(planOptions) { option in
                             TrialPlanRow(
@@ -2523,7 +2463,7 @@ struct TrialOfferSheet: View {
                     .accessibilityIdentifier("trial-pitch-cta")
 
                     Button(action: onDismiss) {
-                        Text(exitOffer == nil ? String(localized: "Not now") : String(localized: "No thanks"))
+                        Text(String(localized: "Not now"))
                             .font(.system(.subheadline, design: .rounded, weight: .semibold))
                             .foregroundStyle(Theme.textSecondary)
                             .frame(minWidth: 44, minHeight: 44)
@@ -2757,15 +2697,12 @@ struct CenteredScrollContainer: ViewModifier {
 
     func body(content: Content) -> some View {
         GeometryReader { proxy in
-            ScrollViewReader { reader in
-                ScrollView(showsIndicators: false) {
-                    content
-                }
-                .scrollBounceBehavior(.basedOnSize)
-                .revealingInScroll(reader)
-                .onAppear { height = proxy.size.height }
-                .onChange(of: proxy.size.height) { _, new in height = new }
+            ScrollView(showsIndicators: false) {
+                content
             }
+            .scrollBounceBehavior(.basedOnSize)
+            .onAppear { height = proxy.size.height }
+            .onChange(of: proxy.size.height) { _, new in height = new }
         }
     }
 }
