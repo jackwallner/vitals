@@ -14,6 +14,7 @@ Developer notes and historical audits for this repository. The published site re
 - [reg94.md](audits/reg94.md): REG94: released build versus latest TestFlight build
 - [AUDIT-2026-10-20-qol-209-211.md](audits/AUDIT-2026-10-20-qol-209-211.md): Audit: QoL features, builds 209 to 211
 - [duo-screenshots-fleet-2026-10-21.md](audits/duo-screenshots-fleet-2026-10-21.md): Fleet audit: APP_IPHONE_DUO screenshot sets
+- [state-machines-2026-11-06.md](audits/state-machines-2026-11-06.md): State machine audit: 15 machines, 9 findings (3 proved by test, repro suite alongside)
 
 ## Experiments
 
