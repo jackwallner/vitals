@@ -108,3 +108,12 @@ with region ar_AE, because ar_SA brings the Islamic calendar and Arabic-Indic
 digits. Frame 1's second watch is a localized Watch breakdown, since the English
 set's system watch face cannot be scripted in other languages. Watch and Duo
 sets stay en-US.
+
+## Language row
+
+Settings has a Language row that names the running localization in itself
+(`Bundle.main.preferredLocalizations`) and opens `openSettingsURLString`, Apple's
+route for a per-app language change. iOS hides the app's Language option on a
+device with one preferred language unless `UIPrefersShowingLanguageSettings` is
+YES in `Info.plist`, so keep that key. The simulator's Settings opens at its root
+for this link; check the landing on a real iPhone.
