@@ -722,7 +722,9 @@ final class StoreService: NSObject, ObservableObject {
 
     /// Re-checks RevenueCat customer info so cancellations / billing failures flip `isPro` off promptly.
     /// Uses `.fetchCurrent` to bypass the local cache and get the latest entitlement state from RevenueCat's servers.
-    func updateCustomerProductStatus(fetchPolicy: CacheFetchPolicy = .default) async {
+    /// A cached answer over 3 days old reads as expired once its expiry date has
+    /// passed, so the default never accepts a stale one.
+    func updateCustomerProductStatus(fetchPolicy: CacheFetchPolicy = .notStaleCachedOrFetched) async {
         configureIfNeeded()
         #if DEBUG
         if ScreenshotConfig.wantsPremiumActive {

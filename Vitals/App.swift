@@ -1412,7 +1412,10 @@ struct MainTabView: View {
         .onChange(of: store.isPro) { _, isPro in
             // A cold launch from the recap notification reads the cached entitlement
             // until RevenueCat answers.
-            if !isPro { showWeeklyRecap = false }
+            if !isPro {
+                if showWeeklyRecap, !store.lapseConfirmed { recapAwaitsEntitlement = true }
+                showWeeklyRecap = false
+            }
             if isPro {
                 // If a trial/milestone sheet is up, wait for its onDismiss to apply
                 // the pending feature. Requesting dietary HealthKit auth while that

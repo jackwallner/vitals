@@ -417,15 +417,15 @@ struct DashboardView: View {
                 await refresh()
             }
         }
+        // RevenueCat can replay an old "no access" while a paying customer's
+        // renewal is on its way, and these settings don't come back by themselves.
+        .onChange(of: store.lapseConfirmed, initial: true) { _, confirmed in
+            guard confirmed else { return }
+            goals.showNetCalories = false
+            goals.showMacros = false
+        }
         .onChange(of: store.isPro) { oldValue, isPro in
-            if oldValue && !isPro && goals.showNetCalories {
-                goals.showNetCalories = false
-            } else if isPro && goals.showNetCalories {
-                Task { await refresh() }
-            }
-            if oldValue && !isPro && goals.showMacros {
-                goals.showMacros = false
-            } else if isPro && goals.showMacros {
+            if isPro && (goals.showNetCalories || goals.showMacros) {
                 Task { await refresh() }
             }
             // Weekly recap notifications are scheduled in the system, so they'd
