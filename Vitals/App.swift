@@ -891,7 +891,8 @@ struct MainTabView: View {
     private func evaluateHabitMilestones() {
         let habit = ReviewPromptTracker.recordTrackedDay()
         // Only a confirmed lapse clears tenure, and the cached flag can be stale.
-        let subscriber = store.isPro && ReviewPromptTracker.recordProStatus(isPro: true)
+        // A history still loading can't say when this paid run began: next launch can.
+        let subscriber = store.isPro && store.proRunStartRead && ReviewPromptTracker.recordProStatus(isPro: true)
         evaluateWidgetInstallMoment()
         // A moment recorded away from Today (a report generated on History, a
         // recap read as the app went to background) has nowhere to surface at
