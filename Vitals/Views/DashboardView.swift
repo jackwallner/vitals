@@ -65,6 +65,7 @@ private struct PastDayRequest: Equatable {
 
 struct DashboardView: View {
     @Environment(\.dynamicTypeSize) private var typeSize
+    @ScaledMetric(relativeTo: .caption2) private var streakFlameSize: CGFloat = 10
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @StateObject private var healthKit = HealthKitService.shared
@@ -798,9 +799,9 @@ struct DashboardView: View {
                                 // The ring can't grow, so what's inside it stops growing first.
                                 calorieLabel(numberSize: calNumberSize)
                                     .dynamicTypeSize(...DynamicTypeSize.accessibility1)
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.6)
-                                    .frame(maxWidth: ringSize - 2 * ringLineWidth - 28)
+                                    .lineLimit(typeSize.isAccessibilitySize ? 1 : nil)
+                                    .minimumScaleFactor(typeSize.isAccessibilitySize ? 0.6 : 1)
+                                    .frame(maxWidth: typeSize.isAccessibilitySize ? ringSize - 2 * ringLineWidth - 28 : nil)
                             }
                         } else {
                             calorieLabel(numberSize: calNumberSize)
@@ -1186,7 +1187,7 @@ struct DashboardView: View {
     private func streakBadge(count: Int, metric: String, compact: Bool = false) -> some View {
         HStack(spacing: 4) {
             Image(systemName: "flame.fill")
-                .font(.caption2.weight(.bold))
+                .font(.system(size: streakFlameSize, weight: .bold))
             Text(compact ? String(localized: "\(count)d") : String(localized: "\(count)-day streak"))
                 .font(.system(.caption2, design: .rounded, weight: .semibold))
         }
@@ -1478,8 +1479,7 @@ struct DashboardView: View {
                 .textCase(.uppercase)
                 .tracking(1.5)
                 .lineLimit(1)
-                .minimumScaleFactor(0.7)
-                .layoutPriority(1)
+                .minimumScaleFactor(typeSize.isAccessibilitySize ? 0.5 : 0.7)
             Image(systemName: "chevron.forward")
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(Theme.textTertiary)
@@ -1515,6 +1515,7 @@ struct DashboardView: View {
             } else {
                 HStack(spacing: 4) {
                     macrosTitle
+                        .layoutPriority(1)
                     Spacer(minLength: 8)
                     macrosLoggedText
                 }
@@ -2644,14 +2645,15 @@ private struct FitOrWrapText: View {
 }
 
 /// Reports a line's ideal width at its smallest scale, so `ViewThatFits` takes it
-/// whenever the shrunk line fits, while keeping the full line's height.
+/// whenever the shrunk line fits, while keeping the full line's height. The margin
+/// covers small type tracking wider than a straight scale would.
 private struct ShrinkableLine: Layout {
     let minScale: CGFloat
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         guard let line = subviews.first else { return .zero }
         let ideal = line.sizeThatFits(.unspecified)
-        return CGSize(width: proposal.width.map { min($0, ideal.width) } ?? ideal.width * minScale, height: ideal.height)
+        return CGSize(width: proposal.width.map { min($0, ideal.width) } ?? ideal.width * minScale * 1.04, height: ideal.height)
     }
 
     func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {

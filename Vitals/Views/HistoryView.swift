@@ -1446,13 +1446,9 @@ struct HistoryView: View {
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
                     .multilineTextAlignment(.center)
-                HStack(spacing: 16) {
-                    Button("Try Again") {
-                        Task { await loadHistory() }
-                    }
-                    Button("Health Permissions") {
-                        openHealthApp()
-                    }
+                ViewThatFits(in: .horizontal) {
+                    HStack(spacing: 16) { historyRecoveryButtons }
+                    VStack(spacing: 8) { historyRecoveryButtons }
                 }
                 .font(.system(.caption, design: .rounded, weight: .semibold))
                 .foregroundStyle(Theme.caloriesPrimary)
@@ -1484,6 +1480,16 @@ struct HistoryView: View {
     /// Stacked grams per day: one bar, three segments, so the day's composition
     /// reads at a glance without three separate charts competing for space.
     /// Grams (not calories) because that is the unit people set targets in.
+    @ViewBuilder
+    private var historyRecoveryButtons: some View {
+        Button("Try Again") {
+            Task { await loadHistory() }
+        }
+        Button("Health Permissions") {
+            openHealthApp()
+        }
+    }
+
     private var macrosChart: some View {
         Chart(macroChartData, id: \.id) { item in
             BarMark(
@@ -1551,13 +1557,9 @@ struct HistoryView: View {
                     .font(.system(.caption, design: .rounded))
                     .foregroundStyle(Theme.textTertiary)
                     .multilineTextAlignment(.center)
-                HStack(spacing: 16) {
-                    Button("Try Again") {
-                        Task { await loadHistory() }
-                    }
-                    Button("Health Permissions") {
-                        openHealthApp()
-                    }
+                ViewThatFits(in: .horizontal) {
+                    HStack(spacing: 16) { historyRecoveryButtons }
+                    VStack(spacing: 8) { historyRecoveryButtons }
                 }
                 .font(.system(.caption, design: .rounded, weight: .semibold))
                 .foregroundStyle(Theme.caloriesPrimary)
