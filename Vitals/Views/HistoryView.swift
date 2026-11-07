@@ -1477,9 +1477,6 @@ struct HistoryView: View {
 
     // MARK: - Macros chart
 
-    /// Stacked grams per day: one bar, three segments, so the day's composition
-    /// reads at a glance without three separate charts competing for space.
-    /// Grams (not calories) because that is the unit people set targets in.
     @ViewBuilder
     private var historyRecoveryButtons: some View {
         Button("Try Again") {
@@ -1490,6 +1487,9 @@ struct HistoryView: View {
         }
     }
 
+    /// Stacked grams per day: one bar, three segments, so the day's composition
+    /// reads at a glance without three separate charts competing for space.
+    /// Grams (not calories) because that is the unit people set targets in.
     private var macrosChart: some View {
         Chart(macroChartData, id: \.id) { item in
             BarMark(

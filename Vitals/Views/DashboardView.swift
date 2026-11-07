@@ -65,7 +65,6 @@ private struct PastDayRequest: Equatable {
 
 struct DashboardView: View {
     @Environment(\.dynamicTypeSize) private var typeSize
-    @ScaledMetric(relativeTo: .caption2) private var streakFlameSize: CGFloat = 10
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @StateObject private var healthKit = HealthKitService.shared
@@ -1186,8 +1185,7 @@ struct DashboardView: View {
     /// warning. `compact` drops the wordy label for tight header rows.
     private func streakBadge(count: Int, metric: String, compact: Bool = false) -> some View {
         HStack(spacing: 4) {
-            Image(systemName: "flame.fill")
-                .font(.system(size: streakFlameSize, weight: .bold))
+            StreakFlame()
             Text(compact ? String(localized: "\(count)d") : String(localized: "\(count)-day streak"))
                 .font(.system(.caption2, design: .rounded, weight: .semibold))
         }
@@ -2611,6 +2609,16 @@ private struct PromptCard: View {
 }
 
 // MARK: - Pacing Pill
+
+/// Its own view so its size follows any text size cap around the badge it sits in.
+private struct StreakFlame: View {
+    @ScaledMetric(relativeTo: .caption2) private var size: CGFloat = 10
+
+    var body: some View {
+        Image(systemName: "flame.fill")
+            .font(.system(size: size, weight: .bold))
+    }
+}
 
 /// One line of caption text. At the default size and below it shrinks as far as
 /// `minScale` to stay there; past that it wraps, rather than cutting off the words
