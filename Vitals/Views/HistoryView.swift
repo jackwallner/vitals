@@ -1867,7 +1867,7 @@ struct HistoryView: View {
 
                 VStack(spacing: 12) {
                     macroAverageCards
-                    HStack(spacing: 12) {
+                    CardRow {
                         if let bestProtein {
                             PeakCard(
                                 label: String(localized: "Best Protein"),
@@ -2636,6 +2636,8 @@ struct DeepTrendsCard: View {
                 Text("Deep Trends")
                     .font(.headline)
                     .foregroundStyle(Theme.textPrimary)
+                    // Shares its line with the badge, so a long word breaks past this.
+                    .dynamicTypeSize(...DynamicTypeSize.accessibility2)
                 Spacer()
                 Text(isPro ? String(localized: "Active") : String(localized: "Vitals+"))
                     .font(.system(size: 10, weight: .bold, design: .rounded))
@@ -2795,8 +2797,20 @@ struct DeepTrendsCard: View {
 }
 
 struct DeepTrendInsightRow: View {
+    @Environment(\.dynamicTypeSize) private var typeSize
     let insight: DeepTrendInsight
     var blurComparisons: Bool = false
+
+    private var percentBadge: some View {
+        HStack(spacing: 4) {
+            Image(systemName: insight.isFlat ? "arrow.forward" : (insight.isUp ? "arrow.up.forward" : "arrow.down.forward"))
+            Text(insight.percent)
+        }
+        .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
+        .foregroundStyle(insight.isFlat ? Theme.textSecondary : (insight.isUp ? Theme.netDeficitPositive : Theme.netDeficitNegative))
+        .blur(radius: blurComparisons ? 8 : 0)
+        .accessibilityHidden(blurComparisons)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -2815,18 +2829,19 @@ struct DeepTrendInsightRow: View {
                         .foregroundStyle(Theme.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
                 }
-                Spacer(minLength: 0)
-                HStack(spacing: 4) {
-                    Image(systemName: insight.isFlat ? "arrow.forward" : (insight.isUp ? "arrow.up.forward" : "arrow.down.forward"))
-                    Text(insight.percent)
+                if !typeSize.isAccessibilitySize {
+                    Spacer(minLength: 0)
+                    percentBadge
                 }
-                .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
-                .foregroundStyle(insight.isFlat ? Theme.textSecondary : (insight.isUp ? Theme.netDeficitPositive : Theme.netDeficitNegative))
-                .blur(radius: blurComparisons ? 8 : 0)
-                .accessibilityHidden(blurComparisons)
             }
 
-            HStack(spacing: 8) {
+            if typeSize.isAccessibilitySize {
+                percentBadge
+            }
+
+            (typeSize.isAccessibilitySize
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+                : AnyLayout(HStackLayout(spacing: 8))) {
                 DeepTrendMiniStat(label: String(localized: "Current"), value: insight.current)
                 DeepTrendMiniStat(label: String(localized: "Previous"), value: insight.previous)
                     .blur(radius: blurComparisons ? 8 : 0)
@@ -2942,6 +2957,8 @@ private struct SegmentButton: View {
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)
             }
+            // Four segments share one line, so past this size the words would be cut.
+            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
             .foregroundStyle(locked ? Theme.textTertiary : (isSelected ? Theme.textPrimary : Theme.textSecondary))
             .padding(.vertical, 8)
             .frame(maxWidth: .infinity, minHeight: 44)
@@ -3094,6 +3111,7 @@ private struct EqualColumnsRow: Layout {
 }
 
 private struct AverageCard: View {
+    @Environment(\.dynamicTypeSize) private var typeSize
     let label: String
     let value: String
     let color: Color
@@ -3107,9 +3125,11 @@ private struct AverageCard: View {
                 .tracking(0.8)
                 // Three-across macro cards ("AVG PROTEIN") would otherwise wrap
                 // and push their value down out of line with the shorter labels
-                // beside them.
-                .lineLimit(1)
+                // beside them. At the largest sizes the cards stack, nothing sits
+                // beside them, and a long word fits only below this cap.
+                .lineLimit(typeSize.isAccessibilitySize ? nil : 1)
                 .minimumScaleFactor(0.75)
+                .dynamicTypeSize(...DynamicTypeSize.accessibility3)
             Text(value)
                 .font(.system(.title3, design: .rounded, weight: .bold).monospacedDigit())
                 .foregroundStyle(color)
@@ -3132,19 +3152,37 @@ private struct WideTotalCard: View {
     let value: String
     let color: Color
 
+    private var labelText: some View {
+        Text(label)
+            .font(.caption)
+            .foregroundStyle(Theme.textSecondary)
+            .textCase(.uppercase)
+            .tracking(0.8)
+            .dynamicTypeSize(...DynamicTypeSize.accessibility3)
+    }
+
+    private var valueText: some View {
+        Text(value)
+            .font(.system(.title3, design: .rounded, weight: .bold).monospacedDigit())
+            .foregroundStyle(color)
+            .lineLimit(1)
+            .minimumScaleFactor(0.6)
+    }
+
     var body: some View {
-        HStack(spacing: 12) {
-            Text(label)
-                .font(.caption)
-                .foregroundStyle(Theme.textSecondary)
-                .textCase(.uppercase)
-                .tracking(0.8)
-            Spacer(minLength: 0)
-            Text(value)
-                .font(.system(.title3, design: .rounded, weight: .bold).monospacedDigit())
-                .foregroundStyle(color)
-                .lineLimit(1)
-                .minimumScaleFactor(0.6)
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 12) {
+                labelText
+                    .lineLimit(1)
+                Spacer(minLength: 0)
+                valueText
+            }
+            VStack(alignment: .leading, spacing: 6) {
+                labelText
+                    .fixedSize(horizontal: false, vertical: true)
+                valueText
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(maxWidth: .infinity)
         .padding(Theme.cardPadding)
@@ -3174,6 +3212,7 @@ private struct PeakCard: View {
                 .foregroundStyle(Theme.textSecondary)
                 .textCase(.uppercase)
                 .tracking(0.8)
+                .dynamicTypeSize(...DynamicTypeSize.accessibility3)
             Text(value)
                 .font(.system(.title3, design: .rounded, weight: .bold).monospacedDigit())
                 .foregroundStyle(color)
@@ -3236,7 +3275,9 @@ private struct ChartCard<Content: View>: View {
             // The bars come out as one tiny element per day; one element for the
             // whole chart keeps its axis text reachable, and the recent-days list
             // below carries the same figures at a usable size.
+            // Axis labels sit in fixed slots and overlap past this size.
             content
+                .dynamicTypeSize(...DynamicTypeSize.xxLarge)
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(title)
         }
@@ -3309,6 +3350,42 @@ private struct RecentDaysList: View {
         return f
     }()
 
+    private func dayLabel(_ row: RecentDayRow) -> some View {
+        HStack {
+            Text(Self.dateFormatter.string(from: row.date))
+                .font(.system(.subheadline, design: .rounded))
+                .foregroundStyle(Theme.textSecondary)
+            if row.isExcluded {
+                // Names the state rather than leaving a faint row to
+                // be read as missing data.
+                Text("EXCLUDED")
+                    .font(.system(size: 9, design: .rounded).weight(.bold))
+                    .tracking(0.5)
+                    .foregroundStyle(Theme.textTertiary)
+                    .padding(.horizontal, 5)
+                    .padding(.vertical, 2)
+                    .background(
+                        Capsule().fill(Theme.textTertiary.opacity(0.12))
+                    )
+            }
+        }
+    }
+
+    private func inlineValues(_ row: RecentDayRow) -> some View {
+        HStack(spacing: 5) {
+            ForEach(Array(row.segments.enumerated()), id: \.offset) { segmentIndex, segment in
+                Text(segment.text)
+                    .foregroundStyle(segment.color)
+                if segmentIndex < row.segments.count - 1 {
+                    Text("·")
+                        .foregroundStyle(Theme.textTertiary)
+                }
+            }
+        }
+        .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
+        .lineLimit(1)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Recent Days")
@@ -3323,38 +3400,29 @@ private struct RecentDaysList: View {
                     .padding(.vertical, 8)
             } else {
                 ForEach(Array(rows.enumerated()), id: \.element.id) { index, row in
-                    HStack {
-                        Text(Self.dateFormatter.string(from: row.date))
-                            .font(.system(.subheadline, design: .rounded))
-                            .foregroundStyle(Theme.textSecondary)
-                        if row.isExcluded {
-                            // Names the state rather than leaving a faint row to
-                            // be read as missing data.
-                            Text("EXCLUDED")
-                                .font(.system(size: 9, design: .rounded).weight(.bold))
-                                .tracking(0.5)
-                                .foregroundStyle(Theme.textTertiary)
-                                .padding(.horizontal, 5)
-                                .padding(.vertical, 2)
-                                .background(
-                                    Capsule().fill(Theme.textTertiary.opacity(0.12))
-                                )
+                    ViewThatFits(in: .horizontal) {
+                        HStack {
+                            dayLabel(row)
+                            Spacer()
+                            inlineValues(row)
+                                .frame(minWidth: 64, alignment: .trailing)
                         }
-                        Spacer()
-                        HStack(spacing: 5) {
-                            ForEach(Array(row.segments.enumerated()), id: \.offset) { segmentIndex, segment in
+                        VStack(alignment: .leading, spacing: 2) {
+                            dayLabel(row)
+                            inlineValues(row)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        VStack(alignment: .leading, spacing: 2) {
+                            dayLabel(row)
+                            ForEach(Array(row.segments.enumerated()), id: \.offset) { _, segment in
                                 Text(segment.text)
                                     .foregroundStyle(segment.color)
-                                if segmentIndex < row.segments.count - 1 {
-                                    Text("·")
-                                        .foregroundStyle(Theme.textTertiary)
-                                }
                             }
+                            .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
                         }
-                        .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.7)
-                        .frame(minWidth: 64, alignment: .trailing)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     .opacity(row.isExcluded ? 0.45 : 1)
                     .contentShape(Rectangle())
