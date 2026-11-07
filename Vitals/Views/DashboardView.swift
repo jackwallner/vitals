@@ -730,8 +730,8 @@ struct DashboardView: View {
                             Text(HealthNotice.loadError.title)
                                 .font(.system(.caption2, design: .rounded))
                                 .foregroundStyle(Theme.textTertiary)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.8)
+                                .lineLimit(2)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                     } else if healthNotice == .accessNeeded {
                         Text("Waiting for Health access")
@@ -2493,6 +2493,7 @@ private struct PromptCard: View {
                 .font(.system(.subheadline, design: .rounded, weight: .semibold))
                 .foregroundStyle(.white)
                 .lineLimit(lineLimit)
+                .fixedSize(horizontal: false, vertical: lineLimit == nil)
                 .minimumScaleFactor(0.6)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 9)
@@ -2504,6 +2505,7 @@ private struct PromptCard: View {
                 .font(.system(.subheadline, design: .rounded, weight: .medium))
                 .foregroundStyle(Theme.textSecondary)
                 .lineLimit(lineLimit)
+                .fixedSize(horizontal: false, vertical: lineLimit == nil)
                 .minimumScaleFactor(0.6)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 9)
@@ -2579,8 +2581,10 @@ private struct PacingPill: View {
             }
         }
         .foregroundStyle(textTint)
-        // Wraps rather than cutting off the words that say what the number means.
-        .lineLimit(typeSize.isAccessibilitySize ? nil : 2)
+        // Past the default size it wraps, rather than cutting off the words that
+        // say what the number means.
+        .lineLimit(typeSize <= .large ? 1 : nil)
+        .fixedSize(horizontal: false, vertical: typeSize > .large)
         .multilineTextAlignment(.center)
         .minimumScaleFactor(0.75)
         .padding(.horizontal, 12)

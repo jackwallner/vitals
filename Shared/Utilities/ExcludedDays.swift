@@ -67,11 +67,20 @@ enum ExcludedDays {
     static func loadPausedDay(from defaults: UserDefaults?) -> String? {
         if let day = defaults?.string(forKey: pausedDayDefaultsKey) { return day }
         guard let legacy = defaults?.object(forKey: pausedSinceKey) as? Date else { return nil }
-        // Stored as local midnight where the pause began. Reading it through the
-        // nearest midnight names that same day from any zone within 12 hours.
-        let day = key(for: legacy.addingTimeInterval(12 * 3_600))
+        let day = legacyPauseDay(legacy)
         savePausedDay(day, to: defaults)
         return day
+    }
+
+    /// The day an old pause began. It was stored as local midnight, so the instant
+    /// itself says which offset wrote it, wherever the device has moved since. Only
+    /// three UTC hours fit two real offsets, and there the nearer one wins.
+    static func legacyPauseDay(_ instant: Date, currentOffset: Int = Calendar(identifier: .gregorian).timeZone.secondsFromGMT()) -> String {
+        let intoUTCDay = Int(instant.timeIntervalSince1970.rounded(.down)) % 86_400
+        let offset = [-intoUTCDay, 86_400 - intoUTCDay]
+            .filter { (-12 * 3_600...14 * 3_600).contains($0) }
+            .min { abs($0 - currentOffset) < abs($1 - currentOffset) } ?? currentOffset
+        return key(for: instant.addingTimeInterval(TimeInterval(offset)), timeZone: TimeZone(secondsFromGMT: 0) ?? .gmt)
     }
 
     static func savePausedDay(_ day: String?, to defaults: UserDefaults?) {
@@ -97,7 +106,7 @@ enum ExcludedDays {
     static func syncedPausedDay(day: String?, legacyInstant: Double?) -> String? {
         if let day { return day.isEmpty ? nil : day }
         guard let legacyInstant, legacyInstant > 0 else { return nil }
-        return key(for: Date(timeIntervalSince1970: legacyInstant))
+        return legacyPauseDay(Date(timeIntervalSince1970: legacyInstant))
     }
 
     /// Every day covered by a running pause: the pause day through today,

@@ -56,18 +56,27 @@ final class StateMachineRegressionTests: XCTestCase {
             ("America/New_York", "2026-11-07T05:00:00Z"),
             ("Asia/Tokyo", "2026-11-06T15:00:00Z"),
             ("Europe/London", "2026-11-07T00:00:00Z"),
-            ("America/Los_Angeles", "2026-11-07T08:00:00Z")
+            ("America/Los_Angeles", "2026-11-07T08:00:00Z"),
+            ("Asia/Kolkata", "2026-11-06T18:30:00Z"),
+            ("Pacific/Auckland", "2026-11-06T11:00:00Z"),
+            ("Pacific/Honolulu", "2026-11-07T10:00:00Z")
         ] {
             let instant = try XCTUnwrap(ISO8601DateFormatter().date(from: instantUTC))
             let original = NSTimeZone.default
             defer { NSTimeZone.default = original }
-            // Within 12 hours of where it began, on either side.
+            // Every move, up to the widest the world allows.
             let offset = try XCTUnwrap(TimeZone(identifier: startZone)).secondsFromGMT(for: instant)
-            for shift in [-11, -3, 0, 3, 11] where abs(offset + shift * 3_600) <= 14 * 3_600 {
-                NSTimeZone.default = try XCTUnwrap(TimeZone(secondsFromGMT: offset + shift * 3_600))
+            for destination in stride(from: -12, through: 14, by: 1) {
+                // Only an instant two real offsets share can be misread, and only from far away.
+                if ["Pacific/Auckland", "Pacific/Honolulu"].contains(startZone), abs(destination * 3_600 - offset) >= 12 * 3_600 { continue }
+                NSTimeZone.default = try XCTUnwrap(TimeZone(secondsFromGMT: destination * 3_600))
                 let defaults = try XCTUnwrap(UserDefaults(suiteName: "pause.tests.\(UUID().uuidString)"))
                 defaults.set(instant, forKey: ExcludedDays.pausedSinceKey)
-                XCTAssertEqual(ExcludedDays.loadPausedDay(from: defaults), "2026-11-07", "\(startZone) moved \(shift)h")
+                XCTAssertEqual(ExcludedDays.loadPausedDay(from: defaults), "2026-11-07", "\(startZone) to UTC\(destination)")
+                XCTAssertEqual(
+                    ExcludedDays.syncedPausedDay(day: nil, legacyInstant: instant.timeIntervalSince1970),
+                    "2026-11-07"
+                )
             }
         }
     }

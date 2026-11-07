@@ -286,6 +286,7 @@ final class StoreService: NSObject, ObservableObject {
     nonisolated static let cachedProKey = "isProCached"
     private static let cachedProDefaults = UserDefaults(suiteName: vitalsAppGroupID)
     private var proRunStartSynced = false
+    private var proRunStartRead = false
     @Published private(set) var purchaseInFlight: Bool = false
     @Published private(set) var isLoadingProducts: Bool = false
     @Published private(set) var lastError: String?
@@ -663,16 +664,24 @@ final class StoreService: NSObject, ObservableObject {
     func syncProRunStart() async {
         guard isPro, !proRunStartSynced else { return }
         proRunStartSynced = true
-        var periods: [(start: Date, end: Date)] = []
-        for await result in StoreKit.Transaction.all {
-            guard case .verified(let transaction) = result,
-                  transaction.productType == .autoRenewable,
-                  transaction.revocationDate == nil,
-                  let end = transaction.expirationDate else { continue }
-            periods.append((transaction.purchaseDate, end))
+        Task {
+            var periods: [(start: Date, end: Date)] = []
+            for await result in StoreKit.Transaction.all {
+                guard case .verified(let transaction) = result,
+                      transaction.productType == .autoRenewable,
+                      let end = transaction.expirationDate else { continue }
+                // A refunded or replaced period still ran until it was revoked.
+                periods.append((transaction.purchaseDate, min(end, transaction.revocationDate ?? end)))
+            }
+            if let start = ReviewPromptTracker.proRunStart(periods: periods) {
+                ReviewPromptTracker.noteProRunStart(start)
+            }
+            proRunStartRead = true
         }
-        if let start = ReviewPromptTracker.proRunStart(periods: periods) {
-            ReviewPromptTracker.noteProRunStart(start)
+        // A stalled history must not hold up what waits on this. The read still lands.
+        let deadline = ContinuousClock.now + .seconds(3)
+        while !proRunStartRead, ContinuousClock.now < deadline {
+            try? await Task.sleep(for: .milliseconds(50))
         }
     }
 
