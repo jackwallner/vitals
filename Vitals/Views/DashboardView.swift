@@ -132,6 +132,7 @@ struct DashboardView: View {
     @State private var stepStreak: Int = 0
     @State private var isRefreshing = false
     @State private var pullRefreshCount = 0
+    @State private var pull = PullToRefreshState()
     @ScaledMetric(relativeTo: .caption2) private var subtitleLineHeight: CGFloat = 13
     private static let scrollSpace = "today-scroll"
     @State private var healthNotice: HealthNotice? = nil
@@ -214,9 +215,11 @@ struct DashboardView: View {
         store.isPro && goals.showStreaks
     }
 
-    private var showCalorieStreak: Bool {
-        streaksUnlocked && !isViewingPast && goals.showCalories && goals.calorieGoal != nil && calorieStreak > 0
+    private var hasCalorieStreak: Bool {
+        streaksUnlocked && goals.showCalories && goals.calorieGoal != nil && calorieStreak > 0
     }
+
+    private var showCalorieStreak: Bool { hasCalorieStreak && !isViewingPast }
 
     private var showStepStreak: Bool { hasStepStreak && !isViewingPast }
 
@@ -357,6 +360,7 @@ struct DashboardView: View {
                                 .background { pullToRefreshDetector }
                         }
                         .coordinateSpace(name: Self.scrollSpace)
+                        .tracksScrollDrag(pull)
                         .sensoryFeedback(.impact(weight: .light), trigger: pullRefreshCount)
                     }
                 }
@@ -626,15 +630,21 @@ struct DashboardView: View {
     /// screen over the date, and the header already says "Refreshing…".
     private var pullToRefreshDetector: some View {
         GeometryReader { proxy in
-            Color.clear.onChange(of: proxy.frame(in: .named(Self.scrollSpace)).minY > 70) { _, pulled in
-                guard pulled else { return }
-                pullRefreshCount += 1
-                Task {
-                    await refresh()
-                    await loadPastDay()
+            Color.clear.onChange(of: proxy.frame(in: .named(Self.scrollSpace)).minY) { _, offset in
+                if offset < 35 {
+                    pull.armed = true
+                } else if offset > 70, pull.armed, pull.dragging, !isRefreshing {
+                    pull.armed = false
+                    pullRefreshCount += 1
+                    Task { await refreshAllFigures() }
                 }
             }
         }
+    }
+
+    private func refreshAllFigures() async {
+        await refresh()
+        await loadPastDay()
     }
 
     private var loadingView: some View {
@@ -675,11 +685,12 @@ struct DashboardView: View {
                         label: String(localized: "Previous day"),
                         identifier: "today-previous-day",
                         target: DayBrowser.previous(of: viewedDay),
-                        enabled: DayBrowser.previous(of: viewedDay) != nil
+                        enabled: DayBrowser.previous(of: viewedDay) != nil,
+                        width: 30
                     )
-                    // Hangs in the margin, taking no width, so the date sits where it
-                    // always has.
-                    .padding(.leading, -30)
+                    // Hangs in the 24pt margin, taking no width, so the date sits
+                    // where it always has.
+                    .padding(.leading, -24)
                     .padding(.trailing, -6)
                     headerDate
                     if let viewedDay {
@@ -704,6 +715,9 @@ struct DashboardView: View {
                     .buttonStyle(.plain)
                     .accessibilityLabel("Settings")
                 }
+                // Over the Today button's padded tap zone, so a low tap on the
+                // back arrow still steps back a day.
+                .zIndex(1)
                 HStack(spacing: 8) {
                     if isViewingPast {
                         Button("Today") { showDay(nil) }
@@ -1001,6 +1015,9 @@ struct DashboardView: View {
         }
         .font(.system(.title3, design: .rounded, weight: .bold))
         .foregroundStyle(Theme.textPrimary)
+        .accessibilityAction(named: Text("Refresh")) {
+            Task { await refreshAllFigures() }
+        }
     }
 
     /// `target` nil means today.
@@ -1009,15 +1026,17 @@ struct DashboardView: View {
         label: String,
         identifier: String,
         target: Date?,
-        enabled: Bool
+        enabled: Bool,
+        width: CGFloat = 36
     ) -> some View {
         Button {
             showDay(target)
         } label: {
             Image(systemName: systemName)
                 .font(.subheadline.weight(.semibold))
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 .foregroundStyle(enabled ? Theme.textSecondary : Theme.textTertiary)
-                .frame(width: 36, height: 44)
+                .frame(width: width, height: 44)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -1693,9 +1712,10 @@ struct DashboardView: View {
             }
             // Streak rides with the metric itself (inside the ring when one is
             // shown) rather than floating in the insights row below.
-            if showCalorieStreak {
+            if hasCalorieStreak {
                 streakBadge(count: calorieStreak, metric: "calorie")
                     .padding(.top, 6)
+                    .hiddenOnPastDays(isViewingPast)
             }
         }
         .accessibilityElement(children: .combine)
@@ -5162,7 +5182,24 @@ private struct CoachLinkButton: View {
     }
 }
 
+/// A class so scrolling never invalidates the whole of Today.
+private final class PullToRefreshState {
+    /// One refresh per pull: set again once the page has settled back.
+    var armed = true
+    /// A flick that bounces past the top isn't a pull. iOS 17 can't tell, so it stays true there.
+    var dragging = true
+}
+
 private extension View {
+    @ViewBuilder
+    func tracksScrollDrag(_ pull: PullToRefreshState) -> some View {
+        if #available(iOS 18, *) {
+            onScrollPhaseChange { _, phase in pull.dragging = phase == .interacting }
+        } else {
+            self
+        }
+    }
+
     /// Keeps today's row laid out but invisible, so stepping to a past day moves nothing.
     func hiddenOnPastDays(_ isViewingPast: Bool) -> some View {
         opacity(isViewingPast ? 0 : 1)

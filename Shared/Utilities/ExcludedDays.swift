@@ -143,6 +143,7 @@ enum ExcludedDays {
         private var keys: Set<String> = []
         private var validFrom: Date = .distantFuture
         private var validUntil: Date = .distantPast
+        private var validTimeZone: TimeZone?
 
         mutating func invalidate() {
             validFrom = .distantFuture
@@ -155,11 +156,12 @@ enum ExcludedDays {
             now: Date = .now,
             calendar: Calendar = .current
         ) -> Set<String> {
-            if validFrom <= now && now < validUntil { return keys }
+            if validFrom <= now && now < validUntil && validTimeZone == calendar.timeZone { return keys }
             let today = calendar.startOfDay(for: now)
             keys = picked.union(ExcludedDays.pausedKeys(since: pausedSince, now: now, calendar: calendar))
             validFrom = today
             validUntil = calendar.date(byAdding: .day, value: 1, to: today) ?? now
+            validTimeZone = calendar.timeZone
             return keys
         }
     }

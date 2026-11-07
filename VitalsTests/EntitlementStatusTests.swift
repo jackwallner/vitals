@@ -36,4 +36,31 @@ final class EntitlementStatusTests: XCTestCase {
         XCTAssertEqual(status.resolution, .unresolved)
         XCTAssertTrue(status.isPro)
     }
+
+    func testOnDeviceInactiveIsNotALapseUntilTheServersReply() {
+        var status = EntitlementStatus(cachedPro: false)
+        status.resolve(isPro: false)
+        XCTAssertFalse(status.lapseConfirmed)
+
+        status.markServerAnswered()
+        status.resolve(isPro: false)
+        XCTAssertTrue(status.lapseConfirmed)
+    }
+
+    func testServerSayingActiveIsNotALapse() {
+        var status = EntitlementStatus(cachedPro: false)
+        status.resolve(isPro: false)
+        status.markServerAnswered()
+        status.resolve(isPro: true)
+        XCTAssertFalse(status.lapseConfirmed)
+    }
+
+    func testFailedRefreshWithdrawsAConfirmedLapse() {
+        var status = EntitlementStatus(cachedPro: false)
+        status.markServerAnswered()
+        status.resolve(isPro: false)
+        status.refreshFailed()
+        status.resolve(isPro: false)
+        XCTAssertFalse(status.lapseConfirmed)
+    }
 }

@@ -399,8 +399,9 @@ final class SeededHealthFlowUITests: XCTestCase {
         let digits = ringValue.prefix { !$0.isLetter }.filter(\.isNumber)
         let yesterdayCalories = try! XCTUnwrap(Int(digits), "No calorie figure in \(ringValue)")
 
-        previous.tap()
-        XCTAssertTrue(next.waitForExistence(timeout: 5))
+        // A low tap on the arrow still steps back, rather than landing on the Today button.
+        previous.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.95)).tap()
+        XCTAssertFalse(next.waitForNonExistence(timeout: 2), "A low tap on the back arrow jumped to today")
         attach(app.screenshot(), name: "arrows-two-days-back")
         next.tap()
         XCTAssertTrue(next.waitForExistence(timeout: 5), "Stepping forward to yesterday left the past days")

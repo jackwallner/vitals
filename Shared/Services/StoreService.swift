@@ -277,8 +277,7 @@ final class StoreService: NSObject, ObservableObject {
         cachedPro: StoreService.cachedProDefaults?.bool(forKey: StoreService.cachedProKey) ?? false
     )
     var isPro: Bool { entitlementStatus.isPro }
-    /// RevenueCat has answered, and the answer is no access.
-    var lapseConfirmed: Bool { entitlementStatus.resolution == .inactive }
+    var lapseConfirmed: Bool { entitlementStatus.lapseConfirmed }
 
     /// App Group key mirroring the live `isPro` entitlement for widget gating.
     /// `nonisolated` because the widget and complication timeline providers read
@@ -733,7 +732,10 @@ final class StoreService: NSObject, ObservableObject {
         #endif
         guard isConfigured else { return }
         do {
-            let info = try await Purchases.shared.customerInfo(fetchPolicy: fetchPolicy)
+            // Until the servers have replied once, a refresh must reach them.
+            let policy: CacheFetchPolicy = entitlementStatus.serverAnswered ? fetchPolicy : .fetchCurrent
+            let info = try await Purchases.shared.customerInfo(fetchPolicy: policy)
+            if policy == .fetchCurrent { entitlementStatus.markServerAnswered() }
             apply(customerInfo: info)
             lastError = nil
         } catch {
@@ -749,6 +751,7 @@ final class StoreService: NSObject, ObservableObject {
         guard isConfigured else { return }
         do {
             let info = try await Purchases.shared.restorePurchases()
+            entitlementStatus.markServerAnswered()
             apply(customerInfo: info)
             lastError = isPro ? nil : String(localized: "No active Vitals+ purchase was found for this Apple ID.")
         } catch {

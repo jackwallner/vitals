@@ -1413,10 +1413,6 @@ struct MainTabView: View {
             // A cold launch from the recap notification reads the cached entitlement
             // until RevenueCat answers.
             if !isPro { showWeeklyRecap = false }
-            if isPro, recapAwaitsEntitlement {
-                recapAwaitsEntitlement = false
-                presentWeeklyRecap()
-            }
             if isPro {
                 // If a trial/milestone sheet is up, wait for its onDismiss to apply
                 // the pending feature. Requesting dietary HealthKit auth while that
@@ -1426,6 +1422,14 @@ struct MainTabView: View {
                 pendingMilestone = nil
                 if !conversionSheetUp {
                     applyPendingFeatureEnable()
+                }
+                if recapAwaitsEntitlement {
+                    recapAwaitsEntitlement = false
+                    Task {
+                        // A sheet presented while another is leaving never appears.
+                        if conversionSheetUp { try? await Task.sleep(for: .milliseconds(600)) }
+                        presentWeeklyRecap()
+                    }
                 }
             }
         }
@@ -1456,7 +1460,8 @@ struct MainTabView: View {
             guard let event else { return }
             handleMilestone(event)
         }
-        .onChange(of: recapCoordinator.pendingPresent) { _, present in
+        // A cold launch from the notification can set this before the view subscribes.
+        .onChange(of: recapCoordinator.pendingPresent, initial: true) { _, present in
             guard present else { return }
             recapCoordinator.clear()
             // The recap is Vitals+. A notification delivered before a lapse can

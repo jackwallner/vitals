@@ -103,6 +103,21 @@ final class ExcludedDaysTests: XCTestCase {
         )
     }
 
+    func testCacheRebuildsWhenTheTimeZoneChanges() throws {
+        var cache = ExcludedDays.KeyCache()
+        var east = Calendar(identifier: .gregorian)
+        east.timeZone = try XCTUnwrap(TimeZone(identifier: "Pacific/Auckland"))
+        var west = Calendar(identifier: .gregorian)
+        west.timeZone = try XCTUnwrap(TimeZone(identifier: "America/Los_Angeles"))
+        // Noon Nov 7 in Auckland, then a date-line flight to the afternoon of Nov 6.
+        let pausedAt = try XCTUnwrap(east.date(from: DateComponents(year: 2026, month: 11, day: 7, hour: 12)))
+        let landed = pausedAt.addingTimeInterval(3 * 3600)
+
+        _ = cache.keys(picked: [], pausedSince: pausedAt, now: pausedAt, calendar: east)
+        let keys = cache.keys(picked: [], pausedSince: pausedAt, now: landed, calendar: west)
+        XCTAssertTrue(keys.contains(ExcludedDays.key(for: landed, timeZone: west.timeZone)))
+    }
+
     func testInvalidatedCachePicksUpAChangedSet() throws {
         var cache = ExcludedDays.KeyCache()
         let now = try day(2026, 9, 11)
