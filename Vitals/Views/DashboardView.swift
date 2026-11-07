@@ -923,6 +923,7 @@ struct DashboardView: View {
 
                         if typeSize.isAccessibilitySize {
                             stepsCaption
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
 
                         if let progress = stepProgress {
@@ -1302,6 +1303,32 @@ struct DashboardView: View {
         }
     }
 
+    @ViewBuilder
+    private func netDeficitNumberText(_ deficit: Double, size: CGFloat) -> some View {
+        if netDeficitNumericReady {
+            Text(netDeficitDisplayText(deficit))
+                .font(Theme.bigNumber(size))
+                .foregroundStyle(netDeficitColor)
+                .contentTransition(.numericText())
+        } else {
+            Text("—")
+                .font(Theme.bigNumber(size))
+                .foregroundStyle(Theme.textTertiary)
+        }
+    }
+
+    private var netDeficitWordText: some View {
+        Text(netDeficitNumericReady ? netDeficitWord : String(localized: "net"))
+            .font(.system(.callout, design: .rounded, weight: .medium))
+            .foregroundStyle(netDeficitNumericReady ? netDeficitColor : Theme.textTertiary)
+    }
+
+    private var netDeficitChevron: some View {
+        Image(systemName: "chevron.forward")
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(Theme.textTertiary)
+    }
+
     private func netDeficitSection(netNumberSize: CGFloat) -> some View {
         let deficit = netDeficit
 
@@ -1343,24 +1370,24 @@ struct DashboardView: View {
                 .scaleEffect(animateContent || reduceMotion ? 1 : 0.9)
             } else {
                 VStack(spacing: 10) {
-                    HStack(alignment: .firstTextBaseline) {
-                        if netDeficitNumericReady {
-                            Text(netDeficitDisplayText(deficit))
-                                .font(Theme.bigNumber(netNumberSize))
-                                .foregroundStyle(netDeficitColor)
-                                .contentTransition(.numericText())
-                        } else {
-                            Text("—")
-                                .font(Theme.bigNumber(netNumberSize))
-                                .foregroundStyle(Theme.textTertiary)
+                    if typeSize.isAccessibilitySize {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                netDeficitNumberText(deficit, size: netNumberSize)
+                                netDeficitWordText
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.6)
+                            }
+                            Spacer(minLength: 8)
+                            netDeficitChevron
                         }
-                        Text(netDeficitNumericReady ? netDeficitWord : String(localized: "net"))
-                            .font(.system(.callout, design: .rounded, weight: .medium))
-                            .foregroundStyle(netDeficitNumericReady ? netDeficitColor : Theme.textTertiary)
-                        Spacer(minLength: 8)
-                        Image(systemName: "chevron.forward")
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(Theme.textTertiary)
+                    } else {
+                        HStack(alignment: .firstTextBaseline) {
+                            netDeficitNumberText(deficit, size: netNumberSize)
+                            netDeficitWordText
+                            Spacer(minLength: 8)
+                            netDeficitChevron
+                        }
                     }
                     netDeficitBreakdownRow(centered: true)
                     netDeficitFootnote(centered: true)
@@ -1470,7 +1497,7 @@ struct DashboardView: View {
             Text("\(Int(foodCalories.rounded()).formatted(.number)) cal logged")
                 .font(.system(.caption, design: .rounded).monospacedDigit())
                 .foregroundStyle(Theme.textTertiary)
-                .lineLimit(1)
+                .lineLimit(typeSize.isAccessibilitySize ? nil : 1)
                 .minimumScaleFactor(0.7)
                 .accessibilityLabel(isViewingPast
                     ? String(localized: "\(Int(foodCalories.rounded()).formatted(.number)) cal logged")
@@ -1480,15 +1507,15 @@ struct DashboardView: View {
 
     private func macrosSection() -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            // The food total moves under the title once the two can't share a line.
-            ViewThatFits(in: .horizontal) {
+            if typeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 4) {
+                    macrosTitle
+                    macrosLoggedText
+                }
+            } else {
                 HStack(spacing: 4) {
                     macrosTitle
                     Spacer(minLength: 8)
-                    macrosLoggedText
-                }
-                VStack(alignment: .leading, spacing: 4) {
-                    macrosTitle
                     macrosLoggedText
                 }
             }
@@ -1547,12 +1574,13 @@ struct DashboardView: View {
             let barred = goals.goaledMacros
             let pilled = goals.ungoaledMacros
             VStack(spacing: 10) {
-                if !barred.isEmpty {
-                    // Every row switches together, so the bars keep lining up.
-                    ViewThatFits(in: .horizontal) {
-                        macroBarRows(barred, stacked: false)
-                        macroBarRows(barred, stacked: true)
-                    }
+                ForEach(barred) { kind in
+                    MacroBarRow(
+                        kind: kind,
+                        grams: macros.grams(kind),
+                        goal: goals.macroGoal(for: kind) ?? kind.defaultGoal,
+                        stacked: typeSize.isAccessibilitySize
+                    )
                 }
                 if !pilled.isEmpty {
                     macroPillRow(pilled, centered: barred.isEmpty)
@@ -1582,19 +1610,6 @@ struct DashboardView: View {
                 .font(.system(.caption2, design: .rounded))
                 .foregroundStyle(Theme.textTertiary)
                 .fixedSize(horizontal: false, vertical: true)
-        }
-    }
-
-    private func macroBarRows(_ kinds: [MacroKind], stacked: Bool) -> some View {
-        VStack(spacing: 10) {
-            ForEach(kinds) { kind in
-                MacroBarRow(
-                    kind: kind,
-                    grams: macros.grams(kind),
-                    goal: goals.macroGoal(for: kind) ?? kind.defaultGoal,
-                    stacked: stacked
-                )
-            }
         }
     }
 
@@ -1655,22 +1670,26 @@ struct DashboardView: View {
     private var macroSplitCaption: some View {
         if goals.macroSplitEnabled, let percentages = macros.sharePercentages() {
             let visible = goals.visibleMacros
-            ViewThatFits(in: .horizontal) {
-                HStack(spacing: 5) {
-                    macroSplitPercents(percentages, visible)
-                    Text(macroSplitDenominatorText)
-                        .foregroundStyle(Theme.textTertiary)
-                }
-                .lineLimit(1)
-                VStack(alignment: .leading, spacing: 2) {
+            Group {
+                if typeSize.isAccessibilitySize {
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack(spacing: 5) {
+                            macroSplitPercents(percentages, visible)
+                        }
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
+                        Text(macroSplitDenominatorText)
+                            .foregroundStyle(Theme.textTertiary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                } else {
                     HStack(spacing: 5) {
                         macroSplitPercents(percentages, visible)
+                        Text(macroSplitDenominatorText)
+                            .foregroundStyle(Theme.textTertiary)
                     }
                     .lineLimit(1)
                     .minimumScaleFactor(0.75)
-                    Text(macroSplitDenominatorText)
-                        .foregroundStyle(Theme.textTertiary)
-                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
             .font(.system(.caption2, design: .rounded))
@@ -2592,12 +2611,13 @@ private struct PromptCard: View {
 
 // MARK: - Pacing Pill
 
-/// One line of caption text, shrunk as far as `minScale` to stay there. Past that
-/// it wraps, rather than cutting off the words that say what a number means.
+/// One line of caption text. At the default size and below it shrinks as far as
+/// `minScale` to stay there; past that it wraps, rather than cutting off the words
+/// that say what a number means. Larger text never shrinks below the default.
 private struct FitOrWrapText: View {
     let text: String
     let minScale: CGFloat
-    @ScaledMetric(relativeTo: .caption2) private var textSize: CGFloat = 11
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     init(_ text: String, minScale: CGFloat) {
         self.text = text
@@ -2608,21 +2628,38 @@ private struct FitOrWrapText: View {
         ViewThatFits(in: .horizontal) {
             Text(text)
                 .lineLimit(1)
-            Text(text)
-                .font(.system(size: textSize * minScale, design: .rounded))
-                .lineLimit(1)
-                .hidden()
-                .frame(maxWidth: .infinity)
-                .overlay {
+            if typeSize <= .large {
+                ShrinkableLine(minScale: minScale) {
                     Text(text)
                         .lineLimit(1)
                         .minimumScaleFactor(minScale)
                 }
+            }
             Text(text)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .font(.system(.caption2, design: .rounded))
+    }
+}
+
+/// Reports a line's ideal width at its smallest scale, so `ViewThatFits` takes it
+/// whenever the shrunk line fits, while keeping the full line's height.
+private struct ShrinkableLine: Layout {
+    let minScale: CGFloat
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        guard let line = subviews.first else { return .zero }
+        let ideal = line.sizeThatFits(.unspecified)
+        return CGSize(width: proposal.width.map { min($0, ideal.width) } ?? ideal.width * minScale, height: ideal.height)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        subviews.first?.place(
+            at: CGPoint(x: bounds.midX, y: bounds.midY),
+            anchor: .center,
+            proposal: ProposedViewSize(bounds.size)
+        )
     }
 }
 
@@ -2673,7 +2710,7 @@ private struct PacingPill: View {
         }
         if let projected {
             let clause = String(localized: "on pace for \(Int(projected.rounded()).formatted(.number)) \(label)")
-            parts.append(parts.isEmpty ? clause : clause.midSentence)
+            parts.append(parts.isEmpty ? clause : clause.lowercasingFirstLetter)
         }
         return parts.joined(separator: ", ")
     }
@@ -3086,7 +3123,6 @@ private struct MacroBarRow: View {
                     .frame(width: max(geo.size.width * fraction, fraction > 0 ? 4 : 0))
             }
         }
-        .frame(minWidth: 40)
         .frame(height: 8)
     }
 

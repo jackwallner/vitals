@@ -1297,6 +1297,7 @@ struct HistoryView: View {
             }
         }
         .frame(minHeight: 180, maxHeight: 240)
+        .chartBodyStyle(String(localized: "Calories"))
     }
 
     private var stepsChart: some View {
@@ -1357,6 +1358,7 @@ struct HistoryView: View {
             }
         }
         .frame(minHeight: 180, maxHeight: 240)
+        .chartBodyStyle(String(localized: "Steps"))
     }
 
     private var netDeficitChart: some View {
@@ -1419,6 +1421,7 @@ struct HistoryView: View {
             }
         }
         .frame(minHeight: 180, maxHeight: 240)
+        .chartBodyStyle(String(localized: "Net Deficit"))
     }
 
     @ViewBuilder
@@ -1523,6 +1526,7 @@ struct HistoryView: View {
             }
         }
         .frame(minHeight: 180, maxHeight: 240)
+        .chartBodyStyle(String(localized: "Macros"))
     }
 
     @ViewBuilder
@@ -3148,6 +3152,7 @@ private struct AverageCard: View {
 /// Full-width total row: label on the left, value on the right. Sits under the
 /// Avg + Best Day pair in the focused metric views for a consistent layout.
 private struct WideTotalCard: View {
+    @Environment(\.dynamicTypeSize) private var typeSize
     let label: String
     let value: String
     let color: Color
@@ -3170,19 +3175,21 @@ private struct WideTotalCard: View {
     }
 
     var body: some View {
-        ViewThatFits(in: .horizontal) {
-            HStack(spacing: 12) {
-                labelText
-                    .lineLimit(1)
-                Spacer(minLength: 0)
-                valueText
+        Group {
+            if typeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 6) {
+                    labelText
+                        .fixedSize(horizontal: false, vertical: true)
+                    valueText
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                HStack(spacing: 12) {
+                    labelText
+                    Spacer(minLength: 0)
+                    valueText
+                }
             }
-            VStack(alignment: .leading, spacing: 6) {
-                labelText
-                    .fixedSize(horizontal: false, vertical: true)
-                valueText
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(maxWidth: .infinity)
         .padding(Theme.cardPadding)
@@ -3231,6 +3238,17 @@ private struct PeakCard: View {
     }
 }
 
+private extension View {
+    /// Axis labels sit in fixed slots and overlap past this size. The bars come out
+    /// as one tiny element per day; one element for the whole chart keeps its axis
+    /// text reachable, and the recent-days list carries the same figures.
+    func chartBodyStyle(_ title: String) -> some View {
+        dynamicTypeSize(...DynamicTypeSize.xxLarge)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(title)
+    }
+}
+
 private struct ChartCard<Content: View>: View {
     let title: String
     var selection: ChartSelection? = nil
@@ -3272,14 +3290,7 @@ private struct ChartCard<Content: View>: View {
                     .font(.headline)
                     .foregroundStyle(Theme.textPrimary)
             }
-            // The bars come out as one tiny element per day; one element for the
-            // whole chart keeps its axis text reachable, and the recent-days list
-            // below carries the same figures at a usable size.
-            // Axis labels sit in fixed slots and overlap past this size.
             content
-                .dynamicTypeSize(...DynamicTypeSize.xxLarge)
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel(title)
         }
         .padding(Theme.cardPadding)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
@@ -3330,6 +3341,7 @@ struct RecentDayRow: Identifiable {
 /// Recent-days list shown on the single-metric detail screen so "what was
 /// yesterday" is a glance rather than a chart scrub.
 private struct RecentDaysList: View {
+    @Environment(\.dynamicTypeSize) private var typeSize
     let metric: HistoryMetric
     let rows: [RecentDayRow]
     /// Excluding a day is a Vitals+ feature; a free user's long-press pitches it.
@@ -3371,6 +3383,28 @@ private struct RecentDaysList: View {
         }
     }
 
+    /// At the largest text sizes the day and its values stop sharing a line, and
+    /// three macro values stop sharing theirs.
+    private func giantRow(_ row: RecentDayRow) -> some View {
+        ViewThatFits(in: .horizontal) {
+            VStack(alignment: .leading, spacing: 2) {
+                dayLabel(row)
+                inlineValues(row)
+            }
+            VStack(alignment: .leading, spacing: 2) {
+                dayLabel(row)
+                ForEach(Array(row.segments.enumerated()), id: \.offset) { _, segment in
+                    Text(segment.text)
+                        .foregroundStyle(segment.color)
+                }
+                .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
     private func inlineValues(_ row: RecentDayRow) -> some View {
         HStack(spacing: 5) {
             ForEach(Array(row.segments.enumerated()), id: \.offset) { segmentIndex, segment in
@@ -3400,29 +3434,18 @@ private struct RecentDaysList: View {
                     .padding(.vertical, 8)
             } else {
                 ForEach(Array(rows.enumerated()), id: \.element.id) { index, row in
-                    ViewThatFits(in: .horizontal) {
-                        HStack {
-                            dayLabel(row)
-                            Spacer()
-                            inlineValues(row)
-                                .frame(minWidth: 64, alignment: .trailing)
-                        }
-                        VStack(alignment: .leading, spacing: 2) {
-                            dayLabel(row)
-                            inlineValues(row)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        VStack(alignment: .leading, spacing: 2) {
-                            dayLabel(row)
-                            ForEach(Array(row.segments.enumerated()), id: \.offset) { _, segment in
-                                Text(segment.text)
-                                    .foregroundStyle(segment.color)
+                    Group {
+                        if typeSize.isAccessibilitySize {
+                            giantRow(row)
+                        } else {
+                            HStack {
+                                dayLabel(row)
+                                Spacer()
+                                inlineValues(row)
+                                    .minimumScaleFactor(0.7)
+                                    .frame(minWidth: 64, alignment: .trailing)
                             }
-                            .font(.system(.subheadline, design: .rounded, weight: .bold).monospacedDigit())
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.7)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     .opacity(row.isExcluded ? 0.45 : 1)
                     .contentShape(Rectangle())

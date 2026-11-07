@@ -15,6 +15,13 @@ extension String {
         return first.uppercased() + dropFirst()
     }
 
+    /// A translated clause joined onto another sentence. Only its first letter
+    /// changes, so a German noun inside it ("Schritte") keeps its capital.
+    var lowercasingFirstLetter: String {
+        guard let first else { return self }
+        return String(first).localizedLowercase + dropFirst()
+    }
+
     /// Mid-sentence form of a label like "Protein" or "30 days". German nouns
     /// keep their capital.
     var midSentence: String {
