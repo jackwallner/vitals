@@ -434,6 +434,168 @@ final class SeededHealthFlowUITests: XCTestCase {
         )
     }
 
+    /// A Health notice on today holds its space on past days, so nothing moves.
+    func testHealthNoticeHoldsItsPlaceOnPastDays() throws {
+        let app = XCUIApplication()
+        app.launchEnvironment["VITALS_RC_APP_USER_ID"] = "uitest-vitals-\(UUID().uuidString)"
+        app.launchEnvironment["VITALS_FORCE_SETUP_COMPLETE"] = "1"
+        app.launchEnvironment["VITALS_UPGRADE_TAB"] = "catalog"
+        app.launch()
+        grantHealthKitAccess(in: app)
+        dismissBlockingSheets(in: app)
+        let notNow = app.buttons["Not now"]
+        if notNow.waitForExistence(timeout: 20) { notNow.tap() }
+        dismissTrialPitch(in: app)
+
+        let previous = app.buttons["today-previous-day"]
+        XCTAssertTrue(previous.waitForExistence(timeout: 30), "Today never rendered")
+        let retry = app.buttons["Retry"]
+        try XCTSkipUnless(retry.waitForExistence(timeout: 20), "This simulator already has Health data, so no notice shows")
+        attach(app.screenshot(), name: "notice-today")
+        let ring = app.buttons["Calorie progress"]
+        let steps = app.buttons["Steps"]
+        let ringTop = ring.frame.minY
+        let stepsTop = steps.frame.minY
+
+        previous.tap()
+        XCTAssertTrue(app.buttons["today-next-day"].waitForExistence(timeout: 5))
+        _ = app.buttons["nonexistent"].waitForExistence(timeout: 2)
+        attach(app.screenshot(), name: "notice-past-day")
+        XCTAssertFalse(retry.exists && retry.isHittable, "Today's notice stayed usable on a past day")
+        XCTAssertEqual(ring.frame.minY, ringTop, accuracy: 1, "The ring moved between days")
+        XCTAssertEqual(steps.frame.minY, stepsTop, accuracy: 1, "The steps card moved between days")
+    }
+
+    /// A deliberate pull refreshes; a flick that bounces past the top doesn't.
+    func testFlickToTopDoesNotRefreshButAPullDoes() throws {
+        // Grant at normal text size: the permission sheet takes swipes at giant sizes.
+        let setup = launchSeeded(upgradeTab: "catalog")
+        grantHealthKitAccess(in: setup)
+        dismissBlockingSheets(in: setup)
+        // The seeder asks for its own access, so wait until its samples show.
+        let ring = setup.buttons["Calorie progress"]
+        XCTAssertTrue(ring.waitForExistence(timeout: 30), "Calorie ring missing")
+        let seeded = Date.now.addingTimeInterval(90)
+        while Date.now < seeded, (ring.value as? String ?? "").hasPrefix("0 ") {
+            grantHealthKitAccess(in: setup)
+            _ = setup.buttons["nonexistent"].waitForExistence(timeout: 1)
+        }
+        setup.terminate()
+        let app = launchSeeded(
+            upgradeTab: "catalog",
+            arguments: ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        )
+        dismissBlockingSheets(in: app)
+        let notNow = app.buttons["Not now"]
+        if notNow.waitForExistence(timeout: 20) { notNow.tap() }
+        dismissTrialPitch(in: app)
+        XCTAssertTrue(app.buttons["today-previous-day"].waitForExistence(timeout: 30), "Today never rendered")
+        let date = app.staticTexts["today-date"]
+        XCTAssertTrue(date.waitForExistence(timeout: 10), "Date missing")
+        XCTAssertEqual(date.value as? String, "0")
+
+        app.swipeUp(velocity: .fast)
+        _ = app.buttons["nonexistent"].waitForExistence(timeout: 2)
+        attach(app.screenshot(), name: "flick-scrolled-down")
+        try XCTSkipUnless(!date.isHittable, "Today fits on this device even at this text size, so it can't flick")
+
+        for _ in 0..<3 {
+            app.swipeDown(velocity: XCUIGestureVelocity(rawValue: 6_000))
+            _ = app.buttons["nonexistent"].waitForExistence(timeout: 2)
+            app.swipeUp(velocity: .fast)
+            _ = app.buttons["nonexistent"].waitForExistence(timeout: 1)
+        }
+        app.swipeDown(velocity: XCUIGestureVelocity(rawValue: 6_000))
+        _ = app.buttons["nonexistent"].waitForExistence(timeout: 2)
+        attach(app.screenshot(), name: "flick-back-at-top")
+        XCTAssertEqual(date.value as? String, "0", "A flick refreshed")
+
+        let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.3))
+        let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.7))
+        start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.1)
+        _ = app.buttons["nonexistent"].waitForExistence(timeout: 2)
+        XCTAssertEqual(date.value as? String, "1", "A pull didn't refresh exactly once")
+    }
+
+    /// A pull finishes with no spinner left on screen, whatever the customer does
+    /// while the refresh runs: leave the tab, leave the app, or pull again.
+    func testHistoryRefreshLeavesNoSpinnerBehind() {
+        let app = launchSeeded(upgradeTab: "catalog")
+        grantHealthKitAccess(in: app)
+        dismissBlockingSheets(in: app)
+        let notNow = app.buttons["Not now"]
+        if notNow.waitForExistence(timeout: 20) { notNow.tap() }
+        dismissTrialPitch(in: app)
+        app.buttons["tab-history"].tap()
+        if notNow.waitForExistence(timeout: 8) { notNow.tap() }
+        dismissTrialPitch(in: app)
+        XCTAssertTrue(
+            app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'chart-card-link-'")).firstMatch.waitForExistence(timeout: 180),
+            "History never rendered"
+        )
+        runPullScenarios(in: app, screen: "history", leave: { app.buttons["tab-today"].tap() }, back: { app.buttons["tab-history"].tap() })
+    }
+
+    /// The same walk on Today, where the arrows can also change the day mid refresh.
+    func testTodayRefreshLeavesNoSpinnerBehind() {
+        let app = launchSeeded(upgradeTab: "catalog")
+        grantHealthKitAccess(in: app)
+        dismissBlockingSheets(in: app)
+        let notNow = app.buttons["Not now"]
+        if notNow.waitForExistence(timeout: 20) { notNow.tap() }
+        dismissTrialPitch(in: app)
+        let previous = app.buttons["today-previous-day"]
+        XCTAssertTrue(previous.waitForExistence(timeout: 30), "Today never rendered")
+        runPullScenarios(in: app, screen: "today", leave: { app.buttons["tab-history"].tap() }, back: { app.buttons["tab-today"].tap() })
+
+        pullDown(in: app)
+        previous.tap()
+        assertNoSpinner(in: app, after: "pull then step back a day")
+        pullDown(in: app)
+        app.buttons["today-back-to-today"].tap()
+        assertNoSpinner(in: app, after: "pull then return to today")
+    }
+
+    private func runPullScenarios(in app: XCUIApplication, screen: String, leave: () -> Void, back: () -> Void) {
+        pullDown(in: app)
+        assertNoSpinner(in: app, after: "\(screen): single pull")
+
+        for _ in 0..<3 {
+            pullDown(in: app)
+            pullDown(in: app)
+        }
+        assertNoSpinner(in: app, after: "\(screen): repeated pulls")
+
+        pullDown(in: app)
+        leave()
+        back()
+        assertNoSpinner(in: app, after: "\(screen): pull then leave the tab")
+
+        pullDown(in: app)
+        XCUIDevice.shared.press(.home)
+        _ = app.wait(for: .runningBackground, timeout: 5)
+        app.activate()
+        _ = app.wait(for: .runningForeground, timeout: 10)
+        // Returning to the foreground starts its own refresh, so pull straight
+        // into it, the case that ends the pull's action at once.
+        pullDown(in: app)
+        assertNoSpinner(in: app, after: "\(screen): pull across background and foreground")
+    }
+
+    private func pullDown(in app: XCUIApplication) {
+        let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.32))
+        let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.85))
+        start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .fast, thenHoldForDuration: 0.05)
+    }
+
+    private func assertNoSpinner(in app: XCUIApplication, after step: String) {
+        _ = app.buttons["nonexistent"].waitForExistence(timeout: 6)
+        attach(app.screenshot(), name: "spinner-\(step)")
+        let spinners = app.activityIndicators.count
+        add(XCTAttachment(string: "\(step): \(spinners) spinner(s)\n\(app.debugDescription)"))
+        XCTAssertEqual(spinners, 0, "A spinner stayed on screen after \(step)")
+    }
+
     /// Once loaded, rows are unique and yesterday reads what the seeder wrote.
     private func assertSettled(_ app: XCUIApplication, _ rows: XCUIElementQuery, label: String) {
         _ = app.buttons["nonexistent"].waitForExistence(timeout: 3)

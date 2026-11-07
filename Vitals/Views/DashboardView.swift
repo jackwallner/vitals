@@ -358,9 +358,9 @@ struct DashboardView: View {
                                 .readableWidth()
                                 .frame(minHeight: geo.size.height)
                                 .background { pullToRefreshDetector }
+                                .background { ScrollDragReader(pull: pull) }
                         }
                         .coordinateSpace(name: Self.scrollSpace)
-                        .tracksScrollDrag(pull)
                         .sensoryFeedback(.impact(weight: .light), trigger: pullRefreshCount)
                     }
                 }
@@ -725,6 +725,14 @@ struct DashboardView: View {
                             .foregroundStyle(Theme.caloriesText)
                             .contentShape(Rectangle().inset(by: -12))
                             .accessibilityIdentifier("today-back-to-today")
+                        // Here, not in the banner, so a failed read moves nothing.
+                        if pastDay?.statsFailed == true {
+                            Text(HealthNotice.loadError.title)
+                                .font(.system(.caption2, design: .rounded))
+                                .foregroundStyle(Theme.textTertiary)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.8)
+                        }
                     } else if healthNotice == .accessNeeded {
                         Text("Waiting for Health access")
                             .font(.system(.caption2, design: .rounded))
@@ -750,12 +758,13 @@ struct DashboardView: View {
             .opacity(animateContent ? 1 : 0)
             .offset(y: animateContent || reduceMotion ? 0 : 10)
 
-            if let notice = visibleHealthNotice {
+            if let notice = healthNotice {
                 healthNoticeBanner(notice)
                     .opacity(animateContent ? 1 : 0)
+                    .hiddenOnPastDays(isViewingPast)
             }
 
-            if let prompt, visibleHealthNotice == nil {
+            if let prompt, healthNotice == nil {
                 promptCard(prompt)
                     .padding(.horizontal, 24)
                     .padding(.top, 12)
@@ -786,7 +795,12 @@ struct DashboardView: View {
                                     lineWidth: ringLineWidth,
                                     size: ringSize
                                 )
+                                // The ring can't grow, so what's inside it stops growing first.
                                 calorieLabel(numberSize: calNumberSize)
+                                    .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.6)
+                                    .frame(maxWidth: ringSize - 2 * ringLineWidth - 28)
                             }
                         } else {
                             calorieLabel(numberSize: calNumberSize)
@@ -891,10 +905,15 @@ struct DashboardView: View {
                                 .font(Theme.bigNumber(stepsNumberSize))
                                 .foregroundStyle(Theme.textPrimary)
                                 .contentTransition(.numericText())
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.5)
+                                .layoutPriority(1)
                             if let goal = goals.stepGoal {
                                 Text("/ \(goal.formatted(.number))")
                                     .font(.system(.caption, design: .rounded))
                                     .foregroundStyle(Theme.textSecondary)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                             } else {
                                 Text("steps")
                                     .font(.system(.subheadline, design: .rounded))
@@ -1018,6 +1037,8 @@ struct DashboardView: View {
         .accessibilityAction(named: Text("Refresh")) {
             Task { await refreshAllFigures() }
         }
+        .accessibilityIdentifier("today-date")
+        .exposesPullCount(pullRefreshCount)
     }
 
     /// `target` nil means today.
@@ -1043,11 +1064,6 @@ struct DashboardView: View {
         .disabled(!enabled)
         .accessibilityLabel(label)
         .accessibilityIdentifier(identifier)
-    }
-
-    private var visibleHealthNotice: HealthNotice? {
-        guard isViewingPast else { return healthNotice }
-        return pastDay?.statsFailed == true ? .loadError : nil
     }
 
     /// Swaps the figures in the same update as the date, so a new date never
@@ -1174,7 +1190,7 @@ struct DashboardView: View {
     private func streakBadge(count: Int, metric: String, compact: Bool = false) -> some View {
         HStack(spacing: 4) {
             Image(systemName: "flame.fill")
-                .font(.system(size: 10, weight: .bold))
+                .font(.caption2.weight(.bold))
             Text(compact ? String(localized: "\(count)d") : String(localized: "\(count)-day streak"))
                 .font(.system(.caption2, design: .rounded, weight: .semibold))
         }
@@ -2453,24 +2469,11 @@ private struct PromptCard: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
-            HStack(spacing: 8) {
-                Button(action: onPrimary) {
-                    Text(primaryTitle)
-                        .font(.system(.subheadline, design: .rounded, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 9)
-                        .background(tint, in: Capsule())
-                }
-                .buttonStyle(.plain)
-                Button(action: onSecondary) {
-                    Text(secondaryTitle)
-                        .font(.system(.subheadline, design: .rounded, weight: .medium))
-                        .foregroundStyle(Theme.textSecondary)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 9)
-                }
-                .buttonStyle(.plain)
+            // Stacks when side by side would break a number across lines, and only
+            // then wraps, so a long label at giant text is never cut off.
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 8) { buttons(lineLimit: 1) }
+                VStack(alignment: .leading, spacing: 4) { buttons(lineLimit: nil) }
             }
             .padding(.leading, 44)
         }
@@ -2481,6 +2484,31 @@ private struct PromptCard: View {
         // pill and text otherwise interpolated separately and overprinted.
         .geometryGroup()
         .accessibilityElement(children: .contain)
+    }
+
+    @ViewBuilder
+    private func buttons(lineLimit: Int?) -> some View {
+        Button(action: onPrimary) {
+            Text(primaryTitle)
+                .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                .foregroundStyle(.white)
+                .lineLimit(lineLimit)
+                .minimumScaleFactor(0.6)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 9)
+                .background(tint, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        }
+        .buttonStyle(.plain)
+        Button(action: onSecondary) {
+            Text(secondaryTitle)
+                .font(.system(.subheadline, design: .rounded, weight: .medium))
+                .foregroundStyle(Theme.textSecondary)
+                .lineLimit(lineLimit)
+                .minimumScaleFactor(0.6)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 9)
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -2499,6 +2527,8 @@ private struct PacingPill: View {
     let lookback: PacingLookback
 
     @State private var showExplainer = false
+    @Environment(\.dynamicTypeSize) private var typeSize
+    @ScaledMetric(relativeTo: .caption2) private var infoIconSize: CGFloat = 10
 
     private var diff: Double? { typical.map { current - $0 } }
 
@@ -2544,16 +2574,18 @@ private struct PacingPill: View {
                 .font(.system(.caption2, design: .rounded))
             if typical != nil {
                 Image(systemName: "info.circle")
-                    .font(.system(size: 10, weight: .semibold))
+                    .font(.system(size: infoIconSize, weight: .semibold))
                     .opacity(0.7)
             }
         }
         .foregroundStyle(textTint)
-        .lineLimit(1)
+        // Wraps rather than cutting off the words that say what the number means.
+        .lineLimit(typeSize.isAccessibilitySize ? nil : 2)
+        .multilineTextAlignment(.center)
         .minimumScaleFactor(0.75)
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
-        .background(tint.opacity(0.1), in: Capsule())
+        .background(tint.opacity(0.1), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 
     var body: some View {
@@ -5186,18 +5218,57 @@ private struct CoachLinkButton: View {
 private final class PullToRefreshState {
     /// One refresh per pull: set again once the page has settled back.
     var armed = true
-    /// A flick that bounces past the top isn't a pull. iOS 17 can't tell, so it stays true there.
+    /// A flick that bounces past the top isn't a pull. Stays true if no scroll
+    /// view turns up, so pulling still works.
     var dragging = true
 }
 
-private extension View {
-    @ViewBuilder
-    func tracksScrollDrag(_ pull: PullToRefreshState) -> some View {
-        if #available(iOS 18, *) {
-            onScrollPhaseChange { _, phase in pull.dragging = phase == .interacting }
-        } else {
-            self
+/// Follows the page's own pan gesture, which works the same on every iOS version.
+private struct ScrollDragReader: UIViewRepresentable {
+    let pull: PullToRefreshState
+
+    func makeUIView(context: Context) -> ReaderView { ReaderView(pull: pull) }
+    func updateUIView(_ view: ReaderView, context: Context) {}
+
+    final class ReaderView: UIView {
+        private let pull: PullToRefreshState
+        private weak var pan: UIPanGestureRecognizer?
+
+        init(pull: PullToRefreshState) {
+            self.pull = pull
+            super.init(frame: .zero)
+            isUserInteractionEnabled = false
         }
+
+        @available(*, unavailable)
+        required init?(coder: NSCoder) { fatalError("init(coder:) is not used") }
+
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+            guard window != nil, pan == nil else { return }
+            var ancestor = superview
+            while let view = ancestor, !(view is UIScrollView) { ancestor = view.superview }
+            guard let scrollView = ancestor as? UIScrollView else { return }
+            pan = scrollView.panGestureRecognizer
+            scrollView.panGestureRecognizer.addTarget(self, action: #selector(panChanged))
+            pull.dragging = false
+        }
+
+        @objc private func panChanged(_ pan: UIPanGestureRecognizer) {
+            pull.dragging = pan.state == .began || pan.state == .changed
+        }
+    }
+}
+
+private extension View {
+    /// Lets UI tests count pulls, which a refresh too quick to see can't show.
+    @ViewBuilder
+    func exposesPullCount(_ count: Int) -> some View {
+        #if DEBUG
+        accessibilityValue("\(count)")
+        #else
+        self
+        #endif
     }
 
     /// Keeps today's row laid out but invisible, so stepping to a past day moves nothing.
