@@ -277,6 +277,8 @@ final class StoreService: NSObject, ObservableObject {
         cachedPro: StoreService.cachedProDefaults?.bool(forKey: StoreService.cachedProKey) ?? false
     )
     var isPro: Bool { entitlementStatus.isPro }
+    /// RevenueCat has answered, and the answer is no access.
+    var lapseConfirmed: Bool { entitlementStatus.resolution == .inactive }
 
     /// App Group key mirroring the live `isPro` entitlement for widget gating.
     /// `nonisolated` because the widget and complication timeline providers read
@@ -703,6 +705,7 @@ final class StoreService: NSObject, ObservableObject {
 
     private func notePendingConversion(for product: Package, startedTrial: Bool) {
         ConversionDiagnostics.notePendingConversion(
+            productID: product.storeProduct.productIdentifier,
             plan: String(describing: product.vitalsPackageKind),
             startedTrial: startedTrial,
             variant: upgradeTabVariant.rawValue,
@@ -772,7 +775,10 @@ final class StoreService: NSObject, ObservableObject {
         resolveEntitlement(isPro: hasActiveSubscription)
         // An approved Ask to Buy lands here, with no purchase call running to
         // record the sale.
-        if hasActiveSubscription, !purchaseInFlight, ConversionDiagnostics.recordPendingConversion() {
+        let activeProducts = customerInfo.activeSubscriptions
+            .union(customerInfo.nonSubscriptions.map(\.productIdentifier))
+        if hasActiveSubscription, !purchaseInFlight,
+           ConversionDiagnostics.recordPendingConversion(activeProductIDs: activeProducts) {
             syncConversionAttributes()
         }
         // Running or already ended: someone who cancels and next opens the app

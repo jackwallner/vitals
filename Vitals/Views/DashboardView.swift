@@ -131,6 +131,9 @@ struct DashboardView: View {
     @State private var calorieStreak: Int = 0
     @State private var stepStreak: Int = 0
     @State private var isRefreshing = false
+    @State private var pullRefreshCount = 0
+    @ScaledMetric(relativeTo: .caption2) private var subtitleLineHeight: CGFloat = 13
+    private static let scrollSpace = "today-scroll"
     @State private var healthNotice: HealthNotice? = nil
     @State private var lastRefreshDate: Date? = nil
     @State private var todayFood: Double = 0
@@ -215,8 +218,10 @@ struct DashboardView: View {
         streaksUnlocked && !isViewingPast && goals.showCalories && goals.calorieGoal != nil && calorieStreak > 0
     }
 
-    private var showStepStreak: Bool {
-        streaksUnlocked && !isViewingPast && goals.showSteps && goals.stepGoal != nil && stepStreak > 0
+    private var showStepStreak: Bool { hasStepStreak && !isViewingPast }
+
+    private var hasStepStreak: Bool {
+        streaksUnlocked && goals.showSteps && goals.stepGoal != nil && stepStreak > 0
     }
 
     /// "Usual by now" feeding the pace clause of the pill, nil when pacing is off
@@ -224,22 +229,24 @@ struct DashboardView: View {
     private var calorieTypical: Double? { showsPacing ? pacingCalories : nil }
     private var stepTypical: Double? { showsPacing ? pacingSteps.map(Double.init) : nil }
 
-    /// Pace compares today so far against the usual, so a finished day has none.
-    private var showsPacing: Bool { goals.showPacing && !isViewingPast }
+    /// Pace compares today so far against the usual, so a finished day shows none.
+    /// These rows always hold today's figures: a past day keeps them laid out but
+    /// invisible (`hiddenOnPastDays`), which stops the page moving between days.
+    private var showsPacing: Bool { goals.showPacing }
 
     private var projectedCalories: Double? {
-        guard isProjectionEnabled, !isViewingPast, goals.showCalories else { return nil }
+        guard isProjectionEnabled, goals.showCalories else { return nil }
         return ProjectionCalculator.projectedEndOfDay(
-            current: totalCalories,
+            current: todayActive + todayResting,
             usualByNow: usualCaloriesByNow,
             usualFullDay: usualCaloriesFullDay
         )
     }
 
     private var projectedSteps: Double? {
-        guard isProjectionEnabled, !isViewingPast, goals.showSteps else { return nil }
+        guard isProjectionEnabled, goals.showSteps else { return nil }
         return ProjectionCalculator.projectedEndOfDay(
-            current: Double(steps),
+            current: Double(todaySteps),
             usualByNow: usualStepsByNow,
             usualFullDay: usualStepsFullDay
         )
@@ -347,11 +354,10 @@ struct DashboardView: View {
                             mainContent(availableHeight: geo.size.height)
                                 .readableWidth()
                                 .frame(minHeight: geo.size.height)
+                                .background { pullToRefreshDetector }
                         }
-                        .refreshable {
-                            await refresh()
-                            await loadPastDay()
-                        }
+                        .coordinateSpace(name: Self.scrollSpace)
+                        .sensoryFeedback(.impact(weight: .light), trigger: pullRefreshCount)
                     }
                 }
             }
@@ -616,6 +622,21 @@ struct DashboardView: View {
         .padding(.horizontal, 24)
     }
 
+    /// Pulling down refreshes with no system spinner: the control could stay on
+    /// screen over the date, and the header already says "Refreshing…".
+    private var pullToRefreshDetector: some View {
+        GeometryReader { proxy in
+            Color.clear.onChange(of: proxy.frame(in: .named(Self.scrollSpace)).minY > 70) { _, pulled in
+                guard pulled else { return }
+                pullRefreshCount += 1
+                Task {
+                    await refresh()
+                    await loadPastDay()
+                }
+            }
+        }
+    }
+
     private var loadingView: some View {
         ProgressView()
             .tint(Theme.textTertiary)
@@ -656,8 +677,10 @@ struct DashboardView: View {
                         target: DayBrowser.previous(of: viewedDay),
                         enabled: DayBrowser.previous(of: viewedDay) != nil
                     )
-                    // Lines the glyph, not its tap area, up with the page margin.
-                    .padding(.leading, -13)
+                    // Hangs in the margin, taking no width, so the date sits where it
+                    // always has.
+                    .padding(.leading, -30)
+                    .padding(.trailing, -6)
                     headerDate
                     if let viewedDay {
                         dayArrow(
@@ -684,7 +707,7 @@ struct DashboardView: View {
                 HStack(spacing: 8) {
                     if isViewingPast {
                         Button("Today") { showDay(nil) }
-                            .font(.system(.caption, design: .rounded, weight: .semibold))
+                            .font(.system(.caption2, design: .rounded, weight: .semibold))
                             .foregroundStyle(Theme.caloriesText)
                             .contentShape(Rectangle().inset(by: -12))
                             .accessibilityIdentifier("today-back-to-today")
@@ -704,8 +727,9 @@ struct DashboardView: View {
                             .foregroundStyle(Theme.textTertiary)
                     }
                 }
-                .padding(.leading, 23)
                 .animation(.easeInOut(duration: 0.2), value: isRefreshing)
+                // The line keeps its height with nothing on it.
+                .frame(minHeight: subtitleLineHeight)
             }
             .padding(.horizontal, 24)
             .padding(.top, 16)
@@ -717,10 +741,11 @@ struct DashboardView: View {
                     .opacity(animateContent ? 1 : 0)
             }
 
-            if let prompt, visibleHealthNotice == nil, !isViewingPast {
+            if let prompt, visibleHealthNotice == nil {
                 promptCard(prompt)
                     .padding(.horizontal, 24)
                     .padding(.top, 12)
+                    .hiddenOnPastDays(isViewingPast)
                     // Fades in place under the header (a .move from the top edge
                     // slid it over the date and gear). The ring below makes room
                     // first, then the card fades in; on removal it fades fast,
@@ -810,14 +835,15 @@ struct DashboardView: View {
                                 .foregroundStyle(Theme.textTertiary)
                         }
                         // Streak rides with the metric label, not the pacing row.
-                        if showStepStreak {
+                        if hasStepStreak {
                             streakBadge(count: stepStreak, metric: "step")
                                 .padding(.top, 4)
+                                .hiddenOnPastDays(isViewingPast)
                         }
 
                         if stepTypical != nil || projectedSteps != nil {
                             PacingPill(
-                                current: Double(steps),
+                                current: Double(todaySteps),
                                 typical: stepTypical,
                                 projected: projectedSteps,
                                 label: String(localized: "steps"),
@@ -825,11 +851,13 @@ struct DashboardView: View {
                                 comparison: goals.pacingComparison,
                                 lookback: goals.pacingLookback
                             )
+                            .hiddenOnPastDays(isViewingPast)
                             .padding(.top, 8)
                         } else if showsPacing && pacingStepsInsufficient {
                             Text(pacingBuildingText(samples: pacingStepSamples))
                                 .font(.system(.caption2, design: .rounded))
                                 .foregroundStyle(Theme.textTertiary)
+                                .hiddenOnPastDays(isViewingPast)
                                 .padding(.top, 8)
                         }
                     }
@@ -880,7 +908,7 @@ struct DashboardView: View {
 
                         if stepTypical != nil || projectedSteps != nil {
                             PacingPill(
-                                current: Double(steps),
+                                current: Double(todaySteps),
                                 typical: stepTypical,
                                 projected: projectedSteps,
                                 label: String(localized: "steps"),
@@ -888,10 +916,12 @@ struct DashboardView: View {
                                 comparison: goals.pacingComparison,
                                 lookback: goals.pacingLookback
                             )
+                            .hiddenOnPastDays(isViewingPast)
                         } else if showsPacing && pacingStepsInsufficient {
                             Text(pacingBuildingText(samples: pacingStepSamples))
                                 .font(.system(.caption2, design: .rounded))
                                 .foregroundStyle(Theme.textTertiary)
+                                .hiddenOnPastDays(isViewingPast)
                         }
                     }
                     .accessibilityElement(children: .combine)
@@ -985,7 +1015,7 @@ struct DashboardView: View {
             showDay(target)
         } label: {
             Image(systemName: systemName)
-                .font(.body.weight(.semibold))
+                .font(.subheadline.weight(.semibold))
                 .foregroundStyle(enabled ? Theme.textSecondary : Theme.textTertiary)
                 .frame(width: 36, height: 44)
                 .contentShape(Rectangle())
@@ -1099,7 +1129,7 @@ struct DashboardView: View {
             VStack(spacing: 8) {
                 if hasPill {
                     PacingPill(
-                        current: totalCalories,
+                        current: todayActive + todayResting,
                         typical: calorieTypical,
                         projected: projectedCalories,
                         label: String(localized: "cal"),
@@ -1115,6 +1145,7 @@ struct DashboardView: View {
             }
             .padding(.top, 16)
             .opacity(animateContent ? 1 : 0)
+            .hiddenOnPastDays(isViewingPast)
         }
     }
 
@@ -2030,8 +2061,8 @@ struct DashboardView: View {
     private func restoreWeeklyRecap() async {
         guard store.isPro, goals.weeklyRecapEnabled else { return }
         await NotificationService.restoreWeeklyRecapIfNeeded()
-        // The store can resolve a lapse while that was waiting.
-        if !store.isPro { NotificationService.cancelWeeklyRecap() }
+        // A lapse can resolve, or the switch go off, while that was waiting.
+        if !store.isPro || !goals.weeklyRecapEnabled { NotificationService.cancelWeeklyRecap() }
     }
 
     private func refresh() async {
@@ -4169,8 +4200,8 @@ private struct SettingsSheet: View {
                     goals.weeklyRecapEnabled = enabled
                     Task {
                         if enabled {
-                            await ensureNotificationPermission()
                             await NotificationService.scheduleWeeklyRecap()
+                            notificationStatus = await NotificationService.authorizationStatus()
                         } else {
                             NotificationService.cancelWeeklyRecap()
                         }
@@ -5128,5 +5159,14 @@ private struct CoachLinkButton: View {
 
     private var border: Color {
         colorScheme == .dark ? CoachBrand.aquamarine.opacity(0.22) : CoachBrand.nearBlack.opacity(0.08)
+    }
+}
+
+private extension View {
+    /// Keeps today's row laid out but invisible, so stepping to a past day moves nothing.
+    func hiddenOnPastDays(_ isViewingPast: Bool) -> some View {
+        opacity(isViewingPast ? 0 : 1)
+            .allowsHitTesting(!isViewingPast)
+            .accessibilityHidden(isViewingPast)
     }
 }

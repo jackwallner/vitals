@@ -14,11 +14,25 @@ final class StateMachineRegressionTests: XCTestCase {
         return calendar
     }
 
+    private func pausedKeys(day: String, now: Date, in calendar: Calendar) -> Set<String> {
+        ExcludedDays.pausedKeys(
+            since: ExcludedDays.date(fromKey: day, timeZone: calendar.timeZone),
+            now: now,
+            calendar: calendar
+        )
+    }
+
+    func testPauseOnADayAheadOfTodayStillCoversToday() {
+        let la = calendar("America/Los_Angeles")
+        let now = la.date(from: DateComponents(year: 2026, month: 11, day: 6, hour: 12))!
+        XCTAssertEqual(pausedKeys(day: "2026-11-07", now: now, in: la), ["2026-11-06"])
+    }
+
     func testPauseCoversStartDayThroughToday() {
         let ny = calendar("America/New_York")
         let now = ny.date(from: DateComponents(year: 2026, month: 11, day: 9, hour: 12))!
         XCTAssertEqual(
-            ExcludedDays.pausedKeys(sinceDay: "2026-11-07", now: now, calendar: ny),
+            pausedKeys(day: "2026-11-07", now: now, in: ny),
             ["2026-11-07", "2026-11-08", "2026-11-09"]
         )
     }
@@ -28,7 +42,7 @@ final class StateMachineRegressionTests: XCTestCase {
             let there = calendar(zone)
             let now = there.date(from: DateComponents(year: 2026, month: 11, day: 9, hour: 12))!
             XCTAssertEqual(
-                ExcludedDays.pausedKeys(sinceDay: "2026-11-07", now: now, calendar: there),
+                pausedKeys(day: "2026-11-07", now: now, in: there),
                 ["2026-11-07", "2026-11-08", "2026-11-09"],
                 zone
             )
@@ -69,6 +83,10 @@ final class StateMachineRegressionTests: XCTestCase {
 
     func testCelebratingAHigherTierRetiresTheLowerOnes() {
         XCTAssertNil(MilestoneCalculator.unfiredStreakMilestone(currentStreak: 16, firedIds: ["streak_14"]))
+    }
+
+    func testALaterStreakDoesNotCelebrateBelowTheBest() {
+        XCTAssertNil(MilestoneCalculator.unfiredStreakMilestone(currentStreak: 7, firedIds: ["streak_14"]))
     }
 
     func testTheNextTierStillFiresAfterASkippedOne() {

@@ -49,8 +49,8 @@ All seven are fixed in the commit that adds this section. Any of them a real cus
 
 - CP-1: the switch reads off while notifications are denied, and the recap reschedules on launch and foreground once they are allowed. Walked through on a simulator: Don't Allow, then allow in iOS Settings, then back to the app.
 - CP-2: the recap route checks `isPro`, and an open recap closes when a lapse resolves, which covers the cached `true` on cold launch. No real-lapse run.
-- CP-3: a lapse drops the Custom range to Week. `testLapsedSubscriberLosesTheCustomRange` fails without the fix.
-- CP-4: an approved Ask to Buy records the funnel as it stood at the tap, for up to 7 days.
+- CP-3: a confirmed lapse shows Week and keeps the saved Custom range for a resubscribe. `testLapsedSubscriberLosesTheCustomRange` fails without the fix.
+- CP-4: an approved Ask to Buy records the funnel as it stood at the tap, for up to 30 days, once that product is active.
 - SM-1: the pause is stored as a day key, so moving zones cannot shift it. A pause already shifted by travel stays shifted.
 - SM-2: only the highest reached streak tier can fire.
-- SM-3: tenure resets on a lapse the app sees. A lapse and resubscribe with no open in between is not seen.
+- SM-3: tenure resets when RevenueCat confirms a lapse. A lapse and resubscribe with no open in between is not seen.

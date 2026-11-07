@@ -514,6 +514,7 @@ struct MainTabView: View {
     @StateObject private var trialCoordinator = TrialOfferCoordinator.shared
     @StateObject private var milestoneCoordinator = MilestoneCoordinator.shared
     @StateObject private var recapCoordinator = WeeklyRecapCoordinator.shared
+    @State private var recapAwaitsEntitlement = false
     @StateObject private var reviewPromptCoordinator = ReviewPromptCoordinator.shared
     @StateObject private var deepLinkRouter = DeepLinkRouter.shared
     @State private var selectedTab = 0
@@ -880,9 +881,17 @@ struct MainTabView: View {
     /// using the app, and a subscriber who has kept Vitals+ for a month.
     /// Evaluated once real numbers are on screen so the ask never lands on an
     /// empty dashboard. Each fires at most once ever.
+    private func presentWeeklyRecap() {
+        // Land on Today, then present the recap once no other sheet is up.
+        guard trialPitch == nil, !showTrialPaywall, pendingMilestone == nil, !showReviewPrompt else { return }
+        selectedTab = 0
+        showWeeklyRecap = true
+    }
+
     private func evaluateHabitMilestones() {
         let habit = ReviewPromptTracker.recordTrackedDay()
-        let subscriber = ReviewPromptTracker.recordProStatus(isPro: store.isPro)
+        // Only a confirmed lapse clears tenure, and the cached flag can be stale.
+        let subscriber = store.isPro && ReviewPromptTracker.recordProStatus(isPro: true)
         evaluateWidgetInstallMoment()
         // A moment recorded away from Today (a report generated on History, a
         // recap read as the app went to background) has nowhere to surface at
@@ -1404,6 +1413,10 @@ struct MainTabView: View {
             // A cold launch from the recap notification reads the cached entitlement
             // until RevenueCat answers.
             if !isPro { showWeeklyRecap = false }
+            if isPro, recapAwaitsEntitlement {
+                recapAwaitsEntitlement = false
+                presentWeeklyRecap()
+            }
             if isPro {
                 // If a trial/milestone sheet is up, wait for its onDismiss to apply
                 // the pending feature. Requesting dietary HealthKit auth while that
@@ -1447,12 +1460,18 @@ struct MainTabView: View {
             guard present else { return }
             recapCoordinator.clear()
             // The recap is Vitals+. A notification delivered before a lapse can
-            // still be tapped after one.
-            guard store.isPro else { return }
-            // Land on Today, then present the recap once no other sheet is up.
-            guard trialPitch == nil, !showTrialPaywall, pendingMilestone == nil, !showReviewPrompt else { return }
-            selectedTab = 0
-            showWeeklyRecap = true
+            // still be tapped after one. A cached "free" can also be a renewal
+            // RevenueCat hasn't reported yet, so that waits for its answer.
+            guard store.isPro else {
+                recapAwaitsEntitlement = !store.lapseConfirmed
+                return
+            }
+            presentWeeklyRecap()
+        }
+        .onChange(of: store.lapseConfirmed, initial: true) { _, confirmed in
+            guard confirmed else { return }
+            recapAwaitsEntitlement = false
+            _ = ReviewPromptTracker.recordProStatus(isPro: false)
         }
         #if DEBUG
         .onReceive(NotificationCenter.default.publisher(for: .vitalsDebugShot)) { note in
@@ -1582,6 +1601,8 @@ struct MainTabView: View {
             ReviewPromptSheet(asksWhatToFix: reviewPromptAsksWhatToFix, onFinish: handleReviewPromptFinish)
         }
         .sheet(isPresented: $showWeeklyRecap, onDismiss: {
+            // A lapse closes the recap too, and that's nobody's good moment.
+            guard store.isPro else { return }
             // They opened their week and read it. One of the better-disposed
             // moments the app gets, and it was going unused.
             if ReviewPromptTracker.recordOneShotPositiveMoment(key: "weekly_recap_read") {

@@ -180,28 +180,38 @@ final class ConversionDiagnosticsTests: XCTestCase {
 
     func testApprovedAskToBuyRecordsTheFunnelFromTheTap() {
         ConversionDiagnostics.recordPitchView(impressionID: "vitals_trial_offer_launch")
-        ConversionDiagnostics.notePendingConversion(plan: "yearly", startedTrial: true, offeringID: "default")
+        ConversionDiagnostics.notePendingConversion(productID: "yearly.id", plan: "yearly", startedTrial: true, offeringID: "default")
         XCTAssertNil(ConversionDiagnostics.subscriberAttributes["converted_surface"], "a deferred purchase is not a sale yet")
 
         // More pitches while the parent decides must not rewrite how they converted.
         ConversionDiagnostics.recordPitchView(impressionID: "vitals_trial_offer_settings")
-        XCTAssertTrue(ConversionDiagnostics.recordPendingConversion())
+        XCTAssertTrue(ConversionDiagnostics.recordPendingConversion(activeProductIDs: ["yearly.id"]))
 
         let attributes = ConversionDiagnostics.subscriberAttributes
         XCTAssertEqual(attributes["converted_surface"], "trial_offer_launch")
         XCTAssertEqual(attributes["pitch_views_at_convert"], "1")
         XCTAssertEqual(attributes["converted_with_trial"], "true")
-        XCTAssertFalse(ConversionDiagnostics.recordPendingConversion(), "the note is spent")
+        XCTAssertFalse(ConversionDiagnostics.recordPendingConversion(activeProductIDs: ["yearly.id"]), "the note is spent")
     }
 
     func testStaleOrClearedDeferredPurchaseRecordsNothing() {
         let tap = Date(timeIntervalSince1970: 1_800_000_000)
-        ConversionDiagnostics.notePendingConversion(plan: "yearly", startedTrial: true, now: tap)
-        XCTAssertFalse(ConversionDiagnostics.recordPendingConversion(now: tap.addingTimeInterval(8 * 86_400)))
+        ConversionDiagnostics.notePendingConversion(productID: "yearly.id", plan: "yearly", startedTrial: true, now: tap)
+        XCTAssertFalse(ConversionDiagnostics.recordPendingConversion(activeProductIDs: ["yearly.id"], now: tap.addingTimeInterval(31 * 86_400)))
         XCTAssertNil(ConversionDiagnostics.subscriberAttributes["converted_surface"])
 
-        ConversionDiagnostics.notePendingConversion(plan: "yearly", startedTrial: true)
+        ConversionDiagnostics.notePendingConversion(productID: "yearly.id", plan: "yearly", startedTrial: true)
         ConversionDiagnostics.clearPendingConversion()
-        XCTAssertFalse(ConversionDiagnostics.recordPendingConversion())
+        XCTAssertFalse(ConversionDiagnostics.recordPendingConversion(activeProductIDs: ["yearly.id"]))
+    }
+
+    /// A restore of some other plan is not the deferred purchase being approved.
+    func testAccessToAnotherProductLeavesTheDeferredPurchaseWaiting() {
+        ConversionDiagnostics.recordPitchView(impressionID: "vitals_trial_offer_launch")
+        ConversionDiagnostics.notePendingConversion(productID: "yearly.id", plan: "yearly", startedTrial: true)
+
+        XCTAssertFalse(ConversionDiagnostics.recordPendingConversion(activeProductIDs: ["monthly.id"]))
+        XCTAssertNil(ConversionDiagnostics.subscriberAttributes["converted_surface"])
+        XCTAssertTrue(ConversionDiagnostics.recordPendingConversion(activeProductIDs: ["yearly.id"]))
     }
 }

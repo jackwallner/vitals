@@ -98,23 +98,16 @@ enum ExcludedDays {
         return key(for: Date(timeIntervalSince1970: legacyInstant))
     }
 
-    /// Every day covered by a pause that started on `sinceDay`, read in `calendar`.
-    static func pausedKeys(sinceDay: String?, now: Date = .now, calendar: Calendar = .current) -> Set<String> {
-        let since = sinceDay.flatMap { date(fromKey: $0, timeZone: calendar.timeZone) }
-        return pausedKeys(since: since, now: now, calendar: calendar)
-    }
-
     /// Every day covered by a running pause: the pause day through today,
     /// inclusive. Empty when nothing is paused. Today is in the range because a
     /// paused day the user is currently living through is exactly the day they
-    /// pressed Pause about.
+    /// pressed Pause about. A westward date-line flight can put the pause day
+    /// ahead of today, and today still counts as paused then.
     static func pausedKeys(since pausedSince: Date?, now: Date = .now, calendar: Calendar = .current) -> Set<String> {
         guard let pausedSince else { return [] }
-        let start = calendar.startOfDay(for: pausedSince)
         let today = calendar.startOfDay(for: now)
-        guard start <= today else { return [] }
         var keys: Set<String> = []
-        var cursor = start
+        var cursor = min(calendar.startOfDay(for: pausedSince), today)
         while cursor <= today {
             keys.insert(key(for: cursor, timeZone: calendar.timeZone))
             guard let next = calendar.date(byAdding: .day, value: 1, to: cursor) else { break }

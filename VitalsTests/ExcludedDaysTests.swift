@@ -31,13 +31,13 @@ final class ExcludedDaysTests: XCTestCase {
         XCTAssertTrue(ExcludedDays.pausedKeys(since: nil, now: .now, calendar: calendar).isEmpty)
     }
 
-    func testPauseDatedInTheFutureCoversNothing() throws {
+    func testPauseDatedAheadOfTodayCoversOnlyToday() throws {
         let keys = ExcludedDays.pausedKeys(
             since: try day(2026, 9, 20),
             now: try day(2026, 9, 11),
             calendar: calendar
         )
-        XCTAssertTrue(keys.isEmpty)
+        XCTAssertEqual(keys, ["2026-09-11"])
     }
 
     func testEffectiveKeysUnionPickedDaysWithTheRunningPause() throws {

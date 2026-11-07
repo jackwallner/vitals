@@ -139,12 +139,13 @@ enum ConversionDiagnostics {
     }
 
     /// Days a deferred purchase stays attributable to the tap that started it.
-    static let pendingConversionLifetimeDays = 7.0
+    static let pendingConversionLifetimeDays = 30.0
 
     /// A purchase was deferred (Ask to Buy), so it isn't a sale yet and may never
     /// be. Freezes the funnel at the tap, for `recordPendingConversion` to write
     /// if access arrives.
     static func notePendingConversion(
+        productID: String,
         plan: String,
         startedTrial: Bool,
         variant: String? = nil,
@@ -153,6 +154,7 @@ enum ConversionDiagnostics {
     ) {
         let d = defaults
         var note: [String: Any] = [
+            "productID": productID,
             "plan": plan,
             "startedTrial": startedTrial,
             "surface": d.string(forKey: Key.lastSurface) ?? "unknown",
@@ -164,17 +166,23 @@ enum ConversionDiagnostics {
         d.set(note, forKey: Key.pendingConversion)
     }
 
-    /// Access arrived with no purchase call running: a deferred purchase was
+    /// The deferred product turned up with no purchase call running: it was
     /// approved. Writes the conversion frozen at the tap. Returns whether it did.
+    /// Access to anything else, such as a restore, leaves the note waiting.
     @discardableResult
-    static func recordPendingConversion(now: Date = .now) -> Bool {
+    static func recordPendingConversion(activeProductIDs: Set<String>, now: Date = .now) -> Bool {
         let d = defaults
         guard let note = d.dictionary(forKey: Key.pendingConversion) else { return false }
-        d.removeObject(forKey: Key.pendingConversion)
         guard let plan = note["plan"] as? String,
+              let productID = note["productID"] as? String,
               let at = note["at"] as? Double,
               now.timeIntervalSince1970 - at <= pendingConversionLifetimeDays * 86_400
-        else { return false }
+        else {
+            d.removeObject(forKey: Key.pendingConversion)
+            return false
+        }
+        guard activeProductIDs.contains(productID) else { return false }
+        d.removeObject(forKey: Key.pendingConversion)
         recordConversion(
             plan: plan,
             startedTrial: note["startedTrial"] as? Bool ?? false,

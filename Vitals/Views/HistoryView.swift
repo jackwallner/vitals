@@ -155,10 +155,30 @@ struct HistoryView: View {
 
     /// Custom is Vitals+, and the saved period outlives the subscription: a lapsed
     /// user would keep a frozen paid range behind a locked chip. The change handler
-    /// saves the new period and reloads.
-    private func dropLockedCustomRange() {
-        if !store.isPro && selectedPeriod == .custom { selectedPeriod = .week }
+    /// reloads. Waits for RevenueCat, because a cached "free" can be a customer
+    /// who has since resubscribed. The saved choice stays, so resubscribing brings
+    /// the range back.
+    private func syncCustomRangeAccess() {
+        if store.lapseConfirmed {
+            showCustomRange = false
+            guard selectedPeriod == .custom else { return }
+            keepsSavedPeriod = true
+            selectedPeriod = .week
+        } else if store.isPro, selectedPeriod != .custom, HistoryPrefs.savedPeriod() == .custom {
+            selectedPeriod = .custom
+            resetForReload()
+            Task { await loadHistory() }
+        }
     }
+
+    private func savePeriodChoice() {
+        if keepsSavedPeriod {
+            keepsSavedPeriod = false
+        } else {
+            HistoryPrefs.save(period: selectedPeriod, customStart: customStart, customEnd: customEnd)
+        }
+    }
+    @State private var keepsSavedPeriod = false
     @State private var customStart: Date = HistoryPrefs.savedCustomStart()
     @State private var customEnd: Date = HistoryPrefs.savedCustomEnd()
     @State private var showCustomRange = false
@@ -824,7 +844,7 @@ struct HistoryView: View {
         }
         .onChange(of: selectedPeriod) { _, _ in
             if selectedPeriod != .custom {
-                HistoryPrefs.save(period: selectedPeriod, customStart: customStart, customEnd: customEnd)
+                savePeriodChoice()
                 resetForReload()
                 Task { await loadHistory() }
             }
@@ -852,10 +872,10 @@ struct HistoryView: View {
             Task { await loadHistory() }
         }
         .onAppear {
-            dropLockedCustomRange()
+            syncCustomRangeAccess()
             primeFromCache()
         }
-        .onChange(of: store.isPro) { _, _ in dropLockedCustomRange() }
+        .onChange(of: store.lapseConfirmed) { _, _ in syncCustomRangeAccess() }
         .task {
             if ScreenshotConfig.wantsHistoryTab {
                 selectedPeriod = .month
@@ -1746,14 +1766,14 @@ struct HistoryView: View {
         .toolbar(isUnfoldedPane ? .hidden : .automatic, for: .navigationBar)
         .background(InteractivePopGestureEnabler())
         .onAppear {
-            dropLockedCustomRange()
+            syncCustomRangeAccess()
             primeFromCache()
         }
-        .onChange(of: store.isPro) { _, _ in dropLockedCustomRange() }
+        .onChange(of: store.lapseConfirmed) { _, _ in syncCustomRangeAccess() }
         .task { await loadHistory() }
         .onChange(of: selectedPeriod) { _, _ in
             if selectedPeriod != .custom {
-                HistoryPrefs.save(period: selectedPeriod, customStart: customStart, customEnd: customEnd)
+                savePeriodChoice()
                 resetForReload()
                 Task { await loadHistory() }
             }

@@ -367,6 +367,8 @@ final class SeededHealthFlowUITests: XCTestCase {
             _ = app.buttons["nonexistent"].waitForExistence(timeout: 1)
         }
         XCTAssertFalse((todayRing.value as? String ?? "").hasPrefix("0 "), "Seed never reached Today")
+        let todayRingTop = todayRing.frame.minY
+        let todayStepsTop = app.buttons["Steps"].frame.minY
 
         previous.tap()
         XCTAssertTrue(next.waitForExistence(timeout: 5), "Next day arrow missing on a past day")
@@ -391,6 +393,8 @@ final class SeededHealthFlowUITests: XCTestCase {
 
         let ring = app.buttons["Calorie progress"]
         XCTAssertTrue(ring.exists, "Calorie ring missing on a past day")
+        XCTAssertEqual(ring.frame.minY, todayRingTop, accuracy: 1, "The ring moved between days")
+        XCTAssertEqual(stepsCard.frame.minY, todayStepsTop, accuracy: 1, "The steps card moved between days")
         let ringValue = ring.value as? String ?? ""
         let digits = ringValue.prefix { !$0.isLetter }.filter(\.isNumber)
         let yesterdayCalories = try! XCTUnwrap(Int(digits), "No calorie figure in \(ringValue)")
