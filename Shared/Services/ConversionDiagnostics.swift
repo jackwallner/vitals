@@ -49,6 +49,7 @@ enum ConversionDiagnostics {
         static let convertedVariant = "conv.convertedVariant"
         static let convertedOffering = "conv.convertedOffering"
         static let convertedAt = "conv.convertedAt"
+        static let pendingConversion = "conv.pendingConversion"
         static let onboardingVariant = "conv.onboardingVariant"
 
         /// Owned by `GoalSettings`, not by this file, but it lives in the same
@@ -110,16 +111,21 @@ enum ConversionDiagnostics {
     ///     enrolled in it.
     ///   - offeringID: the offering the arm came from, so a result can be tied
     ///     back to the experiment that produced it.
+    ///   - surface: the surface that sold it, when that was frozen earlier. Defaults
+    ///     to the last one on screen.
+    ///   - views: the pitch count frozen with `surface`. Defaults to the total so far.
     static func recordConversion(
         plan: String,
         startedTrial: Bool,
         variant: String? = nil,
-        offeringID: String? = nil
+        offeringID: String? = nil,
+        surface: String? = nil,
+        views: Int? = nil
     ) {
         let d = defaults
         guard d.string(forKey: Key.convertedOn) == nil else { return }
-        d.set(d.string(forKey: Key.lastSurface) ?? "unknown", forKey: Key.convertedOn)
-        d.set(d.integer(forKey: Key.totalViews), forKey: Key.viewsAtConvert)
+        d.set(surface ?? d.string(forKey: Key.lastSurface) ?? "unknown", forKey: Key.convertedOn)
+        d.set(views ?? d.integer(forKey: Key.totalViews), forKey: Key.viewsAtConvert)
         d.set(plan, forKey: Key.convertedPlan)
         d.set(startedTrial, forKey: Key.convertedWithTrial)
         if let variant { d.set(variant, forKey: Key.convertedVariant) }
@@ -130,6 +136,58 @@ enum ConversionDiagnostics {
             d.set(max(0, days), forKey: Key.daysToConvert)
         }
         logger.info("Conversion on \(d.string(forKey: Key.convertedOn) ?? "?", privacy: .public) after \(d.integer(forKey: Key.viewsAtConvert)) pitches")
+    }
+
+    /// Days a deferred purchase stays attributable to the tap that started it.
+    static let pendingConversionLifetimeDays = 7.0
+
+    /// A purchase was deferred (Ask to Buy), so it isn't a sale yet and may never
+    /// be. Freezes the funnel at the tap, for `recordPendingConversion` to write
+    /// if access arrives.
+    static func notePendingConversion(
+        plan: String,
+        startedTrial: Bool,
+        variant: String? = nil,
+        offeringID: String? = nil,
+        now: Date = .now
+    ) {
+        let d = defaults
+        var note: [String: Any] = [
+            "plan": plan,
+            "startedTrial": startedTrial,
+            "surface": d.string(forKey: Key.lastSurface) ?? "unknown",
+            "views": d.integer(forKey: Key.totalViews),
+            "at": now.timeIntervalSince1970,
+        ]
+        if let variant { note["variant"] = variant }
+        if let offeringID { note["offeringID"] = offeringID }
+        d.set(note, forKey: Key.pendingConversion)
+    }
+
+    /// Access arrived with no purchase call running: a deferred purchase was
+    /// approved. Writes the conversion frozen at the tap. Returns whether it did.
+    @discardableResult
+    static func recordPendingConversion(now: Date = .now) -> Bool {
+        let d = defaults
+        guard let note = d.dictionary(forKey: Key.pendingConversion) else { return false }
+        d.removeObject(forKey: Key.pendingConversion)
+        guard let plan = note["plan"] as? String,
+              let at = note["at"] as? Double,
+              now.timeIntervalSince1970 - at <= pendingConversionLifetimeDays * 86_400
+        else { return false }
+        recordConversion(
+            plan: plan,
+            startedTrial: note["startedTrial"] as? Bool ?? false,
+            variant: note["variant"] as? String,
+            offeringID: note["offeringID"] as? String,
+            surface: note["surface"] as? String,
+            views: note["views"] as? Int
+        )
+        return true
+    }
+
+    static func clearPendingConversion() {
+        defaults.removeObject(forKey: Key.pendingConversion)
     }
 
     // MARK: - Reading

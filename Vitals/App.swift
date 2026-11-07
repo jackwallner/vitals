@@ -51,6 +51,9 @@ private final class PhoneGoalSyncService: NSObject, WCSessionDelegate {
             GoalSyncKeys.averagesPausedSince: StoreService.shared.isPro
                 ? (goals.averagesPausedSince?.timeIntervalSince1970 ?? 0)
                 : 0,
+            GoalSyncKeys.averagesPausedDay: StoreService.shared.isPro
+                ? (goals.averagesPausedDay ?? "")
+                : "",
         ]
 
         do {
@@ -194,7 +197,7 @@ private struct RootView: View {
                 PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
                 #endif
             }
-            .onChange(of: goals.averagesPausedSince) { _, _ in
+            .onChange(of: goals.averagesPausedDay) { _, _ in
                 #if canImport(WatchConnectivity)
                 PhoneGoalSyncService.shared.pushCurrentGoals(from: goals)
                 #endif
@@ -226,6 +229,8 @@ struct VitalsApp: App {
             if let since = Calendar.current.date(byAdding: .day, value: -30, to: .now) {
                 ExcludedDays.savePausedSince(DateHelpers.startOfDay(since), to: defaults)
             }
+            // And the paid Custom range as their last History selection.
+            defaults?.set("Custom", forKey: "history.period")
         } else if DebugLaunchConfig.seedHealth {
             // The seed above writes to the App Group, which outlives the app.
             // Every seeded UI test shares one simulator, so without this a test
@@ -235,6 +240,9 @@ struct VitalsApp: App {
             let defaults = UserDefaults(suiteName: vitalsAppGroupID)
             ExcludedDays.save([], to: defaults)
             ExcludedDays.savePausedSince(nil, to: defaults)
+            if defaults?.string(forKey: "history.period") == "Custom" {
+                defaults?.removeObject(forKey: "history.period")
+            }
         }
         #endif
         // Run the launch handler on the main queue. With `using: nil` the system uses a
@@ -1393,6 +1401,9 @@ struct MainTabView: View {
             if done { skipPassiveTrialThisSession = true }
         }
         .onChange(of: store.isPro) { _, isPro in
+            // A cold launch from the recap notification reads the cached entitlement
+            // until RevenueCat answers.
+            if !isPro { showWeeklyRecap = false }
             if isPro {
                 // If a trial/milestone sheet is up, wait for its onDismiss to apply
                 // the pending feature. Requesting dietary HealthKit auth while that
@@ -1435,6 +1446,9 @@ struct MainTabView: View {
         .onChange(of: recapCoordinator.pendingPresent) { _, present in
             guard present else { return }
             recapCoordinator.clear()
+            // The recap is Vitals+. A notification delivered before a lapse can
+            // still be tapped after one.
+            guard store.isPro else { return }
             // Land on Today, then present the recap once no other sheet is up.
             guard trialPitch == nil, !showTrialPaywall, pendingMilestone == nil, !showReviewPrompt else { return }
             selectedTab = 0

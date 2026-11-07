@@ -444,6 +444,7 @@ struct DashboardView: View {
             guard goals.hasCompletedSetup else { return }
             if newPhase == .active {
                 Task { await refresh() }
+                Task { await restoreWeeklyRecap() }
             }
         }
         // Local midnight. Without this the dashboard sits on the previous day —
@@ -469,6 +470,7 @@ struct DashboardView: View {
         .onReceive(NotificationCenter.default.publisher(for: .vitalsEnableMacrosWithHealthAuth)) { _ in
             beginEnableMacrosWithHealthAuth()
         }
+        .task { await restoreWeeklyRecap() }
         .task {
             // Presented plainly. Suppressing the slide-up by setting this
             // inside a `disablesAnimations` transaction is what onboarding
@@ -2023,6 +2025,13 @@ struct DashboardView: View {
 
     private func isAllZero(_ stats: (active: Double, resting: Double, steps: Int)) -> Bool {
         HealthKitService.isAllZero(stats)
+    }
+
+    private func restoreWeeklyRecap() async {
+        guard store.isPro, goals.weeklyRecapEnabled else { return }
+        await NotificationService.restoreWeeklyRecapIfNeeded()
+        // The store can resolve a lapse while that was waiting.
+        if !store.isPro { NotificationService.cancelWeeklyRecap() }
     }
 
     private func refresh() async {
@@ -4154,12 +4163,13 @@ private struct SettingsSheet: View {
 
     private var weeklyRecapBinding: Binding<Bool> {
         Binding(
-            get: { store.isPro && goals.weeklyRecapEnabled },
+            get: { store.isPro && goals.weeklyRecapEnabled && notificationStatus != .denied },
             set: { enabled in
                 if store.isPro {
                     goals.weeklyRecapEnabled = enabled
                     Task {
                         if enabled {
+                            await ensureNotificationPermission()
                             await NotificationService.scheduleWeeklyRecap()
                         } else {
                             NotificationService.cancelWeeklyRecap()

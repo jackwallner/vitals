@@ -671,6 +671,7 @@ final class StoreService: NSObject, ObservableObject {
         } catch where Self.isDeferredPurchase(error) {
             // RevenueCat throws for Ask to Buy and other StoreKit `.pending`
             // results instead of returning them, so they surface here.
+            notePendingConversion(for: product, startedTrial: startedTrial)
             syncConversionAttributes()
             return .pending
         }
@@ -683,9 +684,11 @@ final class StoreService: NSObject, ObservableObject {
         // frozen into the funnel as a sale, and there is no second write to
         // take it back: recordConversion only ever records the first one.
         guard result.customerInfo.hasVitalsProEntitlement else {
+            notePendingConversion(for: product, startedTrial: startedTrial)
             syncConversionAttributes()
             return .pending
         }
+        ConversionDiagnostics.clearPendingConversion()
         // Freeze what the funnel looked like at the moment of sale: which
         // surface was last on screen, and how many pitches came before it.
         ConversionDiagnostics.recordConversion(
@@ -696,6 +699,15 @@ final class StoreService: NSObject, ObservableObject {
         )
         syncConversionAttributes()
         return .purchased
+    }
+
+    private func notePendingConversion(for product: Package, startedTrial: Bool) {
+        ConversionDiagnostics.notePendingConversion(
+            plan: String(describing: product.vitalsPackageKind),
+            startedTrial: startedTrial,
+            variant: upgradeTabVariant.rawValue,
+            offeringID: currentOffering?.identifier
+        )
     }
 
     /// Whether a thrown purchase error is StoreKit deferring the transaction
@@ -758,6 +770,11 @@ final class StoreService: NSObject, ObservableObject {
         logger.info("Applied customerInfo — active: [\(activeKeys, privacy: .public)] all: [\(allKeys, privacy: .public)]")
         let hasActiveSubscription = customerInfo.hasVitalsProEntitlement
         resolveEntitlement(isPro: hasActiveSubscription)
+        // An approved Ask to Buy lands here, with no purchase call running to
+        // record the sale.
+        if hasActiveSubscription, !purchaseInFlight, ConversionDiagnostics.recordPendingConversion() {
+            syncConversionAttributes()
+        }
         // Running or already ended: someone who cancels and next opens the app
         // after the week is still owed the ask.
         let entitlement = customerInfo.entitlements.active.values.first ?? customerInfo.entitlements.all.values.first

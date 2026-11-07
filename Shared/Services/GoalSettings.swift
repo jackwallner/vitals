@@ -41,6 +41,7 @@ enum GoalSyncKeys {
     /// not an absent key, because `updateApplicationContext` replaces the whole
     /// dictionary and the watch has to be able to tell "resumed" from "unsent".
     static let averagesPausedSince = "goalSync.averagesPausedSince"
+    static let averagesPausedDay = "goalSync.averagesPausedDay"
 }
 
 @MainActor
@@ -379,18 +380,25 @@ final class GoalSettings: ObservableObject {
         }
     }
 
-    /// The day averages were paused, or nil when they're counting normally.
-    /// See [[ExcludedDays]] for why this is a date and not a flag.
-    @Published private(set) var averagesPausedSince: Date? {
+    /// The day averages were paused ("yyyy-MM-dd"), or nil when they're counting
+    /// normally. See [[ExcludedDays]] for why this is a day and not a flag or an
+    /// instant.
+    @Published private(set) var averagesPausedDay: String? {
         didSet {
             excludedKeysCache.invalidate()
-            guard averagesPausedSince != oldValue else { return }
-            ExcludedDays.savePausedSince(averagesPausedSince, to: defaults)
+            guard averagesPausedDay != oldValue else { return }
+            ExcludedDays.savePausedDay(averagesPausedDay, to: defaults)
             WidgetCenter.shared.reloadAllTimelines()
         }
     }
 
-    var isAveragesPaused: Bool { averagesPausedSince != nil }
+    /// The start of the paused day in the current time zone, read fresh so it
+    /// follows the phone when it travels.
+    var averagesPausedSince: Date? {
+        averagesPausedDay.flatMap { ExcludedDays.date(fromKey: $0) }
+    }
+
+    var isAveragesPaused: Bool { averagesPausedDay != nil }
 
     /// Every day that counts toward nothing: picked days plus the running pause.
     /// Recomputed per read so a pause that rolls over midnight covers the new day
@@ -454,8 +462,8 @@ final class GoalSettings: ObservableObject {
     /// paused keeps the original date, so the banner can't quietly reset the
     /// stretch it is reporting.
     func pauseAverages(from date: Date = .now) {
-        guard averagesPausedSince == nil else { return }
-        averagesPausedSince = DateHelpers.startOfDay(date)
+        guard averagesPausedDay == nil else { return }
+        averagesPausedDay = ExcludedDays.key(for: date)
     }
 
     /// Ends the pause, keeping every day it covered excluded. Resuming is not
@@ -464,7 +472,7 @@ final class GoalSettings: ObservableObject {
     func resumeAverages(now: Date = .now) {
         guard let pausedSince = averagesPausedSince else { return }
         let covered = ExcludedDays.pausedKeys(since: pausedSince, now: now)
-        averagesPausedSince = nil
+        averagesPausedDay = nil
         pickedExcludedDayKeys.formUnion(covered)
     }
 
@@ -486,9 +494,9 @@ final class GoalSettings: ObservableObject {
     /// Applies the exclusion state pushed from the phone. Watch-side only: the
     /// phone owns this setting, and the watch mirrors it so its trends filter
     /// the same days the phone's do.
-    func applySyncedExclusions(keys: Set<String>, pausedSince: Date?) {
+    func applySyncedExclusions(keys: Set<String>, pausedDay: String?) {
         pickedExcludedDayKeys = keys
-        averagesPausedSince = pausedSince
+        averagesPausedDay = pausedDay
     }
 
     /// Clears the hand-picked days. A running pause is a separate decision with
@@ -683,7 +691,7 @@ final class GoalSettings: ObservableObject {
         self.calorieGoalSetAt = defaults.object(forKey: "calorieGoalSetAt") as? Date
         self.stepGoalSetAt = defaults.object(forKey: "stepGoalSetAt") as? Date
         self.pickedExcludedDayKeys = ExcludedDays.load(from: defaults)
-        self.averagesPausedSince = ExcludedDays.loadPausedSince(from: defaults)
+        self.averagesPausedDay = ExcludedDays.loadPausedDay(from: defaults)
 
         let calEnabled = defaults.object(forKey: "calorieGoalEnabled") as? Bool ?? true
         if calEnabled {
@@ -732,7 +740,7 @@ final class GoalSettings: ObservableObject {
         // A capture run inherits whatever the device was left at, and a day the
         // fixtures draw but no figure counts is a broken screenshot.
         pickedExcludedDayKeys = []
-        averagesPausedSince = nil
+        averagesPausedDay = nil
         showCalories = true
         showSteps = true
         showNetCalories = false
@@ -760,7 +768,7 @@ final class GoalSettings: ObservableObject {
             hasCompletedSetup = true
             if let days = DebugLaunchConfig.pausedDaysAgo,
                let since = Calendar.current.date(byAdding: .day, value: -days, to: .now) {
-                averagesPausedSince = DateHelpers.startOfDay(since)
+                averagesPausedDay = ExcludedDays.key(for: since)
             }
             return
         }

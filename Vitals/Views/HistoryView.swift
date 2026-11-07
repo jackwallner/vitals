@@ -152,6 +152,13 @@ struct HistoryView: View {
         return 90 + (store.isPro && goals.isAveragesPaused ? pausedBannerInset : 0)
     }
     @State private var selectedPeriod: Period = HistoryPrefs.savedPeriod()
+
+    /// Custom is Vitals+, and the saved period outlives the subscription: a lapsed
+    /// user would keep a frozen paid range behind a locked chip. The change handler
+    /// saves the new period and reloads.
+    private func dropLockedCustomRange() {
+        if !store.isPro && selectedPeriod == .custom { selectedPeriod = .week }
+    }
     @State private var customStart: Date = HistoryPrefs.savedCustomStart()
     @State private var customEnd: Date = HistoryPrefs.savedCustomEnd()
     @State private var showCustomRange = false
@@ -634,6 +641,7 @@ struct HistoryView: View {
                                 selectedPeriod = period
                             }
                         }
+                        .accessibilityIdentifier("history-period-\(period.rawValue)")
                     }
                 }
                 .padding(3)
@@ -843,7 +851,11 @@ struct HistoryView: View {
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             Task { await loadHistory() }
         }
-        .onAppear { primeFromCache() }
+        .onAppear {
+            dropLockedCustomRange()
+            primeFromCache()
+        }
+        .onChange(of: store.isPro) { _, _ in dropLockedCustomRange() }
         .task {
             if ScreenshotConfig.wantsHistoryTab {
                 selectedPeriod = .month
@@ -1733,7 +1745,11 @@ struct HistoryView: View {
         // away from this pane's title. The pane draws its own instead.
         .toolbar(isUnfoldedPane ? .hidden : .automatic, for: .navigationBar)
         .background(InteractivePopGestureEnabler())
-        .onAppear { primeFromCache() }
+        .onAppear {
+            dropLockedCustomRange()
+            primeFromCache()
+        }
+        .onChange(of: store.isPro) { _, _ in dropLockedCustomRange() }
         .task { await loadHistory() }
         .onChange(of: selectedPeriod) { _, _ in
             if selectedPeriod != .custom {
@@ -2905,6 +2921,7 @@ private struct SegmentButton: View {
         }
         .buttonStyle(.plain)
         .animation(.easeInOut(duration: 0.2), value: isSelected)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
         .accessibilityHint(locked ? String(localized: "Vitals+: pick any date range") : "")
     }
 }

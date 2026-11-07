@@ -19,6 +19,7 @@
 		0A15A50AFA7DC19834C3D106 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
 		0ABF71410170EF6C0DF7D63D /* PaywallUIVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92A4096A4EFCD26122F1D62 /* PaywallUIVariant.swift */; };
 		0AC639F100296E17EF0A0680 /* GoalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6804EF421C3725E70674D40 /* GoalSettings.swift */; };
+		0C04E2BA47FBAD6872186EC7 /* StateMachineRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5D543DBAC741320A695C21 /* StateMachineRegressionTests.swift */; };
 		0E0201FB0EAAC755B25E719B /* PaywallScreenshotHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8287269CC5CE093BEF6CBB25 /* PaywallScreenshotHarness.swift */; };
 		0E0E46ECA14AB2494C91909D /* VitalsConversionCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1FB17511E85720FB3545D /* VitalsConversionCopy.swift */; };
 		0EA5DC155C32F07931E96361 /* ProjectionCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE9370DC12BAC7716DA62A5 /* ProjectionCalculator.swift */; };
@@ -445,6 +446,7 @@
 		88A7B6FE8ABB68654889591B /* DayBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayBrowser.swift; sourceTree = "<group>"; };
 		8950B6E783926A868F274E1F /* ExcludedDays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcludedDays.swift; sourceTree = "<group>"; };
 		8984606AC7BF0325F5B42DA3 /* TodaySnapshotResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaySnapshotResolverTests.swift; sourceTree = "<group>"; };
+		8B5D543DBAC741320A695C21 /* StateMachineRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachineRegressionTests.swift; sourceTree = "<group>"; };
 		8BA6AECE7D2FEB86748EA85D /* ReviewPromptTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewPromptTracker.swift; sourceTree = "<group>"; };
 		91B6F4FE3966882D8D2A9287 /* ReviewPromptSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewPromptSheet.swift; sourceTree = "<group>"; };
 		91C056000F5C8A4A19422218 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -711,6 +713,7 @@
 				7896892E56FE0D79E979DEE7 /* ProjectionCalculatorTests.swift */,
 				2A44C7A591373EE7FB91D88F /* ReviewPromptTrackerTests.swift */,
 				96C94BF0069C1CB87ADF04D7 /* ScreenshotFixturesTests.swift */,
+				8B5D543DBAC741320A695C21 /* StateMachineRegressionTests.swift */,
 				4F1950F301FFCB4FC5DBA454 /* SummaryReportTrendTests.swift */,
 				8984606AC7BF0325F5B42DA3 /* TodaySnapshotResolverTests.swift */,
 				CADA89CDD5ECB0D56E671B1A /* TrialNoteTests.swift */,
@@ -1331,6 +1334,7 @@
 				A37F41D487E59DBC81432D52 /* ReviewPromptTrackerTests.swift in Sources */,
 				201690E9207EE09A9777340F /* ScreenshotConfig.swift in Sources */,
 				39FC9CB90D989E00A2D4F705 /* ScreenshotFixturesTests.swift in Sources */,
+				0C04E2BA47FBAD6872186EC7 /* StateMachineRegressionTests.swift in Sources */,
 				395FBEEB454541B074B31DB4 /* StepTrendSummary.swift in Sources */,
 				26AEB856474B93AD30FDD790 /* SummaryReportGenerator.swift in Sources */,
 				ADEF060819776E792B198B28 /* SummaryReportTrendTests.swift in Sources */,
@@ -1551,7 +1555,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 250;
+				CURRENT_PROJECT_VERSION = 251;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1700,7 +1704,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 250;
+				CURRENT_PROJECT_VERSION = 251;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

@@ -177,4 +177,31 @@ final class ConversionDiagnosticsTests: XCTestCase {
         XCTAssertEqual(ConversionDiagnostics.subscriberAttributes["days_to_convert"], "0")
         XCTAssertEqual(ConversionDiagnostics.subscriberAttributes["converted_with_trial"], "false")
     }
+
+    func testApprovedAskToBuyRecordsTheFunnelFromTheTap() {
+        ConversionDiagnostics.recordPitchView(impressionID: "vitals_trial_offer_launch")
+        ConversionDiagnostics.notePendingConversion(plan: "yearly", startedTrial: true, offeringID: "default")
+        XCTAssertNil(ConversionDiagnostics.subscriberAttributes["converted_surface"], "a deferred purchase is not a sale yet")
+
+        // More pitches while the parent decides must not rewrite how they converted.
+        ConversionDiagnostics.recordPitchView(impressionID: "vitals_trial_offer_settings")
+        XCTAssertTrue(ConversionDiagnostics.recordPendingConversion())
+
+        let attributes = ConversionDiagnostics.subscriberAttributes
+        XCTAssertEqual(attributes["converted_surface"], "trial_offer_launch")
+        XCTAssertEqual(attributes["pitch_views_at_convert"], "1")
+        XCTAssertEqual(attributes["converted_with_trial"], "true")
+        XCTAssertFalse(ConversionDiagnostics.recordPendingConversion(), "the note is spent")
+    }
+
+    func testStaleOrClearedDeferredPurchaseRecordsNothing() {
+        let tap = Date(timeIntervalSince1970: 1_800_000_000)
+        ConversionDiagnostics.notePendingConversion(plan: "yearly", startedTrial: true, now: tap)
+        XCTAssertFalse(ConversionDiagnostics.recordPendingConversion(now: tap.addingTimeInterval(8 * 86_400)))
+        XCTAssertNil(ConversionDiagnostics.subscriberAttributes["converted_surface"])
+
+        ConversionDiagnostics.notePendingConversion(plan: "yearly", startedTrial: true)
+        ConversionDiagnostics.clearPendingConversion()
+        XCTAssertFalse(ConversionDiagnostics.recordPendingConversion())
+    }
 }

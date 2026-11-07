@@ -139,9 +139,13 @@ enum ReviewPromptTracker {
 
     /// Stamps when Vitals+ first turned on and reports whether the subscriber has
     /// now held it for `subscriberMomentDays`. Fires at most once ever, and only
-    /// while they still have it — a lapsed subscriber is not a happy moment.
+    /// while they still have it. A lapsed subscriber is not a happy moment, and
+    /// a lapse restarts the count, so a resubscription's first day isn't "kept it".
     static func recordProStatus(isPro: Bool, now: Date = .now) -> Bool {
-        guard isPro else { return false }
+        guard isPro else {
+            defaults.removeObject(forKey: proSinceKey)
+            return false
+        }
         guard let since = defaults.object(forKey: proSinceKey) as? Date else {
             defaults.set(now, forKey: proSinceKey)
             return false

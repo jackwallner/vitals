@@ -114,18 +114,19 @@ enum MilestoneCalculator {
         }
     }
 
-    /// Returns the largest celebrated streak tier the user has reached or
-    /// passed that hasn't already fired. nil = nothing to celebrate.
+    /// Returns the largest celebrated streak tier the user has reached, unless it
+    /// has already fired. nil = nothing to celebrate. Lower tiers are never
+    /// offered: after "14-day streak!", a "7-day streak!" would read backwards.
     /// Callers must seed existing history first (see hasSeededStreakMilestones)
     /// so this never congratulates a streak the user already had on first launch.
     static func unfiredStreakMilestone(
         currentStreak: Int,
         firedIds: Set<String>
     ) -> MilestoneEvent? {
-        let candidate = celebratedStreaks
-            .filter { $0 <= currentStreak && !firedIds.contains("streak_\($0)") }
-            .max()
-        return candidate.map { .goalStreak(n: $0) }
+        guard let tier = celebratedStreaks.filter({ $0 <= currentStreak }).max(),
+              !firedIds.contains("streak_\(tier)")
+        else { return nil }
+        return .goalStreak(n: tier)
     }
 
     /// Marks every celebrated tier at or below `currentStreak` as already fired.

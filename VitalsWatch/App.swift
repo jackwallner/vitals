@@ -79,12 +79,14 @@ private final class WatchGoalSyncService: NSObject, WCSessionDelegate {
         }
 
         if let excluded = applicationContext[GoalSyncKeys.excludedDays] as? [String] {
-            let pausedRaw = applicationContext[GoalSyncKeys.averagesPausedSince] as? Double ?? 0
-            let pausedSince = pausedRaw > 0 ? Date(timeIntervalSince1970: pausedRaw) : nil
+            let pausedDay = ExcludedDays.syncedPausedDay(
+                day: applicationContext[GoalSyncKeys.averagesPausedDay] as? String,
+                legacyInstant: applicationContext[GoalSyncKeys.averagesPausedSince] as? Double
+            )
             ExcludedDays.save(Set(excluded), to: defaults)
-            ExcludedDays.savePausedSince(pausedSince, to: defaults)
+            ExcludedDays.savePausedDay(pausedDay, to: defaults)
             Task { @MainActor in
-                GoalSettings.shared.applySyncedExclusions(keys: Set(excluded), pausedSince: pausedSince)
+                GoalSettings.shared.applySyncedExclusions(keys: Set(excluded), pausedDay: pausedDay)
             }
         }
 

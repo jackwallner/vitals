@@ -90,6 +90,16 @@ enum NotificationService {
         }
     }
 
+    /// Puts the weekly recap back when nothing is pending. Never prompts: this is
+    /// for a user who declined and later turned notifications on in iOS Settings,
+    /// where the app gets no callback and their switch stayed on.
+    static func restoreWeeklyRecapIfNeeded() async {
+        guard await isAuthorized() else { return }
+        let pending = await UNUserNotificationCenter.current().pendingNotificationRequests()
+        guard !pending.contains(where: { $0.identifier == weeklyRecapID }) else { return }
+        await scheduleWeeklyRecap()
+    }
+
     /// Cancels the pending weekly recap notification (toggle turned off, or
     /// subscription lapsed).
     static func cancelWeeklyRecap() {

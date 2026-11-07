@@ -32,6 +32,13 @@ enum ExcludedDays {
     /// its own at midnight with nothing to remember and nothing to schedule.
     /// Resuming freezes those days into the stored set, so the record of what was
     /// excluded survives the pause ending.
+    ///
+    /// Stored as the calendar day, not an instant: the midnight of Nov 7 in New
+    /// York is the evening of Nov 6 in Los Angeles, so an instant moved the start
+    /// a day earlier when the phone travelled west.
+    static let pausedDayDefaultsKey = "averagesPausedDay"
+
+    /// Builds up to 1.9.3 build 251 stored the instant. Read once and replaced.
     static let pausedSinceKey = "averagesPausedSince"
 
     /// Same "yyyy-MM-dd" spelling the SwiftData cache uses for its unique key,
@@ -57,16 +64,44 @@ enum ExcludedDays {
         }
     }
 
+    static func loadPausedDay(from defaults: UserDefaults?) -> String? {
+        if let day = defaults?.string(forKey: pausedDayDefaultsKey) { return day }
+        guard let legacy = defaults?.object(forKey: pausedSinceKey) as? Date else { return nil }
+        let day = key(for: legacy)
+        savePausedDay(day, to: defaults)
+        return day
+    }
+
+    static func savePausedDay(_ day: String?, to defaults: UserDefaults?) {
+        defaults?.removeObject(forKey: pausedSinceKey)
+        if let day {
+            defaults?.set(day, forKey: pausedDayDefaultsKey)
+        } else {
+            defaults?.removeObject(forKey: pausedDayDefaultsKey)
+        }
+    }
+
+    /// The start of the paused day where the device is now.
     static func loadPausedSince(from defaults: UserDefaults?) -> Date? {
-        defaults?.object(forKey: pausedSinceKey) as? Date
+        loadPausedDay(from: defaults).flatMap { date(fromKey: $0) }
     }
 
     static func savePausedSince(_ date: Date?, to defaults: UserDefaults?) {
-        if let date {
-            defaults?.set(date, forKey: pausedSinceKey)
-        } else {
-            defaults?.removeObject(forKey: pausedSinceKey)
-        }
+        savePausedDay(date.map { key(for: $0) }, to: defaults)
+    }
+
+    /// The pause day the phone sent the watch. An empty day means no pause. A
+    /// phone on an older build sends only the instant.
+    static func syncedPausedDay(day: String?, legacyInstant: Double?) -> String? {
+        if let day { return day.isEmpty ? nil : day }
+        guard let legacyInstant, legacyInstant > 0 else { return nil }
+        return key(for: Date(timeIntervalSince1970: legacyInstant))
+    }
+
+    /// Every day covered by a pause that started on `sinceDay`, read in `calendar`.
+    static func pausedKeys(sinceDay: String?, now: Date = .now, calendar: Calendar = .current) -> Set<String> {
+        let since = sinceDay.flatMap { date(fromKey: $0, timeZone: calendar.timeZone) }
+        return pausedKeys(since: since, now: now, calendar: calendar)
     }
 
     /// Every day covered by a running pause: the pause day through today,

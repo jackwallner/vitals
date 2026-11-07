@@ -136,6 +136,26 @@ final class SeededHealthFlowUITests: XCTestCase {
         attach(app.screenshot(), name: "lapsed-history-unfiltered")
     }
 
+    /// The saved History period outlives the subscription. Once RevenueCat says
+    /// the customer is free, Custom must not stay selected behind its lock.
+    func testLapsedSubscriberLosesTheCustomRange() {
+        let app = launchSeeded(upgradeTab: "catalog", staleProCache: true)
+        grantHealthKitAccess(in: app)
+        dismissBlockingSheets(in: app)
+        dismissTrialPitch(in: app)
+
+        app.buttons["History"].tap()
+        let week = app.buttons["history-period-7D"]
+        XCTAssertTrue(week.waitForExistence(timeout: 20), "History never loaded")
+        let selected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "isSelected == true"), object: week)
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [selected], timeout: 45), .completed,
+            "a free customer's History did not leave the Custom range"
+        )
+        XCTAssertFalse(app.buttons["history-period-Custom"].isSelected)
+        attach(app.screenshot(), name: "lapsed-history-week")
+    }
+
     /// The locked Excluded Days screen must not describe the stored pause as
     /// active. `GoalSettings.excludedDayKeys` is empty while Vitals+ is
     /// inactive, so "Today and every day until you resume is excluded" was
