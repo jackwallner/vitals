@@ -67,7 +67,9 @@ enum ExcludedDays {
     static func loadPausedDay(from defaults: UserDefaults?) -> String? {
         if let day = defaults?.string(forKey: pausedDayDefaultsKey) { return day }
         guard let legacy = defaults?.object(forKey: pausedSinceKey) as? Date else { return nil }
-        let day = key(for: legacy)
+        // Stored as local midnight where the pause began. Reading it through the
+        // nearest midnight names that same day from any zone within 12 hours.
+        let day = key(for: legacy.addingTimeInterval(12 * 3_600))
         savePausedDay(day, to: defaults)
         return day
     }

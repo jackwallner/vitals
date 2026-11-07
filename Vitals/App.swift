@@ -1448,7 +1448,10 @@ struct MainTabView: View {
             // passive trial nudge is allowed to consider firing.
             dashboardShowedRealData = true
             if !maybeShowWhatsNew() { evaluateTrialOffer() }
-            evaluateHabitMilestones()
+            Task {
+                await store.syncProRunStart()
+                evaluateHabitMilestones()
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .vitalsHistoryDidFinishLoading)) { _ in
             evaluateHistoryTrialOffer()

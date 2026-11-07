@@ -49,6 +49,43 @@ final class StateMachineRegressionTests: XCTestCase {
         }
     }
 
+    /// Older builds stored the instant of local midnight. Whichever way the phone
+    /// has since moved, the migration names the day the pause actually began.
+    func testOldPauseInstantKeepsItsDayAfterTheZoneMoved() throws {
+        for (startZone, instantUTC) in [
+            ("America/New_York", "2026-11-07T05:00:00Z"),
+            ("Asia/Tokyo", "2026-11-06T15:00:00Z"),
+            ("Europe/London", "2026-11-07T00:00:00Z"),
+            ("America/Los_Angeles", "2026-11-07T08:00:00Z")
+        ] {
+            let instant = try XCTUnwrap(ISO8601DateFormatter().date(from: instantUTC))
+            let original = NSTimeZone.default
+            defer { NSTimeZone.default = original }
+            // Within 12 hours of where it began, on either side.
+            let offset = try XCTUnwrap(TimeZone(identifier: startZone)).secondsFromGMT(for: instant)
+            for shift in [-11, -3, 0, 3, 11] where abs(offset + shift * 3_600) <= 14 * 3_600 {
+                NSTimeZone.default = try XCTUnwrap(TimeZone(secondsFromGMT: offset + shift * 3_600))
+                let defaults = try XCTUnwrap(UserDefaults(suiteName: "pause.tests.\(UUID().uuidString)"))
+                defaults.set(instant, forKey: ExcludedDays.pausedSinceKey)
+                XCTAssertEqual(ExcludedDays.loadPausedDay(from: defaults), "2026-11-07", "\(startZone) moved \(shift)h")
+            }
+        }
+    }
+
+    func testRunStartIsTheLatestUnbrokenPaidRun() throws {
+        func day(_ n: Double) -> Date { Date(timeIntervalSince1970: n * 86_400) }
+        XCTAssertNil(ReviewPromptTracker.proRunStart(periods: []))
+        // Renewals back to back, out of order, are one run.
+        XCTAssertEqual(
+            ReviewPromptTracker.proRunStart(periods: [(day(30), day(60)), (day(0), day(30)), (day(60), day(90))]),
+            day(0)
+        )
+        // A billing retry that recovers is still the same run.
+        XCTAssertEqual(ReviewPromptTracker.proRunStart(periods: [(day(0), day(30)), (day(40), day(70))]), day(0))
+        // A real lapse starts a new run.
+        XCTAssertEqual(ReviewPromptTracker.proRunStart(periods: [(day(0), day(30)), (day(90), day(120))]), day(90))
+    }
+
     func testPausedDayIsStoredAndTheOldInstantIsMigratedOnce() throws {
         let defaults = try XCTUnwrap(UserDefaults(suiteName: "pause.tests.\(UUID().uuidString)"))
         let instant = try XCTUnwrap(ExcludedDays.date(fromKey: "2026-11-07"))

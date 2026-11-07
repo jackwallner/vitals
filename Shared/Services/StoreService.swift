@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 import os
+import StoreKit
 import WidgetKit
 
 @preconcurrency import RevenueCat
@@ -284,6 +285,7 @@ final class StoreService: NSObject, ObservableObject {
     /// it off the main actor, and an immutable String has nothing to isolate.
     nonisolated static let cachedProKey = "isProCached"
     private static let cachedProDefaults = UserDefaults(suiteName: vitalsAppGroupID)
+    private var proRunStartSynced = false
     @Published private(set) var purchaseInFlight: Bool = false
     @Published private(set) var isLoadingProducts: Bool = false
     @Published private(set) var lastError: String?
@@ -657,6 +659,23 @@ final class StoreService: NSObject, ObservableObject {
         )
     }
 
+    /// Tells the rating tenure about a lapse that happened with the app closed.
+    func syncProRunStart() async {
+        guard isPro, !proRunStartSynced else { return }
+        proRunStartSynced = true
+        var periods: [(start: Date, end: Date)] = []
+        for await result in StoreKit.Transaction.all {
+            guard case .verified(let transaction) = result,
+                  transaction.productType == .autoRenewable,
+                  transaction.revocationDate == nil,
+                  let end = transaction.expirationDate else { continue }
+            periods.append((transaction.purchaseDate, end))
+        }
+        if let start = ReviewPromptTracker.proRunStart(periods: periods) {
+            ReviewPromptTracker.noteProRunStart(start)
+        }
+    }
+
     /// Performs a RevenueCat package purchase and updates customer info.
     @discardableResult
     func purchase(_ product: Package) async throws -> PurchaseState {
@@ -668,6 +687,9 @@ final class StoreService: NSObject, ObservableObject {
         let startedTrial = isEligibleForIntroOffer(product)
         let result: PurchaseResultData
         do {
+            #if DEBUG
+            if DebugLaunchConfig.deferPurchase { throw ErrorCode.paymentPendingError }
+            #endif
             result = try await Purchases.shared.purchase(package: product)
         } catch where Self.isDeferredPurchase(error) {
             // RevenueCat throws for Ask to Buy and other StoreKit `.pending`

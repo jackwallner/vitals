@@ -34,6 +34,12 @@ enum DebugLaunchConfig {
         ProcessInfo.processInfo.environment["VITALS_FAIL_PRODUCT_LOAD"] == "1"
     }
 
+    /// Purchases come back deferred, as Ask to Buy does, so a later server-side
+    /// approval can be tested. `VITALS_DEFER_PURCHASE=1`.
+    static var deferPurchase: Bool {
+        ProcessInfo.processInfo.environment["VITALS_DEFER_PURCHASE"] == "1"
+    }
+
     /// Launch as a lapsed subscriber: the App Group still says Vitals+ and two
     /// excluded days are stored, while RevenueCat resolves a free customer.
     /// Reproduces the stale-mirror bug from the 1.8.6 audit.

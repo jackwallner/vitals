@@ -137,6 +137,27 @@ enum ReviewPromptTracker {
         return true
     }
 
+    /// A lapse with no app open in between is only visible in the purchase
+    /// history. Moves the count up to the start of the current unbroken run.
+    static func noteProRunStart(_ start: Date) {
+        guard let since = defaults.object(forKey: proSinceKey) as? Date, start > since else { return }
+        defaults.set(start, forKey: proSinceKey)
+    }
+
+    /// When the latest unbroken run of paid periods began. Billing retry can run
+    /// 16 days, and a gap that short isn't a lapse.
+    static func proRunStart(periods: [(start: Date, end: Date)]) -> Date? {
+        let sorted = periods.sorted { $0.start < $1.start }
+        guard let first = sorted.first else { return nil }
+        var runStart = first.start
+        var reach = first.end
+        for period in sorted.dropFirst() {
+            if period.start.timeIntervalSince(reach) > 16 * 86_400 { runStart = period.start }
+            reach = max(reach, period.end)
+        }
+        return runStart
+    }
+
     /// Stamps when Vitals+ first turned on and reports whether the subscriber has
     /// now held it for `subscriberMomentDays`. Fires at most once ever, and only
     /// while they still have it. A lapsed subscriber is not a happy moment, and
