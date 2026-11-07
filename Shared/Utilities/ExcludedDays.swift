@@ -73,13 +73,14 @@ enum ExcludedDays {
     }
 
     /// The day an old pause began. It was stored as local midnight, so the instant
-    /// itself says which offset wrote it, wherever the device has moved since. Only
-    /// three UTC hours fit two real offsets, and there the nearer one wins.
+    /// itself says which offset wrote it, wherever the device has moved since. A few
+    /// instants fit two offsets a day apart: the device's own wins, then the one
+    /// people live in (UTC-10 over UTC+14, UTC+13 over UTC-11, UTC+12 over UTC-12).
     static func legacyPauseDay(_ instant: Date, currentOffset: Int = Calendar(identifier: .gregorian).timeZone.secondsFromGMT()) -> String {
         let intoUTCDay = Int(instant.timeIntervalSince1970.rounded(.down)) % 86_400
-        let offset = [-intoUTCDay, 86_400 - intoUTCDay]
-            .filter { (-12 * 3_600...14 * 3_600).contains($0) }
-            .min { abs($0 - currentOffset) < abs($1 - currentOffset) } ?? currentOffset
+        let west = -intoUTCDay
+        let east = 86_400 - intoUTCDay
+        let offset = [west, east].contains(currentOffset) ? currentOffset : (west >= -10 * 3_600 ? west : east)
         return key(for: instant.addingTimeInterval(TimeInterval(offset)), timeZone: TimeZone(secondsFromGMT: 0) ?? .gmt)
     }
 

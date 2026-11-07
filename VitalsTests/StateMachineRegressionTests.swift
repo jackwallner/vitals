@@ -59,6 +59,7 @@ final class StateMachineRegressionTests: XCTestCase {
             ("America/Los_Angeles", "2026-11-07T08:00:00Z"),
             ("Asia/Kolkata", "2026-11-06T18:30:00Z"),
             ("Pacific/Auckland", "2026-11-06T11:00:00Z"),
+            ("Pacific/Fiji", "2026-11-06T12:00:00Z"),
             ("Pacific/Honolulu", "2026-11-07T10:00:00Z")
         ] {
             let instant = try XCTUnwrap(ISO8601DateFormatter().date(from: instantUTC))
@@ -67,8 +68,8 @@ final class StateMachineRegressionTests: XCTestCase {
             // Every move, up to the widest the world allows.
             let offset = try XCTUnwrap(TimeZone(identifier: startZone)).secondsFromGMT(for: instant)
             for destination in stride(from: -12, through: 14, by: 1) {
-                // Only an instant two real offsets share can be misread, and only from far away.
-                if ["Pacific/Auckland", "Pacific/Honolulu"].contains(startZone), abs(destination * 3_600 - offset) >= 12 * 3_600 { continue }
+                // Midnight in both zones at once: the instant alone can't tell them apart.
+                if destination * 3_600 != offset, (destination * 3_600 - offset) % 86_400 == 0 { continue }
                 NSTimeZone.default = try XCTUnwrap(TimeZone(secondsFromGMT: destination * 3_600))
                 let defaults = try XCTUnwrap(UserDefaults(suiteName: "pause.tests.\(UUID().uuidString)"))
                 defaults.set(instant, forKey: ExcludedDays.pausedSinceKey)

@@ -286,7 +286,7 @@ final class StoreService: NSObject, ObservableObject {
     nonisolated static let cachedProKey = "isProCached"
     private static let cachedProDefaults = UserDefaults(suiteName: vitalsAppGroupID)
     private var proRunStartSynced = false
-    private var proRunStartRead = false
+    private(set) var proRunStartRead = false
     @Published private(set) var purchaseInFlight: Bool = false
     @Published private(set) var isLoadingProducts: Bool = false
     @Published private(set) var lastError: String?
