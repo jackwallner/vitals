@@ -1430,7 +1430,8 @@ struct MainTabView: View {
                     recapAwaitsEntitlement = false
                     Task {
                         // A sheet presented while another is leaving never appears.
-                        if conversionSheetUp { try? await Task.sleep(for: .milliseconds(600)) }
+                        try? await Task.sleep(for: .milliseconds(600))
+                        guard store.isPro else { return }
                         presentWeeklyRecap()
                     }
                 }

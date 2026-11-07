@@ -876,7 +876,12 @@ struct HistoryView: View {
             primeFromCache()
         }
         .onChange(of: store.lapseConfirmed) { _, _ in syncCustomRangeAccess() }
-        .onChange(of: store.isPro) { _, _ in syncCustomRangeAccess() }
+        .onChange(of: store.isPro) { _, isPro in
+            syncCustomRangeAccess()
+            if isPro, goals.showNetCalories || goals.showMacros {
+                Task { await loadHistory() }
+            }
+        }
         .task {
             if ScreenshotConfig.wantsHistoryTab {
                 selectedPeriod = .month
@@ -1771,7 +1776,12 @@ struct HistoryView: View {
             primeFromCache()
         }
         .onChange(of: store.lapseConfirmed) { _, _ in syncCustomRangeAccess() }
-        .onChange(of: store.isPro) { _, _ in syncCustomRangeAccess() }
+        .onChange(of: store.isPro) { _, isPro in
+            syncCustomRangeAccess()
+            if isPro, goals.showNetCalories || goals.showMacros {
+                Task { await loadHistory() }
+            }
+        }
         .task { await loadHistory() }
         .onChange(of: selectedPeriod) { _, _ in
             if selectedPeriod != .custom {
