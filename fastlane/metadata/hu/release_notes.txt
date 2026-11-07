@@ -1,3 +1,5 @@
-A Total Calories mostantól magyarul és további 35 nyelven is elérhető.
+Lapozz a korábbi napok között a dátum melletti új nyilakkal a Ma képernyőn.
 
-Emellett gördülékenyebb képernyők és hibajavítások.
+Az app nyelvét közvetlenül a Beállításokban módosíthatod.
+
+Emellett javítások a Heti összefoglalóban és máshol.

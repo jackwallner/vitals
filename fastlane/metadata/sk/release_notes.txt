@@ -1,3 +1,5 @@
-Total Calories je teraz v slovenčine a v ďalších 35 jazykoch.
+Prechádzajte minulé dni pomocou nových šípok vedľa dátumu na obrazovke Dnes.
 
-K tomu plynulejšie obrazovky a opravy chýb.
+Jazyk aplikácie zmeníte priamo v Nastaveniach.
+
+K tomu opravy Týždenného zhrnutia a ďalšie.

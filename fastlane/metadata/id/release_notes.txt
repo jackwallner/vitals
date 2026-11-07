@@ -1,3 +1,5 @@
-Total Calories kini tersedia dalam bahasa Indonesia dan 35 bahasa lainnya.
+Telusuri hari-hari sebelumnya dengan panah baru di samping tanggal pada Hari Ini.
 
-Ditambah layar yang lebih mulus dan perbaikan.
+Ubah bahasa aplikasi langsung dari Pengaturan.
+
+Ditambah perbaikan Rekap Mingguan dan lainnya.

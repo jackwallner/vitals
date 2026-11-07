@@ -1,3 +1,5 @@
-Total Calories on nyt saatavilla suomeksi ja 35 muulla kielellä.
+Selaa menneitä päiviä uusilla nuolilla päivämäärän vieressä Tänään-näkymässä.
 
-Lisäksi sujuvammat näkymät ja korjauksia.
+Vaihda sovelluksen kieli suoraan Asetuksista.
+
+Lisäksi korjauksia Viikkoyhteenvetoon ja muuta.

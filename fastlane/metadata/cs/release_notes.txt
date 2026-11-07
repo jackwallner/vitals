@@ -1,3 +1,5 @@
-Total Calories je nyní v češtině a v dalších 35 jazycích.
+Procházej minulé dny pomocí nových šipek vedle data na obrazovce Dnes.
 
-K tomu plynulejší obrazovky a opravy chyb.
+Jazyk aplikace změníš přímo v Nastavení.
+
+K tomu opravy Týdenního shrnutí a další.

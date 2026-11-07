@@ -1,3 +1,5 @@
-O Total Calories agora está em português e em mais 35 idiomas.
+Navegue pelos dias anteriores com as novas setas ao lado da data em Hoje.
 
-Além de telas mais fluidas e correções.
+Mude o idioma do app direto nos Ajustes.
+
+E correções no Resumo semanal e mais.

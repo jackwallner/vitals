@@ -1,3 +1,5 @@
-Total Calories ara parla 36 idiomes.
+Recorre els dies anteriors amb les fletxes noves al costat de la data a Today.
 
-A més, pantalles més fluides i correccions.
+Canvia l'idioma de l'app directament des de Settings.
+
+A més, correccions a Weekly Recap i altres millores.

@@ -1,3 +1,5 @@
-Total Calories finns nu på svenska och 35 andra språk.
+Bläddra bland tidigare dagar med de nya pilarna bredvid datumet på Idag.
 
-Dessutom smidigare skärmar och buggfixar.
+Byt språk i appen direkt från Inställningar.
+
+Plus korrigeringar av Veckosammanfattning med mera.

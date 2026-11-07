@@ -1,3 +1,5 @@
-Total Calories now speaks 36 languages.
+Step through past days with the new arrows beside the date on Today.
 
-Plus smoother screens and fixes.
+Change the app's language right from Settings.
+
+Plus Weekly Recap and other fixes.

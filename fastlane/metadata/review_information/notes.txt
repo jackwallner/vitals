@@ -4,7 +4,7 @@ Total Calories reads calorie and step data from Apple Health (HealthKit) in read
 
 WHAT CHANGED IN THIS VERSION
 
-1.9.1 translates the app into 35 languages and adds an introductory offer.
+1.9.3 adds arrows beside the date on Today to step through past days, a Language row in Settings, and fixes for Weekly Recap and subscription status.
 
 No new permissions or data collection.
 
@@ -24,7 +24,7 @@ If access is denied or not yet granted, the app shows a banner explaining that H
 
 iPHONE FEATURES
 
-- Today: calorie ring, step bar, active vs. resting breakdown, pacing against a rolling average
+- Today: calorie ring, step bar, active vs. resting breakdown, pacing against a rolling average, arrows to step through past days
 - History: charts for 7D / 30D / 90D / 1Y / custom range, trends, CSV export
 - Home and lock screen widgets
 

@@ -1,3 +1,5 @@
-Total Calories artık Türkçe ve 35 dilde daha kullanılabiliyor.
+Bugün ekranında tarihin yanındaki yeni oklarla geçmiş günlere göz at.
 
-Ayrıca daha akıcı ekranlar ve hata düzeltmeleri.
+Uygulamanın dilini doğrudan Ayarlar'dan değiştir.
+
+Ayrıca Haftalık Özet ve diğer düzeltmeler.

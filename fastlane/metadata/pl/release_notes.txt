@@ -1,3 +1,5 @@
-Aplikacja Total Calories jest teraz dostępna po polsku i w 35 innych językach.
+Przeglądaj poprzednie dni za pomocą nowych strzałek obok daty na ekranie Dziś.
 
-Do tego płynniejsze ekrany i poprawki.
+Zmień język aplikacji bezpośrednio w Ustawieniach.
+
+Do tego poprawki w Podsumowaniu tygodnia i nie tylko.
