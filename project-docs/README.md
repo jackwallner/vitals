@@ -16,6 +16,7 @@ Developer notes and historical audits for this repository. The published site re
 - [duo-screenshots-fleet-2026-10-21.md](audits/duo-screenshots-fleet-2026-10-21.md): Fleet audit: APP_IPHONE_DUO screenshot sets
 - [state-machines-2026-11-06.md](audits/state-machines-2026-11-06.md): State machine audit: 15 machines, 9 findings (3 proved by test, repro suite alongside)
 - [state-machines-2026-11-06-review.md](audits/state-machines-2026-11-06-review.md): Independent review of that audit: 1 confirmed, 6 minor, 2 not a bug
+- [presubmit-review-2026-11-07.md](audits/presubmit-review-2026-11-07.md): Pre-submit review of 1.9.3 build 254 against 1.9.2: no P0 or P1, 4 P2 notes
 
 ## Experiments
 
