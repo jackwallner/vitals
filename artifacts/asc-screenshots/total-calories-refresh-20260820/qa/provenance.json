@@ -17,25 +17,25 @@
       "filename": "01-total-burn.png",
       "headline": "Know your total burn",
       "literal_source": "dashboard.png",
-      "sha256": "a9ee8b672bc3a8189287d9cbe085433b5d0d6b568ff1aa037f4ff1cc6ced9915"
+      "sha256": "b4054c7f84d713cc33cce24273e17363fd31667b9be6ba43bfa368a3c4ddd6c8"
     },
     {
       "filename": "02-active-resting.png",
       "headline": "See what makes your burn",
       "literal_source": "premium-dashboard.png",
-      "sha256": "6b7d90bfc5997f118d71561164bfe859b8aa48b6cf36e3233cf268189759f158"
+      "sha256": "4d512d69850d70982a2c2663c90091704cb489be8560bfa4baa1bf3b29d6f403"
     },
     {
       "filename": "03-daily-patterns.png",
       "headline": "Find your daily patterns",
       "literal_source": "history.png",
-      "sha256": "fe5070673eccc36b8f267368222fc4ac044deceb9e2e3e84235bdaebe498a8a3"
+      "sha256": "7ba1652aa203460afb8a915cfed50c011d5264530f143d7657a87a35da986610"
     },
     {
       "filename": "04-net-deficit.png",
       "headline": "Burned minus eaten",
       "literal_source": "net-deficit.png",
-      "sha256": "2dc065643248db906b5f1edb6a455b4a89bf546a6af3dd858e1dc240a70e6c52"
+      "sha256": "1298990d7a28436cde98e3929d8dc7611eaabbaee2c973ea950023447fc99351"
     },
     {
       "filename": "05-macros.png",
@@ -47,13 +47,13 @@
       "filename": "06-macro-goals.png",
       "headline": "Set your macro goals",
       "literal_source": "macro-goals.png",
-      "sha256": "41d13e1bda1a2c6828e2e28d600ca99c84b2e1f6b95bf869db0fe3ba8a4a42c7"
+      "sha256": "826bdab1dcf42b67727a0b71f24cf3bd96a0a081ae63bc94a3d5cc3b3e37b4d1"
     },
     {
       "filename": "07-macro-patterns.png",
       "headline": "Spot your macro patterns",
       "literal_source": "macro-history.png",
-      "sha256": "054132c1efd706c6833797f2a3a8d94ad6e3dad99c90e5879135b69ccea7ac77"
+      "sha256": "b1c074fe401ca156ab4385272324ecfa25159b4c0c43bdecd9cafb7ff7bd3dde"
     },
     {
       "filename": "08-on-your-wrist.png",
@@ -65,7 +65,7 @@
       "filename": "09-dark-mode.png",
       "headline": "Read it in dark mode",
       "literal_source": "dark-dashboard.png",
-      "sha256": "54539df9908d80b34f4d7d2db6b415fa6f65a3c7f5d64094346ef099bc96e595"
+      "sha256": "92491fff084fb6370abdfaae8960d209c3d6976601f6e4cc6d8f694aaa5b6fcf"
     },
     {
       "filename": "10-go-further.png",
@@ -76,36 +76,36 @@
   ],
   "raw_sources": {
     "dark-dashboard.png": {
-      "size_bytes": 508681,
-      "sha256": "3d89ddd2cc63bdb7edc88ad7d0c8c0e871ba0556a1b329b55e6c7231db00cc47"
+      "size_bytes": 501505,
+      "sha256": "45446c40ec4707ab64e47356d76a20cc99563723b17c79328bb731bfa8cb9f35"
     },
     "dashboard.png": {
-      "size_bytes": 501318,
-      "sha256": "9d5898574818ffe01ef42628d4645a5404e0baf26acb1c60690e7f68eb7652c7"
+      "size_bytes": 501385,
+      "sha256": "ebb8edb8cf5290662d8e14b85dff22ac78f03820ba03d07c870d51b1f11b5995"
     },
     "history.png": {
-      "size_bytes": 660354,
-      "sha256": "82d46ce4696ed396f4a2ddd44bb77d8f2aff6ea30e22cf15406d125d726a2c0a"
+      "size_bytes": 592804,
+      "sha256": "9bf23bf062d8d488ecb5789cffa1d9b4c69fef8c021bc2e09eaa76c4c9c1eafc"
     },
     "macro-dashboard.png": {
       "size_bytes": 476112,
       "sha256": "f51b9eb2cd7c075b82bd0382228f800538c109a61fb9df34c230cf136b5654f0"
     },
     "macro-goals.png": {
-      "size_bytes": 557083,
-      "sha256": "fa7374daee9af23675f9231d1797dd9b82ea555275d959b6273c60e1829a2eaa"
+      "size_bytes": 520614,
+      "sha256": "16d412f8ba1e7216a4c89c2a68eb272724244f5b1e0a26af6edd9c05c7a88b80"
     },
     "macro-history.png": {
-      "size_bytes": 376207,
-      "sha256": "7f26f7ee2b9fa3fc4199c6f1a2ee27a751f0f42b38830a6bf7bc1df94746fc7b"
+      "size_bytes": 280616,
+      "sha256": "c25baabba34e1286301893e5d99ba2cd16f5636419925f353d7f135f5b613a7b"
     },
     "net-deficit.png": {
-      "size_bytes": 522415,
-      "sha256": "1e70a665a1b18527287764b2a406e67afedfae41237e1c32e4016b685c453c48"
+      "size_bytes": 527393,
+      "sha256": "675e3e7e073f0a091f84be8aeb1fd9a821d95b2f06162094742d04c690eb69ea"
     },
     "premium-dashboard.png": {
-      "size_bytes": 534258,
-      "sha256": "54c8714a3729643b95e17b64bed7dd682c11b2bda07bc18ce971747aa380f620"
+      "size_bytes": 539241,
+      "sha256": "830ef2a8a49b33065ae4a77bd1bba263fde6f29a99907f5e72fb785fcc472f61"
     },
     "premium.png": {
       "size_bytes": 594855,
