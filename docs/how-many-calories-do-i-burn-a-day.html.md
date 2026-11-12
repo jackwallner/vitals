@@ -6,7 +6,7 @@ Web page: https://jackwallner.com/ios/vitals/how-many-calories-do-i-burn-a-day.h
 
 ## How Many Calories Do I Burn a Day?
 
-By Jack Wallner · Last updated October 25, 2026
+By Jack Wallner · Last updated November 12, 2026
 
 Most adults burn between 1,600 and 2,400 calories a day if they are women and 2,000 to 3,000 if they are men, according to the Dietary Guidelines for Americans. Total daily energy expenditure (TDEE) is a total that adds up your resting metabolism, digestion, everyday movement and exercise. Your own number depends on your size, age and how much you move. The largest share is resting metabolism, which you burn even when doing nothing. An Apple Watch can measure your real total by adding active and resting energy.
 
@@ -53,7 +53,7 @@ The NIH's Body Weight Planner, from NIDDK, takes your age, sex, height, weight a
 
 ## How do you measure your own calorie burn?
 
-Add the active and resting energy your Apple Watch records in Apple Health. An Apple Watch records two figures in Apple Health every day: active energy (calories above resting, estimated from heart rate and motion) and resting energy. Add them for a measured total for that day. The Move ring shows only the active part, so it reads far lower than any table above. A 7 to 30 day average of the total is a better personal baseline than a formula, because it includes your real steps, workouts and slow Sundays. See the guides on [TDEE](https://jackwallner.com/ios/vitals/tdee-calculator.html), [BMR](https://jackwallner.com/ios/vitals/bmr-calculator.html) and [active versus resting calories on Apple Watch](https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html) for the details and a calculator. Comparing apps? See the [best app to track calories burned on Apple Watch](https://jackwallner.com/ios/vitals/best-app-to-track-calories-burned-apple-watch.html).
+Add the active and resting energy your Apple Watch records in Apple Health. An Apple Watch records two figures in Apple Health every day: active energy (calories above resting, estimated from heart rate and motion) and resting energy. Add them for a measured total for that day ([where to find both numbers on iPhone](https://jackwallner.com/ios/vitals/total-calories-burned-on-iphone.html)). The Move ring shows only the active part, so it reads far lower than any table above. A 7 to 30 day average of the total is a better personal baseline than a formula, because it includes your real steps, workouts and slow Sundays. See the guides on [TDEE](https://jackwallner.com/ios/vitals/tdee-calculator.html), [BMR](https://jackwallner.com/ios/vitals/bmr-calculator.html) and [active versus resting calories on Apple Watch](https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html) for the details and a calculator. Comparing apps? See the [best app to track calories burned on Apple Watch](https://jackwallner.com/ios/vitals/best-app-to-track-calories-burned-apple-watch.html).
 
 ## How Total Calories helps
 
