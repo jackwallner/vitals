@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Wat actieve energie en energie in rust op de Apple Watch betekenen, waarom de bewegingsring maar een deel van je verbruik toont en hoe je je totale calorieverbruik per dag ziet.">
+<link rel="icon" type="image/png" sizes="256x256" href="../icon_256.png">
+<link rel="apple-touch-icon" href="../icon_256.png">
+<title>Actieve vs. rustcalorieën op de Apple Watch: totaal verbruik</title>
+<link rel="canonical" href="https://jackwallner.com/ios/vitals/nl/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="en" href="https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="de" href="https://jackwallner.com/ios/vitals/de/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ja" href="https://jackwallner.com/ios/vitals/ja/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="fr" href="https://jackwallner.com/ios/vitals/fr/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="zh-Hans" href="https://jackwallner.com/ios/vitals/zh-Hans/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="es" href="https://jackwallner.com/ios/vitals/es/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="pl" href="https://jackwallner.com/ios/vitals/pl/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ru" href="https://jackwallner.com/ios/vitals/ru/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="it" href="https://jackwallner.com/ios/vitals/it/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://jackwallner.com/ios/vitals/pt-BR/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ar" href="https://jackwallner.com/ios/vitals/ar/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ko" href="https://jackwallner.com/ios/vitals/ko/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://jackwallner.com/ios/vitals/zh-Hant/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="nl" href="https://jackwallner.com/ios/vitals/nl/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="sv" href="https://jackwallner.com/ios/vitals/sv/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="x-default" href="https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html">
+<meta http-equiv="refresh" content="0; url=https://jackwallner.com/ios/vitals/nl/apple-watch-active-vs-resting-calories.html">
+<script>if(location.hostname==="jackwallner.github.io"){var c=document.querySelector('link[rel="canonical"]');if(c&&c.href.indexOf("https://jackwallner.com/")===0)location.replace(c.href)}</script>
+<meta property="og:title" content="Actieve calorieën en rustcalorieën op de Apple Watch">
+<meta property="og:description" content="Wat actieve energie en energie in rust op de Apple Watch betekenen, waarom de bewegingsring maar een deel van je verbruik toont en hoe je je totale calorieverbruik per dag ziet.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://jackwallner.com/ios/vitals/nl/apple-watch-active-vs-resting-calories.html">
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Actieve calorieën en rustcalorieën op de Apple Watch",
+    "description": "Wat actieve energie en energie in rust op de Apple Watch betekenen, waarom de bewegingsring maar een deel van je verbruik toont en hoe je je totale calorieverbruik per dag ziet.",
+    "author": {
+        "@type": "Person",
+        "name": "Jack Wallner"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Total Calories"
+    },
+    "mainEntityOfPage": "https://jackwallner.com/ios/vitals/nl/apple-watch-active-vs-resting-calories.html",
+    "dateModified": "2026-10-28"
+}</script>
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": "Telt de Apple Watch rustcalorieën mee?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Ja. Energie in rust wordt de hele dag in Gezondheid geregistreerd, maar de bewegingsring in de Conditie-app toont alleen actieve energie. Tel de twee op voor je totale verbruik."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Waarom zegt mijn Apple Watch dat ik maar 400 calorieën heb verbrand?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Dat is de actieve helft. Je energie in rust, meestal 1.200 tot 2.000 kcal, wordt apart bijgehouden in de Gezondheid-app. Je echte dagtotaal is de som van beide."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Kan ik mijn totale calorieverbruik op mijn wijzerplaat zien?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Niet met de standaardcomplicaties van Apple, want die tonen alleen de bewegingsring. Total Calories voegt een complicatie en widgets toe die actieve energie en energie in rust als één getal laten zien."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Moet je uitgaan van actieve of totale calorieën?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Ga uit van je totale calorieën, actief plus rust, als je bepaalt hoeveel je eet: dat is je hele verbruik van de dag. Actieve calorieën (de bewegingsring) zijn een goed bewegingsdoel, maar alleen daarop letten laat de 1.200 tot 2.000 kcal weg die je lichaam in rust verbruikt. Neem het gemiddelde van het totaal over 7 dagen of meer, want één dag schommelt te veel."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Hoe nauwkeurig is energie in rust op de Apple Watch?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Het is een schatting met een model, geen meting. Apple berekent energie in rust uit het gewicht, de lengte, de leeftijd en het geslacht in je gezondheidsprofiel, past die iets aan op je huidige activiteit en publiceert er geen nauwkeurigheidscijfer voor. Houd je gewicht in Gezondheid actueel, want energie in rust wordt daaruit berekend."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Hoe nauwkeurig zijn de calorieën van de Apple Watch tijdens trainingen?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Gemiddeld komen ze dichtbij. In Apples labtests hadden wandelen, hardlopen en hiken een gemiddelde fout van 0% met 9% spreiding, en lastiger te meten activiteiten zoals zwemmen en yoga een spreiding van rond de 20%."
+            }
+        }
+    ]
+}</script>
+<style>* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif; color: #1d1d1f; background: #fafafa; -webkit-font-smoothing: antialiased; }
+.container { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+nav { padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.06); background: rgba(250,250,250,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 10; }
+nav .container { display: flex; align-items: center; justify-content: space-between; max-width: 980px; }
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1d1d1f; }
+.nav-brand img { width: 32px; height: 32px; border-radius: 7px; }
+.nav-brand span { font-size: 15px; font-weight: 600; }
+.nav-link { font-size: 14px; text-decoration: none; background: #1d1d1f; color: #fff; padding: 8px 18px; border-radius: 980px; font-weight: 500; }
+.nav-link:hover { opacity: 0.85; }
+article { padding: 64px 0 48px; }
+h1 { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
+.updated { font-size: 14px; color: #6e6e73; margin-bottom: 12px; }
+.lede { font-size: 19px; color: #6e6e73; line-height: 1.5; margin-bottom: 36px; }
+h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.4px; margin: 40px 0 12px; }
+p, li { font-size: 17px; line-height: 1.6; margin-bottom: 14px; }
+ul, ol { padding-left: 22px; }
+li { margin-bottom: 6px; }
+a { color: #1d1d1f; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 20px; font-size: 16px; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid rgba(0,0,0,0.08); }
+th { font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px; color: #6e6e73; font-weight: 600; }
+.formula { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; padding: 16px 18px; font-family: "SF Mono", Menlo, monospace; font-size: 15px; line-height: 1.7; margin: 8px 0 20px; overflow-x: auto; }
+.calc { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 18px; padding: 24px; margin: 20px 0 28px; }
+.calc h2 { margin: 0 0 16px; font-size: 20px; }
+.calc .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.calc label { display: block; font-size: 13px; color: #6e6e73; margin-bottom: 6px; }
+.calc input, .calc select { width: 100%; font: inherit; font-size: 17px; padding: 10px 12px; border: 1px solid rgba(0,0,0,0.14); border-radius: 10px; background: #fafafa; color: #1d1d1f; }
+.calc .seg { display: flex; gap: 8px; }
+.calc .seg button { flex: 1; font: inherit; font-size: 15px; padding: 9px 0; border-radius: 10px; border: 1px solid rgba(0,0,0,0.14); background: #fafafa; cursor: pointer; }
+.calc .seg button[aria-pressed="true"] { background: #1d1d1f; color: #fff; border-color: #1d1d1f; }
+.result { margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.08); }
+.result .big { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1; }
+.result .big small { font-size: 16px; font-weight: 500; color: #6e6e73; letter-spacing: 0; margin-left: 6px; }
+.result .sub { font-size: 15px; color: #6e6e73; margin-top: 8px; }
+.cta { text-align: center; padding: 48px 24px 56px; border-top: 1px solid rgba(0,0,0,0.06); margin-top: 24px; }
+.cta h2 { margin: 0 0 8px; }
+.cta p { color: #6e6e73; max-width: 440px; margin: 0 auto 22px; }
+.download-btn { display: inline-block; background: #1d1d1f; color: #fff; font-size: 15px; font-weight: 500; padding: 14px 36px; border-radius: 980px; text-decoration: none; }
+.download-btn:hover { opacity: 0.85; }
+.related { padding: 24px 0 8px; }
+.related h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: #6e6e73; margin-bottom: 10px; }
+.related a { display: block; font-size: 16px; text-decoration: none; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+footer { text-align: center; padding: 20px 24px 40px; font-size: 12px; color: #6e6e73; }
+footer a { display: inline-block; padding: 6px 0; color: #6e6e73; text-decoration: none; margin: 0 10px; }
+footer .divider { margin: 4px 0; }
+.note { font-size: 14px; color: #6e6e73; line-height: 1.5; }
+@media (max-width: 520px) { h1 { font-size: 32px; } .calc .row { grid-template-columns: 1fr; } }
+
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.nav-actions .nav-link, .nav-brand span { white-space: nowrap; }
+@media (max-width: 480px) { .nav-actions { gap: 6px; } .nav-actions .nav-link { padding: 7px 12px; font-size: 13px; } }
+.nav-link-play { background: transparent; color: #1d1d1f; box-shadow: inset 0 0 0 1px #1d1d1f; }
+.store-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; }
+.play-badge { display: inline-block; line-height: 0; margin: -11px -12px; }
+.play-badge img { height: 69px; width: auto; display: block; }
+.cta-box .play-badge { margin: -10px -11px; }
+.cta-box .play-badge img { height: 64px; }
+</style>
+</head>
+<body>
+<nav>
+<div class="container">
+<a class="nav-brand" href="../" aria-label="Total Calories"><img src="../icon_64.webp" alt="" width="32" height="32"><span>Total Calories</span></a>
+<span class="nav-actions"><a class="nav-link" href="https://apps.apple.com/nl/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-apple-watch-active-vs-resti-nl&amp;mt=8">Download</a><a class="nav-link nav-link-play" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener">Google Play</a></span>
+</div>
+</nav>
+<article>
+<div class="container">
+<h1>Actieve calorieën en rustcalorieën op de Apple Watch</h1>
+<p class="updated">Laatst bijgewerkt <time datetime="2026-10-28" data-updated>28-10-2026</time></p>
+<p class="lede">Actieve calorieën (actieve energie) verbrand je door te bewegen, bovenop je rustverbruik. Rustcalorieën (energie in rust) verbruikt je lichaam gewoon om in leven te blijven. Je bewegingsring laat maar een deel van je verbruik zien. Hier lees je wat actieve energie en energie in rust in de Gezondheid-app betekenen, waar je het totaal ziet en waarom juist dat totaal telt als je bepaalt hoeveel je eet.</p>
+<h2>Wat is het verschil tussen actieve calorieën en rustcalorieën?</h2>
+<p>Energie in rust is wat je lichaam verbrandt om in leven te blijven, actieve energie is alles daarbovenop, van wandelen tot trainen. De Gezondheid-app registreert je calorieën de hele dag in die twee aparte velden.</p>
+<ul>
+<li><strong>Energie in rust</strong> is de schatting van de Watch van je basaal metabolisme: de calorieën die je lichaam nodig heeft om in leven te blijven. Apple berekent die uit het gewicht, de lengte, de leeftijd en het geslacht in je gezondheidsprofiel (plus of je een rolstoel gebruikt), en de waarde schommelt een beetje met wat je doet. Bij de meeste volwassenen komt dat op 1.200 tot 2.000 kcal per dag, ongeveer 50 tot 85 kcal per uur.</li>
+<li><strong>Actieve energie</strong> is alles boven je rustverbruik: wandelen, trainen, huishouden, friemelen. De Watch schat die de hele dag uit de bewegingssensoren en je hartslag, en tijdens een training komen daar gps, hoogte en het type training bij. Dit is het getal op je bewegingsring.</li>
+</ul>
+<p>Apples eigen definitie, uit de <a href="https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf">calorimetriewhitepaper van november 2024</a> (Engels): actieve calorieën zijn de calorieën die je verbrandt boven je basale (rust)calorieën, en totale calorieën zijn die twee samen. Je totale calorieverbruik voor de dag is dus gewoon de som. Een bewegingsring van 500 kcal op een dag met 1.700 kcal in rust geeft 2.200 kcal in totaal.</p>
+<h2>Waarom lijkt het getal op de bewegingsring zo laag?</h2>
+<p>Omdat de ring alleen actieve energie toont, niet je rustverbruik. De Conditie-app draait om beweging, zet actieve energie voorop en laat energie in rust in de Gezondheid-app staan, onder 'Gegevens' &gt; 'Activiteit'. Mensen leggen een bewegingstotaal van 480 kcal naast een TDEE-calculator die 2.400 zegt en denken dat hun Watch kapot is. Dat is niet zo. Ze kijken naar de helft van het getal.</p>
+<h2>Hoe zie je je totale calorieverbruik?</h2>
+<p>Tel energie in rust en actieve energie op in de Gezondheid-app, of gebruik een app die dat voor je doet.</p>
+<ol>
+<li>Open de Gezondheid-app, tik op 'Gegevens' en dan op 'Activiteit'. Energie in rust en actieve energie staan op aparte regels; tel die van vandaag bij elkaar op.</li>
+<li>Voor één training open je die in de Conditie-app. Het overzicht van de training toont actieve en totale kilocalorieën naast elkaar.</li>
+<li>Of gebruik een app die het optellen doet en de geschiedenis bewaart. Total Calories toont het totaal op je iPhone, als complicatie op je Apple Watch en in een widget op je beginscherm of toegangsscherm, met de verdeling actief en rust eronder.</li>
+</ol>
+<h2>Hoe nauwkeurig zijn de calorieën van de Apple Watch?</h2>
+<p>Bij trainingen kwam de gemiddelde fout in Apples tests dicht bij nul uit, met een spreiding van ongeveer 9 tot 20% afhankelijk van de activiteit. Apple vergeleek de Apple Watch met een metabole kar, het labinstrument dat je verbruik uit je ademhaling meet. Gemiddelde fout en spreiding volgens Apples whitepaper van november 2024:</p>
+<table>
+<thead><tr><th>Training</th><th>Gemiddelde fout</th><th>Spreiding (SD)</th></tr></thead>
+<tbody>
+<tr><td>Wandelen, hardlopen, hiken</td><td>0%</td><td>9%</td></tr>
+<tr><td>Buiten fietsen</td><td>5%</td><td>13%</td></tr>
+<tr><td>Crosstrainer</td><td>0%</td><td>15%</td></tr>
+<tr><td>Roeien</td><td>-2%</td><td>15%</td></tr>
+<tr><td>HIIT en binnen fietsen</td><td>-2%</td><td>14%</td></tr>
+<tr><td>Krachttraining en pilates</td><td>2%</td><td>17%</td></tr>
+<tr><td>Zwemmen</td><td>5%</td><td>20%</td></tr>
+<tr><td>Yoga en tai chi</td><td>3%</td><td>20%</td></tr>
+</tbody>
+</table>
+<p>Eén wandeling kan dus zo'n 10% naar boven of beneden afwijken, maar over een week vallen de fouten grotendeels tegen elkaar weg. Voor energie in rust over de hele dag publiceert Apple geen nauwkeurigheidscijfer. Het is een model, geen meting, met dezelfde beperkingen als elke BMR-calculator. Toch zit het dagtotaal dichter bij je echte verbruik dan een vaste TDEE-schatting, omdat het telt wat je werkelijk hebt gedaan.</p>
+<h2>Hoe maak je je calorietotaal bruikbaarder?</h2>
+<p>Houd je gewicht actueel, draag de Watch de hele dag en kijk naar een gemiddelde over 7 dagen.</p>
+<ul>
+<li>Houd het gewicht in je gezondheidsprofiel actueel. Energie in rust wordt daaruit berekend.</li>
+<li>Draag de Watch de hele dag, ook buiten je trainingen, zodat actieve energie ook stappen en huishoudelijk werk meetelt.</li>
+<li>Neem het gemiddelde van 7 dagen of meer. Eén dag schommelt te veel; het gemiddelde is je bruikbare totale dagelijkse energieverbruik.</li>
+<li>Houd je je eten bij in een app die naar Gezondheid schrijft, dan geeft verbruik min inname je tekort voor die dag, zonder zelf te rekenen.</li>
+</ul>
+<p class="note">Alleen ter informatie, geen medisch advies.</p>
+<h2>Veelgestelde vragen</h2>
+<h3 style="font-size:18px;margin:18px 0 6px">Telt de Apple Watch rustcalorieën mee?</h3><p>Ja. Energie in rust wordt de hele dag in Gezondheid geregistreerd, maar de bewegingsring in de Conditie-app toont alleen actieve energie. Tel de twee op voor je totale verbruik.</p><h3 style="font-size:18px;margin:18px 0 6px">Waarom zegt mijn Apple Watch dat ik maar 400 calorieën heb verbrand?</h3><p>Dat is de actieve helft. Je energie in rust, meestal 1.200 tot 2.000 kcal, wordt apart bijgehouden in de Gezondheid-app. Je echte dagtotaal is de som van beide.</p><h3 style="font-size:18px;margin:18px 0 6px">Kan ik mijn totale calorieverbruik op mijn wijzerplaat zien?</h3><p>Niet met de standaardcomplicaties van Apple, want die tonen alleen de bewegingsring. Total Calories voegt een complicatie en widgets toe die actieve energie en energie in rust als één getal laten zien.</p><h3 style="font-size:18px;margin:18px 0 6px">Moet je uitgaan van actieve of totale calorieën?</h3><p>Ga uit van je totale calorieën, actief plus rust, als je bepaalt hoeveel je eet: dat is je hele verbruik van de dag. Actieve calorieën (de bewegingsring) zijn een goed bewegingsdoel, maar alleen daarop letten laat de 1.200 tot 2.000 kcal weg die je lichaam in rust verbruikt. Neem het gemiddelde van het totaal over 7 dagen of meer, want één dag schommelt te veel.</p><h3 style="font-size:18px;margin:18px 0 6px">Hoe nauwkeurig is energie in rust op de Apple Watch?</h3><p>Het is een schatting met een model, geen meting. Apple berekent energie in rust uit het gewicht, de lengte, de leeftijd en het geslacht in je gezondheidsprofiel, past die iets aan op je huidige activiteit en publiceert er geen nauwkeurigheidscijfer voor. Houd je gewicht in Gezondheid actueel, want energie in rust wordt daaruit berekend.</p>
+<h3 style="font-size:18px;margin:18px 0 6px">Hoe nauwkeurig zijn de calorieën van de Apple Watch tijdens trainingen?</h3><p>Gemiddeld komen ze dichtbij. In Apples labtests hadden wandelen, hardlopen en hiken een gemiddelde fout van 0% met 9% spreiding, en lastiger te meten activiteiten zoals zwemmen en yoga een spreiding van rond de 20%.</p><div class="related"><h3>Gerelateerde gidsen</h3><a href="../tdee-calculator.html">TDEE-calculator: je volledige dagverbruik (Engels)</a><a href="../bmr-calculator.html">BMR-calculator: je rustverbruik (Engels)</a></div>
+</div>
+</article>
+<section class="cta">
+<h2>Zie je echte verbruik, geen schatting</h2>
+<p>Total Calories leest actieve energie en energie in rust uit Apple Gezondheid en toont je echte dagtotaal op je iPhone, Apple Watch en widgets. Gratis om mee te beginnen.</p>
+<div class="store-row"><a class="download-btn" href="https://apps.apple.com/nl/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-apple-watch-active-vs-resti-nl&amp;mt=8">Download Total Calories</a><a class="play-badge" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener"><img src="../google-play-badge.webp" alt="Ontdek het op Google Play"></a></div>
+</section>
+<footer>
+<div class="divider">© 2026 Jack Wallner</div>
+<div><a href="../">Home</a><a href="../guides.html">Gidsen</a><a href="../support.html">Support</a><a href="../privacy-policy.html">Privacy</a></div>
+        <div class="lang-switch"><a href="../apple-watch-active-vs-resting-calories.html" hreflang="en" lang="en">English</a> <a href="../de/apple-watch-active-vs-resting-calories.html" hreflang="de" lang="de">Deutsch</a> <a href="../ja/apple-watch-active-vs-resting-calories.html" hreflang="ja" lang="ja">日本語</a> <a href="../fr/apple-watch-active-vs-resting-calories.html" hreflang="fr" lang="fr">Français</a> <a href="../zh-Hans/apple-watch-active-vs-resting-calories.html" hreflang="zh-Hans" lang="zh-Hans">简体中文</a> <a href="../es/apple-watch-active-vs-resting-calories.html" hreflang="es" lang="es">Español</a> <a href="../pl/apple-watch-active-vs-resting-calories.html" hreflang="pl" lang="pl">Polski</a> <a href="../ru/apple-watch-active-vs-resting-calories.html" hreflang="ru" lang="ru">Русский</a> <a href="../it/apple-watch-active-vs-resting-calories.html" hreflang="it" lang="it">Italiano</a> <a href="../pt-BR/apple-watch-active-vs-resting-calories.html" hreflang="pt-BR" lang="pt-BR">Português (Brasil)</a> <a href="../ar/apple-watch-active-vs-resting-calories.html" hreflang="ar" lang="ar">العربية</a> <a href="../ko/apple-watch-active-vs-resting-calories.html" hreflang="ko" lang="ko">한국어</a> <a href="../zh-Hant/apple-watch-active-vs-resting-calories.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a> <span lang="nl">Nederlands</span> <a href="../sv/apple-watch-active-vs-resting-calories.html" hreflang="sv" lang="sv">Svenska</a></div>
+</footer>
+</body>
+</html>

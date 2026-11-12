@@ -33,14 +33,18 @@
 - [Calorie bruciate Apple Watch | Total Calories](https://jackwallner.com/ios/vitals/it/index.html.md): Total Calories mostra le calorie bruciate su Apple Watch e iPhone. Somma le calorie attive e a riposo di Salute in un solo numero. Gratis e privata.
 - [Apple Watchのアクティブと安静時カロリー:総消費を解説](https://jackwallner.com/ios/vitals/ja/apple-watch-active-vs-resting-calories.html.md): Apple Watchのアクティブエネルギーと安静時エネルギーの意味、ムーブリングが消費の一部しか示さない理由、1日の総消費カロリーの確認方法を解説します。
 - [Apple Watch 消費カロリー | Total Calories](https://jackwallner.com/ios/vitals/ja/index.html.md): Total CaloriesはiPhoneとApple Watchの消費カロリーアプリ。ヘルスケアのアクティブと安静時のカロリーを合計して1つの数字に。無料でプライバシーも安心。
+- [애플워치 활동 칼로리와 휴식 칼로리 차이: 총 소모량 보는 법](https://jackwallner.com/ios/vitals/ko/apple-watch-active-vs-resting-calories.html.md): 애플워치의 활동 에너지와 휴식 에너지가 무슨 뜻인지, 움직이기 링이 소모량의 일부만 보여주는 이유, 하루 총 소모 칼로리를 확인하는 방법을 정리했습니다.
+- [Actieve vs. rustcalorieën op de Apple Watch: totaal verbruik](https://jackwallner.com/ios/vitals/nl/apple-watch-active-vs-resting-calories.html.md): Wat actieve energie en energie in rust op de Apple Watch betekenen, waarom de bewegingsring maar een deel van je verbruik toont en hoe je je totale calorieverbruik per dag ziet.
 - [Kalorie aktywne i spoczynkowe Apple Watch: łączne spalanie](https://jackwallner.com/ios/vitals/pl/apple-watch-active-vs-resting-calories.html.md): Co oznaczają energia aktywna i spoczynkowa na Apple Watch, czemu pierścień Ruch pokazuje tylko część spalania i jak zobaczyć łączne kalorie.
 - [Spalone kalorie Apple Watch | Total Calories](https://jackwallner.com/ios/vitals/pl/index.html.md): Total Calories pokazuje spalone kalorie na Apple Watch i iPhonie. Kalorie aktywne i spoczynkowe z aplikacji Zdrowie w jednej liczbie. Za darmo i prywatnie.
 - [Calorias ativas e em repouso no Apple Watch: gasto total](https://jackwallner.com/ios/vitals/pt-BR/apple-watch-active-vs-resting-calories.html.md): O que energia ativa e em repouso significam no Apple Watch, por que o anel Mover mostra só parte do gasto e como ver suas calorias totais.
 - [Calorias queimadas Apple Watch | Total Calories](https://jackwallner.com/ios/vitals/pt-BR/index.html.md): O Total Calories mostra as calorias queimadas no Apple Watch e iPhone. Soma as calorias ativas e em repouso do Saúde em um só número. Grátis e privado.
 - [Активные и базовые калории Apple Watch: общий расход](https://jackwallner.com/ios/vitals/ru/apple-watch-active-vs-resting-calories.html.md): Что значат активная энергия и энергия покоя на Apple Watch, почему кольцо «Движение» показывает лишь часть расхода и как увидеть общие калории.
 - [Сожжённые калории Apple Watch | Total Calories](https://jackwallner.com/ios/vitals/ru/index.html.md): Total Calories показывает сожжённые калории на Apple Watch и iPhone. Активные и базовые калории из Здоровья в одном числе. Бесплатно и приватно.
+- [Aktiva kalorier och vilokalorier på Apple Watch förklarade](https://jackwallner.com/ios/vitals/sv/apple-watch-active-vs-resting-calories.html.md): Vad aktiv energi och vilande energi betyder på Apple Watch, varför Rörelseringen bara visar en del av förbränningen och hur du ser dagens totala kaloriförbrukning.
 - [Apple Watch 活动与静息卡路里：总消耗详解](https://jackwallner.com/ios/vitals/zh-Hans/apple-watch-active-vs-resting-calories.html.md): Apple Watch 上活动能量和静息能量的含义，为什么活动圆环只显示部分消耗，以及如何查看当天的总卡路里消耗。
 - [Apple Watch 卡路里消耗 | Total Calories](https://jackwallner.com/ios/vitals/zh-Hans/index.html.md): Total Calories 在 Apple Watch 和 iPhone 上显示总卡路里消耗。把健康 App 中的活动与静息卡路里合成一个数字。免费，注重隐私。
+- [Apple Watch 動態與靜止卡路里：一天總消耗怎麼看](https://jackwallner.com/ios/vitals/zh-Hant/apple-watch-active-vs-resting-calories.html.md): Apple Watch 的動態能量和靜止能量各代表什麼、為什麼「活動」圓圈只顯示部分消耗，以及如何查看一天的總消耗卡路里。
 
 ## Optional
 

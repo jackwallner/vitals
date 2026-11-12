@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Vad aktiv energi och vilande energi betyder på Apple Watch, varför Rörelseringen bara visar en del av förbränningen och hur du ser dagens totala kaloriförbrukning.">
+<link rel="icon" type="image/png" sizes="256x256" href="../icon_256.png">
+<link rel="apple-touch-icon" href="../icon_256.png">
+<title>Aktiva kalorier och vilokalorier på Apple Watch förklarade</title>
+<link rel="canonical" href="https://jackwallner.com/ios/vitals/sv/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="en" href="https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="de" href="https://jackwallner.com/ios/vitals/de/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ja" href="https://jackwallner.com/ios/vitals/ja/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="fr" href="https://jackwallner.com/ios/vitals/fr/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="zh-Hans" href="https://jackwallner.com/ios/vitals/zh-Hans/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="es" href="https://jackwallner.com/ios/vitals/es/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="pl" href="https://jackwallner.com/ios/vitals/pl/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ru" href="https://jackwallner.com/ios/vitals/ru/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="it" href="https://jackwallner.com/ios/vitals/it/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://jackwallner.com/ios/vitals/pt-BR/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ar" href="https://jackwallner.com/ios/vitals/ar/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="ko" href="https://jackwallner.com/ios/vitals/ko/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="zh-Hant" href="https://jackwallner.com/ios/vitals/zh-Hant/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="nl" href="https://jackwallner.com/ios/vitals/nl/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="sv" href="https://jackwallner.com/ios/vitals/sv/apple-watch-active-vs-resting-calories.html">
+    <link rel="alternate" hreflang="x-default" href="https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html">
+<meta http-equiv="refresh" content="0; url=https://jackwallner.com/ios/vitals/sv/apple-watch-active-vs-resting-calories.html">
+<script>if(location.hostname==="jackwallner.github.io"){var c=document.querySelector('link[rel="canonical"]');if(c&&c.href.indexOf("https://jackwallner.com/")===0)location.replace(c.href)}</script>
+<meta property="og:title" content="Aktiva kalorier och vilokalorier på Apple Watch">
+<meta property="og:description" content="Vad aktiv energi och vilande energi betyder på Apple Watch, varför Rörelseringen bara visar en del av förbränningen och hur du ser dagens totala kaloriförbrukning.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://jackwallner.com/ios/vitals/sv/apple-watch-active-vs-resting-calories.html">
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Aktiva kalorier och vilokalorier på Apple Watch",
+    "description": "Vad aktiv energi och vilande energi betyder på Apple Watch, varför Rörelseringen bara visar en del av förbränningen och hur du ser dagens totala kaloriförbrukning.",
+    "author": {
+        "@type": "Person",
+        "name": "Jack Wallner"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Total Calories"
+    },
+    "mainEntityOfPage": "https://jackwallner.com/ios/vitals/sv/apple-watch-active-vs-resting-calories.html",
+    "dateModified": "2026-10-28"
+}</script>
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": "Räknar Apple Watch vilokalorier?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Ja. Vilande energi registreras i Hälsa hela dagen, men Rörelseringen i Fitness-appen visar bara aktiv energi. Lägg ihop de två för din totala förbrukning."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Varför säger min Apple Watch att jag bara har förbränt 400 kalorier?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Det är den aktiva halvan. Din vilande energi, oftast 1 200 till 2 000 kcal, registreras separat i appen Hälsa. Din verkliga dagstotal är summan."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Kan jag se total kaloriförbrukning på urtavlan?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Inte med Apples inbyggda komplikationer, som bara visar Rörelseringen. Total Calories lägger till en komplikation och widgetar som visar aktiv plus vilande energi som en siffra."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Ska man utgå från aktiva kalorier eller totala kalorier?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Utgå från totala kalorier, aktiv plus vilande energi, när du bestämmer hur mycket du ska äta, eftersom det är hela dagens förbrukning. Aktiva kalorier (Rörelseringen) är ett bra aktivitetsmål, men på egen hand missar de de 1 200 till 2 000 kcal som kroppen gör av med i vila. Ta ett snitt av totalen över 7 dagar eller fler, eftersom en enskild dag varierar mycket."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Hur exakt är vilande energi på Apple Watch?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Det är en uppskattning från en modell, inte en mätning. Apple räknar fram vilande energi utifrån vikt, längd, ålder och kön i hälsoprofilen, justerar den lite efter din aktivitet och publicerar ingen siffra för noggrannheten. Håll vikten i Hälsa uppdaterad, eftersom vilande energi räknas fram utifrån den."
+            }
+        },
+        {
+            "@type": "Question",
+            "name": "Hur exakta är kalorierna på Apple Watch under träning?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "I snitt nära. I Apples labbtester hade promenad, löpning och vandring 0 % medelfel med 9 % spridning, och svårare aktiviteter som simning och yoga hade en spridning runt 20 %."
+            }
+        }
+    ]
+}</script>
+<style>* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif; color: #1d1d1f; background: #fafafa; -webkit-font-smoothing: antialiased; }
+.container { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+nav { padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.06); background: rgba(250,250,250,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 10; }
+nav .container { display: flex; align-items: center; justify-content: space-between; max-width: 980px; }
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1d1d1f; }
+.nav-brand img { width: 32px; height: 32px; border-radius: 7px; }
+.nav-brand span { font-size: 15px; font-weight: 600; }
+.nav-link { font-size: 14px; text-decoration: none; background: #1d1d1f; color: #fff; padding: 8px 18px; border-radius: 980px; font-weight: 500; }
+.nav-link:hover { opacity: 0.85; }
+article { padding: 64px 0 48px; }
+h1 { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
+.updated { font-size: 14px; color: #6e6e73; margin-bottom: 12px; }
+.lede { font-size: 19px; color: #6e6e73; line-height: 1.5; margin-bottom: 36px; }
+h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.4px; margin: 40px 0 12px; }
+p, li { font-size: 17px; line-height: 1.6; margin-bottom: 14px; }
+ul, ol { padding-left: 22px; }
+li { margin-bottom: 6px; }
+a { color: #1d1d1f; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 20px; font-size: 16px; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid rgba(0,0,0,0.08); }
+th { font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px; color: #6e6e73; font-weight: 600; }
+.formula { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; padding: 16px 18px; font-family: "SF Mono", Menlo, monospace; font-size: 15px; line-height: 1.7; margin: 8px 0 20px; overflow-x: auto; }
+.calc { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 18px; padding: 24px; margin: 20px 0 28px; }
+.calc h2 { margin: 0 0 16px; font-size: 20px; }
+.calc .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.calc label { display: block; font-size: 13px; color: #6e6e73; margin-bottom: 6px; }
+.calc input, .calc select { width: 100%; font: inherit; font-size: 17px; padding: 10px 12px; border: 1px solid rgba(0,0,0,0.14); border-radius: 10px; background: #fafafa; color: #1d1d1f; }
+.calc .seg { display: flex; gap: 8px; }
+.calc .seg button { flex: 1; font: inherit; font-size: 15px; padding: 9px 0; border-radius: 10px; border: 1px solid rgba(0,0,0,0.14); background: #fafafa; cursor: pointer; }
+.calc .seg button[aria-pressed="true"] { background: #1d1d1f; color: #fff; border-color: #1d1d1f; }
+.result { margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.08); }
+.result .big { font-size: 40px; font-weight: 700; letter-spacing: -1px; line-height: 1; }
+.result .big small { font-size: 16px; font-weight: 500; color: #6e6e73; letter-spacing: 0; margin-left: 6px; }
+.result .sub { font-size: 15px; color: #6e6e73; margin-top: 8px; }
+.cta { text-align: center; padding: 48px 24px 56px; border-top: 1px solid rgba(0,0,0,0.06); margin-top: 24px; }
+.cta h2 { margin: 0 0 8px; }
+.cta p { color: #6e6e73; max-width: 440px; margin: 0 auto 22px; }
+.download-btn { display: inline-block; background: #1d1d1f; color: #fff; font-size: 15px; font-weight: 500; padding: 14px 36px; border-radius: 980px; text-decoration: none; }
+.download-btn:hover { opacity: 0.85; }
+.related { padding: 24px 0 8px; }
+.related h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: #6e6e73; margin-bottom: 10px; }
+.related a { display: block; font-size: 16px; text-decoration: none; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+footer { text-align: center; padding: 20px 24px 40px; font-size: 12px; color: #6e6e73; }
+footer a { display: inline-block; padding: 6px 0; color: #6e6e73; text-decoration: none; margin: 0 10px; }
+footer .divider { margin: 4px 0; }
+.note { font-size: 14px; color: #6e6e73; line-height: 1.5; }
+@media (max-width: 520px) { h1 { font-size: 32px; } .calc .row { grid-template-columns: 1fr; } }
+
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.nav-actions .nav-link, .nav-brand span { white-space: nowrap; }
+@media (max-width: 480px) { .nav-actions { gap: 6px; } .nav-actions .nav-link { padding: 7px 12px; font-size: 13px; } }
+.nav-link-play { background: transparent; color: #1d1d1f; box-shadow: inset 0 0 0 1px #1d1d1f; }
+.store-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; }
+.play-badge { display: inline-block; line-height: 0; margin: -11px -12px; }
+.play-badge img { height: 69px; width: auto; display: block; }
+.cta-box .play-badge { margin: -10px -11px; }
+.cta-box .play-badge img { height: 64px; }
+</style>
+</head>
+<body>
+<nav>
+<div class="container">
+<a class="nav-brand" href="../" aria-label="Total Calories"><img src="../icon_64.webp" alt="" width="32" height="32"><span>Total Calories</span></a>
+<span class="nav-actions"><a class="nav-link" href="https://apps.apple.com/se/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-apple-watch-active-vs-resti-sv&amp;mt=8">Ladda ned</a><a class="nav-link nav-link-play" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener">Google Play</a></span>
+</div>
+</nav>
+<article>
+<div class="container">
+<h1>Aktiva kalorier och vilokalorier på Apple Watch</h1>
+<p class="updated">Senast uppdaterad <time datetime="2026-10-28" data-updated>2026-10-28</time></p>
+<p class="lede">Aktiva kalorier (aktiv energi) är det du förbränner genom att röra dig, utöver viloförbrukningen. Vilokalorier (vilande energi) är det kroppen gör av med bara för att hålla dig vid liv. Rörelseringen visar bara en del av det du förbränner. Här går vi igenom vad aktiv energi och vilande energi betyder i appen Hälsa, var du ser totalen och varför det är totalen som räknas när du bestämmer hur mycket du ska äta.</p>
+<h2>Vad är skillnaden mellan aktiva kalorier och vilokalorier?</h2>
+<p>Vilande energi är det kroppen förbränner för att hålla dig vid liv, och aktiv energi är allt utöver det, från promenader till träningspass. Appen Hälsa registrerar kalorierna i två separata fält hela dagen.</p>
+<ul>
+<li><strong>Vilande energi</strong> är klockans uppskattning av din basalomsättning, de kalorier kroppen gör av med för att hålla dig vid liv. Apple räknar fram den utifrån vikt, längd, ålder och kön i din hälsoprofil (och om du använder rullstol), och den varierar lite med vad du gör. För de flesta vuxna blir det 1 200 till 2 000 kcal per dag, ungefär 50 till 85 kcal i timmen.</li>
+<li><strong>Aktiv energi</strong> är allt utöver vilan: promenader, träning, hushållssysslor, småpill. Klockan uppskattar den hela dagen med rörelsesensorer och puls, och under ett träningspass tillkommer GPS, höjd och träningstyp. Det är den siffran som visas i Rörelseringen.</li>
+</ul>
+<p>Apples egen definition, från <a href="https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf">vitboken om kalorimetri från november 2024</a> (på engelska): aktiva kalorier är de kalorier du förbränner utöver de basala (vilande) kalorierna, och totala kalorier är de två tillsammans. Dagens totala kaloriförbrukning är alltså bara summan. En Rörelsering på 500 kcal en dag med 1 700 kcal vilande energi ger 2 200 kcal totalt.</p>
+<h2>Varför ser siffran i Rörelseringen så låg ut?</h2>
+<p>För att ringen bara visar aktiv energi, inte viloförbrukningen. Fitness-appen är byggd kring aktivitet, så den lyfter fram aktiv energi och lämnar vilande energi i appen Hälsa under Bläddra &gt; Aktivitet. Många jämför 480 kcal i Rörelse med en TDEE-kalkylator som säger 2 400 och tror att klockan är trasig. Det är den inte. De tittar på halva siffran.</p>
+<h2>Hur ser du din totala kaloriförbrukning?</h2>
+<p>Lägg ihop vilande energi och aktiv energi i appen Hälsa, eller använd en app som gör det åt dig.</p>
+<ol>
+<li>Öppna appen Hälsa, tryck på Bläddra och sedan på Aktivitet. Vilande energi och aktiv energi ligger på separata rader; lägg ihop dagens värden.</li>
+<li>För ett enskilt träningspass öppnar du passet i Fitness-appen. Sammanfattningen visar aktiva och totala kalorier sida vid sida.</li>
+<li>Eller använd en app som räknar ihop åt dig och sparar historiken. Total Calories visar summan på iPhone, som komplikation på Apple Watch och i en widget på hemskärmen eller låsskärmen, med fördelningen mellan aktiv och vilande energi under.</li>
+</ol>
+<h2>Hur exakta är kalorierna på Apple Watch?</h2>
+<p>För träningspass låg medelfelet nära noll i Apples tester, med en spridning på ungefär 9 till 20 % beroende på aktivitet. Apple jämförde Apple Watch med en metabolisk vagn, labbinstrumentet som mäter förbrukningen via andningen. Medelfel och spridning enligt Apples vitbok från november 2024:</p>
+<table>
+<thead><tr><th>Träningspass</th><th>Medelfel</th><th>Spridning (SD)</th></tr></thead>
+<tbody>
+<tr><td>Promenad, löpning, vandring</td><td>0%</td><td>9%</td></tr>
+<tr><td>Cykling utomhus</td><td>5%</td><td>13%</td></tr>
+<tr><td>Crosstrainer</td><td>0%</td><td>15%</td></tr>
+<tr><td>Rodd</td><td>-2%</td><td>15%</td></tr>
+<tr><td>HIIT och inomhuscykling</td><td>-2%</td><td>14%</td></tr>
+<tr><td>Styrketräning och pilates</td><td>2%</td><td>17%</td></tr>
+<tr><td>Simning</td><td>5%</td><td>20%</td></tr>
+<tr><td>Yoga och tai chi</td><td>3%</td><td>20%</td></tr>
+</tbody>
+</table>
+<p>En promenad kan alltså slå fel med ungefär 10 % åt något håll, men felen tar till stor del ut varandra under en vecka. För vilande energi över hela dagen publicerar Apple ingen siffra för noggrannheten. Den är en modell, inte en mätning, och har samma begränsningar som alla BMR-kalkylatorer. Dagstotalen ligger ändå närmare din verkliga förbrukning än en fast TDEE-uppskattning, eftersom den räknar det du faktiskt gjorde.</p>
+<h2>Hur gör du kaloritotalen mer användbar?</h2>
+<p>Håll vikten uppdaterad, bär klockan hela dagen och titta på ett snitt över 7 dagar.</p>
+<ul>
+<li>Håll vikten i hälsoprofilen uppdaterad. Vilande energi räknas fram utifrån den.</li>
+<li>Bär klockan hela dagen, även utanför träningspassen, så att aktiv energi fångar steg och hushållssysslor.</li>
+<li>Ta ett snitt över 7 dagar eller fler. En enskild dag varierar mycket; snittet är din användbara totala dagliga energiförbrukning.</li>
+<li>Om du loggar maten i en app som skriver till Hälsa ger förbrukning minus intag dagens underskott, utan att du behöver räkna själv.</li>
+</ul>
+<p class="note">Endast i informationssyfte, inte medicinsk rådgivning.</p>
+<h2>Vanliga frågor</h2>
+<h3 style="font-size:18px;margin:18px 0 6px">Räknar Apple Watch vilokalorier?</h3><p>Ja. Vilande energi registreras i Hälsa hela dagen, men Rörelseringen i Fitness-appen visar bara aktiv energi. Lägg ihop de två för din totala förbrukning.</p><h3 style="font-size:18px;margin:18px 0 6px">Varför säger min Apple Watch att jag bara har förbränt 400 kalorier?</h3><p>Det är den aktiva halvan. Din vilande energi, oftast 1 200 till 2 000 kcal, registreras separat i appen Hälsa. Din verkliga dagstotal är summan.</p><h3 style="font-size:18px;margin:18px 0 6px">Kan jag se total kaloriförbrukning på urtavlan?</h3><p>Inte med Apples inbyggda komplikationer, som bara visar Rörelseringen. Total Calories lägger till en komplikation och widgetar som visar aktiv plus vilande energi som en siffra.</p><h3 style="font-size:18px;margin:18px 0 6px">Ska man utgå från aktiva kalorier eller totala kalorier?</h3><p>Utgå från totala kalorier, aktiv plus vilande energi, när du bestämmer hur mycket du ska äta, eftersom det är hela dagens förbrukning. Aktiva kalorier (Rörelseringen) är ett bra aktivitetsmål, men på egen hand missar de de 1 200 till 2 000 kcal som kroppen gör av med i vila. Ta ett snitt av totalen över 7 dagar eller fler, eftersom en enskild dag varierar mycket.</p><h3 style="font-size:18px;margin:18px 0 6px">Hur exakt är vilande energi på Apple Watch?</h3><p>Det är en uppskattning från en modell, inte en mätning. Apple räknar fram vilande energi utifrån vikt, längd, ålder och kön i hälsoprofilen, justerar den lite efter din aktivitet och publicerar ingen siffra för noggrannheten. Håll vikten i Hälsa uppdaterad, eftersom vilande energi räknas fram utifrån den.</p>
+<h3 style="font-size:18px;margin:18px 0 6px">Hur exakta är kalorierna på Apple Watch under träning?</h3><p>I snitt nära. I Apples labbtester hade promenad, löpning och vandring 0 % medelfel med 9 % spridning, och svårare aktiviteter som simning och yoga hade en spridning runt 20 %.</p><div class="related"><h3>Relaterade guider</h3><a href="../tdee-calculator.html">TDEE-kalkylator: hela dagens förbrukning (på engelska)</a><a href="../bmr-calculator.html">BMR-kalkylator: din viloförbrukning (på engelska)</a></div>
+</div>
+</article>
+<section class="cta">
+<h2>Se din verkliga förbrukning, inte en uppskattning</h2>
+<p>Total Calories läser aktiv och vilande energi från Apple Hälsa och visar din verkliga dagstotal på iPhone, Apple Watch och i widgetar. Gratis att börja.</p>
+<div class="store-row"><a class="download-btn" href="https://apps.apple.com/se/app/total-calories-daily-tracker/id6761743504?pt=128748779&amp;ct=jw-vitals-apple-watch-active-vs-resti-sv&amp;mt=8">Ladda ned Total Calories</a><a class="play-badge" href="https://play.google.com/store/apps/details?id=com.jackwallner.vitals" rel="noopener"><img src="../google-play-badge.webp" alt="Ladda ned på Google Play"></a></div>
+</section>
+<footer>
+<div class="divider">© 2026 Jack Wallner</div>
+<div><a href="../">Hem</a><a href="../guides.html">Guider</a><a href="../support.html">Support</a><a href="../privacy-policy.html">Integritet</a></div>
+        <div class="lang-switch"><a href="../apple-watch-active-vs-resting-calories.html" hreflang="en" lang="en">English</a> <a href="../de/apple-watch-active-vs-resting-calories.html" hreflang="de" lang="de">Deutsch</a> <a href="../ja/apple-watch-active-vs-resting-calories.html" hreflang="ja" lang="ja">日本語</a> <a href="../fr/apple-watch-active-vs-resting-calories.html" hreflang="fr" lang="fr">Français</a> <a href="../zh-Hans/apple-watch-active-vs-resting-calories.html" hreflang="zh-Hans" lang="zh-Hans">简体中文</a> <a href="../es/apple-watch-active-vs-resting-calories.html" hreflang="es" lang="es">Español</a> <a href="../pl/apple-watch-active-vs-resting-calories.html" hreflang="pl" lang="pl">Polski</a> <a href="../ru/apple-watch-active-vs-resting-calories.html" hreflang="ru" lang="ru">Русский</a> <a href="../it/apple-watch-active-vs-resting-calories.html" hreflang="it" lang="it">Italiano</a> <a href="../pt-BR/apple-watch-active-vs-resting-calories.html" hreflang="pt-BR" lang="pt-BR">Português (Brasil)</a> <a href="../ar/apple-watch-active-vs-resting-calories.html" hreflang="ar" lang="ar">العربية</a> <a href="../ko/apple-watch-active-vs-resting-calories.html" hreflang="ko" lang="ko">한국어</a> <a href="../zh-Hant/apple-watch-active-vs-resting-calories.html" hreflang="zh-Hant" lang="zh-Hant">繁體中文</a> <a href="../nl/apple-watch-active-vs-resting-calories.html" hreflang="nl" lang="nl">Nederlands</a> <span lang="sv">Svenska</span></div>
+</footer>
+</body>
+</html>
