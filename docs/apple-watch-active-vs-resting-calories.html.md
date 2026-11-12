@@ -21,7 +21,7 @@ Apple's own definition, from its [November 2024 calorimetry white paper](https:/
 
 ## Why does the Move ring read low?
 
-Because it shows only active energy, not your resting burn. The Fitness app is built around activity, so it headlines active energy and leaves resting energy in the Health app under Browse, Activity. People compare a 480 kcal Move total to a TDEE calculator saying 2,400 and assume the Watch is broken. It is not. They are looking at half the number.
+Because it shows only active energy, not your resting burn. The Fitness app is built around activity, so it headlines active energy and leaves resting energy in the Health app under Browse, Activity. People compare a 480 kcal Move total to a TDEE calculator saying 2,400 and assume the Watch is broken. It is not. They are looking at half the number. The Move ring is also the one most people keep a streak on; [what breaks an Apple Watch streak, and how to protect it](https://jackwallner.com/ios/fitness-streaks/apple-watch-streak-broken.html).
 
 ## How do you see your total calories burned?
 
