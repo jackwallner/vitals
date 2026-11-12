@@ -9,7 +9,7 @@
 ## Guides
 
 - [Active vs Resting Calories on Apple Watch: Total Burn Explained](https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html.md): What active and resting energy mean on Apple Watch, why the Move ring shows only part of your burn, and how to see your total calories burned for the day.
-- [Best App to Track Calories Burned on Apple Watch (2026)](https://jackwallner.com/ios/vitals/best-app-to-track-calories-burned-apple-watch.html.md): Five iPhone apps for tracking calories burned compared: Total Calories, ActivityTracker, TDEE, TDEE Calculator and Dynamic TDEE Tracker, as of October 2026.
+- [Best App to Track Calories Burned on Apple Watch (2026)](https://jackwallner.com/ios/vitals/best-app-to-track-calories-burned-apple-watch.html.md): Five iPhone apps for tracking calories burned compared: Total Calories, ActivityTracker, TDEE, TDEE Calculator and Dynamic TDEE Tracker, as of November 2026.
 - [BMR Calculator: Basal Metabolic Rate Explained](https://jackwallner.com/ios/vitals/bmr-calculator.html.md): Free BMR calculator (Mifflin-St Jeor), what basal metabolic rate means, what changes it, and how Apple Watch resting energy compares.
 - [Lock Screen Widget for Calories Burned and Steps (Free)](https://jackwallner.com/ios/vitals/calories-and-steps-lock-screen-widget.html.md): A free iPhone Lock Screen widget that shows today's total calories burned and steps: what it shows, how to add it, and the matching Apple Watch complication.
 - [Calorie burn guides: TDEE, BMR and Apple Watch energy](https://jackwallner.com/ios/vitals/guides.html.md): Short guides on calories burned: TDEE, BMR, and how Apple Watch measures active and resting energy.

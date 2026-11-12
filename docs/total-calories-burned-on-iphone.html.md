@@ -6,13 +6,21 @@ Web page: https://jackwallner.com/ios/vitals/total-calories-burned-on-iphone.htm
 
 ## How to see total calories burned on your iPhone
 
-Last updated October 30, 2026
+Last updated November 12, 2026
 
-Your iPhone keeps two calorie numbers in Apple Health, Active Energy and Resting Energy, and your total burn for the day is the two added together. You can add them yourself in the Health app, or use Total Calories, a free iPhone app that shows the combined number on one ring, in widgets and on your Apple Watch.
+The iPhone does not show total calories burned on one screen. It keeps two calorie numbers in Apple Health, Active Energy and Resting Energy, and your total burn for the day is the two added together. You can add them yourself in the Health app, or use Total Calories, a free iPhone app that shows the combined number on one ring, in widgets and on your Apple Watch.
 
 ## Where is the total in Apple's own apps?
 
 Apple's apps show the parts, not the daily sum. The Fitness app's Move ring counts active calories only. The Health app records Resting Energy and Active Energy as separate rows under Browse, Activity. A workout summary in Fitness lists Total Calories, but only for that workout.
+
+| Where you look | What it shows | Includes resting? |
+| --- | --- | --- |
+| Fitness, Move ring | Active calories for the day | No |
+| Fitness, workout summary | Active and total calories for one workout | Only during that workout |
+| Health, Active Energy | Active calories by hour, day, week | No |
+| Health, Resting Energy | Resting calories by hour, day, week | Resting only |
+| Total Calories app | Active plus resting for the day, on one ring | Yes |
 
 ## How to add it up yourself
 
@@ -38,7 +46,20 @@ Vitals+, the optional upgrade, adds the active and resting breakdown on the dash
 
 ## Why the total is the number to watch
 
-Resting energy is usually 1,200 to 2,000 kcal of your day, so the Move ring alone can look far lower than what you actually burned. The total, averaged over a week, is your working daily energy expenditure. [Active vs resting calories, explained](https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html).
+Resting energy is usually 1,200 to 2,000 kcal of your day, so the Move ring alone can look far lower than what you actually burned. On a 600 kcal Move day, the ring shows about a quarter to a third of your real burn. The total, averaged over a week, is your working daily energy expenditure. [Active vs resting calories, explained](https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calories.html).
+
+## What does a typical daily total look like?
+
+For most adults the daily total lands between about 1,600 and 2,500 kcal, and resting energy is the larger share. The table below estimates resting energy with the Mifflin-St Jeor equation and adds two common Move ring results. Apple Health's own Resting Energy figure uses Apple's estimate, so yours will differ by a little.
+
+| Example person | Resting (est.) | Total with 300 active | Total with 600 active |
+| --- | --- | --- | --- |
+| Woman, 35, 165 cm, 60 kg | 1,295 kcal | 1,595 kcal | 1,895 kcal |
+| Woman, 45, 165 cm, 80 kg | 1,445 kcal | 1,745 kcal | 2,045 kcal |
+| Man, 30, 178 cm, 75 kg | 1,718 kcal | 2,018 kcal | 2,318 kcal |
+| Man, 50, 183 cm, 95 kg | 1,849 kcal | 2,149 kcal | 2,449 kcal |
+
+In every row, resting energy is 70 to 85 percent of the day's burn. To estimate your own resting number, use the [BMR calculator](https://jackwallner.com/ios/vitals/bmr-calculator.html); to turn it into a daily target, use the [TDEE calculator](https://jackwallner.com/ios/vitals/tdee-calculator.html) or read [how many calories you burn a day](https://jackwallner.com/ios/vitals/how-many-calories-do-i-burn-a-day.html).
 
 Informational only, not medical advice.
 

@@ -6,7 +6,7 @@ Web page: https://jackwallner.com/ios/vitals/apple-watch-active-vs-resting-calor
 
 ## Active vs resting calories on Apple Watch
 
-Last updated October 28, 2026
+Last updated November 12, 2026
 
 Active energy is the calorie burn that comes from movement above your resting rate, and resting energy is what your body spends just staying alive. Your Move ring shows only part of what you burn. Here is what active and resting energy mean in Apple Health, how to see your total, and why the total is the number that matters for eating.
 
@@ -25,7 +25,7 @@ Because it shows only active energy, not your resting burn. The Fitness app is b
 
 ## How do you see your total calories burned?
 
-Add Resting Energy and Active Energy in the Health app, or use an app that adds them for you.
+Add Resting Energy and Active Energy in the Health app, or use an app that adds them for you. Step by step, with typical totals: [how to see total calories burned on iPhone](https://jackwallner.com/ios/vitals/total-calories-burned-on-iphone.html).
 
 1. Open the Health app, tap Browse, then Activity. Resting Energy and Active Energy are separate rows; add them for today.
 2. For a single workout, open it in the Fitness app. The workout summary lists Active Calories and Total Calories side by side.
