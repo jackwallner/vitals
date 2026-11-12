@@ -6,11 +6,11 @@ Web page: https://jackwallner.com/ios/vitals/best-app-to-track-calories-burned-a
 
 ## Best App to Track Calories Burned on Apple Watch
 
-By Jack Wallner · Last updated November 11, 2026
+By Jack Wallner · Last updated November 12, 2026
 
 **Best for hour-by-hour activity and workouts: ActivityTracker Pedometer. Best for a total daily burn (active plus resting) on your watch face: Total Calories. Best for a one-time estimate from your body stats: TDEE.** A calorie burn tracker is an app that reads what your Apple Watch measured, while a TDEE calculator estimates from age, height, weight and activity. The two kinds of app answer different questions.
 
-**How we compared.** We read each app's App Store listing and pulled rating, rating count and update date on November 11, 2026. For Total Calories, TDEE, TDEE Calculator and Dynamic TDEE Tracker we also ran the app and noted onboarding, plans and what the first session shows. **Disclosure:** Jack Wallner makes Total Calories, so read its entry with that in mind.
+**How we compared.** We read each app's App Store listing and pulled rating, rating count and update date on November 12, 2026. For Total Calories, TDEE, TDEE Calculator and Dynamic TDEE Tracker we also ran the app and noted onboarding, plans and what the first session shows. **Disclosure:** Jack Wallner makes Total Calories, so read its entry with that in mind.
 
 ## How do the calorie burn apps compare?
 
@@ -19,12 +19,12 @@ Total Calories and ActivityTracker Pedometer read what your Apple Watch records,
 | App | Best for | Price model | Apple Watch | iPad | Account | Rating (count) | Last updated |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | [Total Calories](https://apps.apple.com/us/app/id6761743504?pt=128748779&ct=jw-vitals-best-app-to-track-calories-bur&mt=8) | Total daily burn on the watch face | Free + subscription or lifetime upgrade | Yes | Not listed | None | 4.67 (12) | Nov 9, 2026 |
-| [ActivityTracker Pedometer](https://apps.apple.com/us/app/id993667592) | Hourly activity, steps and GPS workouts | Free + PRO upgrade | Yes | Not listed | Not stated | 4.78 (102,862) | Nov 5, 2026 |
+| [ActivityTracker Pedometer](https://apps.apple.com/us/app/id993667592) | Hourly activity, steps and GPS workouts | Free + PRO upgrade | Yes | Not listed | Not stated | 4.78 (102,878) | Nov 5, 2026 |
 | [TDEE (Apperitif)](https://apps.apple.com/us/app/id1398051875) | A one-time maintenance estimate with macro splits | Free + one-time Pro upgrade | Not listed | Yes | None in our test | 4.71 (504) | Jul 30, 2026 |
 | [TDEE Calculator (Clixade)](https://apps.apple.com/us/app/id1620861771) | Formula numbers with BMR, RMR and body fat inputs | Free + subscription or lifetime upgrade | Not listed | Yes | None in our test | 4.59 (478) | Oct 12, 2026 |
 | [Dynamic TDEE Tracker](https://apps.apple.com/us/app/id6755413589) | Adaptive TDEE from logged intake and weight | Free | Not listed | Yes | None in our test | 3.5 (4) | Nov 19, 2025 |
 
-Ratings and update dates are from each app's App Store listing as of November 11, 2026. Apple Watch and iPad show the devices each listing names; "Not listed" means the listing does not name them. Price models describe the structure only, because prices vary by region and change.
+Ratings and update dates are from each app's App Store listing as of November 12, 2026. Apple Watch and iPad show the devices each listing names; "Not listed" means the listing does not name them. Price models describe the structure only, because prices vary by region and change.
 
 ## The apps, one by one
 
