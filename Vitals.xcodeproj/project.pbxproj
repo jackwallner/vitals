@@ -174,6 +174,7 @@
 		86FEB604B62D71C0655124AE /* EnergyAveragesCacheReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139F5B0C64C45205FEFCDD22 /* EnergyAveragesCacheReader.swift */; };
 		8A78DE17AF752A889D4CBEDF /* AppStoreReviewLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46F96D18B8385758A31EFC6 /* AppStoreReviewLinks.swift */; };
 		8BA4236445D489D8CCF15852 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FFCB6BDEA8A338E3DE8FB1 /* DataService.swift */; };
+		8BB9B20D2F9F0EFA2C4AD4FD /* IPadCaptureUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 265A6F9FF4158A3DCC026E6C /* IPadCaptureUITests.swift */; };
 		8D267B9C3DAEEDBBDF04937F /* WeeklyRecap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029E0F56D793DA022CCA3D3F /* WeeklyRecap.swift */; };
 		8EE774439A332DC23508F38D /* TrialNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058C18F5B6A17B0302D702CD /* TrialNote.swift */; };
 		9032987B70D7BDD245847674 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = B25E8EC0600130AD108B5EED /* RevenueCat */; };
@@ -392,6 +393,7 @@
 		1DABF18D30A514919DE529CB /* InteractivePopGestureEnabler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractivePopGestureEnabler.swift; sourceTree = "<group>"; };
 		207ADC8FCC7E1328298839A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		208A2706128ED69211B77282 /* CTAGlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTAGlow.swift; sourceTree = "<group>"; };
+		265A6F9FF4158A3DCC026E6C /* IPadCaptureUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPadCaptureUITests.swift; sourceTree = "<group>"; };
 		28B688A25476BF08977C9AB3 /* VitalsTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = VitalsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		292C63911A7E258A1952BF35 /* GoalRecalibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalRecalibration.swift; sourceTree = "<group>"; };
 		29693CF9343830E2D9DE2029 /* EnergyAveragesCacheReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyAveragesCacheReaderTests.swift; sourceTree = "<group>"; };
@@ -598,6 +600,7 @@
 				BE594FF27D6233DB728F7D5A /* AuditFeaturesUITests.swift */,
 				C5F6A6AE22A02C84F2077B36 /* ExcludedDaysUITests.swift */,
 				5A524F44F2C81B258D1BBE67 /* HealthKitLabUITests.swift */,
+				265A6F9FF4158A3DCC026E6C /* IPadCaptureUITests.swift */,
 				E70DDBFDB45C81CCDD148019 /* LandscapeSplitUITests.swift */,
 				9D69AA5CE048C7FF360D80A3 /* OnboardingFlowUITests.swift */,
 				33D5592097926B5086A3CF36 /* PaywallFunnelUITests.swift */,
@@ -1058,11 +1061,11 @@
 			projectRoot = "";
 			targets = (
 				7F399A17E2AC88E07B83ADE5 /* Vitals */,
-				EF698115BC31C3766ED148BA /* VitalsTests */,
-				7EB7E4D973233A77BEED96AF /* VitalsUITests */,
 				BA7F93B3F4FA48491616A6FE /* VitalsWatch */,
-				8CE4321B67221E8301492377 /* VitalsWatchWidget */,
 				F7D9E69E00CE7AA8C7C7BE09 /* VitalsWidget */,
+				8CE4321B67221E8301492377 /* VitalsWatchWidget */,
+				7EB7E4D973233A77BEED96AF /* VitalsUITests */,
+				EF698115BC31C3766ED148BA /* VitalsTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1360,6 +1363,7 @@
 				75DF1DC0913DA36B2351FFF0 /* ExcludedDaysUITests.swift in Sources */,
 				E834A90B2E27EF4DF66164EB /* FleetQA.swift in Sources */,
 				AC4CC88A6ACE68D5ED34C6FE /* HealthKitLabUITests.swift in Sources */,
+				8BB9B20D2F9F0EFA2C4AD4FD /* IPadCaptureUITests.swift in Sources */,
 				C2F6C569933721E5B145FDAB /* LandscapeSplitUITests.swift in Sources */,
 				E301042E1AFB8011E2FD493C /* OnboardingFlowUITests.swift in Sources */,
 				213EE773F5D27D3D1B3F3A2B /* PaywallFunnelUITests.swift in Sources */,
@@ -1499,7 +1503,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.vitals;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1555,7 +1559,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 253;
+				CURRENT_PROJECT_VERSION = 254;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1630,7 +1634,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jackwallner.vitals;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -1704,7 +1708,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 253;
+				CURRENT_PROJECT_VERSION = 254;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = YXG4MP6W39;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

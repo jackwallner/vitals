@@ -355,7 +355,7 @@ struct DashboardView: View {
                 } else {
                     GeometryReader { geo in
                         ScrollView(showsIndicators: false) {
-                            mainContent(availableHeight: geo.size.height)
+                            mainContent(availableHeight: geo.size.height, availableWidth: geo.size.width)
                                 .readableWidth()
                                 .frame(minHeight: geo.size.height)
                                 .background { pullToRefreshDetector }
@@ -653,29 +653,33 @@ struct DashboardView: View {
             .tint(Theme.textTertiary)
     }
 
-    private func mainContent(availableHeight: CGFloat) -> some View {
+    private func mainContent(availableHeight: CGFloat, availableWidth: CGFloat) -> some View {
+        // An iPad pane is twice a phone's height, so the caps that keep the ring
+        // and figures phone-sized leave a hole. They grow with it; the phone,
+        // the Duo panes and a narrow Split View keep the phone caps.
+        let s: CGFloat = UIDevice.current.userInterfaceIdiom == .pad && availableWidth >= 480 ? 1.4 : 1
         // Scale fonts based on mode
         let calNumberSize: CGFloat = {
             if isSingleMetric && goals.showCalories && !goals.showSteps && !isNetDeficitEnabled {
-                return min(availableHeight * 0.12, 100)
+                return min(availableHeight * 0.12, 100 * s)
             }
-            if isMinimalMode { return min(availableHeight * 0.10, 88) }
-            return min(availableHeight * 0.06, 52)
+            if isMinimalMode { return min(availableHeight * 0.10, 88 * s) }
+            return min(availableHeight * 0.06, 52 * s)
         }()
         let stepsNumberSize: CGFloat = {
             if isSingleMetric && goals.showSteps && !goals.showCalories && !isNetDeficitEnabled {
-                return min(availableHeight * 0.12, 100)
+                return min(availableHeight * 0.12, 100 * s)
             }
-            if isMinimalMode { return min(availableHeight * 0.08, 68) }
-            return min(availableHeight * 0.048, 42)
+            if isMinimalMode { return min(availableHeight * 0.08, 68 * s) }
+            return min(availableHeight * 0.048, 42 * s)
         }()
         let netNumberSize: CGFloat = {
-            if onlyNetMetric { return min(availableHeight * 0.12, 100) }
-            if isMinimalMode { return min(availableHeight * 0.08, 68) }
-            return min(availableHeight * 0.048, 42)
+            if onlyNetMetric { return min(availableHeight * 0.12, 100 * s) }
+            if isMinimalMode { return min(availableHeight * 0.08, 68 * s) }
+            return min(availableHeight * 0.048, 42 * s)
         }()
-        let ringSize: CGFloat = min(availableHeight * 0.32, 260)
-        let ringLineWidth: CGFloat = min(availableHeight * 0.022, 18)
+        let ringSize: CGFloat = min(availableHeight * 0.32, 260 * s)
+        let ringLineWidth: CGFloat = min(availableHeight * 0.022, 18 * s)
 
         return VStack(spacing: 0) {
             // Header

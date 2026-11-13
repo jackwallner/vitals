@@ -432,7 +432,11 @@ struct PaywallView: View {
 
     /// Plans that scrolled under the footer were sliced by it, half a plan
     /// card showing above the button.
-    private var pinsPlanCards: Bool { isUnfoldedPane && showsFullBenefitList }
+    /// Not on an iPad: its pane is tall enough for the pitch and every plan, and
+    /// pinning the plans left a hole between the benefits and the button.
+    private var pinsPlanCards: Bool {
+        isUnfoldedPane && showsFullBenefitList && UIDevice.current.userInterfaceIdiom != .pad
+    }
 
     /// CTA + required 3.1.2 copy.
     ///

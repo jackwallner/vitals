@@ -39,6 +39,7 @@ XcodeGen project/scheme: `Vitals`, sim lease owner `vitals`.
 - Paywall exit offer (test ended 2026-11-06, code removed; keep the `exit_offer` offering and ASC plan live for 1.9.1-1.9.3 binaries): `.claude/rules/exit-offer.md`.
 - UI localization (en + 35 languages, 31 priority locales, RTL and String Catalog rules): `.claude/rules/localization.md`.
 - iPhone Duo unfolded split (Today and History either side of the fold), simulator recipe, App Store set: `.claude/rules/iphone-duo.md`.
+- iPad (family 1,2, the Duo split reused as the iPad layout, Today ring scale, paywall, capture recipe): `.claude/rules/ipad-layout.md`.
 - Android port (Health Connect, Compose, Play, RevenueCat, emulator on Pro, Console answers): `.claude/rules/android.md`.
 - Astro ASO: `./scripts/astro-setup.sh` (`--extra "phrase"` for app-specific terms); local MCP `http://127.0.0.1:8089/mcp`; playbook `~/ios/aso/astro-setup-process.md`; re-sync keywords `./scripts/sync-astro-keywords.sh`.
 
