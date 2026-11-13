@@ -208,7 +208,7 @@ struct ExcludedDaysView: View {
         return VStack(alignment: .leading, spacing: 10) {
             Text("Vitals+")
                 .font(.system(.caption, design: .rounded, weight: .bold))
-                .foregroundStyle(Theme.caloriesPrimary)
+                .foregroundStyle(Theme.caloriesText)
             VStack(alignment: .leading, spacing: 4) {
                 Text(suggestion?.headline ?? String(localized: "Keep odd days out of your averages"))
                     .font(.system(.headline, design: .rounded))

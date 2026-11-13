@@ -746,12 +746,12 @@ struct HistoryView: View {
                                 AverageCard(
                                     label: String(localized: "Avg Calories"),
                                     value: avgCalories.formatted(.number.precision(.fractionLength(0))),
-                                    color: Theme.caloriesPrimary
+                                    color: Theme.caloriesText
                                 )
                                 AverageCard(
                                     label: String(localized: "metric.totalCalories", defaultValue: "Total Calories"),
                                     value: totalCalories.formatted(.number.precision(.fractionLength(0))),
-                                    color: Theme.caloriesPrimary
+                                    color: Theme.caloriesText
                                 )
                             }
 
@@ -2650,7 +2650,7 @@ struct DeepTrendsCard: View {
                     .padding(.horizontal, 8)
                     .padding(.vertical, 3)
                     .background(Theme.caloriesPrimary.opacity(0.15), in: Capsule())
-                    .foregroundStyle(Theme.caloriesPrimary)
+                    .foregroundStyle(Theme.caloriesText)
             }
 
             Text(periodLabel)
