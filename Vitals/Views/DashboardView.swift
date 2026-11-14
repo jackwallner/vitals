@@ -5195,6 +5195,7 @@ private struct SettingsSheet: View {
             Text("Vitals+")
                 .textCase(nil)
                 .font(.footnote.weight(.semibold))
+                .foregroundStyle(.primary)
         }
     }
 }
