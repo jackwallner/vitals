@@ -760,12 +760,12 @@ struct HistoryView: View {
                                 AverageCard(
                                     label: String(localized: "Avg Steps"),
                                     value: avgSteps.formatted(.number),
-                                    color: Theme.stepsPrimary
+                                    color: Theme.stepsText
                                 )
                                 AverageCard(
                                     label: String(localized: "Total Steps"),
                                     value: totalSteps.formatted(.number),
-                                    color: Theme.stepsPrimary
+                                    color: Theme.stepsText
                                 )
                             }
 
@@ -2650,7 +2650,7 @@ struct DeepTrendsCard: View {
                     .padding(.horizontal, 8)
                     .padding(.vertical, 3)
                     .background(Theme.caloriesPrimary.opacity(0.15), in: Capsule())
-                    .foregroundStyle(Theme.caloriesText)
+                    .foregroundStyle(Theme.textPrimary)
             }
 
             Text(periodLabel)
