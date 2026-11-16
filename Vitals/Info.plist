@@ -97,10 +97,6 @@
 	<array>
 		<string>com.jackwallner.vitals.refresh</string>
 	</array>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>healthkit</string>
-	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
