@@ -192,7 +192,7 @@ struct BodyProfileView: View {
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 11)
-                    .background(Theme.caloriesGradient, in: Capsule())
+                    .background(Theme.ctaGradient, in: Capsule())
                 }
                 .buttonStyle(.plain)
                 .disabled(isSyncing)
@@ -221,7 +221,7 @@ struct BodyProfileView: View {
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 11)
-                    .background(Theme.caloriesGradient, in: Capsule())
+                    .background(Theme.ctaGradient, in: Capsule())
                 }
                 .buttonStyle(.plain)
                 .disabled(isSyncing)

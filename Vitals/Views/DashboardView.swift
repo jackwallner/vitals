@@ -572,7 +572,7 @@ struct DashboardView: View {
         }
         .padding(.horizontal, 18)
         .padding(.vertical, 12)
-        .background(Theme.caloriesGradient, in: Capsule())
+        .background(Theme.ctaGradient, in: Capsule())
         .shadow(color: Theme.caloriesPrimary.opacity(0.35), radius: 12, x: 0, y: 6)
         .padding(.top, 8)
         .accessibilityElement(children: .combine)

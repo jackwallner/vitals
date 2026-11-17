@@ -89,6 +89,15 @@ enum Theme {
 
     // MARK: - Gradients
 
+    /// Darker coral to orange for fills under white text (4.5:1 contrast).
+    static var ctaGradient: LinearGradient {
+        LinearGradient(
+            colors: [Color(red: 0.80, green: 0.20, blue: 0.20), Color(red: 0.75, green: 0.30, blue: 0.10)],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
     static var caloriesGradient: LinearGradient {
         LinearGradient(
             colors: [caloriesPrimary, caloriesSecondary],

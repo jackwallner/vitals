@@ -466,7 +466,7 @@ struct PaywallView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: 50)
-                .background(Theme.caloriesGradient, in: Capsule())
+                .background(Theme.ctaGradient, in: Capsule())
                 .ctaGlow()
             }
             .buttonStyle(.plain)

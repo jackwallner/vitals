@@ -92,7 +92,7 @@ struct WhatsNewSheet: View {
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
-                    .background(Theme.caloriesGradient, in: Capsule())
+                    .background(Theme.ctaGradient, in: Capsule())
             }
             .buttonStyle(.plain)
 

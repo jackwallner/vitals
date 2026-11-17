@@ -2146,7 +2146,7 @@ private struct PremiumActionRow: View {
                         .foregroundStyle(.white)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
-                        .background(Theme.caloriesGradient, in: Capsule())
+                        .background(Theme.ctaGradient, in: Capsule())
                 }
                 .buttonStyle(.plain)
             }
@@ -2391,7 +2391,7 @@ struct TrialOfferSheet: View {
                         .foregroundStyle(.white)
                         .padding(.horizontal, 14)
                         .padding(.vertical, 6)
-                        .background(Theme.caloriesGradient, in: Capsule())
+                        .background(Theme.ctaGradient, in: Capsule())
                         .overlay(Capsule().stroke(.white.opacity(0.35), lineWidth: 1))
                         .shadow(color: Theme.caloriesPrimary.opacity(0.5), radius: animateGlow ? 12 : 6, x: 0, y: 2)
                         .scaleEffect(animateGlow ? 1.03 : 1.0)
@@ -2503,7 +2503,7 @@ struct TrialOfferSheet: View {
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 13)
-                        .background(Theme.caloriesGradient, in: Capsule())
+                        .background(Theme.ctaGradient, in: Capsule())
                         .ctaGlow()
                     }
                     .buttonStyle(.plain)
@@ -2683,7 +2683,7 @@ private struct MilestoneCelebrationSheet: View {
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 14)
-                            .background(Theme.caloriesGradient, in: Capsule())
+                            .background(Theme.ctaGradient, in: Capsule())
                     }
                     .buttonStyle(.plain)
 
@@ -2780,7 +2780,7 @@ private struct TrialPlanRow: View {
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 2)
-                                .background(Theme.caloriesGradient, in: Capsule())
+                                .background(Theme.ctaGradient, in: Capsule())
                         }
                     }
                     if let detail = option.detail {

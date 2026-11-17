@@ -982,7 +982,7 @@ struct HistoryView: View {
             .foregroundStyle(.white)
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
-            .background(Theme.caloriesGradient, in: Capsule())
+            .background(Theme.ctaGradient, in: Capsule())
             .disabled(isGeneratingPDF)
         }
         .padding(14)
@@ -2762,7 +2762,7 @@ struct DeepTrendsCard: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
-                .background(Theme.caloriesGradient, in: Capsule())
+                .background(Theme.ctaGradient, in: Capsule())
             }
             .buttonStyle(.plain)
             .disabled(isPurchasing || !store.conversionCTAReady)
