@@ -1,5 +1,3 @@
-Bugün ekranında tarihin yanındaki yeni oklarla geçmiş günlere göz at.
+Yeni: Yeni Yıl Meydan Okuması. 18 Aralık'tan itibaren Bugün sekmesinde bulabilirsiniz. Ocak'ta kalori hedefinize veya adım hedefinize ulaştığınız her gün ayı doldurur. 31 günün hepsini yapabilir misiniz?
 
-Uygulamanın dilini doğrudan Ayarlar'dan değiştir.
-
-Ayrıca Haftalık Özet ve diğer düzeltmeler.
+Bu güncellemede ayrıca: daha kolay okunan metinler, ayrıca düzeltmeler ve iyileştirmeler var.

@@ -1,5 +1,3 @@
-Prechádzajte minulé dni pomocou nových šípok vedľa dátumu na obrazovke Dnes.
+Novinka: Novoročná výzva. Od 18. decembra ju nájdeš v časti Dnes. Každý deň januára, keď dosiahneš cieľ kalórií alebo cieľ krokov, vyplní mesiac. Zvládneš všetkých 31?
 
-Jazyk aplikácie zmeníte priamo v Nastaveniach.
-
-K tomu opravy Týždenného zhrnutia a ďalšie.
+Tiež v tejto aktualizácii: ľahšie čitateľný text a opravy a vylepšenia.

@@ -1,5 +1,3 @@
-Răsfoiește zilele trecute cu noile săgeți de lângă dată, în ecranul Astăzi.
+Nou: Provocarea de Anul Nou. Din 18 decembrie o găsești în Astăzi. Fiecare zi din ianuarie în care atingi ținta de calorii sau ținta de pași umple luna. Poți bifa toate cele 31?
 
-Schimbă limba aplicației direct din Setări.
-
-Plus remedieri pentru Rezumatul săptămânal și altele.
+Tot în această actualizare: text mai ușor de citit, plus remedieri și îmbunătățiri.

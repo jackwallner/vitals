@@ -1,5 +1,3 @@
-Blättere mit den neuen Pfeilen neben dem Datum auf Heute durch vergangene Tage.
+Neu: die Neujahrs-Challenge. Ab dem 18. Dezember findest Du sie unter Heute. Jeder Tag im Januar, an dem Du Dein Kalorienziel oder Dein Schrittziel erreichst, füllt den Monat. Schaffst Du alle 31?
 
-Ändere die Sprache der App direkt in den Einstellungen.
-
-Dazu Korrekturen beim Wochenrückblick und mehr.
+Außerdem in diesem Update: besser lesbarer Text sowie Fehlerbehebungen und Verbesserungen.
