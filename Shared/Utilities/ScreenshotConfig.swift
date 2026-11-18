@@ -180,6 +180,15 @@ enum ScreenshotFixtures {
         }
     }
 
+    /// The New Year Goal Challenge capture: a month going well, with two
+    /// misses, and today over the step goal as the Today screen shows it.
+    static func challengeHistory(through end: Date) -> [(date: Date, active: Double, resting: Double, steps: Int)] {
+        history(days: 31, end: end).map { day in
+            let missed = [4, 9].contains(Calendar.current.component(.day, from: day.date))
+            return (date: day.date, active: day.active, resting: day.resting, steps: missed ? 6_400 : 10_342)
+        }
+    }
+
     static func history(days: Int, end: Date = .now) -> [(date: Date, active: Double, resting: Double, steps: Int)] {
         let totalDays = max(days, 30)
         let calendar = Calendar.current

@@ -275,6 +275,18 @@ struct DashboardView: View {
         return Double(steps) / Double(goal)
     }
 
+    /// The New Year Goal Challenge needs a goal to count against.
+    private var showsChallengeRow: Bool {
+        (goals.calorieGoal != nil || goals.stepGoal != nil)
+            && JanuaryChallenge.showsRow(now: JanuaryChallenge.clock())
+    }
+
+    private var challengeRefreshID: String {
+        let hitCalories = (calorieProgress ?? 0) >= 1
+        let hitSteps = (stepProgress ?? 0) >= 1
+        return "\(DailyHealthRecord.key(for: DateHelpers.startOfDay()))-\(hitCalories || hitSteps)"
+    }
+
     private var isMinimalMode: Bool {
         goals.calorieGoal == nil && goals.stepGoal == nil && !goals.showPacing
     }
@@ -782,6 +794,13 @@ struct DashboardView: View {
                         removal: .opacity.animation(.easeOut(duration: 0.1))
                     ))
                     .zIndex(1)
+            }
+
+            if prompt == nil, healthNotice == nil, showsChallengeRow {
+                JanuaryChallengeRow(goals: goals, refreshID: challengeRefreshID)
+                    .padding(.horizontal, 24)
+                    .padding(.top, 12)
+                    .hiddenOnPastDays(isViewingPast)
             }
 
             Spacer(minLength: 16)

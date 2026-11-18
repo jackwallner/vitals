@@ -2,7 +2,7 @@ import XCTest
 
 final class DeepLinkTests: XCTestCase {
     func testEveryLinkRoundTripsThroughItsURL() {
-        let links: [DeepLink] = [.today, .weeklyRecap] + DeepLink.Metric.allCases.map { .metric($0) }
+        let links: [DeepLink] = [.today, .weeklyRecap, .challenge] + DeepLink.Metric.allCases.map { .metric($0) }
         for link in links {
             XCTAssertEqual(DeepLink(url: link.url), link, link.url.absoluteString)
         }
@@ -10,6 +10,10 @@ final class DeepLinkTests: XCTestCase {
 
     func testMetricURLShape() {
         XCTAssertEqual(DeepLink.metric(.steps).url.absoluteString, "totalcalories://metric/steps")
+    }
+
+    func testChallengeURLShape() {
+        XCTAssertEqual(DeepLink.challenge.url.absoluteString, "totalcalories://challenge")
     }
 
     func testRejectsForeignSchemesAndUnknownRoutes() {
