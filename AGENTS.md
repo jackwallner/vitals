@@ -40,7 +40,6 @@ XcodeGen project/scheme: `Vitals`, sim lease owner `vitals`.
 - UI localization (en + 35 languages, 31 priority locales, RTL and String Catalog rules): `.claude/rules/localization.md`.
 - iPhone Duo unfolded split (Today and History either side of the fold), simulator recipe, App Store set: `.claude/rules/iphone-duo.md`.
 - iPad (family 1,2, the Duo split reused as the iPad layout, Today ring scale, paywall, capture recipe): `.claude/rules/ipad-layout.md`.
-- New Year Goal Challenge 2027 behind the in-app event, `totalcalories://challenge`, debug clock: `.claude/rules/january-challenge.md`.
 - Android port (Health Connect, Compose, Play, RevenueCat, emulator on Pro, Console answers): `.claude/rules/android.md`.
 - Astro ASO: `./scripts/astro-setup.sh` (`--extra "phrase"` for app-specific terms); local MCP `http://127.0.0.1:8089/mcp`; playbook `~/ios/aso/astro-setup-process.md`; re-sync keywords `./scripts/sync-astro-keywords.sh`.
 

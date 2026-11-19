@@ -5,13 +5,11 @@ import Foundation
 /// the app has a single router (`DeepLinkRouter`) instead of one per source.
 ///
 /// `totalcalories://today`, `totalcalories://metric/steps`,
-/// `totalcalories://recap`, `totalcalories://challenge`.
+/// `totalcalories://recap`.
 enum DeepLink: Equatable, Sendable {
     case today
     case metric(Metric)
     case weeklyRecap
-    /// The New Year Goal Challenge, the App Store event's link.
-    case challenge
 
     /// Mirrors the iOS `HistoryMetric` cases by raw value. Kept separate because
     /// `HistoryMetric` carries SwiftUI colors and lives in the app target only.
@@ -35,8 +33,6 @@ enum DeepLink: Equatable, Sendable {
             components.path = "/\(metric.rawValue)"
         case .weeklyRecap:
             components.host = "recap"
-        case .challenge:
-            components.host = "challenge"
         }
         // Built from constants, so this can only fail on a programming error.
         return components.url ?? URL(string: "\(Self.scheme)://today")!
@@ -49,8 +45,6 @@ enum DeepLink: Equatable, Sendable {
             self = .today
         case "recap":
             self = .weeklyRecap
-        case "challenge":
-            self = .challenge
         case "metric":
             let name = url.pathComponents.first { $0 != "/" }?.lowercased() ?? ""
             guard let metric = Metric(rawValue: name) else { return nil }

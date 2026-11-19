@@ -149,11 +149,6 @@ private struct RootView: View {
                     await HealthKitSeeder.run()
                 }
                 AuditHooks.start()
-                // -openChallenge: what `totalcalories://challenge` does, for
-                // headless captures, where `simctl openurl` stops on an alert.
-                if ProcessInfo.processInfo.arguments.contains("-openChallenge") {
-                    DeepLinkRouter.shared.open(.challenge)
-                }
                 if ProcessInfo.processInfo.environment["VITALS_SCREENSHOT_TOUR"] == "1" {
                     await runScreenshotTour()
                 }
@@ -522,7 +517,6 @@ struct MainTabView: View {
     @State private var recapAwaitsEntitlement = false
     @StateObject private var reviewPromptCoordinator = ReviewPromptCoordinator.shared
     @StateObject private var deepLinkRouter = DeepLinkRouter.shared
-    @State private var showChallenge = false
     @State private var selectedTab = 0
     #if DEBUG
     /// Taps on the Upgrade tab while already on it, counted toward the hidden
@@ -957,8 +951,6 @@ struct MainTabView: View {
 
     private func handlePendingDeepLink() {
         guard let link = deepLinkRouter.pending else { return }
-        // A challenge link that arrives before setup waits for it to finish.
-        if link == .challenge, !goals.hasCompletedSetup { return }
         deepLinkRouter.pending = nil
         guard goals.hasCompletedSetup else { return }
         switch link {
@@ -974,11 +966,6 @@ struct MainTabView: View {
             // The recap is Vitals+; a typed URL must not open it for free users.
             guard store.isPro else { return }
             WeeklyRecapCoordinator.shared.request()
-        case .challenge:
-            guard JanuaryChallenge.acceptsLink(now: JanuaryChallenge.clock()) else { return }
-            selectedTab = 0
-            dismissSheetsForDeepLink()
-            showChallenge = true
         }
     }
 
@@ -1022,7 +1009,6 @@ struct MainTabView: View {
             && !showReviewPrompt
             && !showWhatsNew
             && !showWeeklyRecap
-            && !showChallenge
             && !showExcludedDays
             && !trialCoordinator.coveringSheetIsPresented
             && trialCoordinator.pendingIntent == nil
@@ -1515,10 +1501,6 @@ struct MainTabView: View {
         // A cold launch from a widget or notification sets the link before this
         // view subscribes, so onChange alone would miss it.
         .onAppear { handlePendingDeepLink() }
-        .onChange(of: goals.hasCompletedSetup) { _, done in
-            if done { handlePendingDeepLink() }
-        }
-        .sheet(isPresented: $showChallenge) { JanuaryChallengeSheet(goals: goals) }
         .onChange(of: reviewPromptCoordinator.pendingPresentation) { _, presentation in
             guard let presentation else { return }
             defer { reviewPromptCoordinator.clear() }
