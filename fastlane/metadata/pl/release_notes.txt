@@ -1,3 +1,5 @@
-Nowość: Wyzwanie noworoczne. Od 18 grudnia znajdziesz je w zakładce Dziś. Każdy dzień stycznia, w którym osiągniesz cel kalorii lub cel kroków, wypełnia miesiąc. Uda Ci się wszystkie 31?
+Przeglądaj poprzednie dni za pomocą nowych strzałek obok daty na ekranie Dziś.
 
-W tej aktualizacji także: łatwiejszy do czytania tekst oraz poprawki i ulepszenia.
+Zmień język aplikacji bezpośrednio w Ustawieniach.
+
+Do tego poprawki w Podsumowaniu tygodnia i nie tylko.

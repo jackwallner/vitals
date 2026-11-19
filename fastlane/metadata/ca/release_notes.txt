@@ -1,3 +1,5 @@
-Novetat: el Repte d'Objectius d'Any Nou. A partir del 18 de desembre el trobaràs a Avui. Cada dia de gener en què arribis al teu objectiu de calories o al de passos omple el mes. Podràs aconseguir els 31?
+Recorre els dies anteriors amb les fletxes noves al costat de la data a Today.
 
-Aquesta actualització també inclou: textos més fàcils de llegir, a més de correccions i millores.
+Canvia l'idioma de l'app directament des de Settings.
+
+A més, correccions a Weekly Recap i altres millores.

@@ -1,3 +1,5 @@
-Újdonság: az Újévi kihívás. December 18-tól a Ma fülön találod. A január minden napja, amikor eléred a kalóriacélodat vagy a lépéscélodat, kitölti a hónapot. Meg tudod csinálni mind a 31-et?
+Lapozz a korábbi napok között a dátum melletti új nyilakkal a Ma képernyőn.
 
-Ebben a frissítésben még: könnyebben olvasható szöveg, valamint javítások és fejlesztések.
+Az app nyelvét közvetlenül a Beállításokban módosíthatod.
+
+Emellett javítások a Heti összefoglalóban és máshol.

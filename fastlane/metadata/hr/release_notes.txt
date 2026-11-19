@@ -1,3 +1,5 @@
-Novo: Novogodišnji izazov. Od 18. prosinca naći ćeš ga u Danas. Svaki dan u siječnju kada ostvariš cilj kalorija ili cilj koraka popunjava mjesec. Možeš li svih 31?
+Pregledavaj prethodne dane novim strelicama pokraj datuma na zaslonu Danas.
 
-U ovom ažuriranju još: čitljiviji tekst te ispravci i poboljšanja.
+Promijeni jezik aplikacije izravno u Postavkama.
+
+I ispravci za Tjedni pregled i ostalo.

@@ -1,3 +1,5 @@
-Uutta: Uudenvuoden haaste. Löydät sen 18. joulukuuta alkaen kohdasta Tänään. Jokainen tammikuun päivä, jona saavutat kaloritavoitteesi tai askeltavoitteesi, täyttää kuukauden. Onnistutko kaikkina 31 päivänä?
+Selaa menneitä päiviä uusilla nuolilla päivämäärän vieressä Tänään-näkymässä.
 
-Tässä päivityksessä myös: helpommin luettava teksti sekä korjauksia ja parannuksia.
+Vaihda sovelluksen kieli suoraan Asetuksista.
+
+Lisäksi korjauksia Viikkoyhteenvetoon ja muuta.

@@ -1,3 +1,5 @@
-Mới: Thử thách Năm Mới. Từ ngày 18 tháng 12, bạn sẽ thấy nó ở tab Hôm nay. Mỗi ngày trong tháng Một bạn đạt mục tiêu calo hoặc mục tiêu bước chân sẽ lấp đầy tháng đó. Bạn có thể đạt đủ 31 ngày không?
+Xem lại các ngày trước bằng mũi tên mới cạnh ngày tháng trên màn hình Hôm nay.
 
-Bản cập nhật này còn có: chữ dễ đọc hơn, cùng các bản sửa lỗi và cải tiến.
+Đổi ngôn ngữ ứng dụng ngay trong Cài đặt.
+
+Cùng các bản sửa lỗi cho Tổng kết tuần và nhiều hơn nữa.

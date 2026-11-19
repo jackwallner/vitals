@@ -1,3 +1,5 @@
-Novo: Novoletni izziv. Od 18. decembra ga najdeš v Danes. Vsak dan januarja, ko dosežeš cilj kalorij ali cilj korakov, zapolni mesec. Ti uspe vseh 31?
+Prelistajte pretekle dneve z novimi puščicami ob datumu na zaslonu Danes.
 
-V tej posodobitvi tudi: lažje berljivo besedilo ter popravki in izboljšave.
+Jezik aplikacije spremenite kar v Nastavitvah.
+
+Poleg tega popravki Tedenskega pregleda in še več.

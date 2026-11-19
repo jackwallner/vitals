@@ -1,3 +1,5 @@
-Novinka: Novoroční výzva. Od 18. prosince ji najdeš na Dnes. Každý den ledna, kdy splníš cíl kalorií nebo cíl kroků, vyplní měsíc. Zvládneš všech 31?
+Procházej minulé dny pomocí nových šipek vedle data na obrazovce Dnes.
 
-Také v této aktualizaci: lépe čitelný text, opravy a vylepšení.
+Jazyk aplikace změníš přímo v Nastavení.
+
+K tomu opravy Týdenního shrnutí a další.

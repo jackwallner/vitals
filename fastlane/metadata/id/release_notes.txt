@@ -1,3 +1,5 @@
-Baru: Tantangan Tahun Baru. Mulai 18 Desember, kamu bisa menemukannya di Hari Ini. Setiap hari di bulan Januari saat kamu mencapai target kalori atau target langkah akan mengisi bulannya. Bisakah kamu menuntaskan ke-31 harinya?
+Telusuri hari-hari sebelumnya dengan panah baru di samping tanggal pada Hari Ini.
 
-Di pembaruan ini juga: teks yang lebih mudah dibaca, plus perbaikan dan peningkatan.
+Ubah bahasa aplikasi langsung dari Pengaturan.
+
+Ditambah perbaikan Rekap Mingguan dan lainnya.
