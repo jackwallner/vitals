@@ -1,1 +1,1 @@
-pedometer,bmr,komplikacija,primanjkljaj,mirenje,aktivno,pokurjene,healthkit,koraki,bmi,kcal,proteini
+števec,korakov,kalkulator,kalorije,primanjkljaj,kalorijski,brezplačno,metabolizem,bazalni,mirovanje

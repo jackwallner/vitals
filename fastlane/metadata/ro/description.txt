@@ -1,62 +1,61 @@
-Total Calories îți afișează caloriile totale arse pe zi (active + în repaus) și numărul de pași chiar acolo unde ai nevoie de ele – pe ecranul principal și ecranul blocat al iPhone și pe cadranul Apple Watch – gratuit. Fără abonament pentru funcțiile de bază. Fără cont. Datele tale de sănătate nu părăsesc telefonul.
+Total Calories îți arată caloriile totale pe care le arzi într-o zi, active plus în repaus, și pașii pe cadranul Apple Watch, pe ecranul principal și pe ecranul de blocare al iPhone-ului. Complicațiile, widgeturile și tabloul de bord zilnic sunt gratuite, fără cont. Datele tale de sănătate rămân pe iPhone.
 
-Dacă ți-ai dorit vreodată ca ecranul Apple Watch să arate doar caloriile totale arse în ziua curentă, aceasta este aplicația.
+Obiectivul Mișcare de pe Apple Watch numără doar caloriile active. Total Calories adaugă arderea în repaus din aplicația Sănătate, așa că vezi cifra completă pe care o arzi într-o zi.
 
-PE APPLE WATCH (GRATUIT)
-- Complicații cu totalul caloriilor arse pentru orice stil de cadran: circular, dreptunghiular, în linie și în colț.
-- Complicație cu numărul de pași în timp real.
-- Aplicația de ceas arată ziua de azi dintr-o privire plus tendințe pe 30 de zile.
-- Obiectivele setate pe iPhone se sincronizează direct pe ceas.
+PE APPLE WATCH
+- Complicații pentru totalul caloriilor arse: circulare, dreptunghiulare, în linie și de colț
+- Complicație pentru numărul de pași
+- Aplicație pentru ceas cu totalurile de azi și ultimele 30 de zile
+- Obiectivele setate pe iPhone se sincronizează pe ceas
 
-PE ECRANUL PRINCIPAL & DE BLOCARE (GRATUIT)
-- Widgeturi pentru ecranul principal în dimensiuni mici și medii.
-- Widgeturi pentru ecranul de blocare în formate circulare și dreptunghiulare.
-- Widgeturile respectă indicatorii pe care i-ai activat și obiectivele pe care le-ai setat.
-- Totalurile zilnice complete sunt vizibile fără să deschizi aplicația.
+WIDGETURI PE ECRANUL PRINCIPAL ȘI DE BLOCARE
+- Widgeturi mici, medii și mari pentru ecranul principal
+- Widgeturi circulare și dreptunghiulare pentru ecranul de blocare
+- Widgeturile arată indicatorii și obiectivele pe care le-ai activat, iar o atingere deschide aplicația
 
-TABLOUL DE BORD (GRATUIT)
-- Totalul caloriilor zilnice arse într-un singur inel clar.
-- Pași zilnici cu bară de progres și obiectiv.
-- Indicator de ritm: ești înainte sau în urmă față de o zi obișnuită la aceeași oră?
-- Trage în jos pentru actualizare. Atinge pictograma rotiță pentru setări.
+AZI
+- Totalul caloriilor arse pe un singur inel, cu pașii și o bară de obiectiv
+- Verificare de ritm: compară momentul de acum cu o zi obișnuită la aceeași oră
+- Întreabă Siri câte calorii sau câți pași ai azi
+- O alertă opțională când atingi obiectivul zilnic
 
-MACRO (VITALS+)
-- Proteine, carbohidrați și grăsimi lângă caloriile tale, citite din aplicația care oricum îți scrie mâncarea în Apple Health.
-- Nimic de introdus de două ori. Ce e în Health e și aici.
-- Urmărește-le pe toate trei sau doar macro-ul pe care chiar îl numeri.
-- Obiective opționale în grame, medii, grafice, coloane CSV și rapoarte PDF.
+ISTORIC
+- Vizualizări pe 7, 30, 90 de zile și 1 an, cu grafice cu bare, săgeți de tendință și zilele de vârf
+- Export CSV al datelor zilnice
 
-ISTORIC (GRATUIT)
-- Vizualizări pe 7 / 30 / 90 / 365 de zile și orice interval de date personalizat.
-- Săgeți de tendință, zile de vârf și grafice tip bară clare.
-- Export de date în format CSV.
+IMC
+- IMC-ul tău, calculat din înălțimea și greutatea din Sănătate sau introduse manual
+- O notă simplă despre ce arată și ce nu arată această valoare
 
-OBIECTIVE CARE ȚI SE POTRIVESC
-- Obiective zilnice opționale pentru calorii și pași.
-- Sau renunți la obiective și îl folosești ca simplu contor – alegerea ta.
-- Comparație de ritm: aceeași zi a săptămânii vs. toate zilele, cu interval de analiză configurabil (14 / 30 / 90 de zile / 1 an).
+OBIECTIVE
+- Obiective zilnice opționale pentru calorii și pași, sau niciun obiectiv
+- Ritmul comparat cu aceeași zi a săptămânii sau cu toate zilele, pe 14, 30, 90 de zile sau un an
 
-Vitals+ (OPȚIONAL)
-Un mic upgrade lunar, anual sau pe viață deblochează:
-- Macro: proteine, carbohidrați și grăsimi din Apple Health
-- Defalcare între calorii active și în repaus
-- Deficit net: calorii arse minus energia din alimente din Apple Health
-- Rapoarte lunare PDF gata de partajat
-- Rapoarte PDF pentru intervale de date personalizate
-- Deep Trends: carduri cu comparații între perioade
-Un trial gratuit este oferit noilor abonați.
+GRATUIT ȘI VITALS+
+Tot ce este mai sus este gratuit și nu expiră. Vitals+ este o îmbunătățire opțională, ca abonament lunar sau anual, fiecare cu 7 zile de probă gratuită pentru abonații noi eligibili, sau ca achiziție unică Lifetime. Vitals+ adaugă:
+- Activ și în repaus: cât din arderea de azi vine din activitate
+- Deficit net: calorii arse minus energia din alimente înregistrată în Sănătate
+- Macronutrienți: proteine, carbohidrați și grăsimi din aplicația de alimentație care scrie deja în Sănătate, cu obiective opționale în grame
+- TDEE și BMR: mediile pe 30 de zile pentru necesarul de menținere și arderea în repaus
+- Proiecții pentru sfârșitul zilei, la calorii și pași, în ritmul tău actual
+- Serii de obiective și un rezumat de duminică: săptămâna aceasta față de cea trecută
+- Intervale personalizate în Istoric, cu rapoarte PDF
+- Deep Trends: orice perioadă comparată cu cea dinainte
+- Grăsime corporală și context caloric lângă IMC
+- Zile excluse, ca zilele de boală și zilele fără ceas la mână să nu-ți strice mediile
+- O reamintire seara, când un obiectiv este încă deschis
 
-PROIECTAT PENTRU CONFIDENȚIALITATE
-- Acces Apple Health doar în citire. Aplicația nu scrie niciodată în dosarele tale medicale.
-- Datele tale de sănătate rămân pe dispozitiv și nu sunt încărcate niciodată.
-- Rapoartele sunt generate pe dispozitiv.
-- Fără reclame. Fără urmărire. Fără conturi.
-- Achizițiile sunt procesate de Apple și RevenueCat, care nu primesc niciodată datele tale de sănătate.
+CONFIDENȚIALITATE
+- Accesul la Sănătate este doar pentru citire. Aplicația nu scrie niciodată în datele tale de sănătate
+- Datele tale de sănătate rămân pe iPhone și nu sunt încărcate nicăieri
+- Rapoartele se generează pe iPhone
+- Fără reclame, fără urmărire, fără cont
+- Achizițiile sunt procesate de Apple și RevenueCat, care nu primesc niciodată datele tale de sănătate
 
-Total Calories nu este un dispozitiv medical și nu este destinată diagnosticării, tratării sau prevenirii niciunei afecțiuni medicale. Consultă întotdeauna un specialist medical pentru sfaturi de sănătate.
+Total Calories nu este un dispozitiv medical și nu este destinat diagnosticării, tratării sau prevenirii vreunei afecțiuni. Pentru sfaturi medicale, discută cu un specialist din domeniul sănătății.
 
-Detalii abonament
-Vitals+ este disponibil ca abonament cu reînnoire automată (lunar sau anual, ambele cu 7 zile de probă gratuită) sau ca achiziție unică Lifetime. Prețurile apar în aplicație înainte de cumpărare și diferă în funcție de regiune. Plata se face din contul tău Apple ID la confirmare. Abonamentele se reînnoiesc automat dacă nu sunt anulate cu cel puțin 24 de ore înainte de sfârșitul perioadei curente. Le poți gestiona sau anula oricând în Setări → Apple ID → Abonamente.
+DETALII ABONAMENT
+Prețurile sunt afișate în aplicație înainte de cumpărare și variază în funcție de regiune. Plata se debitează din ID-ul tău Apple la confirmare. Abonamentele se reînnoiesc automat, dacă nu sunt anulate cu cel puțin 24 de ore înainte de sfârșitul perioadei curente. Poți gestiona sau anula abonamentul din Setări > ID Apple > Abonamente.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

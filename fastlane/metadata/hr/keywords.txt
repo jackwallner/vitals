@@ -1,1 +1,1 @@
-pedometar,bmr,komplikacija,deficit,odmor,aktivan,post,pokret,healthkit,bmi,sagorjeno,proteini
+brojač,pedometar,koraka,kalkulator,kalorijski,deficit,besplatno,bazalni,metabolizam,mirovanje,unos
