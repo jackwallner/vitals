@@ -1,4 +1,4 @@
-Total Calories näyttää päivittäisen kokonaiskalorinkulutuksesi, aktiivisen ja levon, sekä askeleesi Apple Watchin kellotaululla sekä iPhonen koti-valikossa ja lukitusnäytöllä. Komplikaatiot, widgetit ja päivän yhteenveto ovat ilmaisia, eikä tiliä tarvita. Terveystietosi pysyvät iPhonessasi.
+Total Calories näyttää päivittäisen kokonaiskalorinkulutuksesi (aktiivinen ja lepo) sekä askeleesi Apple Watchin kellotaululla sekä iPhonen koti-valikossa ja lukitusnäytöllä. Komplikaatiot, widgetit ja päivän yhteenveto ovat ilmaisia, eikä tiliä tarvita. Terveystietosi pysyvät iPhonessasi.
 
 Apple Watchin Liiku-tavoite laskee vain aktiiviset kalorit. Total Calories lisää siihen lepokulutuksesi Terveys-sovelluksesta, jolloin näet koko päivän aikana kuluttamasi määrän.
 
@@ -38,10 +38,10 @@ Kaikki yllä oleva on ilmaista eikä lopu koskaan. Vitals+ on valinnainen päivi
 - Makrot: proteiini, hiilihydraatit ja rasva ruokasovelluksesta, joka kirjoittaa jo Terveys-sovellukseen, valinnaisilla grammatavoitteilla
 - TDEE ja BMR: 30 päivän keskiarvot ylläpidolle ja lepokulutukselle Terveys-sovelluksesta
 - Päivän lopun ennusteet kaloreille ja askelille nykyisellä tahdillasi
-- Tavoiteputket ja sunnuntain katsaus tästä viikosta edelliseen viikkoon
+- Tavoiteputket ja sunnuntain katsaus, jossa tätä viikkoa verrataan edelliseen
 - Omat aikavälit Historiassa sekä PDF-raportit
 - Deep Trends: mikä tahansa jakso verrattuna edeltävään
-- Kehon rasva ja kalorien tausta BMI:n vierellä
+- Kehon rasva ja kalorien lisätiedot BMI:n vieressä
 - Poissuljetut päivät, jotta sairaspäivät ja päivät ilman kelloa eivät vääristä keskiarvoja
 - Iltamuistutus, kun tavoite on vielä auki
 

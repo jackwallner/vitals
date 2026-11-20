@@ -1,6 +1,6 @@
 Total Calories visar din totala kaloriförbrukning varje dag, aktiv plus vila, och dina steg på urtavlan på Apple Watch, hemskärmen och låsskärmen på iPhone. Komplikationer, widgets och dagsöversikten är gratis och kräver inget konto. Dina hälsodata stannar på din iPhone.
 
-Rörelsemålet på Apple Watch räknar bara aktiva kalorier. Total Calories lägger till din viloförbrukning från appen Hälsa, så att du ser hela det tal du förbrukar på en dag.
+Rörelsemålet på Apple Watch räknar bara aktiva kalorier. Total Calories lägger till din viloförbrukning från appen Hälsa, så att du ser hela talet du förbrukar på en dag.
 
 PÅ DIN APPLE WATCH
 - Komplikationer med totala kalorier för runda, rektangulära, inline- och hörnplatser på urtavlor som stöder dem

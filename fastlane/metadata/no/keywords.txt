@@ -1,1 +1,1 @@
-kaloriteller,skritteller,telle,kalori,gratis,kaloriforbruk,forbrenning,underskudd,helse,kcal,bmi
+kaloriteller,skritteller,telle,kalkulator,gratis,kaloriforbruk,forbrenning,underskudd,helse,kcal,bmi

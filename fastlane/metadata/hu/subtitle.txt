@@ -1,1 +1,1 @@
-Napi égetés számlapon, widget
+Égetés számlapon és widgeten

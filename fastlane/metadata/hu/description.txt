@@ -1,11 +1,11 @@
 A Total Calories megmutatja a teljes napi kalóriaégetésedet, az aktív és a nyugalmi együtt, valamint a lépéseidet az Apple Watch számlapján, az iPhone főképernyőjén és zárolási képernyőjén. A komplikációk, a widgetek és a napi áttekintés ingyenesek, fiók nélkül. Az egészségügyi adataid az iPhone-odon maradnak.
 
-Az Apple Watch Mozgás célja csak az aktív kalóriákat számolja. A Total Calories hozzáadja a nyugalmi égetésedet az Egészség appból, így a teljes napi számot látod.
+Az Apple Watch mozgáscélja csak az aktív kalóriákat számolja. A Total Calories hozzáadja a nyugalmi égetésedet az Egészség appból, így a teljes napi számot látod.
 
 AZ APPLE WATCHON
-- Teljes kalória komplikációk kerek, téglalap alakú, soron belüli és sarokhelyekre, minden támogató számlapon
-- Lépésszám komplikáció
-- Watch app a mai értékekkel és az elmúlt 30 nappal
+- Teljes kalória komplikációk kerek, téglalap alakú, soron belüli és sarokhelyekre, a támogató számlapokon
+- Lépésszám-komplikáció
+- Watch-app a mai értékekkel és az elmúlt 30 nappal
 - Az iPhone-on beállított célok szinkronizálódnak az órára
 
 WIDGETEK A FŐKÉPERNYŐRE ÉS A ZÁROLÁSI KÉPERNYŐRE
@@ -15,7 +15,7 @@ WIDGETEK A FŐKÉPERNYŐRE ÉS A ZÁROLÁSI KÉPERNYŐRE
 
 MA
 - A teljes kalóriaégetés egyetlen gyűrűn, lépésekkel és célsávval
-- Tempóellenőrzés, amely a mostanit a szokásos napodhoz hasonlítja ugyanabban az időben
+- Tempóellenőrzés, amely a mostani állást a szokásos napoddal veti össze az adott időpontra
 - Kérdezd meg Sirit a mai kalóriákról vagy lépésekről
 - Választható értesítés, amikor eléred a napi célodat
 
@@ -25,29 +25,29 @@ ELŐZMÉNYEK
 
 BMI
 - A BMI-d az Egészség appban már meglévő magasságból és súlyból, vagy kézzel megadva
-- Egyszerű megjegyzés arról, mit mond el a szám, és mit nem
+- Rövid megjegyzés arról, mit mond el a szám, és mit nem
 
 CÉLOK
 - Választható napi kalória- és lépéscélok, vagy egyáltalán nincs cél
-- Tempó összehasonlítva ugyanazzal a hétköznappal vagy az összes nappal, az elmúlt 14, 30, 90 napra vagy egy évre
+- Tempó összehasonlítva a hét ugyanazon napjával vagy az összes nappal, az elmúlt 14, 30, 90 napra vagy egy évre
 
 INGYENES ÉS VITALS+
-Minden fent említett ingyenes és nem jár le. A Vitals+ választható bővítés havi vagy éves előfizetésként, mindkettő 7 napos ingyenes próbával a jogosult új előfizetőknek, vagy egyszeri vásárlásként (Lifetime). A Vitals+ ezeket adja hozzá:
+Minden fent említett ingyenes, és soha nem jár le. A Vitals+ választható bővítés havi vagy éves előfizetésként, mindkettő 7 napos ingyenes próbával a jogosult új előfizetőknek, vagy egyszeri vásárlásként (Lifetime). A Vitals+ ezeket adja hozzá:
 - Aktív és nyugalmi: a mai égetés mekkora része származott mozgásból
 - Nettó deficit: az elégetett kalória mínusz az Egészségben rögzített ételenergia
-- Makrók: fehérje, szénhidrát és zsír abból az étel appból, amely már ír az Egészségbe, választható gramm célokkal
+- Makrók: fehérje, szénhidrát és zsír abból az ételnaplózó appból, amely már ír az Egészségbe, választható grammcélokkal
 - TDEE és BMR: a fenntartó és a nyugalmi égetés 30 napos átlagai az Egészségből
 - Napvégi előrejelzések kalóriára és lépésekre a jelenlegi tempódban
 - Célsorozatok és vasárnapi összegzés erről a hétről a múlt héthez képest
-- Egyéni időszakok az Előzményekben, PDF jelentésekkel
+- Egyéni időszakok az Előzményekben, PDF-jelentésekkel
 - Deep Trends: bármely időszak összehasonlítva az előzővel
-- Testzsír és kalóriakörnyezet a BMI mellett
-- Kihagyott napok, hogy a betegnapok és az óra nélküli napok ne torzítsák az átlagaidat
+- Testzsír és kalóriaadatok a BMI mellett
+- Kihagyott napok, hogy a betegnapok és az óra nélküli napok ne torzítsák az átlagot
 - Esti emlékeztető, ha egy cél még nyitott
 
 ADATVÉDELEM
-- Az Egészség elérése csak olvasható. Az app soha nem ír az egészségügyi adataidba
-- Az egészségügyi adataid az iPhone-odon maradnak, és soha nem kerülnek feltöltésre
+- Az Egészség elérése csak olvasásra szól. Az app soha nem ír az egészségügyi adataidba
+- Az egészségügyi adataid az iPhone-odon maradnak, és soha nem töltődnek fel
 - A jelentések az iPhone-odon készülnek
 - Nincs hirdetés, nincs követés és nincs fiók
 - A vásárlásokat az Apple és a RevenueCat kezeli, amelyek soha nem kapják meg az egészségügyi adataidat

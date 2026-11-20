@@ -1,1 +1,1 @@
-krokoměr,počítadlo,kalorií,zdarma,bazální,metabolismus,deficit,zdraví,widget,kcal,bmi,komplikace
+krokoměr,počítadlo,kalkulačka,zdarma,bazální,metabolismus,deficit,zdraví,widget,kcal,bmi,komplikace

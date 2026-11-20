@@ -1,11 +1,11 @@
-Total Calories viser ditt totale kaloriforbruk hver dag, aktivt pluss hvile, og skrittene dine på Apple Watch-urskiven, hjemmeskjermen og låseskjermen på iPhone. Komplikasjoner, widgets og dagsoversikten er gratis og krever ingen konto. Helsedataene dine blir på iPhonen din.
+Total Calories viser ditt totale kaloriforbruk hver dag, aktivt pluss hvile, og skrittene dine på Apple Watch-urskiven, hjemmeskjermen og låseskjermen på iPhone. Komplikasjoner, widgets og dagsoversikten er gratis og krever ingen konto. Helsedataene dine blir værende på iPhonen din.
 
-Beveg-målet på Apple Watch teller bare aktive kalorier. Total Calories legger til hvileforbruket ditt fra Helse-appen, slik at du ser hele tallet du forbrenner på en dag.
+Bevegelsesmålet på Apple Watch teller bare aktive kalorier. Total Calories legger til hvileforbruket ditt fra Helse-appen, slik at du ser hele tallet du forbrenner på en dag.
 
 PÅ APPLE WATCH
 - Komplikasjoner med totale kalorier for runde, rektangulære, inline- og hjørneplasseringer på urskiver som støtter dem
 - En komplikasjon med skrittene dine
-- Watch-app med dagens tall og de siste 30 dagene
+- En Watch-app med dagens tall og de siste 30 dagene
 - Mål du setter på iPhone synkroniseres til klokken
 
 WIDGETS FOR HJEMMESKJERM OG LÅSESKJERM
@@ -14,7 +14,7 @@ WIDGETS FOR HJEMMESKJERM OG LÅSESKJERM
 - Widgetene viser tallene og målene du har slått på, og et trykk åpner appen
 
 I DAG
-- Totalt kaloriforbruk i én ring, med skritt og en målstolpe
+- Totalt kaloriforbruk i én ring, med skritt og en fremdriftslinje mot målet
 - En tempokontroll som sammenligner nå med din vanlige dag på samme tid
 - Spør Siri om dagens kalorier eller skritt
 - Valgfritt varsel når du når dagsmålet ditt
@@ -35,7 +35,7 @@ GRATIS OG VITALS+
 Alt over er gratis og utløper aldri. Vitals+ er en valgfri oppgradering som månedlig eller årlig abonnement, begge med 7 dagers gratis prøveperiode for nye abonnenter som er kvalifisert, eller som et engangskjøp (Lifetime). Vitals+ legger til:
 - Aktiv mot hvile: hvor stor del av dagens forbruk som kom fra aktivitet
 - Nettounderskudd: forbrente kalorier minus matenergien som er registrert i Helse
-- Makro: protein, karbohydrater og fett fra mat-appen som allerede skriver til Helse, med valgfrie gram-mål
+- Makroer: protein, karbohydrater og fett fra matappen som allerede skriver til Helse, med valgfrie grammål
 - TDEE og BMR: 30-dagers gjennomsnitt for vedlikehold og hvileforbruk fra Helse
 - Prognoser for dagens slutt for kalorier og skritt i ditt nåværende tempo
 - Måldager på rad og en søndagsoppsummering av denne uken mot forrige uke
@@ -47,12 +47,12 @@ Alt over er gratis og utløper aldri. Vitals+ er en valgfri oppgradering som må
 
 PERSONVERN
 - Tilgangen til Helse er skrivebeskyttet. Appen skriver aldri til helsedataene dine
-- Helsedataene dine blir på iPhonen din og lastes aldri opp
+- Helsedataene dine blir værende på iPhonen din og lastes aldri opp
 - Rapporter lages på iPhonen din
 - Ingen reklame, ingen sporing og ingen konto
 - Kjøp håndteres av Apple og RevenueCat, som aldri mottar helsedataene dine
 
-Total Calories er ikke et medisinsk utstyr og er ikke ment å diagnostisere, behandle eller forebygge noen sykdom. Snakk med helsepersonell hvis du trenger medisinsk rådgivning.
+Total Calories er ikke medisinsk utstyr og er ikke ment å diagnostisere, behandle eller forebygge noen sykdom. Snakk med helsepersonell hvis du trenger medisinsk rådgivning.
 
 Abonnementsinformasjon
 Vitals+ er tilgjengelig som abonnement med automatisk fornyelse (månedlig eller årlig, begge med 7 dagers gratis prøveperiode) eller som et engangskjøp av Lifetime. Prisene vises i appen før du kjøper og varierer fra region til region. Betalingen belastes Apple-ID-en din ved bekreftelse. Abonnementer fornyes automatisk med mindre de sies opp minst 24 timer før gjeldende periode utløper. Administrer eller si opp når som helst i Innstillinger → Apple-ID → Abonnementer.

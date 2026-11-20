@@ -1,11 +1,11 @@
 Total Calories viser dit samlede kalorieforbrug hver dag, aktivt plus hvile, og dine skridt på Apple Watch-urskiven, iPhones hjemmeskærm og låseskærm. Komplikationer, widgets og dagsoversigten er gratis og kræver ingen konto. Dine helbredsdata bliver på din iPhone.
 
-Bevæg-målet på Apple Watch tæller kun aktive kalorier. Total Calories lægger dit hvileforbrug fra appen Sundhed oveni, så du ser hele det tal, du forbrænder på en dag.
+Bevægelsesmålet på Apple Watch tæller kun aktive kalorier. Total Calories lægger dit hvileforbrug fra appen Sundhed oveni, så du ser hele det tal, du forbrænder på en dag.
 
 PÅ DIT APPLE WATCH
 - Komplikationer med samlede kalorier til runde, rektangulære, inline- og hjørnepladser på urskiver, der understøtter dem
 - En komplikation med dine skridt
-- Watch-app med dagens tal og de seneste 30 dage
+- En Watch-app med dagens tal og de seneste 30 dage
 - Mål, du sætter på iPhone, synkroniseres til uret
 
 WIDGETS TIL HJEMMESKÆRM OG LÅSESKÆRM
@@ -15,7 +15,7 @@ WIDGETS TIL HJEMMESKÆRM OG LÅSESKÆRM
 
 I DAG
 - Samlet kalorieforbrug i én ring, med skridt og en målbjælke
-- Tempotjek, der sammenligner nu med din sædvanlige dag på samme tidspunkt
+- Et tempotjek, der sammenligner nu med din sædvanlige dag på samme tidspunkt
 - Spørg Siri om dagens kalorier eller skridt
 - Valgfri besked, når du når dit daglige mål
 
@@ -52,7 +52,7 @@ PRIVATLIV
 - Ingen reklamer, ingen sporing og ingen konto
 - Køb håndteres af Apple og RevenueCat, som aldrig modtager dine helbredsdata
 
-Total Calories er ikke et medicinsk udstyr og er ikke beregnet til at diagnosticere, behandle eller forebygge nogen sygdom. Tal med en sundhedsprofessionel, hvis du har brug for medicinsk rådgivning.
+Total Calories er ikke medicinsk udstyr og er ikke beregnet til at diagnosticere, behandle eller forebygge nogen sygdom. Tal med en sundhedsprofessionel, hvis du har brug for medicinsk rådgivning.
 
 Abonnementsoplysninger
 Vitals+ fås som et abonnement med automatisk fornyelse (månedligt eller årligt, begge med 7 dages gratis prøveperiode) eller som et engangskøb af Lifetime. Priserne vises i appen, før du køber, og varierer fra region til region. Betalingen trækkes på dit Apple-id ved bekræftelse. Abonnementer fornyes automatisk, medmindre de opsiges mindst 24 timer før den aktuelle periode slutter. Administrer eller opsig når som helst i Indstillinger → Apple-id → Abonnementer.

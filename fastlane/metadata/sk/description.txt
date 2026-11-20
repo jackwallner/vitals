@@ -1,6 +1,6 @@
 Total Calories ukazuje váš celkový denný kalorický výdaj, aktívny plus pokojový, a vaše kroky na ciferníku Apple Watch, na domovskej obrazovke a na uzamknutej obrazovke iPhonu. Komplikácie, widgety a denný prehľad sú zadarmo a bez účtu. Vaše zdravotné údaje zostávajú v iPhone.
 
-Cieľ Pohyb na Apple Watch počíta iba aktívne kalórie. Total Calories k nim pridá váš pokojový výdaj z aplikácie Zdravie, takže vidíte celé číslo, ktoré za deň spálite.
+Cieľ pohybu na Apple Watch počíta iba aktívne kalórie. Total Calories k nim pridá váš pokojový výdaj z aplikácie Zdravie, takže vidíte celé číslo, ktoré za deň spálite.
 
 NA APPLE WATCH
 - Komplikácie s celkovými kalóriami pre okrúhle, obdĺžnikové, riadkové a rohové miesta na ciferníkoch, ktoré ich podporujú
@@ -32,7 +32,7 @@ CIELE
 - Tempo v porovnaní s rovnakým dňom v týždni alebo so všetkými dňami za posledných 14, 30, 90 dní alebo rok
 
 ZADARMO A VITALS+
-Všetko vyššie je zadarmo a nikdy nevyprší. Vitals+ je voliteľné rozšírenie ako mesačné alebo ročné predplatné, obe so 7-dňovou bezplatnou skúšobnou verziou pre oprávnených nových predplatiteľov, alebo ako jednorazový nákup (Lifetime). Vitals+ pridáva:
+Všetko vyššie je zadarmo a nikdy nevyprší. Vitals+ je voliteľné rozšírenie ako mesačné alebo ročné predplatné, obe so 7-dňovým bezplatným skúšobným obdobím pre oprávnených nových predplatiteľov, alebo ako jednorazový nákup (Lifetime). Vitals+ pridáva:
 - Aktívny oproti pokojovému: koľko z dnešného výdaja pochádza z pohybu
 - Čistý deficit: spálené kalórie mínus energia z jedla zapísaná v aplikácii Zdravie
 - Makrá: bielkoviny, sacharidy a tuky z aplikácie o jedle, ktorá už zapisuje do Zdravia, s voliteľnými cieľmi v gramoch
@@ -48,14 +48,14 @@ Všetko vyššie je zadarmo a nikdy nevyprší. Vitals+ je voliteľné rozšíre
 SÚKROMIE
 - Prístup k aplikácii Zdravie je len na čítanie. Aplikácia nikdy nezapisuje do vašich zdravotných záznamov
 - Vaše zdravotné údaje zostávajú v iPhone a nikdy sa nenahrávajú
-- Správy sa vytvárajú priamo v iPhone
+- Prehľady sa vytvárajú priamo v iPhone
 - Žiadne reklamy, žiadne sledovanie, žiadny účet
 - Nákupy spracúvajú Apple a RevenueCat, ktoré vaše zdravotné údaje nikdy nedostanú
 
 Total Calories nie je zdravotnícka pomôcka a nie je určená na diagnostiku, liečbu ani prevenciu akéhokoľvek ochorenia. V lekárskych otázkach sa obráťte na zdravotníckeho pracovníka.
 
 Podrobnosti o predplatnom
-Vitals+ je k dispozícii ako predplatné s automatickým obnovením (mesačné alebo ročné, obe so 7-dňovou bezplatnou skúšobnou verziou) alebo ako jednorazový nákup Lifetime. Ceny sa zobrazujú v aplikácii pred nákupom a líšia sa podľa regiónu. Platba sa strháva z vášho Apple ID pri potvrdení. Predplatné sa obnovuje automaticky, ak ho nezrušíte aspoň 24 hodín pred koncom aktuálneho obdobia. Spravovať alebo zrušiť ho môžete kedykoľvek v Nastaveniach → Apple ID → Predplatné.
+Vitals+ je k dispozícii ako predplatné s automatickým obnovením (mesačné alebo ročné, obe so 7-dňovým bezplatným skúšobným obdobím) alebo ako jednorazový nákup Lifetime. Ceny sa zobrazujú v aplikácii pred nákupom a líšia sa podľa regiónu. Platba sa strháva z vášho Apple ID pri potvrdení. Predplatné sa obnovuje automaticky, ak ho nezrušíte aspoň 24 hodín pred koncom aktuálneho obdobia. Spravovať alebo zrušiť ho môžete kedykoľvek v Nastaveniach → Apple ID → Predplatné.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

@@ -1,6 +1,6 @@
-Total Calories ukazuje váš celkový denní kalorický výdej, aktivní plus klidový, a vaše kroky na ciferníku Apple Watch, na ploše a na zamknuté obrazovce iPhonu. Komplikace, widgety a denní přehled jsou zdarma a bez účtu. Vaše zdravotní údaje zůstávají na iPhonu.
+Total Calories ukazuje váš celkový denní kalorický výdej, aktivní plus klidový, a vaše kroky na ciferníku Apple Watch, na domovské a zamknuté obrazovce iPhonu. Komplikace, widgety a denní přehled jsou zdarma a bez účtu. Vaše zdravotní údaje zůstávají na iPhonu.
 
-Cíl Pohyb na Apple Watch počítá jen aktivní kalorie. Total Calories k nim přidá váš klidový výdej z aplikace Zdraví, takže vidíte celé číslo, které za den spálíte.
+Cíl pohybu na Apple Watch počítá jen aktivní kalorie. Total Calories k nim přidá váš klidový výdej z aplikace Zdraví, takže vidíte celé číslo, které za den spálíte.
 
 NA APPLE WATCH
 - Komplikace s celkovými kaloriemi pro kulatá, obdélníková, řádková a rohová místa na ciferníkách, které je podporují
@@ -8,8 +8,8 @@ NA APPLE WATCH
 - Aplikace pro hodinky s dnešními čísly a posledními 30 dny
 - Cíle nastavené v iPhonu se synchronizují do hodinek
 
-WIDGETY NA PLOCHU A ZAMKNUTOU OBRAZOVKU
-- Malé, střední a velké widgety na plochu
+WIDGETY NA DOMOVSKOU A ZAMKNUTOU OBRAZOVKU
+- Malé, střední a velké widgety na domovskou obrazovku
 - Kulaté a obdélníkové widgety na zamknutou obrazovku
 - Widgety ukazují hodnoty a cíle, které jste zapnuli, a klepnutí otevře aplikaci
 
@@ -32,7 +32,7 @@ CÍLE
 - Tempo ve srovnání se stejným dnem v týdnu nebo se všemi dny za posledních 14, 30, 90 dní nebo rok
 
 ZDARMA A VITALS+
-Vše výše je zdarma a nikdy nevyprší. Vitals+ je volitelné rozšíření jako měsíční nebo roční předplatné, obojí se 7denní zkušební verzí zdarma pro způsobilé nové předplatitele, nebo jako jednorázový nákup (Lifetime). Vitals+ přidává:
+Vše výše je zdarma a nikdy nevyprší. Vitals+ je volitelné rozšíření jako měsíční nebo roční předplatné, obojí se 7denním zkušebním obdobím zdarma pro způsobilé nové předplatitele, nebo jako jednorázový nákup (Lifetime). Vitals+ přidává:
 - Aktivní oproti klidovému: kolik z dnešního výdeje pochází z pohybu
 - Čistý deficit: spálené kalorie minus energie z jídla zapsaná v aplikaci Zdraví
 - Makra: bílkoviny, sacharidy a tuky z aplikace o jídle, která už zapisuje do Zdraví, s volitelnými cíli v gramech
@@ -48,14 +48,14 @@ Vše výše je zdarma a nikdy nevyprší. Vitals+ je volitelné rozšíření ja
 SOUKROMÍ
 - Přístup k aplikaci Zdraví je jen pro čtení. Aplikace nikdy nezapisuje do vašich zdravotních záznamů
 - Vaše zdravotní údaje zůstávají na iPhonu a nikdy se nenahrávají
-- Zprávy se vytvářejí přímo v iPhonu
+- Přehledy se vytvářejí přímo v iPhonu
 - Žádné reklamy, žádné sledování, žádný účet
 - Nákupy zpracovávají Apple a RevenueCat, které vaše zdravotní údaje nikdy nedostanou
 
 Total Calories není zdravotnický prostředek a není určena k diagnostice, léčbě ani prevenci jakéhokoli onemocnění. V lékařských otázkách se obraťte na zdravotnického pracovníka.
 
 Podrobnosti o předplatném
-Vitals+ je k dispozici jako předplatné s automatickým obnovením (měsíční nebo roční, obojí se 7denní zkušební verzí zdarma) nebo jako jednorázový nákup Lifetime. Ceny se zobrazují v aplikaci před nákupem a liší se podle regionu. Platba se strhává z vašeho Apple ID při potvrzení. Předplatné se obnovuje automaticky, pokud ho nezrušíte alespoň 24 hodin před koncem aktuálního období. Spravovat nebo zrušit ho můžete kdykoli v Nastavení → Apple ID → Předplatné.
+Vitals+ je k dispozici jako předplatné s automatickým obnovením (měsíční nebo roční, obojí se 7denním zkušebním obdobím zdarma) nebo jako jednorázový nákup Lifetime. Ceny se zobrazují v aplikaci před nákupem a liší se podle regionu. Platba se strhává z vašeho Apple ID při potvrzení. Předplatné se obnovuje automaticky, pokud ho nezrušíte alespoň 24 hodin před koncem aktuálního období. Spravovat nebo zrušit ho můžete kdykoli v Nastavení → Apple ID → Předplatné.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

@@ -1,1 +1,1 @@
-krokomer,počítadlo,kalórií,zadarmo,zdarma,bazálny,metabolizmus,deficit,zdravie,widget,kcal,bmi,makrá
+krokomer,počítadlo,kalkulačka,zadarmo,zdarma,bazálny,metabolizmus,deficit,zdravie,widget,kcal,bmi
