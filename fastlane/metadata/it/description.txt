@@ -1,4 +1,4 @@
-Mostra le calorie bruciate ogni giorno, attive più a riposo, e i tuoi passi sul quadrante dell’Apple Watch, nella schermata Home e nella schermata di blocco dell’iPhone. Complicazioni, widget e riepilogo giornaliero sono gratuiti, senza account. I tuoi dati sanitari restano sull’iPhone.
+Total Calories mostra le calorie bruciate ogni giorno, attive più a riposo, e i tuoi passi sul quadrante dell’Apple Watch, nella schermata Home e nella schermata di blocco dell’iPhone. Complicazioni, widget e riepilogo giornaliero sono gratuiti, senza account. I tuoi dati sanitari restano sull’iPhone.
 
 L’obiettivo Movimento dell’Apple Watch conta solo le calorie attive. Total Calories aggiunge il dispendio a riposo da Salute, così vedi il dispendio calorico totale della giornata.
 
@@ -24,7 +24,7 @@ STORICO
 - Esportazione CSV dei dati giornalieri
 
 BMI
-- Il tuo BMI da altezza e peso già presenti in Salute, o inseriti a mano
+- Il tuo BMI calcolato su altezza e peso già presenti in Salute, o inseriti a mano
 - Una nota chiara su cosa dice il numero e cosa no
 
 OBIETTIVI
@@ -39,14 +39,14 @@ Tutto quanto sopra è gratuito e non scade. Vitals+ è un upgrade facoltativo: a
 - TDEE e BMR: medie su 30 giorni di mantenimento e metabolismo basale
 - Proiezioni di fine giornata per calorie e passi
 - Serie di obiettivi e riepilogo della domenica, questa settimana contro la scorsa
-- Intervalli di date liberi nello storico, con report PDF
+- Intervalli di date personalizzati nello storico, con report PDF
 - Deep Trends: qualsiasi periodo confrontato con il precedente
 - Massa grassa e contesto calorico accanto al BMI
 - Giorni esclusi, per tenere fuori dalle medie i giorni di malattia o senza orologio
 - Un promemoria serale quando un obiettivo è ancora aperto
 
 LA TUA PRIVACY
-- Accesso in sola lettura a Apple Health. L’app non scrive mai nei tuoi dati sanitari.
+- Accesso in sola lettura a Salute. L’app non scrive mai nei tuoi dati sanitari.
 - I tuoi dati sanitari restano sul dispositivo e non vengono mai caricati.
 - I report sono generati sul dispositivo.
 - Niente pubblicità. Nessun tracciamento. Nessun account.

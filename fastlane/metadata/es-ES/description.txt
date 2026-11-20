@@ -1,4 +1,4 @@
-Muestra tu gasto calórico total de cada día, activas más reposo, y tus pasos en la esfera del Apple Watch, la pantalla de inicio y la pantalla de bloqueo del iPhone. Las complicaciones, los widgets y el panel diario son gratis, sin cuenta. Tus datos de salud se quedan en tu iPhone.
+Total Calories muestra tu gasto calórico total de cada día, activas más reposo, y tus pasos en la esfera del Apple Watch, la pantalla de inicio y la pantalla de bloqueo del iPhone. Las complicaciones, los widgets y el panel diario son gratis, sin cuenta. Tus datos de salud se quedan en tu iPhone.
 
 El objetivo Movimiento del Apple Watch solo cuenta calorías activas. Total Calories suma tu gasto en reposo de la app Salud, así ves cuántas calorías quemas de verdad en un día.
 
@@ -16,7 +16,7 @@ WIDGETS DE INICIO Y DE BLOQUEO
 HOY
 - Tus calorías quemadas totales en un anillo, con los pasos y una barra de objetivo
 - Un control de ritmo que compara ahora con tu día habitual a esta hora
-- Pregunta a Siri por tus calorías o pasos de hoy
+- Pregunta a Siri cuántas calorías o pasos llevas hoy
 - Aviso opcional al alcanzar tu objetivo diario
 
 HISTORIAL
@@ -39,20 +39,20 @@ Todo lo anterior es gratis y no caduca. Vitals+ es una mejora opcional: suscripc
 - TDEE y BMR: medias de 30 días de mantenimiento y metabolismo basal
 - Proyecciones de fin de día para calorías y pasos
 - Rachas de objetivos y resumen del domingo, esta semana frente a la anterior
-- Rangos de fechas libres en el historial, con informes PDF
+- Rangos de fechas personalizados en el historial, con informes PDF
 - Deep Trends: cualquier periodo comparado con el anterior
 - Grasa corporal y contexto calórico junto al IMC
 - Días excluidos, para que los días de enfermedad o sin reloj no afecten a tus medias
-- Un recordatorio de tarde cuando queda un objetivo abierto
+- Un recordatorio por la tarde cuando queda un objetivo abierto
 
 TU PRIVACIDAD
-- Acceso de solo lectura a Apple Health. La app nunca escribe en tus registros de salud.
+- Acceso de solo lectura a la app Salud. La app nunca escribe en tus registros de salud.
 - Tus datos de salud se guardan en tu dispositivo y nunca se suben.
 - Los informes se generan en el dispositivo.
 - Sin anuncios. Sin rastreo. Sin cuentas.
 - Las compras las procesan Apple y RevenueCat, que nunca reciben tus datos de salud.
 
-Total Calories no es un dispositivo médico y no está destinada a diagnosticar, tratar ni prevenir ninguna enfermedad. Consulta siempre a un profesional sanitario para obtener asesoramiento médico.
+Total Calories no es un producto sanitario y no está destinada a diagnosticar, tratar ni prevenir ninguna enfermedad. Consulta siempre a un profesional sanitario para obtener asesoramiento médico.
 
 Detalles de la suscripción
 Vitals+ está disponible como suscripción de renovación automática (mensual o anual, ambas con 7 días de prueba gratis) o como compra única Lifetime. Los precios se muestran en la app antes de comprar y varían según la región. El pago se carga a tu Apple ID al confirmar. Las suscripciones se renuevan automáticamente salvo que se cancelen al menos 24 horas antes de que termine el periodo en curso. Gestiona o cancela cuando quieras en Ajustes → Apple ID → Suscripciones.

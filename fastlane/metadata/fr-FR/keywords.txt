@@ -1,1 +1,1 @@
-compteur,calcul,calorique,podomètre,pas,apple,kcal,tdee,bmr,bmi,métabolisme,déficit,repos,actives
+compteur,calcul,podomètre,pas,apple,montre,widget,kcal,tdee,bmi,métabolisme,déficit,repos,actives

@@ -1,6 +1,6 @@
-Zeigt deinen gesamten Kalorienverbrauch pro Tag, aktiv plus Ruhe, und deine Schritte auf dem Apple-Watch-Zifferblatt, dem iPhone-Home-Bildschirm und dem Sperrbildschirm. Komplikationen, Widgets und Tagesübersicht sind kostenlos, ohne Konto. Deine Gesundheitsdaten bleiben auf deinem iPhone.
+Total Calories zeigt deinen gesamten Kalorienverbrauch pro Tag, aktiv plus Ruhe, und deine Schritte auf dem Apple-Watch-Zifferblatt, dem iPhone-Home-Bildschirm und dem Sperrbildschirm. Komplikationen, Widgets und Tagesübersicht sind kostenlos, ohne Konto. Deine Gesundheitsdaten bleiben auf deinem iPhone.
 
-Das Bewegen-Ziel der Apple Watch zählt nur aktive Kalorien. Total Calories addiert deinen Ruheumsatz aus Apple Health, damit du siehst, wie viele Kalorien du am Tag wirklich verbrennst.
+Das Bewegungsziel der Apple Watch zählt nur aktive Kalorien. Total Calories addiert deinen Ruheumsatz aus Apple Health, damit du siehst, wie viele Kalorien du am Tag wirklich verbrennst.
 
 AUF DER APPLE WATCH
 - Komplikationen für den Gesamtverbrauch: rund, rechteckig, inline und Ecke
@@ -52,7 +52,7 @@ DATENSCHUTZ VON ANFANG AN
 - Keine Werbung. Kein Tracking. Keine Konten.
 - Käufe werden von Apple und RevenueCat abgewickelt, die deine Gesundheitsdaten nie erhalten.
 
-Total Calories ist kein Medizinprodukt und nicht dazu bestimmt, Krankheiten zu diagnostizieren, zu behandeln oder zu verhindern. Hole dir immer medizinischen Rat bei Fachpersonal.
+Total Calories ist kein Medizinprodukt und nicht dazu bestimmt, Krankheiten zu diagnostizieren, zu behandeln oder zu verhindern. Bei medizinischen Fragen wende dich immer an medizinisches Fachpersonal.
 
 Abonnementdetails
 Vitals+ ist als automatisch verlängerbares Abo (monatlich oder jährlich, beide mit 7 Tagen kostenlosem Test) oder als einmaliger Lifetime-Kauf erhältlich. Die Preise werden vor dem Kauf in der App angezeigt und unterscheiden sich je nach Region. Die Zahlung wird bei der Bestätigung über deine Apple-ID abgebucht. Abos verlängern sich automatisch, sofern sie nicht mindestens 24 Stunden vor Ende des laufenden Zeitraums gekündigt werden. Verwalten oder kündigen kannst du jederzeit unter Einstellungen → Apple-ID → Abos.

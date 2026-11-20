@@ -1,14 +1,14 @@
-Pokazuje Twoje dzienne spalone kalorie, aktywne i spoczynkowe, oraz kroki na tarczy Apple Watch, ekranie początkowym i ekranie blokady iPhone’a. Komplikacje, widżety i podsumowanie dnia są bezpłatne, bez konta. Dane zdrowotne zostają na Twoim iPhonie.
+Total Calories pokazuje Twoje dzienne spalone kalorie, aktywne i spoczynkowe, oraz kroki na tarczy Apple Watch, ekranie początkowym i ekranie blokady iPhone’a. Komplikacje, widżety i podsumowanie dnia są bezpłatne, bez konta. Dane zdrowotne zostają na Twoim iPhonie.
 
 Cel Ruch w Apple Watch liczy tylko kalorie aktywne. Total Calories dodaje spoczynkowe spalanie z aplikacji Zdrowie, więc widzisz całkowite spalanie kalorii w ciągu dnia.
 
 NA APPLE WATCH
-- Komplikacje z kaloriami łącznie: okrągłe, prostokątne, liniowe i narożne
+- Komplikacje z łącznymi kaloriami: okrągłe, prostokątne, liniowe i narożne
 - Komplikacja z liczbą kroków
-- Aplikacja na zegarek z wynikami z dziś i z ostatnich 30 dni
+- Aplikacja na zegarek z dzisiejszymi wynikami i ostatnimi 30 dniami
 - Cele ustawione na iPhonie synchronizują się z zegarkiem
 
-WIDŻETY NA EKRAN POCZĄTKOWY I BLOKADY
+WIDŻETY NA EKRAN POCZĄTKOWY I EKRAN BLOKADY
 - Małe, średnie i duże widżety na ekran początkowy
 - Okrągłe i prostokątne widżety na ekran blokady
 - Widżety pokazują włączone wskaźniki i cele, a dotknięcie otwiera aplikację
@@ -24,35 +24,35 @@ HISTORIA
 - Eksport danych dziennych do CSV
 
 BMI
-- BMI z wzrostu i wagi z aplikacji Zdrowie albo wpisanych ręcznie
+- BMI obliczone ze wzrostu i wagi z aplikacji Zdrowie lub wpisanych ręcznie
 - Prosta uwaga o tym, co ta liczba mówi, a czego nie
 
 CELE
-- Dzienne cele kalorii i kroków są opcjonalne, można ich nie ustawiać
-- Tempo w porównaniu z tym samym dniem tygodnia lub ze wszystkimi dniami, z 14, 30, 90 dni lub roku
+- Dzienne cele kalorii i kroków są opcjonalne, możesz też nie ustawiać żadnych
+- Tempo w porównaniu z tym samym dniem tygodnia lub ze wszystkimi dniami, z ostatnich 14, 30, 90 dni lub roku
 
 BEZPŁATNIE I VITALS+
 Wszystko powyżej jest bezpłatne i bez limitu czasu. Vitals+ to opcjonalne ulepszenie: subskrypcja miesięczna lub roczna, każda z 7-dniowym okresem próbnym dla uprawnionych nowych subskrybentów, albo jednorazowy zakup na zawsze. Vitals+ dodaje:
 - Aktywne i spoczynkowe: ile dzisiejszego spalania pochodzi z ruchu
 - Bilans netto: spalone kalorie minus energia z jedzenia zapisana w aplikacji Zdrowie
-- Makroskładniki: białko, węglowodany i tłuszcz z aplikacji do jedzenia zapisującej w Zdrowiu
+- Makroskładniki: białko, węglowodany i tłuszcz z aplikacji żywieniowej, która zapisuje dane w Zdrowiu
 - TDEE i BMR: 30-dniowe średnie zapotrzebowania i przemiany podstawowej
 - Prognozy na koniec dnia dla kalorii i kroków
 - Serie celów i niedzielne podsumowanie: ten tydzień kontra poprzedni
 - Własne zakresy dat w historii z raportami PDF
 - Deep Trends: dowolny okres porównany z poprzednim
 - Tkanka tłuszczowa i kontekst kalorii obok BMI
-- Wykluczone dni, by choroba lub dni bez zegarka nie psuły średnich
+- Wykluczone dni, by dni choroby i dni bez zegarka nie zaniżały średnich
 - Wieczorne przypomnienie, gdy cel jest jeszcze otwarty
 
 PRYWATNOŚĆ OD PODSTAW
-- Tylko odczyt danych Apple Health. Aplikacja nigdy nie zapisuje nic do Twoich danych zdrowotnych.
+- Dostęp do aplikacji Zdrowie tylko do odczytu. Aplikacja niczego nie zapisuje w Twoich danych zdrowotnych.
 - Twoje dane zdrowotne pozostają na urządzeniu i nigdy nie są wysyłane.
 - Raporty są generowane na urządzeniu.
 - Bez reklam. Bez śledzenia. Bez kont.
 - Zakupy obsługują Apple i RevenueCat, które nigdy nie otrzymują Twoich danych zdrowotnych.
 
-Total Calories nie jest wyrobem medycznym i nie służy do diagnozowania, leczenia ani zapobiegania jakimkolwiek chorobom. W sprawach medycznych zawsze konsultuj się z profesjonalnym pracownikiem ochrony zdrowia.
+Total Calories nie jest wyrobem medycznym i nie służy do diagnozowania, leczenia ani zapobiegania jakimkolwiek chorobom. W sprawach medycznych zawsze konsultuj się z lekarzem lub innym pracownikiem ochrony zdrowia.
 
 Szczegóły subskrypcji
 Vitals+ jest dostępny w automatycznie odnawianej subskrypcji (miesięcznej lub rocznej, obie z 7-dniowym bezpłatnym okresem próbnym) albo jako jednorazowy zakup Lifetime. Ceny są widoczne w aplikacji przed zakupem i różnią się w zależności od regionu. Płatność jest pobierana z Apple ID przy potwierdzeniu. Subskrypcje odnawiają się automatycznie, o ile nie zostaną anulowane co najmniej 24 godziny przed końcem bieżącego okresu. Zarządzaj nimi lub anuluj w dowolnej chwili w Ustawienia → Apple ID → Subskrypcje.
