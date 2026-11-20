@@ -120,14 +120,16 @@ enum SummaryReportGenerator {
         let nonZeroCalDays = days.filter { $0.totalCalories > 0 }
 
         let totalCalories = days.map(\.totalCalories).reduce(0, +)
-        let dayCount = max(days.count, 1)
-        let avgCalories = totalCalories / Double(dayCount)
         let totalActive = days.map(\.activeCalories).reduce(0, +)
-        let avgActive = totalActive / Double(dayCount)
         let totalResting = days.map(\.restingCalories).reduce(0, +)
-        let avgResting = totalResting / Double(dayCount)
         let totalSteps = days.map(\.steps).reduce(0, +)
-        let avgSteps = Int((Double(totalSteps) / Double(dayCount)).rounded())
+        // Averages divide by finished days with a reading, like History.
+        let calorieDays = DailyAverage.days(days, date: \.date, hasData: { $0.totalCalories > 0 }, now: now, calendar: calendar)
+        let calorieDayCount = Double(max(calorieDays.count, 1))
+        let avgCalories = calorieDays.map(\.totalCalories).reduce(0, +) / calorieDayCount
+        let avgActive = calorieDays.map(\.activeCalories).reduce(0, +) / calorieDayCount
+        let avgResting = calorieDays.map(\.restingCalories).reduce(0, +) / calorieDayCount
+        let avgSteps = Int(DailyAverage.mean(days, value: { Double($0.steps) }, date: \.date, now: now, calendar: calendar).rounded())
 
         let peakCal = days.max(by: { $0.totalCalories < $1.totalCalories })
         let peakStep = days.max(by: { $0.steps < $1.steps })

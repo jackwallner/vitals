@@ -292,8 +292,7 @@ struct HistoryView: View {
     }
 
     private var avgCalories: Double {
-        guard !countedRecords.isEmpty else { return 0 }
-        return totalCalories / Double(countedRecords.count)
+        DailyAverage.mean(countedRecords, value: \.totalCalories, date: \.date)
     }
 
     private var totalSteps: Int {
@@ -301,8 +300,7 @@ struct HistoryView: View {
     }
 
     private var avgSteps: Int {
-        guard !countedRecords.isEmpty else { return 0 }
-        return Int((Double(totalSteps) / Double(countedRecords.count)).rounded())
+        Int(DailyAverage.mean(countedRecords, value: { Double($0.steps) }, date: \.date).rounded())
     }
 
     private var currentMonthKey: String {
