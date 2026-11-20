@@ -1,62 +1,60 @@
-Total Calories hiển thị calo đốt mỗi ngày (hoạt động + nghỉ ngơi) và số bước chân ngay trên Màn hình chính, Màn hình khóa iPhone và mặt Apple Watch của bạn – hoàn toàn miễn phí. Không cần đăng ký gói cơ bản. Không tài khoản. Dữ liệu sức khỏe không rời khỏi điện thoại.
+Total Calories hiển thị tổng lượng calo bạn tiêu hao mỗi ngày, gồm cả lúc hoạt động và lúc nghỉ, cùng số bước chân, ngay trên mặt đồng hồ Apple Watch, Màn hình chính và Màn hình khóa của iPhone. Complication, widget và bảng theo dõi hằng ngày đều miễn phí, không cần tài khoản, và dữ liệu sức khỏe chỉ nằm trên iPhone của bạn.
 
-Nếu bạn từng ước mặt Apple Watch chỉ hiển thị tổng calo đã đốt trong ngày, thì đây chính là ứng dụng đó.
+Mục tiêu Di chuyển trên Apple Watch chỉ tính calo hoạt động. Total Calories cộng thêm lượng calo tiêu hao lúc nghỉ từ ứng dụng Sức khỏe, nên bạn thấy con số đầy đủ mà cơ thể tiêu hao trong một ngày.
 
-TRÊN APPLE WATCH (MIỄN PHÍ)
-- Complication tổng calo đốt cho mọi kiểu mặt đồng hồ: tròn, chữ nhật, dòng inline và góc.
-- Complication đếm bước chân theo thời gian thực.
-- Ứng dụng trên đồng hồ hiển thị nhanh hôm nay và xu hướng 30 ngày.
-- Mục tiêu bạn đặt trên iPhone tự động đồng bộ sang đồng hồ.
+TRÊN APPLE WATCH
+• Complication tổng calo tiêu hao dạng tròn, chữ nhật, một dòng và góc, dùng được trên mọi mặt đồng hồ hỗ trợ
+• Complication số bước chân
+• Ứng dụng trên đồng hồ hiển thị số liệu hôm nay và 30 ngày gần nhất
+• Mục tiêu đặt trên iPhone được đồng bộ sang đồng hồ
 
-TRÊN MÀN HÌNH CHÍNH & MÀN HÌNH KHÓA (MIỄN PHÍ)
-- Widget Màn hình chính kích thước nhỏ và vừa.
-- Widget Màn hình khóa dạng tròn và chữ nhật.
-- Widget tuân theo chỉ số bạn bật và mục tiêu bạn thiết lập.
-- Thấy toàn bộ tổng số trong ngày mà không cần mở ứng dụng.
+WIDGET MÀN HÌNH CHÍNH VÀ MÀN HÌNH KHÓA
+• Widget Màn hình chính cỡ nhỏ, vừa và lớn
+• Widget Màn hình khóa dạng tròn và chữ nhật
+• Widget hiển thị các chỉ số và mục tiêu bạn đã bật, chạm vào để mở ứng dụng
 
-BẢNG ĐIỀU KHIỂN (MIỄN PHÍ)
-- Tổng calo đốt mỗi ngày trên một vòng tròn rõ ràng.
-- Bước chân hằng ngày với thanh tiến độ và mục tiêu.
-- Chỉ báo nhịp độ: bạn đang vượt trước hay chậm hơn so với một ngày điển hình ở cùng thời điểm.
-- Kéo để làm mới. Chạm biểu tượng bánh răng để mở cài đặt.
+HÔM NAY
+• Tổng calo tiêu hao trong một vòng tròn, kèm số bước chân và thanh mục tiêu
+• Kiểm tra nhịp: so sánh hiện tại với một ngày bình thường của bạn vào cùng giờ
+• Hỏi Siri xem hôm nay bạn có bao nhiêu calo hoặc bao nhiêu bước
+• Thông báo khi đạt mục tiêu hằng ngày (tùy chọn)
 
-MACRO (VITALS+)
-- Đạm, tinh bột và chất béo ngay cạnh lượng calo, đọc từ ứng dụng vẫn ghi bữa ăn của bạn vào Apple Health.
-- Không phải nhập lại. Có trong Health thì có ở đây.
-- Theo dõi cả ba, hoặc chỉ macro bạn thật sự đếm.
-- Mục tiêu gam tùy chọn, cùng trung bình, biểu đồ, cột CSV và báo cáo PDF.
+LỊCH SỬ
+• Xem 7 ngày, 30 ngày, 90 ngày và 1 năm, có biểu đồ cột, mũi tên xu hướng và ngày cao nhất
+• Xuất dữ liệu từng ngày ra CSV
 
-LỊCH SỬ (MIỄN PHÍ)
-- Xem 7 / 30 / 90 / 365 ngày và bất kỳ khoảng ngày tùy chỉnh nào.
-- Mũi tên xu hướng, ngày đỉnh điểm và biểu đồ cột gọn gàng.
-- Xuất dữ liệu CSV.
+BMI
+• BMI tính từ chiều cao và cân nặng đã có trong ứng dụng Sức khỏe, hoặc bạn tự nhập
+• Có ghi chú ngắn về những gì con số này cho biết và không cho biết
 
-MỤC TIÊU PHÙ HỢP VỚI BẠN
-- Mục tiêu calo và bước chân mỗi ngày (tùy chọn).
-- Hoặc bỏ qua mục tiêu và dùng như bộ đếm đơn giản – tùy bạn.
-- So sánh nhịp độ: cùng thứ trong tuần so với mọi ngày, thời gian nhìn lại tùy chỉnh (14 / 30 / 90 ngày / 1 năm).
+MỤC TIÊU
+• Mục tiêu calo và bước chân hằng ngày là tùy chọn, bạn cũng có thể không đặt mục tiêu nào
+• So sánh nhịp với cùng thứ trong tuần hoặc mọi ngày, trong 14 ngày, 30 ngày, 90 ngày hoặc 1 năm gần nhất
 
-Vitals+ (TÙY CHỌN)
-Nâng cấp nhỏ theo tháng, năm hoặc trọn đời sẽ mở khóa:
-- Macro: đạm, tinh bột và chất béo từ bữa ăn đã ghi trong Apple Health
-- Tách calo hoạt động và calo nghỉ ngơi
-- Thâm hụt ròng: calo đốt trừ năng lượng từ thức ăn trong Apple Health
-- PDF tổng kết hàng tháng sẵn sàng chia sẻ
-- Báo cáo PDF theo khoảng ngày tùy chỉnh
-- Deep Trends: thẻ so sánh giai đoạn này với giai đoạn khác
-Người đăng ký mới được dùng thử miễn phí.
+MIỄN PHÍ VÀ VITALS+
+Mọi thứ ở trên đều miễn phí và không hết hạn. Vitals+ là bản nâng cấp tùy chọn, theo gói đăng ký hằng tháng hoặc hằng năm (mỗi gói có 7 ngày dùng thử miễn phí cho người đăng ký mới đủ điều kiện), hoặc mua một lần Lifetime. Vitals+ bổ sung:
+• Hoạt động so với nghỉ: bao nhiêu calo hôm nay đến từ vận động
+• Net Deficit: calo tiêu hao trừ đi năng lượng từ thức ăn đã ghi trong ứng dụng Sức khỏe
+• Macro: protein, carb và chất béo từ ứng dụng ăn uống vốn đã ghi vào ứng dụng Sức khỏe, kèm mục tiêu theo gam (tùy chọn)
+• TDEE và BMR: mức trung bình 30 ngày của calo duy trì và calo tiêu hao lúc nghỉ, lấy từ ứng dụng Sức khỏe
+• Dự đoán calo và số bước chân đến cuối ngày theo nhịp hiện tại
+• Chuỗi ngày đạt mục tiêu và bản tổng kết Chủ nhật so tuần này với tuần trước
+• Khoảng ngày tùy chỉnh trong Lịch sử, kèm báo cáo PDF tóm tắt
+• Deep Trends: so sánh bất kỳ khoảng thời gian nào với khoảng liền trước
+• Mỡ cơ thể và thông tin calo bên cạnh BMI
+• Ngày loại trừ, để những ngày ốm hoặc không đeo đồng hồ không làm lệch số trung bình
+• Nhắc nhở buổi tối khi mục tiêu còn dang dở
 
-RIÊNG TƯ NGAY TỪ THIẾT KẾ
-- Quyền truy cập Apple Health chỉ đọc. Ứng dụng không bao giờ ghi vào hồ sơ sức khỏe của bạn.
-- Dữ liệu sức khỏe của bạn nằm trên thiết bị và không bao giờ được tải lên.
-- Báo cáo được xử lý ngay trên thiết bị.
-- Không quảng cáo. Không theo dõi. Không cần tài khoản.
-- Giao dịch mua do Apple và RevenueCat xử lý, cả hai đều không nhận dữ liệu sức khỏe của bạn.
+QUYỀN RIÊNG TƯ
+• Quyền truy cập ứng dụng Sức khỏe chỉ để đọc. Ứng dụng không bao giờ ghi vào hồ sơ sức khỏe của bạn
+• Dữ liệu sức khỏe được lưu trên iPhone và không bao giờ được tải lên
+• Báo cáo được tạo ngay trên iPhone
+• Không quảng cáo, không theo dõi và không cần tài khoản
+• Giao dịch mua do Apple và RevenueCat xử lý, cả hai đều không nhận dữ liệu sức khỏe của bạn
 
-Total Calories không phải là thiết bị y tế và không nhằm mục đích chẩn đoán, điều trị hay phòng ngừa bất kỳ tình trạng y khoa nào. Luôn hỏi ý kiến chuyên gia y tế để được tư vấn.
+Giá được hiển thị trong ứng dụng trước khi bạn mua và thay đổi theo khu vực. Khoản thanh toán được tính vào Apple ID của bạn khi xác nhận. Gói đăng ký tự động gia hạn trừ khi bị hủy ít nhất 24 giờ trước khi kỳ hiện tại kết thúc. Quản lý hoặc hủy bất cứ lúc nào trong Cài đặt → Apple ID → Gói đăng ký.
 
-Chi tiết gói đăng ký
-Vitals+ có sẵn dưới dạng gói đăng ký tự động gia hạn (Hằng tháng hoặc Hằng năm, cả hai đều có 7 ngày dùng thử miễn phí) hoặc mua một lần Lifetime. Giá được hiển thị trong ứng dụng trước khi bạn mua và thay đổi theo khu vực. Khoản thanh toán được tính vào Apple ID của bạn khi xác nhận. Gói đăng ký tự động gia hạn trừ khi bị hủy ít nhất 24 giờ trước khi kỳ hiện tại kết thúc. Quản lý hoặc hủy bất cứ lúc nào trong Cài đặt → Apple ID → Gói đăng ký.
+Total Calories không phải là thiết bị y tế và không nhằm mục đích chẩn đoán, điều trị hay phòng ngừa bất kỳ tình trạng bệnh lý nào. Nếu cần tư vấn y tế, hãy hỏi chuyên gia y tế.
 
 Chính sách quyền riêng tư: https://jackwallner.com/ios/vitals/privacy-policy.html
 Điều khoản sử dụng (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

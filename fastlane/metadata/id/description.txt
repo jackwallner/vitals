@@ -1,62 +1,60 @@
-Total Calories menampilkan kalori harian yang terbakar (aktif + istirahat) dan jumlah langkah tepat di tempat yang Anda butuhkan – Layar Utama iPhone, Layar Kunci, dan tampilan Apple Watch – gratis. Tanpa langganan untuk fitur dasar. Tanpa akun. Data kesehatan Anda tidak keluar dari ponsel.
+Total Calories menampilkan total kalori yang Anda bakar setiap hari, aktif ditambah istirahat, beserta jumlah langkah, di muka jam Apple Watch, Layar Utama, dan Layar Kunci iPhone. Komplikasi jam, widget, dan dasbor harian semuanya gratis, tanpa akun, dan data kesehatan Anda tetap di iPhone.
 
-Jika Anda pernah berharap tampilan Apple Watch hanya menampilkan total kalori harian yang terbakar, inilah aplikasinya.
+Target Gerak di Apple Watch hanya menghitung kalori aktif. Total Calories menambahkan pembakaran saat istirahat dari app Kesehatan, sehingga Anda melihat angka lengkap yang Anda bakar dalam sehari.
 
-DI APPLE WATCH ANDA (GRATIS)
-- Komplikasi total kalori terbakar untuk setiap gaya tampilan: melingkar, persegi panjang, inline, dan sudut.
-- Komplikasi jumlah langkah langsung juga.
-- Aplikasi Watch menampilkan hari ini secara sekilas plus tren 30 hari.
-- Target yang Anda atur di iPhone tersinkron ke Watch.
+DI APPLE WATCH
+• Komplikasi total kalori terbakar untuk slot lingkaran, persegi panjang, sebaris, dan sudut di muka jam yang mendukungnya
+• Komplikasi jumlah langkah
+• App jam yang menampilkan total hari ini dan 30 hari terakhir
+• Target yang diatur di iPhone ikut tersinkron ke jam
 
-DI LAYAR UTAMA & LAYAR KUNCI (GRATIS)
-- Widget Layar Utama ukuran kecil dan sedang.
-- Widget Layar Kunci tata letak melingkar dan persegi panjang.
-- Widget mengikuti metrik dan target yang Anda pilih.
-- Total harian penuh terlihat tanpa membuka aplikasi.
+WIDGET LAYAR UTAMA DAN LAYAR KUNCI
+• Widget Layar Utama ukuran kecil, sedang, dan besar
+• Widget Layar Kunci berbentuk lingkaran dan persegi panjang
+• Widget menampilkan metrik dan target yang Anda aktifkan, dan ketukan membuka app
 
-DASHBOARD (GRATIS)
-- Total kalori harian terbakar dalam satu cincin rapi.
-- Langkah harian dengan bilah progres dan target.
-- Indikator kecepatan: Anda lebih cepat atau lebih lambat dari hari biasa di waktu ini?
-- Tarik untuk segarkan. Ketuk ikon roda gigi untuk pengaturan.
+HARI INI
+• Total kalori terbakar dalam satu cincin, lengkap dengan langkah dan bilah target
+• Cek tempo yang membandingkan kondisi saat ini dengan hari biasa Anda pada jam yang sama
+• Tanya Siri berapa kalori atau langkah Anda hari ini
+• Pemberitahuan opsional saat target harian tercapai
 
-MAKRO (VITALS+)
-- Protein, karbohidrat, dan lemak di samping kalorimu, dibaca dari aplikasi yang sudah mencatat makananmu ke Apple Health.
-- Tidak ada yang diisi dua kali. Yang ada di Health, ada di sini.
-- Lacak ketiganya, atau hanya makro yang benar-benar kamu hitung.
-- Target gram opsional, plus rata-rata, grafik, kolom CSV, dan laporan PDF.
+RIWAYAT
+• Tampilan 7 hari, 30 hari, 90 hari, dan 1 tahun dengan grafik batang, panah tren, dan hari puncak
+• Ekspor data harian ke CSV
 
-RIWAYAT (GRATIS)
-- Tampilan 7 / 30 / 90 / 365 hari dan rentang tanggal kustom.
-- Panah tren, hari puncak, dan grafik batang bersih.
-- Ekspor data CSV.
+BMI
+• BMI dari tinggi dan berat badan yang sudah ada di app Kesehatan, atau diisi manual
+• Catatan singkat tentang apa yang bisa dan tidak bisa ditunjukkan angka ini
 
-TARGET YANG FLEKSIBEL
-- Target harian kalori dan langkah opsional.
-- Atau tanpa target dan gunakan sebagai penghitung bersih – terserah Anda.
-- Perbandingan kecepatan: hari kerja sama vs semua hari, periode kilas balik dapat diatur (14 / 30 / 90 hari / 1 tahun).
+TARGET
+• Target kalori dan langkah harian bersifat opsional, atau tidak perlu target sama sekali
+• Tempo dibandingkan dengan hari yang sama dalam seminggu atau semua hari, 14, 30, 90 hari, atau setahun terakhir
 
-Vitals+ (OPSIONAL)
-Upgrade kecil bulanan,tahunan,atau seumur hidup membuka:
-- Makro: protein, karbohidrat, dan lemak dari makanan yang sudah tercatat di Apple Health
-- Rincian kalori aktif vs istirahat
-- Net Deficit: kalori terbakar dikurangi energi makanan dari Apple Health
-- Ringkasan Bulanan PDF siap dibagikan
-- Laporan PDF rentang tanggal kustom
-- Deep Trends: kartu perbandingan periode ke periode
-Uji coba gratis tersedia untuk pelanggan baru.
+GRATIS DAN VITALS+
+Semua di atas gratis dan tidak kedaluwarsa. Vitals+ adalah peningkatan opsional, berupa langganan bulanan atau tahunan, masing-masing dengan uji coba gratis 7 hari untuk pelanggan baru yang memenuhi syarat, atau pembelian Lifetime sekali bayar. Vitals+ menambahkan:
+• Aktif vs istirahat: berapa banyak pembakaran hari ini yang berasal dari aktivitas
+• Net Deficit: kalori terbakar dikurangi energi makanan yang tercatat di app Kesehatan
+• Makro: protein, karbohidrat, dan lemak dari app makanan yang sudah menulis ke app Kesehatan, dengan target gram opsional
+• TDEE dan BMR: rata-rata 30 hari kalori pemeliharaan dan pembakaran saat istirahat dari app Kesehatan
+• Proyeksi kalori dan langkah di akhir hari pada tempo saat ini
+• Rangkaian hari target tercapai dan rekap hari Minggu yang membandingkan minggu ini dengan minggu lalu
+• Rentang tanggal kustom di Riwayat, dengan laporan ringkasan PDF
+• Deep Trends: bandingkan periode apa pun dengan periode sebelumnya
+• Lemak tubuh dan konteks kalori di samping BMI
+• Hari yang dikecualikan, agar hari sakit dan hari tanpa jam tidak memengaruhi rata-rata
+• Pengingat malam saat target masih terbuka
 
-PRIVASI SEJAK DESAIN
-- Akses Apple Health hanya-baca. Aplikasi tidak pernah menulis ke data kesehatan Anda.
-- Data kesehatanmu tersimpan di perangkat dan tidak pernah diunggah.
-- Laporan dibuat di perangkat.
-- Tanpa iklan. Tanpa pelacakan. Tanpa akun.
-- Pembelian diproses oleh Apple dan RevenueCat, yang tidak pernah menerima data kesehatanmu.
+PRIVASI
+• Akses app Kesehatan hanya baca. App tidak pernah menulis ke catatan kesehatan Anda
+• Data kesehatan disimpan di iPhone dan tidak pernah diunggah
+• Laporan dibuat di iPhone Anda
+• Tanpa iklan, tanpa pelacakan, dan tanpa akun
+• Pembelian diproses oleh Apple dan RevenueCat, yang tidak pernah menerima data kesehatan Anda
 
-Total Calories bukan perangkat medis dan tidak dimaksudkan untuk mendiagnosis, mengobati, atau mencegah kondisi medis apa pun. Selalu konsultasikan dengan tenaga kesehatan profesional untuk nasihat medis.
+Harga ditampilkan di app sebelum Anda membeli dan berbeda-beda menurut wilayah. Pembayaran dibebankan ke Apple ID Anda saat konfirmasi. Langganan diperpanjang otomatis kecuali dibatalkan setidaknya 24 jam sebelum periode berjalan berakhir. Kelola atau batalkan kapan saja di Pengaturan → Apple ID → Langganan.
 
-Detail Langganan
-Vitals+ tersedia sebagai langganan perpanjangan otomatis (Bulanan atau Tahunan, keduanya dengan uji coba gratis 7 hari) atau sebagai pembelian Lifetime sekali bayar. Harga ditampilkan di aplikasi sebelum Anda membeli dan berbeda-beda menurut wilayah. Pembayaran dibebankan ke Apple ID Anda saat konfirmasi. Langganan diperpanjang otomatis kecuali dibatalkan setidaknya 24 jam sebelum periode berjalan berakhir. Kelola atau batalkan kapan saja di Pengaturan → Apple ID → Langganan.
+Total Calories bukan perangkat medis dan tidak dimaksudkan untuk mendiagnosis, mengobati, atau mencegah kondisi medis apa pun. Untuk saran medis, bicarakan dengan tenaga kesehatan profesional.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

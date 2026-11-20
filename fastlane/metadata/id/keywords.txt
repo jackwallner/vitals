@@ -1,1 +1,1 @@
-pedometer,bmr,komplikasi,defisit,istirahat,aktif,puasa,jalan,healthkit,kcal,bmi,terbakar,protein
+hitung,penghitung,pelacak,kalkulator,pedometer,kaki,gratis,pembakaran,kebutuhan,metabolisme,defisit
