@@ -18,6 +18,7 @@ Developer notes and historical audits for this repository. The published site re
 - [state-machines-2026-11-06.md](audits/state-machines-2026-11-06.md): State machine audit: 15 machines, 9 findings (3 proved by test, repro suite alongside)
 - [state-machines-2026-11-06-review.md](audits/state-machines-2026-11-06-review.md): Independent review of that audit: 1 confirmed, 6 minor, 2 not a bug
 - [presubmit-review-2026-11-07.md](audits/presubmit-review-2026-11-07.md): Pre-submit review of 1.9.3 build 254 against 1.9.2: no P0 or P1, 4 P2 notes
+- [2026-11-20-bug-ux.html](audits/2026-11-20-bug-ux.html): Bug and UX catalog, 2026-11-20: 15 bugs (7 medium, 8 low; 7 confirmed), 14 UX items, October audit items rechecked. Catalog only, nothing fixed.
 
 ## Experiments
 
