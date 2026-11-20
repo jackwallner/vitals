@@ -3255,11 +3255,11 @@ private struct OnboardingSheet: View {
     }
 
     private var calValid: Bool {
-        !wantCalGoal || (Double(calText).map { (500...50000).contains($0) } ?? false)
+        !wantCalGoal || (TypedNumber.double(calText).map { (500...50000).contains($0) } ?? false)
     }
 
     private var stepValid: Bool {
-        !wantStepGoal || (Int(stepText).map { (100...500000).contains($0) } ?? false)
+        !wantStepGoal || (TypedNumber.int(stepText).map { (100...500000).contains($0) } ?? false)
     }
 
     var body: some View {
@@ -3674,12 +3674,12 @@ private struct OnboardingSheet: View {
             .padding(.horizontal, 24)
         case .goals:
             Button {
-                if wantCalGoal, let cal = Double(calText), (500...50000).contains(cal) {
+                if wantCalGoal, let cal = TypedNumber.double(calText), (500...50000).contains(cal) {
                     goals.calorieGoal = cal
                 } else {
                     goals.calorieGoal = nil
                 }
-                if wantStepGoal, let stepValue = Int(stepText), (100...500000).contains(stepValue) {
+                if wantStepGoal, let stepValue = TypedNumber.int(stepText), (100...500000).contains(stepValue) {
                     goals.stepGoal = stepValue
                 } else {
                     goals.stepGoal = nil
@@ -4164,11 +4164,11 @@ private struct SettingsSheet: View {
     private enum GoalField: Hashable { case calories, steps, macro(MacroKind) }
 
     private var calValid: Bool {
-        !calEnabled || (Double(calText).map { (500...50000).contains($0) } ?? false)
+        !calEnabled || (TypedNumber.double(calText).map { (500...50000).contains($0) } ?? false)
     }
 
     private var stepValid: Bool {
-        !stepEnabled || (Int(stepText).map { (100...500000).contains($0) } ?? false)
+        !stepEnabled || (TypedNumber.int(stepText).map { (100...500000).contains($0) } ?? false)
     }
 
     private func macroVisibleBinding(_ kind: MacroKind) -> Binding<Bool> {
@@ -4194,7 +4194,7 @@ private struct SettingsSheet: View {
 
     private func macroGoalValid(_ kind: MacroKind) -> Bool {
         guard goals.isMacroGoalEnabled(kind), goals.isMacroVisible(kind) else { return true }
-        return Int(macroGoalText[kind] ?? "").map { kind.goalRange.contains($0) } ?? false
+        return TypedNumber.int(macroGoalText[kind] ?? "").map { kind.goalRange.contains($0) } ?? false
     }
 
     private var macroGoalsValid: Bool {
@@ -4597,7 +4597,7 @@ private struct SettingsSheet: View {
     /// fix and the stored goal keeps its last good value meanwhile.
     private func commitGoalDrafts() {
         if calEnabled {
-            if let cal = Double(calText), (500...50000).contains(cal) {
+            if let cal = TypedNumber.double(calText), (500...50000).contains(cal) {
                 goals.calorieGoal = cal
             }
         } else {
@@ -4605,7 +4605,7 @@ private struct SettingsSheet: View {
         }
 
         if stepEnabled {
-            if let step = Int(stepText), (100...500000).contains(step) {
+            if let step = TypedNumber.int(stepText), (100...500000).contains(step) {
                 goals.stepGoal = step
             }
         } else {
@@ -4613,7 +4613,7 @@ private struct SettingsSheet: View {
         }
 
         for kind in MacroKind.allCases {
-            if let grams = Int(macroGoalText[kind] ?? ""), kind.goalRange.contains(grams) {
+            if let grams = TypedNumber.int(macroGoalText[kind] ?? ""), kind.goalRange.contains(grams) {
                 goals.setMacroGoal(grams, for: kind)
             }
         }

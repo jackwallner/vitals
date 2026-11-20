@@ -63,7 +63,7 @@ enum BodyProfileCalculator {
     /// Parses decimal input from the device locale, with a comma fallback for
     /// pasted values on devices that use a dot decimal separator.
     static func parseDecimal(_ text: String) -> Double? {
-        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmed = TypedNumber.latinDigits(text)
         guard !trimmed.isEmpty else { return nil }
         if let value = Double(trimmed) { return value }
 
