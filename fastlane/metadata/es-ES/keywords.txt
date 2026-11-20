@@ -1,1 +1,1 @@
-quemadas,contador,pasos,podómetro,metabolismo,basal,tdee,apple,watch,kcal,déficit,reposo,bmr,bmi,tmb
+quemadas,contador,podómetro,metabolismo,basal,tdee,apple,watch,kcal,déficit,reposo,bmr,bmi,tmb,salud
