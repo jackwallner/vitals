@@ -1,1 +1,1 @@
-krokomierz,bmr,komplikacja,deficyt,spoczynek,aktywny,post,chodzenie,kroki,bmi,spalone,kcal,białko
+kalorii,krokomierz,kroki,kcal,zapotrzebowanie,tdee,bmr,bmi,apple,watch,deficyt,aktywne,spoczynek,ppm

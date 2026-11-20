@@ -1,52 +1,49 @@
-Compteur Calories affiche vos calories totales brûlées chaque jour (actives + au repos) et vos pas depuis Santé, sur l’écran d’accueil et l’écran verrouillé de l’iPhone ainsi que sur le cadran de l’Apple Watch. Les fonctions de base sont gratuites, sans abonnement ni compte. Vos données de santé restent sur votre téléphone.
+Affiche vos calories brûlées chaque jour, actives et au repos, et vos pas sur le cadran de l’Apple Watch, l’écran d’accueil et l’écran verrouillé de l’iPhone. Complications, widgets et tableau de bord sont gratuits, sans compte. Vos données de santé restent sur votre iPhone.
 
+L’objectif Bouger de l’Apple Watch ne compte que les calories actives. Total Calories ajoute votre dépense au repos issue de Santé : vous voyez la dépense calorique totale de la journée.
 
-SUR VOTRE APPLE WATCH (GRATUIT)
-- Complications de calories totales brûlées pour chaque style de cadran : circulaire, rectangulaire, en ligne et coin.
-- Complication de nombre de pas en direct.
-- L’app Watch affiche la journée en un coup d’œil plus les tendances sur 30 jours.
-- Les objectifs définis sur iPhone se synchronisent automatiquement avec la montre.
+SUR L’APPLE WATCH
+- Complications de calories totales : circulaire, rectangulaire, en ligne et coin
+- Complication de nombre de pas
+- App Watch avec les totaux du jour et les 30 derniers jours
+- Les objectifs réglés sur l’iPhone se synchronisent avec la montre
 
-SUR L’ÉCRAN D’ACCUEIL & L’ÉCRAN VERROUILLÉ (GRATUIT)
-- Widgets d’écran d’accueil en petite et moyenne tailles.
-- Widgets d’écran verrouillé en formats circulaire et rectangulaire.
-- Les widgets suivent les mesures et objectifs que vous avez définis.
-- Totaux quotidiens complets visibles sans ouvrir l’app.
+WIDGETS ÉCRAN D’ACCUEIL ET ÉCRAN VERROUILLÉ
+- Widgets d’accueil petit, moyen et grand format
+- Widgets d’écran verrouillé circulaires et rectangulaires
+- Les widgets affichent les mesures et objectifs activés, un toucher ouvre l’app
 
-TABLEAU DE BORD (GRATUIT)
-- Total quotidien de calories brûlées sur un anneau clair.
-- Pas quotidiens avec barre de progression et objectif.
-- Indicateur de rythme : en avance ou en retard sur votre journée habituelle ?
-- Tirez pour actualiser.
+AUJOURD’HUI
+- Vos calories totales brûlées sur un anneau, avec les pas et une barre d’objectif
+- Un point de rythme qui compare maintenant à votre journée habituelle à cette heure
+- Demandez à Siri vos calories ou vos pas du jour
+- Une alerte facultative quand vous atteignez votre objectif quotidien
 
-PROFIL CORPOREL ET IMC (GRATUIT)
-- Votre IMC est calculé à partir de votre taille et de votre poids dans Santé. Vous pouvez aussi les saisir manuellement. Un texte explique comment interpréter l’IMC. Le taux de masse grasse et le contexte calorique sont inclus dans Vitals+.
+HISTORIQUE
+- Vues sur 7 jours, 30 jours, 90 jours et 1 an avec graphiques en barres, flèches de tendance et jours de pointe
+- Export CSV de vos données quotidiennes
 
-MACROS (VITALS+)
-- Protéines, glucides et lipides à côté de vos calories, lus depuis l'app qui enregistre déjà vos repas dans Apple Health.
-- Suivez les trois, ou seulement le macro que vous comptez.
-- Objectifs en grammes facultatifs, moyennes, graphiques, colonnes CSV et rapports PDF.
+IMC
+- Votre IMC à partir de la taille et du poids déjà dans Santé, ou saisis à la main
+- Une note simple sur ce que le chiffre indique ou non
 
-HISTORIQUE (GRATUIT)
-- Vues 7 / 30 / 90 / 365 jours et plage de dates personnalisée.
-- Flèches de tendance, jours de pic et graphiques en barres épurés.
-- Export des données en CSV.
+OBJECTIFS
+- Objectifs de calories et de pas facultatifs, ou aucun objectif
+- Rythme comparé au même jour de la semaine ou à tous les jours, sur 14, 30, 90 jours ou un an
 
-DES OBJECTIFS QUI VOUS CONVIENNENT
-- Objectifs quotidiens facultatifs de calories et de pas.
-- Ou ignorez les objectifs et utilisez-le comme simple compteur. À vous de choisir.
-
-Vitals+ (OPTIONNEL)
-Un petit abonnement mensuel, annuel ou un achat à vie débloque :
-- TDEE et BMR : moyennes sur 30 jours des dépenses totales et au repos depuis Santé
-- Taux de masse grasse à côté de votre IMC
-- Rappel en soirée
-- Détail des calories actives vs au repos
-- Déficit net : calories brûlées moins énergie alimentaire depuis Apple Health
-- Synthèses mensuelles en PDF prêtes à partager
-- Rapports PDF pour toute plage de dates
-- Tendances avancées : cartes de comparaison période par période
-Un essai gratuit est proposé aux nouveaux abonnés.
+GRATUIT ET VITALS+
+Tout ce qui précède est gratuit et n’expire pas. Vitals+ est une option : abonnement mensuel ou annuel, chacun avec 7 jours d’essai gratuit pour les nouveaux abonnés éligibles, ou achat unique à vie. Vitals+ ajoute :
+- Actives et repos : la part de la dépense du jour venue de l’activité
+- Déficit net : calories brûlées moins l’énergie des aliments saisie dans Santé
+- Macros : protéines, glucides et lipides depuis l’app de nutrition qui écrit dans Santé
+- TDEE et BMR : moyennes sur 30 jours de maintien et de métabolisme de base
+- Projections de fin de journée pour les calories et les pas
+- Séries d’objectifs et bilan du dimanche, cette semaine contre la précédente
+- Périodes libres dans l’historique, avec rapports PDF
+- Deep Trends : toute période comparée à la précédente
+- Masse grasse et contexte calorique à côté de l’IMC
+- Jours exclus, pour écarter les jours de maladie ou sans montre de vos moyennes
+- Un rappel du soir quand un objectif reste ouvert
 
 VOTRE CONFIDENTIALITÉ
 - Accès Apple Health en lecture seule. L’app n’écrit jamais dans vos données de santé.

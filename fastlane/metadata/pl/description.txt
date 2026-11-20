@@ -1,53 +1,49 @@
-Suma Kalorii pokazuje dzienne spalone kalorie (aktywne + spoczynkowe) oraz liczbę kroków z Apple Zdrowie na ekranie głównym iPhone’a, ekranie blokady oraz tarczy Apple Watch. Podstawowe funkcje są bezpłatne, bez subskrypcji i konta. Twoje dane zdrowotne pozostają na telefonie.
+Pokazuje Twoje dzienne spalone kalorie, aktywne i spoczynkowe, oraz kroki na tarczy Apple Watch, ekranie początkowym i ekranie blokady iPhone’a. Komplikacje, widżety i podsumowanie dnia są bezpłatne, bez konta. Dane zdrowotne zostają na Twoim iPhonie.
 
+Cel Ruch w Apple Watch liczy tylko kalorie aktywne. Total Calories dodaje spoczynkowe spalanie z aplikacji Zdrowie, więc widzisz całkowite spalanie kalorii w ciągu dnia.
 
-NA APPLE WATCH (ZA DARMO)
-- Komplikacje z całkowitymi spalonymi kaloriami dla każdego typu tarczy: okrągłe, prostokątne, w wierszu i narożne.
-- Komplikacja z liczbą kroków na żywo.
-- Aplikacja na zegarku pokazuje dzisiejsze dane i trendy z 30 dni.
-- Cele ustawione na iPhonie synchronizują się prosto na zegarek.
+NA APPLE WATCH
+- Komplikacje z kaloriami łącznie: okrągłe, prostokątne, liniowe i narożne
+- Komplikacja z liczbą kroków
+- Aplikacja na zegarek z wynikami z dziś i z ostatnich 30 dni
+- Cele ustawione na iPhonie synchronizują się z zegarkiem
 
-NA EKRANIE POCZĄTKOWYM I EKRANIE BLOKADY (ZA DARMO)
-- Widżety ekranu początkowego w małym i średnim rozmiarze.
-- Widżety ekranu blokady w układach okrągłych i prostokątnych.
-- Widżety respektują wybrane metryki i ustawione cele.
-- Pełne dzienne sumy widoczne bez otwierania aplikacji.
+WIDŻETY NA EKRAN POCZĄTKOWY I BLOKADY
+- Małe, średnie i duże widżety na ekran początkowy
+- Okrągłe i prostokątne widżety na ekran blokady
+- Widżety pokazują włączone wskaźniki i cele, a dotknięcie otwiera aplikację
 
-PULPIT (ZA DARMO)
-- Dzienne całkowite spalone kalorie w jednym prostym pierścieniu.
-- Dzienne kroki z paskiem postępu i celem.
-- Wskaźnik tempa: jesteś przed czy za swoim typowym dniem o tej porze?
-- Pociągnij, aby odświeżyć. Stuknij w koło zębate, aby przejść do ustawień.
+DZIŚ
+- Łączne spalone kalorie na jednym pierścieniu, z krokami i paskiem celu
+- Kontrola tempa: porównanie z Twoim zwykłym dniem o tej porze
+- Zapytaj Siri o dzisiejsze kalorie lub kroki
+- Opcjonalne powiadomienie po osiągnięciu dziennego celu
 
-PROFIL CIAŁA I BMI (BEZPŁATNIE)
-- BMI obliczane jest ze wzrostu i masy ciała zapisanych w Zdrowiu. Możesz też wpisać je ręcznie. Opis wyjaśnia, jak interpretować BMI. Procent tkanki tłuszczowej i kontekst kaloryczny są częścią Vitals+.
+HISTORIA
+- Widoki 7, 30, 90 dni i roku z wykresami słupkowymi, strzałkami trendu i dniami szczytowymi
+- Eksport danych dziennych do CSV
 
-MAKRO (VITALS+)
-- Białko, węglowodany i tłuszcze obok kalorii, odczytane z aplikacji, która i tak zapisuje jedzenie do Apple Health.
-- Śledź wszystkie trzy albo tylko to makro, które naprawdę liczysz.
-- Opcjonalne cele w gramach, średnie, wykresy, kolumny CSV i raporty PDF.
+BMI
+- BMI z wzrostu i wagi z aplikacji Zdrowie albo wpisanych ręcznie
+- Prosta uwaga o tym, co ta liczba mówi, a czego nie
 
-HISTORIA (ZA DARMO)
-- Widoki 7 / 30 / 90 / 365 dni oraz dowolny własny zakres dat.
-- Strzałki trendu, dni szczytowe i przejrzyste wykresy słupkowe.
-- Eksport danych do CSV.
+CELE
+- Dzienne cele kalorii i kroków są opcjonalne, można ich nie ustawiać
+- Tempo w porównaniu z tym samym dniem tygodnia lub ze wszystkimi dniami, z 14, 30, 90 dni lub roku
 
-CELE DOPASOWANE DO CIEBIE
-- Opcjonalne dzienne cele kalorii i kroków.
-- Albo pomiń cele i używaj aplikacji jako prostego licznika, jak wolisz.
-- Porównanie tempa: ten sam dzień tygodnia vs. wszystkie dni, konfigurowany okres wstecz (14 / 30 / 90 dni / 1 rok).
-
-Vitals+ (OPCJONALNE)
-Niewielka opłata miesięczna, roczna lub jednorazowa dożywotnia odblokowuje:
-- TDEE i BMR: średnie z 30 dni dla całkowitego i spoczynkowego wydatku energii ze Zdrowia
-- Procent tkanki tłuszczowej obok BMI
-- Wieczorne przypomnienie
-- Podział kalorii aktywnych vs. spoczynkowych
-- Bilans netto: kalorie spalone minus energia z jedzenia z Apple Health
-- Miesięczne podsumowania PDF gotowe do udostępniania
-- Raporty PDF dla własnych zakresów dat
-- Głębokie trendy: karty porównujące okres do okresu
-Nowi subskrybenci otrzymują bezpłatny okres próbny.
+BEZPŁATNIE I VITALS+
+Wszystko powyżej jest bezpłatne i bez limitu czasu. Vitals+ to opcjonalne ulepszenie: subskrypcja miesięczna lub roczna, każda z 7-dniowym okresem próbnym dla uprawnionych nowych subskrybentów, albo jednorazowy zakup na zawsze. Vitals+ dodaje:
+- Aktywne i spoczynkowe: ile dzisiejszego spalania pochodzi z ruchu
+- Bilans netto: spalone kalorie minus energia z jedzenia zapisana w aplikacji Zdrowie
+- Makroskładniki: białko, węglowodany i tłuszcz z aplikacji do jedzenia zapisującej w Zdrowiu
+- TDEE i BMR: 30-dniowe średnie zapotrzebowania i przemiany podstawowej
+- Prognozy na koniec dnia dla kalorii i kroków
+- Serie celów i niedzielne podsumowanie: ten tydzień kontra poprzedni
+- Własne zakresy dat w historii z raportami PDF
+- Deep Trends: dowolny okres porównany z poprzednim
+- Tkanka tłuszczowa i kontekst kalorii obok BMI
+- Wykluczone dni, by choroba lub dni bez zegarka nie psuły średnich
+- Wieczorne przypomnienie, gdy cel jest jeszcze otwarty
 
 PRYWATNOŚĆ OD PODSTAW
 - Tylko odczyt danych Apple Health. Aplikacja nigdy nie zapisuje nic do Twoich danych zdrowotnych.

@@ -1,1 +1,1 @@
-bmr,complicazione,riposo,deficit,attivo,metabolismo,basale,bruciate,dispendio,calorico,bmi,macro
+contacalorie,contapassi,calorico,dispendio,metabolismo,basale,tdee,kcal,apple,deficit,riposo,bmr,bmi

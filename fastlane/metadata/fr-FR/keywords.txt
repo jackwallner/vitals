@@ -1,1 +1,1 @@
-bmr,complication,actif,actives,besoin,calorique,nettes,métabolisme,base,repos,bmi,brûlées,kcal,macro
+compteur,calcul,calorique,podomètre,pas,apple,kcal,tdee,bmr,bmi,métabolisme,déficit,repos,actives
