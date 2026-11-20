@@ -1,4 +1,4 @@
-Total Calories prikaže skupne kalorije, ki jih porabiš v enem dnevu, aktivne in v mirovanju, ter tvoje korake na številčnici Apple Watch, na domačem zaslonu in zaklenjenem zaslonu iPhona. Komplikacije, pripomočki in dnevni pregled so brezplačni, brez računa. Tvoji zdravstveni podatki ostanejo v tvojem iPhonu.
+Total Calories prikaže skupne kalorije, ki jih porabiš v enem dnevu, aktivne in v mirovanju, ter tvoje korake na številčnici Apple Watch, na domačem zaslonu in zaklenjenem zaslonu iPhona. Komplikacije, pripomočki in dnevni pregled so brezplačni in ne zahtevajo registracije. Tvoji zdravstveni podatki ostanejo v tvojem iPhonu.
 
 Cilj gibanja na Apple Watch šteje samo aktivne kalorije. Total Calories doda tvojo porabo v mirovanju iz aplikacije Zdravje, tako da vidiš celotno številko, ki jo porabiš v enem dnevu.
 
@@ -20,7 +20,7 @@ DANES
 - Neobvezno obvestilo, ko dosežeš dnevni cilj
 
 ZGODOVINA
-- Pogledi za 7 dni, 30 dni, 90 dni in 1 leto, s stolpčnimi grafikoni, puščicami trenda in najmočnejšimi dnevi
+- Pogledi za 7 dni, 30 dni, 90 dni in 1 leto, s stolpčnimi grafikoni, puščicami trenda in dnevnimi vrhunci
 - Izvoz dnevnih podatkov v CSV
 
 ITM (BMI)
@@ -41,21 +41,21 @@ Vse zgoraj je brezplačno in ne poteče. Vitals+ je neobvezna nadgradnja, kot me
 - Nizi ciljev in nedeljski povzetek: ta teden v primerjavi s prejšnjim
 - Poljubna obdobja v zgodovini, s poročili PDF
 - Deep Trends: katero koli obdobje v primerjavi s prejšnjim
-- Telesna maščoba in kalorični kontekst ob tvojem ITM
+- Telesna maščoba in kalorični kazalniki ob tvojem ITM
 - Izključeni dnevi, da dnevi bolezni in dnevi brez ure na zapestju ne pokvarijo tvojih povprečij
-- Večerni opomnik, ko je cilj še odprt
+- Večerni opomnik, ko cilj še ni dosežen
 
 ZASEBNOST
 - Dostop do aplikacije Zdravje je samo za branje. Aplikacija nikoli ne piše v tvoje zdravstvene podatke
 - Tvoji zdravstveni podatki ostanejo v iPhonu in se nikoli ne naložijo na strežnik
 - Poročila nastanejo v tvojem iPhonu
-- Brez oglasov, brez sledenja, brez računa
+- Brez oglasov, brez sledenja, brez uporabniškega računa
 - Nakupe obdelujeta Apple in RevenueCat, ki nikoli ne prejmeta tvojih zdravstvenih podatkov
 
 Total Calories ni medicinski pripomoček in ni namenjen diagnosticiranju, zdravljenju ali preprečevanju nobenega zdravstvenega stanja. Za zdravniški nasvet se posvetuj z zdravstvenim delavcem.
 
 PODROBNOSTI O NAROČNINI
-Cene so prikazane v aplikaciji pred nakupom in se razlikujejo glede na regijo. Plačilo se obračuna na tvoj Apple ID ob potrditvi. Naročnine se samodejno obnovijo, razen če jih prekličeš vsaj 24 ur pred koncem trenutnega obdobja. Naročnino upravljaš ali prekličeš v Nastavitve > Apple ID > Naročnine.
+Cene so prikazane v aplikaciji pred nakupom in se razlikujejo glede na regijo. Plačilo se obračuna na tvoj Apple ID ob potrditvi. Naročnine se samodejno obnovijo, razen če jih prekličeš vsaj 24 ur pred koncem trenutnega obdobja. Naročnino upravljaš ali prekličeš v Nastavitvah > Apple ID > Naročnine.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

@@ -1,1 +1,1 @@
-števec,korakov,kalkulator,kalorije,primanjkljaj,kalorijski,brezplačno,metabolizem,bazalni,mirovanje
+števec,korakov,kalkulator,primanjkljaj,kalorijski,brezplačno,metabolizem,bazalni,mirovanje,ura,hoja

@@ -1,4 +1,4 @@
-Total Calories, gün boyunca yaktığın toplam kaloriyi (aktif ve dinlenme) ve adımlarını Apple Watch kadranında, iPhone'un Ana Ekran'ında ve Kilitli Ekran'ında gösterir. Komplikasyonlar, widget'lar ve günlük pano ücretsizdir, hesap gerekmez. Sağlık verilerin iPhone'unda kalır.
+Total Calories, gün boyunca yaktığın toplam kaloriyi (aktif ve dinlenme) ve adımlarını Apple Watch kadranında, iPhone'un Ana Ekran'ında ve Kilit Ekranı'nda gösterir. Komplikasyonlar, widget'lar ve günlük pano ücretsizdir, hesap gerekmez. Sağlık verilerin iPhone'unda kalır.
 
 Apple Watch'un Hareket hedefi yalnızca aktif kaloriyi sayar. Total Calories, Sağlık uygulamasındaki dinlenme yakımını da ekler, böylece günde yaktığın kaloriyi eksiksiz görürsün.
 
@@ -8,15 +8,15 @@ APPLE WATCH'TA
 - Bugünün toplamlarını ve son 30 günü gösteren saat uygulaması
 - iPhone'da belirlediğin hedefler saate senkronlanır
 
-ANA EKRAN VE KİLİTLİ EKRAN WIDGET'LARI
+ANA EKRAN VE KİLİT EKRANI WIDGET'LARI
 - Küçük, orta ve büyük Ana Ekran widget'ları
-- Dairesel ve dikdörtgen Kilitli Ekran widget'ları
+- Dairesel ve dikdörtgen Kilit Ekranı widget'ları
 - Widget'lar açtığın ölçüleri ve hedefleri gösterir, dokununca uygulama açılır
 
 BUGÜN
 - Toplam yakılan kalori tek halkada, yanında adımlar ve hedef çubuğu
-- Tempo kontrolü: şu anı, günün aynı saatindeki olağan gününle karşılaştırır
-- Siri'ye bugünkü kalorini veya adımlarını sor
+- Tempo kontrolü: şu ana kadarki durumunu, olağan bir günün aynı saatiyle karşılaştırır
+- Siri'ye bugün kaç kalori yaktığını veya kaç adım attığını sor
 - Günlük hedefe ulaştığında isteğe bağlı bildirim
 
 GEÇMİŞ
@@ -41,21 +41,21 @@ Yukarıdakilerin hepsi ücretsizdir ve süresi dolmaz. Vitals+ isteğe bağlı b
 - Hedef serileri ve pazar günü özeti: bu hafta geçen haftayla karşılaştırmalı
 - Geçmiş'te özel tarih aralıkları ve PDF raporlar
 - Deep Trends: herhangi bir dönemi öncekiyle karşılaştır
-- VKİ'nin yanında vücut yağı ve kalori bağlamı
+- VKİ'nin yanında vücut yağı ve kalori göstergeleri
 - Hariç tutulan günler: hasta olduğun ya da saati takmadığın günler ortalamalarını bozmasın
-- Bir hedef hâlâ açıkken akşam hatırlatması
+- Hedef henüz tamamlanmamışsa akşam hatırlatması
 
 GİZLİLİK
-- Sağlık'a erişim yalnızca okuma yönündedir. Uygulama sağlık verilerine hiçbir zaman yazmaz
+- Sağlık'a erişim salt okunurdur. Uygulama sağlık verilerine hiçbir zaman yazmaz
 - Sağlık verilerin iPhone'unda kalır, hiçbir yere yüklenmez
 - Raporlar iPhone'unda oluşturulur
 - Reklam yok, izleme yok, hesap yok
-- Satın alımları Apple ve RevenueCat işler, sağlık verilerin onlara hiçbir zaman ulaşmaz
+- Satın alma işlemlerini Apple ve RevenueCat yürütür, sağlık verilerin onlara hiçbir zaman ulaşmaz
 
 Total Calories bir tıbbi cihaz değildir ve herhangi bir tıbbi durumu teşhis etmek, tedavi etmek veya önlemek için tasarlanmamıştır. Tıbbi tavsiye için bir sağlık uzmanına danış.
 
 ABONELİK AYRINTILARI
-Fiyatlar satın almadan önce uygulamada gösterilir ve bölgeye göre değişir. Ödeme, onay sırasında Apple ID'ne yansıtılır. Abonelikler, mevcut dönemin bitiminden en az 24 saat önce iptal edilmezse otomatik olarak yenilenir. Aboneliğini Ayarlar > Apple ID > Abonelikler bölümünden yönetebilir veya iptal edebilirsin.
+Fiyatlar satın almadan önce uygulamada gösterilir ve bölgeye göre değişir. Ödeme, satın alma onaylandığında Apple ID hesabından tahsil edilir. Abonelikler, mevcut dönemin bitiminden en az 24 saat önce iptal edilmezse otomatik olarak yenilenir. Aboneliğini Ayarlar > Apple ID > Abonelikler bölümünden yönetebilir veya iptal edebilirsin.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

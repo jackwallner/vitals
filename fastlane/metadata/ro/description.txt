@@ -6,7 +6,7 @@ PE APPLE WATCH
 - Complicații pentru totalul caloriilor arse: circulare, dreptunghiulare, în linie și de colț
 - Complicație pentru numărul de pași
 - Aplicație pentru ceas cu totalurile de azi și ultimele 30 de zile
-- Obiectivele setate pe iPhone se sincronizează pe ceas
+- Obiectivele setate pe iPhone se sincronizează cu ceasul
 
 WIDGETURI PE ECRANUL PRINCIPAL ȘI DE BLOCARE
 - Widgeturi mici, medii și mari pentru ecranul principal
@@ -41,9 +41,9 @@ Tot ce este mai sus este gratuit și nu expiră. Vitals+ este o îmbunătățire
 - Serii de obiective și un rezumat de duminică: săptămâna aceasta față de cea trecută
 - Intervale personalizate în Istoric, cu rapoarte PDF
 - Deep Trends: orice perioadă comparată cu cea dinainte
-- Grăsime corporală și context caloric lângă IMC
+- Grăsime corporală și repere calorice lângă IMC
 - Zile excluse, ca zilele de boală și zilele fără ceas la mână să nu-ți strice mediile
-- O reamintire seara, când un obiectiv este încă deschis
+- O reamintire seara, când un obiectiv nu este încă atins
 
 CONFIDENȚIALITATE
 - Accesul la Sănătate este doar pentru citire. Aplicația nu scrie niciodată în datele tale de sănătate
