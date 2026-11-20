@@ -129,6 +129,12 @@ struct TrialOfferPitchSheet: View {
         .presentationDragIndicator(.visible)
         .presentationContentInteraction(.resizes)
         .interactiveDismissDisabled(isPurchasing)
+        // A restore, an approved Ask to Buy or a purchase on another device
+        // unlocks Vitals+ while this is up. Every presenter's onDismiss applies
+        // the feature the user reached for.
+        .onChange(of: store.isPro) { _, isPro in
+            if isPro { onDismiss() }
+        }
         .task {
             if store.products.isEmpty { await store.fetchProducts() }
             snapshot = store.conversionPackage
@@ -196,7 +202,7 @@ struct TrialOfferPitchSheet: View {
     /// A restore that says nothing is barely a restore. `restorePurchases`
     /// already distinguishes "nothing on this Apple ID" from a network failure
     /// in `store.lastError`; this puts that answer where the user can read it.
-    /// A successful one flips `isPro`, which dismisses the sheet on its own.
+    /// A successful one flips `isPro`, and the `onChange` in `body` closes the sheet.
     private func startRestore() {
         errorMessage = nil
         restoreMessage = nil

@@ -23,6 +23,9 @@ struct BodyProfileView: View {
     /// the Settings sheet, so handing the tap to MainTabView meant asking it to
     /// present a sheet over a sheet — which SwiftUI drops silently.
     @State private var trialPitch: TrialPitchRequest?
+    /// No plan loaded for the one-tap pitch: it closes and the full paywall opens.
+    @State private var wantsPlanPicker = false
+    @State private var showPlanPicker = false
 
     @State private var heightError = false
     @State private var weightError = false
@@ -72,9 +75,21 @@ struct BodyProfileView: View {
         .navigationBarTitleDisplayMode(.inline)
         .unfoldedPaneBackHeader(String(localized: "Body Profile"))
         .background(InteractivePopGestureEnabler())
-        .sheet(item: $trialPitch) { pitch in
-            TrialOfferPitchSheet(request: pitch, onDismiss: { trialPitch = nil })
+        .sheet(item: $trialPitch, onDismiss: openPlanPickerIfAsked) { pitch in
+            TrialOfferPitchSheet(
+                request: pitch,
+                onDismiss: { trialPitch = nil },
+                onNeedsPlanPicker: {
+                    wantsPlanPicker = true
+                    trialPitch = nil
+                }
+            )
+            .environmentObject(store)
+        }
+        .sheet(isPresented: $showPlanPicker) {
+            PaywallView(focus: .bodyProfile)
                 .environmentObject(store)
+                .task { store.trackPaywallImpression(id: "vitals_trial_sheet_body_profile") }
         }
         .task {
             seedManualDrafts()
@@ -479,6 +494,12 @@ struct BodyProfileView: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Theme.cardSurface, in: RoundedRectangle(cornerRadius: Theme.cardRadius))
+    }
+
+    private func openPlanPickerIfAsked() {
+        guard wantsPlanPicker else { return }
+        wantsPlanPicker = false
+        showPlanPicker = true
     }
 
     private var lockedBodyContextRow: some View {
