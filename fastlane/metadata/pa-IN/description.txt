@@ -1,61 +1,60 @@
-Total Calories ਤੁਹਾਡੀਆਂ ਰੋਜ਼ਾਨਾ ਸੜੀਆਂ ਕੈਲੋਰੀਆਂ (ਸਰਗਰਮ + ਆਰਾਮ) ਅਤੇ ਕਦਮਾਂ ਦੀ ਗਿਣਤੀ ਠੀਕ ਉੱਥੇ ਦਿਖਾਉਂਦਾ ਹੈ ਜਿੱਥੇ ਚਾਹੀਦਾ ਹੈ – iPhone Home Screen, Lock Screen ਅਤੇ Apple Watch face – ਪੂਰੀ ਤਰ੍ਹਾਂ ਮੁਫ਼ਤ। ਬੁਨਿਆਦੀ features ਲਈ subscription ਨਹੀਂ ਚਾਹੀਦਾ। account ਨਹੀਂ। ਸਿਹਤ data ਫੋਨ ਤੋਂ ਬਾਹਰ ਨਹੀਂ ਜਾਂਦਾ।
+Total Calories ਤੁਹਾਡੀਆਂ ਦਿਨ ਭਰ ਦੀਆਂ ਕੁੱਲ ਸਾੜੀਆਂ ਕੈਲੋਰੀਆਂ (ਸਰਗਰਮ ਅਤੇ ਆਰਾਮ ਮਿਲਾ ਕੇ) ਅਤੇ ਕਦਮਾਂ ਦੀ ਗਿਣਤੀ Apple Watch ਫੇਸ, iPhone Home Screen ਅਤੇ Lock Screen 'ਤੇ ਦਿਖਾਉਂਦਾ ਹੈ। Complications, widgets ਅਤੇ ਰੋਜ਼ਾਨਾ dashboard ਮੁਫ਼ਤ ਹਨ, ਖਾਤੇ ਦੀ ਲੋੜ ਨਹੀਂ। ਤੁਹਾਡਾ ਸਿਹਤ ਡੇਟਾ ਤੁਹਾਡੇ iPhone 'ਤੇ ਹੀ ਰਹਿੰਦਾ ਹੈ।
 
-ਜੇ ਤੁਸੀਂ ਚਾਹਿਆ ਹੈ Apple Watch face ਅੱਜ ਦੀ ਕੁੱਲ ਸੜੀ ਕੈਲੋਰੀ ਸਾਫ਼ ਦਿਖਾਵੇ, ਤਾਂ ਇਹ ਉਹ app ਹੈ।
+Apple Watch ਦਾ Move ਟੀਚਾ ਸਿਰਫ਼ ਸਰਗਰਮ ਕੈਲੋਰੀਆਂ ਗਿਣਦਾ ਹੈ। Total Calories Apple Health ਤੋਂ ਆਰਾਮ ਦੌਰਾਨ ਦੀ ਖਪਤ ਵੀ ਜੋੜਦਾ ਹੈ, ਇਸ ਲਈ ਦਿਨ ਦੀ ਪੂਰੀ ਗਿਣਤੀ ਦਿਸਦੀ ਹੈ।
 
-APPLE WATCH (ਮੁਫ਼ਤ)
-- ਹਰ watch face style ਲਈ ਕੁੱਲ ਸੜੀ ਕੈਲੋਰੀ complications: circular, rectangular, inline, corner।
-- Live step count complication।
-- Watch app ਅੱਜ ਦਾ ਸਾਰ ਅਤੇ 30‑ਦਿਨ trends।
-- iPhone ਤੇ set goals ਸਿੱਧੇ watch ਤੇ sync।
+APPLE WATCH 'ਤੇ
+- ਗੋਲ, ਆਇਤਾਕਾਰ, inline ਅਤੇ ਕੋਨੇ ਦੀਆਂ ਥਾਵਾਂ ਲਈ ਕੁੱਲ ਕੈਲੋਰੀ complications (ਇਨ੍ਹਾਂ ਨੂੰ ਸਹਾਰਨ ਵਾਲੇ ਹਰ watch face 'ਤੇ)
+- ਕਦਮ ਗਿਣਤੀ complication
+- ਅੱਜ ਦੇ ਕੁੱਲ ਅਤੇ ਪਿਛਲੇ 30 ਦਿਨਾਂ ਵਾਲੀ watch app
+- iPhone 'ਤੇ ਸੈੱਟ ਕੀਤੇ ਟੀਚੇ watch ਨਾਲ sync ਹੁੰਦੇ ਹਨ
 
-HOME SCREEN & LOCK SCREEN (ਮੁਫ਼ਤ)
-- Home Screen widgets ਛੋਟੇ ਅਤੇ medium sizes।
-- Lock Screen widgets circular, rectangular layouts।
-- Widgets ਤੁਹਾਡੇ on ਕੀਤੇ metrics, goals ਦਿਖਾਉਂਦੇ ਹਨ।
-- App ਖੋਲ੍ਹੇ ਬਿਨਾਂ ਪੂਰੇ ਦਿਨ ਦਾ total।
+HOME SCREEN ਅਤੇ LOCK SCREEN WIDGETS
+- ਛੋਟੇ, ਦਰਮਿਆਨੇ ਅਤੇ ਵੱਡੇ Home Screen widgets
+- ਗੋਲ ਅਤੇ ਆਇਤਾਕਾਰ Lock Screen widgets
+- ਤੁਹਾਡੇ ਚਾਲੂ ਕੀਤੇ ਮਾਪ ਅਤੇ ਟੀਚੇ widgets ਵਿੱਚ ਦਿਸਦੇ ਹਨ, ਛੂਹਣ 'ਤੇ app ਖੁੱਲ੍ਹਦੀ ਹੈ
 
-DASHBOARD (ਮੁਫ਼ਤ)
-- ਇੱਕ clean ring ਤੇ daily total calories burned।
-- Daily steps, progress bar, goal।
-- Pacing indicator: ਇਸ ਸਮੇਂ usual day ਤੋਂ ਅੱਗੇ ਜਾਂ ਪਿੱਛੇ?
-- Pull to refresh. Gear icon tap for settings.
+ਅੱਜ
+- ਇੱਕ ਰਿੰਗ ਵਿੱਚ ਕੁੱਲ ਸਾੜੀਆਂ ਕੈਲੋਰੀਆਂ, ਨਾਲ ਕਦਮ ਅਤੇ ਟੀਚੇ ਦੀ ਪੱਟੀ
+- ਰਫ਼ਤਾਰ ਦੀ ਜਾਂਚ: ਇਸ ਵੇਲੇ ਤੁਹਾਡੇ ਆਮ ਦਿਨ ਨਾਲ ਤੁਲਨਾ
+- ਅੱਜ ਦੀਆਂ ਕੈਲੋਰੀਆਂ ਜਾਂ ਕਦਮਾਂ ਬਾਰੇ Siri ਨੂੰ ਪੁੱਛੋ
+- ਰੋਜ਼ਾਨਾ ਟੀਚਾ ਪੂਰਾ ਹੋਣ 'ਤੇ ਵਿਕਲਪਿਕ ਅਲਰਟ
 
-ਮੈਕਰੋ (VITALS+)
-- ਪ੍ਰੋਟੀਨ, ਕਾਰਬਸ ਅਤੇ ਫੈਟ ਤੁਹਾਡੀਆਂ ਕੈਲੋਰੀਆਂ ਦੇ ਨਾਲ, ਉਸੇ ਐਪ ਤੋਂ ਪੜ੍ਹੇ ਜੋ ਖਾਣਾ ਪਹਿਲਾਂ ਹੀ Apple Health ਵਿੱਚ ਲਿਖਦੀ ਹੈ।
-- ਕੁਝ ਵੀ ਦੋ ਵਾਰ ਦਰਜ ਨਹੀਂ। ਜੋ Health ਵਿੱਚ ਹੈ, ਉਹੀ ਇੱਥੇ ਹੈ।
-- ਤਿੰਨੇ ਟਰੈਕ ਕਰੋ, ਜਾਂ ਸਿਰਫ਼ ਉਹ ਮੈਕਰੋ ਜੋ ਤੁਸੀਂ ਸੱਚਮੁੱਚ ਗਿਣਦੇ ਹੋ।
-- ਵਿਕਲਪਿਕ ਗ੍ਰਾਮ ਟੀਚੇ, ਨਾਲ ਹੀ ਔਸਤ, ਚਾਰਟ, CSV ਕਾਲਮ ਅਤੇ PDF ਰਿਪੋਰਟਾਂ।
+ਇਤਿਹਾਸ
+- 7, 30, 90 ਦਿਨ ਅਤੇ 1 ਸਾਲ ਦੇ ਦ੍ਰਿਸ਼: ਬਾਰ ਚਾਰਟ, ਰੁਝਾਨ ਤੀਰ ਅਤੇ ਸਿਖਰ ਵਾਲੇ ਦਿਨ
+- ਰੋਜ਼ਾਨਾ ਡੇਟਾ ਦਾ CSV export
 
-HISTORY (ਮੁਫ਼ਤ)
-- 7 / 30 / 90 / 365‑day views, custom date range।
-- Trend arrows, peak days, bar charts।
-- CSV export।
+BMI
+- Apple Health ਵਿਚਲੇ ਕੱਦ ਅਤੇ ਭਾਰ ਤੋਂ ਜਾਂ ਹੱਥੀਂ ਦਰਜ ਕੀਤੇ ਮੁੱਲਾਂ ਤੋਂ ਤੁਹਾਡਾ BMI
+- ਇਹ ਅੰਕ ਕੀ ਦੱਸਦਾ ਹੈ ਅਤੇ ਕੀ ਨਹੀਂ ਦੱਸਦਾ, ਇਸ ਬਾਰੇ ਸਾਦਾ ਨੋਟ
 
-ਤੁਹਾਡੇ ਲਈ ਢੁਕਵੇਂ goals
-- Optional daily calorie, step goals।
-- Goals skip ਕਰਕੇ clean counter ਵਜੋਂ ਵਰਤੋ।
-- Pacing: same weekday vs all days, lookback (14 / 30 / 90 days / 1 year)।
+ਟੀਚੇ
+- ਰੋਜ਼ਾਨਾ ਕੈਲੋਰੀ ਅਤੇ ਕਦਮਾਂ ਦੇ ਟੀਚੇ ਵਿਕਲਪਿਕ ਹਨ, ਬਿਨਾਂ ਟੀਚਿਆਂ ਦੇ ਵੀ ਵਰਤ ਸਕਦੇ ਹੋ
+- ਉਸੇ ਹਫ਼ਤੇ ਦੇ ਦਿਨ ਜਾਂ ਸਾਰੇ ਦਿਨਾਂ ਨਾਲ, ਪਿਛਲੇ 14, 30, 90 ਦਿਨ ਜਾਂ ਸਾਲ ਵਿੱਚ ਰਫ਼ਤਾਰ ਦੀ ਤੁਲਨਾ
 
-Vitals+ (optional)
-ਛੋਟਾ monthly, yearly, lifetime upgrade unlock:
-- ਮੈਕਰੋ: Apple Health ਵਿੱਚ ਦਰਜ ਖਾਣੇ ਤੋਂ ਪ੍ਰੋਟੀਨ, ਕਾਰਬਸ ਅਤੇ ਫੈਟ
-- Active vs resting calorie breakdown
-- Net Deficit: Apple Health food energy ਘਟਾ ਕੇ burned calories
-- Share-ready Monthly Summary PDF
-- Custom date-range PDF reports
-- Deep Trends: period-over-period cards
-ਨਵੇਂ subscribers ਲਈ free trial।
+ਮੁਫ਼ਤ ਅਤੇ VITALS+
+ਉੱਪਰ ਦਿੱਤਾ ਸਭ ਕੁਝ ਮੁਫ਼ਤ ਹੈ ਅਤੇ ਕਦੇ ਖ਼ਤਮ ਨਹੀਂ ਹੁੰਦਾ। Vitals+ ਇੱਕ ਵਿਕਲਪਿਕ ਅੱਪਗ੍ਰੇਡ ਹੈ: ਮਹੀਨਾਵਾਰ ਜਾਂ ਸਾਲਾਨਾ ਸਬਸਕ੍ਰਿਪਸ਼ਨ (ਯੋਗ ਨਵੇਂ ਗਾਹਕਾਂ ਲਈ ਹਰੇਕ ਵਿੱਚ 7 ਦਿਨ ਦਾ ਮੁਫ਼ਤ ਟ੍ਰਾਇਲ) ਜਾਂ ਇੱਕ ਵਾਰ ਦੀ Lifetime ਖ਼ਰੀਦ। Vitals+ ਵਿੱਚ ਇਹ ਜੁੜਦਾ ਹੈ:
+- ਸਰਗਰਮ ਬਨਾਮ ਆਰਾਮ: ਅੱਜ ਦੀ ਖਪਤ ਦਾ ਕਿੰਨਾ ਹਿੱਸਾ ਹਿਲਜੁਲ ਤੋਂ ਆਇਆ
+- Net Deficit: ਸਾੜੀਆਂ ਕੈਲੋਰੀਆਂ ਵਿੱਚੋਂ Apple Health ਵਿੱਚ ਦਰਜ ਖਾਣੇ ਦੀ ਊਰਜਾ ਘਟਾ ਕੇ
+- Macros: Apple Health ਵਿੱਚ ਲਿਖਣ ਵਾਲੀ ਖਾਣੇ ਦੀ app ਤੋਂ ਪ੍ਰੋਟੀਨ, ਕਾਰਬੋਹਾਈਡ੍ਰੇਟ ਅਤੇ ਚਰਬੀ; ਵਿਕਲਪਿਕ ਗ੍ਰਾਮ ਟੀਚੇ
+- TDEE ਅਤੇ BMR: 30 ਦਿਨਾਂ ਦੀ ਔਸਤ ਮੇਨਟੇਨੈਂਸ ਅਤੇ ਆਰਾਮ ਦੌਰਾਨ ਖਪਤ
+- ਮੌਜੂਦਾ ਰਫ਼ਤਾਰ ਨਾਲ ਦਿਨ ਦੇ ਅੰਤ ਤੱਕ ਕੈਲੋਰੀਆਂ ਅਤੇ ਕਦਮਾਂ ਦਾ ਅੰਦਾਜ਼ਾ
+- ਟੀਚਿਆਂ ਦੀ ਲੜੀ ਅਤੇ ਐਤਵਾਰ ਦਾ ਸਾਰ: ਇਹ ਹਫ਼ਤਾ ਬਨਾਮ ਪਿਛਲਾ ਹਫ਼ਤਾ
+- ਇਤਿਹਾਸ ਵਿੱਚ ਆਪਣੀ ਮਰਜ਼ੀ ਦੀਆਂ ਤਾਰੀਖ਼ ਹੱਦਾਂ ਅਤੇ ਸਾਰ PDF ਰਿਪੋਰਟਾਂ
+- Deep Trends: ਕਿਸੇ ਵੀ ਮਿਆਦ ਦੀ ਉਸ ਤੋਂ ਪਹਿਲਾਂ ਵਾਲੀ ਮਿਆਦ ਨਾਲ ਤੁਲਨਾ
+- BMI ਕੋਲ ਸਰੀਰ ਦੀ ਚਰਬੀ ਅਤੇ ਕੈਲੋਰੀਆਂ ਦਾ ਸੰਦਰਭ
+- ਬਾਹਰ ਰੱਖੇ ਦਿਨ: ਬੀਮਾਰੀ ਵਾਲੇ ਅਤੇ ਘੜੀ ਨਾ ਪਹਿਨਣ ਵਾਲੇ ਦਿਨ ਔਸਤ ਤੋਂ ਬਾਹਰ ਰਹਿੰਦੇ ਹਨ
+- ਟੀਚਾ ਅਜੇ ਬਾਕੀ ਹੋਵੇ ਤਾਂ ਸ਼ਾਮ ਦੀ ਯਾਦ-ਦਹਾਨੀ
 
-Privacy-first design
-- Read-only Apple Health. App health records ਵਿੱਚ ਨਹੀਂ ਲਿਖਦਾ।
-- ਤੁਹਾਡਾ ਸਿਹਤ ਡਾਟਾ ਤੁਹਾਡੇ ਡਿਵਾਈਸ 'ਤੇ ਹੀ ਰਹਿੰਦਾ ਹੈ, ਕਦੇ ਅੱਪਲੋਡ ਨਹੀਂ ਹੁੰਦਾ।
-- Reports on-device generate।
-- ਕੋਈ ਇਸ਼ਤਿਹਾਰ ਨਹੀਂ। ਕੋਈ ਟਰੈਕਿੰਗ ਨਹੀਂ। ਕੋਈ ਖਾਤਾ ਨਹੀਂ।
-- ਖਰੀਦਦਾਰੀ Apple ਅਤੇ RevenueCat ਸੰਭਾਲਦੇ ਹਨ; ਉਹਨਾਂ ਨੂੰ ਤੁਹਾਡਾ ਸਿਹਤ ਡਾਟਾ ਕਦੇ ਨਹੀਂ ਮਿਲਦਾ।
+ਗੋਪਨੀਅਤਾ
+- Apple Health ਤੱਕ ਪਹੁੰਚ ਸਿਰਫ਼ ਪੜ੍ਹਨ ਲਈ ਹੈ। App ਤੁਹਾਡੇ ਸਿਹਤ ਰਿਕਾਰਡ ਵਿੱਚ ਕੁਝ ਨਹੀਂ ਲਿਖਦੀ
+- ਤੁਹਾਡਾ ਸਿਹਤ ਡੇਟਾ ਤੁਹਾਡੇ iPhone 'ਤੇ ਹੀ ਰਹਿੰਦਾ ਹੈ ਅਤੇ ਕਦੇ ਅੱਪਲੋਡ ਨਹੀਂ ਹੁੰਦਾ
+- ਰਿਪੋਰਟਾਂ iPhone 'ਤੇ ਹੀ ਬਣਦੀਆਂ ਹਨ
+- ਕੋਈ ਇਸ਼ਤਿਹਾਰ ਨਹੀਂ, ਕੋਈ ਟਰੈਕਿੰਗ ਨਹੀਂ, ਕੋਈ ਖਾਤਾ ਨਹੀਂ
+- ਖ਼ਰੀਦਾਂ Apple ਅਤੇ RevenueCat ਸੰਭਾਲਦੇ ਹਨ, ਜਿਨ੍ਹਾਂ ਨੂੰ ਤੁਹਾਡਾ ਸਿਹਤ ਡੇਟਾ ਕਦੇ ਨਹੀਂ ਮਿਲਦਾ
 
-Total Calories medical device ਨਹੀਂ; diagnose, treat, prevent ਲਈ intended ਨਹੀਂ। Medical advice ਲਈ healthcare professional consult ਕਰੋ।
+Total Calories ਮੈਡੀਕਲ ਯੰਤਰ ਨਹੀਂ ਹੈ ਅਤੇ ਕਿਸੇ ਵੀ ਡਾਕਟਰੀ ਸਥਿਤੀ ਦੀ ਪਛਾਣ, ਇਲਾਜ ਜਾਂ ਰੋਕਥਾਮ ਲਈ ਨਹੀਂ ਬਣਾਇਆ ਗਿਆ। ਡਾਕਟਰੀ ਸਲਾਹ ਲਈ ਸਿਹਤ ਮਾਹਰ ਨਾਲ ਗੱਲ ਕਰੋ।
 
-Subscription Details
+ਸਬਸਕ੍ਰਿਪਸ਼ਨ ਵੇਰਵੇ
 Vitals+ ਆਪਣੇ-ਆਪ ਨਵਿਆਉਣ ਵਾਲੀ ਸਬਸਕ੍ਰਿਪਸ਼ਨ ਵਜੋਂ (ਮਹੀਨਾਵਾਰ ਜਾਂ ਸਾਲਾਨਾ, ਦੋਵਾਂ ਵਿੱਚ 7 ਦਿਨ ਦਾ ਮੁਫ਼ਤ ਟ੍ਰਾਇਲ) ਜਾਂ ਇੱਕ ਵਾਰੀ ਦੀ Lifetime ਖ਼ਰੀਦ ਵਜੋਂ ਉਪਲਬਧ ਹੈ। ਕੀਮਤਾਂ ਖ਼ਰੀਦਣ ਤੋਂ ਪਹਿਲਾਂ ਐਪ ਵਿੱਚ ਦਿਖਦੀਆਂ ਹਨ ਅਤੇ ਖੇਤਰ ਮੁਤਾਬਕ ਵੱਖਰੀਆਂ ਹੁੰਦੀਆਂ ਹਨ। ਪੁਸ਼ਟੀ ਵੇਲੇ ਤੁਹਾਡੇ Apple ID ਤੋਂ ਭੁਗਤਾਨ ਲਿਆ ਜਾਂਦਾ ਹੈ। ਮੌਜੂਦਾ ਮਿਆਦ ਖ਼ਤਮ ਹੋਣ ਤੋਂ ਘੱਟੋ-ਘੱਟ 24 ਘੰਟੇ ਪਹਿਲਾਂ ਰੱਦ ਨਾ ਕਰਨ 'ਤੇ ਸਬਸਕ੍ਰਿਪਸ਼ਨ ਆਪਣੇ-ਆਪ ਨਵਿਆ ਜਾਂਦੀ ਹੈ। ਕਿਸੇ ਵੀ ਵੇਲੇ Settings → Apple ID → Subscriptions ਵਿੱਚ ਪ੍ਰਬੰਧ ਕਰੋ ਜਾਂ ਰੱਦ ਕਰੋ।
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html

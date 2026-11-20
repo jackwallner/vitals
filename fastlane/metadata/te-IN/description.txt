@@ -1,61 +1,60 @@
-Total Calories మీ రోజువారీ కాలరీలు (active + resting) మరియు step count ను మీకు కావాల్సిన చోటే చూపిస్తుంది – iPhone Home Screen, Lock Screen, Apple Watch face – పూర్తిగా ఉచితం. ప్రాథమిక features కు subscription అవసరం లేదు. account లేదు. ఆరోగ్య data phone నుండి బయటకు రాదు.
+Total Calories మీరు రోజుకు ఖర్చు చేసే మొత్తం కేలరీలను (యాక్టివ్ మరియు విశ్రాంతి కలిపి), అడుగుల సంఖ్యను Apple Watch ఫేస్, iPhone Home Screen, Lock Screen పై చూపిస్తుంది. Complications, widgets, రోజువారీ dashboard ఉచితం, ఖాతా అవసరం లేదు. మీ ఆరోగ్య డేటా మీ iPhone లోనే ఉంటుంది.
 
-Apple Watch face ఈ రోజు total calories burned స్పష్టంగా చూపించాలని మీరు కోరుకుంటే, ఇదే ఆ app.
+Apple Watch లోని Move లక్ష్యం యాక్టివ్ కేలరీలను మాత్రమే లెక్కిస్తుంది. Total Calories, Apple Health లోని విశ్రాంతి సమయపు ఖర్చును కూడా కలిపి, రోజులో మీరు ఖర్చు చేసే పూర్తి సంఖ్యను చూపిస్తుంది.
 
-APPLE WATCH (ఉచితం)
-- ప్రతి watch face style కు total calories burned complications: circular, rectangular, inline, corner.
-- Live step count complication.
-- Watch app today at a glance + 30‑day trends.
-- iPhone లో set చేసిన goals watch కు sync.
+APPLE WATCH లో
+- గుండ్రని, దీర్ఘచతురస్రాకార, inline, మూల స్లాట్‌ల కోసం మొత్తం కేలరీల complications (మద్దతిచ్చే ఏ watch face లోనైనా)
+- అడుగుల సంఖ్య complication
+- ఈరోజు మొత్తాలు, గత 30 రోజులు చూపే watch app
+- iPhone లో సెట్ చేసిన లక్ష్యాలు watch తో sync అవుతాయి
 
-HOME SCREEN & LOCK SCREEN (ఉచితం)
-- Home Screen widgets small, medium sizes.
-- Lock Screen widgets circular, rectangular layouts.
-- Widgets మీరు on చేసిన metrics, goals చూపిస్తాయి.
-- App తెరవకుండా full daily total.
+HOME SCREEN, LOCK SCREEN WIDGETS
+- చిన్న, మధ్యస్థ, పెద్ద Home Screen widgets
+- గుండ్రని, దీర్ఘచతురస్రాకార Lock Screen widgets
+- మీరు ఆన్ చేసిన కొలమానాలు, లక్ష్యాలను widgets చూపిస్తాయి; తాకితే app తెరుచుకుంటుంది
 
-DASHBOARD (ఉచితం)
-- clean ring లో daily total calories burned.
-- Daily steps, progress bar, goal.
-- Pacing indicator: ఈ సమయంలో usual day కంటే ahead లేదా behind?
-- Pull to refresh. Gear icon tap for settings.
+ఈరోజు
+- ఒకే రింగ్‌లో మొత్తం ఖర్చైన కేలరీలు, అడుగులు, లక్ష్యం బార్‌తో పాటు
+- వేగ తనిఖీ: ఈ సమయానికి మీ సాధారణ రోజుతో పోలిక
+- ఈరోజు కేలరీలు లేదా అడుగుల గురించి Siri ని అడగండి
+- రోజువారీ లక్ష్యం చేరినప్పుడు ఐచ్ఛిక అలర్ట్
 
-మాక్రో (VITALS+)
-- ప్రోటీన్, కార్బ్స్, ఫ్యాట్ మీ కేలరీల పక్కన; ఆహారాన్ని ఇప్పటికే Apple Health కు రాసే యాప్ నుంచి చదవబడతాయి.
-- దేన్నీ రెండుసార్లు నమోదు చేయనక్కర్లేదు. Health లో ఉన్నది ఇక్కడా ఉంటుంది.
-- మూడింటినీ ట్రాక్ చేయండి, లేదా మీరు నిజంగా లెక్కించే మాక్రోను మాత్రమే.
-- ఐచ్ఛిక గ్రాము లక్ష్యాలు, సగటులు, చార్టులు, CSV కాలమ్‌లు, PDF నివేదికలు.
+చరిత్ర
+- 7, 30, 90 రోజులు, 1 సంవత్సరం వీక్షణలు: బార్ చార్ట్‌లు, ట్రెండ్ బాణాలు, గరిష్ట రోజులు
+- రోజువారీ డేటా CSV ఎగుమతి
 
-HISTORY (ఉచితం)
-- 7 / 30 / 90 / 365‑day views, custom date range.
-- Trend arrows, peak days, bar charts.
-- CSV export.
+BMI
+- Apple Health లోని ఎత్తు, బరువు నుంచి లేదా చేతితో నమోదు చేసిన విలువల నుంచి మీ BMI
+- ఈ సంఖ్య ఏమి చెబుతుందో, ఏమి చెప్పదో వివరించే సరళమైన గమనిక
 
-మీకు సరిపడే goals
-- Optional daily calorie, step goals.
-- Goals skip చేసి clean counter గా use చేయండి.
-- Pacing: same weekday vs all days, lookback (14 / 30 / 90 days / 1 year).
+లక్ష్యాలు
+- రోజువారీ కేలరీ, అడుగుల లక్ష్యాలు ఐచ్ఛికం; లక్ష్యాలు లేకుండా కూడా వాడవచ్చు
+- అదే వారం రోజుతో లేదా అన్ని రోజులతో, గత 14, 30, 90 రోజులు లేదా సంవత్సరంలో వేగ పోలిక
 
-Vitals+ (optional)
-చిన్న monthly, yearly, lifetime upgrade unlock:
-- మాక్రో: Apple Health లో నమోదైన ఆహారం నుంచి ప్రోటీన్, కార్బ్స్, ఫ్యాట్
-- Active vs resting calorie breakdown
-- Net Deficit: Apple Health food energy తగ్గించిన burned calories
-- Share-ready Monthly Summary PDF
-- Custom date-range PDF reports
-- Deep Trends: period-over-period cards
-కొత్త subscribers కు free trial.
+ఉచితం మరియు VITALS+
+పైవన్నీ ఉచితం, గడువు తీరదు. Vitals+ ఐచ్ఛిక అప్‌గ్రేడ్: నెలవారీ లేదా వార్షిక సబ్‌స్క్రిప్షన్ (అర్హత ఉన్న కొత్త చందాదారులకు ఒక్కోదానిలో 7 రోజుల ఉచిత ట్రయల్) లేదా ఒకసారి చేసే Lifetime కొనుగోలు. Vitals+ లో అదనంగా:
+- యాక్టివ్ vs విశ్రాంతి: ఈరోజు ఖర్చులో ఎంత భాగం కార్యకలాపం నుంచి వచ్చింది
+- Net Deficit: ఖర్చైన కేలరీల నుంచి Apple Health లో నమోదైన ఆహార శక్తిని తీసివేయగా
+- Macros: Apple Health లో రాసే ఆహార app నుంచి ప్రోటీన్, కార్బోహైడ్రేట్లు, కొవ్వు; ఐచ్ఛిక గ్రాముల లక్ష్యాలు
+- TDEE, BMR: 30 రోజుల సగటు నిర్వహణ, విశ్రాంతి ఖర్చు
+- ప్రస్తుత వేగంతో రోజు ముగిసే సమయానికి కేలరీలు, అడుగుల అంచనా
+- లక్ష్య స్ట్రీక్‌లు, ఈ వారం vs గత వారం ఆదివారం సారాంశం
+- చరిత్రలో కస్టమ్ తేదీ పరిధులు, సారాంశ PDF నివేదికలు
+- Deep Trends: ఏ కాలాన్నైనా దానికి ముందటి కాలంతో పోల్చడం
+- BMI పక్కన శరీర కొవ్వు, కేలరీల సందర్భం
+- మినహాయించిన రోజులు: అనారోగ్యపు రోజులు, వాచ్ ధరించని రోజులు సగటులలో కలవవు
+- లక్ష్యం ఇంకా మిగిలి ఉంటే సాయంత్రం రిమైండర్
 
-Privacy-first design
-- Read-only Apple Health. App health records లో write చేయదు.
-- మీ ఆరోగ్య డేటా మీ పరికరంలోనే ఉంటుంది, ఎప్పుడూ అప్‌లోడ్ కాదు.
-- Reports on-device generate.
-- ప్రకటనలు లేవు. ట్రాకింగ్ లేదు. ఖాతాలు లేవు.
-- కొనుగోళ్లను Apple, RevenueCat ప్రాసెస్ చేస్తాయి; రెండూ మీ ఆరోగ్య డేటాను ఎప్పుడూ అందుకోవు.
+గోప్యత
+- Apple Health యాక్సెస్ చదవడానికి మాత్రమే. App మీ ఆరోగ్య రికార్డులలో ఏమీ రాయదు
+- మీ ఆరోగ్య డేటా మీ iPhone లోనే నిల్వ ఉంటుంది, ఎప్పుడూ అప్‌లోడ్ కాదు
+- నివేదికలు iPhone లోనే తయారవుతాయి
+- ప్రకటనలు లేవు, ట్రాకింగ్ లేదు, ఖాతా లేదు
+- కొనుగోళ్లను Apple, RevenueCat నిర్వహిస్తాయి; అవి మీ ఆరోగ్య డేటాను ఎప్పుడూ అందుకోవు
 
-Total Calories medical device కాదు; diagnose, treat, prevent కోసం intended కాదు. Medical advice కు healthcare professional consult.
+Total Calories వైద్య పరికరం కాదు, ఏ వైద్య పరిస్థితినీ నిర్ధారించడానికి, చికిత్స చేయడానికి లేదా నివారించడానికి ఉద్దేశించింది కూడా కాదు. వైద్య సలహా కోసం ఆరోగ్య నిపుణులతో మాట్లాడండి.
 
-Subscription Details
+సబ్‌స్క్రిప్షన్ వివరాలు
 Vitals+ ఆటో-రెన్యూ అయ్యే సబ్‌స్క్రిప్షన్‌గా (నెలవారీ లేదా వార్షికం, రెండింటిలోనూ 7 రోజుల ఉచిత ట్రయల్) లేదా ఒకసారి చేసే Lifetime కొనుగోలుగా అందుబాటులో ఉంది. కొనుగోలుకు ముందు ధరలు యాప్‌లో కనిపిస్తాయి, అవి ప్రాంతాన్ని బట్టి మారతాయి. నిర్ధారించినప్పుడు మీ Apple ID నుంచి చెల్లింపు జరుగుతుంది. ప్రస్తుత వ్యవధి ముగియడానికి కనీసం 24 గంటల ముందు రద్దు చేయకపోతే సబ్‌స్క్రిప్షన్ దానంతట అదే రెన్యూ అవుతుంది. ఎప్పుడైనా Settings → Apple ID → Subscriptions లో నిర్వహించండి లేదా రద్దు చేయండి.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html

@@ -1,61 +1,60 @@
-Total Calories ଆପଣଙ୍କ ଦୈନିକ ଜଳିଥିବା କ୍ୟାଲୋରି (ସକ୍ରିୟ + ବିଶ୍ରାମ) ଏବଂ ପାଦକ୍ଷେପ ଗଣନା ଯେଉଁଠାରେ ଦରକାର ସେଠାରେ ଦେଖାଏ – iPhone Home Screen, Lock Screen ଏବଂ Apple Watch face – ସମ୍ପୂର୍ଣ୍ଣ ମାଗଣା। ମୂଳ features ପାଇଁ subscription ଲାଗେ ନାହିଁ। account ନାହିଁ। ସ୍ୱାସ୍ଥ୍ୟ data phone ବାହାରକୁ ଯାଏ ନାହିଁ।
+Total Calories ଆପଣ ଦିନକୁ ଜଳାଉଥିବା ମୋଟ କ୍ୟାଲୋରି (ସକ୍ରିୟ ଓ ବିଶ୍ରାମ ମିଶାଇ) ଏବଂ ପାଦକ୍ଷେପ ସଂଖ୍ୟାକୁ Apple Watch ଫେସ୍, iPhone Home Screen ଓ Lock Screen ରେ ଦେଖାଏ। Complications, widgets ଓ ଦୈନିକ dashboard ମାଗଣା, ଆକାଉଣ୍ଟ ଦରକାର ନାହିଁ। ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ତଥ୍ୟ iPhone ରେ ହିଁ ରହେ।
 
-Apple Watch face ଆଜିର ମୋଟ ଜଳିଥିବା କ୍ୟାଲୋରି ସ୍ପଷ୍ଟ ଦେଖାଇବାକୁ ଚାହିଁଥିଲେ, ଏହା ସେହି app।
+Apple Watch ର Move ଲକ୍ଷ୍ୟ କେବଳ ସକ୍ରିୟ କ୍ୟାଲୋରି ଗଣେ। Total Calories Apple Health ରୁ ବିଶ୍ରାମ ସମୟର ଜଳନ ମଧ୍ୟ ଯୋଡ଼େ, ତେଣୁ ଦିନର ପୂର୍ଣ୍ଣ ସଂଖ୍ୟା ଦେଖିହୁଏ।
 
-APPLE WATCH (ମାଗଣା)
-- ପ୍ରତ୍ୟେକ watch face style ପାଇଁ ମୋଟ ଜଳିଥିବା କ୍ୟାଲୋରି complications: circular, rectangular, inline, corner।
-- Live step count complication।
-- Watch app ଆଜିର summary ଏବଂ 30‑ଦିନ trends।
-- iPhone ରେ set goals ସିଧା watch କୁ sync।
+APPLE WATCH ରେ
+- ଗୋଲ, ଆୟତାକାର, inline ଓ କୋଣ ସ୍ଲଟ ପାଇଁ ମୋଟ କ୍ୟାଲୋରି complications (ସମର୍ଥନ କରୁଥିବା ଯେକୌଣସି watch face ରେ)
+- ପାଦକ୍ଷେପ complication
+- ଆଜିର ମୋଟ ଓ ଗତ 30 ଦିନ ଥିବା watch app
+- iPhone ରେ ସେଟ୍ କରିଥିବା ଲକ୍ଷ୍ୟ watch ସହ sync ହୁଏ
 
-HOME SCREEN & LOCK SCREEN (ମାଗଣା)
-- Home Screen widgets ଛୋଟ ଏବଂ medium sizes।
-- Lock Screen widgets circular, rectangular layouts।
-- Widgets ଆପଣ on କରିଥିବା metrics, goals ଦେଖାଏ।
-- App ଖୋଲିବା ବିନା full daily total।
+HOME SCREEN ଓ LOCK SCREEN WIDGETS
+- ଛୋଟ, ମଧ୍ୟମ ଓ ବଡ଼ Home Screen widgets
+- ଗୋଲ ଓ ଆୟତାକାର Lock Screen widgets
+- ଆପଣ ଚାଲୁ କରିଥିବା ମାପ ଓ ଲକ୍ଷ୍ୟ widgets ରେ ଦେଖାଯାଏ, ଛୁଇଁଲେ app ଖୋଲେ
 
-DASHBOARD (ମାଗଣା)
-- ଗୋଟିଏ clean ring ରେ daily total calories burned।
-- Daily steps, progress bar, goal।
-- Pacing indicator: ଏହି ସମୟରେ usual day ଠାରୁ ahead କି behind?
-- Pull to refresh. Gear icon tap for settings.
+ଆଜି
+- ଗୋଟିଏ ରିଙ୍ଗରେ ମୋଟ ଜଳିଥିବା କ୍ୟାଲୋରି, ସାଙ୍ଗରେ ପାଦକ୍ଷେପ ଓ ଲକ୍ଷ୍ୟ ବାର୍
+- ଗତି ଯାଞ୍ଚ: ଏହି ସମୟରେ ଆପଣଙ୍କ ସାଧାରଣ ଦିନ ସହ ତୁଳନା
+- ଆଜିର କ୍ୟାଲୋରି କିମ୍ବା ପାଦକ୍ଷେପ ବିଷୟରେ Siri କୁ ପଚାରନ୍ତୁ
+- ଦୈନିକ ଲକ୍ଷ୍ୟ ପୂରଣ ହେଲେ ଇଚ୍ଛାଧୀନ ଅଲର୍ଟ
 
-ମାକ୍ରୋ (VITALS+)
-- ପ୍ରୋଟିନ୍, କାର୍ବ ଏବଂ ଫ୍ୟାଟ୍ ଆପଣଙ୍କ କ୍ୟାଲୋରୀ ପାଖରେ, ଖାଦ୍ୟକୁ ପୂର୍ବରୁ Apple Health କୁ ଲେଖୁଥିବା ଆପ୍ ରୁ ପଢ଼ାଯାଏ।
-- କିଛି ବି ଦୁଇଥର ଲେଖିବାକୁ ପଡ଼ିବ ନାହିଁ। Health ରେ ଯାହା ଅଛି, ଏଠାରେ ମଧ୍ୟ ଅଛି।
-- ତିନୋଟିଯାକ ଟ୍ରାକ୍ କରନ୍ତୁ, କିମ୍ବା କେବଳ ସେଇ ମାକ୍ରୋ ଯାହା ଆପଣ ପ୍ରକୃତରେ ଗଣନ୍ତି।
-- ବୈକଳ୍ପିକ ଗ୍ରାମ ଲକ୍ଷ୍ୟ, ସହିତ ହାରାହାରି, ଚାର୍ଟ, CSV କଲମ ଓ PDF ରିପୋର୍ଟ।
+ଇତିହାସ
+- 7, 30, 90 ଦିନ ଓ 1 ବର୍ଷର ଦୃଶ୍ୟ: ବାର୍ ଚାର୍ଟ, ଧାରା ତୀର ଓ ସର୍ବୋଚ୍ଚ ଦିନ
+- ଦୈନିକ ତଥ୍ୟର CSV export
 
-HISTORY (ମାଗଣା)
-- 7 / 30 / 90 / 365‑day views, custom date range।
-- Trend arrows, peak days, bar charts।
-- CSV export।
+BMI
+- Apple Health ରେ ଥିବା ଉଚ୍ଚତା ଓ ଓଜନରୁ କିମ୍ବା ହାତରେ ଲେଖିଥିବା ମାପରୁ ଆପଣଙ୍କ BMI
+- ଏହି ସଂଖ୍ୟା କ'ଣ କହେ ଓ କ'ଣ କହେ ନାହିଁ, ସେ ବିଷୟରେ ସରଳ ଟିପ୍ପଣୀ
 
-ଆପଣଙ୍କ ପାଇଁ ଉପଯୁକ୍ତ goals
-- Optional daily calorie, step goals।
-- Goals skip କରି clean counter ଭାବେ use।
-- Pacing: same weekday vs all days, lookback (14 / 30 / 90 days / 1 year)।
+ଲକ୍ଷ୍ୟ
+- ଦୈନିକ କ୍ୟାଲୋରି ଓ ପାଦକ୍ଷେପ ଲକ୍ଷ୍ୟ ଇଚ୍ଛାଧୀନ, ଲକ୍ଷ୍ୟ ନ ରଖି ମଧ୍ୟ ବ୍ୟବହାର କରିପାରିବେ
+- ସେହି ସପ୍ତାହ ଦିନ କିମ୍ବା ସବୁ ଦିନ ସହ, ଗତ 14, 30, 90 ଦିନ କିମ୍ବା ବର୍ଷ ଉପରେ ଗତି ତୁଳନା
 
-Vitals+ (optional)
-ଛୋଟ monthly, yearly, lifetime upgrade unlock:
-- ମାକ୍ରୋ: Apple Health ରେ ଲିପିବଦ୍ଧ ଖାଦ୍ୟରୁ ପ୍ରୋଟିନ୍, କାର୍ବ ଏବଂ ଫ୍ୟାଟ୍
-- Active vs resting calorie breakdown
-- Net Deficit: Apple Health food energy ବସାଇ burned calories
-- Share-ready Monthly Summary PDF
-- Custom date-range PDF reports
-- Deep Trends: period-over-period cards
-ନୂଆ subscribers ପାଇଁ free trial।
+ମାଗଣା ଓ VITALS+
+ଉପରୋକ୍ତ ସବୁ ମାଗଣା ଓ କେବେ ସରେ ନାହିଁ। Vitals+ ଏକ ଇଚ୍ଛାଧୀନ ଅପଗ୍ରେଡ୍: ମାସିକ କିମ୍ବା ବାର୍ଷିକ ସବସ୍କ୍ରିପସନ୍ (ଯୋଗ୍ୟ ନୂଆ ଗ୍ରାହକଙ୍କ ପାଇଁ ପ୍ରତ୍ୟେକରେ 7 ଦିନର ମାଗଣା ଟ୍ରାଏଲ୍) କିମ୍ବା ଥରକେ Lifetime କ୍ରୟ। Vitals+ ରେ ଅତିରିକ୍ତ ଭାବେ ମିଳେ:
+- ସକ୍ରିୟ ବନାମ ବିଶ୍ରାମ: ଆଜିର ଜଳନର କେତେ ଅଂଶ ଗତିବିଧିରୁ ଆସିଛି
+- Net Deficit: ଜଳିଥିବା କ୍ୟାଲୋରିରୁ Apple Health ରେ ଲଗ୍ ହୋଇଥିବା ଖାଦ୍ୟ ଶକ୍ତି ବିୟୋଗ
+- Macros: Apple Health ରେ ଲେଖୁଥିବା ଖାଦ୍ୟ app ରୁ ପ୍ରୋଟିନ୍, କାର୍ବୋହାଇଡ୍ରେଟ୍ ଓ ଚର୍ବି; ଇଚ୍ଛାଧୀନ ଗ୍ରାମ ଲକ୍ଷ୍ୟ
+- TDEE ଓ BMR: 30 ଦିନର ହାରାହାରି ରକ୍ଷଣାବେକ୍ଷଣ ଓ ବିଶ୍ରାମ ଜଳନ
+- ବର୍ତ୍ତମାନ ଗତିରେ ଦିନ ଶେଷ ପାଇଁ କ୍ୟାଲୋରି ଓ ପାଦକ୍ଷେପ ପୂର୍ବାନୁମାନ
+- ଲକ୍ଷ୍ୟ ଧାରା ଓ ରବିବାର ସାରାଂଶ: ଏହି ସପ୍ତାହ ବନାମ ଗତ ସପ୍ତାହ
+- ଇତିହାସରେ କଷ୍ଟମ୍ ତାରିଖ ସୀମା ଓ ସାରାଂଶ PDF ରିପୋର୍ଟ
+- Deep Trends: ଯେକୌଣସି ଅବଧିକୁ ତା' ପୂର୍ବ ଅବଧି ସହ ତୁଳନା
+- BMI ପାଖରେ ଶରୀର ଚର୍ବି ଓ କ୍ୟାଲୋରି ପ୍ରସଙ୍ଗ
+- ବାଦ୍ ଦିନ: ଅସୁସ୍ଥ ଦିନ ଓ ଘଡ଼ି ନ ପିନ୍ଧିଥିବା ଦିନକୁ ହାରାହାରିରୁ ବାହାରେ ରଖନ୍ତୁ
+- ଲକ୍ଷ୍ୟ ବାକି ଥିଲେ ସନ୍ଧ୍ୟା ସ୍ମାରକ
 
-Privacy-first design
-- Read-only Apple Health. App health records ରେ write କରେ ନାହିଁ।
-- ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ଡାଟା ଆପଣଙ୍କ ଡିଭାଇସରେ ରହେ, କେବେ ଅପଲୋଡ ହୁଏ ନାହିଁ।
-- Reports on-device generate।
-- କୌଣସି ବିଜ୍ଞାପନ ନାହିଁ। କୌଣସି ଟ୍ରାକିଂ ନାହିଁ। କୌଣସି ଆକାଉଣ୍ଟ ନାହିଁ।
-- କ୍ରୟ Apple ଏବଂ RevenueCat ପରିଚାଳନା କରନ୍ତି; ସେମାନେ କେବେ ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ଡାଟା ପାଆନ୍ତି ନାହିଁ।
+ଗୋପନୀୟତା
+- Apple Health ପ୍ରବେଶ କେବଳ ପଢ଼ିବା ପାଇଁ। App ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡରେ କିଛି ଲେଖେ ନାହିଁ
+- ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ତଥ୍ୟ iPhone ରେ ସଞ୍ଚିତ ରହେ ଓ କେବେ ଅପଲୋଡ୍ ହୁଏ ନାହିଁ
+- ରିପୋର୍ଟ iPhone ରେ ହିଁ ତିଆରି ହୁଏ
+- ବିଜ୍ଞାପନ ନାହିଁ, ଟ୍ରାକିଂ ନାହିଁ, ଆକାଉଣ୍ଟ ନାହିଁ
+- କ୍ରୟ Apple ଓ RevenueCat ପରିଚାଳନା କରନ୍ତି, ସେମାନେ ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ତଥ୍ୟ ପାଆନ୍ତି ନାହିଁ
 
-Total Calories medical device ନୁହେଁ; diagnose, treat, prevent ପାଇଁ intended ନୁହେଁ। Medical advice ପାଇଁ healthcare professional consult।
+Total Calories ଏକ ଚିକିତ୍ସା ଉପକରଣ ନୁହେଁ ଏବଂ କୌଣସି ରୋଗ ଚିହ୍ନଟ, ଚିକିତ୍ସା କିମ୍ବା ପ୍ରତିରୋଧ ପାଇଁ ଉଦ୍ଦିଷ୍ଟ ନୁହେଁ। ଚିକିତ୍ସା ପରାମର୍ଶ ପାଇଁ ସ୍ୱାସ୍ଥ୍ୟ ବିଶେଷଜ୍ଞଙ୍କ ସହ କଥା ହୁଅନ୍ତୁ।
 
-Subscription Details
+ସବସ୍କ୍ରିପସନ୍ ବିବରଣୀ
 Vitals+ ସ୍ୱୟଂ-ନବୀକରଣ ହେଉଥିବା ସବସ୍କ୍ରିପସନ୍ ଭାବେ (ମାସିକ କିମ୍ବା ବାର୍ଷିକ, ଦୁଇଟିରେ 7 ଦିନର ମାଗଣା ଟ୍ରାଏଲ୍) କିମ୍ବା ଥରେ ପାଇଁ Lifetime କିଣାରେ ଉପଲବ୍ଧ। କିଣିବା ପୂର୍ବରୁ ଦାମ ଆପରେ ଦେଖାଯାଏ ଏବଂ ଅଞ୍ଚଳ ଅନୁସାରେ ଭିନ୍ନ ହୁଏ। ନିଶ୍ଚିତ କରିବା ସମୟରେ ଆପଣଙ୍କ Apple ID ରୁ ଟଙ୍କା କଟାଯାଏ। ଚଳିତ ଅବଧି ଶେଷ ହେବାର ଅତି କମରେ 24 ଘଣ୍ଟା ପୂର୍ବରୁ ବାତିଲ୍ ନକଲେ ସବସ୍କ୍ରିପସନ୍ ସ୍ୱୟଂ ନବୀକରଣ ହୁଏ। ଯେକୌଣସି ସମୟରେ Settings → Apple ID → Subscriptions ରେ ପରିଚାଳନା କରନ୍ତୁ କିମ୍ବା ବାତିଲ୍ କରନ୍ତୁ।
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
