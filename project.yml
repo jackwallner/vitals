@@ -177,9 +177,11 @@ targets:
       - path: Shared/Utilities/SupportMail.swift
       - path: Shared/Services/ConversionDiagnostics.swift
       - path: Shared/Utilities/BodyProfileCalculator.swift
+      - path: Shared/Utilities/TypedNumber.swift
       - path: Shared/Models/BodyProfile.swift
       - path: Shared/Services/ReviewPromptTracker.swift
       - path: Shared/Services/SummaryReportGenerator.swift
+      - path: Shared/Utilities/DailyAverage.swift
       - path: Shared/Utilities/DeepLink.swift
       - path: Shared/Utilities/DailyNudgePlanner.swift
       - path: Shared/Utilities/GoalRecalibration.swift
