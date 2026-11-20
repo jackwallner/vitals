@@ -183,7 +183,10 @@ enum CachedHistoryWindow {
         var current = normalizedStart
         while current <= normalizedEnd {
             let key = DailyHealthRecord.key(for: current, timeZone: calendar.timeZone)
-            results.append(rows[key] ?? (date: current, active: 0, resting: 0, steps: 0))
+            // The window's own day, never the row's stored instant: a row written
+            // in a zone further east would otherwise land on the day before.
+            let row = rows[key]
+            results.append((date: current, active: row?.active ?? 0, resting: row?.resting ?? 0, steps: row?.steps ?? 0))
             guard let next = calendar.date(byAdding: .day, value: 1, to: current) else { break }
             current = next
         }

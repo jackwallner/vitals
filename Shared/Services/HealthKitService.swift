@@ -655,6 +655,14 @@ final class HealthKitService: ObservableObject {
     // MARK: - Background Delivery
 
     private var pendingRefreshTask: Task<Void, Never>?
+    /// Observer handlers waiting for the debounced refresh to finish.
+    private var pendingObserverCompletions: [ObserverCompletion] = []
+
+    private func finishObserverCompletions() {
+        let completions = pendingObserverCompletions
+        pendingObserverCompletions = []
+        completions.forEach { $0.call() }
+    }
     private var installedObserverTypes: Set<String> = []
 
     /// UserDefaults flag: once we've successfully read dietary energy at least once,
@@ -725,15 +733,16 @@ final class HealthKitService: ObservableObject {
             installedObserverTypes.insert(identifier)
 
             let query = HKObserverQuery(sampleType: type, predicate: nil) { [weak self] _, completionHandler, error in
-                // Call completion handler immediately — watchOS kills the app
-                // if this isn't called within 15 seconds.
-                completionHandler()
                 if let error {
+                    completionHandler()
                     healthKitLogger.error("HKObserverQuery error for \(String(describing: type), privacy: .public): \(String(describing: error), privacy: .public)")
                     return
                 }
                 #if os(watchOS)
-                // On watchOS, don't do heavy work in the observer callback —
+                // Call completion handler immediately: watchOS kills the app
+                // if this isn't called within 15 seconds.
+                completionHandler()
+                // On watchOS, don't do heavy work in the observer callback;
                 // the CAROUSEL watchdog has a tight CPU budget and will kill us.
                 // Just schedule a background refresh and let the protected handler do it.
                 Task { @MainActor in
@@ -743,18 +752,27 @@ final class HealthKitService: ObservableObject {
                     ) { _ in }
                 }
                 #else
+                // iOS keeps a background-woken app running until the handler is
+                // called, so it runs only after the cache is saved and the
+                // widgets reloaded. Calling it first let iOS suspend the app
+                // before the refresh ran.
+                let completion = ObserverCompletion(completionHandler)
                 Task { @MainActor in
+                    guard let self else { return completion.call() }
+                    self.pendingObserverCompletions.append(completion)
                     // Debounce: multiple HK types often deliver simultaneously.
-                    // Coalesce into a single refreshCache call.
-                    self?.pendingRefreshTask?.cancel()
-                    self?.pendingRefreshTask = Task {
+                    // Coalesce into a single refreshCache call; the task that
+                    // runs calls every handler that arrived meanwhile.
+                    self.pendingRefreshTask?.cancel()
+                    self.pendingRefreshTask = Task {
                         try? await Task.sleep(for: .milliseconds(500))
                         guard !Task.isCancelled else { return }
                         do {
-                            try await self?.refreshCache()
+                            try await self.refreshCache()
                         } catch {
                             healthKitLogger.error("Observer-triggered cache refresh failed: \(String(describing: error), privacy: .public)")
                         }
+                        self.finishObserverCompletions()
                     }
                 }
                 #endif
@@ -857,6 +875,7 @@ final class HealthKitService: ObservableObject {
 
         let record: DailyHealthRecord
         if let existing {
+            existing.date = today
             existing.activeCalories = resolvedStats.active
             existing.restingCalories = resolvedStats.resting
             existing.steps = resolvedStats.steps
@@ -1030,7 +1049,7 @@ final class HealthKitService: ObservableObject {
         )
 
         let results = CachedHistoryWindow.fill(
-            rows: recordDict.mapValues { (date: $0.date, active: $0.activeCalories, resting: $0.restingCalories, steps: $0.steps) },
+            rows: recordDict.mapValues { (date: $0.localDay, active: $0.activeCalories, resting: $0.restingCalories, steps: $0.steps) },
             from: normalizedStart,
             to: normalizedEnd
         )
@@ -1048,6 +1067,9 @@ final class HealthKitService: ObservableObject {
                 predicate: #Predicate { $0.dateString == key }
             )
             if let existing = try context.fetch(descriptor).first {
+                // Re-anchor to this zone's midnight so a row from before a move
+                // stops reading as the previous day.
+                existing.date = DateHelpers.startOfDay(day.date)
                 existing.activeCalories = day.active
                 existing.restingCalories = day.resting
                 existing.steps = day.steps
@@ -1238,4 +1260,11 @@ final class HealthKitService: ObservableObject {
         }
     }
 
+}
+
+/// An `HKObserverQuery` completion handler carried to the main actor.
+struct ObserverCompletion: @unchecked Sendable {
+    private let handler: () -> Void
+    init(_ handler: @escaping () -> Void) { self.handler = handler }
+    func call() { handler() }
 }

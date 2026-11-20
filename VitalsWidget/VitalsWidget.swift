@@ -126,7 +126,7 @@ struct VitalsTimelineProvider: TimelineProvider {
                 showSteps: goals.showSteps,
                 showNetCalories: goals.showNetCalories,
                 foodCalories: prior.foodCalories,
-                staleDate: prior.date
+                staleDate: prior.localDay
             )
         }
 

@@ -178,7 +178,7 @@ struct WatchTimelineProvider: TimelineProvider {
                 showCalories: goals.showCalories,
                 showSteps: goals.showSteps,
                 showNetCalories: goals.showNetCalories,
-                staleDate: prior.date
+                staleDate: prior.localDay
             )
         }
 

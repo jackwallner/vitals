@@ -55,7 +55,7 @@ enum EnergyAveragesCacheReader {
         }
 
         let result = EnergyAveragesCalculator.compute(
-            records: rows.map { (date: $0.date, active: $0.activeCalories, resting: $0.restingCalories) },
+            records: rows.map { (date: $0.localDay, active: $0.activeCalories, resting: $0.restingCalories) },
             referenceDate: referenceDate,
             minSamples: minSamples,
             excludedKeys: excludedKeys

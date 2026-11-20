@@ -49,6 +49,19 @@ final class DailyHealthRecord {
         key(for: date, calendar: gregorian)
     }
 
+    /// The row's day as local midnight in the current time zone. `date` is the
+    /// midnight of the zone the row was first written in, so after a move west
+    /// it reads as the evening before; the key never changes.
+    var localDay: Date { Self.day(forKey: dateString) ?? date }
+
+    static func day(forKey key: String, timeZone: TimeZone = Calendar.current.timeZone) -> Date? {
+        let parts = key.split(separator: "-").compactMap { Int($0) }
+        guard parts.count == 3 else { return nil }
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = timeZone
+        return calendar.date(from: DateComponents(year: parts[0], month: parts[1], day: parts[2]))
+    }
+
     /// Same spelling, read in `timeZone` (always Gregorian, whatever calendar the
     /// device uses).
     static func key(for date: Date, timeZone: TimeZone) -> String {
