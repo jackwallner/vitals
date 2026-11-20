@@ -26,6 +26,10 @@ Developer notes and historical audits for this repository. The published site re
 - [ONBOARDING-RESTORE-1.8.5.md](experiments/ONBOARDING-RESTORE-1.8.5.md): Onboarding restore (1.8.5)
 - [UPGRADE-TAB-EXPERIMENT.md](experiments/UPGRADE-TAB-EXPERIMENT.md): Upgrade-tab layout experiment (1.8.3+)
 
+## Research
+
+- [2026-11-20-competitor-reviews.md](research/2026-11-20-competitor-reviews.md): Competitor reviews, 2026-11-20: 33,994 reviews on 13 calories-burned, activity and pedometer apps (4,085 read one by one), themes ranked against Total Calories, 8 opportunities. Tagged rows in the TSV beside it; pull method and keyword counts in the pull notes.
+
 ## ASO
 
 - [2026-10-28-aso-pass.md](aso/2026-10-28-aso-pass.md): App Store metadata changes and live search evidence.

@@ -425,3 +425,304 @@ Top themes by row count (excluding praise_general and other): steps_distance, bu
 9. "There is a learning curve with the energy settings and macro" (Cronometer, 5 stars, 2024-11-12, R12108)
 10. "BMR sometimesly sinply disappears" (Google Fit, 3 stars, 2019-03-08, R28761)
 
+
+## 10. Second tagging pass (2024+ decision sample, hand-tagged)
+
+Run: fleet-run on imac, branch fleet/20261120-115932-62a3-claude. Only tags and the new `tag_method` column changed in `2026-11-20-competitor-reviews.tsv`; row order, uids and every other column are untouched. No app code touched.
+
+### 10.1 Method and what changed
+
+- New last column `tag_method`: auto (praise_general rule) 11,724, rule (keyword tagger, not re-read) 18,185, hand1 (first run's hand tags, best guess) 1,091, hand2 (this pass) 2,994. Total 33,994.
+- hand1 is inferred, because the first run's raw folder is not available here: a non-praise row counts as hand1 when its gist is not a fixed theme phrase (any gist shared by 5 or more rows) and not a text copy of the review. The first run reported 1,104 hand-tagged rows (1,048 plus 56 web); this rule finds 1,091. Any row that looked like a rule row was re-tagged if it fell in the sample, so a misjudged hand1 row only costs a re-tag, not a missed one.
+- Decision sample = rows dated 2024-01-01 or later, not auto praise, not hand1, for (A) every such row of ActivityTracker Pedometer, Steps - Activity Tracker, HealthView, Activity Tracker FitnessView, Calorie Counter - Calory AI, All the Rings, TDEE, Calorie Burn Plan, plus (B) a seeded random sample (random.seed(20261120), `random.sample` over the eligible rows in file order) of 300 Apple Fitness, 300 Cronometer, 300 Google Fit, 300 Pedometer++ and 150 iTECH Wearables. TDEE had no eligible row. Total 2,994 rows.
+- Every row got up to 3 themes, sentiment, intensity (1 praise or mild, 2 complaint, 3 quit, refund, scam or rage), request 0/1, and a gist in English of at most 15 words, written by hand with no keyword rules. Non-English reviews (German, French, Spanish, Italian, Japanese, Chinese, Polish, Dutch, Arabic, Hindi and others) were read in the original and glossed in English. The tags were written to a JSONL in batches of about 100 as I went.
+- request = 1 when the reviewer asks for something missing or changed, which here also covers an explicit "please fix this" on a bug (that is why bugs_stability has 114 asks). Section 6 gives only the theme names, so I applied these working definitions: calorie_accuracy = calorie or energy numbers wrong or different from another source; sync_refresh = data late, stale or not syncing; platform = OS, device, tracker or ecosystem support (Android, iPad, Garmin, Fitbit, Health Connect); support_dev = support or developer response; localization = language, translation, regional units or foods.
+
+Rows re-tagged by app (hand2):
+
+| App | rows |
+|---|---|
+| Steps - Activity Tracker | 495 |
+| ActivityTracker Pedometer | 429 |
+| Calorie Counter - Calory AI | 403 |
+| Apple Fitness | 300 |
+| Cronometer | 300 |
+| Pedometer++ | 300 |
+| Google Fit | 300 |
+| Activity Tracker FitnessView | 152 |
+| iTECH Wearables | 150 |
+| HealthView | 143 |
+| Calorie Burn Plan | 18 |
+| All the Rings | 4 |
+| total | 2,994 |
+
+Limit you should know about: for long reviews I read only the opening of each (the first 200 to 320 characters of title plus text, depending on the batch). That cut off the tail of 1,061 of the 2,994 rows (35%). Short reviews and the opening of long ones, which is where complaints and asks usually sit, were read in full; a later request or theme in the unread tail of a long review can be missing from its tags. If that matters for a decision, re-read the tails of the long rows in the Total Calories-shaped list below first.
+
+### 10.2 Spot check and agreement with the old rule tags
+
+Spot check: 15 of my rows drawn at random (seed 20261121) and compared with the review text: R24895, R09051, R12803, R21107, R27837, R02164, R20893, R01953, R00247, R09482, R08175, R21359, R21138, R08832, R08392. Result: gist, themes, sentiment and request were right on 15 of 15; intensity was right on 14 of 15 (R09482, a 2-star French review calling the app "cruelly incomplete", I tagged 1 where 2 fits better). This is my own check of my own work, not an independent read.
+
+Agreement of my tags with the old rule tags on the same 2,994 rows (my tags as the reference, same measures as section 6):
+
+| measure | agreement |
+|---|---|
+| my top theme found in the rule's themes | 53.4% |
+| my top theme equals the rule's first theme | 33.8% |
+| mean theme-set overlap (Jaccard) | 0.39 |
+| sentiment | 83.7% |
+| intensity | 75.2% |
+| request flag | 74.0% |
+
+Section 6 measured 65% top-theme agreement on its hand-tagged rows, which were biased toward widget and calorie wording. On this broader sample the rule tagger finds my top theme only about half the time (53%), so rule-tagged theme counts in sections 7 and 8 stay directional only. By slice: top-theme agreement is 56% on my negative rows against 48% on my positive rows, and 54% on English text against 52% on non-English.
+
+### 10.3 Theme table, hand1 + hand2 rows only
+
+4,085 rows (1,091 hand1, 2,994 hand2). Caution: this is not a market-share view. The close competitors are covered almost fully, the five big apps contribute 300 random rows each (150 for iTECH), and hand1 leans to widget, complication and calorie wording. Columns: mentions = rows carrying the theme; neg/mixed = those with negative or mixed sentiment; 1-3 star = rows rated 1 to 3 (web rows have no rating); int 3 = intensity-3 rows; asks = request 1 rows; score = sum of intensity over the neg/mixed rows; top apps = the two apps with the highest score (score in brackets).
+
+| theme | mentions | neg/mixed | 1-3 star | int 3 | asks | score | top 2 apps by score |
+|---|---|---|---|---|---|---|---|
+| bugs_stability | 919 | 877 | 772 | 348 | 114 | 1980 | iTECH Wearables (280), Steps - Activity Tracker (275) |
+| steps_distance | 1054 | 790 | 687 | 257 | 133 | 1617 | Steps - Activity Tracker (505), Google Fit (399) |
+| price_paywall | 640 | 478 | 420 | 232 | 81 | 1119 | Calorie Counter - Calory AI (295), HealthView (286) |
+| sync_refresh | 431 | 391 | 330 | 112 | 54 | 828 | Pedometer++ (173), Google Fit (154) |
+| widgets_complications | 511 | 397 | 324 | 93 | 147 | 810 | Pedometer++ (325), iTECH Wearables (139) |
+| watch_app | 428 | 369 | 309 | 120 | 97 | 762 | Pedometer++ (253), iTECH Wearables (203) |
+| platform | 440 | 344 | 301 | 134 | 94 | 741 | Google Fit (295), Apple Fitness (102) |
+| ui_design | 580 | 372 | 309 | 88 | 221 | 675 | Apple Fitness (113), Calorie Counter - Calory AI (92) |
+| workouts | 413 | 326 | 279 | 86 | 190 | 619 | Apple Fitness (260), Google Fit (194) |
+| calorie_accuracy | 257 | 216 | 172 | 80 | 43 | 467 | Apple Fitness (173), Google Fit (116) |
+| goals_rings | 366 | 235 | 209 | 50 | 106 | 462 | Apple Fitness (294), Google Fit (45) |
+| food_logging | 454 | 191 | 131 | 47 | 129 | 332 | Calorie Counter - Calory AI (193), Cronometer (120) |
+| ads | 187 | 143 | 126 | 66 | 12 | 319 | Cronometer (131), Calorie Counter - Calory AI (80) |
+| history_trends | 227 | 149 | 129 | 39 | 73 | 290 | Steps - Activity Tracker (86), Google Fit (61) |
+| support_dev | 144 | 109 | 99 | 70 | 8 | 280 | Steps - Activity Tracker (76), HealthView (66) |
+| privacy_account | 97 | 95 | 87 | 61 | 13 | 242 | Calorie Counter - Calory AI (40), iTECH Wearables (38) |
+| other | 72 | 58 | 56 | 17 | 12 | 119 | Google Fit (32), Activity Tracker FitnessView (30) |
+| total_vs_active | 96 | 61 | 38 | 9 | 50 | 104 | Apple Fitness (22), web: Apple Community (17) |
+| localization | 75 | 63 | 53 | 9 | 56 | 104 | Apple Fitness (69), Cronometer (13) |
+| weight_body | 94 | 44 | 37 | 22 | 22 | 101 | Google Fit (33), iTECH Wearables (22) |
+| notifications | 78 | 47 | 35 | 15 | 28 | 92 | iTECH Wearables (29), Apple Fitness (27) |
+| deficit_net | 57 | 27 | 14 | 3 | 30 | 44 | Calorie Counter - Calory AI (12), Activity Tracker FitnessView (11) |
+| tdee_bmr | 23 | 15 | 11 | 6 | 6 | 32 | TDEE (17), Google Fit (6) |
+| praise_general | 251 | 10 | 20 | 0 | 8 | 10 | Google Fit (5), Steps - Activity Tracker (2) |
+| siri_shortcuts | 7 | 2 | 2 | 1 | 2 | 4 | Apple Fitness (3), Steps - Activity Tracker (1) |
+
+### 10.4 Top 12 themes by score: quotes and asks
+
+Top 12 named themes by score, leaving out praise_general and other. Quotes are verbatim from the review (title or text), under 15 words, English unless a language is noted. Asks are summarised from the hand2 rows with request 1.
+
+**bugs_stability**
+
+- "Two days of walking since the upgrade not one step counted." (Steps - Activity Tracker, 1 stars, 2024-04-02, R24051)
+- "Watch constantly looses connection and have restarted phone & watch" (iTECH Wearables, 1 stars, 2024-07-26, R32926)
+- "For no reason all my previous records are gone." (Pedometer++, 1 stars, 2024-08-27, R21059)
+- Asks: Mostly "fix this" (114 asks): app or complication vanished from the Apple Watch after an OS or app update (Pedometer++ above all), award medals not granted, crash on open, reinstall wiping history (a few ask for a backup), nowhere to report a bug.
+
+**steps_distance**
+
+- "My watch shows 6,000+ steps and the app only records 1,400." (Steps - Activity Tracker, 1 stars, 2026-07-21, R24757)
+- "I walked 15000 steps and your app counted only 4 miles." (Pedometer++, 1 stars, 2024-12-29, R21138)
+- "It registers coughing, shaking or involuntary movements as steps." (Steps - Activity Tracker, 1 stars, 2024-04-09, R24055)
+- Asks: Manual step entry for days the phone was left behind or dead (golf, treadmill, protecting a streak), a pause or start control so driving is not counted, stride length setting, distance in US miles, backdating after a missed midnight sync, floors and elevation.
+
+**price_paywall**
+
+- "An app as simple as this shouldn't be behind a paywall." (Calorie Counter - Calory AI, 2 stars, 2025-01-10, R11076)
+- "Developers advertise in the app for “$5.99 Annually” but charge $59.99 annually." (HealthView, 1 stars, 2024-09-29, R14540)
+- "Massive shame you have to repurchase the app every single year though." (Pedometer++, 1 stars, 2024-04-04, R20948)
+- Asks: A lifetime or one-time price (Calory, HealthView 9 euro lifetime, one-time macro tracker), an annual plan instead of monthly, a real free tier or a way to skip the trial, ad-only removal, the promised 5.99 or 6.99 HealthView price actually charged.
+
+**sync_refresh**
+
+- "you have to open the app for the widget to refresh" (Pedometer++, 3 stars, 2025-10-12, R21481)
+- "the widgets don’t seem to refresh unless you open the app" (HealthView, 3 stars, 2024-01-26, R14477)
+- "It doesn't sync to anything anymore." (Google Fit, 1 stars, 2025-06-29, R30212)
+- Asks: Widgets and watch complications that refresh without opening the app, watch-only walks syncing back to the phone, sync from Garmin, Fitbit and non-Apple watches, and backdating after a missed sync.
+
+**widgets_complications**
+
+- "Fix the widget so that it updates in real time" (Pedometer++, 2 stars, 2025-03-31, R21222)
+- "Pls add Lock Screen widget support" (HealthView, 4 stars, 2024-05-05, R14499)
+- "the widgets are blank when I use monochrome tint" (HealthView, 1 stars, 2024-09-29, R14539)
+- Asks: Lock Screen and Smart Stack widgets, weekly goal widgets, weight widget with a scale, dark and tinted widgets for iOS 26, water and fasting timer widgets, an hourly steps-versus-average widget, step complications on every watch face, an interactive barcode widget.
+
+**watch_app**
+
+- "Updated the app and now it no longer works with my Apple watch." (Pedometer++, 1 stars, 2025-10-06, R21470)
+- "Until they dropped support for older watches." (Pedometer++, 1 stars, 2025-09-27, R21436)
+- "My watch no longer connects to the phone easily." (iTECH Wearables, 1 stars, 2024-08-07, R32971)
+- Asks: Put the app or complication back after an update, keep older watches (Series 3 and 6) supported, step count during workouts, bigger or zoomable text on the v8 watch app, auto workout detection, a stopwatch on the iTECH watches, Garmin, Whoop and Fitbit connections.
+
+**platform**
+
+- "The inability to link with a fitbit or anything other than an Apple Watch." (Apple Fitness, 2 stars, 2024-01-22, R06069)
+- "Please make Fitness and Health consistent across iPhone and iPad." (Apple Fitness, 1 stars, 2026-01-01, R08905)
+- "This is a downgrade from the Fitbit app" (Google Fit, 1 stars, 2026-05-26, R30594)
+- Asks: Android and Health Connect sync (Samsung Health, Zepp, Huawei, Garmin), Fitness rings and Summary on iPad, a Mac app, casting to Apple TV on Fire Stick, iOS 26 Liquid Glass and watchOS 27 support, VoiceOver, Duo layout, Apple Health import.
+
+**ui_design**
+
+- "The new app interface is awful." (Cronometer, 1 stars, 2026-11-05, R13508)
+- "WHY DO I HAVE TO TAP SO MANY THINGS WHEN STARTING A NEW WORKOUT" (Apple Fitness, 2 stars, 2026-05-20, R09495)
+- "Can you please add a standard white/amoled black color theme." (Steps - Activity Tracker, 3 stars, 2025-11-02, R24380)
+- Asks: Fewer taps to start a workout, search and filters in Fitness+, an AMOLED or white theme, high-contrast text, units (US miles, kJ, caffeine), editable recipes, hiding calories or Heart Points, a hideable ring.
+
+**workouts**
+
+- "I rollerblade and the only option I have is Skate." (Apple Fitness, 4 stars, 2026-05-29, R09540)
+- "This app could add more important work out such as rebounding" (Apple Fitness, 3 stars, 2026-09-02, R09955)
+- "Need to have a way to input your own workout" (Apple Fitness, 3 stars, 2026-08-05, R09832)
+- Asks: More workout types (padel, rebounding, ice skating, rollerblading, Pilates, pregnancy), adding a workout after the fact, resuming a paused session, GPX export, editable custom plans, audio-only classes and a music mute, heart-rate zone goals.
+
+**calorie_accuracy**
+
+- "I have burned 838 calories whilst on fitness app only showing 354" (Apple Fitness, 2 stars, 2026-01-25, R09010)
+- "die app meint, dass ich bei 2000 schritten 4000 kalorien verbrenne" (German; the app claims I burn 4000 calories at 2000 steps) (Google Fit, 1 stars, 2025-03-23, R30042)
+- "Random steps logged telling me I've burnt 3500 calories in a day" (Google Fit, 1 stars, 2026-05-26, R30587)
+- Asks: Add or subtract exercise calories so intake is offset (Calory, Cronometer), fix wild burn values (13,000 and 46,000 kcal in a day, 4,000 kcal for 2,000 steps), a treadmill workout type, a manual override.
+
+**goals_rings**
+
+- "Doesn’t recognize when I achieve a goal" (Apple Fitness, 2 stars, 2024-02-28, R06289)
+- "the whole month score is messed up because your trashy app don’t work properly" (Apple Fitness, 1 stars, 2026-02-27, R09130)
+- "You should be able to set your own end of day" (Apple Fitness, 3 stars, 2025-09-07, R08550)
+- Asks: Weekly goals and rest days, a steps ring or step goal instead of calories, a custom end of day for night shifts, a choice of monthly challenge, streak protection for travel or a dead phone, friend leaderboards and challenges, pinning awards.
+
+**food_logging**
+
+- "Great app just wish there was a way to remove calories" (Calorie Counter - Calory AI, 5 stars, 2026-10-20, R11306)
+- "Would like an option to add workouts." (Calorie Counter - Calory AI, 5 stars, 2025-08-20, R11142)
+- "Will be uninstalling because of all the new ai features" (Calorie Counter - Calory AI, 1 stars, 2026-10-14, R11295)
+- Asks: Log exercise and burned calories with a net figure (the most common ask in Calory), barcodes outside the US, UK and Canada (France, Germany, Sweden, Ireland), custom serving sizes, editable recipes, macros by meal, added versus natural sugar, a one-time AI price.
+
+### 10.5 Total Calories-shaped asks
+
+124 rows from the hand1 and hand2 rows where the reviewer asks for something Total Calories does: total or resting calories shown, a burn widget or complication, TDEE or maintenance, net calories (including subtracting exercise calories from intake), kJ units, rest days or pausing goals, or data from Garmin, Fitbit, Oura or Whoop via Health. I found them by a keyword scan of hand1 and hand2 rows (burn, total, resting, basal, TDEE, BMR, maintenance, deficit, net, kJ, rest day, pause, sick, Garmin, Fitbit, Oura, Whoop and the like) and read the surrounding text of every hit that carried a request flag or an ask word, so a row that states the ask without those words can be missing. The 9to5Mac, App Store review and Apple Community web rows are included (their text is an excerpt). hand1 gists below are my one-line reading of the text, not the first run's gist. Categories: 
+net 38, total 19, burn 14, garmin 10, kj 8, rest days 7, tdee 7, resting 6, pause goals 5, fitbit 5, burn complication 4, oura 1. Oura and Whoop: one Oura ask (R09028); the Whoop and Oura mentions in Cronometer reviews (R12185, R12210, R28198) are praise for the integration, so they are not listed.
+
+| uid | app | category | gist |
+|---|---|---|---|
+| R00111 | Activity Tracker FitnessView | net | net calories and deficit calculation wrong, wants it fixed |
+| R00115 | Activity Tracker FitnessView | net | deficit adds intake and burn instead of the balance |
+| R00116 | Activity Tracker FitnessView | net | wants the Net Calories metric that HealthView had |
+| R00225 | Activity Tracker FitnessView | net | wants exercise calories added automatically |
+| R00294 | Activity Tracker FitnessView | total | wanted total calories burned for the day, found it paid |
+| R00346 | Activity Tracker FitnessView | total | wants NEAT separated from workout calories (active, passive, total) |
+| R00385 | Activity Tracker FitnessView | burn complication | total calories complication on watch face not updating |
+| R00531 | ActivityTracker Pedometer | total | wants total calories burned for the day, not only active |
+| R00805 | ActivityTracker Pedometer | kj | wants a kilojoules option instead of calories |
+| R03183 | All the Rings | total | wants total calories by month |
+| R03663 | Apple Fitness | rest days | wants a sick mode that encourages rest instead of pushing goals |
+| R04083 | Apple Fitness | rest days | wants to skip closing rings on a rare day off |
+| R04372 | Apple Fitness | garmin | Garmin Connect calories cannot be added in Fitness |
+| R05338 | Apple Fitness | pause goals | lost a 94-day streak on vacation by 2 calories; wants forgiveness |
+| R05641 | Apple Fitness | garmin | Garmin, Peloton data stopped feeding the move ring after upgrade |
+| R05796 | Apple Fitness | kj | wants kcal or kJ shown consistently across the system |
+| R05900 | Apple Fitness | total | wants total calories burned on watch, not active |
+| R06004 | Apple Fitness | garmin | Garmin Connect data only partly processed |
+| R06069 | Apple Fitness | fitbit | wants linking with Fitbit and non-Apple devices |
+| R06231 | Apple Fitness | total | total calories hard to read; wants them shown |
+| R07158 | Apple Fitness | rest days | daily streak punishes rest days; wants weekly goals |
+| R07222 | Apple Fitness | rest days | wants weekly active calorie goal so rest days are allowed |
+| R07344 | Apple Fitness | fitbit | wants sync with Fitbit and non-Apple watches |
+| R07482 | Apple Fitness | rest days | wants weekly calorie burn goal that tolerates rest days |
+| R07726 | Apple Fitness | net | wants a total calorie tally of intake plus burn |
+| R08226 | Apple Fitness | total | watch does not show total calories |
+| R09028 | Apple Fitness | oura | wants Oura Ring data to match; numbers differ from Fitness |
+| R09076 | Apple Fitness | pause goals | wants a maintenance mode so monthly goals stop rising |
+| R09184 | Apple Fitness | rest days | wants rest days and nutrition advice by activity level |
+| R09315 | Apple Fitness | pause goals | has to pause the move ring when gym workouts cannot be recorded |
+| R09876 | Apple Fitness | tdee | wants post-workout nutrition guidance for fat loss or maintenance |
+| R10438 | Calorie Counter - Calory AI | net | wants to add calories burned beyond Apple Health |
+| R10453 | Calorie Counter - Calory AI | net | wants a minus button for exercise calories |
+| R10465 | Calorie Counter - Calory AI | net | wants manual burned calories subtracted from daily calories |
+| R10505 | Calorie Counter - Calory AI | net | wants to add burned calories like adding food |
+| R10521 | Calorie Counter - Calory AI | net | wants to enter calories burned to show the offset |
+| R10531 | Calorie Counter - Calory AI | net | wants burned calories added into the app directly |
+| R10576 | Calorie Counter - Calory AI | net | wants exercise link that subtracts calories burned from total |
+| R10585 | Calorie Counter - Calory AI | net | wants manual burned calories entry for treadmill |
+| R10660 | Calorie Counter - Calory AI | burn | cannot connect Health to get burned calories |
+| R10751 | Calorie Counter - Calory AI | net | account-for-exercise setting does not apply burned calories |
+| R10757 | Calorie Counter - Calory AI | net | cannot include burned calories |
+| R10773 | Calorie Counter - Calory AI | resting | wants resting calories included in total with active energy |
+| R10791 | Calorie Counter - Calory AI | burn | cannot link activities to see calories burned |
+| R10828 | Calorie Counter - Calory AI | net | wants a simple calories burned log (Strava activities) |
+| R10863 | Calorie Counter - Calory AI | net | wants a simple add-calories-burned tracker |
+| R10874 | Calorie Counter - Calory AI | net | wants a place to log exercise and burned calories |
+| R10887 | Calorie Counter - Calory AI | net | cannot find how to add burned calories |
+| R10912 | Calorie Counter - Calory AI | net | wants workout burn added into the daily calorie plan |
+| R10923 | Calorie Counter - Calory AI | burn complication | total calories complication stopped showing on watch face |
+| R10938 | Calorie Counter - Calory AI | net | wants burned calories and net calories |
+| R10999 | Calorie Counter - Calory AI | net | wants exercise or smartwatch burn calories in the app |
+| R11023 | Calorie Counter - Calory AI | net | wants manual subtraction of exercise calories |
+| R11025 | Calorie Counter - Calory AI | net | no way to track activity to earn extra calories |
+| R11050 | Calorie Counter - Calory AI | garmin | wants Garmin Connect integration without going through Health |
+| R11053 | Calorie Counter - Calory AI | net | cannot find where to track calories burned in workouts |
+| R11064 | Calorie Counter - Calory AI | net | wants workouts deducted from calorie intake like MyFitnessPal |
+| R11142 | Calorie Counter - Calory AI | net | wants workouts subtracted from total calories |
+| R11431 | Cronometer | kj | wants kilojoule support; cannot use otherwise |
+| R11675 | Cronometer | tdee | energy tracker forces a deficit unless set to neutral |
+| R11836 | Cronometer | net | wants net calories shown in the same view |
+| R11919 | Cronometer | resting | confused that app shows 2000 kcal burned at start of day |
+| R12179 | Cronometer | tdee | wants TDEE and total intake trends to exclude bad days |
+| R12627 | Cronometer | net | wants weekly calorie deficit or surplus report |
+| R12924 | Cronometer | kj | app shows kilojoules; wants kcal |
+| R13211 | Cronometer | net | wants calories eaten and calories burned from activity |
+| R13575 | HealthView | total | wants dashboard with active plus resting calories |
+| R13585 | HealthView | resting | Resting Energy not supported |
+| R13608 | HealthView | resting | does not include resting calories |
+| R13823 | HealthView | net | wants Net Calories |
+| R14064 | HealthView | burn complication | burned calories complication shows arbitrary number half the day |
+| R14091 | HealthView | burn | calorie burn stopped showing |
+| R14561 | HealthView | garmin | cannot connect Garmin watches |
+| R14580 | HealthView | net | net calories on Apple Watch complication does not work |
+| R14719 | Pedometer++ | burn | asks to include calories burned |
+| R16313 | Pedometer++ | total | wants active calories shown with total calories |
+| R16542 | Pedometer++ | burn | wants calorie burn display |
+| R17268 | Pedometer++ | burn | asks for calorie burn count |
+| R17369 | Pedometer++ | burn | wants calorie burn feature |
+| R17558 | Pedometer++ | burn | wants calorie burn tracking and Health import |
+| R17695 | Pedometer++ | burn | wants time and calories burned |
+| R19639 | Pedometer++ | burn | missing calorie burn display |
+| R21088 | Pedometer++ | pause goals | wants a streak freeze when sick |
+| R21335 | Pedometer++ | rest days | weekday step goals; one rest day is not customizable |
+| R21551 | Pedometer++ | garmin | wants support for Garmin devices |
+| R21709 | Pedometer++ | garmin | Garmin steps in Health do not show in app |
+| R22235 | Steps - Activity Tracker | burn | wishes it had calories burned |
+| R22258 | Steps - Activity Tracker | total | wants total calories burned without paying |
+| R22383 | Steps - Activity Tracker | kj | wants kilojoules option |
+| R22399 | Steps - Activity Tracker | burn | does not show calories burned |
+| R22435 | Steps - Activity Tracker | kj | wants kcal, calories or kilojoules clarity |
+| R22656 | Steps - Activity Tracker | total | wants monthly and yearly total calories |
+| R24931 | TDEE | tdee | TDEE result area stays blank |
+| R24957 | Total Calories (reference) | net | wants Net Deficit complication (burned minus eaten) |
+| R26330 | Calorie Counter - Calory AI | net | no ability to add calories burned |
+| R26391 | Calorie Counter - Calory AI | net | does not track calories burned or net calories |
+| R26430 | Calorie Counter - Calory AI | kj | kilojoule display but manual food entry only kcal |
+| R26571 | Calorie Counter - Calory AI | net | wants exercises to offset calories |
+| R26735 | Cronometer | fitbit | Fitbit import takes active time only, so burn looks low |
+| R27374 | Cronometer | net | wanted calories consumed minus burned for deficit |
+| R28024 | Cronometer | tdee | wants TDEE algorithm like MacroFactor |
+| R28605 | Google Fit | fitbit | cannot convert Fit active calorie data for other apps |
+| R28695 | Google Fit | kj | wants kJ per day energy view easier to reach |
+| R28719 | Google Fit | tdee | wants adjustable basal metabolic rate |
+| R28761 | Google Fit | tdee | BMR sometimes disappears; wants to hide calorie numbers |
+| R29040 | Google Fit | burn | wants more focus on calories burned than Heart Points |
+| R29214 | Google Fit | garmin | wants smartwatch (Garmin) connection |
+| R30408 | Google Fit | garmin | Fit with food app cannot track calorie burn |
+| R30665 | Google Fit | net | cannot track calories in and out; moving to Garmin |
+| R31533 | Google Fit | fitbit | wants raw Fitbit data from Fit each morning |
+| R31760 | Google Fit | resting | wants switch to stop adding resting calories to total burned |
+| R32235 | iTECH Wearables | burn | wants a strength sport mode that measures calories burned |
+| R33939 | web: 9to5Mac / MacStories | pause goals | wants stand reminders kept while move and exercise rings are paused |
+| R33940 | web: App Store review | total | wants total calories burned in Apple Watch Activity |
+| R33948 | web: Apple Community | total | wants total calories on Apple Watch |
+| R33953 | web: Apple Community | total | asked Apple for total calories as a complication |
+| R33954 | web: Apple Community | burn complication | asks for watch face showing total calories burned |
+| R33956 | web: Apple Community | total | asks why watch shows only active calories |
+| R33958 | web: Apple Community | total | cannot find total calories burned in Fitness or on watch |
+| R33959 | web: Apple Community | total | asks how to see total calories on the watch |
+| R33968 | web: Apple Community | resting | asks how to change resting calories |
+| R33979 | web: Apple Community | total | wants goals based on total calories, not active energy |
+| R33986 | web: Apple Community | total | asks whether Apple total calories include TEF |
+| R33990 | web: Garmin forum | garmin | Garmin resting calories not syncing to Health |
