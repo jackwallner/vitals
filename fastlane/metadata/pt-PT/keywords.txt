@@ -1,1 +1,1 @@
-pedómetro,bmr,complicação,déficit,repouso,ativo,ritmo,queimadas,caminhar,healthkit,kcal,bmi,macros
+queimadas,contador,passos,pedómetro,calculadora,tdee,widget,défice,imc,repouso,ativas,metabolismo

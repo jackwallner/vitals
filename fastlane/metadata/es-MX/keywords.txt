@@ -1,1 +1,1 @@
-bmr,metabolismobasal,gastocalórico,déficit,complicación,reposo,activas,quemadas,bmi,kcal,macros
+contador,pasos,podómetro,calculadora,tdee,déficit,bmr,imc,reposo,activas,metabolismo,basal,kcal

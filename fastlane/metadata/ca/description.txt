@@ -1,62 +1,61 @@
-Total Calories mostra les calories cremades al dia (actives + en repòs) i el recompte de passos just on les necessites: a la pantalla d'inici i de bloqueig de l'iPhone i a la esfera d'Apple Watch, gratuïtament. No cal cap subscripció per a les funcions bàsiques. Sense compte. Les teves dades de salut no surten del telèfon.
+Total Calories mostra les calories que cremes cada dia, actives i en repòs, i els teus passos a l’esfera de l’Apple Watch, a la pantalla d’inici i a la de bloqueig de l’iPhone. Les complicacions, els widgets i el tauler diari són gratuïts, sense compte. Les teves dades de salut es queden a l’iPhone.
 
-Si mai has volgut que la teva esfera d'Apple Watch mostri només les calories totals cremades del dia, aquesta és l'app que busques.
+L’objectiu Moviment de l’Apple Watch només compta les calories actives. Total Calories hi suma la despesa en repòs que ve de l’app Salut, i així veus tot el que cremes en un dia.
 
-A L’APPLE WATCH (GRATUÏT)
-- Complicacions de calories totals cremades per a tots els estils d'esfera: circular, rectangular, en línia i de cantonada.
-- Complicació amb el recompte de passos en temps real.
-- L'app del rellotge mostra el dia d'avui d'una ullada i tendències de 30 dies.
-- Els objectius que configures a l’iPhone es sincronitzen directament amb el rellotge.
+AL TEU APPLE WATCH
+- Complicacions de calories totals: circular, rectangular, en línia i de cantonada
+- Complicació de passos
+- App del rellotge amb els totals d’avui i dels últims 30 dies
+- Els objectius que defineixes a l’iPhone se sincronitzen amb el rellotge
 
-A LA PANTALLA D'INICI I DE BLOQUEIG (GRATUÏT)
-- Widgets a la pantalla d'inici en mides petita i mitjana.
-- Widgets de la pantalla de bloqueig en disposicions circular i rectangular.
-- Els widgets respecten les mètriques que tens activades i els objectius que hagis definit.
-- Totals diaris complets visibles sense obrir l'app.
+WIDGETS D’INICI I DE BLOQUEIG
+- Widgets d’inici petits, mitjans i grans
+- Widgets circulars i rectangulars per a la pantalla de bloqueig
+- Els widgets mostren les mètriques i objectius activats, i un toc obre l’app
 
-EL TAULER (GRATUÏT)
-- Calories diàries totals cremades en un únic anell clar.
-- Passos diaris amb barra de progrés i objectiu.
-- Indicador de ritme: vas per davant o per darrere d'un dia habitual a aquesta hora?
-- Estira per actualitzar. Toca la roda dentada per accedir a la configuració.
+AVUI
+- Les teves calories cremades totals en un anell, amb els passos i una barra d’objectiu
+- Un control de ritme que compara ara amb el teu dia habitual a aquesta hora
+- Pregunta a la Siri quantes calories o passos portes avui
+- Un avís opcional quan assoleixes l’objectiu diari
 
-MACROS (VITALS+)
-- Proteïnes, carbohidrats i greixos al costat de les teves calories, llegits de l'app que ja registra el teu menjar a Apple Health.
-- Res per apuntar dues vegades. El que és a Health és aquí.
-- Segueix-los tots tres, o només el macro que comptes de debò.
-- Objectius en grams opcionals, mitjanes, gràfics, columnes CSV i informes PDF.
+HISTORIAL
+- Vistes de 7, 30 i 90 dies i d’un any amb gràfics de barres, fletxes de tendència i dies de màxim
+- Exportació en CSV de les teves dades diàries
 
-HISTORIAL (GRATUÏT)
-- Vistes de 7 / 30 / 90 / 365 dies i qualsevol interval de dates personalitzat.
-- Fletxes de tendència, dies punta i gràfics de barres nets.
-- Exportació de dades en CSV.
+IMC
+- El teu IMC a partir de l’alçada i el pes que ja són a Salut, o escrits a mà
+- Una nota clara sobre què diu aquest número i què no diu
 
-OBJECTIUS ADAPTATS A TU
-- Objectius diaris opcionals de calories i passos.
-- O bé ignora els objectius i utilitza l'app només com a comptador clar, tu decideixes.
-- Comparació de ritme: mateix dia de la setmana vs. tots els dies, període de comparació configurable (14 / 30 / 90 dies / 1 any).
+OBJECTIUS
+- Objectius diaris de calories i de passos opcionals, o cap objectiu
+- Ritme comparat amb el mateix dia de la setmana o amb tots els dies, en 14, 30, 90 dies o un any
 
-Vitals+ (OPCIONAL)
-Una petita millora mensual, anual o de per vida desbloqueja:
-- Macros: proteïnes, carbohidrats i greixos des d'Apple Health
-- Desglossament de calories actives vs. en repòs
-- Dèficit net: calories cremades menys energia dels aliments des d'Apple Health
-- Resums mensuals en PDF llestos per compartir
-- Informes en PDF per a intervals de dates personalitzats
-- Tendències avançades: targetes de comparació període a període
-S'ofereix una prova gratuïta per a nous subscriptors.
+GRATIS I VITALS+
+Tot l’anterior és gratuït i no caduca. Vitals+ és una millora opcional: subscripció mensual o anual, cadascuna amb 7 dies de prova gratuïta per a nous subscriptors elegibles, o compra única. Vitals+ afegeix:
+- Actives i repòs: quant de la despesa d’avui ve de l’activitat
+- Dèficit net: calories cremades menys l’energia dels aliments registrada a Salut
+- Macros: proteïnes, hidrats de carboni i greixos de l’app d’alimentació que escriu a Salut, amb objectius en grams opcionals
+- TDEE i BMR: mitjanes de 30 dies de manteniment i de metabolisme basal
+- Projeccions de final de dia per a calories i passos
+- Ratxes d’objectius i un resum de diumenge, aquesta setmana davant de l’anterior
+- Intervals de dates personalitzats a l’historial, amb informes en PDF
+- Deep Trends: qualsevol període comparat amb l’anterior
+- Greix corporal i context de calories al costat de l’IMC
+- Dies exclosos, perquè els dies de malaltia o sense rellotge no alterin les mitjanes
+- Un recordatori al vespre quan un objectiu encara és obert
 
-PRIVACITAT PER DISSENY
-- Accés només de lectura a Apple Health. L'app mai escriu al teu registre de salut.
-- Les teves dades de salut es queden al dispositiu.
-- Els informes es generen al mateix dispositiu.
-- Sense anuncis. Sense rastreig. Sense comptes.
-- Compres processades per Apple i RevenueCat, que mai reben les teves dades de salut.
+LA TEVA PRIVADESA
+- Accés de només lectura a l’app Salut. L’app mai escriu als teus registres de salut.
+- Les teves dades de salut es guarden a l’iPhone i mai es pugen enlloc.
+- Els informes es generen a l’iPhone.
+- Sense anuncis, sense seguiment i sense compte.
+- Apple i RevenueCat processen les compres i mai reben les teves dades de salut.
 
-Total Calories no és un dispositiu mèdic i no està pensada per diagnosticar, tractar o prevenir cap malaltia. Consulta sempre un professional sanitari per obtenir assessorament mèdic.
+Total Calories no és un producte sanitari i no està pensada per diagnosticar, tractar ni prevenir cap malaltia. Consulta sempre un professional sanitari per rebre assessorament mèdic.
 
 Detalls de la subscripció
-Vitals+ està disponible com a subscripció de renovació automàtica (mensual o anual, totes dues amb 7 dies de prova gratuïta) o com a compra única Lifetime. Els preus es mostren a l'app abans de comprar i varien segons la regió. El pagament es carrega al teu Apple ID en confirmar. Les subscripcions es renoven automàticament llevat que les cancel·lis com a mínim 24 hores abans que acabi el període actual. Gestiona-les o cancel·la-les quan vulguis a Configuració → Apple ID → Subscripcions.
+Vitals+ és disponible amb subscripció mensual o anual (7 dies de prova gratuïta) o amb compra única. Els preus es mostren a l’app abans de comprar i varien segons la regió. El pagament es carrega al teu Apple ID en confirmar. Les subscripcions es renoven automàticament tret que es cancel·lin almenys 24 hores abans que acabi el període en curs. Gestiona o cancel·la a Configuració > Apple ID > Subscripcions.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

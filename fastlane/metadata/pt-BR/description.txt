@@ -1,65 +1,61 @@
-O app Calorias mostra seu gasto calórico diário (calorias ativas + em repouso) e seus passos da Saúde na Tela de Início, Tela Bloqueada e mostrador do Apple Watch. O básico é gratuito, sem assinatura nem conta. Seus dados de saúde permanecem no iPhone.
+O Total Calories mostra o total de calorias que você queima por dia, ativas mais em repouso, e seus passos no mostrador do Apple Watch, na Tela de Início e na Tela Bloqueada do iPhone. As complicações, os widgets e o painel diário são grátis, sem conta. Seus dados de saúde ficam no seu iPhone.
 
+A meta Movimento do Apple Watch conta só as calorias ativas. O Total Calories soma o seu gasto em repouso vindo do app Saúde, para você ver o total que gasta em um dia.
 
-NO APPLE WATCH (GRÁTIS)
-- Complicações de calorias totais queimadas para todos os estilos de mostrador: circular, retangular, em linha e de canto.
-- Complicação com contagem de passos em tempo real.
-- App no relógio mostra o dia atual e tendências de 30 dias.
-- Metas definidas no iPhone são sincronizadas com o relógio.
+NO SEU APPLE WATCH
+- Complicações de calorias totais: circular, retangular, em linha e de canto
+- Complicação de passos
+- App para o relógio com os totais de hoje e dos últimos 30 dias
+- As metas definidas no iPhone são sincronizadas com o relógio
 
-NA TELA INICIAL E TELA BLOQUEADA (GRÁTIS)
-- Widgets para a Tela de Início nos tamanhos pequeno e médio.
-- Widgets para a Tela Bloqueada em layouts circular e retangular.
-- Widgets respeitam as métricas ativadas e as metas definidas.
-- Totais diários completos visíveis sem abrir o app.
+WIDGETS DA TELA DE INÍCIO E DA TELA BLOQUEADA
+- Widgets pequenos, médios e grandes para a Tela de Início
+- Widgets circulares e retangulares para a Tela Bloqueada
+- Os widgets mostram as métricas e metas que você ativou, e um toque abre o app
 
-O PAINEL (GRÁTIS)
-- Total diário de calorias queimadas em um único anel limpo.
-- Passos diários com barra de progresso e meta.
-- Indicador de ritmo: você está adiantado ou atrasado em relação ao seu dia típico neste horário?
-- Puxe para atualizar. Toque na engrenagem para ajustes.
+HOJE
+- Suas calorias queimadas totais em um anel, com os passos e uma barra de meta
+- Uma checagem de ritmo que compara agora com o seu dia habitual neste horário
+- Pergunte à Siri quantas calorias ou passos você já fez hoje
+- Um aviso opcional quando você bate a meta diária
 
-PERFIL CORPORAL E IMC (GRÁTIS)
-- Seu IMC é calculado com a altura e o peso do app Saúde. Você também pode inseri-los manualmente. Uma explicação ajuda a interpretar o IMC. O percentual de gordura corporal e o contexto calórico fazem parte do Vitals+.
+HISTÓRICO
+- Visões de 7 dias, 30 dias, 90 dias e 1 ano com gráficos de barras, setas de tendência e dias de pico
+- Exportação em CSV dos seus dados diários
 
-MACROS (VITALS+)
-- Proteínas, carboidratos e gorduras ao lado das suas calorias, lidos do app que já registra sua comida no Apple Health.
-- Acompanhe os três, ou só o macro que você realmente conta.
-- Metas em gramas opcionais, médias, gráficos, colunas CSV e relatórios em PDF.
+IMC
+- Seu IMC com a altura e o peso que já estão no app Saúde, ou digitados à mão
+- Uma nota simples sobre o que esse número diz e o que ele não diz
 
-HISTÓRICO (GRÁTIS)
-- Visões de 7 / 30 / 90 / 365 dias e qualquer intervalo de datas personalizado.
-- Setas de tendência, dias de pico e gráficos de barras claros.
-- Exportação de dados em CSV.
+METAS
+- Metas diárias opcionais de calorias e passos, ou nenhuma meta
+- Ritmo comparado com o mesmo dia da semana ou com todos os dias, nos últimos 14 dias, 30 dias, 90 dias ou um ano
 
-METAS QUE FUNCIONAM PARA VOCÊ
-- Metas diárias opcionais de calorias e passos.
-- Ou ignore metas e use como um contador simples, você decide.
-- Comparação de ritmo: mesmo dia da semana vs. todos os dias, janela configurável (14 / 30 / 90 dias / 1 ano).
+GRÁTIS E VITALS+
+Tudo o que está acima é grátis e não expira. O Vitals+ é um upgrade opcional: assinatura mensal ou anual, cada uma com 7 dias de teste grátis para novos assinantes elegíveis, ou compra única vitalícia. O Vitals+ adiciona:
+- Ativas vs. repouso: quanto do gasto de hoje veio da atividade
+- Déficit líquido: calorias queimadas menos a energia dos alimentos registrada no app Saúde
+- Macros: proteínas, carboidratos e gorduras do app de alimentação que já grava no Saúde, com metas opcionais em gramas
+- TDEE e BMR: médias de 30 dias de manutenção e de gasto em repouso
+- Projeções de fim de dia para calorias e passos no seu ritmo atual
+- Sequências de metas e um resumo de domingo, esta semana contra a anterior
+- Períodos personalizados no histórico, com relatórios em PDF
+- Deep Trends: qualquer período comparado com o anterior
+- Gordura corporal e contexto de calorias ao lado do IMC
+- Dias excluídos, para que dias de doença ou sem o relógio não afetem suas médias
+- Um lembrete no fim do dia quando uma meta ainda está em aberto
 
-Vitals+ (OPCIONAL)
-Um pequeno upgrade mensal, anual ou vitalício desbloqueia:
-- TDEE e BMR: médias de 30 dias do gasto total e em repouso no app Saúde
-- Percentual de gordura corporal ao lado do IMC
-- Lembrete à noite
-- Detalhamento de calorias ativas vs. em repouso
-- Déficit líquido: calorias queimadas menos energia dos alimentos do Apple Health
-- PDFs de resumo mensal prontos para compartilhar
-- Relatórios em PDF para intervalos de datas personalizados
-- Tendências avançadas: cartões de comparação período a período
-Um teste gratuito é oferecido para novos assinantes.
+SUA PRIVACIDADE
+- Acesso somente leitura ao app Saúde. O app nunca grava nos seus registros de saúde.
+- Seus dados de saúde ficam no seu iPhone e nunca são enviados.
+- Os relatórios são gerados no iPhone.
+- Sem anúncios, sem rastreamento e sem conta.
+- A Apple e a RevenueCat processam as compras e nunca recebem seus dados de saúde.
 
-PRIVACIDADE EM PRIMEIRO LUGAR
-- Acesso somente leitura ao Apple Health. O app nunca escreve nos seus registros de saúde.
-- Seus dados de saúde ficam no seu dispositivo e nunca são enviados.
-- Relatórios são gerados no próprio dispositivo.
-- Sem anúncios. Sem rastreamento. Sem contas.
-- As compras são processadas por Apple e RevenueCat, que nunca recebem seus dados de saúde.
-
-Total Calories não é um dispositivo médico e não se destina a diagnosticar, tratar ou prevenir qualquer condição médica. Sempre consulte um profissional de saúde para orientações médicas.
+O Total Calories não é um dispositivo médico e não se destina a diagnosticar, tratar ou prevenir nenhuma condição médica. Consulte sempre um profissional de saúde para orientação médica.
 
 Detalhes da assinatura
-O Vitals+ está disponível como assinatura de renovação automática (mensal ou anual, ambas com 7 dias de teste grátis) ou como compra única Lifetime. Os preços aparecem no app antes da compra e variam conforme a região. O pagamento é cobrado no seu Apple ID na confirmação. As assinaturas se renovam automaticamente, a menos que sejam canceladas ao menos 24 horas antes do fim do período atual. Gerencie ou cancele quando quiser em Ajustes → Apple ID → Assinaturas.
+O Vitals+ está disponível como assinatura com renovação automática (mensal ou anual, ambas com 7 dias de teste grátis) ou como compra única vitalícia. Os preços aparecem no app antes da compra e variam por região. O pagamento é cobrado no seu Apple ID na confirmação. As assinaturas renovam automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual. Gerencie ou cancele quando quiser em Ajustes > Apple ID > Assinaturas.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
