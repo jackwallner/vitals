@@ -1,5 +1,1 @@
-Lapozz a korábbi napok között a dátum melletti új nyilakkal a Ma képernyőn.
-
-Az app nyelvét közvetlenül a Beállításokban módosíthatod.
-
-Emellett javítások a Heti összefoglalóban és máshol.
+Javítottuk az iPaden történő telepítés kompatibilitását.

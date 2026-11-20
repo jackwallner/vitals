@@ -1,5 +1,1 @@
-Blader door eerdere dagen met de nieuwe pijlen naast de datum op Vandaag.
-
-Wijzig de taal van de app direct via Instellingen.
-
-Plus oplossingen voor de Wekelijkse terugblik en meer.
+De installatiecompatibiliteit op iPad is opgelost.

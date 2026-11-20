@@ -1,5 +1,1 @@
-Selaa menneitä päiviä uusilla nuolilla päivämäärän vieressä Tänään-näkymässä.
-
-Vaihda sovelluksen kieli suoraan Asetuksista.
-
-Lisäksi korjauksia Viikkoyhteenvetoon ja muuta.
+iPadille asentamisen yhteensopivuus on korjattu.

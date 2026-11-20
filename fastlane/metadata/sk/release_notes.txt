@@ -1,5 +1,1 @@
-Prechádzajte minulé dni pomocou nových šípok vedľa dátumu na obrazovke Dnes.
-
-Jazyk aplikácie zmeníte priamo v Nastaveniach.
-
-K tomu opravy Týždenného zhrnutia a ďalšie.
+Opravená kompatibilita inštalácie na iPade.

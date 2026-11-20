@@ -1,5 +1,1 @@
-Bläddra bland tidigare dagar med de nya pilarna bredvid datumet på Idag.
-
-Byt språk i appen direkt från Inställningar.
-
-Plus korrigeringar av Veckosammanfattning med mera.
+Kompatibiliteten vid installation på iPad är åtgärdad.

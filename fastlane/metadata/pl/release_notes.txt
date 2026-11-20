@@ -1,5 +1,1 @@
-Przeglądaj poprzednie dni za pomocą nowych strzałek obok daty na ekranie Dziś.
-
-Zmień język aplikacji bezpośrednio w Ustawieniach.
-
-Do tego poprawki w Podsumowaniu tygodnia i nie tylko.
+Naprawiono zgodność instalacji na iPadzie.

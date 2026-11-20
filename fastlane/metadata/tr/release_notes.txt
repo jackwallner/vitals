@@ -1,5 +1,1 @@
-Bugün ekranında tarihin yanındaki yeni oklarla geçmiş günlere göz at.
-
-Uygulamanın dilini doğrudan Ayarlar'dan değiştir.
-
-Ayrıca Haftalık Özet ve diğer düzeltmeler.
+iPad'e yükleme uyumluluğu düzeltildi.

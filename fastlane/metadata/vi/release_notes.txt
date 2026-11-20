@@ -1,5 +1,1 @@
-Xem lại các ngày trước bằng mũi tên mới cạnh ngày tháng trên màn hình Hôm nay.
-
-Đổi ngôn ngữ ứng dụng ngay trong Cài đặt.
-
-Cùng các bản sửa lỗi cho Tổng kết tuần và nhiều hơn nữa.
+Đã khắc phục khả năng tương thích khi cài đặt trên iPad.

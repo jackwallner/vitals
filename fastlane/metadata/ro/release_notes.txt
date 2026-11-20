@@ -1,5 +1,1 @@
-Răsfoiește zilele trecute cu noile săgeți de lângă dată, în ecranul Astăzi.
-
-Schimbă limba aplicației direct din Setări.
-
-Plus remedieri pentru Rezumatul săptămânal și altele.
+A fost remediată compatibilitatea instalării pe iPad.

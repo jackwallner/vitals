@@ -1,5 +1,1 @@
-Navegue pelos dias anteriores com as novas setas ao lado da data em Hoje.
-
-Mude o idioma do app direto nos Ajustes.
-
-E correções no Resumo semanal e mais.
+A compatibilidade de instalação no iPad foi corrigida.

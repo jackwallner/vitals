@@ -1,5 +1,1 @@
-Telusuri hari-hari sebelumnya dengan panah baru di samping tanggal pada Hari Ini.
-
-Ubah bahasa aplikasi langsung dari Pengaturan.
-
-Ditambah perbaikan Rekap Mingguan dan lainnya.
+Kompatibilitas instalasi di iPad telah diperbaiki.

@@ -1,5 +1,1 @@
-Recorre els dies anteriors amb les fletxes noves al costat de la data a Today.
-
-Canvia l'idioma de l'app directament des de Settings.
-
-A més, correccions a Weekly Recap i altres millores.
+S'ha corregit la compatibilitat d'instal·lació a l'iPad.

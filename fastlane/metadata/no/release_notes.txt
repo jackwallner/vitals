@@ -1,5 +1,1 @@
-Bla gjennom tidligere dager med de nye pilene ved siden av datoen på I dag.
-
-Bytt språk i appen rett fra Innstillinger.
-
-I tillegg rettelser i Ukesoppsummering og mer.
+Kompatibilitet ved installasjon på iPad er rettet.

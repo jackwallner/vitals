@@ -1,5 +1,1 @@
-Blättere mit den neuen Pfeilen neben dem Datum auf Heute durch vergangene Tage.
-
-Ändere die Sprache der App direkt in den Einstellungen.
-
-Dazu Korrekturen beim Wochenrückblick und mehr.
+Die Installationskompatibilität auf dem iPad wurde behoben.

@@ -1,5 +1,1 @@
-Scorri i giorni passati con le nuove frecce accanto alla data in Oggi.
-
-Cambia la lingua dell'app direttamente da Impostazioni.
-
-Inoltre, correzioni al Riepilogo settimanale e altro.
+Risolta la compatibilità di installazione su iPad.

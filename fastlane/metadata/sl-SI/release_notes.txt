@@ -1,5 +1,1 @@
-Prelistajte pretekle dneve z novimi puščicami ob datumu na zaslonu Danes.
-
-Jezik aplikacije spremenite kar v Nastavitvah.
-
-Poleg tega popravki Tedenskega pregleda in še več.
+Odpravljena je združljivost namestitve na iPadu.

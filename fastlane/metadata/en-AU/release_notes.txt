@@ -1,5 +1,1 @@
-Step through past days with the new arrows beside the date on Today.
-
-Change the app's language right from Settings.
-
-Plus Weekly Recap and other fixes.
+iPad install compatibility is fixed.

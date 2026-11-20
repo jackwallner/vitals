@@ -1,5 +1,1 @@
-Parcourez les jours passés avec les nouvelles flèches à côté de la date dans Aujourd’hui.
-
-Changez la langue de l’app directement depuis les Réglages.
-
-Et des corrections du Bilan hebdo, entre autres.
+La compatibilité d'installation sur iPad est corrigée.

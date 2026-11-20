@@ -1,5 +1,1 @@
-Bladr gennem tidligere dage med de nye pile ved siden af datoen under I dag.
-
-Skift appens sprog direkte fra Indstillinger.
-
-Plus rettelser af Ugentlig opsummering og mere.
+Kompatibilitet ved installation på iPad er rettet.
