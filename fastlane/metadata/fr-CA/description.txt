@@ -3,15 +3,15 @@ Total Calories affiche vos calories brûlées chaque jour, actives et au repos, 
 L’objectif Bouger de l’Apple Watch ne compte que les calories actives. Total Calories ajoute votre dépense au repos tirée de Santé, pour voir tout ce que vous brûlez en une journée.
 
 SUR VOTRE APPLE WATCH
-- Complications de calories totales : circulaire, rectangulaire, en ligne, coin
+- Complications de calories totales : circulaire, rectangulaire, en ligne, en coin
 - Complication du nombre de pas
-- Application Watch : totaux du jour et 30 derniers jours
+- Application Watch : totaux du jour et des 30 derniers jours
 - Les objectifs réglés sur l’iPhone se synchronisent avec la montre
 
 WIDGETS DE L’ÉCRAN D’ACCUEIL ET DE L’ÉCRAN VERROUILLÉ
 - Widgets d’accueil de petit, moyen et grand format
 - Widgets circulaires et rectangulaires pour l’écran verrouillé
-- Les widgets affichent les mesures et objectifs activés, un toucher ouvre l’app
+- Les widgets affichent vos mesures et objectifs; toucher un widget ouvre l’app
 
 AUJOURD’HUI
 - Vos calories brûlées totales sur un anneau, avec les pas et une barre d’objectif
@@ -25,7 +25,7 @@ HISTORIQUE
 
 IMC
 - Votre IMC à partir de la taille et du poids déjà dans Santé, ou saisis à la main
-- Une note claire sur ce que ce chiffre indique ou non
+- Une note claire sur ce que ce chiffre dit ou non
 
 OBJECTIFS
 - Objectifs quotidiens de calories et de pas facultatifs, ou aucun objectif
@@ -36,7 +36,7 @@ Tout ce qui précède est gratuit et n’expire pas. Vitals+ est une mise à niv
 - Actives et repos : la part de la dépense du jour qui vient de l’activité
 - Déficit net : calories brûlées moins l’énergie des aliments enregistrée dans Santé
 - Macros : protéines, glucides et lipides de l’application de nutrition qui écrit dans Santé, avec objectifs en grammes facultatifs
-- TDEE et BMR : moyennes sur 30 jours du maintien et du métabolisme de base
+- TDEE et BMR : moyennes sur 30 jours de l’entretien et du métabolisme de base
 - Projections de fin de journée pour les calories et les pas
 - Séries d’objectifs et bilan du dimanche, cette semaine contre la précédente
 - Périodes personnalisées dans l’historique, avec rapports PDF

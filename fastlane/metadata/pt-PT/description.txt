@@ -55,7 +55,7 @@ A SUA PRIVACIDADE
 O Total Calories não é um dispositivo médico e não se destina a diagnosticar, tratar ou prevenir qualquer condição médica. Consulte sempre um profissional de saúde para aconselhamento médico.
 
 Detalhes da subscrição
-O Vitals+ está disponível como subscrição com renovação automática (mensal ou anual, ambas com 7 dias de teste grátis) ou como compra única vitalícia. Os preços aparecem na app antes da compra e variam por região. O pagamento é cobrado no seu Apple ID na confirmação. As subscrições renovam automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual. Gira ou cancele quando quiser em Definições > Apple ID > Subscrições.
+O Vitals+ está disponível como subscrição com renovação automática (mensal ou anual, ambas com 7 dias de teste grátis) ou como compra única vitalícia. Os preços aparecem na app antes da compra e variam por região. O pagamento é cobrado no seu Apple ID na confirmação. As subscrições renovam-se automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual. Para gerir ou cancelar, vá a Definições > Apple ID > Subscrições.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

@@ -1,6 +1,6 @@
 Total Calories toont je verbrande calorieën per dag, actief plus in rust, en je stappen op de wijzerplaat van je Apple Watch, het beginscherm en het toegangsscherm van je iPhone. De complicaties, widgets en het dagoverzicht zijn gratis, zonder account. Je gezondheidsgegevens blijven op je iPhone.
 
-Het Beweeg-doel van de Apple Watch telt alleen actieve calorieën. Total Calories telt je verbruik in rust uit Gezondheid erbij op, zodat je ziet hoeveel je op een dag verbrandt.
+Het Beweegdoel van de Apple Watch telt alleen actieve calorieën. Total Calories telt je verbruik in rust uit Gezondheid erbij op, zodat je ziet hoeveel je op een dag verbrandt.
 
 OP JE APPLE WATCH
 - Complicaties met totale calorieën: rond, rechthoekig, inline en hoek
@@ -16,7 +16,7 @@ WIDGETS VOOR BEGINSCHERM EN TOEGANGSSCHERM
 VANDAAG
 - Je totaal verbrande calorieën op één ring, met stappen en een doelbalk
 - Een tempocheck die nu vergelijkt met je gewone dag op dit tijdstip
-- Vraag Siri hoeveel calorieën of stappen je vandaag hebt
+- Vraag Siri naar je calorieën of stappen van vandaag
 - Een optionele melding als je je dagdoel haalt
 
 GESCHIEDENIS
@@ -32,16 +32,16 @@ DOELEN
 - Tempo vergeleken met dezelfde weekdag of alle dagen, over 14, 30, 90 dagen of een jaar
 
 GRATIS EN VITALS+
-Alles hierboven is gratis en verloopt niet. Vitals+ is een optionele upgrade: een maand- of jaarabonnement, elk met 7 dagen gratis proberen voor nieuwe abonnees die daarvoor in aanmerking komen, of een eenmalige aankoop. Vitals+ voegt toe:
-- Actief vs. rust: hoeveel van je verbruik van vandaag uit beweging komt
+Alles hierboven is gratis en verloopt niet. Vitals+ is een optionele upgrade: een maand- of jaarabonnement, elk met 7 dagen gratis proefperiode voor nieuwe abonnees die daarvoor in aanmerking komen, of een eenmalige aankoop. Vitals+ voegt toe:
+- Actief vs. in rust: hoeveel van je verbruik van vandaag uit beweging komt
 - Netto tekort: verbrande calorieën min de voedingsenergie die in Gezondheid is vastgelegd
 - Macro's: eiwitten, koolhydraten en vetten uit de voedingsapp die al naar Gezondheid schrijft, met optionele doelen in grammen
-- TDEE en BMR: je gemiddelde onderhoud en verbruik in rust over 30 dagen
+- TDEE en BMR: je gemiddelde onderhoudscalorieën en rustverbruik over 30 dagen
 - Prognoses voor het einde van de dag voor calorieën en stappen
 - Doelreeksen en een zondagoverzicht: deze week tegenover vorige week
-- Eigen datumbereiken in de geschiedenis, met pdf-rapporten
+- Aangepaste datumbereiken in de geschiedenis, met pdf-rapporten
 - Deep Trends: elke periode vergeleken met de periode ervoor
-- Lichaamsvet en calorieënduiding naast je BMI
+- Lichaamsvet en calorie-inzicht naast je BMI
 - Uitgesloten dagen, zodat zieke dagen en dagen zonder horloge je gemiddelden niet vertekenen
 - Een herinnering 's avonds als een doel nog openstaat
 
@@ -55,7 +55,7 @@ PRIVACY
 Total Calories is geen medisch hulpmiddel en is niet bedoeld om medische aandoeningen te diagnosticeren, te behandelen of te voorkomen. Vraag voor medisch advies altijd een zorgprofessional.
 
 Abonnementsdetails
-Vitals+ is er als automatisch verlengend abonnement (maandelijks of jaarlijks, met 7 dagen gratis proberen) of als eenmalige aankoop. Prijzen staan vooraf in de app en verschillen per regio. De betaling gaat bij bevestiging via je Apple ID. Abonnementen verlengen automatisch, tenzij je minstens 24 uur voor het einde van de lopende periode opzegt. Beheer of zeg op via Instellingen > Apple ID > Abonnementen.
+Vitals+ is er als automatisch verlengend abonnement (maandelijks of jaarlijks, met 7 dagen gratis proefperiode) of als eenmalige aankoop. Prijzen staan vooraf in de app en verschillen per regio. De betaling wordt bij bevestiging via je Apple ID in rekening gebracht. Abonnementen verlengen automatisch, tenzij je minstens 24 uur voor het einde van de lopende periode opzegt. Beheer of zeg op via Instellingen > Apple ID > Abonnementen.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

@@ -1,1 +1,1 @@
-compteur,pas,podomètre,calculateur,widget,déficit,calorique,dépense,métabolisme,base,repos,actives
+compteur,pas,podomètre,calculateur,montre,complication,déficit,métabolisme,base,repos,actives,santé

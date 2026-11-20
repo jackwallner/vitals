@@ -1,6 +1,6 @@
 Total Calories muestra tus calorías quemadas totales de cada día, activas más en reposo, y tus pasos en la carátula del Apple Watch, la pantalla de inicio y la pantalla de bloqueo del iPhone. Las complicaciones, los widgets y el panel diario son gratis, sin cuenta. Tus datos de salud se quedan en tu iPhone.
 
-El objetivo de Movimiento del Apple Watch solo cuenta calorías activas. Total Calories suma tu gasto en reposo desde la app Salud, para que veas todo lo que quemas en un día.
+La meta de Movimiento del Apple Watch solo cuenta calorías activas. Total Calories suma tu gasto en reposo desde la app Salud, para que veas todo lo que quemas en un día.
 
 EN TU APPLE WATCH
 - Complicaciones de calorías totales: circular, rectangular, en línea y esquina

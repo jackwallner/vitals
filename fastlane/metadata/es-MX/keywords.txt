@@ -1,1 +1,1 @@
-contador,pasos,podómetro,calculadora,tdee,déficit,bmr,imc,reposo,activas,metabolismo,basal,kcal
+contador,pasos,podómetro,calculadora,tdee,déficit,bmr,imc,reposo,activas,metabolismo,basal,macros

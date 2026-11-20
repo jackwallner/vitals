@@ -20,7 +20,7 @@ HOJE
 - Um aviso opcional quando você bate a meta diária
 
 HISTÓRICO
-- Visões de 7 dias, 30 dias, 90 dias e 1 ano com gráficos de barras, setas de tendência e dias de pico
+- Visualizações de 7 dias, 30 dias, 90 dias e 1 ano com gráficos de barras, setas de tendência e dias de pico
 - Exportação em CSV dos seus dados diários
 
 IMC
@@ -35,7 +35,7 @@ GRÁTIS E VITALS+
 Tudo o que está acima é grátis e não expira. O Vitals+ é um upgrade opcional: assinatura mensal ou anual, cada uma com 7 dias de teste grátis para novos assinantes elegíveis, ou compra única vitalícia. O Vitals+ adiciona:
 - Ativas vs. repouso: quanto do gasto de hoje veio da atividade
 - Déficit líquido: calorias queimadas menos a energia dos alimentos registrada no app Saúde
-- Macros: proteínas, carboidratos e gorduras do app de alimentação que já grava no Saúde, com metas opcionais em gramas
+- Macros: proteínas, carboidratos e gorduras do app de alimentação que já grava no app Saúde, com metas opcionais em gramas
 - TDEE e BMR: médias de 30 dias de manutenção e de gasto em repouso
 - Projeções de fim de dia para calorias e passos no seu ritmo atual
 - Sequências de metas e um resumo de domingo, esta semana contra a anterior
@@ -55,7 +55,7 @@ SUA PRIVACIDADE
 O Total Calories não é um dispositivo médico e não se destina a diagnosticar, tratar ou prevenir nenhuma condição médica. Consulte sempre um profissional de saúde para orientação médica.
 
 Detalhes da assinatura
-O Vitals+ está disponível como assinatura com renovação automática (mensal ou anual, ambas com 7 dias de teste grátis) ou como compra única vitalícia. Os preços aparecem no app antes da compra e variam por região. O pagamento é cobrado no seu Apple ID na confirmação. As assinaturas renovam automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual. Gerencie ou cancele quando quiser em Ajustes > Apple ID > Assinaturas.
+O Vitals+ está disponível como assinatura com renovação automática (mensal ou anual, ambas com 7 dias de teste grátis) ou como compra única vitalícia. Os preços aparecem no app antes da compra e variam por região. O pagamento é cobrado no seu Apple ID na confirmação. As assinaturas se renovam automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período atual. Gerencie ou cancele quando quiser em Ajustes > Apple ID > Assinaturas.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
