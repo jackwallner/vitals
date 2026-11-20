@@ -1,62 +1,61 @@
-Total Calories näyttää päivän aikana poltetut kalorit (aktiivinen + lepotila) ja askelmäärän juuri siellä missä tarvitset ne – iPhonen Koti-näytössä, Lukitusnäytössä ja Apple Watch -kellotaulussa – ilmaiseksi. Ei tilausta perustoimintoihin. Ei tiliä. Terveystietosi eivät poistu puhelimestasi.
+Total Calories näyttää päivittäisen kokonaiskalorinkulutuksesi, aktiivisen ja levon, sekä askeleesi Apple Watchin kellotaululla sekä iPhonen koti-valikossa ja lukitusnäytöllä. Komplikaatiot, widgetit ja päivän yhteenveto ovat ilmaisia, eikä tiliä tarvita. Terveystietosi pysyvät iPhonessasi.
 
-Jos olet koskaan toivonut, että Apple Watch -kellotaulusi näyttäisi vain päivän kokonaiskulutuksen, tämä on se appi.
+Apple Watchin Liiku-tavoite laskee vain aktiiviset kalorit. Total Calories lisää siihen lepokulutuksesi Terveys-sovelluksesta, jolloin näet koko päivän aikana kuluttamasi määrän.
 
-APPLE WATCHISSA (ILMAINEN)
-- Total calories burned -komplikaatiot kaikkiin kellotaulutyyleihin: pyöreä, suorakulmainen, rivinsisäinen ja kulmassa.
-- Myös reaaliaikainen askelkomplikaatio.
-- Watch-app näyttää tämän päivän yhdellä silmäyksellä sekä 30 päivän trendit.
-- iPhonessa asettamasi tavoitteet synkronoituvat suoraan kelloon.
+APPLE WATCHISSA
+- Kokonaiskalorien komplikaatiot pyöreisiin, suorakulmaisiin, rivin sisäisiin ja kulmapaikkoihin
+- Askelmäärän komplikaatio
+- Watch-sovellus, jossa näkyvät tämän päivän luvut ja viimeiset 30 päivää
+- iPhonessa asettamasi tavoitteet siirtyvät kelloon
 
-KOTI- JA LUKITUSNÄYTÖLLÄ (ILMAINEN)
-- Koti-näytön widgetit pienessä ja keskikoossa.
-- Lukitusnäytön widgetit pyöreinä ja suorakulmaisina.
-- Widgetit noudattavat käyttämiäsi mittareita ja asettamiasi tavoitteita.
-- Päivän kokonaismäärät näkyvät ilman, että avaat appin.
+WIDGETIT KOTI-VALIKKOON JA LUKITUSNÄYTÖLLE
+- Pienet, keskikokoiset ja suuret widgetit koti-valikkoon
+- Pyöreät ja suorakulmaiset widgetit lukitusnäytölle
+- Widgetit näyttävät käyttöön ottamasi mittarit ja tavoitteet, ja napautus avaa sovelluksen
 
-KOJELAUTA (ILMAINEN)
-- Päivän kokonaiskulutus yhdessä selkeässä renkaassa.
-- Päivän askeleet etenemispalkilla ja tavoitteella.
-- Tahtimittari: oletko edellä vai jäljessä tavalliseen päivääsi tähän kellonaikaan?
-- Vedä päivittääksesi. Avaa asetukset hammasrattaasta.
+TÄNÄÄN
+- Kokonaiskalorinkulutus yhdellä renkaalla, askeleet ja tavoitepalkki mukana
+- Tahtitarkistus, joka vertaa nykyhetkeä tavalliseen päivääsi samaan aikaan
+- Kysy Sirilta päivän kalorit tai askeleet
+- Valinnainen ilmoitus, kun päivätavoite täyttyy
 
-MAKROT (VITALS+)
-- Proteiini, hiilihydraatit ja rasva kalorien rinnalla, luettuina sovelluksesta, joka jo kirjaa ruokasi Apple Healthiin.
-- Mitään ei syötetä kahdesti. Mikä on Healthissa, on täällä.
-- Seuraa kaikkia kolmea tai vain sitä makroa, jota oikeasti lasket.
-- Valinnaiset grammatavoitteet sekä keskiarvot, kaaviot, CSV-sarakkeet ja PDF-raportit.
+HISTORIA
+- 7, 30 ja 90 päivän sekä 1 vuoden näkymät pylväskaavioilla, trendinuolilla ja huippupäivillä
+- Päivittäisten tietojen CSV-vienti
 
-HISTORIA (ILMAINEN)
-- 7 / 30 / 90 / 365 päivän näkymät ja mikä tahansa mukautettu aikaväli.
-- Trendinuolet, huippupäivät ja selkeät pylväskaaviot.
-- CSV-datan vienti.
+BMI
+- BMI pituudesta ja painosta, jotka ovat jo Terveys-sovelluksessa, tai käsin syötettynä
+- Selkeä huomautus siitä, mitä luku kertoo ja mitä ei
 
-TAVOITTEET, JOTKA SOPIVAT SINULLE
-- Valinnaiset päivittäiset kalori- ja askeltavoitteet.
-- Tai jätä tavoitteet väliin ja käytä appia pelkkänä selkeänä laskurina – sinä päätät.
-- Tahtivertailu: sama viikonpäivä vs. kaikki päivät, säädettävä tarkastelujakso (14 / 30 / 90 päivää / 1 vuosi).
+TAVOITTEET
+- Valinnaiset päivittäiset kalori- ja askeltavoitteet, tai ei tavoitteita lainkaan
+- Tahti verrattuna samaan viikonpäivään tai kaikkiin päiviin viimeisen 14, 30 tai 90 päivän tai vuoden ajalta
 
-Vitals+ (VALINNAINEN)
-Pieni kuukausi-, vuosi- tai kertamaksullinen päivitys avaa:
-- Makrot: proteiini, hiilihydraatit ja rasva ruoasta, jonka jo kirjaat Apple Healthiin
-- Aktiivisten ja lepokaloreiden erittelyn
-- Nettivajeen: kulutetut kalorit miinus ruoan energia Apple Health -datasta
-- Kuukausiyhteenvedot PDF-muodossa jakamista varten
-- Mukautetun aikavälin PDF-raportit
-- Syvätrendit: jaksojen väliset vertailukortit
-Uusille tilaajille tarjotaan ilmainen kokeilujakso.
+ILMAINEN JA VITALS+
+Kaikki yllä oleva on ilmaista eikä lopu koskaan. Vitals+ on valinnainen päivitys kuukausi- tai vuositilauksena, molemmissa 7 päivän ilmainen kokeilu oikeutetuille uusille tilaajille, tai kertaostoksena (Lifetime). Vitals+ lisää:
+- Aktiivinen ja lepo: kuinka suuri osa päivän kulutuksesta tuli liikunnasta
+- Nettovaje: poltetut kalorit miinus Terveys-sovellukseen kirjattu ruoan energia
+- Makrot: proteiini, hiilihydraatit ja rasva ruokasovelluksesta, joka kirjoittaa jo Terveys-sovellukseen, valinnaisilla grammatavoitteilla
+- TDEE ja BMR: 30 päivän keskiarvot ylläpidolle ja lepokulutukselle Terveys-sovelluksesta
+- Päivän lopun ennusteet kaloreille ja askelille nykyisellä tahdillasi
+- Tavoiteputket ja sunnuntain katsaus tästä viikosta edelliseen viikkoon
+- Omat aikavälit Historiassa sekä PDF-raportit
+- Deep Trends: mikä tahansa jakso verrattuna edeltävään
+- Kehon rasva ja kalorien tausta BMI:n vierellä
+- Poissuljetut päivät, jotta sairaspäivät ja päivät ilman kelloa eivät vääristä keskiarvoja
+- Iltamuistutus, kun tavoite on vielä auki
 
-SUUNNITELTU YKSITYISEKSI
-- Vain luku -oikeus Apple Health -tietoihin. App ei koskaan kirjoita terveystietoihisi.
-- Terveystietosi pysyvät laitteellasi eikä niitä koskaan ladata verkkoon.
-- Raportit luodaan täysin laitteessa.
-- Ei mainoksia. Ei seurantaa. Ei tilejä.
-- Ostot käsittelevät Apple ja RevenueCat, jotka eivät koskaan saa terveystietojasi.
+YKSITYISYYS
+- Terveys-sovelluksen käyttö on vain luku -tilassa. Sovellus ei koskaan kirjoita terveystietoihisi
+- Terveystietosi pysyvät iPhonessasi eikä niitä koskaan lähetetä
+- Raportit luodaan iPhonessasi
+- Ei mainoksia, ei seurantaa eikä tiliä
+- Ostokset käsittelevät Apple ja RevenueCat, jotka eivät koskaan saa terveystietojasi
 
-Total Calories ei ole lääkinnällinen laite, eikä sitä ole tarkoitettu minkään sairauden diagnosointiin, hoitoon tai ehkäisyyn. Käänny aina terveydenhuollon ammattilaisen puoleen lääkinnällisissä kysymyksissä.
+Total Calories ei ole lääkinnällinen laite, eikä sitä ole tarkoitettu minkään sairauden diagnosointiin, hoitoon tai ehkäisyyn. Kysy lääketieteellisissä asioissa neuvoa terveydenhuollon ammattilaiselta.
 
-Tilaustiedot
-Vitals+ on saatavana automaattisesti uusiutuvana tilauksena (kuukausi tai vuosi, molemmissa 7 päivän ilmainen kokeilu) tai kertaostoksena Lifetime. Hinnat näkyvät apissa ennen ostoa ja vaihtelevat alueittain. Maksu veloitetaan Apple ID:ltäsi vahvistuksen yhteydessä. Tilaukset uusiutuvat automaattisesti, ellei niitä peruuteta vähintään 24 tuntia ennen kuluvan jakson päättymistä. Voit hallita tai peruuttaa milloin tahansa: Asetukset → Apple ID → Tilaukset.
+Tilauksen tiedot
+Vitals+ on saatavilla automaattisesti uusiutuvana tilauksena (kuukausi- tai vuositilaus, molemmissa 7 päivän ilmainen kokeilu) tai kertaostoksena Lifetime. Hinnat näkyvät sovelluksessa ennen ostoa ja vaihtelevat alueen mukaan. Maksu veloitetaan Apple ID:stäsi vahvistuksen yhteydessä. Tilaukset uusiutuvat automaattisesti, ellei niitä peruuteta vähintään 24 tuntia ennen nykyisen jakson päättymistä. Hallitse tai peruuta milloin tahansa kohdassa Asetukset → Apple ID → Tilaukset.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

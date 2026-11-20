@@ -1,1 +1,1 @@
-skritteller,bmr,komplikasjon,underskudd,hvile,aktiv,faste,bevegelse,healthkit,bmi,forbrent,makroer
+kaloriteller,skritteller,telle,kalori,gratis,kaloriforbruk,forbrenning,underskudd,helse,kcal,bmi

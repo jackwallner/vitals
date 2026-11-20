@@ -1,62 +1,61 @@
-Total Calories zobrazuje vaše denní spálené kalorie (aktivní + klidové) a počet kroků přesně tam, kde je potřebujete – na ploše iPhonu, Zamčené obrazovce a ciferníku Apple Watch – zdarma. Základní funkce bez předplatného. Bez účtu. Zdravotní data neopouštějí váš telefon.
+Total Calories ukazuje váš celkový denní kalorický výdej, aktivní plus klidový, a vaše kroky na ciferníku Apple Watch, na ploše a na zamknuté obrazovce iPhonu. Komplikace, widgety a denní přehled jsou zdarma a bez účtu. Vaše zdravotní údaje zůstávají na iPhonu.
 
-Pokud jste si někdy přáli, aby ciferník Apple Watch ukazoval jen celkové kalorie za den, tohle je ta aplikace.
+Cíl Pohyb na Apple Watch počítá jen aktivní kalorie. Total Calories k nim přidá váš klidový výdej z aplikace Zdraví, takže vidíte celé číslo, které za den spálíte.
 
-NA APPLE WATCH (ZDARMA)
-- Komplikace s celkovými spálenými kaloriemi pro každý styl ciferníku: kruhové, obdélníkové, řádkové i rohové.
-- Komplikace s živým počtem kroků.
-- Aplikace na hodinkách ukáže dnešek na první pohled a také trendy za 30 dní.
-- Cíle nastavené na iPhonu se synchronizují přímo do hodinek.
+NA APPLE WATCH
+- Komplikace s celkovými kaloriemi pro kulatá, obdélníková, řádková a rohová místa na ciferníkách, které je podporují
+- Komplikace s počtem kroků
+- Aplikace pro hodinky s dnešními čísly a posledními 30 dny
+- Cíle nastavené v iPhonu se synchronizují do hodinek
 
-NA PLOŠE A ZAMČENÉ OBRAZOVCE (ZDARMA)
-- Widgety na plochu v malém a středním rozměru.
-- Widgety na Zamčenou obrazovku v kruhovém a obdélníkovém rozložení.
-- Widgety respektují zvolené metriky a nastavené cíle.
-- Denní souhrny vidíte celé bez otevření aplikace.
+WIDGETY NA PLOCHU A ZAMKNUTOU OBRAZOVKU
+- Malé, střední a velké widgety na plochu
+- Kulaté a obdélníkové widgety na zamknutou obrazovku
+- Widgety ukazují hodnoty a cíle, které jste zapnuli, a klepnutí otevře aplikaci
 
-PŘEHLED (ZDARMA)
-- Celkové denní kalorie v jednom přehledném kroužku.
-- Denní kroky s ukazatelem postupu a cílem.
-- Ukazatel tempa: jste napřed, nebo pozadu oproti běžnému dni v tuto dobu?
-- Stažením dolů obnovíte data. Klepnutím na ozubené kolečko otevřete nastavení.
+DNES
+- Celkový kalorický výdej v jednom kruhu, s kroky a ukazatelem cíle
+- Kontrola tempa, která porovnává stav teď s vaším obvyklým dnem ve stejnou dobu
+- Zeptejte se Siri na dnešní kalorie nebo kroky
+- Volitelné upozornění, když dosáhnete denního cíle
 
-MAKRA (VITALS+)
-- Bílkoviny, sacharidy a tuky vedle tvých kalorií, načtené z aplikace, která jídlo stejně zapisuje do Apple Health.
-- Nic nezadáváš dvakrát. Co je v Health, je i tady.
-- Sleduj všechna tři, nebo jen to makro, které opravdu počítáš.
-- Volitelné cíle v gramech, průměry, grafy, sloupce CSV a PDF přehledy.
+HISTORIE
+- Zobrazení za 7, 30 a 90 dní a za 1 rok se sloupcovými grafy, šipkami trendu a nejlepšími dny
+- Export denních dat do CSV
 
-HISTORIE (ZDARMA)
-- Přehledy za 7 / 30 / 90 / 365 dní a libovolný vlastní rozsah.
-- Trendové šipky, rekordní dny a čisté sloupcové grafy.
-- Export dat do CSV.
+BMI
+- Vaše BMI z výšky a váhy, které už jsou v aplikaci Zdraví, nebo zadané ručně
+- Stručná poznámka o tom, co číslo říká a co neříká
 
-CÍLE, KTERÉ VÁM SEDNOU
-- Volitelné denní cíle pro kalorie i kroky.
-- Nebo cíle vynechte a používejte aplikaci jen jako přehledný čítač – je to na vás.
-- Porovnání tempa: stejný den v týdnu vs. všechny dny, nastavitelný zpětný pohled (14 / 30 / 90 dní / 1 rok).
+CÍLE
+- Volitelné denní cíle pro kalorie a kroky, nebo žádné cíle vůbec
+- Tempo ve srovnání se stejným dnem v týdnu nebo se všemi dny za posledních 14, 30, 90 dní nebo rok
 
-Vitals+ (VOLITELNÉ)
-Malý měsíční, roční nebo doživotní jednorázový upgrade odemkne:
-- Makra: bílkoviny, sacharidy a tuky z jídla zapsaného v Apple Health
-- Rozklad aktivních vs. klidových kalorií
-- Čistý deficit: spálené kalorie mínus přijatá energie z Apple Health
-- Měsíční souhrnné PDF připravené ke sdílení
-- Vlastní PDF reporty pro libovolné období
-- Deep Trends: karty s porovnáním období
-Noví předplatitelé mají k dispozici bezplatné zkušební období.
+ZDARMA A VITALS+
+Vše výše je zdarma a nikdy nevyprší. Vitals+ je volitelné rozšíření jako měsíční nebo roční předplatné, obojí se 7denní zkušební verzí zdarma pro způsobilé nové předplatitele, nebo jako jednorázový nákup (Lifetime). Vitals+ přidává:
+- Aktivní oproti klidovému: kolik z dnešního výdeje pochází z pohybu
+- Čistý deficit: spálené kalorie minus energie z jídla zapsaná v aplikaci Zdraví
+- Makra: bílkoviny, sacharidy a tuky z aplikace o jídle, která už zapisuje do Zdraví, s volitelnými cíli v gramech
+- TDEE a BMR: 30denní průměry udržovacího a klidového výdeje ze Zdraví
+- Odhady na konec dne pro kalorie a kroky při vašem současném tempu
+- Série splněných cílů a nedělní souhrn tohoto týdne oproti minulému
+- Vlastní období v Historii s PDF zprávami
+- Deep Trends: libovolné období porovnané s předchozím
+- Tělesný tuk a kalorický kontext vedle vašeho BMI
+- Vynechané dny, aby dny nemoci a dny bez hodinek nezkreslovaly vaše průměry
+- Večerní připomenutí, když je cíl stále otevřený
 
-SOUKROMÍ NA PRVNÍM MÍSTĚ
-- Pouze čtení dat z Apple Health. Aplikace nikdy nezapisuje do vašich zdravotních záznamů.
-- Tvoje zdravotní data zůstávají v zařízení a nikdy se nikam neodesílají.
-- Reporty se vytvářejí přímo v zařízení.
-- Žádné reklamy. Žádné sledování. Žádné účty.
-- Nákupy zpracovávají Apple a RevenueCat, které tvoje zdravotní data nikdy nedostanou.
+SOUKROMÍ
+- Přístup k aplikaci Zdraví je jen pro čtení. Aplikace nikdy nezapisuje do vašich zdravotních záznamů
+- Vaše zdravotní údaje zůstávají na iPhonu a nikdy se nenahrávají
+- Zprávy se vytvářejí přímo v iPhonu
+- Žádné reklamy, žádné sledování, žádný účet
+- Nákupy zpracovávají Apple a RevenueCat, které vaše zdravotní údaje nikdy nedostanou
 
-Total Calories není zdravotnický prostředek a není určena k diagnostice, léčbě ani prevenci žádného onemocnění. Vždy se ohledně zdravotních otázek poraďte se zdravotnickým odborníkem.
+Total Calories není zdravotnický prostředek a není určena k diagnostice, léčbě ani prevenci jakéhokoli onemocnění. V lékařských otázkách se obraťte na zdravotnického pracovníka.
 
 Podrobnosti o předplatném
-Vitals+ je k dispozici jako automaticky obnovované předplatné (měsíční nebo roční, obojí se 7denní bezplatnou zkušební verzí) nebo jako jednorázový nákup Lifetime. Ceny se zobrazují v aplikaci před nákupem a liší se podle regionu. Platba se strhne z vašeho Apple ID při potvrzení. Předplatné se automaticky obnovuje, pokud ho nezrušíte alespoň 24 hodin před koncem aktuálního období. Spravovat nebo zrušit můžete kdykoli v Nastavení → Apple ID → Předplatné.
+Vitals+ je k dispozici jako předplatné s automatickým obnovením (měsíční nebo roční, obojí se 7denní zkušební verzí zdarma) nebo jako jednorázový nákup Lifetime. Ceny se zobrazují v aplikaci před nákupem a liší se podle regionu. Platba se strhává z vašeho Apple ID při potvrzení. Předplatné se obnovuje automaticky, pokud ho nezrušíte alespoň 24 hodin před koncem aktuálního období. Spravovat nebo zrušit ho můžete kdykoli v Nastavení → Apple ID → Předplatné.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

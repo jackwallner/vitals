@@ -1,62 +1,61 @@
-Total Calories viser dine daglige forbrændte kalorier (aktive + hvilende) og skridttal præcis dér, hvor du har brug for dem – på din iPhone hjemmeskærm, Låseskærm og Apple Watch-urskive – gratis. Intet abonnement kræves til det grundlæggende. Ingen konto. Dine helbredsdata forlader aldrig telefonen.
+Total Calories viser dit samlede kalorieforbrug hver dag, aktivt plus hvile, og dine skridt på Apple Watch-urskiven, iPhones hjemmeskærm og låseskærm. Komplikationer, widgets og dagsoversigten er gratis og kræver ingen konto. Dine helbredsdata bliver på din iPhone.
 
-Hvis du nogensinde har ønsket, at din Apple Watch-urskive bare viste dine samlede kalorier for dagen, er dette appen til det.
+Bevæg-målet på Apple Watch tæller kun aktive kalorier. Total Calories lægger dit hvileforbrug fra appen Sundhed oveni, så du ser hele det tal, du forbrænder på en dag.
 
-PÅ DIT APPLE WATCH (GRATIS)
-- Komplikationer med samlede daglige kalorier til alle urskivetyper: cirkulær, rektangulær, inline og hjørne.
-- Live-skridttæller som komplikation.
-- Watch-app med overblik over i dag plus 30-dages tendenser.
-- Mål du sætter på iPhone, synkroniseres direkte til uret.
+PÅ DIT APPLE WATCH
+- Komplikationer med samlede kalorier til runde, rektangulære, inline- og hjørnepladser på urskiver, der understøtter dem
+- En komplikation med dine skridt
+- Watch-app med dagens tal og de seneste 30 dage
+- Mål, du sætter på iPhone, synkroniseres til uret
 
-PÅ DIN HJEMMESKÆRM & LÅSESKÆRM (GRATIS)
-- Hjemmeskærm-widgets i små og mellemstore størrelser.
-- Låseskærm-widgets i cirkulære og rektangulære layouts.
-- Widgets følger de målinger, du har slået til, og de mål, du har sat.
-- Hele dagens totaler synlige uden at åbne appen.
+WIDGETS TIL HJEMMESKÆRM OG LÅSESKÆRM
+- Små, mellemstore og store widgets til hjemmeskærmen
+- Runde og rektangulære widgets til låseskærmen
+- Widgets viser de tal og mål, du har slået til, og et tryk åbner appen
 
-DASHBOARDET (GRATIS)
-- Samlede daglige kalorier vist i én ren ring.
-- Daglige skridt med statuslinje og mål.
-- Pacing-indikator: er du foran eller bagefter en typisk dag på dette tidspunkt?
-- Træk for at opdatere. Tryk på tandhjulet for indstillinger.
+I DAG
+- Samlet kalorieforbrug i én ring, med skridt og en målbjælke
+- Tempotjek, der sammenligner nu med din sædvanlige dag på samme tidspunkt
+- Spørg Siri om dagens kalorier eller skridt
+- Valgfri besked, når du når dit daglige mål
 
-MAKROER (VITALS+)
-- Protein, kulhydrater og fedt ved siden af dine kalorier, læst fra den app, der i forvejen skriver din mad til Apple Health.
-- Intet skal indtastes to gange. Står det i Health, står det her.
-- Følg alle tre, eller kun den makro du reelt tæller.
-- Valgfrie grammål plus makrogennemsnit, grafer, CSV-kolonner og PDF-rapporter.
+HISTORIK
+- Visninger for 7, 30 og 90 dage og 1 år med søjlediagrammer, trendpile og topdage
+- CSV-eksport af dine daglige data
 
-HISTORIK (GRATIS)
-- Visninger for 7 / 30 / 90 / 365 dage samt valgfri periode.
-- Trendpile, topdage og overskuelige søjlediagrammer.
-- CSV-eksport af data.
+BMI
+- Dit BMI ud fra højde og vægt, der allerede ligger i Sundhed, eller som du taster selv
+- En enkel forklaring på, hvad tallet siger, og hvad det ikke siger
 
-MÅL DER PASSER TIL DIG
-- Valgfrie daglige kalorie- og skridtmål.
-- Eller spring mål over og brug den som en ren tæller – dit valg.
-- Pacing-sammenligning: samme ugedag vs. alle dage, med justerbar tilbageblik (14 / 30 / 90 dage / 1 år).
+MÅL
+- Valgfrie daglige mål for kalorier og skridt, eller ingen mål
+- Tempo sammenlignet med samme ugedag eller alle dage, over de seneste 14, 30 eller 90 dage eller et år
 
-Vitals+ (VALGFRI)
-Et lille månedligt, årligt eller livstids-køb låser op for:
-- Makroer: protein, kulhydrater og fedt fra den mad, du i forvejen logger i Apple Health
-- Fordeling af aktive vs. hvilende kalorier
-- Nettounderskud: kalorier forbrændt minus madenergi fra Apple Health
-- Månedlige oversigts-PDF’er klar til deling
-- PDF-rapporter for valgfri dato-periode
-- Deep Trends: kort med periode-for-periode-sammenligninger
-En gratis prøveperiode tilbydes nye abonnenter.
+GRATIS OG VITALS+
+Alt ovenfor er gratis og udløber aldrig. Vitals+ er en valgfri opgradering som månedligt eller årligt abonnement, begge med 7 dages gratis prøveperiode til nye abonnenter, der er berettiget til den, eller som et engangskøb (Lifetime). Vitals+ tilføjer:
+- Aktiv mod hvile: hvor stor en del af dagens forbrug der kom fra aktivitet
+- Nettounderskud: forbrændte kalorier minus den madenergi, der er registreret i Sundhed
+- Makroer: protein, kulhydrater og fedt fra den madapp, der allerede skriver til Sundhed, med valgfri gram-mål
+- TDEE og BMR: dine 30-dages gennemsnit for vedligeholdelse og hvileforbrug fra Sundhed
+- Prognoser for dagens slutning for kalorier og skridt i dit nuværende tempo
+- Måldage i træk og en søndagsopsummering af denne uge mod sidste uge
+- Egne datoperioder i Historik, med PDF-rapporter
+- Deep Trends: en vilkårlig periode sammenlignet med den forrige
+- Kropsfedt og kalorier ved siden af dit BMI
+- Udeladte dage, så sygedage og dage uden ur ikke trækker dine gennemsnit ned
+- En aftenpåmindelse, når et mål stadig er åbent
 
-PRIVATLIV SOM STANDARD
-- Læseadgang til Apple Health. Appen skriver aldrig til dine helbredsdata.
-- Dine helbredsdata bliver på din enhed og uploades aldrig.
-- Rapporter genereres på enheden.
-- Ingen annoncer. Ingen sporing. Ingen konti.
-- Køb håndteres af Apple og RevenueCat, som aldrig modtager dine helbredsdata.
+PRIVATLIV
+- Adgangen til Sundhed er skrivebeskyttet. Appen skriver aldrig til dine helbredsdata
+- Dine helbredsdata bliver på din iPhone og uploades aldrig
+- Rapporter genereres på din iPhone
+- Ingen reklamer, ingen sporing og ingen konto
+- Køb håndteres af Apple og RevenueCat, som aldrig modtager dine helbredsdata
 
-Total Calories er ikke et medicinsk udstyr og er ikke beregnet til at diagnosticere, behandle eller forebygge nogen medicinsk tilstand. Søg altid råd hos en sundhedsprofessionel for medicinsk vejledning.
+Total Calories er ikke et medicinsk udstyr og er ikke beregnet til at diagnosticere, behandle eller forebygge nogen sygdom. Tal med en sundhedsprofessionel, hvis du har brug for medicinsk rådgivning.
 
 Abonnementsoplysninger
-Vitals+ fås som et abonnement med automatisk fornyelse (månedligt eller årligt, begge med 7 dages gratis prøveperiode) eller som et engangskøb af Lifetime. Priserne vises i appen, inden du køber, og varierer fra region til region. Betalingen trækkes på dit Apple ID ved bekræftelse. Abonnementer fornyes automatisk, medmindre de opsiges mindst 24 timer før den aktuelle periode slutter. Administrer eller opsig når som helst i Indstillinger → Apple ID → Abonnementer.
+Vitals+ fås som et abonnement med automatisk fornyelse (månedligt eller årligt, begge med 7 dages gratis prøveperiode) eller som et engangskøb af Lifetime. Priserne vises i appen, før du køber, og varierer fra region til region. Betalingen trækkes på dit Apple-id ved bekræftelse. Abonnementer fornyes automatisk, medmindre de opsiges mindst 24 timer før den aktuelle periode slutter. Administrer eller opsig når som helst i Indstillinger → Apple-id → Abonnementer.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

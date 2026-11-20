@@ -1,1 +1,1 @@
-krokoměr,bmr,komplikácia,deficit,pokoj,aktívny,pôst,chôdza,pohyb,healthkit,kroky,bmi,spálené,makrá
+krokomer,počítadlo,kalórií,zadarmo,zdarma,bazálny,metabolizmus,deficit,zdravie,widget,kcal,bmi,makrá

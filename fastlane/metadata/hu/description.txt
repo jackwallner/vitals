@@ -1,62 +1,61 @@
-A Total Calories az elégetett napi kalóriáidat (aktív + nyugalmi) és a napi lépésszámodat pontosan oda teszi, ahol szükséged van rájuk – az iPhone Főképernyődre, a Zárolt képernyőre és az Apple Watch számlapodra – ingyen. Az alapfunkciókhoz nincs szükség előfizetésre. Nincs fiók. Az egészségügyi adataid nem hagyják el a telefonod.
+A Total Calories megmutatja a teljes napi kalóriaégetésedet, az aktív és a nyugalmi együtt, valamint a lépéseidet az Apple Watch számlapján, az iPhone főképernyőjén és zárolási képernyőjén. A komplikációk, a widgetek és a napi áttekintés ingyenesek, fiók nélkül. Az egészségügyi adataid az iPhone-odon maradnak.
 
-Ha valaha szeretted volna, hogy az Apple Watch számlapod csak az aznapi összes elégetett kalóriát mutassa, ez az az app.
+Az Apple Watch Mozgás célja csak az aktív kalóriákat számolja. A Total Calories hozzáadja a nyugalmi égetésedet az Egészség appból, így a teljes napi számot látod.
 
-AZ APPLE WATCH-ON (INGYENES)
-- Komplikációk az összes elégetett kalóriához minden számlapstílushoz: kör alakú, téglalap, inline és sarok.
-- Élő lépésszám-komplikáció is.
-- Az óra appja az adott napot és 30 napos trendeket mutat áttekinthetően.
-- Az iPhone-on beállított célok automatikusan szinkronizálódnak az órára.
+AZ APPLE WATCHON
+- Teljes kalória komplikációk kerek, téglalap alakú, soron belüli és sarokhelyekre, minden támogató számlapon
+- Lépésszám komplikáció
+- Watch app a mai értékekkel és az elmúlt 30 nappal
+- Az iPhone-on beállított célok szinkronizálódnak az órára
 
-A FŐKÉPERNYŐN ÉS A ZÁROLT KÉPERNYŐN (INGYENES)
-- Főképernyő-widgetek kicsi és közepes méretben.
-- Zárolt képernyő widgetek kör és téglalap elrendezésben.
-- A widgetek követik az általad kiválasztott méréseket és célokat.
-- A napi összesített értékek appmegnyitás nélkül láthatók.
+WIDGETEK A FŐKÉPERNYŐRE ÉS A ZÁROLÁSI KÉPERNYŐRE
+- Kicsi, közepes és nagy widgetek a főképernyőre
+- Kerek és téglalap alakú widgetek a zárolási képernyőre
+- A widgetek azokat az értékeket és célokat mutatják, amelyeket bekapcsoltál, és egy koppintás megnyitja az appot
 
-A VEZÉRŐPULT (INGYENES)
-- Napi összes elégetett kalória egy letisztult gyűrűn.
-- Napi lépések haladásjelző sávval és céllal.
-- Tempójelző: előrébb vagy vagy lemaradva a szokásos napodhoz képest az adott időpontban?
-- Lehúzással frissítés. Fogaskerékre koppintva beállítások.
+MA
+- A teljes kalóriaégetés egyetlen gyűrűn, lépésekkel és célsávval
+- Tempóellenőrzés, amely a mostanit a szokásos napodhoz hasonlítja ugyanabban az időben
+- Kérdezd meg Sirit a mai kalóriákról vagy lépésekről
+- Választható értesítés, amikor eléred a napi célodat
 
-MAKRÓK (VITALS+)
-- Fehérje, szénhidrát és zsír a kalóriáid mellett, abból az appból beolvasva, amely az ételeidet amúgy is az Apple Healthbe írja.
-- Semmit nem kell kétszer bevinni. Ami a Healthben van, itt is megjelenik.
-- Kövesd mind a hármat, vagy csak azt a makrót, amit tényleg számolsz.
-- Opcionális grammcélok, átlagok, diagramok, CSV-oszlopok és PDF-jelentések.
+ELŐZMÉNYEK
+- 7, 30 és 90 napos, valamint 1 éves nézetek oszlopdiagramokkal, trendnyilakkal és csúcsnapokkal
+- A napi adatok exportálása CSV-be
 
-ELŐZMÉNYEK (INGYENES)
-- 7 / 30 / 90 / 365 napos nézetek és tetszőleges egyéni dátumtartomány.
-- Trendnyilak, csúcsnapok és letisztult oszlopdiagramok.
-- CSV-adatexport.
+BMI
+- A BMI-d az Egészség appban már meglévő magasságból és súlyból, vagy kézzel megadva
+- Egyszerű megjegyzés arról, mit mond el a szám, és mit nem
 
-CÉLOK, AMELYEK HOZZÁD IGAZODNAK
-- Opcionális napi kalória- és lépéscélok.
-- Vagy hagyd ki a célokat, és használd egyszerű számlálóként – rajtad múlik.
-- Tempó-összehasonlítás: azonos hétköznap vs. összes nap, állítható visszatekintési idő (14 / 30 / 90 nap / 1 év).
+CÉLOK
+- Választható napi kalória- és lépéscélok, vagy egyáltalán nincs cél
+- Tempó összehasonlítva ugyanazzal a hétköznappal vagy az összes nappal, az elmúlt 14, 30, 90 napra vagy egy évre
 
-Vitals+ (OPCIONÁLIS)
-Egy kisebb havi, éves vagy örökös frissítés feloldja:
-- Makrók: fehérje, szénhidrát és zsír az Apple Healthbe rögzített ételeidből
-- Aktív és nyugalmi kalóriák bontása
-- Nettó deficit: elégetett kalória mínusz az Apple Health által jelzett felvett energia
-- Havi összefoglaló PDF-ek, azonnal megoszthatók
-- Egyéni dátumtartományú PDF-jelentések
-- Mély trendek: időszak–időszak összehasonlító kártyák
-Ingyenes próbaidő áll rendelkezésre az új előfizetőknek.
+INGYENES ÉS VITALS+
+Minden fent említett ingyenes és nem jár le. A Vitals+ választható bővítés havi vagy éves előfizetésként, mindkettő 7 napos ingyenes próbával a jogosult új előfizetőknek, vagy egyszeri vásárlásként (Lifetime). A Vitals+ ezeket adja hozzá:
+- Aktív és nyugalmi: a mai égetés mekkora része származott mozgásból
+- Nettó deficit: az elégetett kalória mínusz az Egészségben rögzített ételenergia
+- Makrók: fehérje, szénhidrát és zsír abból az étel appból, amely már ír az Egészségbe, választható gramm célokkal
+- TDEE és BMR: a fenntartó és a nyugalmi égetés 30 napos átlagai az Egészségből
+- Napvégi előrejelzések kalóriára és lépésekre a jelenlegi tempódban
+- Célsorozatok és vasárnapi összegzés erről a hétről a múlt héthez képest
+- Egyéni időszakok az Előzményekben, PDF jelentésekkel
+- Deep Trends: bármely időszak összehasonlítva az előzővel
+- Testzsír és kalóriakörnyezet a BMI mellett
+- Kihagyott napok, hogy a betegnapok és az óra nélküli napok ne torzítsák az átlagaidat
+- Esti emlékeztető, ha egy cél még nyitott
 
-ADATVÉDELEMRE TERVEZVE
-- Csak olvasási jogosultság az Apple Health adataihoz. Az app soha nem ír az egészségügyi adataidhoz.
-- Az egészségügyi adataid a készülékeden maradnak, és soha nem töltődnek fel.
-- A jelentések helyben, az eszközön készülnek.
-- Nincs hirdetés. Nincs követés. Nincs fiók.
-- A vásárlásokat az Apple és a RevenueCat kezeli, amelyek soha nem kapják meg az egészségügyi adataidat.
+ADATVÉDELEM
+- Az Egészség elérése csak olvasható. Az app soha nem ír az egészségügyi adataidba
+- Az egészségügyi adataid az iPhone-odon maradnak, és soha nem kerülnek feltöltésre
+- A jelentések az iPhone-odon készülnek
+- Nincs hirdetés, nincs követés és nincs fiók
+- A vásárlásokat az Apple és a RevenueCat kezeli, amelyek soha nem kapják meg az egészségügyi adataidat
 
-A Total Calories nem minősül orvostechnikai eszköznek, és nem alkalmas betegségek diagnosztizálására, kezelésére vagy megelőzésére. Egészségügyi kérdésekben mindig kérd ki egészségügyi szakember tanácsát.
+A Total Calories nem orvostechnikai eszköz, és nem arra szolgál, hogy bármilyen betegséget diagnosztizáljon, kezeljen vagy megelőzzön. Orvosi kérdésekben fordulj egészségügyi szakemberhez.
 
-Előfizetési részletek
-A Vitals+ automatikusan megújuló előfizetésként (havi vagy éves, mindkettő 7 napos ingyenes próbaidőszakkal) vagy egyszeri Lifetime vásárlásként érhető el. Az árak vásárlás előtt az appban láthatók, és régiónként eltérnek. A díjat megerősítéskor terheljük az Apple ID-dra. Az előfizetés automatikusan megújul, ha nem mondod le legalább 24 órával az aktuális időszak vége előtt. Bármikor kezelheted vagy lemondhatod a Beállítások → Apple ID → Előfizetések menüben.
+Előfizetés részletei
+A Vitals+ automatikusan megújuló előfizetésként (havi vagy éves, mindkettő 7 napos ingyenes próbával) vagy egyszeri Lifetime vásárlásként érhető el. Az árak vásárlás előtt megjelennek az appban, és régiónként eltérnek. A díjat az Apple ID-d terheli a megerősítéskor. Az előfizetések automatikusan megújulnak, hacsak legalább 24 órával az aktuális időszak vége előtt nem mondod le őket. Kezelés vagy lemondás bármikor: Beállítások → Apple ID → Előfizetések.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

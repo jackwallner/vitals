@@ -1,68 +1,61 @@
-Kaloriräknare visar dagens förbrända kalorier (aktiva + vila) och steg från Hälsa på hemskärmen, låsskärmen och Apple Watch-urtavlan. Grundfunktionerna är gratis, utan abonnemang eller konto. Dina hälsodata stannar i telefonen.
+Total Calories visar din totala kaloriförbrukning varje dag, aktiv plus vila, och dina steg på urtavlan på Apple Watch, hemskärmen och låsskärmen på iPhone. Komplikationer, widgets och dagsöversikten är gratis och kräver inget konto. Dina hälsodata stannar på din iPhone.
 
-Om du någonsin önskat att din Apple Watch-urtavla bara visade dagens totala förbrända kalorier, är detta appen.
+Rörelsemålet på Apple Watch räknar bara aktiva kalorier. Total Calories lägger till din viloförbrukning från appen Hälsa, så att du ser hela det tal du förbrukar på en dag.
 
-PÅ DIN APPLE WATCH (GRATIS)
-- Komplikationer för totala förbrända kalorier för alla urtavelstilar: cirkulär, rektangulär, linje och hörn.
-- Komplikation för livestegräkning också.
-- Klockappen visar dagens översikt plus 30-dagarstrender.
-- Mål du ställer in på iPhone synkas direkt till klockan.
+PÅ DIN APPLE WATCH
+- Komplikationer med totala kalorier för runda, rektangulära, inline- och hörnplatser på urtavlor som stöder dem
+- En komplikation med dina steg
+- Watch-app med dagens siffror och de senaste 30 dagarna
+- Mål som du ställer in på iPhone synkas till klockan
 
-PÅ HEMSKÄRM & LÅSSKÄRM (GRATIS)
-- Hemskärmswidgetar i liten och medium storlek.
-- Låsskärmswidgetar i cirkulära och rektangulära layouter.
-- Widgetar följer de mätvärden du har aktiverat och målen du har satt.
-- Dagliga totaler syns fullt ut utan att öppna appen.
+WIDGETS FÖR HEMSKÄRM OCH LÅSSKÄRM
+- Små, medelstora och stora widgets för hemskärmen
+- Runda och rektangulära widgets för låsskärmen
+- Widgetarna visar de mått och mål du har slagit på, och ett tryck öppnar appen
 
-DASHBOARD (GRATIS)
-- Totalt antal förbrända kalorier per dag i en ren ring.
-- Dagliga steg med framstegsfält och mål.
-- Tempomätare: ligger du före eller efter en vanlig dag vid den här tiden?
-- Dra för att uppdatera. Tryck på kugghjulet för inställningar.
+IDAG
+- Total kaloriförbrukning i en ring, med steg och en målstapel
+- En tempokoll som jämför nu med din vanliga dag vid samma tid
+- Fråga Siri om dagens kalorier eller steg
+- Valfri avisering när du når ditt dagliga mål
 
-KROPPSPROFIL OCH BMI (GRATIS)
-- Ditt BMI beräknas med längd och vikt från Hälsa. Du kan också ange värdena manuellt. En förklaring hjälper dig att tolka BMI. Kroppsfettprocent och kalorikontext ingår i Vitals+.
+HISTORIK
+- Vyer för 7, 30 och 90 dagar samt 1 år med stapeldiagram, trendpilar och toppdagar
+- CSV-export av dina dagliga data
 
-MAKROS (VITALS+)
-- Protein, kolhydrater och fett bredvid dina kalorier, lästa från appen som redan skriver din mat till Apple Health.
-- Inget matas in två gånger. Står det i Health står det här.
-- Följ alla tre, eller bara det makro du faktiskt räknar.
-- Valfria grammål plus makrosnitt, diagram, CSV-kolumner och PDF-rapporter.
+BMI
+- Ditt BMI utifrån längd och vikt som redan finns i Hälsa, eller som du anger själv
+- En enkel förklaring av vad siffran säger och vad den inte säger
 
-HISTORIK (GRATIS)
-- Vy för 7 / 30 / 90 / 365 dagar och valfritt eget datumintervall.
-- Trendpilar, toppdagar och tydliga stapeldiagram.
-- Export av data till CSV.
+MÅL
+- Valfria dagliga mål för kalorier och steg, eller inga mål alls
+- Tempo jämfört med samma veckodag eller alla dagar, över de senaste 14, 30 eller 90 dagarna eller ett år
 
-MÅL SOM PASSAR DIG
-- Valfria dagliga kalorimål och stegmål.
-- Eller hoppa över mål och använd den som en ren räknare – du väljer.
-- Tempoljämförelse: samma veckodag vs. alla dagar, konfigurerbart bakåtblick (14 / 30 / 90 dagar / 1 år).
+GRATIS OCH VITALS+
+Allt ovan är gratis och löper aldrig ut. Vitals+ är en valfri uppgradering som månads- eller årsprenumeration, båda med 7 dagars gratis provperiod för nya prenumeranter som är berättigade, eller som ett engångsköp (Lifetime). Vitals+ lägger till:
+- Aktiv mot vila: hur stor del av dagens förbrukning som kom från aktivitet
+- Nettounderskott: förbrända kalorier minus den matenergi som är registrerad i Hälsa
+- Makron: protein, kolhydrater och fett från den matapp som redan skriver till Hälsa, med valfria grammål
+- TDEE och BMR: dina 30-dagarsmedelvärden för underhåll och viloförbrukning från Hälsa
+- Prognoser för dagens slut för kalorier och steg i din nuvarande takt
+- Måldagar i rad och en söndagssammanfattning av den här veckan mot förra veckan
+- Egna datumintervall i Historik, med PDF-rapporter
+- Deep Trends: en valfri period jämförd med den föregående
+- Kroppsfett och kaloriunderlag bredvid ditt BMI
+- Undantagna dagar, så att sjukdagar och dagar utan klocka inte drar ned dina medelvärden
+- En kvällspåminnelse när ett mål fortfarande är öppet
 
-Vitals+ (VALFRITT)
-En liten månads-, års- eller livstidsuppgradering låser upp:
-- Makros: protein, kolhydrater och fett från maten du redan loggar i Apple Health
-- TDEE och BMR: 30-dagarsgenomsnitt för total och vilande energiförbrukning från Hälsa
-- Kroppsfettprocent bredvid ditt BMI
-- Påminnelse på kvällen
-- Uppdelning aktiva vs. vilande kalorier
-- Net Deficit: förbrända kalorier minus energi från mat i Apple Health
-- Månadssammanfattningar i PDF redo att dela
-- PDF-rapporter för valfria datumintervall
-- Deep Trends: kort för period‑mot‑period‑jämförelser
-En kostnadsfri provperiod erbjuds nya prenumeranter.
+INTEGRITET
+- Åtkomsten till Hälsa är skrivskyddad. Appen skriver aldrig till dina hälsodata
+- Dina hälsodata stannar på din iPhone och laddas aldrig upp
+- Rapporter skapas på din iPhone
+- Inga annonser, ingen spårning och inget konto
+- Köp hanteras av Apple och RevenueCat, som aldrig tar emot dina hälsodata
 
-INBYGGT SKYDD AV INTEGRITETEN
-- Endast läsåtkomst till Apple Health. Appen skriver aldrig till dina hälsodata.
-- Dina hälsodata stannar på din enhet och laddas aldrig upp.
-- Rapporter skapas på enheten.
-- Inga annonser. Ingen spårning. Inga konton.
-- Köp hanteras av Apple och RevenueCat, som aldrig får dina hälsodata.
+Total Calories är inte en medicinteknisk produkt och är inte avsedd att diagnostisera, behandla eller förebygga någon sjukdom. Prata med vårdpersonal om du behöver medicinsk rådgivning.
 
-Total Calories är inte en medicinteknisk produkt och är inte avsedd att diagnostisera, behandla eller förebygga någon medicinsk åkomma. Kontakta alltid vårdpersonal för medicinsk rådgivning.
-
-Prenumerationsinfo
-Vitals+ finns som en prenumeration med automatisk förnyelse (månadsvis eller årsvis, båda med 7 dagars gratis provperiod) eller som ett engångsköp av Lifetime. Priserna visas i appen innan du köper och varierar mellan regioner. Betalningen dras från ditt Apple-ID vid bekräftelsen. Prenumerationer förnyas automatiskt om de inte sägs upp minst 24 timmar före den aktuella periodens slut. Hantera eller säg upp när som helst under Inställningar → Apple-ID → Prenumerationer.
+Prenumerationsuppgifter
+Vitals+ finns som en prenumeration med automatisk förnyelse (månads- eller årsvis, båda med 7 dagars gratis provperiod) eller som ett engångsköp av Lifetime. Priserna visas i appen innan du köper och varierar mellan regioner. Betalningen debiteras ditt Apple-ID vid bekräftelse. Prenumerationer förnyas automatiskt om de inte sägs upp minst 24 timmar innan den aktuella perioden slutar. Hantera eller avsluta när som helst i Inställningar → Apple-ID → Prenumerationer.
 
 Privacy Policy: https://jackwallner.com/ios/vitals/privacy-policy.html
 Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

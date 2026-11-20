@@ -1,1 +1,1 @@
-askelmittari,bmr,komplikaatio,alijäämä,lepo,aktiivinen,paasto,kävely,liike,kcal,bmi,poltettu,makrot
+kalorilaskuri,askelmittari,kalorit,laskuri,ilmainen,poltetut,alijäämä,terveys,kcal,lepo,bmi,makrot
