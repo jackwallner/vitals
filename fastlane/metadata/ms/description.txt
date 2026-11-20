@@ -3,7 +3,7 @@ Total Calories memaparkan jumlah kalori yang anda bakar setiap hari, aktif ditam
 Matlamat Gerak pada Apple Watch hanya mengira kalori aktif. Total Calories menambah pembakaran semasa rehat daripada aplikasi Kesihatan, jadi anda nampak angka penuh yang dibakar dalam sehari.
 
 PADA APPLE WATCH
-• Komplikasi jumlah kalori terbakar bentuk bulat, segi empat, sebaris dan sudut, pada muka jam yang menyokongnya
+• Komplikasi jumlah kalori terbakar berbentuk bulat, segi empat, sebaris dan sudut, pada muka jam yang menyokongnya
 • Komplikasi bilangan langkah
 • Aplikasi jam dengan jumlah hari ini dan 30 hari terakhir
 • Matlamat yang ditetapkan pada iPhone disegerakkan ke jam
@@ -16,7 +16,7 @@ WIDGET SKRIN UTAMA DAN SKRIN KUNCI
 HARI INI
 • Jumlah kalori terbakar dalam satu cincin, bersama langkah dan bar matlamat
 • Semakan rentak: bandingkan sekarang dengan hari biasa anda pada masa yang sama
-• Tanya Siri berapa kalori atau langkah anda hari ini
+• Tanya Siri berapa kalori dibakar dan langkah anda hari ini
 • Pemberitahuan pilihan apabila matlamat harian dicapai
 
 SEJARAH
@@ -36,14 +36,14 @@ Semua di atas percuma dan tidak tamat tempoh. Vitals+ ialah naik taraf pilihan: 
 • Aktif lawan rehat: berapa banyak pembakaran hari ini daripada aktiviti
 • Net Deficit: kalori terbakar ditolak tenaga makanan yang direkodkan dalam aplikasi Kesihatan
 • Makro: protein, karbohidrat dan lemak daripada aplikasi makanan yang sudah menulis ke Kesihatan, dengan matlamat gram pilihan
-• TDEE dan BMR: purata 30 hari kalori penyelenggaraan dan pembakaran semasa rehat, daripada Kesihatan
+• TDEE dan BMR: purata 30 hari kalori mengekalkan berat badan dan pembakaran semasa rehat, daripada Kesihatan
 • Unjuran kalori dan langkah hujung hari mengikut rentak semasa
 • Rentetan hari matlamat tercapai dan rekap hari Ahad, minggu ini berbanding minggu lalu
 • Julat tarikh tersuai dalam Sejarah, dengan laporan ringkasan PDF
 • Deep Trends: bandingkan mana-mana tempoh dengan tempoh sebelumnya
 • Lemak badan dan konteks kalori di sebelah BMI
 • Hari dikecualikan, supaya hari sakit dan hari tanpa jam tidak menjejaskan purata
-• Peringatan petang apabila matlamat belum dicapai
+• Peringatan malam apabila matlamat belum dicapai
 
 PRIVASI
 • Akses aplikasi Kesihatan adalah baca sahaja. Aplikasi tidak pernah menulis ke rekod kesihatan anda

@@ -16,7 +16,7 @@ WIDGET LAYAR UTAMA DAN LAYAR KUNCI
 HARI INI
 • Total kalori terbakar dalam satu cincin, lengkap dengan langkah dan bilah target
 • Cek tempo yang membandingkan kondisi saat ini dengan hari biasa Anda pada jam yang sama
-• Tanya Siri berapa kalori atau langkah Anda hari ini
+• Tanya Siri berapa kalori terbakar dan langkah Anda hari ini
 • Pemberitahuan opsional saat target harian tercapai
 
 RIWAYAT
@@ -29,16 +29,16 @@ BMI
 
 TARGET
 • Target kalori dan langkah harian bersifat opsional, atau tidak perlu target sama sekali
-• Tempo dibandingkan dengan hari yang sama dalam seminggu atau semua hari, 14, 30, 90 hari, atau setahun terakhir
+• Tempo dibandingkan dengan hari yang sama dalam seminggu atau semua hari, selama 14, 30, 90 hari, atau setahun terakhir
 
 GRATIS DAN VITALS+
 Semua di atas gratis dan tidak kedaluwarsa. Vitals+ adalah peningkatan opsional, berupa langganan bulanan atau tahunan, masing-masing dengan uji coba gratis 7 hari untuk pelanggan baru yang memenuhi syarat, atau pembelian Lifetime sekali bayar. Vitals+ menambahkan:
 • Aktif vs istirahat: berapa banyak pembakaran hari ini yang berasal dari aktivitas
 • Net Deficit: kalori terbakar dikurangi energi makanan yang tercatat di app Kesehatan
-• Makro: protein, karbohidrat, dan lemak dari app makanan yang sudah menulis ke app Kesehatan, dengan target gram opsional
+• Makro: protein, karbohidrat, dan lemak dari app makanan yang sudah mencatat ke app Kesehatan, dengan target gram opsional
 • TDEE dan BMR: rata-rata 30 hari kalori pemeliharaan dan pembakaran saat istirahat dari app Kesehatan
 • Proyeksi kalori dan langkah di akhir hari pada tempo saat ini
-• Rangkaian hari target tercapai dan rekap hari Minggu yang membandingkan minggu ini dengan minggu lalu
+• Rentetan hari target tercapai dan rekap hari Minggu yang membandingkan minggu ini dengan minggu lalu
 • Rentang tanggal kustom di Riwayat, dengan laporan ringkasan PDF
 • Deep Trends: bandingkan periode apa pun dengan periode sebelumnya
 • Lemak tubuh dan konteks kalori di samping BMI

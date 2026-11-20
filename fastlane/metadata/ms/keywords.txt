@@ -1,1 +1,1 @@
-pedometer,penghitung,pelacak,percuma,jumlah,tenaga,aktif,rehat,defisit,metabolisme,pembakaran,kaki
+pedometer,penghitung,pelacak,percuma,jumlah,senaman,aktif,rehat,defisit,metabolisme,pembakaran,kaki

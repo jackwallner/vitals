@@ -16,7 +16,7 @@ WIDGET MÀN HÌNH CHÍNH VÀ MÀN HÌNH KHÓA
 HÔM NAY
 • Tổng calo tiêu hao trong một vòng tròn, kèm số bước chân và thanh mục tiêu
 • Kiểm tra nhịp: so sánh hiện tại với một ngày bình thường của bạn vào cùng giờ
-• Hỏi Siri xem hôm nay bạn có bao nhiêu calo hoặc bao nhiêu bước
+• Hỏi Siri hôm nay bạn đã tiêu hao bao nhiêu calo và đi được bao nhiêu bước
 • Thông báo khi đạt mục tiêu hằng ngày (tùy chọn)
 
 LỊCH SỬ
