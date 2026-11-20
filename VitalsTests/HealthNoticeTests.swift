@@ -7,6 +7,12 @@ final class HealthNoticeTests: XCTestCase {
         XCTAssertEqual(HealthNotice.noData.buttonTitle, "Check Health Access")
     }
 
+    func testNoDataNoticeSaysWhereToTurnAccessBackOn() {
+        let message = HealthNotice.noData.message
+        XCTAssertTrue(message.contains("Settings → Privacy & Security → Health → Total Calories"), message)
+        XCTAssertFalse(message.contains("syncing"), message)
+    }
+
     func testUnansweredPermissionSheetStillOffersAuthorization() {
         XCTAssertEqual(HealthNotice.emptyFetch(requestStatus: .shouldRequest), .accessNeeded)
     }

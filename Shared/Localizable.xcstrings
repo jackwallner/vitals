@@ -42156,240 +42156,240 @@
         }
       }
     },
-    "Apple Health may still be syncing. Check that your watch or fitness app has added data, or check Health access." : {
+    "If you tapped Don't Allow, turn access on in Settings → Privacy & Security → Health → Total Calories." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ربما لا يزال تطبيق صحتي يُجري المزامنة. تأكد من أن ساعتك أو تطبيق اللياقة أضاف بيانات، أو تحقق من أذونات صحتي."
+            "value" : "إذا نقرت على عدم السماح، فشغّل الوصول من الإعدادات ← الخصوصية والأمن ← صحتي ← Total Calories."
           }
         },
         "bg" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health може все още да се синхронизира. Проверете дали има добавени данни от часовника или фитнес приложението, или проверете достъпа до Apple Health."
+            "value" : "Ако сте докоснали „Не разрешавай“, включете достъпа от Настройки → Поверителност и сигурност → Здраве → Total Calories."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zdraví se možná ještě synchronizuje. Ověřte, zda hodinky nebo fitness aplikace přidaly data, případně zkontrolujte přístup k aplikaci Zdraví."
+            "value" : "Pokud jste klepli na Nepovolit, zapněte přístup v Nastavení → Soukromí a zabezpečení → Zdraví → Total Calories."
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sundhed synkroniserer muligvis stadig. Tjek, at dit ur eller din fitnessapp har tilføjet data, eller tjek adgangen til Sundhed."
+            "value" : "Hvis du trykkede på Tillad ikke, kan du slå adgang til under Indstillinger → Anonymitet & sikkerhed → Sundhed → Total Calories."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health synchronisiert vielleicht noch. Prüfe, ob deine Uhr oder Fitness-App Daten geliefert hat, oder prüfe den Health-Zugriff."
+            "value" : "Wenn du auf „Nicht erlauben“ getippt hast, aktiviere den Zugriff unter Einstellungen → Datenschutz & Sicherheit → Health → Total Calories."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Η Υγεία μπορεί να συγχρονίζεται ακόμη. Ελέγξτε αν το ρολόι ή η εφαρμογή γυμναστικής έχει προσθέσει δεδομένα ή ελέγξτε την πρόσβαση στην Υγεία."
+            "value" : "Αν πατήσατε «Να μην επιτρέπεται», ενεργοποιήστε την πρόσβαση στις Ρυθμίσεις → Απόρρητο και ασφάλεια → Υγεία → Total Calories."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Puede que Apple Salud aún se esté sincronizando. Comprueba que tu reloj o app de fitness haya añadido datos, o revisa el acceso a Salud."
+            "value" : "Si tocaste No permitir, activa el acceso en Ajustes → Privacidad y seguridad → Salud → Total Calories."
           }
         },
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tervis võib veel sünkroonida. Kontrolli, kas sinu kell või treeningrakendus on andmeid lisanud, või vaata üle Tervise rakenduse ligipääsuõigused."
+            "value" : "Kui puudutasid valikut Ära luba, lülita juurdepääs sisse: Seaded → Privaatsus ja turvalisus → Tervis → Total Calories."
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ممکن است Apple Health هنوز در حال همگام‌سازی باشد. بررسی کنید که ساعت یا برنامه تناسب‌اندام داده اضافه کرده باشد، یا مجوزهای Apple Health را بررسی کنید."
+            "value" : "اگر «اجازه نده» را زدید، دسترسی را از تنظیمات › حریم خصوصی و امنیت › Apple Health › Total Calories روشن کنید."
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Terveys-apin synkronointi saattaa vielä olla kesken. Tarkista, että kellosi tai kuntosovelluksesi on lisännyt tietoja, tai tarkista Terveys-apin käyttöoikeudet."
+            "value" : "Jos napautit Älä salli, laita käyttöoikeus päälle kohdassa Asetukset → Tietosuoja ja suojaus → Terveys → Total Calories."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Santé est peut-être encore en cours de synchronisation. Vérifiez que votre montre ou votre app de sport a ajouté des données, ou vérifiez l’accès à Santé."
+            "value" : "Si vous avez touché Ne pas autoriser, activez l’accès dans Réglages → Confidentialité et sécurité → Santé → Total Calories."
           }
         },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ייתכן שאפליקציית בריאות עדיין מסתנכרנת. כדאי לוודא שהשעון או אפליקציית הכושר הוסיפו נתונים, או לבדוק את הגישה לנתוני בריאות."
+            "value" : "אם הקשת על ״אל תאפשר״, יש להפעיל את הגישה בהגדרות ← פרטיות ואבטחה ← בריאות ← Total Calories."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "हो सकता है कि सेहत ऐप का डेटा अभी सिंक हो रहा हो। जाँचें कि आपकी घड़ी या फ़िटनेस ऐप ने डेटा जोड़ा है, या सेहत ऐप का ऐक्सेस जाँचें।"
+            "value" : "अगर आपने अनुमति न दें पर टैप किया था, तो सेटिंग्ज़ → गोपनीयता और सुरक्षा → सेहत → Total Calories में ऐक्सेस चालू करें।"
           }
         },
         "hr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aplikacija Zdravlje možda još sinkronizira podatke. Provjerite jesu li sat ili aplikacija za fitness dodali podatke ili provjerite dopuštenja za pristup podacima u aplikaciji Zdravlje."
+            "value" : "Ako ste dodirnuli Ne dopusti, uključite pristup u Postavke → Privatnost i sigurnost → Zdravlje → Total Calories."
           }
         },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lehet, hogy az Apple Egészség még szinkronizál. Ellenőrizd, hogy az órád vagy a fitneszalkalmazásod rögzített-e új adatot, vagy nézd meg az Apple Egészséghez való hozzáférés beállításait."
+            "value" : "Ha a Tiltás gombra koppintottál, kapcsold be a hozzáférést itt: Beállítások → Adatvédelem és biztonság → Egészség → Total Calories."
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kesehatan mungkin masih menyinkronkan data. Pastikan jam tangan atau app kebugaran Anda sudah menambahkan data, atau periksa izin akses ke Kesehatan."
+            "value" : "Jika Anda mengetuk Jangan Izinkan, nyalakan akses di Pengaturan → Privasi & Keamanan → Kesehatan → Total Calories."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La sincronizzazione di Apple Salute potrebbe essere ancora in corso. Controlla che l’orologio o l’app fitness abbia aggiunto dati, oppure verifica l’accesso ad Apple Salute."
+            "value" : "Se hai toccato Non consentire, attiva l’accesso in Impostazioni → Privacy e sicurezza → Salute → Total Calories."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ヘルスケアが同期中かもしれません。ウォッチやフィットネスアプリがデータを追加しているか、ヘルスケアへのアクセスを確認してください。"
+            "value" : "「許可しない」をタップした場合は、「設定」→「プライバシーとセキュリティ」→「ヘルスケア」→「Total Calories」でアクセスをオンにしてください。"
           }
         },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "შესაძლოა, Apple Health ჯერ კიდევ სინქრონიზდება. შეამოწმეთ, დაამატა თუ არა საათმა ან ფიტნეს აპმა მონაცემები, ან შეამოწმეთ Apple Health-ზე წვდომა."
+            "value" : "თუ შეეხეთ „არ დაუშვა“-ს, ჩართეთ წვდომა: პარამეტრები → კონფიდენციალურობა და უსაფრთხოება → Health → Total Calories."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "건강 데이터가 아직 동기화 중일 수 있어요. 워치나 피트니스 앱에서 데이터를 추가했는지 확인하거나 건강 앱 접근 권한을 확인하세요."
+            "value" : "허용 안 함을 탭했다면 설정 → 개인정보 보호 및 보안 → 건강 → Total Calories에서 접근을 켜세요."
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health vis dar gali sinchronizuoti duomenis. Patikrink, ar laikrodis arba sporto programėlė pridėjo duomenų, arba patikrink prieigą prie Apple Health."
+            "value" : "Jei bakstelėjote Neleisti, įjunkite prieigą: Nustatymai → Privatumas ir sauga → Sveikata → Total Calories."
           }
         },
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lietotnes Veselība dati vēl var sinhronizēties. Pārbaudiet, vai pulkstenis vai fitnesa lietotne ir pievienojusi datus, un pārbaudiet piekļuvi lietotnes Veselība datiem."
+            "value" : "Ja pieskārāties Neatļaut, ieslēdziet piekļuvi: Iestatījumi → Privātums un drošība → Veselība → Total Calories."
           }
         },
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "App Kesihatan mungkin masih menyegerakkan data. Semak sama ada jam tangan atau app kecergasan anda telah merekodkan data, atau semak akses Kesihatan."
+            "value" : "Jika anda mengetik Jangan Benarkan, aktifkan akses dalam Tetapan → Privasi & Keselamatan → Kesihatan → Total Calories."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Helse synkroniserer kanskje fortsatt. Sjekk at klokken eller treningsappen din har lagt inn data, eller sjekk tilgangen til Helse."
+            "value" : "Hvis du trykket på Ikke tillat, slår du på tilgang i Innstillinger → Personvern og sikkerhet → Helse → Total Calories."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Gezondheid is mogelijk nog aan het synchroniseren. Controleer of je horloge of fitness-app gegevens heeft toegevoegd, of controleer de toegang tot Gezondheid."
+            "value" : "Heb je op Sta niet toe getikt? Zet toegang aan via Instellingen → Privacy en beveiliging → Gezondheid → Total Calories."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aplikacja Zdrowie może jeszcze synchronizować dane. Sprawdź, czy zegarek lub aplikacja fitness je dodały, albo sprawdź dostęp do danych w aplikacji Zdrowie."
+            "value" : "Jeśli stuknięto Nie pozwalaj, włącz dostęp w Ustawienia → Prywatność i ochrona → Zdrowie → Total Calories."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O Apple Saúde ainda pode estar sincronizando. Verifique se seu relógio ou app de fitness adicionou dados ou confira o acesso ao app Saúde."
+            "value" : "Se você tocou em Não Permitir, ative o acesso em Ajustes → Privacidade e Segurança → Saúde → Total Calories."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A Apple Saúde pode ainda estar a sincronizar. Verifique se o seu relógio ou app de fitness adicionou dados, ou verifique o acesso à Saúde."
+            "value" : "Se tocou em Não permitir, ative o acesso em Definições → Privacidade e segurança → Saúde → Total Calories."
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Sănătate poate fi încă în curs de sincronizare. Verificați dacă ceasul sau aplicația de fitness a adăugat date sau verificați accesul la Sănătate."
+            "value" : "Dacă ai apăsat Nu permite, activează accesul din Setări → Confidențialitate și securitate → Sănătate → Total Calories."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Возможно, данные из приложения «Здоровье» ещё синхронизируются. Убедитесь, что часы или фитнес-приложение добавили данные, и проверьте разрешение на доступ к данным приложения «Здоровье»."
+            "value" : "Если вы нажали «Не разрешать», включите доступ: Настройки → Конфиденциальность и безопасность → Здоровье → Total Calories."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zdravie sa možno ešte synchronizuje. Skontrolujte, či hodinky alebo fitness aplikácia pridali údaje, prípadne skontrolujte prístup k Zdraviu."
+            "value" : "Ak ste klepli na Nepovoliť, zapnite prístup v Nastavenia → Súkromie a bezpečnosť → Zdravie → Total Calories."
           }
         },
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Health morda še sinhronizira podatke. Preverite, ali je ura ali aplikacija za vadbo dodala podatke, oziroma preverite dostop do Zdravja."
+            "value" : "Če ste tapnili Ne dovoli, vklopite dostop v Nastavitve → Zasebnost in varnost → Zdravje → Total Calories."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Hälsa synkroniserar kanske fortfarande. Kontrollera att din klocka eller träningsapp har lagt till data, eller kontrollera åtkomsten till Hälsa."
+            "value" : "Om du tryckte på Tillåt inte slår du på åtkomst i Inställningar → Integritet och säkerhet → Hälsa → Total Calories."
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "แอปสุขภาพอาจยังซิงค์ข้อมูลอยู่ ตรวจสอบว่านาฬิกาหรือแอปฟิตเนสบันทึกข้อมูลแล้ว หรือตรวจสอบสิทธิ์การเข้าถึงแอปสุขภาพ"
+            "value" : "หากคุณแตะไม่อนุญาต ให้เปิดสิทธิ์เข้าถึงใน การตั้งค่า → ความเป็นส่วนตัวและความปลอดภัย → สุขภาพ → Total Calories"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple Sağlık hâlâ eşzamanlanıyor olabilir. Saatinizin veya fitness uygulamanızın veri eklediğini ya da Sağlık verilerine erişim izninin açık olduğunu kontrol edin."
+            "value" : "İzin Verme'ye dokunduysanız erişimi Ayarlar → Gizlilik ve Güvenlik → Sağlık → Total Calories bölümünden açın."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Можливо, програма «Здоров’я» ще синхронізує дані. Перевірте, чи годинник або фітнес-програма додали дані, або перевірте доступ до програми «Здоров’я»."
+            "value" : "Якщо ви торкнулися «Не дозволяти», увімкніть доступ: Параметри → Приватність і безпека → Здоров’я → Total Calories."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sức khỏe có thể vẫn đang đồng bộ. Kiểm tra xem đồng hồ hoặc ứng dụng thể dục của bạn đã thêm dữ liệu chưa, hoặc kiểm tra quyền truy cập Sức khỏe."
+            "value" : "Nếu bạn đã chạm vào Không cho phép, hãy bật quyền truy cập trong Cài đặt → Quyền riêng tư & Bảo mật → Sức khỏe → Total Calories."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple 健康可能仍在同步。请检查手表或健身 App 是否已添加数据，或检查健康访问权限。"
+            "value" : "如果你轻点了“不允许”，请前往“设置”→“隐私与安全性”→“健康”→“Total Calories”打开访问权限。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apple 健康可能仍在同步。請確認手錶或健身 App 已加入資料，或檢查「健康」取用權限。"
+            "value" : "如果你點了「不允許」，請前往「設定」→「隱私權與安全性」→「健康」→「Total Calories」開啟取用權限。"
           }
         }
       }
