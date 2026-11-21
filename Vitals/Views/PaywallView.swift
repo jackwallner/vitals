@@ -390,6 +390,7 @@ struct PaywallView: View {
                         paywallFeatureList
                     }
                     if !pinsPlanCards { planList }
+                    if !pinsFooter { pinnedCheckoutFooter }
                 }
                 .padding(.horizontal, 22)
                 .padding(.top, displayCloseButton ? 44 : 12)
@@ -412,30 +413,47 @@ struct PaywallView: View {
                 // A focused pitch is short: three benefits and the plans. Space
                 // is split above and below so it sits centred, instead of all of
                 // it pooling into one dead band above the button.
-                VStack(spacing: 12) {
-                    Spacer(minLength: 0)
-                    header(compact: true)
-                    paywallFeatureList
-                    planList
-                    Spacer(minLength: 0)
+                if pinsFooter {
+                    VStack(spacing: 12) {
+                        Spacer(minLength: 0)
+                        header(compact: true)
+                        paywallFeatureList
+                        planList
+                        Spacer(minLength: 0)
+                    }
+                    .padding(.horizontal, 22)
+                    .padding(.top, displayCloseButton ? 44 : 20)
+                    .padding(.bottom, 4)
+                    .frame(maxHeight: .infinity)
+                } else {
+                    ScrollView(showsIndicators: false) {
+                        VStack(spacing: 12) {
+                            header(compact: true)
+                            paywallFeatureList
+                            planList
+                            pinnedCheckoutFooter
+                        }
+                        .padding(.horizontal, 22)
+                        .padding(.top, displayCloseButton ? 44 : 20)
+                    }
                 }
-                .padding(.horizontal, 22)
-                .padding(.top, displayCloseButton ? 44 : 20)
-                .padding(.bottom, 4)
-                .frame(maxHeight: .infinity)
             }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            pinnedCheckoutFooter
+            if pinsFooter { pinnedCheckoutFooter }
         }
     }
+
+    /// At accessibility sizes the checkout alone is about a screen tall, so it
+    /// scrolls below the plans instead of covering them.
+    private var pinsFooter: Bool { !typeSize.isAccessibilitySize }
 
     /// Plans that scrolled under the footer were sliced by it, half a plan
     /// card showing above the button.
     /// Not on an iPad: its pane is tall enough for the pitch and every plan, and
     /// pinning the plans left a hole between the benefits and the button.
     private var pinsPlanCards: Bool {
-        isUnfoldedPane && showsFullBenefitList && UIDevice.current.userInterfaceIdiom != .pad
+        pinsFooter && isUnfoldedPane && showsFullBenefitList && UIDevice.current.userInterfaceIdiom != .pad
     }
 
     /// CTA + required 3.1.2 copy.
@@ -516,10 +534,16 @@ struct PaywallView: View {
             // grows there; the plan list above scrolls to make room.
             .frame(height: typeSize.isAccessibilitySize ? nil : 96, alignment: .top)
         }
-        .padding(.horizontal, 22)
+        .padding(.horizontal, pinsFooter ? 22 : 0)
         .padding(.top, 8)
         .padding(.bottom, displayCloseButton ? 10 : 22)
         .background(alignment: .top) {
+            if pinsFooter { checkoutScrim }
+        }
+    }
+
+    private var checkoutScrim: some View {
+        Group {
             // A hard edge across the plan list read as a broken card: the third
             // plan was sliced in half by an opaque bar. The scrim fades the list
             // out instead, which also says "there is more below".
@@ -585,7 +609,7 @@ struct PaywallView: View {
                     Text(feature.featureListTitle)
                         .font(.system(.subheadline, design: .rounded, weight: highlighted ? .semibold : .regular))
                         .foregroundStyle(Theme.textPrimary)
-                        .lineLimit(2)
+                        .lineLimit(typeSize.isAccessibilitySize ? nil : 2)
                         .minimumScaleFactor(0.85)
                     Spacer(minLength: 0)
                 }
@@ -638,7 +662,7 @@ struct PaywallView: View {
                     .font(.system(.title2, design: .rounded, weight: .bold))
                     .foregroundStyle(Theme.textPrimary)
                     .multilineTextAlignment(.center)
-                    .lineLimit(2)
+                    .lineLimit(typeSize.isAccessibilitySize ? nil : 2)
                     .minimumScaleFactor(0.85)
                 Text("Protein, carbs, and fat read straight from the food app you already use. Nothing to enter twice.")
                     .font(.system(.footnote, design: .rounded))
@@ -703,7 +727,7 @@ struct PaywallView: View {
                     .font(.system(.title2, design: .rounded, weight: .bold))
                     .foregroundStyle(Theme.textPrimary)
                     .multilineTextAlignment(.center)
-                    .lineLimit(2)
+                    .lineLimit(typeSize.isAccessibilitySize ? nil : 2)
                     .minimumScaleFactor(0.85)
                 Text("Unlock your maintenance calories and BMR, worked out from 30 days of your own Apple Health data. On your Home Screen. Nothing to log.")
                     .font(.system(.footnote, design: .rounded))
@@ -767,7 +791,7 @@ struct PaywallView: View {
             .font(.system(compact ? .footnote : .subheadline, design: .rounded))
             .foregroundStyle(Theme.textSecondary)
             .multilineTextAlignment(.center)
-            .lineLimit(compact ? 2 : nil)
+            .lineLimit(compact && !typeSize.isAccessibilitySize ? 2 : nil)
             .minimumScaleFactor(compact ? 0.9 : 1)
     }
 
@@ -920,6 +944,12 @@ private struct PlanCard: View {
     var perWeekLabel: String? = nil
     let onTap: () -> Void
 
+    @Environment(\.dynamicTypeSize) private var typeSize
+
+    /// At accessibility sizes the name and the price share one column: side by
+    /// side, each got half the card and broke words mid-letter.
+    private var stacked: Bool { typeSize.isAccessibilitySize }
+
     /// The one line worth saying under the plan name: the trial when it applies,
     /// otherwise the per-week equivalent. nil when neither is known.
     private var subline: String? {
@@ -942,8 +972,15 @@ private struct PlanCard: View {
                     }
                 }
 
+                let cardLayout = stacked
+                    ? AnyLayout(VStackLayout(alignment: .leading, spacing: 6))
+                    : AnyLayout(HStackLayout(spacing: 0))
+                let nameLayout = stacked
+                    ? AnyLayout(VStackLayout(alignment: .leading, spacing: 4))
+                    : AnyLayout(HStackLayout(spacing: 6))
+                cardLayout {
                 VStack(alignment: .leading, spacing: 3) {
-                    HStack(spacing: 6) {
+                    nameLayout {
                         Text(package.vitalsDisplayName)
                             .font(.system(.subheadline, design: .rounded, weight: .bold))
                             .foregroundStyle(Theme.textPrimary)
@@ -970,13 +1007,14 @@ private struct PlanCard: View {
                         Text(subline)
                             .font(.system(.caption2, design: .rounded, weight: .semibold))
                             .foregroundStyle(Theme.stepsPrimary)
-                            .lineLimit(1)
+                            .lineLimit(stacked ? nil : 1)
+                            .fixedSize(horizontal: false, vertical: stacked)
                     }
                 }
 
-                Spacer(minLength: 8)
+                if !stacked { Spacer(minLength: 8) }
 
-                VStack(alignment: .trailing, spacing: 1) {
+                VStack(alignment: stacked ? .leading : .trailing, spacing: 1) {
                     Text(package.vitalsPriceLabel)
                         .font(.system(.subheadline, design: .rounded, weight: .semibold).monospacedDigit())
                         .foregroundStyle(Theme.textSecondary)
@@ -984,9 +1022,11 @@ private struct PlanCard: View {
                         Text("\(perWeekLabel)/wk")
                             .font(.system(.caption2, design: .rounded).monospacedDigit())
                             .foregroundStyle(Theme.textTertiary)
-                            .lineLimit(1)
+                            .lineLimit(stacked ? nil : 1)
                     }
                 }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .frame(minHeight: 44)
             .padding(.horizontal, 16)

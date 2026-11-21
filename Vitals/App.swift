@@ -2461,6 +2461,10 @@ struct TrialOfferSheet: View {
                         }
                     }
                 }
+
+                if typeSize.isAccessibilitySize {
+                    checkoutFooter.padding(.top, 8)
+                }
             }
             .padding(.horizontal, 24)
             .padding(.vertical, 2)
@@ -2469,96 +2473,16 @@ struct TrialOfferSheet: View {
             // pitch to the top and left a band of dead white above the button.
             .frame(minHeight: sheetContentHeight, alignment: .center)
             .modifier(CenteredScrollContainer(height: $sheetContentHeight))
+            // At accessibility sizes the checkout alone fills the sheet, so it
+            // scrolls with the pitch instead of covering it.
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                VStack(spacing: 8) {
-                    // Error replaces disclosure in the same slot — never stack both
-                    // (that was the overlapping red/grey text on purchase failure).
-                    if let errorMessage {
-                        Text(errorMessage)
-                            .font(.system(.caption, design: .rounded))
-                            .foregroundStyle(.red)
-                            .multilineTextAlignment(.center)
-                            .lineLimit(3)
-                            .fixedSize(horizontal: false, vertical: true)
-                    } else if directPurchase, let disclosureText {
-                        Text(disclosureText)
-                            .font(.system(.caption2, design: .rounded))
-                            .foregroundStyle(Theme.textSecondary)
-                            .multilineTextAlignment(.center)
-                            // Never truncated: the renewal terms are the 3.1.2 disclosure,
-                            // and AX3 German needs five lines.
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-
-                    Button(action: onStartTrial) {
-                        ZStack {
-                            Text(ctaTitle)
-                                .font(.system(.headline, design: .rounded, weight: .bold))
-                                .foregroundStyle(.white)
-                                .lineLimit(2)
-                                .minimumScaleFactor(0.75)
-                                .multilineTextAlignment(.center)
-                                .opacity(isPurchasing ? 0 : 1)
-                            if isPurchasing {
-                                ProgressView()
-                                    .tint(.white)
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 13)
-                        .background(Theme.ctaGradient, in: Capsule())
-                        .ctaGlow()
-                    }
-                    .buttonStyle(.plain)
-                    .disabled(isPurchasing)
-                    .accessibilityIdentifier("trial-pitch-cta")
-
-                    Button(action: onDismiss) {
-                        Text(String(localized: "Not now"))
-                            .font(.system(.subheadline, design: .rounded, weight: .semibold))
-                            .foregroundStyle(Theme.textSecondary)
-                            .frame(minWidth: 44, minHeight: 44)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .disabled(isPurchasing)
-                    .accessibilityIdentifier("trial-pitch-dismiss")
-
-                    if let restoreMessage {
-                        Text(restoreMessage)
-                            .font(.system(.caption2, design: .rounded))
-                            .foregroundStyle(Theme.textSecondary)
-                            .multilineTextAlignment(.center)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-
-                    // Stacks at accessibility sizes, as the paywall's footer does: three
-                    // links in one line cut "Privacy Policy".
-                    let stacksLinks = typeSize.isAccessibilitySize
-                    let linkLayout = stacksLinks
-                        ? AnyLayout(VStackLayout(spacing: 0))
-                        : AnyLayout(HStackLayout(spacing: 4))
-                    linkLayout {
-                        Button(action: onRestore) {
-                            Text(isRestoring ? String(localized: "Restoring…") : String(localized: "Restore"))
-                                .legalTapTarget()
-                        }
-                        .buttonStyle(.plain)
-                        .disabled(isRestoring || isPurchasing)
-                        if !stacksLinks { Text("·") }
-                        Link("Terms", destination: PaywallLinks.standardEULA)
-                            .legalTapTarget()
-                        if !stacksLinks { Text("·") }
-                        Link("Privacy Policy", destination: PaywallLinks.privacyPolicy)
-                            .legalTapTarget()
-                    }
-                    .font(.system(.caption2, design: .rounded))
-                    .foregroundStyle(Theme.textTertiary)
+                if !typeSize.isAccessibilitySize {
+                    checkoutFooter
+                        .padding(.horizontal, 24)
+                        .padding(.top, 10)
+                        .padding(.bottom, 12)
+                        .background(.ultraThinMaterial)
                 }
-                .padding(.horizontal, 24)
-                .padding(.top, 10)
-                .padding(.bottom, 12)
-                .background(.ultraThinMaterial)
             }
         }
         .onAppear {
@@ -2571,6 +2495,95 @@ struct TrialOfferSheet: View {
             // made anywhere in this view tree for the lifetime of the sheet.
             animateGlow = true
             shimmerPhase = 1.4
+        }
+    }
+
+    /// Disclosure, buy button, Not now and the legal links.
+    private var checkoutFooter: some View {
+        VStack(spacing: 8) {
+            // Error replaces disclosure in the same slot — never stack both
+            // (that was the overlapping red/grey text on purchase failure).
+            if let errorMessage {
+                Text(errorMessage)
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(3)
+                    .fixedSize(horizontal: false, vertical: true)
+            } else if directPurchase, let disclosureText {
+                Text(disclosureText)
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .multilineTextAlignment(.center)
+                    // Never truncated: the renewal terms are the 3.1.2 disclosure,
+                    // and AX3 German needs five lines.
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Button(action: onStartTrial) {
+                ZStack {
+                    Text(ctaTitle)
+                        .font(.system(.headline, design: .rounded, weight: .bold))
+                        .foregroundStyle(.white)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.75)
+                        .multilineTextAlignment(.center)
+                        .opacity(isPurchasing ? 0 : 1)
+                    if isPurchasing {
+                        ProgressView()
+                            .tint(.white)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 13)
+                .background(Theme.ctaGradient, in: Capsule())
+                .ctaGlow()
+            }
+            .buttonStyle(.plain)
+            .disabled(isPurchasing)
+            .accessibilityIdentifier("trial-pitch-cta")
+
+            Button(action: onDismiss) {
+                Text(String(localized: "Not now"))
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.textSecondary)
+                    .frame(minWidth: 44, minHeight: 44)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .disabled(isPurchasing)
+            .accessibilityIdentifier("trial-pitch-dismiss")
+
+            if let restoreMessage {
+                Text(restoreMessage)
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            // Stacks at accessibility sizes, as the paywall's footer does: three
+            // links in one line cut "Privacy Policy".
+            let stacksLinks = typeSize.isAccessibilitySize
+            let linkLayout = stacksLinks
+                ? AnyLayout(VStackLayout(spacing: 0))
+                : AnyLayout(HStackLayout(spacing: 4))
+            linkLayout {
+                Button(action: onRestore) {
+                    Text(isRestoring ? String(localized: "Restoring…") : String(localized: "Restore"))
+                        .legalTapTarget()
+                }
+                .buttonStyle(.plain)
+                .disabled(isRestoring || isPurchasing)
+                if !stacksLinks { Text("·") }
+                Link("Terms", destination: PaywallLinks.standardEULA)
+                    .legalTapTarget()
+                if !stacksLinks { Text("·") }
+                Link("Privacy Policy", destination: PaywallLinks.privacyPolicy)
+                    .legalTapTarget()
+            }
+            .font(.system(.caption2, design: .rounded))
+            .foregroundStyle(Theme.textTertiary)
         }
     }
 

@@ -125,13 +125,13 @@ struct TrialOfferPitchSheet: View {
     }
 
     private var detents: Set<PresentationDetent> {
-        typeSize.isAccessibilitySize ? [TrialOfferSheet.pitchDetent, .large] : [TrialOfferSheet.pitchDetent]
+        typeSize.isAccessibilitySize ? [.large] : [TrialOfferSheet.pitchDetent]
     }
 
     var body: some View {
         pitch
-        // The footer alone can fill 78% at accessibility sizes, so the pitch
-        // above it needs the full height there.
+        // At accessibility sizes the pitch and checkout need the full height,
+        // so the sheet opens there instead of at 78%.
         .presentationDetents(detents)
         .presentationDragIndicator(.visible)
         .presentationContentInteraction(.resizes)
