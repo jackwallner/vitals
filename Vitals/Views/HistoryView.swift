@@ -2262,6 +2262,11 @@ struct HistoryView: View {
         } catch {
             guard token == loadToken else { return }
             historyLogger.error("History fetch failed: \(String(describing: error), privacy: .public)")
+            // The preceding-window task of the load this one replaced can no
+            // longer clear its spinner (its token is stale), and this failed
+            // load starts no new one, so nothing else would.
+            previousWindowTask?.cancel()
+            isCalculatingTrends = false
             loadErrorMessage = records.isEmpty
                 ? String(localized: "Try again in a moment or check Apple Health access.")
                 : String(localized: "Showing the last available data because refresh failed.")
@@ -2300,6 +2305,7 @@ struct HistoryView: View {
     /// against `loadToken` the way `loadHistory` does: a period switch while
     /// this is in flight must not land the old window's trends.
     private func loadPreviousWindow(token: Int) async {
+        guard token == loadToken else { return }
         isCalculatingTrends = true
         // Only the current load may clear the spinner: a superseded task
         // finishing late would otherwise stop the one that replaced it.
