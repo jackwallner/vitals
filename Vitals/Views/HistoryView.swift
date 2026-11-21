@@ -74,12 +74,15 @@ private enum HistoryPrefs {
         let storedStartTi = defaults.double(forKey: customStartKey)
         let storedEndTi = defaults.double(forKey: customEndKey)
 
-        let rawStart = storedStartTi > 0 ? Date(timeIntervalSince1970: storedStartTi) : DateHelpers.daysAgo(6)
-        let rawEnd = storedEndTi > 0 ? Date(timeIntervalSince1970: storedEndTi) : now
+        // Builds before the day keys stored instants; they still read, once.
+        let storedDays = CustomRangeDays.load(from: defaults)
+        let rawStart = storedDays?.start ?? (storedStartTi > 0 ? Date(timeIntervalSince1970: storedStartTi) : DateHelpers.daysAgo(6))
+        let rawEnd = storedDays?.end ?? (storedEndTi > 0 ? Date(timeIntervalSince1970: storedEndTi) : now)
 
         let end = min(rawEnd, now)
-        var start = min(rawStart, end)
-        if start >= end {
+        var start = rawStart
+        // A one-day range is two keys on the same day, so only a start after the end is invalid.
+        if rawStart > end {
             start = DateHelpers.daysAgo(6, from: end)
         }
         // CustomRangeSheet caps at 2 years; enforce the same bound on load.
@@ -88,18 +91,16 @@ private enum HistoryPrefs {
             start = end.addingTimeInterval(-maxWindow)
         }
         // Only persist back if we actually changed something (avoid gratuitous writes).
-        let needsWriteback = abs(start.timeIntervalSince(rawStart)) > 1 || abs(end.timeIntervalSince(rawEnd)) > 1
-        if needsWriteback && storedStartTi > 0 && storedEndTi > 0 {
-            defaults.set(start.timeIntervalSince1970, forKey: customStartKey)
-            defaults.set(end.timeIntervalSince1970, forKey: customEndKey)
+        let needsWriteback = storedDays == nil || abs(start.timeIntervalSince(rawStart)) > 1 || abs(end.timeIntervalSince(rawEnd)) > 1
+        if needsWriteback && (storedDays != nil || (storedStartTi > 0 && storedEndTi > 0)) {
+            CustomRangeDays.save(start: start, end: end, to: defaults)
         }
         return (start, end)
     }
 
     static func save(period: HistoryView.Period, customStart: Date, customEnd: Date) {
         defaults.set(period.rawValue, forKey: periodKey)
-        defaults.set(customStart.timeIntervalSince1970, forKey: customStartKey)
-        defaults.set(customEnd.timeIntervalSince1970, forKey: customEndKey)
+        CustomRangeDays.save(start: customStart, end: customEnd, to: defaults)
     }
 
     static func generatedMonthlySummaryMonth() -> String? {

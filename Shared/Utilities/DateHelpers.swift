@@ -95,6 +95,29 @@ enum DateHelpers {
     }
 }
 
+/// The History custom range as two calendar days ("yyyy-MM-dd"), not instants:
+/// an instant picked as New York midnight is the evening before in Los Angeles,
+/// so a stored instant moved the range a day after a flight. The days are
+/// rebuilt as midnight in whatever zone the device is in when it is read.
+enum CustomRangeDays {
+    static let startKey = "history.customStartDay"
+    static let endKey = "history.customEndDay"
+
+    static func save(start: Date, end: Date, to defaults: UserDefaults, timeZone: TimeZone = Calendar.current.timeZone) {
+        defaults.set(DailyHealthRecord.key(for: start, timeZone: timeZone), forKey: startKey)
+        defaults.set(DailyHealthRecord.key(for: end, timeZone: timeZone), forKey: endKey)
+    }
+
+    /// Both days as local midnight, or nil when no day pair is stored.
+    static func load(from defaults: UserDefaults, timeZone: TimeZone = Calendar.current.timeZone) -> (start: Date, end: Date)? {
+        guard let startDay = defaults.string(forKey: Self.startKey),
+              let endDay = defaults.string(forKey: Self.endKey),
+              let start = DailyHealthRecord.day(forKey: startDay, timeZone: timeZone),
+              let end = DailyHealthRecord.day(forKey: endDay, timeZone: timeZone) else { return nil }
+        return (start, end)
+    }
+}
+
 private extension Calendar.Identifier {
     var isIslamic: Bool {
         switch self {
