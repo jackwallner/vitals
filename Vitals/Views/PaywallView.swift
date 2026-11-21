@@ -454,7 +454,8 @@ struct PaywallView: View {
                     Text(displayedCTATitle)
                         .font(.system(.headline, design: .rounded, weight: .bold))
                         .foregroundStyle(.white)
-                        .lineLimit(1)
+                        .lineLimit(typeSize.isAccessibilitySize ? 3 : 1)
+                        .multilineTextAlignment(.center)
                         .minimumScaleFactor(0.72)
                         .opacity(isPurchasing || ctaTitle == nil ? 0 : 1)
                         .animation(nil, value: displayedCTATitle)
@@ -465,7 +466,7 @@ struct PaywallView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .frame(height: 50)
+                .frame(minHeight: 50)
                 .background(Theme.ctaGradient, in: Capsule())
                 .ctaGlow()
             }
