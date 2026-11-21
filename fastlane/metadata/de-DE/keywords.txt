@@ -1,1 +1,1 @@
-kalorienzähler,schrittzähler,grundumsatz,kalorienbedarf,verbrannt,defizit,tdee,bmi,apple,aktiv,ruhe
+kalorienzähler,schrittzähler,grundumsatz,kalorienbedarf,verbrannt,defizit,tdee,bmi,apple,aktiv,uhr
