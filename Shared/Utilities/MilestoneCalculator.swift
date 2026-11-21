@@ -48,6 +48,14 @@ enum MilestoneCalculator {
     /// could never fire.
     static let streakHistoryDays = 400
 
+    /// Days the Today sync writes into the cache. The first sync writes the whole
+    /// streak window, so a new or reinstalling customer with a long streak in
+    /// Health reads it at once instead of one cached day at a time; later syncs
+    /// only refresh the recent days.
+    static func historySyncDays(backfilled: Bool) -> Int {
+        backfilled ? 90 : streakHistoryDays
+    }
+
     /// How far back a streak walk will go before giving up. Only reached when
     /// every day on the way is user-excluded, which cannot loop forever anyway
     /// (the excluded set is finite), so this is a belt-and-braces bound.

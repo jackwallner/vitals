@@ -946,6 +946,15 @@ final class HealthKitService: ObservableObject {
         healthKitLogger.info("Refreshed \(history.count, privacy: .public)-day history cache for TDEE widget parity")
     }
 
+    /// Today's background history sync. The first one fills the whole streak
+    /// window (`MilestoneCalculator.streakHistoryDays`); later ones refresh 90 days.
+    func refreshHistoryCacheForStreak() async throws {
+        let defaults = UserDefaults(suiteName: vitalsAppGroupID) ?? .standard
+        let backfilled = defaults.bool(forKey: "streakHistoryBackfilled")
+        try await refreshHistoryCache(days: MilestoneCalculator.historySyncDays(backfilled: backfilled))
+        defaults.set(true, forKey: "streakHistoryBackfilled")
+    }
+
     func updateCachedFoodCalories(_ kcal: Double) throws {
         let context = ModelContext(DataService.sharedModelContainer)
         let todayKey = DailyHealthRecord.key(for: DateHelpers.startOfDay())

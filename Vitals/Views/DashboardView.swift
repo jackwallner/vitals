@@ -2304,7 +2304,7 @@ struct DashboardView: View {
             // Maintenance/TDEE widget (which reads only finalized completed days).
             Task(priority: .utility) {
                 do {
-                    try await healthKit.refreshHistoryCache(days: 90)
+                    try await healthKit.refreshHistoryCacheForStreak()
                     checkGoalStreakMilestone(
                         history: (try? healthKit.fetchCachedHistory(days: MilestoneCalculator.streakHistoryDays)) ?? []
                     )
