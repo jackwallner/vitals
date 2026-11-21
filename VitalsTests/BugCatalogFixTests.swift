@@ -133,4 +133,78 @@ final class BugCatalogFixTests: XCTestCase {
         XCTAssertEqual(BodyProfileCalculator.parseDecimal("۷۰"), 70)
         XCTAssertEqual(BodyProfileCalculator.parseDecimal("70.5"), 70.5)
     }
+
+    // MARK: - B8: the first Today sync fills the streak window
+
+    func testFirstTodaySyncWritesTheWholeStreakWindow() {
+        XCTAssertEqual(MilestoneCalculator.historySyncDays(backfilled: false), MilestoneCalculator.streakHistoryDays)
+        XCTAssertEqual(MilestoneCalculator.historySyncDays(backfilled: true), 90)
+        XCTAssertGreaterThan(MilestoneCalculator.historySyncDays(backfilled: false), 100)
+    }
+
+    // MARK: - B9: a custom range is two days, not two instants
+
+    func testCustomRangeInstantShiftsADayAcrossZones() throws {
+        // What the old storage did: New York midnight is the evening before in Los Angeles.
+        let newYork = calendar("America/New_York")
+        let la = calendar("America/Los_Angeles")
+        let start = newYork.startOfDay(for: try XCTUnwrap(newYork.date(from: DateComponents(year: 2026, month: 11, day: 3, hour: 12))))
+        XCTAssertEqual(la.component(.day, from: la.startOfDay(for: start)), 2)
+    }
+
+    func testCustomRangeDaysKeepTheirCalendarDayAcrossZones() throws {
+        let suite = "bugcatalog.customrange.\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let newYork = calendar("America/New_York")
+        let la = calendar("America/Los_Angeles")
+        let start = newYork.startOfDay(for: try XCTUnwrap(newYork.date(from: DateComponents(year: 2026, month: 11, day: 1, hour: 12))))
+        let end = newYork.startOfDay(for: try XCTUnwrap(newYork.date(from: DateComponents(year: 2026, month: 11, day: 10, hour: 12))))
+        CustomRangeDays.save(start: start, end: end, to: defaults, timeZone: newYork.timeZone)
+
+        let loaded = try XCTUnwrap(CustomRangeDays.load(from: defaults, timeZone: la.timeZone))
+        XCTAssertEqual(loaded.start, la.date(from: DateComponents(year: 2026, month: 11, day: 1)))
+        XCTAssertEqual(loaded.end, la.date(from: DateComponents(year: 2026, month: 11, day: 10)))
+        XCTAssertEqual(la.startOfDay(for: loaded.start), loaded.start)
+    }
+
+    func testCustomRangeDaysAreAbsentUntilSaved() throws {
+        let suite = "bugcatalog.customrange.\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        XCTAssertNil(CustomRangeDays.load(from: defaults))
+    }
+
+    // MARK: - B11: a launch counts once, when the app first comes to the foreground
+
+    func testForegroundLaunchCountsOncePerProcess() {
+        let savedCount = ReviewPromptTracker.appLaunchCount
+        let savedFirst = ReviewPromptTracker.firstAppOpenDate
+        defer {
+            ReviewPromptTracker.appLaunchCount = savedCount
+            ReviewPromptTracker.firstAppOpenDate = savedFirst
+            ReviewPromptTracker.resetLaunchCountedForTesting()
+        }
+        ReviewPromptTracker.resetLaunchCountedForTesting()
+        ReviewPromptTracker.appLaunchCount = 0
+        XCTAssertTrue(ReviewPromptTracker.recordForegroundLaunchOnce())
+        XCTAssertFalse(ReviewPromptTracker.recordForegroundLaunchOnce())
+        XCTAssertEqual(ReviewPromptTracker.appLaunchCount, 1)
+    }
+
+    // MARK: - B12: a corrected, lower live total replaces the cached one
+
+    func testLowerLiveStepsReplaceAHigherCachedRead() throws {
+        let live = TodaySnapshotResolver.Stats(active: 300, resting: 900, steps: 6_200)
+        let cached = TodaySnapshotResolver.Stats(active: 300, resting: 900, steps: 9_400)
+        let shown = try XCTUnwrap(TodaySnapshotResolver.resolve(live: live, cached: cached, protectedDataAvailable: true))
+        XCTAssertEqual(shown.steps, 6_200)
+    }
+
+    func testAnEmptyLiveReadFallsBackToTheCache() throws {
+        let live = TodaySnapshotResolver.Stats(active: 0, resting: 0, steps: 0)
+        let cached = TodaySnapshotResolver.Stats(active: 300, resting: 900, steps: 9_400)
+        let shown = try XCTUnwrap(TodaySnapshotResolver.resolve(live: live, cached: cached, protectedDataAvailable: true))
+        XCTAssertEqual(shown, cached)
+    }
 }
