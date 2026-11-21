@@ -107,6 +107,7 @@ private func runScreenshotTour() async {
 private struct RootView: View {
     @ObservedObject private var goals = GoalSettings.shared
     @ObservedObject private var store = StoreService.shared
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         MainTabView()
@@ -128,6 +129,9 @@ private struct RootView: View {
                 #endif
                 guard let link = DeepLink(url: url) else { return }
                 DeepLinkRouter.shared.open(link)
+            }
+            .onChange(of: scenePhase, initial: true) { _, phase in
+                if phase == .active { ReviewPromptTracker.recordForegroundLaunchOnce() }
             }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
                 Task { await store.updateCustomerProductStatus() }
@@ -262,8 +266,6 @@ struct VitalsApp: App {
         // RevenueCat is configured by `RootView` after the first frame: its
         // setup decodes cached responses on the main thread, and the first
         // screen never waited for it (`isPro` arrives asynchronously either way).
-        ReviewPromptTracker.recordAppLaunch()
-        ConversionDiagnostics.recordAppOpen()
         #if DEBUG
         if RevenueCatProbe.isEnabled {
             // Same entry point the real paywall screens call, so what this

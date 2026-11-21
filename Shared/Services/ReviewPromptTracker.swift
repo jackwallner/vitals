@@ -100,7 +100,24 @@ enum ReviewPromptTracker {
         set { defaults.set(newValue, forKey: pendingPositiveMomentKey) }
     }
 
-    /// Call once per process launch (e.g. from `VitalsApp.init`).
+    private static var launchCountedThisProcess = false
+
+    /// Counts a launch once per process, at its first foreground moment. The app
+    /// object is also built when iOS relaunches it in the background (Health
+    /// delivery, refresh), and those runs are not a time the customer opened it.
+    @discardableResult
+    static func recordForegroundLaunchOnce(now: Date = .now) -> Bool {
+        guard !launchCountedThisProcess else { return false }
+        launchCountedThisProcess = true
+        recordAppLaunch(now: now)
+        ConversionDiagnostics.recordAppOpen()
+        return true
+    }
+
+    /// Test hook: lets a test act as a fresh process.
+    static func resetLaunchCountedForTesting() { launchCountedThisProcess = false }
+
+    /// Adds one launch. Call it through `recordForegroundLaunchOnce`.
     static func recordAppLaunch(now: Date = .now) {
         if firstAppOpenDate == nil {
             firstAppOpenDate = now
