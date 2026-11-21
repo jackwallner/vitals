@@ -2243,21 +2243,19 @@ struct DashboardView: View {
 
         do {
             let stats = try await healthKit.fetchTodayStats()
-            // Per-field max of live iPhone HK and the shared SwiftData cache.
-            // The Watch reads its local HealthKit store directly and writes the
-            // result to the shared cache during background refresh, which can
-            // lead the iPhone's HK view by minutes (Watch → iPhone HK sync is
-            // not instantaneous). Calories and steps within a single day only
-            // ever increase, so taking the per-field max can never invent a
-            // value — it just keeps Today from regressing behind whichever
-            // device most recently observed a higher total.
+            // The live read is the truth, so a total corrected in Health (a
+            // duplicate source removed, a wrong workout deleted) can go down. The
+            // cache is only written by this phone, never by the Watch, so it can
+            // only hold an earlier phone read. It stands in when the live read is
+            // all zeros, which is what a locked phone or a not-yet-synced day returns.
             let displayStats: (active: Double, resting: Double, steps: Int)
-            if let cachedStats {
-                displayStats = (
-                    active: max(stats.active, cachedStats.active),
-                    resting: max(stats.resting, cachedStats.resting),
-                    steps: max(stats.steps, cachedStats.steps)
-                )
+            if let cachedStats,
+               let resolved = TodaySnapshotResolver.resolve(
+                   live: TodaySnapshotResolver.Stats(active: stats.active, resting: stats.resting, steps: stats.steps),
+                   cached: TodaySnapshotResolver.Stats(active: cachedStats.active, resting: cachedStats.resting, steps: cachedStats.steps),
+                   protectedDataAvailable: true
+               ) {
+                displayStats = (resolved.active, resolved.resting, resolved.steps)
             } else {
                 displayStats = stats
             }
@@ -2277,11 +2275,9 @@ struct DashboardView: View {
                     healthNotice = HealthNotice.emptyFetch(requestStatus: status)
                 }
             } else {
-                // We have data to show — either fresh from iPhone HK, or merged
-                // up to the Watch's higher cached value. The cache is part of
-                // the normal data path (Watch writes to it via background
-                // refresh), so a momentarily-empty live read with a populated
-                // cache is not an error condition. Don't surface a banner.
+                // We have data to show, either fresh from iPhone HK or the cached
+                // read standing in for an empty live one. That is not an error
+                // condition. Don't surface a banner.
                 healthNotice = nil
             }
             // Only advance the "Updated HH:mm" header after a successful read
@@ -2293,10 +2289,8 @@ struct DashboardView: View {
 
             // Fire-and-forget: stats are already applied; the SwiftData write
             // and widget reload don't need to gate dietary/pacing fetches.
-            // Write the merged values, not the live ones — otherwise we'd
-            // overwrite a higher cache reading (set by the Watch) with the
-            // iPhone's behind-by-sync live value, and the next refresh would
-            // lose the merge benefit entirely.
+            // Write what is shown, so an empty live read never replaces a
+            // cached total.
             let cacheStats = displayStats
             Task {
                 do {
