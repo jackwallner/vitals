@@ -2260,6 +2260,7 @@ struct TrialOfferSheet: View {
     static let pitchDetent: PresentationDetent = .fraction(0.78)
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var typeSize
     @State private var animateGlow = false
     @State private var shimmerPhase: CGFloat = -1
     /// Height the sheet gives the pitch, measured by `CenteredScrollContainer`.
@@ -2531,17 +2532,23 @@ struct TrialOfferSheet: View {
                             .fixedSize(horizontal: false, vertical: true)
                     }
 
-                    HStack(spacing: 4) {
+                    // Stacks at accessibility sizes, as the paywall's footer does: three
+                    // links in one line cut "Privacy Policy".
+                    let stacksLinks = typeSize.isAccessibilitySize
+                    let linkLayout = stacksLinks
+                        ? AnyLayout(VStackLayout(spacing: 0))
+                        : AnyLayout(HStackLayout(spacing: 4))
+                    linkLayout {
                         Button(action: onRestore) {
                             Text(isRestoring ? String(localized: "Restoring…") : String(localized: "Restore"))
                                 .legalTapTarget()
                         }
                         .buttonStyle(.plain)
                         .disabled(isRestoring || isPurchasing)
-                        Text("·")
+                        if !stacksLinks { Text("·") }
                         Link("Terms", destination: PaywallLinks.standardEULA)
                             .legalTapTarget()
-                        Text("·")
+                        if !stacksLinks { Text("·") }
                         Link("Privacy Policy", destination: PaywallLinks.privacyPolicy)
                             .legalTapTarget()
                     }

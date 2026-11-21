@@ -76,6 +76,7 @@ struct TrialOfferPitchSheet: View {
     var onNeedsPlanPicker: () -> Void = {}
 
     @EnvironmentObject private var store: StoreService
+    @Environment(\.dynamicTypeSize) private var typeSize
     @ObservedObject private var goals = GoalSettings.shared
     /// Snapshot taken when the sheet opened, with a live fallback for the case
     /// where StoreKit had not answered yet.
@@ -123,9 +124,15 @@ struct TrialOfferPitchSheet: View {
             }
     }
 
+    private var detents: Set<PresentationDetent> {
+        typeSize.isAccessibilitySize ? [TrialOfferSheet.pitchDetent, .large] : [TrialOfferSheet.pitchDetent]
+    }
+
     var body: some View {
         pitch
-        .presentationDetents([TrialOfferSheet.pitchDetent])
+        // The footer alone can fill 78% at accessibility sizes, so the pitch
+        // above it needs the full height there.
+        .presentationDetents(detents)
         .presentationDragIndicator(.visible)
         .presentationContentInteraction(.resizes)
         .interactiveDismissDisabled(isPurchasing)
