@@ -43,3 +43,13 @@ new or changed user-facing strings, so the localization catalog is untouched
 ## Needs Jack
 
 - Log `gh` in on this machine (or rerun the verification on the Air) so the suite and the two accessibility screenshots can run.
+
+## Found while verifying B14 and B15
+
+At the largest text size the pinned checkout filled the whole paywall, so the
+plan choices could not be seen, and the trial sheet opened showing only its
+buttons. At accessibility sizes the checkout now scrolls below the plans, plan
+cards stack name over price, benefit rows and headlines read in full, and the
+trial sheet opens at full height. Checked on a local simulator at the largest
+size (scrolled top to bottom) and at the default size (unchanged). Full suite:
+gh-sim `vitals-mbaire203-1120-235259-11991`, 300 passed.
