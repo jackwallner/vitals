@@ -694,6 +694,7 @@ final class StoreService: NSObject, ObservableObject {
         defer { purchaseInFlight = false }
 
         let startedTrial = isEligibleForIntroOffer(product)
+        let wasPro = isPro
         let result: PurchaseResultData
         do {
             #if DEBUG
@@ -706,6 +707,12 @@ final class StoreService: NSObject, ObservableObject {
             notePendingConversion(for: product, startedTrial: startedTrial)
             syncConversionAttributes()
             return .pending
+        } catch {
+            // Apple can take the payment and RevenueCat still throw (it could not
+            // post the receipt, or the product is already owned). Ask the server
+            // before calling it a failure.
+            guard !wasPro, await ownsEntitlementAfterFailedPurchase(error) else { throw error }
+            return recordPurchase(of: product, startedTrial: startedTrial)
         }
         apply(customerInfo: result.customerInfo)
         if result.userCancelled {
@@ -720,6 +727,10 @@ final class StoreService: NSObject, ObservableObject {
             syncConversionAttributes()
             return .pending
         }
+        return recordPurchase(of: product, startedTrial: startedTrial)
+    }
+
+    private func recordPurchase(of product: Package, startedTrial: Bool) -> PurchaseState {
         ConversionDiagnostics.clearPendingConversion()
         // Freeze what the funnel looked like at the moment of sale: which
         // surface was last on screen, and how many pitches came before it.
@@ -731,6 +742,26 @@ final class StoreService: NSObject, ObservableObject {
         )
         syncConversionAttributes()
         return .purchased
+    }
+
+    /// After a purchase threw: re-reads customer info from the server, and for an
+    /// "already purchased" error restores first, since the entitlement did not sync.
+    /// Leaves `lastError` as it found it, because the caller shows its own failure copy.
+    private func ownsEntitlementAfterFailedPurchase(_ error: Error) async -> Bool {
+        let previousError = lastError
+        await updateCustomerProductStatus(fetchPolicy: .fetchCurrent)
+        if !isPro, Self.isAlreadyPurchased(error) {
+            await restorePurchases()
+        }
+        if !isPro { lastError = previousError }
+        return isPro
+    }
+
+    nonisolated static func isAlreadyPurchased(_ error: Error) -> Bool {
+        let code = (error as NSError).code
+        guard (error as NSError).domain == ErrorCode.errorDomain else { return false }
+        return code == ErrorCode.productAlreadyPurchasedError.rawValue
+            || code == ErrorCode.receiptAlreadyInUseError.rawValue
     }
 
     private func notePendingConversion(for product: Package, startedTrial: Bool) {
