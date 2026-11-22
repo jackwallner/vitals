@@ -1,1 +1,1 @@
-step,macro,metabolic,rate,maintenance,expenditure,energy,walking,protein,daily,food,weight,fitness
+step,macro,metabolic,rate,maintenance,expenditure,energy,walking,protein,daily,tdee,bmr,fitness
