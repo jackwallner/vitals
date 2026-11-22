@@ -1,0 +1,10095 @@
+{
+ "app_id": 6761743504,
+ "base": "cf4993a6",
+ "taken": "2026-11-21 23:39",
+ "locales": {
+  "ar-SA": [
+   {
+    "term": "عداد السعرات الحرارية المحروقة",
+    "kind": "name",
+    "store": "sa",
+    "rank": "-/1"
+   },
+   {
+    "term": "عداد السعرات الحرارية المحروقة",
+    "kind": "name",
+    "store": "us",
+    "rank": "-/1"
+   },
+   {
+    "term": "الخطوات على الساعة والودجت",
+    "kind": "subtitle",
+    "store": "sa",
+    "rank": "-/1"
+   },
+   {
+    "term": "الخطوات على الساعة والودجت",
+    "kind": "subtitle",
+    "store": "us",
+    "rank": "-/1"
+   },
+   {
+    "term": "عداد السعرات الحرارية - يومي",
+    "kind": "old name",
+    "store": "sa",
+    "rank": "1/191"
+   },
+   {
+    "term": "عداد السعرات الحرارية - يومي",
+    "kind": "old name",
+    "store": "us",
+    "rank": "1/192"
+   },
+   {
+    "term": "TDEE حرق ساعة وودجت",
+    "kind": "old subtitle",
+    "store": "sa",
+    "rank": "1/2"
+   },
+   {
+    "term": "TDEE حرق ساعة وودجت",
+    "kind": "old subtitle",
+    "store": "us",
+    "rank": "1/2"
+   },
+   {
+    "term": "سعرات",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "178/186"
+   },
+   {
+    "term": "سعرات",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "109/188"
+   },
+   {
+    "term": "حاسبة",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/186"
+   },
+   {
+    "term": "حاسبة",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/166"
+   },
+   {
+    "term": "حساب",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/180"
+   },
+   {
+    "term": "حساب",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/182"
+   },
+   {
+    "term": "كالوري",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/190"
+   },
+   {
+    "term": "كالوري",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/165"
+   },
+   {
+    "term": "خطواتي",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/175"
+   },
+   {
+    "term": "خطواتي",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/174"
+   },
+   {
+    "term": "المشي",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/182"
+   },
+   {
+    "term": "المشي",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/181"
+   },
+   {
+    "term": "وزن",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/195"
+   },
+   {
+    "term": "وزن",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/164"
+   },
+   {
+    "term": "ابل",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/172"
+   },
+   {
+    "term": "ابل",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/189"
+   },
+   {
+    "term": "ويدجت",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/189"
+   },
+   {
+    "term": "ويدجت",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/182"
+   },
+   {
+    "term": "مجاني",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/154"
+   },
+   {
+    "term": "مجاني",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/148"
+   },
+   {
+    "term": "الأيض",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/189"
+   },
+   {
+    "term": "الأيض",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/167"
+   },
+   {
+    "term": "نشاط",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/185"
+   },
+   {
+    "term": "نشاط",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "راحة",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/181"
+   },
+   {
+    "term": "راحة",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "118/180"
+   },
+   {
+    "term": "عجز",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/180"
+   },
+   {
+    "term": "عجز",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "134/179"
+   },
+   {
+    "term": "رياضة",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/174"
+   },
+   {
+    "term": "رياضة",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/174"
+   },
+   {
+    "term": "ماكروز",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/189"
+   },
+   {
+    "term": "ماكروز",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/195"
+   },
+   {
+    "term": "عدادخطوات",
+    "kind": "dropped keyword",
+    "store": "sa",
+    "rank": "5/9"
+   },
+   {
+    "term": "عدادخطوات",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "3/9"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "sa",
+    "rank": "88/148"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/174"
+   },
+   {
+    "term": "مضاعفة",
+    "kind": "dropped keyword",
+    "store": "sa",
+    "rank": "9/43"
+   },
+   {
+    "term": "مضاعفة",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "6/43"
+   },
+   {
+    "term": "نشط",
+    "kind": "dropped keyword",
+    "store": "sa",
+    "rank": "101/178"
+   },
+   {
+    "term": "نشط",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "51/178"
+   },
+   {
+    "term": "صيام",
+    "kind": "dropped keyword",
+    "store": "sa",
+    "rank": "-/194"
+   },
+   {
+    "term": "صيام",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/173"
+   },
+   {
+    "term": "مشي",
+    "kind": "dropped keyword",
+    "store": "sa",
+    "rank": "-/183"
+   },
+   {
+    "term": "مشي",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "162/185"
+   },
+   {
+    "term": "حركة",
+    "kind": "dropped keyword",
+    "store": "sa",
+    "rank": "-/190"
+   },
+   {
+    "term": "حركة",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/191"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "sa",
+    "rank": "-/173"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/191"
+   },
+   {
+    "term": "خطوات",
+    "kind": "dropped keyword",
+    "store": "sa",
+    "rank": "-/179"
+   },
+   {
+    "term": "خطوات",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/176"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "sa",
+    "rank": "142/179"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "شاشةالقفل",
+    "kind": "dropped keyword",
+    "store": "sa",
+    "rank": "6/11"
+   },
+   {
+    "term": "شاشةالقفل",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "6/11"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "sa",
+    "rank": "-/184"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/186"
+   },
+   {
+    "term": "محروق",
+    "kind": "dropped keyword",
+    "store": "sa",
+    "rank": "17/86"
+   },
+   {
+    "term": "محروق",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "8/87"
+   },
+   {
+    "term": "حرق",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/170"
+   },
+   {
+    "term": "حرق",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/170"
+   },
+   {
+    "term": "تتبع",
+    "kind": "keyword",
+    "store": "sa",
+    "rank": "-/177"
+   },
+   {
+    "term": "تتبع",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/179"
+   }
+  ],
+  "bn-BD": [
+   {
+    "term": "মোট ক্যালরি - বার্ন ট্র্যাকার",
+    "kind": "name",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "ঘড়ি, উইজেট ও স্টেপ কাউন্টার",
+    "kind": "subtitle",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "মোট ক্যালরি - দৈনিক ট্র্যাকার",
+    "kind": "old name",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE বার্ন ঘড়ি ওয়িজেট",
+    "kind": "old subtitle",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "পেডোমিটার",
+    "kind": "keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "ক্যালকুলেটর",
+    "kind": "keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "ফিটনেস",
+    "kind": "keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "স্বাস্থ্য",
+    "kind": "keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "ওজন",
+    "kind": "keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "ডায়েট",
+    "kind": "keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "বিএমআই",
+    "kind": "keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "বিএমআর",
+    "kind": "keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "প্রোটিন",
+    "kind": "keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "হাঁটা",
+    "kind": "keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "ঘাটতি",
+    "kind": "keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "লক",
+    "kind": "keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "weight",
+    "kind": "keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "diet",
+    "kind": "keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "জটিলতা",
+    "kind": "dropped keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "বিশ্রাম",
+    "kind": "dropped keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "সক্রিয়",
+    "kind": "dropped keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "গতি",
+    "kind": "dropped keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "burned",
+    "kind": "dropped keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "কার্যকলাপ",
+    "kind": "dropped keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "ধাপ",
+    "kind": "dropped keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "bd",
+    "rank": "-/0"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "bd",
+    "rank": "-/0"
+   }
+  ],
+  "ca": [
+   {
+    "term": "Calories Cremades - Diari",
+    "kind": "name",
+    "store": "es",
+    "rank": "-/1"
+   },
+   {
+    "term": "Despesa calòrica al rellotge",
+    "kind": "subtitle",
+    "store": "es",
+    "rank": "-/0"
+   },
+   {
+    "term": "Total Calories - Diari",
+    "kind": "old name",
+    "store": "es",
+    "rank": "-/4"
+   },
+   {
+    "term": "TDEE Cremat Rellotge Widget",
+    "kind": "old subtitle",
+    "store": "es",
+    "rank": "-/0"
+   },
+   {
+    "term": "comptador",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/195"
+   },
+   {
+    "term": "passos",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/180"
+   },
+   {
+    "term": "podòmetre",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/175"
+   },
+   {
+    "term": "calculadora",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/182"
+   },
+   {
+    "term": "widget",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/175"
+   },
+   {
+    "term": "metabolisme",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/137"
+   },
+   {
+    "term": "basal",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/138"
+   },
+   {
+    "term": "dèficit",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/178"
+   },
+   {
+    "term": "repòs",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/146"
+   },
+   {
+    "term": "actives",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/178"
+   },
+   {
+    "term": "energia",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/180"
+   },
+   {
+    "term": "salut",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/184"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "es",
+    "rank": "-/142"
+   },
+   {
+    "term": "complicació",
+    "kind": "dropped keyword",
+    "store": "es",
+    "rank": "-/7"
+   },
+   {
+    "term": "actiu",
+    "kind": "dropped keyword",
+    "store": "es",
+    "rank": "-/35"
+   },
+   {
+    "term": "cremades",
+    "kind": "dropped keyword",
+    "store": "es",
+    "rank": "-/23"
+   },
+   {
+    "term": "caminar",
+    "kind": "dropped keyword",
+    "store": "es",
+    "rank": "-/181"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "es",
+    "rank": "-/181"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "es",
+    "rank": "-/184"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "es",
+    "rank": "-/188"
+   },
+   {
+    "term": "macros",
+    "kind": "dropped keyword",
+    "store": "es",
+    "rank": "-/178"
+   }
+  ],
+  "cs": [
+   {
+    "term": "Spálené kalorie a kroky",
+    "kind": "name",
+    "store": "cz",
+    "rank": "-/3"
+   },
+   {
+    "term": "Kalorický výdej na hodinkách",
+    "kind": "subtitle",
+    "store": "cz",
+    "rank": "-/0"
+   },
+   {
+    "term": "Celkové Kalorie - Denně",
+    "kind": "old name",
+    "store": "cz",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE Spálení Hodinky",
+    "kind": "old subtitle",
+    "store": "cz",
+    "rank": "-/0"
+   },
+   {
+    "term": "krokoměr",
+    "kind": "keyword",
+    "store": "cz",
+    "rank": "-/183"
+   },
+   {
+    "term": "počítadlo",
+    "kind": "keyword",
+    "store": "cz",
+    "rank": "-/194"
+   },
+   {
+    "term": "kalkulačka",
+    "kind": "keyword",
+    "store": "cz",
+    "rank": "-/177"
+   },
+   {
+    "term": "zdarma",
+    "kind": "keyword",
+    "store": "cz",
+    "rank": "-/180"
+   },
+   {
+    "term": "bazální",
+    "kind": "keyword",
+    "store": "cz",
+    "rank": "-/15"
+   },
+   {
+    "term": "metabolismus",
+    "kind": "keyword",
+    "store": "cz",
+    "rank": "-/31"
+   },
+   {
+    "term": "deficit",
+    "kind": "keyword",
+    "store": "cz",
+    "rank": "-/185"
+   },
+   {
+    "term": "zdraví",
+    "kind": "keyword",
+    "store": "cz",
+    "rank": "-/173"
+   },
+   {
+    "term": "widget",
+    "kind": "keyword",
+    "store": "cz",
+    "rank": "-/177"
+   },
+   {
+    "term": "kcal",
+    "kind": "keyword",
+    "store": "cz",
+    "rank": "-/184"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "cz",
+    "rank": "-/173"
+   },
+   {
+    "term": "komplikace",
+    "kind": "keyword",
+    "store": "cz",
+    "rank": "-/23"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "cz",
+    "rank": "-/147"
+   },
+   {
+    "term": "klid",
+    "kind": "dropped keyword",
+    "store": "cz",
+    "rank": "-/189"
+   },
+   {
+    "term": "aktivní",
+    "kind": "dropped keyword",
+    "store": "cz",
+    "rank": "-/24"
+   },
+   {
+    "term": "půst",
+    "kind": "dropped keyword",
+    "store": "cz",
+    "rank": "-/186"
+   },
+   {
+    "term": "chůze",
+    "kind": "dropped keyword",
+    "store": "cz",
+    "rank": "-/177"
+   },
+   {
+    "term": "pohyb",
+    "kind": "dropped keyword",
+    "store": "cz",
+    "rank": "-/179"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "cz",
+    "rank": "-/168"
+   },
+   {
+    "term": "aktivita",
+    "kind": "dropped keyword",
+    "store": "cz",
+    "rank": "-/182"
+   },
+   {
+    "term": "spálené",
+    "kind": "dropped keyword",
+    "store": "cz",
+    "rank": "-/11"
+   },
+   {
+    "term": "makra",
+    "kind": "dropped keyword",
+    "store": "cz",
+    "rank": "-/189"
+   }
+  ],
+  "da": [
+   {
+    "term": "Kalorieforbrug og skridt",
+    "kind": "name",
+    "store": "dk",
+    "rank": "-/2"
+   },
+   {
+    "term": "Aktiv + hvile, ur & widget",
+    "kind": "subtitle",
+    "store": "dk",
+    "rank": "-/0"
+   },
+   {
+    "term": "Samlede Kalorier - Daglig",
+    "kind": "old name",
+    "store": "dk",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE Forbrænding Ur Widget",
+    "kind": "old subtitle",
+    "store": "dk",
+    "rank": "-/0"
+   },
+   {
+    "term": "kalorietæller",
+    "kind": "keyword",
+    "store": "dk",
+    "rank": "-/182"
+   },
+   {
+    "term": "skridttæller",
+    "kind": "keyword",
+    "store": "dk",
+    "rank": "-/176"
+   },
+   {
+    "term": "kalorier",
+    "kind": "keyword",
+    "store": "dk",
+    "rank": "-/186"
+   },
+   {
+    "term": "tæller",
+    "kind": "keyword",
+    "store": "dk",
+    "rank": "-/188"
+   },
+   {
+    "term": "gratis",
+    "kind": "keyword",
+    "store": "dk",
+    "rank": "-/155"
+   },
+   {
+    "term": "forbrændte",
+    "kind": "keyword",
+    "store": "dk",
+    "rank": "-/5"
+   },
+   {
+    "term": "stofskifte",
+    "kind": "keyword",
+    "store": "dk",
+    "rank": "-/36"
+   },
+   {
+    "term": "underskud",
+    "kind": "keyword",
+    "store": "dk",
+    "rank": "-/38"
+   },
+   {
+    "term": "kcal",
+    "kind": "keyword",
+    "store": "dk",
+    "rank": "-/175"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "dk",
+    "rank": "-/172"
+   },
+   {
+    "term": "beregner",
+    "kind": "keyword",
+    "store": "dk",
+    "rank": "-/189"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "dk",
+    "rank": "-/136"
+   },
+   {
+    "term": "komplikation",
+    "kind": "dropped keyword",
+    "store": "dk",
+    "rank": "-/143"
+   },
+   {
+    "term": "hvile",
+    "kind": "dropped keyword",
+    "store": "dk",
+    "rank": "-/171"
+   },
+   {
+    "term": "aktiv",
+    "kind": "dropped keyword",
+    "store": "dk",
+    "rank": "-/167"
+   },
+   {
+    "term": "forbrændt",
+    "kind": "dropped keyword",
+    "store": "dk",
+    "rank": "-/20"
+   },
+   {
+    "term": "gang",
+    "kind": "dropped keyword",
+    "store": "dk",
+    "rank": "-/184"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "dk",
+    "rank": "-/171"
+   },
+   {
+    "term": "makroer",
+    "kind": "dropped keyword",
+    "store": "dk",
+    "rank": "-/190"
+   }
+  ],
+  "de-DE": [
+   {
+    "term": "Kalorienverbrauch – Tracker",
+    "kind": "name",
+    "store": "de",
+    "rank": "-/9"
+   },
+   {
+    "term": "Kalorien auf Watch & Widget",
+    "kind": "subtitle",
+    "store": "de",
+    "rank": "-/84"
+   },
+   {
+    "term": "Kalorienzähler – Tagestracker",
+    "kind": "old name",
+    "store": "de",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE Verbrennung Uhr Widget",
+    "kind": "old subtitle",
+    "store": "de",
+    "rank": "-/0"
+   },
+   {
+    "term": "kalorienzähler",
+    "kind": "keyword",
+    "store": "de",
+    "rank": "-/194"
+   },
+   {
+    "term": "schrittzähler",
+    "kind": "keyword",
+    "store": "de",
+    "rank": "-/178"
+   },
+   {
+    "term": "grundumsatz",
+    "kind": "keyword",
+    "store": "de",
+    "rank": "-/29"
+   },
+   {
+    "term": "kalorienbedarf",
+    "kind": "keyword",
+    "store": "de",
+    "rank": "-/189"
+   },
+   {
+    "term": "verbrannt",
+    "kind": "keyword",
+    "store": "de",
+    "rank": "-/6"
+   },
+   {
+    "term": "defizit",
+    "kind": "keyword",
+    "store": "de",
+    "rank": "-/191"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "de",
+    "rank": "-/181"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "de",
+    "rank": "-/179"
+   },
+   {
+    "term": "apple",
+    "kind": "keyword",
+    "store": "de",
+    "rank": "-/168"
+   },
+   {
+    "term": "aktiv",
+    "kind": "keyword",
+    "store": "de",
+    "rank": "-/158"
+   },
+   {
+    "term": "uhr",
+    "kind": "keyword",
+    "store": "de",
+    "rank": "-/172"
+   },
+   {
+    "term": "kalorienrechner",
+    "kind": "dropped keyword",
+    "store": "de",
+    "rank": "-/189"
+   },
+   {
+    "term": "komplikation",
+    "kind": "dropped keyword",
+    "store": "de",
+    "rank": "-/168"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "de",
+    "rank": "-/143"
+   },
+   {
+    "term": "makros",
+    "kind": "dropped keyword",
+    "store": "de",
+    "rank": "-/186"
+   }
+  ],
+  "el": [
+   {
+    "term": "Ημερήσια Καύση Θερμίδων",
+    "kind": "name",
+    "store": "gr",
+    "rank": "-/0"
+   },
+   {
+    "term": "Συνολικές θερμίδες στο ρολόι",
+    "kind": "subtitle",
+    "store": "gr",
+    "rank": "-/0"
+   },
+   {
+    "term": "Σύνολο Θερμίδων - Ημερήσιο",
+    "kind": "old name",
+    "store": "gr",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE Καύση Ρολόι Widget",
+    "kind": "old subtitle",
+    "store": "gr",
+    "rank": "-/0"
+   },
+   {
+    "term": "μετρητής",
+    "kind": "keyword",
+    "store": "gr",
+    "rank": "-/193"
+   },
+   {
+    "term": "βημάτων",
+    "kind": "keyword",
+    "store": "gr",
+    "rank": "-/86"
+   },
+   {
+    "term": "θερμιδομετρητής",
+    "kind": "keyword",
+    "store": "gr",
+    "rank": "-/130"
+   },
+   {
+    "term": "βηματομετρητής",
+    "kind": "keyword",
+    "store": "gr",
+    "rank": "-/80"
+   },
+   {
+    "term": "έλλειμμα",
+    "kind": "keyword",
+    "store": "gr",
+    "rank": "-/35"
+   },
+   {
+    "term": "δωρεάν",
+    "kind": "keyword",
+    "store": "gr",
+    "rank": "-/166"
+   },
+   {
+    "term": "μεταβολισμός",
+    "kind": "keyword",
+    "store": "gr",
+    "rank": "-/18"
+   },
+   {
+    "term": "βασικός",
+    "kind": "keyword",
+    "store": "gr",
+    "rank": "-/50"
+   },
+   {
+    "term": "ενεργές",
+    "kind": "keyword",
+    "store": "gr",
+    "rank": "-/1"
+   },
+   {
+    "term": "υγεία",
+    "kind": "keyword",
+    "store": "gr",
+    "rank": "-/185"
+   },
+   {
+    "term": "βηματόμετρο",
+    "kind": "dropped keyword",
+    "store": "gr",
+    "rank": "-/175"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "gr",
+    "rank": "-/137"
+   },
+   {
+    "term": "επιπλοκή",
+    "kind": "dropped keyword",
+    "store": "gr",
+    "rank": "-/4"
+   },
+   {
+    "term": "ανάπαυση",
+    "kind": "dropped keyword",
+    "store": "gr",
+    "rank": "-/29"
+   },
+   {
+    "term": "ενεργό",
+    "kind": "dropped keyword",
+    "store": "gr",
+    "rank": "-/8"
+   },
+   {
+    "term": "νηστεία",
+    "kind": "dropped keyword",
+    "store": "gr",
+    "rank": "-/195"
+   },
+   {
+    "term": "περπάτημα",
+    "kind": "dropped keyword",
+    "store": "gr",
+    "rank": "-/181"
+   },
+   {
+    "term": "κίνηση",
+    "kind": "dropped keyword",
+    "store": "gr",
+    "rank": "-/174"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "gr",
+    "rank": "-/177"
+   },
+   {
+    "term": "καμένες",
+    "kind": "dropped keyword",
+    "store": "gr",
+    "rank": "-/1"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "gr",
+    "rank": "-/179"
+   },
+   {
+    "term": "πρωτεΐνη",
+    "kind": "dropped keyword",
+    "store": "gr",
+    "rank": "-/195"
+   }
+  ],
+  "en-AU": [
+   {
+    "term": "Total Calories Burnt Tracker",
+    "kind": "name",
+    "store": "au",
+    "rank": "48/190"
+   },
+   {
+    "term": "Watch Complications & Widgets",
+    "kind": "subtitle",
+    "store": "au",
+    "rank": "-/183"
+   },
+   {
+    "term": "Total Calories - Daily Tracker",
+    "kind": "old name",
+    "store": "au",
+    "rank": "1/189"
+   },
+   {
+    "term": "TDEE Burn on Watch & Widget",
+    "kind": "old subtitle",
+    "store": "au",
+    "rank": "7/185"
+   },
+   {
+    "term": "step",
+    "kind": "keyword",
+    "store": "au",
+    "rank": "-/190"
+   },
+   {
+    "term": "macro",
+    "kind": "keyword",
+    "store": "au",
+    "rank": "-/186"
+   },
+   {
+    "term": "metabolic",
+    "kind": "keyword",
+    "store": "au",
+    "rank": "-/159"
+   },
+   {
+    "term": "rate",
+    "kind": "keyword",
+    "store": "au",
+    "rank": "-/191"
+   },
+   {
+    "term": "maintenance",
+    "kind": "keyword",
+    "store": "au",
+    "rank": "-/194"
+   },
+   {
+    "term": "expenditure",
+    "kind": "keyword",
+    "store": "au",
+    "rank": "-/155"
+   },
+   {
+    "term": "energy",
+    "kind": "keyword",
+    "store": "au",
+    "rank": "-/192"
+   },
+   {
+    "term": "walking",
+    "kind": "keyword",
+    "store": "au",
+    "rank": "-/189"
+   },
+   {
+    "term": "protein",
+    "kind": "keyword",
+    "store": "au",
+    "rank": "-/192"
+   },
+   {
+    "term": "daily",
+    "kind": "keyword",
+    "store": "au",
+    "rank": "-/195"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "au",
+    "rank": "43/183"
+   },
+   {
+    "term": "bmr",
+    "kind": "keyword",
+    "store": "au",
+    "rank": "57/136"
+   },
+   {
+    "term": "fitness",
+    "kind": "keyword",
+    "store": "au",
+    "rank": "-/192"
+   },
+   {
+    "term": "complication",
+    "kind": "dropped keyword",
+    "store": "au",
+    "rank": "82/160"
+   },
+   {
+    "term": "resting",
+    "kind": "dropped keyword",
+    "store": "au",
+    "rank": "43/169"
+   },
+   {
+    "term": "active",
+    "kind": "dropped keyword",
+    "store": "au",
+    "rank": "-/179"
+   },
+   {
+    "term": "ring",
+    "kind": "dropped keyword",
+    "store": "au",
+    "rank": "-/185"
+   },
+   {
+    "term": "calculator",
+    "kind": "dropped keyword",
+    "store": "au",
+    "rank": "-/195"
+   },
+   {
+    "term": "deficit",
+    "kind": "dropped keyword",
+    "store": "au",
+    "rank": "180/181"
+   },
+   {
+    "term": "net",
+    "kind": "dropped keyword",
+    "store": "au",
+    "rank": "-/183"
+   },
+   {
+    "term": "steps",
+    "kind": "dropped keyword",
+    "store": "au",
+    "rank": "-/188"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "au",
+    "rank": "-/173"
+   },
+   {
+    "term": "burned",
+    "kind": "dropped keyword",
+    "store": "au",
+    "rank": "88/154"
+   }
+  ],
+  "en-CA": [
+   {
+    "term": "Total Calories Burned Tracker",
+    "kind": "name",
+    "store": "ca",
+    "rank": "4/184"
+   },
+   {
+    "term": "Daily Burn on Watch & Widget",
+    "kind": "subtitle",
+    "store": "ca",
+    "rank": "38/186"
+   },
+   {
+    "term": "Total Calories - Daily Tracker",
+    "kind": "old name",
+    "store": "ca",
+    "rank": "1/189"
+   },
+   {
+    "term": "TDEE Burn on Watch & Widget",
+    "kind": "old subtitle",
+    "store": "ca",
+    "rank": "15/185"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "76/184"
+   },
+   {
+    "term": "counter",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/189"
+   },
+   {
+    "term": "calculator",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/194"
+   },
+   {
+    "term": "apple",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/172"
+   },
+   {
+    "term": "pedometer",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/181"
+   },
+   {
+    "term": "steps",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/186"
+   },
+   {
+    "term": "deficit",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "182/183"
+   },
+   {
+    "term": "bmr",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "60/138"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/169"
+   },
+   {
+    "term": "resting",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "41/171"
+   },
+   {
+    "term": "active",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/181"
+   },
+   {
+    "term": "kcal",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/190"
+   },
+   {
+    "term": "intake",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/169"
+   },
+   {
+    "term": "energy",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/189"
+   },
+   {
+    "term": "net",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/180"
+   },
+   {
+    "term": "complication",
+    "kind": "dropped keyword",
+    "store": "ca",
+    "rank": "92/164"
+   },
+   {
+    "term": "ring",
+    "kind": "dropped keyword",
+    "store": "ca",
+    "rank": "-/192"
+   },
+   {
+    "term": "burned",
+    "kind": "dropped keyword",
+    "store": "ca",
+    "rank": "97/159"
+   },
+   {
+    "term": "macro",
+    "kind": "dropped keyword",
+    "store": "ca",
+    "rank": "-/189"
+   },
+   {
+    "term": "protein",
+    "kind": "dropped keyword",
+    "store": "ca",
+    "rank": "-/194"
+   }
+  ],
+  "en-GB": [
+   {
+    "term": "Total Calories - Daily Tracker",
+    "kind": "name",
+    "store": "gb",
+    "rank": "1/188"
+   },
+   {
+    "term": "Kcal Burn on Watch & Widget",
+    "kind": "subtitle",
+    "store": "gb",
+    "rank": "86/176"
+   },
+   {
+    "term": "TDEE Burn on Watch & Widget",
+    "kind": "old subtitle",
+    "store": "gb",
+    "rank": "6/190"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "gb",
+    "rank": "71/184"
+   },
+   {
+    "term": "counter",
+    "kind": "keyword",
+    "store": "gb",
+    "rank": "-/187"
+   },
+   {
+    "term": "calculator",
+    "kind": "keyword",
+    "store": "gb",
+    "rank": "-/193"
+   },
+   {
+    "term": "apple",
+    "kind": "keyword",
+    "store": "gb",
+    "rank": "-/172"
+   },
+   {
+    "term": "burned",
+    "kind": "keyword",
+    "store": "gb",
+    "rank": "59/148"
+   },
+   {
+    "term": "bmr",
+    "kind": "keyword",
+    "store": "gb",
+    "rank": "56/139"
+   },
+   {
+    "term": "deficit",
+    "kind": "keyword",
+    "store": "gb",
+    "rank": "-/184"
+   },
+   {
+    "term": "resting",
+    "kind": "keyword",
+    "store": "gb",
+    "rank": "38/171"
+   },
+   {
+    "term": "active",
+    "kind": "keyword",
+    "store": "gb",
+    "rank": "-/190"
+   },
+   {
+    "term": "pedometer",
+    "kind": "keyword",
+    "store": "gb",
+    "rank": "-/177"
+   },
+   {
+    "term": "steps",
+    "kind": "keyword",
+    "store": "gb",
+    "rank": "-/186"
+   },
+   {
+    "term": "ring",
+    "kind": "keyword",
+    "store": "gb",
+    "rank": "-/189"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "gb",
+    "rank": "-/166"
+   },
+   {
+    "term": "intake",
+    "kind": "keyword",
+    "store": "gb",
+    "rank": "-/158"
+   },
+   {
+    "term": "move",
+    "kind": "keyword",
+    "store": "gb",
+    "rank": "-/186"
+   },
+   {
+    "term": "complication",
+    "kind": "dropped keyword",
+    "store": "gb",
+    "rank": "83/157"
+   },
+   {
+    "term": "net",
+    "kind": "dropped keyword",
+    "store": "gb",
+    "rank": "-/178"
+   },
+   {
+    "term": "energy",
+    "kind": "dropped keyword",
+    "store": "gb",
+    "rank": "-/187"
+   },
+   {
+    "term": "macro",
+    "kind": "dropped keyword",
+    "store": "gb",
+    "rank": "-/189"
+   },
+   {
+    "term": "protein",
+    "kind": "dropped keyword",
+    "store": "gb",
+    "rank": "-/193"
+   }
+  ],
+  "es-ES": [
+   {
+    "term": "Gasto Calórico Diario y Pasos",
+    "kind": "name",
+    "store": "es",
+    "rank": "-/12"
+   },
+   {
+    "term": "Calorías en Reloj y Widget",
+    "kind": "subtitle",
+    "store": "es",
+    "rank": "-/43"
+   },
+   {
+    "term": "Contador de Calorías - Diario",
+    "kind": "old name",
+    "store": "es",
+    "rank": "-/194"
+   },
+   {
+    "term": "TDEE Quema Reloj y Widget",
+    "kind": "old subtitle",
+    "store": "es",
+    "rank": "-/6"
+   },
+   {
+    "term": "quemadas",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/23"
+   },
+   {
+    "term": "contador",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/176"
+   },
+   {
+    "term": "podómetro",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/184"
+   },
+   {
+    "term": "metabolismo",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/136"
+   },
+   {
+    "term": "basal",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/138"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/177"
+   },
+   {
+    "term": "apple",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/170"
+   },
+   {
+    "term": "watch",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/159"
+   },
+   {
+    "term": "kcal",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/188"
+   },
+   {
+    "term": "déficit",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/178"
+   },
+   {
+    "term": "reposo",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/159"
+   },
+   {
+    "term": "bmr",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/142"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/184"
+   },
+   {
+    "term": "tmb",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/97"
+   },
+   {
+    "term": "salud",
+    "kind": "keyword",
+    "store": "es",
+    "rank": "-/169"
+   },
+   {
+    "term": "metabolismobasal",
+    "kind": "dropped keyword",
+    "store": "es",
+    "rank": "-/0"
+   },
+   {
+    "term": "gastocalórico",
+    "kind": "dropped keyword",
+    "store": "es",
+    "rank": "-/0"
+   },
+   {
+    "term": "complicación",
+    "kind": "dropped keyword",
+    "store": "es",
+    "rank": "-/67"
+   },
+   {
+    "term": "activas",
+    "kind": "dropped keyword",
+    "store": "es",
+    "rank": "-/186"
+   },
+   {
+    "term": "macros",
+    "kind": "dropped keyword",
+    "store": "es",
+    "rank": "-/178"
+   }
+  ],
+  "es-MX": [
+   {
+    "term": "Total de Calorías Quemadas",
+    "kind": "name",
+    "store": "mx",
+    "rank": "1/1"
+   },
+   {
+    "term": "Total de Calorías Quemadas",
+    "kind": "name",
+    "store": "us",
+    "rank": "2/168"
+   },
+   {
+    "term": "Gasto calórico: reloj y widget",
+    "kind": "subtitle",
+    "store": "mx",
+    "rank": "-/23"
+   },
+   {
+    "term": "Gasto calórico: reloj y widget",
+    "kind": "subtitle",
+    "store": "us",
+    "rank": "-/180"
+   },
+   {
+    "term": "Contador de Calorías - Diario",
+    "kind": "old name",
+    "store": "mx",
+    "rank": "1/194"
+   },
+   {
+    "term": "Contador de Calorías - Diario",
+    "kind": "old name",
+    "store": "us",
+    "rank": "2/193"
+   },
+   {
+    "term": "TDEE Quema Reloj y Widget",
+    "kind": "old subtitle",
+    "store": "mx",
+    "rank": "1/8"
+   },
+   {
+    "term": "TDEE Quema Reloj y Widget",
+    "kind": "old subtitle",
+    "store": "us",
+    "rank": "24/148"
+   },
+   {
+    "term": "contador",
+    "kind": "keyword",
+    "store": "mx",
+    "rank": "-/187"
+   },
+   {
+    "term": "contador",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/189"
+   },
+   {
+    "term": "pasos",
+    "kind": "keyword",
+    "store": "mx",
+    "rank": "-/185"
+   },
+   {
+    "term": "pasos",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/182"
+   },
+   {
+    "term": "podómetro",
+    "kind": "keyword",
+    "store": "mx",
+    "rank": "-/180"
+   },
+   {
+    "term": "podómetro",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/177"
+   },
+   {
+    "term": "calculadora",
+    "kind": "keyword",
+    "store": "mx",
+    "rank": "-/183"
+   },
+   {
+    "term": "calculadora",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/157"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "mx",
+    "rank": "67/184"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "74/184"
+   },
+   {
+    "term": "déficit",
+    "kind": "keyword",
+    "store": "mx",
+    "rank": "-/176"
+   },
+   {
+    "term": "déficit",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/181"
+   },
+   {
+    "term": "bmr",
+    "kind": "keyword",
+    "store": "mx",
+    "rank": "71/147"
+   },
+   {
+    "term": "bmr",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/174"
+   },
+   {
+    "term": "imc",
+    "kind": "keyword",
+    "store": "mx",
+    "rank": "-/177"
+   },
+   {
+    "term": "imc",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "reposo",
+    "kind": "keyword",
+    "store": "mx",
+    "rank": "53/158"
+   },
+   {
+    "term": "reposo",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "107/170"
+   },
+   {
+    "term": "activas",
+    "kind": "keyword",
+    "store": "mx",
+    "rank": "-/193"
+   },
+   {
+    "term": "activas",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/186"
+   },
+   {
+    "term": "metabolismo",
+    "kind": "keyword",
+    "store": "mx",
+    "rank": "-/146"
+   },
+   {
+    "term": "metabolismo",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/160"
+   },
+   {
+    "term": "basal",
+    "kind": "keyword",
+    "store": "mx",
+    "rank": "-/147"
+   },
+   {
+    "term": "basal",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/151"
+   },
+   {
+    "term": "macros",
+    "kind": "keyword",
+    "store": "mx",
+    "rank": "-/181"
+   },
+   {
+    "term": "macros",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/185"
+   },
+   {
+    "term": "metabolismobasal",
+    "kind": "dropped keyword",
+    "store": "mx",
+    "rank": "1/1"
+   },
+   {
+    "term": "metabolismobasal",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "91/171"
+   },
+   {
+    "term": "gastocalórico",
+    "kind": "dropped keyword",
+    "store": "mx",
+    "rank": "1/1"
+   },
+   {
+    "term": "gastocalórico",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "36/178"
+   },
+   {
+    "term": "complicación",
+    "kind": "dropped keyword",
+    "store": "mx",
+    "rank": "20/75"
+   },
+   {
+    "term": "complicación",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "22/150"
+   },
+   {
+    "term": "quemadas",
+    "kind": "dropped keyword",
+    "store": "mx",
+    "rank": "10/21"
+   },
+   {
+    "term": "quemadas",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "14/104"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "mx",
+    "rank": "-/189"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/186"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "mx",
+    "rank": "130/178"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/187"
+   }
+  ],
+  "fi": [
+   {
+    "term": "Kalorinkulutus ja askeleet",
+    "kind": "name",
+    "store": "fi",
+    "rank": "-/0"
+   },
+   {
+    "term": "Kulutus kellossa ja widgetissä",
+    "kind": "subtitle",
+    "store": "fi",
+    "rank": "-/0"
+   },
+   {
+    "term": "Kalorit yhteensä – Päivittäin",
+    "kind": "old name",
+    "store": "fi",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE Kulutus Kello Widget",
+    "kind": "old subtitle",
+    "store": "fi",
+    "rank": "-/0"
+   },
+   {
+    "term": "kalorilaskuri",
+    "kind": "keyword",
+    "store": "fi",
+    "rank": "-/185"
+   },
+   {
+    "term": "askelmittari",
+    "kind": "keyword",
+    "store": "fi",
+    "rank": "-/179"
+   },
+   {
+    "term": "kalorit",
+    "kind": "keyword",
+    "store": "fi",
+    "rank": "-/190"
+   },
+   {
+    "term": "laskuri",
+    "kind": "keyword",
+    "store": "fi",
+    "rank": "-/181"
+   },
+   {
+    "term": "ilmainen",
+    "kind": "keyword",
+    "store": "fi",
+    "rank": "-/129"
+   },
+   {
+    "term": "poltetut",
+    "kind": "keyword",
+    "store": "fi",
+    "rank": "-/3"
+   },
+   {
+    "term": "alijäämä",
+    "kind": "keyword",
+    "store": "fi",
+    "rank": "-/5"
+   },
+   {
+    "term": "terveys",
+    "kind": "keyword",
+    "store": "fi",
+    "rank": "-/169"
+   },
+   {
+    "term": "kcal",
+    "kind": "keyword",
+    "store": "fi",
+    "rank": "-/189"
+   },
+   {
+    "term": "lepo",
+    "kind": "keyword",
+    "store": "fi",
+    "rank": "-/103"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "fi",
+    "rank": "-/183"
+   },
+   {
+    "term": "makrot",
+    "kind": "keyword",
+    "store": "fi",
+    "rank": "-/195"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "fi",
+    "rank": "-/144"
+   },
+   {
+    "term": "komplikaatio",
+    "kind": "dropped keyword",
+    "store": "fi",
+    "rank": "-/21"
+   },
+   {
+    "term": "aktiivinen",
+    "kind": "dropped keyword",
+    "store": "fi",
+    "rank": "-/131"
+   },
+   {
+    "term": "paasto",
+    "kind": "dropped keyword",
+    "store": "fi",
+    "rank": "-/190"
+   },
+   {
+    "term": "kävely",
+    "kind": "dropped keyword",
+    "store": "fi",
+    "rank": "-/188"
+   },
+   {
+    "term": "liike",
+    "kind": "dropped keyword",
+    "store": "fi",
+    "rank": "-/183"
+   },
+   {
+    "term": "poltettu",
+    "kind": "dropped keyword",
+    "store": "fi",
+    "rank": "-/2"
+   }
+  ],
+  "fr-CA": [
+   {
+    "term": "Calories Brûlées - Suivi",
+    "kind": "name",
+    "store": "ca",
+    "rank": "24/177"
+   },
+   {
+    "term": "Dépense calorique et widgets",
+    "kind": "subtitle",
+    "store": "ca",
+    "rank": "110/175"
+   },
+   {
+    "term": "Compteur Calories - Suivi",
+    "kind": "old name",
+    "store": "ca",
+    "rank": "1/191"
+   },
+   {
+    "term": "TDEE Brûlure Montre Widget",
+    "kind": "old subtitle",
+    "store": "ca",
+    "rank": "118/184"
+   },
+   {
+    "term": "compteur",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/187"
+   },
+   {
+    "term": "pas",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/177"
+   },
+   {
+    "term": "podomètre",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/173"
+   },
+   {
+    "term": "calculateur",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/195"
+   },
+   {
+    "term": "montre",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/181"
+   },
+   {
+    "term": "complication",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "92/164"
+   },
+   {
+    "term": "déficit",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "169/181"
+   },
+   {
+    "term": "métabolisme",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "55/165"
+   },
+   {
+    "term": "base",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/187"
+   },
+   {
+    "term": "repos",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/176"
+   },
+   {
+    "term": "actives",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/187"
+   },
+   {
+    "term": "santé",
+    "kind": "keyword",
+    "store": "ca",
+    "rank": "-/168"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "ca",
+    "rank": "60/138"
+   },
+   {
+    "term": "actif",
+    "kind": "dropped keyword",
+    "store": "ca",
+    "rank": "80/158"
+   },
+   {
+    "term": "besoin",
+    "kind": "dropped keyword",
+    "store": "ca",
+    "rank": "18/153"
+   },
+   {
+    "term": "calorique",
+    "kind": "dropped keyword",
+    "store": "ca",
+    "rank": "-/182"
+   },
+   {
+    "term": "nettes",
+    "kind": "dropped keyword",
+    "store": "ca",
+    "rank": "130/154"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "ca",
+    "rank": "-/169"
+   },
+   {
+    "term": "brûlées",
+    "kind": "dropped keyword",
+    "store": "ca",
+    "rank": "11/86"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "ca",
+    "rank": "-/190"
+   },
+   {
+    "term": "macro",
+    "kind": "dropped keyword",
+    "store": "ca",
+    "rank": "-/189"
+   }
+  ],
+  "fr-FR": [
+   {
+    "term": "Calories Brûlées - Suivi",
+    "kind": "name",
+    "store": "fr",
+    "rank": "-/14"
+   },
+   {
+    "term": "Calories Brûlées - Suivi",
+    "kind": "name",
+    "store": "us",
+    "rank": "23/171"
+   },
+   {
+    "term": "Dépense calorique au poignet",
+    "kind": "subtitle",
+    "store": "fr",
+    "rank": "-/0"
+   },
+   {
+    "term": "Dépense calorique au poignet",
+    "kind": "subtitle",
+    "store": "us",
+    "rank": "-/116"
+   },
+   {
+    "term": "Compteur Calories - Suivi",
+    "kind": "old name",
+    "store": "fr",
+    "rank": "-/194"
+   },
+   {
+    "term": "Compteur Calories - Suivi",
+    "kind": "old name",
+    "store": "us",
+    "rank": "1/193"
+   },
+   {
+    "term": "TDEE Brûlure Montre Widget",
+    "kind": "old subtitle",
+    "store": "fr",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE Brûlure Montre Widget",
+    "kind": "old subtitle",
+    "store": "us",
+    "rank": "169/185"
+   },
+   {
+    "term": "compteur",
+    "kind": "keyword",
+    "store": "fr",
+    "rank": "-/181"
+   },
+   {
+    "term": "compteur",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/184"
+   },
+   {
+    "term": "calcul",
+    "kind": "keyword",
+    "store": "fr",
+    "rank": "-/167"
+   },
+   {
+    "term": "calcul",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "podomètre",
+    "kind": "keyword",
+    "store": "fr",
+    "rank": "-/169"
+   },
+   {
+    "term": "podomètre",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/179"
+   },
+   {
+    "term": "pas",
+    "kind": "keyword",
+    "store": "fr",
+    "rank": "-/169"
+   },
+   {
+    "term": "pas",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/169"
+   },
+   {
+    "term": "apple",
+    "kind": "keyword",
+    "store": "fr",
+    "rank": "-/167"
+   },
+   {
+    "term": "apple",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/181"
+   },
+   {
+    "term": "montre",
+    "kind": "keyword",
+    "store": "fr",
+    "rank": "-/168"
+   },
+   {
+    "term": "montre",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/185"
+   },
+   {
+    "term": "widget",
+    "kind": "keyword",
+    "store": "fr",
+    "rank": "-/177"
+   },
+   {
+    "term": "widget",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/188"
+   },
+   {
+    "term": "kcal",
+    "kind": "keyword",
+    "store": "fr",
+    "rank": "-/186"
+   },
+   {
+    "term": "kcal",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "fr",
+    "rank": "-/182"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "74/184"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "fr",
+    "rank": "-/182"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/186"
+   },
+   {
+    "term": "métabolisme",
+    "kind": "keyword",
+    "store": "fr",
+    "rank": "-/157"
+   },
+   {
+    "term": "métabolisme",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "75/159"
+   },
+   {
+    "term": "déficit",
+    "kind": "keyword",
+    "store": "fr",
+    "rank": "-/178"
+   },
+   {
+    "term": "déficit",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/181"
+   },
+   {
+    "term": "repos",
+    "kind": "keyword",
+    "store": "fr",
+    "rank": "-/180"
+   },
+   {
+    "term": "repos",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/158"
+   },
+   {
+    "term": "actives",
+    "kind": "keyword",
+    "store": "fr",
+    "rank": "-/175"
+   },
+   {
+    "term": "actives",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/180"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "fr",
+    "rank": "-/144"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/174"
+   },
+   {
+    "term": "complication",
+    "kind": "dropped keyword",
+    "store": "fr",
+    "rank": "-/166"
+   },
+   {
+    "term": "complication",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "137/170"
+   },
+   {
+    "term": "actif",
+    "kind": "dropped keyword",
+    "store": "fr",
+    "rank": "-/160"
+   },
+   {
+    "term": "actif",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "71/162"
+   },
+   {
+    "term": "besoin",
+    "kind": "dropped keyword",
+    "store": "fr",
+    "rank": "-/144"
+   },
+   {
+    "term": "besoin",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "25/156"
+   },
+   {
+    "term": "calorique",
+    "kind": "dropped keyword",
+    "store": "fr",
+    "rank": "-/192"
+   },
+   {
+    "term": "calorique",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/189"
+   },
+   {
+    "term": "nettes",
+    "kind": "dropped keyword",
+    "store": "fr",
+    "rank": "-/143"
+   },
+   {
+    "term": "nettes",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "143/160"
+   },
+   {
+    "term": "base",
+    "kind": "dropped keyword",
+    "store": "fr",
+    "rank": "-/184"
+   },
+   {
+    "term": "base",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/184"
+   },
+   {
+    "term": "brûlées",
+    "kind": "dropped keyword",
+    "store": "fr",
+    "rank": "-/86"
+   },
+   {
+    "term": "brûlées",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "15/94"
+   },
+   {
+    "term": "macro",
+    "kind": "dropped keyword",
+    "store": "fr",
+    "rank": "-/185"
+   },
+   {
+    "term": "macro",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/187"
+   }
+  ],
+  "gu-IN": [
+   {
+    "term": "કુલ કેલરી - બર્ન ટ્રેકર",
+    "kind": "name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ઘડિયાળ, વિજેટ, સ્ટેપ કાઉન્ટર",
+    "kind": "subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "કુલ કેલરી - દૈનિક ટ્રેકર",
+    "kind": "old name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE બર્ન વોચ વિજેટ",
+    "kind": "old subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "પેડોમીટર",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "કેલ્ક્યુલેટર",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/1"
+   },
+   {
+    "term": "ફિટનેસ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "આરોગ્ય",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "વજન",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ડાયટ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "બીએમઆઈ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "બીએમઆર",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "પ્રોટીન",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ચાલવું",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ખાધ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "લૉક",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "macros",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/187"
+   },
+   {
+    "term": "metabolism",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/176"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "70/148"
+   },
+   {
+    "term": "જટિલતા",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ઘાટો",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "વિશ્રામ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "સક્રિય",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "burned",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "77/145"
+   },
+   {
+    "term": "ચાલ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/172"
+   },
+   {
+    "term": "પ્રવૃત્તિ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "પગલા",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "161/178"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/192"
+   },
+   {
+    "term": "ચરબી",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   }
+  ],
+  "he": [
+   {
+    "term": "שריפת קלוריות - מעקב יומי",
+    "kind": "name",
+    "store": "il",
+    "rank": "-/9"
+   },
+   {
+    "term": "צעדים, שעון, ווידג'ט",
+    "kind": "subtitle",
+    "store": "il",
+    "rank": "1/3"
+   },
+   {
+    "term": "מחשבון קלוריות - יומי",
+    "kind": "old name",
+    "store": "il",
+    "rank": "1/10"
+   },
+   {
+    "term": "TDEE שריפה שעון ווידג'ט",
+    "kind": "old subtitle",
+    "store": "il",
+    "rank": "1/1"
+   },
+   {
+    "term": "מד",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "-/193"
+   },
+   {
+    "term": "ספירת",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "-/184"
+   },
+   {
+    "term": "מחשבון",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "-/188"
+   },
+   {
+    "term": "סופר",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "-/180"
+   },
+   {
+    "term": "מונה",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "-/195"
+   },
+   {
+    "term": "חינם",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "-/179"
+   },
+   {
+    "term": "הליכה",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "125/180"
+   },
+   {
+    "term": "פעילות",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "-/182"
+   },
+   {
+    "term": "מנוחה",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "50/185"
+   },
+   {
+    "term": "פעיל",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "15/24"
+   },
+   {
+    "term": "גירעון",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "20/37"
+   },
+   {
+    "term": "תזונה",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "-/194"
+   },
+   {
+    "term": "אייפון",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "-/174"
+   },
+   {
+    "term": "בריאות",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "-/175"
+   },
+   {
+    "term": "חילוף",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "-/30"
+   },
+   {
+    "term": "חומרים",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "-/61"
+   },
+   {
+    "term": "חישוב",
+    "kind": "keyword",
+    "store": "il",
+    "rank": "-/186"
+   },
+   {
+    "term": "מדצעדים",
+    "kind": "dropped keyword",
+    "store": "il",
+    "rank": "13/19"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "il",
+    "rank": "51/147"
+   },
+   {
+    "term": "סיבוך",
+    "kind": "dropped keyword",
+    "store": "il",
+    "rank": "1/3"
+   },
+   {
+    "term": "צום",
+    "kind": "dropped keyword",
+    "store": "il",
+    "rank": "125/190"
+   },
+   {
+    "term": "תנועה",
+    "kind": "dropped keyword",
+    "store": "il",
+    "rank": "-/185"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "il",
+    "rank": "-/171"
+   },
+   {
+    "term": "צעדים",
+    "kind": "dropped keyword",
+    "store": "il",
+    "rank": "-/180"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "il",
+    "rank": "108/182"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "il",
+    "rank": "-/181"
+   },
+   {
+    "term": "נשרף",
+    "kind": "dropped keyword",
+    "store": "il",
+    "rank": "1/1"
+   },
+   {
+    "term": "מאקרו",
+    "kind": "dropped keyword",
+    "store": "il",
+    "rank": "103/191"
+   }
+  ],
+  "hi": [
+   {
+    "term": "कुल कैलोरी - बर्न ट्रैकर",
+    "kind": "name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "घड़ी, विजेट और स्टेप काउंटर",
+    "kind": "subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "कुल कैलोरी - दैनिक ट्रैकर",
+    "kind": "old name",
+    "store": "in",
+    "rank": "1/1"
+   },
+   {
+    "term": "TDEE बर्न घड़ी विजेट",
+    "kind": "old subtitle",
+    "store": "in",
+    "rank": "1/1"
+   },
+   {
+    "term": "पेडोमीटर",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "16/99"
+   },
+   {
+    "term": "कैलकुलेटर",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/193"
+   },
+   {
+    "term": "फिटनेस",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/189"
+   },
+   {
+    "term": "हेल्थ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/191"
+   },
+   {
+    "term": "वजन",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/190"
+   },
+   {
+    "term": "डाइट",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/199"
+   },
+   {
+    "term": "बीएमआई",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/70"
+   },
+   {
+    "term": "बीएमआर",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/5"
+   },
+   {
+    "term": "प्रोटीन",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/200"
+   },
+   {
+    "term": "कदम",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "91/195"
+   },
+   {
+    "term": "वॉक",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/195"
+   },
+   {
+    "term": "घाटा",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "19/194"
+   },
+   {
+    "term": "आराम",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/198"
+   },
+   {
+    "term": "लॉक",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/191"
+   },
+   {
+    "term": "fitness",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/176"
+   },
+   {
+    "term": "health",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/175"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "70/148"
+   },
+   {
+    "term": "जटिलता",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "1/5"
+   },
+   {
+    "term": "विश्राम",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "10/171"
+   },
+   {
+    "term": "सक्रिय",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "3/25"
+   },
+   {
+    "term": "गति",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "128/187"
+   },
+   {
+    "term": "उपवास",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "18/175"
+   },
+   {
+    "term": "चलना",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "37/187"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/172"
+   },
+   {
+    "term": "गतिविधि",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "11/166"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "161/178"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/192"
+   },
+   {
+    "term": "जली",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "34/173"
+   }
+  ],
+  "hr": [
+   {
+    "term": "Potrošnja Kalorija - Praćenje",
+    "kind": "name",
+    "store": "hr",
+    "rank": "-/0"
+   },
+   {
+    "term": "Ukupne kalorije i koraci",
+    "kind": "subtitle",
+    "store": "hr",
+    "rank": "-/32"
+   },
+   {
+    "term": "Ukupne Kalorije - Dnevni",
+    "kind": "old name",
+    "store": "hr",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE Sagorijevanje Sat",
+    "kind": "old subtitle",
+    "store": "hr",
+    "rank": "-/0"
+   },
+   {
+    "term": "brojač",
+    "kind": "keyword",
+    "store": "hr",
+    "rank": "-/192"
+   },
+   {
+    "term": "pedometar",
+    "kind": "keyword",
+    "store": "hr",
+    "rank": "-/184"
+   },
+   {
+    "term": "koraka",
+    "kind": "keyword",
+    "store": "hr",
+    "rank": "-/127"
+   },
+   {
+    "term": "kalkulator",
+    "kind": "keyword",
+    "store": "hr",
+    "rank": "-/174"
+   },
+   {
+    "term": "kalorijski",
+    "kind": "keyword",
+    "store": "hr",
+    "rank": "-/24"
+   },
+   {
+    "term": "deficit",
+    "kind": "keyword",
+    "store": "hr",
+    "rank": "-/188"
+   },
+   {
+    "term": "besplatno",
+    "kind": "keyword",
+    "store": "hr",
+    "rank": "-/183"
+   },
+   {
+    "term": "bazalni",
+    "kind": "keyword",
+    "store": "hr",
+    "rank": "-/3"
+   },
+   {
+    "term": "metabolizam",
+    "kind": "keyword",
+    "store": "hr",
+    "rank": "-/17"
+   },
+   {
+    "term": "mirovanje",
+    "kind": "keyword",
+    "store": "hr",
+    "rank": "-/56"
+   },
+   {
+    "term": "unos",
+    "kind": "keyword",
+    "store": "hr",
+    "rank": "-/183"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "hr",
+    "rank": "-/147"
+   },
+   {
+    "term": "komplikacija",
+    "kind": "dropped keyword",
+    "store": "hr",
+    "rank": "-/8"
+   },
+   {
+    "term": "odmor",
+    "kind": "dropped keyword",
+    "store": "hr",
+    "rank": "-/186"
+   },
+   {
+    "term": "aktivan",
+    "kind": "dropped keyword",
+    "store": "hr",
+    "rank": "-/4"
+   },
+   {
+    "term": "post",
+    "kind": "dropped keyword",
+    "store": "hr",
+    "rank": "-/180"
+   },
+   {
+    "term": "pokret",
+    "kind": "dropped keyword",
+    "store": "hr",
+    "rank": "-/77"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "hr",
+    "rank": "-/197"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "hr",
+    "rank": "-/180"
+   },
+   {
+    "term": "sagorjeno",
+    "kind": "dropped keyword",
+    "store": "hr",
+    "rank": "-/0"
+   },
+   {
+    "term": "proteini",
+    "kind": "dropped keyword",
+    "store": "hr",
+    "rank": "-/188"
+   }
+  ],
+  "hu": [
+   {
+    "term": "Elégetett kalória és lépés",
+    "kind": "name",
+    "store": "hu",
+    "rank": "-/0"
+   },
+   {
+    "term": "Égetés számlapon és widgeten",
+    "kind": "subtitle",
+    "store": "hu",
+    "rank": "-/0"
+   },
+   {
+    "term": "Összes Kalória - Napi",
+    "kind": "old name",
+    "store": "hu",
+    "rank": "-/1"
+   },
+   {
+    "term": "TDEE Elégés Óra Widget",
+    "kind": "old subtitle",
+    "store": "hu",
+    "rank": "-/0"
+   },
+   {
+    "term": "kalóriaszámláló",
+    "kind": "keyword",
+    "store": "hu",
+    "rank": "-/184"
+   },
+   {
+    "term": "lépésszámláló",
+    "kind": "keyword",
+    "store": "hu",
+    "rank": "-/179"
+   },
+   {
+    "term": "ingyenes",
+    "kind": "keyword",
+    "store": "hu",
+    "rank": "-/176"
+   },
+   {
+    "term": "kalkulátor",
+    "kind": "keyword",
+    "store": "hu",
+    "rank": "-/178"
+   },
+   {
+    "term": "deficit",
+    "kind": "keyword",
+    "store": "hu",
+    "rank": "-/189"
+   },
+   {
+    "term": "alapanyagcsere",
+    "kind": "keyword",
+    "store": "hu",
+    "rank": "-/3"
+   },
+   {
+    "term": "okosóra",
+    "kind": "keyword",
+    "store": "hu",
+    "rank": "-/177"
+   },
+   {
+    "term": "egészség",
+    "kind": "keyword",
+    "store": "hu",
+    "rank": "-/177"
+   },
+   {
+    "term": "kcal",
+    "kind": "keyword",
+    "store": "hu",
+    "rank": "-/177"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "hu",
+    "rank": "-/182"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "hu",
+    "rank": "-/139"
+   },
+   {
+    "term": "komplikáció",
+    "kind": "dropped keyword",
+    "store": "hu",
+    "rank": "-/10"
+   },
+   {
+    "term": "hiány",
+    "kind": "dropped keyword",
+    "store": "hu",
+    "rank": "-/24"
+   },
+   {
+    "term": "pihenő",
+    "kind": "dropped keyword",
+    "store": "hu",
+    "rank": "-/63"
+   },
+   {
+    "term": "aktív",
+    "kind": "dropped keyword",
+    "store": "hu",
+    "rank": "-/120"
+   },
+   {
+    "term": "elégetett",
+    "kind": "dropped keyword",
+    "store": "hu",
+    "rank": "-/4"
+   },
+   {
+    "term": "séta",
+    "kind": "dropped keyword",
+    "store": "hu",
+    "rank": "-/150"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "hu",
+    "rank": "-/168"
+   },
+   {
+    "term": "lépések",
+    "kind": "dropped keyword",
+    "store": "hu",
+    "rank": "-/143"
+   },
+   {
+    "term": "makrók",
+    "kind": "dropped keyword",
+    "store": "hu",
+    "rank": "-/101"
+   }
+  ],
+  "id": [
+   {
+    "term": "Hitung Kalori Terbakar Harian",
+    "kind": "name",
+    "store": "id",
+    "rank": "1/3"
+   },
+   {
+    "term": "Langkah di Jam dan Widget",
+    "kind": "subtitle",
+    "store": "id",
+    "rank": "-/12"
+   },
+   {
+    "term": "Hitung Kalori - Pelacak Harian",
+    "kind": "old name",
+    "store": "id",
+    "rank": "1/100"
+   },
+   {
+    "term": "TDEE Bakar Jam Widget",
+    "kind": "old subtitle",
+    "store": "id",
+    "rank": "1/1"
+   },
+   {
+    "term": "penghitung",
+    "kind": "keyword",
+    "store": "id",
+    "rank": "-/192"
+   },
+   {
+    "term": "pelacak",
+    "kind": "keyword",
+    "store": "id",
+    "rank": "-/185"
+   },
+   {
+    "term": "kalkulator",
+    "kind": "keyword",
+    "store": "id",
+    "rank": "-/184"
+   },
+   {
+    "term": "pedometer",
+    "kind": "keyword",
+    "store": "id",
+    "rank": "-/183"
+   },
+   {
+    "term": "kaki",
+    "kind": "keyword",
+    "store": "id",
+    "rank": "-/172"
+   },
+   {
+    "term": "gratis",
+    "kind": "keyword",
+    "store": "id",
+    "rank": "-/155"
+   },
+   {
+    "term": "pembakaran",
+    "kind": "keyword",
+    "store": "id",
+    "rank": "-/53"
+   },
+   {
+    "term": "kebutuhan",
+    "kind": "keyword",
+    "store": "id",
+    "rank": "-/111"
+   },
+   {
+    "term": "metabolisme",
+    "kind": "keyword",
+    "store": "id",
+    "rank": "-/145"
+   },
+   {
+    "term": "defisit",
+    "kind": "keyword",
+    "store": "id",
+    "rank": "54/185"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "id",
+    "rank": "63/139"
+   },
+   {
+    "term": "komplikasi",
+    "kind": "dropped keyword",
+    "store": "id",
+    "rank": "3/18"
+   },
+   {
+    "term": "istirahat",
+    "kind": "dropped keyword",
+    "store": "id",
+    "rank": "63/164"
+   },
+   {
+    "term": "aktif",
+    "kind": "dropped keyword",
+    "store": "id",
+    "rank": "50/123"
+   },
+   {
+    "term": "puasa",
+    "kind": "dropped keyword",
+    "store": "id",
+    "rank": "-/196"
+   },
+   {
+    "term": "jalan",
+    "kind": "dropped keyword",
+    "store": "id",
+    "rank": "-/192"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "id",
+    "rank": "-/179"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "id",
+    "rank": "75/186"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "id",
+    "rank": "-/194"
+   },
+   {
+    "term": "terbakar",
+    "kind": "dropped keyword",
+    "store": "id",
+    "rank": "12/54"
+   },
+   {
+    "term": "protein",
+    "kind": "dropped keyword",
+    "store": "id",
+    "rank": "-/188"
+   }
+  ],
+  "it": [
+   {
+    "term": "Calorie Bruciate - Tracker",
+    "kind": "name",
+    "store": "it",
+    "rank": "-/5"
+   },
+   {
+    "term": "Consumo su Watch e Widget",
+    "kind": "subtitle",
+    "store": "it",
+    "rank": "-/0"
+   },
+   {
+    "term": "Contacalorie - Tracker",
+    "kind": "old name",
+    "store": "it",
+    "rank": "-/194"
+   },
+   {
+    "term": "TDEE Bruciatura Orologio",
+    "kind": "old subtitle",
+    "store": "it",
+    "rank": "-/0"
+   },
+   {
+    "term": "contacalorie",
+    "kind": "keyword",
+    "store": "it",
+    "rank": "-/192"
+   },
+   {
+    "term": "contapassi",
+    "kind": "keyword",
+    "store": "it",
+    "rank": "-/180"
+   },
+   {
+    "term": "calorico",
+    "kind": "keyword",
+    "store": "it",
+    "rank": "-/131"
+   },
+   {
+    "term": "dispendio",
+    "kind": "keyword",
+    "store": "it",
+    "rank": "-/4"
+   },
+   {
+    "term": "metabolismo",
+    "kind": "keyword",
+    "store": "it",
+    "rank": "-/128"
+   },
+   {
+    "term": "basale",
+    "kind": "keyword",
+    "store": "it",
+    "rank": "-/133"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "it",
+    "rank": "-/178"
+   },
+   {
+    "term": "kcal",
+    "kind": "keyword",
+    "store": "it",
+    "rank": "-/188"
+   },
+   {
+    "term": "apple",
+    "kind": "keyword",
+    "store": "it",
+    "rank": "-/166"
+   },
+   {
+    "term": "deficit",
+    "kind": "keyword",
+    "store": "it",
+    "rank": "-/189"
+   },
+   {
+    "term": "riposo",
+    "kind": "keyword",
+    "store": "it",
+    "rank": "-/184"
+   },
+   {
+    "term": "bmr",
+    "kind": "keyword",
+    "store": "it",
+    "rank": "-/137"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "it",
+    "rank": "-/184"
+   },
+   {
+    "term": "complicazione",
+    "kind": "dropped keyword",
+    "store": "it",
+    "rank": "-/45"
+   },
+   {
+    "term": "attivo",
+    "kind": "dropped keyword",
+    "store": "it",
+    "rank": "-/183"
+   },
+   {
+    "term": "bruciate",
+    "kind": "dropped keyword",
+    "store": "it",
+    "rank": "-/15"
+   },
+   {
+    "term": "macro",
+    "kind": "dropped keyword",
+    "store": "it",
+    "rank": "-/185"
+   }
+  ],
+  "ja": [
+   {
+    "term": "消費カロリー - 毎日のトラッカー",
+    "kind": "name",
+    "store": "jp",
+    "rank": "5/63"
+   },
+   {
+    "term": "Watchとウィジェットで総消費と歩数を確認",
+    "kind": "subtitle",
+    "store": "jp",
+    "rank": "62/159"
+   },
+   {
+    "term": "カロリー計算 - 毎日のトラッカー",
+    "kind": "old name",
+    "store": "jp",
+    "rank": "1/189"
+   },
+   {
+    "term": "TDEE消費 腕時計＆ウィジェット",
+    "kind": "old subtitle",
+    "store": "jp",
+    "rank": "1/15"
+   },
+   {
+    "term": "歩数計",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/180"
+   },
+   {
+    "term": "基礎代謝",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/163"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "63/190"
+   },
+   {
+    "term": "アクティブ",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/169"
+   },
+   {
+    "term": "安静時",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/90"
+   },
+   {
+    "term": "活動量",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/166"
+   },
+   {
+    "term": "代謝",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "45/171"
+   },
+   {
+    "term": "摂取カロリー",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/178"
+   },
+   {
+    "term": "カロリー計算",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/182"
+   },
+   {
+    "term": "カロリー管理",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/181"
+   },
+   {
+    "term": "コンプリケーション",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/177"
+   },
+   {
+    "term": "ロック画面",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/176"
+   },
+   {
+    "term": "ヘルスケア",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/167"
+   },
+   {
+    "term": "体脂肪",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/172"
+   },
+   {
+    "term": "マクロ",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/177"
+   },
+   {
+    "term": "ムーブ",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/177"
+   },
+   {
+    "term": "万歩計",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/180"
+   },
+   {
+    "term": "燃焼",
+    "kind": "keyword",
+    "store": "jp",
+    "rank": "-/166"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "jp",
+    "rank": "61/148"
+   },
+   {
+    "term": "不足",
+    "kind": "dropped keyword",
+    "store": "jp",
+    "rank": "107/176"
+   },
+   {
+    "term": "安静",
+    "kind": "dropped keyword",
+    "store": "jp",
+    "rank": "173/180"
+   },
+   {
+    "term": "ペース",
+    "kind": "dropped keyword",
+    "store": "jp",
+    "rank": "-/178"
+   },
+   {
+    "term": "断食",
+    "kind": "dropped keyword",
+    "store": "jp",
+    "rank": "-/178"
+   },
+   {
+    "term": "ウォーキング",
+    "kind": "dropped keyword",
+    "store": "jp",
+    "rank": "-/178"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "jp",
+    "rank": "-/165"
+   },
+   {
+    "term": "活動",
+    "kind": "dropped keyword",
+    "store": "jp",
+    "rank": "-/122"
+   },
+   {
+    "term": "歩数",
+    "kind": "dropped keyword",
+    "store": "jp",
+    "rank": "-/177"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "jp",
+    "rank": "-/159"
+   },
+   {
+    "term": "カウンター",
+    "kind": "dropped keyword",
+    "store": "jp",
+    "rank": "-/180"
+   },
+   {
+    "term": "健康",
+    "kind": "dropped keyword",
+    "store": "jp",
+    "rank": "-/162"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "jp",
+    "rank": "-/187"
+   },
+   {
+    "term": "脂質",
+    "kind": "dropped keyword",
+    "store": "jp",
+    "rank": "89/180"
+   }
+  ],
+  "kn-IN": [
+   {
+    "term": "ಒಟ್ಟು ಕ್ಯಾಲೋರಿ ಬರ್ನ್ ಟ್ರ್ಯಾಕರ್",
+    "kind": "name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ವಾಚ್, ವಿಜೆಟ್, ಸ್ಟೆಪ್ ಕೌಂಟರ್",
+    "kind": "subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ಒಟ್ಟು ಕ್ಯಾಲೋರಿ - ದೈನಿಕ ಟ್ರಾಕರ್",
+    "kind": "old name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE ಬರ್ನ್ ವಾಚ್ ವಿಜೆಟ್",
+    "kind": "old subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ಪೆಡೋಮೀಟರ್",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ಕ್ಯಾಲ್ಕುಲೇಟರ್",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/1"
+   },
+   {
+    "term": "ಫಿಟ್ನೆಸ್",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ಆರೋಗ್ಯ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ತೂಕ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ಡಯಟ್",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ಬಿಎಮ್ಐ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ಬಿಎಮ್ಆರ್",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ಪ್ರೋಟೀನ್",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ನಡಿಗೆ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ಲಾಕ್",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "protein",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/196"
+   },
+   {
+    "term": "walking",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/188"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "70/148"
+   },
+   {
+    "term": "ಸಂಕೀರ್ಣತೆ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ಕೊರತೆ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ವಿಶ್ರಾಂತಿ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ಸಕ್ರಿಯ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "burned",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "77/145"
+   },
+   {
+    "term": "ನಡೆ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/1"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/172"
+   },
+   {
+    "term": "ಚಟುವಟಿಕೆ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ಸ್ಟೆಪ್ಸ್",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/192"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "161/178"
+   },
+   {
+    "term": "macro",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/190"
+   }
+  ],
+  "ko": [
+   {
+    "term": "총 소모 칼로리 - 일일 추적기",
+    "kind": "name",
+    "store": "kr",
+    "rank": "1/7"
+   },
+   {
+    "term": "총 소모 칼로리 - 일일 추적기",
+    "kind": "name",
+    "store": "us",
+    "rank": "1/7"
+   },
+   {
+    "term": "애플워치와 위젯으로 걸음수도 확인",
+    "kind": "subtitle",
+    "store": "kr",
+    "rank": "33/92"
+   },
+   {
+    "term": "애플워치와 위젯으로 걸음수도 확인",
+    "kind": "subtitle",
+    "store": "us",
+    "rank": "11/38"
+   },
+   {
+    "term": "총 칼로리 - 일일 추적기",
+    "kind": "old name",
+    "store": "kr",
+    "rank": "1/20"
+   },
+   {
+    "term": "총 칼로리 - 일일 추적기",
+    "kind": "old name",
+    "store": "us",
+    "rank": "1/19"
+   },
+   {
+    "term": "TDEE 소모 워치·위젯",
+    "kind": "old subtitle",
+    "store": "kr",
+    "rank": "1/2"
+   },
+   {
+    "term": "TDEE 소모 워치·위젯",
+    "kind": "old subtitle",
+    "store": "us",
+    "rank": "1/2"
+   },
+   {
+    "term": "계산기",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/179"
+   },
+   {
+    "term": "계산기",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/156"
+   },
+   {
+    "term": "카운터",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/181"
+   },
+   {
+    "term": "카운터",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/169"
+   },
+   {
+    "term": "기록",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/181"
+   },
+   {
+    "term": "기록",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/172"
+   },
+   {
+    "term": "측정",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/182"
+   },
+   {
+    "term": "측정",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/170"
+   },
+   {
+    "term": "만보기",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/185"
+   },
+   {
+    "term": "만보기",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/184"
+   },
+   {
+    "term": "걸음",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/174"
+   },
+   {
+    "term": "걸음",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "172/178"
+   },
+   {
+    "term": "기초대사량",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/100"
+   },
+   {
+    "term": "기초대사량",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/70"
+   },
+   {
+    "term": "활동량",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "45/106"
+   },
+   {
+    "term": "활동량",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "11/97"
+   },
+   {
+    "term": "체지방률",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/173"
+   },
+   {
+    "term": "체지방률",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "126/178"
+   },
+   {
+    "term": "적자",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/53"
+   },
+   {
+    "term": "적자",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/53"
+   },
+   {
+    "term": "섭취",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/180"
+   },
+   {
+    "term": "섭취",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/183"
+   },
+   {
+    "term": "걷기",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/182"
+   },
+   {
+    "term": "걷기",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "82/184"
+   },
+   {
+    "term": "워치",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/166"
+   },
+   {
+    "term": "워치",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/160"
+   },
+   {
+    "term": "페이스",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/161"
+   },
+   {
+    "term": "페이스",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/157"
+   },
+   {
+    "term": "컴플리케이션",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "80/170"
+   },
+   {
+    "term": "컴플리케이션",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "16/70"
+   },
+   {
+    "term": "잠금화면",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/188"
+   },
+   {
+    "term": "잠금화면",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/186"
+   },
+   {
+    "term": "다이어트",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/182"
+   },
+   {
+    "term": "다이어트",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/173"
+   },
+   {
+    "term": "운동",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/179"
+   },
+   {
+    "term": "운동",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/162"
+   },
+   {
+    "term": "건강",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/175"
+   },
+   {
+    "term": "건강",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/165"
+   },
+   {
+    "term": "휴식",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/190"
+   },
+   {
+    "term": "휴식",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/178"
+   },
+   {
+    "term": "활동",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/165"
+   },
+   {
+    "term": "활동",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/190"
+   },
+   {
+    "term": "소비",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/185"
+   },
+   {
+    "term": "소비",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/196"
+   },
+   {
+    "term": "체중",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/189"
+   },
+   {
+    "term": "체중",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/181"
+   },
+   {
+    "term": "단백질",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "-/196"
+   },
+   {
+    "term": "단백질",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "141/194"
+   },
+   {
+    "term": "탄수화물",
+    "kind": "keyword",
+    "store": "kr",
+    "rank": "131/186"
+   },
+   {
+    "term": "탄수화물",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "70/190"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "kr",
+    "rank": "75/142"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/174"
+   },
+   {
+    "term": "부족",
+    "kind": "dropped keyword",
+    "store": "kr",
+    "rank": "94/165"
+   },
+   {
+    "term": "부족",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "44/162"
+   },
+   {
+    "term": "단식",
+    "kind": "dropped keyword",
+    "store": "kr",
+    "rank": "-/186"
+   },
+   {
+    "term": "단식",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/175"
+   },
+   {
+    "term": "이동",
+    "kind": "dropped keyword",
+    "store": "kr",
+    "rank": "-/177"
+   },
+   {
+    "term": "이동",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/172"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "kr",
+    "rank": "-/170"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/191"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "kr",
+    "rank": "154/182"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "대사",
+    "kind": "dropped keyword",
+    "store": "kr",
+    "rank": "160/174"
+   },
+   {
+    "term": "대사",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "48/184"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "kr",
+    "rank": "-/189"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/186"
+   },
+   {
+    "term": "지방",
+    "kind": "dropped keyword",
+    "store": "kr",
+    "rank": "-/156"
+   },
+   {
+    "term": "지방",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "130/161"
+   },
+   {
+    "term": "영양",
+    "kind": "dropped keyword",
+    "store": "kr",
+    "rank": "-/180"
+   },
+   {
+    "term": "영양",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "체지방",
+    "kind": "dropped keyword",
+    "store": "kr",
+    "rank": "-/167"
+   },
+   {
+    "term": "체지방",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "104/176"
+   }
+  ],
+  "ml-IN": [
+   {
+    "term": "ആകെ കലോറി - ബേൺ ട്രാക്കർ",
+    "kind": "name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "വാച്ച് വിജറ്റ് സ്റ്റെപ് കൗണ്ടർ",
+    "kind": "subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ആകെ കാലറി - ദൈനംദിന ട്രാക്കർ",
+    "kind": "old name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE ബേൺ വാച്ച് വിജറ്റ്",
+    "kind": "old subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "പെഡോമീറ്റർ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "കാൽക്കുലേറ്റർ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ഫിറ്റ്നസ്",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ആരോഗ്യം",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ഭാരം",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ഡയറ്റ്",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ബിഎംഐ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ബിഎംആർ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "പ്രോട്ടീൻ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "നടത്തം",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "കമ്മി",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "goal",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/193"
+   },
+   {
+    "term": "lock",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/183"
+   },
+   {
+    "term": "പീഡോമീറ്റർ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "70/148"
+   },
+   {
+    "term": "സങ്കീർണ്ണത",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "കമിഞ്ഞ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "വിശ്രമം",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "സജീവ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "burned",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "77/145"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/172"
+   },
+   {
+    "term": "പ്രവർത്തനം",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/192"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "161/178"
+   },
+   {
+    "term": "macro",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/190"
+   }
+  ],
+  "mr-IN": [
+   {
+    "term": "एकूण कॅलरी - बर्न ट्रॅकर",
+    "kind": "name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "घड्याळ, विजेट आणि स्टेप काउंटर",
+    "kind": "subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "एकूण कॅलरी - दैनिक ट्रॅकर",
+    "kind": "old name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE बर्न वॉच विजेट",
+    "kind": "old subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "पेडोमीटर",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "16/99"
+   },
+   {
+    "term": "कॅल्क्युलेटर",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/22"
+   },
+   {
+    "term": "फिटनेस",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/189"
+   },
+   {
+    "term": "आरोग्य",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/14"
+   },
+   {
+    "term": "वजन",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/190"
+   },
+   {
+    "term": "डाएट",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/1"
+   },
+   {
+    "term": "बीएमआय",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "बीएमआर",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/5"
+   },
+   {
+    "term": "प्रथिने",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "चालणे",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "तूट",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/93"
+   },
+   {
+    "term": "लॉक",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/191"
+   },
+   {
+    "term": "सक्रिय",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "3/25"
+   },
+   {
+    "term": "siri",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/176"
+   },
+   {
+    "term": "csv",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/195"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "70/148"
+   },
+   {
+    "term": "जटिलता",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "1/5"
+   },
+   {
+    "term": "घाटा",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "19/194"
+   },
+   {
+    "term": "विश्राम",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "10/171"
+   },
+   {
+    "term": "burned",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "77/145"
+   },
+   {
+    "term": "चालण",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/172"
+   },
+   {
+    "term": "क्रियाकलाप",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "पायऱ्या",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "161/178"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/192"
+   }
+  ],
+  "ms": [
+   {
+    "term": "Hitung Kalori Terbakar Harian",
+    "kind": "name",
+    "store": "my",
+    "rank": "1/1"
+   },
+   {
+    "term": "Kiraan langkah, jam, widget",
+    "kind": "subtitle",
+    "store": "my",
+    "rank": "-/2"
+   },
+   {
+    "term": "Hitung Kalori - Harian",
+    "kind": "old name",
+    "store": "my",
+    "rank": "1/11"
+   },
+   {
+    "term": "TDEE Bakar Jam Widget",
+    "kind": "old subtitle",
+    "store": "my",
+    "rank": "1/1"
+   },
+   {
+    "term": "pedometer",
+    "kind": "keyword",
+    "store": "my",
+    "rank": "-/185"
+   },
+   {
+    "term": "penghitung",
+    "kind": "keyword",
+    "store": "my",
+    "rank": "-/121"
+   },
+   {
+    "term": "pelacak",
+    "kind": "keyword",
+    "store": "my",
+    "rank": "-/176"
+   },
+   {
+    "term": "percuma",
+    "kind": "keyword",
+    "store": "my",
+    "rank": "-/144"
+   },
+   {
+    "term": "jumlah",
+    "kind": "keyword",
+    "store": "my",
+    "rank": "-/139"
+   },
+   {
+    "term": "senaman",
+    "kind": "keyword",
+    "store": "my",
+    "rank": "-/193"
+   },
+   {
+    "term": "aktif",
+    "kind": "keyword",
+    "store": "my",
+    "rank": "56/98"
+   },
+   {
+    "term": "rehat",
+    "kind": "keyword",
+    "store": "my",
+    "rank": "170/176"
+   },
+   {
+    "term": "defisit",
+    "kind": "keyword",
+    "store": "my",
+    "rank": "64/80"
+   },
+   {
+    "term": "metabolisme",
+    "kind": "keyword",
+    "store": "my",
+    "rank": "-/156"
+   },
+   {
+    "term": "pembakaran",
+    "kind": "keyword",
+    "store": "my",
+    "rank": "-/23"
+   },
+   {
+    "term": "kira",
+    "kind": "keyword",
+    "store": "my",
+    "rank": "-/181"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "my",
+    "rank": "119/142"
+   },
+   {
+    "term": "komplikasi",
+    "kind": "dropped keyword",
+    "store": "my",
+    "rank": "7/13"
+   },
+   {
+    "term": "puasa",
+    "kind": "dropped keyword",
+    "store": "my",
+    "rank": "-/195"
+   },
+   {
+    "term": "jalan",
+    "kind": "dropped keyword",
+    "store": "my",
+    "rank": "-/192"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "my",
+    "rank": "-/171"
+   },
+   {
+    "term": "aktiviti",
+    "kind": "dropped keyword",
+    "store": "my",
+    "rank": "-/177"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "my",
+    "rank": "-/192"
+   },
+   {
+    "term": "terbakar",
+    "kind": "dropped keyword",
+    "store": "my",
+    "rank": "19/39"
+   },
+   {
+    "term": "protein",
+    "kind": "dropped keyword",
+    "store": "my",
+    "rank": "-/195"
+   }
+  ],
+  "nl-NL": [
+   {
+    "term": "Verbrande Calorieën - Tracker",
+    "kind": "name",
+    "store": "nl",
+    "rank": "-/7"
+   },
+   {
+    "term": "Calorieverbruik op je horloge",
+    "kind": "subtitle",
+    "store": "nl",
+    "rank": "-/0"
+   },
+   {
+    "term": "Calorieënteller - Dagelijks",
+    "kind": "old name",
+    "store": "nl",
+    "rank": "-/18"
+   },
+   {
+    "term": "TDEE Verbranding Horloge",
+    "kind": "old subtitle",
+    "store": "nl",
+    "rank": "-/0"
+   },
+   {
+    "term": "stappenteller",
+    "kind": "keyword",
+    "store": "nl",
+    "rank": "-/163"
+   },
+   {
+    "term": "calorieënteller",
+    "kind": "keyword",
+    "store": "nl",
+    "rank": "-/179"
+   },
+   {
+    "term": "widget",
+    "kind": "keyword",
+    "store": "nl",
+    "rank": "-/180"
+   },
+   {
+    "term": "caloriebehoefte",
+    "kind": "keyword",
+    "store": "nl",
+    "rank": "-/6"
+   },
+   {
+    "term": "calorietekort",
+    "kind": "keyword",
+    "store": "nl",
+    "rank": "-/181"
+   },
+   {
+    "term": "pedometer",
+    "kind": "keyword",
+    "store": "nl",
+    "rank": "-/169"
+   },
+   {
+    "term": "rekenmachine",
+    "kind": "keyword",
+    "store": "nl",
+    "rank": "-/156"
+   },
+   {
+    "term": "berekenen",
+    "kind": "keyword",
+    "store": "nl",
+    "rank": "-/161"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "nl",
+    "rank": "-/133"
+   },
+   {
+    "term": "complicatie",
+    "kind": "dropped keyword",
+    "store": "nl",
+    "rank": "-/32"
+   },
+   {
+    "term": "tekort",
+    "kind": "dropped keyword",
+    "store": "nl",
+    "rank": "-/94"
+   },
+   {
+    "term": "rust",
+    "kind": "dropped keyword",
+    "store": "nl",
+    "rank": "-/191"
+   },
+   {
+    "term": "actief",
+    "kind": "dropped keyword",
+    "store": "nl",
+    "rank": "-/115"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "nl",
+    "rank": "-/184"
+   },
+   {
+    "term": "basaalmetabolisme",
+    "kind": "dropped keyword",
+    "store": "nl",
+    "rank": "-/0"
+   },
+   {
+    "term": "netto",
+    "kind": "dropped keyword",
+    "store": "nl",
+    "rank": "-/171"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "nl",
+    "rank": "-/165"
+   },
+   {
+    "term": "macros",
+    "kind": "dropped keyword",
+    "store": "nl",
+    "rank": "-/174"
+   },
+   {
+    "term": "verbrand",
+    "kind": "dropped keyword",
+    "store": "nl",
+    "rank": "-/90"
+   }
+  ],
+  "no": [
+   {
+    "term": "Forbrente kalorier og skritt",
+    "kind": "name",
+    "store": "no",
+    "rank": "1/2"
+   },
+   {
+    "term": "Aktiv + hvile, klokke & widget",
+    "kind": "subtitle",
+    "store": "no",
+    "rank": "4/22"
+   },
+   {
+    "term": "Totale Kalorier - Daglig",
+    "kind": "old name",
+    "store": "no",
+    "rank": "1/2"
+   },
+   {
+    "term": "TDEE Forbrenning Klokke",
+    "kind": "old subtitle",
+    "store": "no",
+    "rank": "1/1"
+   },
+   {
+    "term": "kaloriteller",
+    "kind": "keyword",
+    "store": "no",
+    "rank": "-/190"
+   },
+   {
+    "term": "skritteller",
+    "kind": "keyword",
+    "store": "no",
+    "rank": "118/168"
+   },
+   {
+    "term": "telle",
+    "kind": "keyword",
+    "store": "no",
+    "rank": "-/170"
+   },
+   {
+    "term": "kalkulator",
+    "kind": "keyword",
+    "store": "no",
+    "rank": "-/163"
+   },
+   {
+    "term": "gratis",
+    "kind": "keyword",
+    "store": "no",
+    "rank": "-/170"
+   },
+   {
+    "term": "kaloriforbruk",
+    "kind": "keyword",
+    "store": "no",
+    "rank": "-/3"
+   },
+   {
+    "term": "forbrenning",
+    "kind": "keyword",
+    "store": "no",
+    "rank": "-/191"
+   },
+   {
+    "term": "underskudd",
+    "kind": "keyword",
+    "store": "no",
+    "rank": "8/36"
+   },
+   {
+    "term": "helse",
+    "kind": "keyword",
+    "store": "no",
+    "rank": "-/154"
+   },
+   {
+    "term": "kcal",
+    "kind": "keyword",
+    "store": "no",
+    "rank": "-/169"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "no",
+    "rank": "-/186"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "no",
+    "rank": "60/138"
+   },
+   {
+    "term": "komplikasjon",
+    "kind": "dropped keyword",
+    "store": "no",
+    "rank": "11/25"
+   },
+   {
+    "term": "hvile",
+    "kind": "dropped keyword",
+    "store": "no",
+    "rank": "43/185"
+   },
+   {
+    "term": "aktiv",
+    "kind": "dropped keyword",
+    "store": "no",
+    "rank": "-/173"
+   },
+   {
+    "term": "faste",
+    "kind": "dropped keyword",
+    "store": "no",
+    "rank": "-/189"
+   },
+   {
+    "term": "bevegelse",
+    "kind": "dropped keyword",
+    "store": "no",
+    "rank": "-/194"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "no",
+    "rank": "-/169"
+   },
+   {
+    "term": "forbrent",
+    "kind": "dropped keyword",
+    "store": "no",
+    "rank": "1/3"
+   },
+   {
+    "term": "makroer",
+    "kind": "dropped keyword",
+    "store": "no",
+    "rank": "38/182"
+   }
+  ],
+  "or-IN": [
+   {
+    "term": "ମୋଟ ଜଳିଥିବା କ୍ୟାଲୋରି",
+    "kind": "name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ୱାଚ୍, ୱିଜେଟ୍, ଲକ୍ ସ୍କ୍ରିନ୍",
+    "kind": "subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ସମୁଦାୟ କ୍ୟାଲୋରୀ - ଦୈନିକ",
+    "kind": "old name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE ବର୍ନ ୱାଚ ଉଇଜେଟ",
+    "kind": "old subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ପାଦକ୍ଷେପ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ଷ୍ଟେପ୍ସ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ଚାଲିବା",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ପେଡୋମିଟର",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ବ୍ୟାୟାମ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ସ୍ୱାସ୍ଥ୍ୟ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ଓଜନ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ହ୍ରାସ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ଆପଲ୍",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ବିଶ୍ରାମ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ସକ୍ରିୟ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ଘଡ଼ି",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ଶକ୍ତି",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "କ୍ୟାଲୋରୀ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "70/148"
+   },
+   {
+    "term": "ଜଟିଳତା",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ଘାଟ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "burned",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "77/145"
+   },
+   {
+    "term": "ଚାଲ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/172"
+   },
+   {
+    "term": "କାର୍ଯ୍ୟକଳାପ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "161/178"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/192"
+   },
+   {
+    "term": "ପ୍ରୋଟିନ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   }
+  ],
+  "pa-IN": [
+   {
+    "term": "ਕੁੱਲ ਕੈਲੋਰੀ: ਰੋਜ਼ਾਨਾ ਬਰਨ",
+    "kind": "name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਵਾਚ, ਵਿਜੇਟ, ਲੌਕ ਸਕ੍ਰੀਨ",
+    "kind": "subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਕੁੱਲ ਕੈਲੋਰੀਆਂ - ਰੋਜ਼ਾਨਾ ਟਰੈਕਰ",
+    "kind": "old name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE ਬਰਨ ਵਾਚ ਵਿਜਟ",
+    "kind": "old subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਕਦਮ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਸਟੈੱਪ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਸੈਰ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਪੈਡੋਮੀਟਰ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਕਸਰਤ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਸਿਹਤ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਭਾਰ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਘਟਾਉਣਾ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਐਪਲ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਆਰਾਮ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਸਰਗਰਮ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਘਾਟਾ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਊਰਜਾ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਘੜੀ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਫਿਟਨੈਸ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "fitness",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/176"
+   },
+   {
+    "term": "workout",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/186"
+   },
+   {
+    "term": "ਵਜ਼ਨ",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਪੇਡੋਮੀਟਰ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "70/148"
+   },
+   {
+    "term": "ਜਟਿਲਤਾ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਸਕ੍ਰਿਯ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਗਤੀ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "burned",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "77/145"
+   },
+   {
+    "term": "ਟੁਰਨਾ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/172"
+   },
+   {
+    "term": "ਗਤੀਵਿਧੀ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "161/178"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/192"
+   },
+   {
+    "term": "ਪ੍ਰੋਟੀਨ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ਚਰਬੀ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   }
+  ],
+  "pl": [
+   {
+    "term": "Spalone Kalorie - Licznik",
+    "kind": "name",
+    "store": "pl",
+    "rank": "-/3"
+   },
+   {
+    "term": "Spalanie na zegarku i widżecie",
+    "kind": "subtitle",
+    "store": "pl",
+    "rank": "-/0"
+   },
+   {
+    "term": "Suma Kalorii - Codzienny",
+    "kind": "old name",
+    "store": "pl",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE Spalanie Zegarek",
+    "kind": "old subtitle",
+    "store": "pl",
+    "rank": "-/0"
+   },
+   {
+    "term": "kalorii",
+    "kind": "keyword",
+    "store": "pl",
+    "rank": "-/193"
+   },
+   {
+    "term": "krokomierz",
+    "kind": "keyword",
+    "store": "pl",
+    "rank": "-/178"
+   },
+   {
+    "term": "kroki",
+    "kind": "keyword",
+    "store": "pl",
+    "rank": "-/187"
+   },
+   {
+    "term": "kcal",
+    "kind": "keyword",
+    "store": "pl",
+    "rank": "-/188"
+   },
+   {
+    "term": "zapotrzebowanie",
+    "kind": "keyword",
+    "store": "pl",
+    "rank": "-/8"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "pl",
+    "rank": "-/178"
+   },
+   {
+    "term": "bmr",
+    "kind": "keyword",
+    "store": "pl",
+    "rank": "-/138"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "pl",
+    "rank": "-/171"
+   },
+   {
+    "term": "apple",
+    "kind": "keyword",
+    "store": "pl",
+    "rank": "-/168"
+   },
+   {
+    "term": "watch",
+    "kind": "keyword",
+    "store": "pl",
+    "rank": "-/165"
+   },
+   {
+    "term": "deficyt",
+    "kind": "keyword",
+    "store": "pl",
+    "rank": "-/191"
+   },
+   {
+    "term": "aktywne",
+    "kind": "keyword",
+    "store": "pl",
+    "rank": "-/12"
+   },
+   {
+    "term": "spoczynek",
+    "kind": "keyword",
+    "store": "pl",
+    "rank": "-/7"
+   },
+   {
+    "term": "ppm",
+    "kind": "keyword",
+    "store": "pl",
+    "rank": "-/150"
+   },
+   {
+    "term": "komplikacja",
+    "kind": "dropped keyword",
+    "store": "pl",
+    "rank": "-/20"
+   },
+   {
+    "term": "aktywny",
+    "kind": "dropped keyword",
+    "store": "pl",
+    "rank": "-/22"
+   },
+   {
+    "term": "post",
+    "kind": "dropped keyword",
+    "store": "pl",
+    "rank": "-/181"
+   },
+   {
+    "term": "chodzenie",
+    "kind": "dropped keyword",
+    "store": "pl",
+    "rank": "-/178"
+   },
+   {
+    "term": "spalone",
+    "kind": "dropped keyword",
+    "store": "pl",
+    "rank": "-/10"
+   },
+   {
+    "term": "białko",
+    "kind": "dropped keyword",
+    "store": "pl",
+    "rank": "-/194"
+   }
+  ],
+  "pt-BR": [
+   {
+    "term": "Total de Calorias Queimadas",
+    "kind": "name",
+    "store": "br",
+    "rank": "1/1"
+   },
+   {
+    "term": "Total de Calorias Queimadas",
+    "kind": "name",
+    "store": "us",
+    "rank": "4/167"
+   },
+   {
+    "term": "Gasto calórico no Apple Watch",
+    "kind": "subtitle",
+    "store": "br",
+    "rank": "-/0"
+   },
+   {
+    "term": "Gasto calórico no Apple Watch",
+    "kind": "subtitle",
+    "store": "us",
+    "rank": "59/181"
+   },
+   {
+    "term": "Calorias - Contador Diário",
+    "kind": "old name",
+    "store": "br",
+    "rank": "2/192"
+   },
+   {
+    "term": "Calorias - Contador Diário",
+    "kind": "old name",
+    "store": "us",
+    "rank": "1/193"
+   },
+   {
+    "term": "TDEE Queima Relógio Widget",
+    "kind": "old subtitle",
+    "store": "br",
+    "rank": "1/1"
+   },
+   {
+    "term": "TDEE Queima Relógio Widget",
+    "kind": "old subtitle",
+    "store": "us",
+    "rank": "63/166"
+   },
+   {
+    "term": "gastas",
+    "kind": "keyword",
+    "store": "br",
+    "rank": "-/24"
+   },
+   {
+    "term": "gastas",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/99"
+   },
+   {
+    "term": "contador",
+    "kind": "keyword",
+    "store": "br",
+    "rank": "-/190"
+   },
+   {
+    "term": "contador",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/189"
+   },
+   {
+    "term": "passos",
+    "kind": "keyword",
+    "store": "br",
+    "rank": "-/175"
+   },
+   {
+    "term": "passos",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/144"
+   },
+   {
+    "term": "pedômetro",
+    "kind": "keyword",
+    "store": "br",
+    "rank": "-/183"
+   },
+   {
+    "term": "pedômetro",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/164"
+   },
+   {
+    "term": "calculadora",
+    "kind": "keyword",
+    "store": "br",
+    "rank": "-/184"
+   },
+   {
+    "term": "calculadora",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/160"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "br",
+    "rank": "66/186"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "74/184"
+   },
+   {
+    "term": "widget",
+    "kind": "keyword",
+    "store": "br",
+    "rank": "-/173"
+   },
+   {
+    "term": "widget",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/188"
+   },
+   {
+    "term": "taxa",
+    "kind": "keyword",
+    "store": "br",
+    "rank": "-/190"
+   },
+   {
+    "term": "taxa",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/178"
+   },
+   {
+    "term": "metabólica",
+    "kind": "keyword",
+    "store": "br",
+    "rank": "-/24"
+   },
+   {
+    "term": "metabólica",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/155"
+   },
+   {
+    "term": "basal",
+    "kind": "keyword",
+    "store": "br",
+    "rank": "-/146"
+   },
+   {
+    "term": "basal",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/151"
+   },
+   {
+    "term": "déficit",
+    "kind": "keyword",
+    "store": "br",
+    "rank": "-/174"
+   },
+   {
+    "term": "déficit",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/181"
+   },
+   {
+    "term": "imc",
+    "kind": "keyword",
+    "store": "br",
+    "rank": "-/178"
+   },
+   {
+    "term": "imc",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "repouso",
+    "kind": "keyword",
+    "store": "br",
+    "rank": "28/62"
+   },
+   {
+    "term": "repouso",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "11/60"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "br",
+    "rank": "78/144"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/174"
+   },
+   {
+    "term": "complicação",
+    "kind": "dropped keyword",
+    "store": "br",
+    "rank": "38/77"
+   },
+   {
+    "term": "complicação",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "15/145"
+   },
+   {
+    "term": "ativo",
+    "kind": "dropped keyword",
+    "store": "br",
+    "rank": "-/175"
+   },
+   {
+    "term": "ativo",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/168"
+   },
+   {
+    "term": "ritmo",
+    "kind": "dropped keyword",
+    "store": "br",
+    "rank": "-/175"
+   },
+   {
+    "term": "ritmo",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/176"
+   },
+   {
+    "term": "queimadas",
+    "kind": "dropped keyword",
+    "store": "br",
+    "rank": "43/170"
+   },
+   {
+    "term": "queimadas",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "29/164"
+   },
+   {
+    "term": "caminhar",
+    "kind": "dropped keyword",
+    "store": "br",
+    "rank": "-/178"
+   },
+   {
+    "term": "caminhar",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "br",
+    "rank": "-/165"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/191"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "br",
+    "rank": "133/183"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "br",
+    "rank": "-/192"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/186"
+   },
+   {
+    "term": "macros",
+    "kind": "dropped keyword",
+    "store": "br",
+    "rank": "-/186"
+   },
+   {
+    "term": "macros",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/185"
+   }
+  ],
+  "pt-PT": [
+   {
+    "term": "Total de Calorias Gastas",
+    "kind": "name",
+    "store": "pt",
+    "rank": "-/0"
+   },
+   {
+    "term": "Gasto calórico no Apple Watch",
+    "kind": "subtitle",
+    "store": "pt",
+    "rank": "-/0"
+   },
+   {
+    "term": "Contador de Calorias - Diário",
+    "kind": "old name",
+    "store": "pt",
+    "rank": "-/193"
+   },
+   {
+    "term": "TDEE Queima Relógio Widget",
+    "kind": "old subtitle",
+    "store": "pt",
+    "rank": "-/0"
+   },
+   {
+    "term": "queimadas",
+    "kind": "keyword",
+    "store": "pt",
+    "rank": "-/137"
+   },
+   {
+    "term": "contador",
+    "kind": "keyword",
+    "store": "pt",
+    "rank": "-/180"
+   },
+   {
+    "term": "passos",
+    "kind": "keyword",
+    "store": "pt",
+    "rank": "-/183"
+   },
+   {
+    "term": "pedómetro",
+    "kind": "keyword",
+    "store": "pt",
+    "rank": "-/178"
+   },
+   {
+    "term": "calculadora",
+    "kind": "keyword",
+    "store": "pt",
+    "rank": "-/185"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "pt",
+    "rank": "-/171"
+   },
+   {
+    "term": "widget",
+    "kind": "keyword",
+    "store": "pt",
+    "rank": "-/182"
+   },
+   {
+    "term": "défice",
+    "kind": "keyword",
+    "store": "pt",
+    "rank": "-/106"
+   },
+   {
+    "term": "imc",
+    "kind": "keyword",
+    "store": "pt",
+    "rank": "-/186"
+   },
+   {
+    "term": "repouso",
+    "kind": "keyword",
+    "store": "pt",
+    "rank": "-/36"
+   },
+   {
+    "term": "ativas",
+    "kind": "keyword",
+    "store": "pt",
+    "rank": "-/147"
+   },
+   {
+    "term": "metabolismo",
+    "kind": "keyword",
+    "store": "pt",
+    "rank": "-/134"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "pt",
+    "rank": "-/139"
+   },
+   {
+    "term": "complicação",
+    "kind": "dropped keyword",
+    "store": "pt",
+    "rank": "-/27"
+   },
+   {
+    "term": "déficit",
+    "kind": "dropped keyword",
+    "store": "pt",
+    "rank": "-/177"
+   },
+   {
+    "term": "ativo",
+    "kind": "dropped keyword",
+    "store": "pt",
+    "rank": "-/146"
+   },
+   {
+    "term": "ritmo",
+    "kind": "dropped keyword",
+    "store": "pt",
+    "rank": "-/186"
+   },
+   {
+    "term": "caminhar",
+    "kind": "dropped keyword",
+    "store": "pt",
+    "rank": "-/182"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "pt",
+    "rank": "-/177"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "pt",
+    "rank": "-/183"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "pt",
+    "rank": "-/179"
+   },
+   {
+    "term": "macros",
+    "kind": "dropped keyword",
+    "store": "pt",
+    "rank": "-/178"
+   }
+  ],
+  "ro": [
+   {
+    "term": "Calorii Arse - Tracker Zilnic",
+    "kind": "name",
+    "store": "ro",
+    "rank": "-/2"
+   },
+   {
+    "term": "Consum caloric total pe ceas",
+    "kind": "subtitle",
+    "store": "ro",
+    "rank": "-/0"
+   },
+   {
+    "term": "Total Calorii - Zilnic",
+    "kind": "old name",
+    "store": "ro",
+    "rank": "-/2"
+   },
+   {
+    "term": "TDEE Ardere Ceas Widget",
+    "kind": "old subtitle",
+    "store": "ro",
+    "rank": "-/0"
+   },
+   {
+    "term": "pedometru",
+    "kind": "keyword",
+    "store": "ro",
+    "rank": "-/183"
+   },
+   {
+    "term": "pași",
+    "kind": "keyword",
+    "store": "ro",
+    "rank": "-/173"
+   },
+   {
+    "term": "contor",
+    "kind": "keyword",
+    "store": "ro",
+    "rank": "-/178"
+   },
+   {
+    "term": "calculator",
+    "kind": "keyword",
+    "store": "ro",
+    "rank": "-/169"
+   },
+   {
+    "term": "gratuit",
+    "kind": "keyword",
+    "store": "ro",
+    "rank": "-/151"
+   },
+   {
+    "term": "deficit",
+    "kind": "keyword",
+    "store": "ro",
+    "rank": "-/177"
+   },
+   {
+    "term": "imc",
+    "kind": "keyword",
+    "store": "ro",
+    "rank": "-/187"
+   },
+   {
+    "term": "monitorizare",
+    "kind": "keyword",
+    "store": "ro",
+    "rank": "-/182"
+   },
+   {
+    "term": "metabolism",
+    "kind": "keyword",
+    "store": "ro",
+    "rank": "-/170"
+   },
+   {
+    "term": "bazal",
+    "kind": "keyword",
+    "store": "ro",
+    "rank": "-/8"
+   },
+   {
+    "term": "repaus",
+    "kind": "keyword",
+    "store": "ro",
+    "rank": "-/27"
+   },
+   {
+    "term": "energie",
+    "kind": "keyword",
+    "store": "ro",
+    "rank": "-/181"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "ro",
+    "rank": "-/138"
+   },
+   {
+    "term": "complicație",
+    "kind": "dropped keyword",
+    "store": "ro",
+    "rank": "-/10"
+   },
+   {
+    "term": "odihnă",
+    "kind": "dropped keyword",
+    "store": "ro",
+    "rank": "-/145"
+   },
+   {
+    "term": "activ",
+    "kind": "dropped keyword",
+    "store": "ro",
+    "rank": "-/173"
+   },
+   {
+    "term": "post",
+    "kind": "dropped keyword",
+    "store": "ro",
+    "rank": "-/178"
+   },
+   {
+    "term": "mișcare",
+    "kind": "dropped keyword",
+    "store": "ro",
+    "rank": "-/154"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "ro",
+    "rank": "-/167"
+   },
+   {
+    "term": "activitate",
+    "kind": "dropped keyword",
+    "store": "ro",
+    "rank": "-/181"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "ro",
+    "rank": "-/185"
+   },
+   {
+    "term": "arse",
+    "kind": "dropped keyword",
+    "store": "ro",
+    "rank": "-/160"
+   },
+   {
+    "term": "proteine",
+    "kind": "dropped keyword",
+    "store": "ro",
+    "rank": "-/190"
+   }
+  ],
+  "ru": [
+   {
+    "term": "Сожженные Калории - Трекер",
+    "kind": "name",
+    "store": "ru",
+    "rank": "1/1"
+   },
+   {
+    "term": "Сожженные Калории - Трекер",
+    "kind": "name",
+    "store": "us",
+    "rank": "-/0"
+   },
+   {
+    "term": "Общий расход и шаги на часах",
+    "kind": "subtitle",
+    "store": "ru",
+    "rank": "-/0"
+   },
+   {
+    "term": "Общий расход и шаги на часах",
+    "kind": "subtitle",
+    "store": "us",
+    "rank": "-/0"
+   },
+   {
+    "term": "Счетчик Калорий - Ежедневно",
+    "kind": "old name",
+    "store": "ru",
+    "rank": "1/13"
+   },
+   {
+    "term": "Счетчик Калорий - Ежедневно",
+    "kind": "old name",
+    "store": "us",
+    "rank": "1/13"
+   },
+   {
+    "term": "TDEE Сжигание Часы Виджет",
+    "kind": "old subtitle",
+    "store": "ru",
+    "rank": "1/1"
+   },
+   {
+    "term": "TDEE Сжигание Часы Виджет",
+    "kind": "old subtitle",
+    "store": "us",
+    "rank": "1/1"
+   },
+   {
+    "term": "счетчик",
+    "kind": "keyword",
+    "store": "ru",
+    "rank": "-/183"
+   },
+   {
+    "term": "счетчик",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "126/183"
+   },
+   {
+    "term": "шагомер",
+    "kind": "keyword",
+    "store": "ru",
+    "rank": "-/169"
+   },
+   {
+    "term": "шагомер",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "140/178"
+   },
+   {
+    "term": "калорий",
+    "kind": "keyword",
+    "store": "ru",
+    "rank": "-/188"
+   },
+   {
+    "term": "калорий",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "107/189"
+   },
+   {
+    "term": "шагов",
+    "kind": "keyword",
+    "store": "ru",
+    "rank": "-/169"
+   },
+   {
+    "term": "шагов",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/174"
+   },
+   {
+    "term": "калькулятор",
+    "kind": "keyword",
+    "store": "ru",
+    "rank": "-/177"
+   },
+   {
+    "term": "калькулятор",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/168"
+   },
+   {
+    "term": "подсчет",
+    "kind": "keyword",
+    "store": "ru",
+    "rank": "-/189"
+   },
+   {
+    "term": "подсчет",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "ккал",
+    "kind": "keyword",
+    "store": "ru",
+    "rank": "-/187"
+   },
+   {
+    "term": "ккал",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/190"
+   },
+   {
+    "term": "ккалорий",
+    "kind": "keyword",
+    "store": "ru",
+    "rank": "-/181"
+   },
+   {
+    "term": "ккалорий",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "176/189"
+   },
+   {
+    "term": "виджет",
+    "kind": "keyword",
+    "store": "ru",
+    "rank": "-/184"
+   },
+   {
+    "term": "виджет",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/186"
+   },
+   {
+    "term": "дефицит",
+    "kind": "keyword",
+    "store": "ru",
+    "rank": "133/183"
+   },
+   {
+    "term": "дефицит",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "46/191"
+   },
+   {
+    "term": "бесплатно",
+    "kind": "keyword",
+    "store": "ru",
+    "rank": "-/130"
+   },
+   {
+    "term": "бесплатно",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/163"
+   },
+   {
+    "term": "имт",
+    "kind": "keyword",
+    "store": "ru",
+    "rank": "-/175"
+   },
+   {
+    "term": "имт",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/183"
+   },
+   {
+    "term": "ходьба",
+    "kind": "keyword",
+    "store": "ru",
+    "rank": "-/172"
+   },
+   {
+    "term": "ходьба",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "143/175"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "ru",
+    "rank": "67/137"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/174"
+   },
+   {
+    "term": "осложнение",
+    "kind": "dropped keyword",
+    "store": "ru",
+    "rank": "2/5"
+   },
+   {
+    "term": "осложнение",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "1/5"
+   },
+   {
+    "term": "отдых",
+    "kind": "dropped keyword",
+    "store": "ru",
+    "rank": "-/176"
+   },
+   {
+    "term": "отдых",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/185"
+   },
+   {
+    "term": "активный",
+    "kind": "dropped keyword",
+    "store": "ru",
+    "rank": "63/94"
+   },
+   {
+    "term": "активный",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "24/53"
+   },
+   {
+    "term": "пост",
+    "kind": "dropped keyword",
+    "store": "ru",
+    "rank": "-/186"
+   },
+   {
+    "term": "пост",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "182/184"
+   },
+   {
+    "term": "движение",
+    "kind": "dropped keyword",
+    "store": "ru",
+    "rank": "-/161"
+   },
+   {
+    "term": "движение",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/157"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "ru",
+    "rank": "-/155"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/191"
+   },
+   {
+    "term": "шаги",
+    "kind": "dropped keyword",
+    "store": "ru",
+    "rank": "-/183"
+   },
+   {
+    "term": "шаги",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "116/188"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "ru",
+    "rank": "-/188"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/186"
+   },
+   {
+    "term": "сожжённые",
+    "kind": "dropped keyword",
+    "store": "ru",
+    "rank": "3/5"
+   },
+   {
+    "term": "сожжённые",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "3/5"
+   },
+   {
+    "term": "бжу",
+    "kind": "dropped keyword",
+    "store": "ru",
+    "rank": "-/187"
+   },
+   {
+    "term": "бжу",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "86/196"
+   }
+  ],
+  "sk": [
+   {
+    "term": "Spálené kalórie a kroky",
+    "kind": "name",
+    "store": "sk",
+    "rank": "-/1"
+   },
+   {
+    "term": "Kalorický výdaj na hodinkách",
+    "kind": "subtitle",
+    "store": "sk",
+    "rank": "-/0"
+   },
+   {
+    "term": "Celkové Kalórie - Denný",
+    "kind": "old name",
+    "store": "sk",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE Spaľovanie Hodinky",
+    "kind": "old subtitle",
+    "store": "sk",
+    "rank": "-/0"
+   },
+   {
+    "term": "krokomer",
+    "kind": "keyword",
+    "store": "sk",
+    "rank": "-/189"
+   },
+   {
+    "term": "počítadlo",
+    "kind": "keyword",
+    "store": "sk",
+    "rank": "-/196"
+   },
+   {
+    "term": "kalkulačka",
+    "kind": "keyword",
+    "store": "sk",
+    "rank": "-/175"
+   },
+   {
+    "term": "zadarmo",
+    "kind": "keyword",
+    "store": "sk",
+    "rank": "-/182"
+   },
+   {
+    "term": "zdarma",
+    "kind": "keyword",
+    "store": "sk",
+    "rank": "-/179"
+   },
+   {
+    "term": "bazálny",
+    "kind": "keyword",
+    "store": "sk",
+    "rank": "-/5"
+   },
+   {
+    "term": "metabolizmus",
+    "kind": "keyword",
+    "store": "sk",
+    "rank": "-/22"
+   },
+   {
+    "term": "deficit",
+    "kind": "keyword",
+    "store": "sk",
+    "rank": "-/192"
+   },
+   {
+    "term": "zdravie",
+    "kind": "keyword",
+    "store": "sk",
+    "rank": "-/163"
+   },
+   {
+    "term": "widget",
+    "kind": "keyword",
+    "store": "sk",
+    "rank": "-/182"
+   },
+   {
+    "term": "kcal",
+    "kind": "keyword",
+    "store": "sk",
+    "rank": "-/185"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "sk",
+    "rank": "-/179"
+   },
+   {
+    "term": "krokoměr",
+    "kind": "dropped keyword",
+    "store": "sk",
+    "rank": "-/184"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "sk",
+    "rank": "-/142"
+   },
+   {
+    "term": "komplikácia",
+    "kind": "dropped keyword",
+    "store": "sk",
+    "rank": "-/7"
+   },
+   {
+    "term": "pokoj",
+    "kind": "dropped keyword",
+    "store": "sk",
+    "rank": "-/185"
+   },
+   {
+    "term": "aktívny",
+    "kind": "dropped keyword",
+    "store": "sk",
+    "rank": "-/9"
+   },
+   {
+    "term": "pôst",
+    "kind": "dropped keyword",
+    "store": "sk",
+    "rank": "-/171"
+   },
+   {
+    "term": "chôdza",
+    "kind": "dropped keyword",
+    "store": "sk",
+    "rank": "-/185"
+   },
+   {
+    "term": "pohyb",
+    "kind": "dropped keyword",
+    "store": "sk",
+    "rank": "-/178"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "sk",
+    "rank": "-/172"
+   },
+   {
+    "term": "kroky",
+    "kind": "dropped keyword",
+    "store": "sk",
+    "rank": "-/182"
+   },
+   {
+    "term": "spálené",
+    "kind": "dropped keyword",
+    "store": "sk",
+    "rank": "-/8"
+   },
+   {
+    "term": "makrá",
+    "kind": "dropped keyword",
+    "store": "sk",
+    "rank": "-/192"
+   }
+  ],
+  "sl-SI": [
+   {
+    "term": "Poraba Kalorij - Sledilnik",
+    "kind": "name",
+    "store": "si",
+    "rank": "-/0"
+   },
+   {
+    "term": "Skupne kalorije na zapestju",
+    "kind": "subtitle",
+    "store": "si",
+    "rank": "-/0"
+   },
+   {
+    "term": "Skupne Kalorije - Dnevno",
+    "kind": "old name",
+    "store": "si",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE Zgorevanje Ura Widget",
+    "kind": "old subtitle",
+    "store": "si",
+    "rank": "-/0"
+   },
+   {
+    "term": "števec",
+    "kind": "keyword",
+    "store": "si",
+    "rank": "-/1"
+   },
+   {
+    "term": "korakov",
+    "kind": "keyword",
+    "store": "si",
+    "rank": "-/0"
+   },
+   {
+    "term": "kalkulator",
+    "kind": "keyword",
+    "store": "si",
+    "rank": "-/181"
+   },
+   {
+    "term": "primanjkljaj",
+    "kind": "keyword",
+    "store": "si",
+    "rank": "-/0"
+   },
+   {
+    "term": "kalorijski",
+    "kind": "keyword",
+    "store": "si",
+    "rank": "-/2"
+   },
+   {
+    "term": "brezplačno",
+    "kind": "keyword",
+    "store": "si",
+    "rank": "-/0"
+   },
+   {
+    "term": "metabolizem",
+    "kind": "keyword",
+    "store": "si",
+    "rank": "-/0"
+   },
+   {
+    "term": "bazalni",
+    "kind": "keyword",
+    "store": "si",
+    "rank": "-/0"
+   },
+   {
+    "term": "mirovanje",
+    "kind": "keyword",
+    "store": "si",
+    "rank": "-/0"
+   },
+   {
+    "term": "ura",
+    "kind": "keyword",
+    "store": "si",
+    "rank": "-/178"
+   },
+   {
+    "term": "hoja",
+    "kind": "keyword",
+    "store": "si",
+    "rank": "-/59"
+   },
+   {
+    "term": "pedometer",
+    "kind": "dropped keyword",
+    "store": "si",
+    "rank": "-/173"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "si",
+    "rank": "-/144"
+   },
+   {
+    "term": "komplikacija",
+    "kind": "dropped keyword",
+    "store": "si",
+    "rank": "-/0"
+   },
+   {
+    "term": "mirenje",
+    "kind": "dropped keyword",
+    "store": "si",
+    "rank": "-/0"
+   },
+   {
+    "term": "aktivno",
+    "kind": "dropped keyword",
+    "store": "si",
+    "rank": "-/0"
+   },
+   {
+    "term": "pokurjene",
+    "kind": "dropped keyword",
+    "store": "si",
+    "rank": "-/0"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "si",
+    "rank": "-/199"
+   },
+   {
+    "term": "koraki",
+    "kind": "dropped keyword",
+    "store": "si",
+    "rank": "-/180"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "si",
+    "rank": "-/178"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "si",
+    "rank": "-/190"
+   },
+   {
+    "term": "proteini",
+    "kind": "dropped keyword",
+    "store": "si",
+    "rank": "-/186"
+   }
+  ],
+  "sv": [
+   {
+    "term": "Kaloriförbrukning och steg",
+    "kind": "name",
+    "store": "se",
+    "rank": "-/2"
+   },
+   {
+    "term": "Aktiv + vila, klocka & widget",
+    "kind": "subtitle",
+    "store": "se",
+    "rank": "-/16"
+   },
+   {
+    "term": "Kaloriräknare - Daglig",
+    "kind": "old name",
+    "store": "se",
+    "rank": "-/143"
+   },
+   {
+    "term": "TDEE Förbränning Klocka",
+    "kind": "old subtitle",
+    "store": "se",
+    "rank": "-/0"
+   },
+   {
+    "term": "kaloriräknare",
+    "kind": "keyword",
+    "store": "se",
+    "rank": "-/189"
+   },
+   {
+    "term": "stegräknare",
+    "kind": "keyword",
+    "store": "se",
+    "rank": "-/170"
+   },
+   {
+    "term": "stegmätare",
+    "kind": "keyword",
+    "store": "se",
+    "rank": "-/168"
+   },
+   {
+    "term": "räkna",
+    "kind": "keyword",
+    "store": "se",
+    "rank": "-/174"
+   },
+   {
+    "term": "kalorier",
+    "kind": "keyword",
+    "store": "se",
+    "rank": "-/190"
+   },
+   {
+    "term": "gratis",
+    "kind": "keyword",
+    "store": "se",
+    "rank": "-/167"
+   },
+   {
+    "term": "förbrända",
+    "kind": "keyword",
+    "store": "se",
+    "rank": "-/2"
+   },
+   {
+    "term": "underskott",
+    "kind": "keyword",
+    "store": "se",
+    "rank": "-/44"
+   },
+   {
+    "term": "makro",
+    "kind": "keyword",
+    "store": "se",
+    "rank": "-/184"
+   },
+   {
+    "term": "hälsa",
+    "kind": "keyword",
+    "store": "se",
+    "rank": "-/165"
+   },
+   {
+    "term": "kcal",
+    "kind": "keyword",
+    "store": "se",
+    "rank": "-/188"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "se",
+    "rank": "-/175"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "se",
+    "rank": "-/132"
+   },
+   {
+    "term": "komplikation",
+    "kind": "dropped keyword",
+    "store": "se",
+    "rank": "-/157"
+   },
+   {
+    "term": "vila",
+    "kind": "dropped keyword",
+    "store": "se",
+    "rank": "-/182"
+   },
+   {
+    "term": "aktiv",
+    "kind": "dropped keyword",
+    "store": "se",
+    "rank": "-/169"
+   },
+   {
+    "term": "gång",
+    "kind": "dropped keyword",
+    "store": "se",
+    "rank": "-/137"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "se",
+    "rank": "-/170"
+   },
+   {
+    "term": "steg",
+    "kind": "dropped keyword",
+    "store": "se",
+    "rank": "-/175"
+   },
+   {
+    "term": "makros",
+    "kind": "dropped keyword",
+    "store": "se",
+    "rank": "-/182"
+   }
+  ],
+  "ta-IN": [
+   {
+    "term": "மொத்த கலோரி: தினசரி எரிப்பு",
+    "kind": "name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "வாட்ச், விட்ஜெட், பூட்டுத்திரை",
+    "kind": "subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "மொத்த கலோரிகள் - தினசரி",
+    "kind": "old name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE எரிப்பு வாட்ச் விஜெட்",
+    "kind": "old subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ஸ்டெப்ஸ்",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "நடைப்பயிற்சி",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "பெடோமீட்டர்",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "உடற்பயிற்சி",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "எடை",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/1"
+   },
+   {
+    "term": "குறைப்பு",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/2"
+   },
+   {
+    "term": "ஆரோக்கியம்",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ஆப்பிள்",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ஓய்வு",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "செயல்பாடு",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "படிகள்",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "பேடோமீட்டர்",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ரிங்",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "70/148"
+   },
+   {
+    "term": "சிக்கல்",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "பற்றாக்குறை",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "செயல்",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "burned",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "77/145"
+   },
+   {
+    "term": "நடை",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/172"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/192"
+   },
+   {
+    "term": "macro",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/190"
+   }
+  ],
+  "te-IN": [
+   {
+    "term": "మొత్తం కేలరీలు: రోజువారీ బర్న్",
+    "kind": "name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "వాచ్, విడ్జెట్, లాక్ స్క్రీన్",
+    "kind": "subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "మొత్తం క్యాలరీలు - రోజువారీ",
+    "kind": "old name",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE బర్న్ వాచ్ విడ్జెట్",
+    "kind": "old subtitle",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "అడుగులు",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "స్టెప్స్",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "నడక",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "పెడోమీటర్",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "వ్యాయామం",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ఆరోగ్యం",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "బరువు",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "తగ్గడం",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "విశ్రాంతి",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "యాక్టివ్",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "క్యాలరీలు",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "ఫిట్నెస్",
+    "kind": "keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "పీడోమీటర్",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "70/148"
+   },
+   {
+    "term": "సంక్లిష్టత",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "లోపం",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "burned",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "77/145"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/172"
+   },
+   {
+    "term": "యాక్టివిటీ",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/0"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/192"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "161/178"
+   },
+   {
+    "term": "macro",
+    "kind": "dropped keyword",
+    "store": "in",
+    "rank": "-/190"
+   }
+  ],
+  "th": [
+   {
+    "term": "แคลอรี่ที่เผาผลาญ - รายวัน",
+    "kind": "name",
+    "store": "th",
+    "rank": "3/5"
+   },
+   {
+    "term": "นับก้าว ดูบนนาฬิกาและวิดเจ็ต",
+    "kind": "subtitle",
+    "store": "th",
+    "rank": "3/8"
+   },
+   {
+    "term": "แคลอรี่รวม - ติดตามรายวัน",
+    "kind": "old name",
+    "store": "th",
+    "rank": "1/9"
+   },
+   {
+    "term": "TDEE เผาผลาญ นาฬิกา วิดเจ็ต",
+    "kind": "old subtitle",
+    "store": "th",
+    "rank": "1/2"
+   },
+   {
+    "term": "นับแคลอรี่",
+    "kind": "keyword",
+    "store": "th",
+    "rank": "-/188"
+   },
+   {
+    "term": "คำนวณแคลอรี่",
+    "kind": "keyword",
+    "store": "th",
+    "rank": "-/152"
+   },
+   {
+    "term": "ก้าวเดิน",
+    "kind": "keyword",
+    "store": "th",
+    "rank": "126/180"
+   },
+   {
+    "term": "เครื่องนับก้าว",
+    "kind": "keyword",
+    "store": "th",
+    "rank": "-/80"
+   },
+   {
+    "term": "ฟรี",
+    "kind": "keyword",
+    "store": "th",
+    "rank": "-/196"
+   },
+   {
+    "term": "ออกกำลังกาย",
+    "kind": "keyword",
+    "store": "th",
+    "rank": "-/179"
+   },
+   {
+    "term": "สุขภาพ",
+    "kind": "keyword",
+    "store": "th",
+    "rank": "-/153"
+   },
+   {
+    "term": "ลดน้ำหนัก",
+    "kind": "keyword",
+    "store": "th",
+    "rank": "-/179"
+   },
+   {
+    "term": "พลังงาน",
+    "kind": "keyword",
+    "store": "th",
+    "rank": "-/158"
+   },
+   {
+    "term": "หน้าปัด",
+    "kind": "keyword",
+    "store": "th",
+    "rank": "-/77"
+   },
+   {
+    "term": "นับก้าว",
+    "kind": "dropped keyword",
+    "store": "th",
+    "rank": "87/182"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "th",
+    "rank": "68/135"
+   },
+   {
+    "term": "ภาพปะ",
+    "kind": "dropped keyword",
+    "store": "th",
+    "rank": "-/148"
+   },
+   {
+    "term": "ขาด",
+    "kind": "dropped keyword",
+    "store": "th",
+    "rank": "33/79"
+   },
+   {
+    "term": "พัก",
+    "kind": "dropped keyword",
+    "store": "th",
+    "rank": "114/175"
+   },
+   {
+    "term": "กระตือ",
+    "kind": "dropped keyword",
+    "store": "th",
+    "rank": "2/3"
+   },
+   {
+    "term": "จังหวะ",
+    "kind": "dropped keyword",
+    "store": "th",
+    "rank": "-/177"
+   },
+   {
+    "term": "เดิน",
+    "kind": "dropped keyword",
+    "store": "th",
+    "rank": "-/164"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "th",
+    "rank": "-/169"
+   },
+   {
+    "term": "กิจกรรม",
+    "kind": "dropped keyword",
+    "store": "th",
+    "rank": "-/180"
+   },
+   {
+    "term": "ก้าว",
+    "kind": "dropped keyword",
+    "store": "th",
+    "rank": "-/189"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "th",
+    "rank": "101/176"
+   },
+   {
+    "term": "ตัวนับ",
+    "kind": "dropped keyword",
+    "store": "th",
+    "rank": "-/197"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "th",
+    "rank": "-/174"
+   },
+   {
+    "term": "มาโคร",
+    "kind": "dropped keyword",
+    "store": "th",
+    "rank": "-/172"
+   }
+  ],
+  "tr": [
+   {
+    "term": "Yakılan Kalori - Günlük Takip",
+    "kind": "name",
+    "store": "tr",
+    "rank": "1/4"
+   },
+   {
+    "term": "Bileğinde toplam yakım ve adım",
+    "kind": "subtitle",
+    "store": "tr",
+    "rank": "-/0"
+   },
+   {
+    "term": "Kalori Sayar - Günlük Takip",
+    "kind": "old name",
+    "store": "tr",
+    "rank": "1/44"
+   },
+   {
+    "term": "TDEE Yakım Saat Widget",
+    "kind": "old subtitle",
+    "store": "tr",
+    "rank": "1/1"
+   },
+   {
+    "term": "adımsayar",
+    "kind": "keyword",
+    "store": "tr",
+    "rank": "-/170"
+   },
+   {
+    "term": "sayacı",
+    "kind": "keyword",
+    "store": "tr",
+    "rank": "-/197"
+   },
+   {
+    "term": "sayar",
+    "kind": "keyword",
+    "store": "tr",
+    "rank": "130/186"
+   },
+   {
+    "term": "hesaplama",
+    "kind": "keyword",
+    "store": "tr",
+    "rank": "-/197"
+   },
+   {
+    "term": "hesaplayıcı",
+    "kind": "keyword",
+    "store": "tr",
+    "rank": "-/192"
+   },
+   {
+    "term": "açığı",
+    "kind": "keyword",
+    "store": "tr",
+    "rank": "-/117"
+   },
+   {
+    "term": "bazal",
+    "kind": "keyword",
+    "store": "tr",
+    "rank": "-/33"
+   },
+   {
+    "term": "metabolizma",
+    "kind": "keyword",
+    "store": "tr",
+    "rank": "-/49"
+   },
+   {
+    "term": "ücretsiz",
+    "kind": "keyword",
+    "store": "tr",
+    "rank": "-/148"
+   },
+   {
+    "term": "vki",
+    "kind": "keyword",
+    "store": "tr",
+    "rank": "-/184"
+   },
+   {
+    "term": "pedometre",
+    "kind": "keyword",
+    "store": "tr",
+    "rank": "-/174"
+   },
+   {
+    "term": "yakma",
+    "kind": "keyword",
+    "store": "tr",
+    "rank": "-/118"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "tr",
+    "rank": "65/156"
+   },
+   {
+    "term": "komplikasyon",
+    "kind": "dropped keyword",
+    "store": "tr",
+    "rank": "9/29"
+   },
+   {
+    "term": "açık",
+    "kind": "dropped keyword",
+    "store": "tr",
+    "rank": "-/183"
+   },
+   {
+    "term": "dinlenme",
+    "kind": "dropped keyword",
+    "store": "tr",
+    "rank": "46/184"
+   },
+   {
+    "term": "aktif",
+    "kind": "dropped keyword",
+    "store": "tr",
+    "rank": "86/136"
+   },
+   {
+    "term": "oruç",
+    "kind": "dropped keyword",
+    "store": "tr",
+    "rank": "-/184"
+   },
+   {
+    "term": "yürüyüş",
+    "kind": "dropped keyword",
+    "store": "tr",
+    "rank": "-/183"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "tr",
+    "rank": "-/174"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "tr",
+    "rank": "145/186"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "tr",
+    "rank": "-/189"
+   },
+   {
+    "term": "yakılan",
+    "kind": "dropped keyword",
+    "store": "tr",
+    "rank": "3/7"
+   },
+   {
+    "term": "protein",
+    "kind": "dropped keyword",
+    "store": "tr",
+    "rank": "-/190"
+   }
+  ],
+  "uk": [
+   {
+    "term": "Спалені Калорії - Трекер",
+    "kind": "name",
+    "store": "ua",
+    "rank": "-/1"
+   },
+   {
+    "term": "Витрата калорій на годиннику",
+    "kind": "subtitle",
+    "store": "ua",
+    "rank": "-/0"
+   },
+   {
+    "term": "Загальні Калорії - Щоденно",
+    "kind": "old name",
+    "store": "ua",
+    "rank": "1/1"
+   },
+   {
+    "term": "TDEE Спалення Годинник",
+    "kind": "old subtitle",
+    "store": "ua",
+    "rank": "1/1"
+   },
+   {
+    "term": "лічильник",
+    "kind": "keyword",
+    "store": "ua",
+    "rank": "-/194"
+   },
+   {
+    "term": "крокомір",
+    "kind": "keyword",
+    "store": "ua",
+    "rank": "172/172"
+   },
+   {
+    "term": "кроки",
+    "kind": "keyword",
+    "store": "ua",
+    "rank": "-/174"
+   },
+   {
+    "term": "шагомір",
+    "kind": "keyword",
+    "store": "ua",
+    "rank": "-/173"
+   },
+   {
+    "term": "віджет",
+    "kind": "keyword",
+    "store": "ua",
+    "rank": "-/186"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "ua",
+    "rank": "63/186"
+   },
+   {
+    "term": "bmr",
+    "kind": "keyword",
+    "store": "ua",
+    "rank": "67/140"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "ua",
+    "rank": "-/188"
+   },
+   {
+    "term": "apple",
+    "kind": "keyword",
+    "store": "ua",
+    "rank": "-/170"
+   },
+   {
+    "term": "watch",
+    "kind": "keyword",
+    "store": "ua",
+    "rank": "-/165"
+   },
+   {
+    "term": "kcal",
+    "kind": "keyword",
+    "store": "ua",
+    "rank": "187/190"
+   },
+   {
+    "term": "дефіцит",
+    "kind": "keyword",
+    "store": "ua",
+    "rank": "81/130"
+   },
+   {
+    "term": "активні",
+    "kind": "keyword",
+    "store": "ua",
+    "rank": "-/6"
+   },
+   {
+    "term": "спокій",
+    "kind": "keyword",
+    "store": "ua",
+    "rank": "-/194"
+   },
+   {
+    "term": "ходьба",
+    "kind": "keyword",
+    "store": "ua",
+    "rank": "-/185"
+   },
+   {
+    "term": "ускладнення",
+    "kind": "dropped keyword",
+    "store": "ua",
+    "rank": "4/12"
+   },
+   {
+    "term": "відпочинок",
+    "kind": "dropped keyword",
+    "store": "ua",
+    "rank": "132/188"
+   },
+   {
+    "term": "активний",
+    "kind": "dropped keyword",
+    "store": "ua",
+    "rank": "110/160"
+   },
+   {
+    "term": "піст",
+    "kind": "dropped keyword",
+    "store": "ua",
+    "rank": "57/130"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "ua",
+    "rank": "-/176"
+   },
+   {
+    "term": "спалені",
+    "kind": "dropped keyword",
+    "store": "ua",
+    "rank": "4/5"
+   },
+   {
+    "term": "макроси",
+    "kind": "dropped keyword",
+    "store": "ua",
+    "rank": "67/189"
+   }
+  ],
+  "ur-PK": [
+   {
+    "term": "جلنے والی کل کیلوریز",
+    "kind": "name",
+    "store": "pk",
+    "rank": "-/0"
+   },
+   {
+    "term": "واچ، ویجیٹ، لاک اسکرین",
+    "kind": "subtitle",
+    "store": "pk",
+    "rank": "-/0"
+   },
+   {
+    "term": "کل کیلوریز - روزانہ ٹریکر",
+    "kind": "old name",
+    "store": "pk",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE برن واچ ویجٹ",
+    "kind": "old subtitle",
+    "store": "pk",
+    "rank": "-/0"
+   },
+   {
+    "term": "قدم",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/168"
+   },
+   {
+    "term": "شمار",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/32"
+   },
+   {
+    "term": "پیڈومیٹر",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/197"
+   },
+   {
+    "term": "چہل",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/197"
+   },
+   {
+    "term": "قدمی",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/132"
+   },
+   {
+    "term": "ورزش",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/25"
+   },
+   {
+    "term": "صحت",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/169"
+   },
+   {
+    "term": "وزن",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/199"
+   },
+   {
+    "term": "کمی",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/198"
+   },
+   {
+    "term": "ایپل",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/197"
+   },
+   {
+    "term": "آرام",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/193"
+   },
+   {
+    "term": "فعال",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/154"
+   },
+   {
+    "term": "توانائی",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/199"
+   },
+   {
+    "term": "خسارہ",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/35"
+   },
+   {
+    "term": "فٹنس",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/136"
+   },
+   {
+    "term": "health",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/174"
+   },
+   {
+    "term": "fitness",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/174"
+   },
+   {
+    "term": "ٹریکر",
+    "kind": "keyword",
+    "store": "pk",
+    "rank": "-/185"
+   },
+   {
+    "term": "رنگ",
+    "kind": "dropped keyword",
+    "store": "pk",
+    "rank": "-/199"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "pk",
+    "rank": "139/143"
+   },
+   {
+    "term": "پیچیدگی",
+    "kind": "dropped keyword",
+    "store": "pk",
+    "rank": "-/198"
+   },
+   {
+    "term": "رفتار",
+    "kind": "dropped keyword",
+    "store": "pk",
+    "rank": "-/134"
+   },
+   {
+    "term": "burned",
+    "kind": "dropped keyword",
+    "store": "pk",
+    "rank": "-/147"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "pk",
+    "rank": "-/200"
+   },
+   {
+    "term": "سرگرمی",
+    "kind": "dropped keyword",
+    "store": "pk",
+    "rank": "-/143"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "pk",
+    "rank": "-/183"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "pk",
+    "rank": "-/182"
+   },
+   {
+    "term": "پروٹین",
+    "kind": "dropped keyword",
+    "store": "pk",
+    "rank": "-/199"
+   },
+   {
+    "term": "چربی",
+    "kind": "dropped keyword",
+    "store": "pk",
+    "rank": "-/196"
+   }
+  ],
+  "vi": [
+   {
+    "term": "Tính Calo Tiêu Hao Hằng Ngày",
+    "kind": "name",
+    "store": "vn",
+    "rank": "-/6"
+   },
+   {
+    "term": "Tính Calo Tiêu Hao Hằng Ngày",
+    "kind": "name",
+    "store": "us",
+    "rank": "-/6"
+   },
+   {
+    "term": "Đốt calo ngay trên đồng hồ",
+    "kind": "subtitle",
+    "store": "vn",
+    "rank": "2/16"
+   },
+   {
+    "term": "Đốt calo ngay trên đồng hồ",
+    "kind": "subtitle",
+    "store": "us",
+    "rank": "1/16"
+   },
+   {
+    "term": "Tính Calo - Theo Dõi Hàng Ngày",
+    "kind": "old name",
+    "store": "vn",
+    "rank": "1/42"
+   },
+   {
+    "term": "Tính Calo - Theo Dõi Hàng Ngày",
+    "kind": "old name",
+    "store": "us",
+    "rank": "1/68"
+   },
+   {
+    "term": "TDEE Đốt cháy Đồng hồ",
+    "kind": "old subtitle",
+    "store": "vn",
+    "rank": "1/4"
+   },
+   {
+    "term": "TDEE Đốt cháy Đồng hồ",
+    "kind": "old subtitle",
+    "store": "us",
+    "rank": "1/4"
+   },
+   {
+    "term": "đếm",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/176"
+   },
+   {
+    "term": "đếm",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/174"
+   },
+   {
+    "term": "bước",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/188"
+   },
+   {
+    "term": "bước",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/185"
+   },
+   {
+    "term": "chân",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/186"
+   },
+   {
+    "term": "chân",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/179"
+   },
+   {
+    "term": "đi",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/168"
+   },
+   {
+    "term": "đi",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/164"
+   },
+   {
+    "term": "bộ",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/187"
+   },
+   {
+    "term": "bộ",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/176"
+   },
+   {
+    "term": "miễn",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/155"
+   },
+   {
+    "term": "miễn",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/171"
+   },
+   {
+    "term": "phí",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/165"
+   },
+   {
+    "term": "phí",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/159"
+   },
+   {
+    "term": "năng",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/196"
+   },
+   {
+    "term": "năng",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/197"
+   },
+   {
+    "term": "lượng",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/194"
+   },
+   {
+    "term": "lượng",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/197"
+   },
+   {
+    "term": "hoạt",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/176"
+   },
+   {
+    "term": "hoạt",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "động",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/195"
+   },
+   {
+    "term": "động",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/177"
+   },
+   {
+    "term": "nghỉ",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/166"
+   },
+   {
+    "term": "nghỉ",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/170"
+   },
+   {
+    "term": "sức",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/175"
+   },
+   {
+    "term": "sức",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/189"
+   },
+   {
+    "term": "khỏe",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/179"
+   },
+   {
+    "term": "khỏe",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/185"
+   },
+   {
+    "term": "khóa",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/188"
+   },
+   {
+    "term": "khóa",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/193"
+   },
+   {
+    "term": "màn",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/178"
+   },
+   {
+    "term": "màn",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/159"
+   },
+   {
+    "term": "hình",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/163"
+   },
+   {
+    "term": "hình",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/175"
+   },
+   {
+    "term": "widget",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/181"
+   },
+   {
+    "term": "widget",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/188"
+   },
+   {
+    "term": "đếmbước",
+    "kind": "dropped keyword",
+    "store": "vn",
+    "rank": "6/10"
+   },
+   {
+    "term": "đếmbước",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "6/10"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "vn",
+    "rank": "62/149"
+   },
+   {
+    "term": "bmr",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/174"
+   },
+   {
+    "term": "phứctạp",
+    "kind": "dropped keyword",
+    "store": "vn",
+    "rank": "1/2"
+   },
+   {
+    "term": "phứctạp",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "1/2"
+   },
+   {
+    "term": "thiếu",
+    "kind": "dropped keyword",
+    "store": "vn",
+    "rank": "-/159"
+   },
+   {
+    "term": "thiếu",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "141/163"
+   },
+   {
+    "term": "nhịn",
+    "kind": "dropped keyword",
+    "store": "vn",
+    "rank": "-/192"
+   },
+   {
+    "term": "nhịn",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/183"
+   },
+   {
+    "term": "đibộ",
+    "kind": "dropped keyword",
+    "store": "vn",
+    "rank": "13/28"
+   },
+   {
+    "term": "đibộ",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "33/61"
+   },
+   {
+    "term": "dichuyen",
+    "kind": "dropped keyword",
+    "store": "vn",
+    "rank": "31/36"
+   },
+   {
+    "term": "dichuyen",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "9/44"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "vn",
+    "rank": "-/171"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/191"
+   },
+   {
+    "term": "hoạtđộng",
+    "kind": "dropped keyword",
+    "store": "vn",
+    "rank": "12/22"
+   },
+   {
+    "term": "hoạtđộng",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "5/20"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "vn",
+    "rank": "124/183"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "vn",
+    "rank": "-/192"
+   },
+   {
+    "term": "bmi",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/186"
+   },
+   {
+    "term": "protein",
+    "kind": "dropped keyword",
+    "store": "vn",
+    "rank": "-/182"
+   },
+   {
+    "term": "protein",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/199"
+   },
+   {
+    "term": "theo",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/177"
+   },
+   {
+    "term": "theo",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "113/173"
+   },
+   {
+    "term": "dõi",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/187"
+   },
+   {
+    "term": "dõi",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/185"
+   },
+   {
+    "term": "đo",
+    "kind": "keyword",
+    "store": "vn",
+    "rank": "-/157"
+   },
+   {
+    "term": "đo",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/159"
+   }
+  ],
+  "zh-Hans": [
+   {
+    "term": "卡路里计算 - 每日追踪",
+    "kind": "name",
+    "store": "cn",
+    "rank": "1/44"
+   },
+   {
+    "term": "卡路里计算 - 每日追踪",
+    "kind": "name",
+    "store": "us",
+    "rank": "1/70"
+   },
+   {
+    "term": "每日总消耗热量 手表与锁屏小组件",
+    "kind": "subtitle",
+    "store": "cn",
+    "rank": "4/12"
+   },
+   {
+    "term": "每日总消耗热量 手表与锁屏小组件",
+    "kind": "subtitle",
+    "store": "us",
+    "rank": "3/13"
+   },
+   {
+    "term": "TDEE消耗 手表与小组件",
+    "kind": "old subtitle",
+    "store": "cn",
+    "rank": "1/1"
+   },
+   {
+    "term": "TDEE消耗 手表与小组件",
+    "kind": "old subtitle",
+    "store": "us",
+    "rank": "1/1"
+   },
+   {
+    "term": "计步器",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/175"
+   },
+   {
+    "term": "计步器",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/180"
+   },
+   {
+    "term": "基础代谢",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/120"
+   },
+   {
+    "term": "基础代谢",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/139"
+   },
+   {
+    "term": "步数",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "147/171"
+   },
+   {
+    "term": "步数",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "139/176"
+   },
+   {
+    "term": "苹果手表",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/177"
+   },
+   {
+    "term": "苹果手表",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/177"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "56/185"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "74/184"
+   },
+   {
+    "term": "bmr",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "76/134"
+   },
+   {
+    "term": "bmr",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/174"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/187"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/186"
+   },
+   {
+    "term": "热量缺口",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/185"
+   },
+   {
+    "term": "热量缺口",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/193"
+   },
+   {
+    "term": "静息",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/182"
+   },
+   {
+    "term": "静息",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "12/182"
+   },
+   {
+    "term": "活动量",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "11/89"
+   },
+   {
+    "term": "活动量",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "5/144"
+   },
+   {
+    "term": "表盘",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/162"
+   },
+   {
+    "term": "表盘",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "71/177"
+   },
+   {
+    "term": "体脂",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/180"
+   },
+   {
+    "term": "体脂",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "125/182"
+   },
+   {
+    "term": "蛋白质",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/194"
+   },
+   {
+    "term": "蛋白质",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "84/195"
+   },
+   {
+    "term": "碳水",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "75/187"
+   },
+   {
+    "term": "碳水",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "72/196"
+   },
+   {
+    "term": "燃脂",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/171"
+   },
+   {
+    "term": "燃脂",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/192"
+   },
+   {
+    "term": "运动",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/162"
+   },
+   {
+    "term": "运动",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/165"
+   },
+   {
+    "term": "健康",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/166"
+   },
+   {
+    "term": "健康",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/151"
+   },
+   {
+    "term": "计数器",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/183"
+   },
+   {
+    "term": "计数器",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/184"
+   },
+   {
+    "term": "脂肪",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "93/161"
+   },
+   {
+    "term": "脂肪",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "113/172"
+   },
+   {
+    "term": "营养",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/180"
+   },
+   {
+    "term": "营养",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/177"
+   },
+   {
+    "term": "代谢率",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/154"
+   },
+   {
+    "term": "代谢率",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/64"
+   },
+   {
+    "term": "复杂功能",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/59"
+   },
+   {
+    "term": "复杂功能",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/87"
+   },
+   {
+    "term": "体重",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/182"
+   },
+   {
+    "term": "体重",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/178"
+   },
+   {
+    "term": "减肥",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/179"
+   },
+   {
+    "term": "减肥",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/169"
+   },
+   {
+    "term": "步行",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/173"
+   },
+   {
+    "term": "步行",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "165/180"
+   },
+   {
+    "term": "走路",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/164"
+   },
+   {
+    "term": "走路",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/186"
+   },
+   {
+    "term": "能量",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/162"
+   },
+   {
+    "term": "能量",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/179"
+   },
+   {
+    "term": "摄入",
+    "kind": "keyword",
+    "store": "cn",
+    "rank": "-/177"
+   },
+   {
+    "term": "摄入",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "缺口",
+    "kind": "dropped keyword",
+    "store": "cn",
+    "rank": "11/90"
+   },
+   {
+    "term": "缺口",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "8/108"
+   },
+   {
+    "term": "活动",
+    "kind": "dropped keyword",
+    "store": "cn",
+    "rank": "-/167"
+   },
+   {
+    "term": "活动",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/163"
+   },
+   {
+    "term": "节奏",
+    "kind": "dropped keyword",
+    "store": "cn",
+    "rank": "-/136"
+   },
+   {
+    "term": "节奏",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/170"
+   },
+   {
+    "term": "断食",
+    "kind": "dropped keyword",
+    "store": "cn",
+    "rank": "-/185"
+   },
+   {
+    "term": "断食",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/188"
+   },
+   {
+    "term": "移动",
+    "kind": "dropped keyword",
+    "store": "cn",
+    "rank": "-/159"
+   },
+   {
+    "term": "移动",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/163"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "cn",
+    "rank": "-/165"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/191"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "cn",
+    "rank": "-/176"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "锁屏",
+    "kind": "dropped keyword",
+    "store": "cn",
+    "rank": "-/179"
+   },
+   {
+    "term": "锁屏",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/176"
+   },
+   {
+    "term": "代谢",
+    "kind": "dropped keyword",
+    "store": "cn",
+    "rank": "54/154"
+   },
+   {
+    "term": "代谢",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "35/164"
+   },
+   {
+    "term": "热量",
+    "kind": "dropped keyword",
+    "store": "cn",
+    "rank": "-/183"
+   },
+   {
+    "term": "热量",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/185"
+   }
+  ],
+  "zh-Hant": [
+   {
+    "term": "卡路里計算機 - 每日追蹤",
+    "kind": "name",
+    "store": "tw",
+    "rank": "1/186"
+   },
+   {
+    "term": "卡路里計算機 - 每日追蹤",
+    "kind": "name",
+    "store": "us",
+    "rank": "1/181"
+   },
+   {
+    "term": "每日總消耗熱量 手錶與鎖定畫面小工具",
+    "kind": "subtitle",
+    "store": "tw",
+    "rank": "-/0"
+   },
+   {
+    "term": "每日總消耗熱量 手錶與鎖定畫面小工具",
+    "kind": "subtitle",
+    "store": "us",
+    "rank": "-/0"
+   },
+   {
+    "term": "TDEE消耗 手錶與小工具",
+    "kind": "old subtitle",
+    "store": "tw",
+    "rank": "1/1"
+   },
+   {
+    "term": "TDEE消耗 手錶與小工具",
+    "kind": "old subtitle",
+    "store": "us",
+    "rank": "1/1"
+   },
+   {
+    "term": "計步器",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/182"
+   },
+   {
+    "term": "計步器",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/186"
+   },
+   {
+    "term": "基礎代謝",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/120"
+   },
+   {
+    "term": "基礎代謝",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/142"
+   },
+   {
+    "term": "步數",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/181"
+   },
+   {
+    "term": "步數",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "151/187"
+   },
+   {
+    "term": "蘋果手錶",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/171"
+   },
+   {
+    "term": "蘋果手錶",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/195"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "55/180"
+   },
+   {
+    "term": "tdee",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "74/184"
+   },
+   {
+    "term": "bmr",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "66/139"
+   },
+   {
+    "term": "bmr",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/174"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/189"
+   },
+   {
+    "term": "bmi",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/186"
+   },
+   {
+    "term": "熱量赤字",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/97"
+   },
+   {
+    "term": "熱量赤字",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/73"
+   },
+   {
+    "term": "靜息",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/172"
+   },
+   {
+    "term": "靜息",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "12/179"
+   },
+   {
+    "term": "活動量",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "9/138"
+   },
+   {
+    "term": "活動量",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "9/142"
+   },
+   {
+    "term": "錶面",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/193"
+   },
+   {
+    "term": "錶面",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/198"
+   },
+   {
+    "term": "體脂",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/182"
+   },
+   {
+    "term": "體脂",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/169"
+   },
+   {
+    "term": "蛋白質",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "155/190"
+   },
+   {
+    "term": "蛋白質",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "92/195"
+   },
+   {
+    "term": "碳水",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "42/192"
+   },
+   {
+    "term": "碳水",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "72/196"
+   },
+   {
+    "term": "燃燒",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/150"
+   },
+   {
+    "term": "燃燒",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/143"
+   },
+   {
+    "term": "運動",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/178"
+   },
+   {
+    "term": "運動",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/160"
+   },
+   {
+    "term": "健康",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/166"
+   },
+   {
+    "term": "健康",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/151"
+   },
+   {
+    "term": "計數器",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/178"
+   },
+   {
+    "term": "計數器",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/176"
+   },
+   {
+    "term": "脂肪",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "147/164"
+   },
+   {
+    "term": "脂肪",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "113/172"
+   },
+   {
+    "term": "營養",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/188"
+   },
+   {
+    "term": "營養",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/183"
+   },
+   {
+    "term": "代謝率",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/156"
+   },
+   {
+    "term": "代謝率",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/28"
+   },
+   {
+    "term": "複雜功能",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/60"
+   },
+   {
+    "term": "複雜功能",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/91"
+   },
+   {
+    "term": "體重",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/177"
+   },
+   {
+    "term": "體重",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/178"
+   },
+   {
+    "term": "鎖屏",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/180"
+   },
+   {
+    "term": "鎖屏",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "步行",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "164/193"
+   },
+   {
+    "term": "步行",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "165/180"
+   },
+   {
+    "term": "走路",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/184"
+   },
+   {
+    "term": "走路",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/186"
+   },
+   {
+    "term": "能量",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/184"
+   },
+   {
+    "term": "能量",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/179"
+   },
+   {
+    "term": "攝取",
+    "kind": "keyword",
+    "store": "tw",
+    "rank": "-/182"
+   },
+   {
+    "term": "攝取",
+    "kind": "keyword",
+    "store": "us",
+    "rank": "-/181"
+   },
+   {
+    "term": "錶盤",
+    "kind": "dropped keyword",
+    "store": "tw",
+    "rank": "100/180"
+   },
+   {
+    "term": "錶盤",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "94/178"
+   },
+   {
+    "term": "缺口",
+    "kind": "dropped keyword",
+    "store": "tw",
+    "rank": "13/62"
+   },
+   {
+    "term": "缺口",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "8/108"
+   },
+   {
+    "term": "活動",
+    "kind": "dropped keyword",
+    "store": "tw",
+    "rank": "-/171"
+   },
+   {
+    "term": "活動",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/167"
+   },
+   {
+    "term": "節奏",
+    "kind": "dropped keyword",
+    "store": "tw",
+    "rank": "-/180"
+   },
+   {
+    "term": "節奏",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/178"
+   },
+   {
+    "term": "斷食",
+    "kind": "dropped keyword",
+    "store": "tw",
+    "rank": "-/183"
+   },
+   {
+    "term": "斷食",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/191"
+   },
+   {
+    "term": "移動",
+    "kind": "dropped keyword",
+    "store": "tw",
+    "rank": "-/170"
+   },
+   {
+    "term": "移動",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/144"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "tw",
+    "rank": "-/173"
+   },
+   {
+    "term": "healthkit",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/191"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "tw",
+    "rank": "95/182"
+   },
+   {
+    "term": "kcal",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/187"
+   },
+   {
+    "term": "代謝",
+    "kind": "dropped keyword",
+    "store": "tw",
+    "rank": "39/146"
+   },
+   {
+    "term": "代謝",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "33/171"
+   },
+   {
+    "term": "熱量",
+    "kind": "dropped keyword",
+    "store": "tw",
+    "rank": "-/189"
+   },
+   {
+    "term": "熱量",
+    "kind": "dropped keyword",
+    "store": "us",
+    "rank": "-/187"
+   }
+  ]
+ }
+}
