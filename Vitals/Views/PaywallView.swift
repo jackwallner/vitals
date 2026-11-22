@@ -382,14 +382,16 @@ struct PaywallView: View {
                         featureLedHero
                     case .maintenanceLed:
                         maintenanceLedHero
-                    case .fullList:
+                    case .fullList, .catalog:
                         header(compact: true)
-                        paywallFeatureList
-                    case .catalog:
-                        header(compact: true)
+                        // At accessibility sizes the benefit list alone is more
+                        // than a screen, so the plans (and their prices) come
+                        // first instead of scrolling out of sight below it.
+                        if !pinsFooter && !pinsPlanCards { planList }
                         paywallFeatureList
                     }
-                    if !pinsPlanCards { planList }
+                    if pinsFooter && !pinsPlanCards { planList }
+                    if !pinsFooter && !pinsPlanCards && !upgradeTabVariantPlansFirst { planList }
                     if !pinsFooter { checkoutTerms }
                 }
                 .padding(.horizontal, 22)
@@ -488,6 +490,11 @@ struct PaywallView: View {
     /// At accessibility sizes the checkout alone is about a screen tall, so it
     /// scrolls below the plans instead of covering them.
     private var pinsFooter: Bool { !typeSize.isAccessibilitySize }
+
+    /// The full-list and catalog layouts already placed the plans above the benefits.
+    private var upgradeTabVariantPlansFirst: Bool {
+        upgradeTabVariant == .fullList || upgradeTabVariant == .catalog
+    }
 
     /// Plans that scrolled under the footer were sliced by it, half a plan
     /// card showing above the button.

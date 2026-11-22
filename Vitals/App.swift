@@ -147,6 +147,13 @@ private struct RootView: View {
                 }
             }
             .task {
+                // Neither is needed for the first frame: the refresh request
+                // is a daemon round trip and WatchConnectivity activation
+                // spins up its own session, both on the launch path before.
+                VitalsApp.scheduleAppRefresh()
+                #if canImport(WatchConnectivity)
+                PhoneGoalSyncService.shared.activate()
+                #endif
                 store.start()
                 #if DEBUG
                 if DebugLaunchConfig.seedHealth {
@@ -260,7 +267,6 @@ struct VitalsApp: App {
         DailyNudgeService.install()
         // Must run on every launch (including background) so observer queries are active
         HealthKitService.shared.enableBackgroundDelivery()
-        Self.scheduleAppRefresh()
         // Route weekly-recap notification taps to the recap sheet.
         UNUserNotificationCenter.current().delegate = VitalsNotificationDelegate.shared
         // RevenueCat is configured by `RootView` after the first frame: its
@@ -279,9 +285,6 @@ struct VitalsApp: App {
                 }
             }
         }
-        #endif
-        #if canImport(WatchConnectivity)
-        PhoneGoalSyncService.shared.activate()
         #endif
     }
 
