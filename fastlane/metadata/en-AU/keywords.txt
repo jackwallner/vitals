@@ -1,1 +1,1 @@
-step,macro,metabolic,rate,maintenance,expenditure,energy,walking,protein,daily,tdee,bmr,fitness
+bmr,complication,resting,active,ring,calculator,deficit,net,energy,steps,bmi,burned,macro,protein

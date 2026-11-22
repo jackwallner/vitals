@@ -1,1 +1,1 @@
-tdee,counter,calculator,apple,burned,bmr,deficit,resting,active,pedometer,steps,ring,bmi,intake,move
+tdee,counter,calculator,apple,burned,bmr,deficit,resting,active,pedometer,steps,ring,bmi,intake,net
