@@ -390,7 +390,7 @@ struct PaywallView: View {
                         paywallFeatureList
                     }
                     if !pinsPlanCards { planList }
-                    if !pinsFooter { pinnedCheckoutFooter }
+                    if !pinsFooter { checkoutTerms }
                 }
                 .padding(.horizontal, 22)
                 .padding(.top, displayCloseButton ? 44 : 12)
@@ -431,7 +431,7 @@ struct PaywallView: View {
                             header(compact: true)
                             paywallFeatureList
                             planList
-                            pinnedCheckoutFooter
+                            checkoutTerms
                         }
                         .padding(.horizontal, 22)
                         .padding(.top, displayCloseButton ? 44 : 20)
@@ -440,8 +440,49 @@ struct PaywallView: View {
             }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            if pinsFooter { pinnedCheckoutFooter }
+            if pinsFooter { pinnedCheckoutFooter } else { accessibilityCheckoutBar }
         }
+    }
+
+    /// At accessibility sizes only the button stays pinned (with a purchase or
+    /// restore message above it); the price terms and links scroll below the plans.
+    private var accessibilityCheckoutBar: some View {
+        VStack(spacing: 6) {
+            if let errorMessage {
+                Text(errorMessage)
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
+            } else if let restoreMessage {
+                Text(restoreMessage)
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(Theme.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
+            }
+            purchaseButton
+        }
+        .padding(.horizontal, 22)
+        .padding(.top, 8)
+        .padding(.bottom, displayCloseButton ? 10 : 22)
+        .background(alignment: .top) { checkoutScrim }
+    }
+
+    /// Required 3.1.2 copy and the legal links, scrolled at accessibility sizes.
+    private var checkoutTerms: some View {
+        VStack(spacing: 4) {
+            if let disclosureText {
+                Text(disclosureText)
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(Theme.textTertiary)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
+            }
+            legalFooter
+        }
+        .padding(.top, 8)
+        .padding(.bottom, 12)
     }
 
     /// At accessibility sizes the checkout alone is about a screen tall, so it
@@ -467,37 +508,7 @@ struct PaywallView: View {
             if pinsPlanCards {
                 planList.padding(.bottom, 6)
             }
-            Button(action: startPurchase) {
-                ZStack {
-                    Text(displayedCTATitle)
-                        .font(.system(.headline, design: .rounded, weight: .bold))
-                        .foregroundStyle(.white)
-                        .lineLimit(typeSize.isAccessibilitySize ? 3 : 1)
-                        .multilineTextAlignment(.center)
-                        .minimumScaleFactor(0.72)
-                        .opacity(isPurchasing || ctaTitle == nil ? 0 : 1)
-                        .animation(nil, value: displayedCTATitle)
-                    if isPurchasing || ctaTitle == nil {
-                        ProgressView()
-                            .tint(.white)
-                            .accessibilityHidden(true)
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .frame(minHeight: 50)
-                .background(Theme.ctaGradient, in: Capsule())
-                .ctaGlow()
-            }
-            .buttonStyle(.plain)
-            .accessibilityIdentifier("paywall-purchase")
-            .accessibilityLabel(displayedCTATitle)
-            .disabled(isPurchasing || ctaTitle == nil)
-            .onChange(of: ctaTitle) { _, new in
-                if let new { displayedCTATitle = new }
-            }
-            .onAppear {
-                if let ctaTitle { displayedCTATitle = ctaTitle }
-            }
+            purchaseButton
 
             VStack(spacing: 4) {
                 // Error replaces disclosure in the same slot — never ZStack both
@@ -539,6 +550,40 @@ struct PaywallView: View {
         .padding(.bottom, displayCloseButton ? 10 : 22)
         .background(alignment: .top) {
             if pinsFooter { checkoutScrim }
+        }
+    }
+
+    private var purchaseButton: some View {
+        Button(action: startPurchase) {
+            ZStack {
+                Text(displayedCTATitle)
+                    .font(.system(.headline, design: .rounded, weight: .bold))
+                    .foregroundStyle(.white)
+                    .lineLimit(typeSize.isAccessibilitySize ? 3 : 1)
+                    .multilineTextAlignment(.center)
+                    .minimumScaleFactor(0.72)
+                    .opacity(isPurchasing || ctaTitle == nil ? 0 : 1)
+                    .animation(nil, value: displayedCTATitle)
+                if isPurchasing || ctaTitle == nil {
+                    ProgressView()
+                        .tint(.white)
+                        .accessibilityHidden(true)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .frame(minHeight: 50)
+            .background(Theme.ctaGradient, in: Capsule())
+            .ctaGlow()
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("paywall-purchase")
+        .accessibilityLabel(displayedCTATitle)
+        .disabled(isPurchasing || ctaTitle == nil)
+        .onChange(of: ctaTitle) { _, new in
+            if let new { displayedCTATitle = new }
+        }
+        .onAppear {
+            if let ctaTitle { displayedCTATitle = ctaTitle }
         }
     }
 

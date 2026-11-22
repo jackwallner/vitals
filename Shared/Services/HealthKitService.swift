@@ -658,10 +658,10 @@ final class HealthKitService: ObservableObject {
     /// Observer handlers waiting for the debounced refresh to finish.
     private var pendingObserverCompletions: [ObserverCompletion] = []
 
-    private func finishObserverCompletions() {
+    private func takeObserverCompletions() -> [ObserverCompletion] {
         let completions = pendingObserverCompletions
         pendingObserverCompletions = []
-        completions.forEach { $0.call() }
+        return completions
     }
     private var installedObserverTypes: Set<String> = []
 
@@ -761,18 +761,21 @@ final class HealthKitService: ObservableObject {
                     guard let self else { return completion.call() }
                     self.pendingObserverCompletions.append(completion)
                     // Debounce: multiple HK types often deliver simultaneously.
-                    // Coalesce into a single refreshCache call; the task that
-                    // runs calls every handler that arrived meanwhile.
+                    // Coalesce into a single refreshCache call. The task that
+                    // runs takes the handlers that arrived before it started and
+                    // calls them once its refresh is saved; later ones wait for
+                    // the next refresh.
                     self.pendingRefreshTask?.cancel()
                     self.pendingRefreshTask = Task {
                         try? await Task.sleep(for: .milliseconds(500))
                         guard !Task.isCancelled else { return }
+                        let batch = self.takeObserverCompletions()
+                        defer { batch.forEach { $0.call() } }
                         do {
                             try await self.refreshCache()
                         } catch {
                             healthKitLogger.error("Observer-triggered cache refresh failed: \(String(describing: error), privacy: .public)")
                         }
-                        self.finishObserverCompletions()
                     }
                 }
                 #endif
@@ -948,11 +951,25 @@ final class HealthKitService: ObservableObject {
 
     /// Today's background history sync. The first one fills the whole streak
     /// window (`MilestoneCalculator.streakHistoryDays`); later ones refresh 90 days.
+    /// A backfill that fails waits until tomorrow, so a stuck long read can't
+    /// rerun on every refresh; the usual 90 days still sync meanwhile.
     func refreshHistoryCacheForStreak() async throws {
         let defaults = UserDefaults(suiteName: vitalsAppGroupID) ?? .standard
+        let today = DailyHealthRecord.key(for: DateHelpers.startOfDay())
         let backfilled = defaults.bool(forKey: "streakHistoryBackfilled")
-        try await refreshHistoryCache(days: MilestoneCalculator.historySyncDays(backfilled: backfilled))
-        defaults.set(true, forKey: "streakHistoryBackfilled")
+        let failedToday = defaults.string(forKey: "streakHistoryBackfillFailedDay") == today
+        let days = MilestoneCalculator.historySyncDays(backfilled: backfilled, backfillFailedToday: failedToday)
+        do {
+            try await refreshHistoryCache(days: days)
+        } catch {
+            if days == MilestoneCalculator.streakHistoryDays {
+                defaults.set(today, forKey: "streakHistoryBackfillFailedDay")
+            }
+            throw error
+        }
+        if days == MilestoneCalculator.streakHistoryDays {
+            defaults.set(true, forKey: "streakHistoryBackfilled")
+        }
     }
 
     func updateCachedFoodCalories(_ kcal: Double) throws {

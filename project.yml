@@ -178,6 +178,7 @@ targets:
       - path: Shared/Services/ConversionDiagnostics.swift
       - path: Shared/Utilities/BodyProfileCalculator.swift
       - path: Shared/Utilities/TypedNumber.swift
+      - path: Shared/Utilities/FirstToFinish.swift
       - path: Shared/Models/BodyProfile.swift
       - path: Shared/Services/ReviewPromptTracker.swift
       - path: Shared/Services/SummaryReportGenerator.swift
