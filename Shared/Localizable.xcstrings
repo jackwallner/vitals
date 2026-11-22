@@ -42156,240 +42156,240 @@
         }
       }
     },
-    "If you tapped Don't Allow, turn access on in Settings → Privacy & Security → Health → Total Calories." : {
+    "Apple Health may still be syncing. If you tapped Don't Allow, turn access on in Settings → Privacy & Security → Health → Total Calories." : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "إذا نقرت على عدم السماح، فشغّل الوصول من الإعدادات ← الخصوصية والأمن ← صحتي ← Total Calories."
+            "value" : "ربما لا يزال تطبيق صحتي يُجري المزامنة. إذا نقرت على عدم السماح، فشغّل الوصول من الإعدادات ← الخصوصية والأمن ← صحتي ← Total Calories."
           }
         },
         "bg" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ако сте докоснали „Не разрешавай“, включете достъпа от Настройки → Поверителност и сигурност → Здраве → Total Calories."
+            "value" : "Apple Health може все още да се синхронизира. Ако сте докоснали „Не разрешавай“, включете достъпа от Настройки → Поверителност и сигурност → Здраве → Total Calories."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pokud jste klepli na Nepovolit, zapněte přístup v Nastavení → Soukromí a zabezpečení → Zdraví → Total Calories."
+            "value" : "Zdraví se možná ještě synchronizuje. Pokud jste klepli na Nepovolit, zapněte přístup v Nastavení → Soukromí a zabezpečení → Zdraví → Total Calories."
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hvis du trykkede på Tillad ikke, kan du slå adgang til under Indstillinger → Anonymitet & sikkerhed → Sundhed → Total Calories."
+            "value" : "Sundhed synkroniserer muligvis stadig. Hvis du trykkede på Tillad ikke, kan du slå adgang til under Indstillinger → Anonymitet & sikkerhed → Sundhed → Total Calories."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wenn du auf „Nicht erlauben“ getippt hast, aktiviere den Zugriff unter Einstellungen → Datenschutz & Sicherheit → Health → Total Calories."
+            "value" : "Apple Health synchronisiert vielleicht noch. Wenn du auf „Nicht erlauben“ getippt hast, aktiviere den Zugriff unter Einstellungen → Datenschutz & Sicherheit → Health → Total Calories."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Αν πατήσατε «Να μην επιτρέπεται», ενεργοποιήστε την πρόσβαση στις Ρυθμίσεις → Απόρρητο και ασφάλεια → Υγεία → Total Calories."
+            "value" : "Η Υγεία μπορεί να συγχρονίζεται ακόμη. Αν πατήσατε «Να μην επιτρέπεται», ενεργοποιήστε την πρόσβαση στις Ρυθμίσεις → Απόρρητο και ασφάλεια → Υγεία → Total Calories."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si tocaste No permitir, activa el acceso en Ajustes → Privacidad y seguridad → Salud → Total Calories."
+            "value" : "Puede que Apple Salud aún se esté sincronizando. Si tocaste No permitir, activa el acceso en Ajustes → Privacidad y seguridad → Salud → Total Calories."
           }
         },
         "et" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kui puudutasid valikut Ära luba, lülita juurdepääs sisse: Seaded → Privaatsus ja turvalisus → Tervis → Total Calories."
+            "value" : "Tervis võib veel sünkroonida. Kui puudutasid valikut Ära luba, lülita juurdepääs sisse: Seaded → Privaatsus ja turvalisus → Tervis → Total Calories."
           }
         },
         "fa" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "اگر «اجازه نده» را زدید، دسترسی را از تنظیمات › حریم خصوصی و امنیت › Apple Health › Total Calories روشن کنید."
+            "value" : "ممکن است Apple Health هنوز در حال همگام‌سازی باشد. اگر «اجازه نده» را زدید، دسترسی را از تنظیمات › حریم خصوصی و امنیت › Apple Health › Total Calories روشن کنید."
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jos napautit Älä salli, laita käyttöoikeus päälle kohdassa Asetukset → Tietosuoja ja suojaus → Terveys → Total Calories."
+            "value" : "Terveys-apin synkronointi saattaa vielä olla kesken. Jos napautit Älä salli, laita käyttöoikeus päälle kohdassa Asetukset → Tietosuoja ja suojaus → Terveys → Total Calories."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si vous avez touché Ne pas autoriser, activez l’accès dans Réglages → Confidentialité et sécurité → Santé → Total Calories."
+            "value" : "Apple Santé est peut-être encore en cours de synchronisation. Si vous avez touché Ne pas autoriser, activez l’accès dans Réglages → Confidentialité et sécurité → Santé → Total Calories."
           }
         },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "אם הקשת על ״אל תאפשר״, יש להפעיל את הגישה בהגדרות ← פרטיות ואבטחה ← בריאות ← Total Calories."
+            "value" : "ייתכן שאפליקציית בריאות עדיין מסתנכרנת. אם הקשת על ״אל תאפשר״, יש להפעיל את הגישה בהגדרות ← פרטיות ואבטחה ← בריאות ← Total Calories."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "अगर आपने अनुमति न दें पर टैप किया था, तो सेटिंग्ज़ → गोपनीयता और सुरक्षा → सेहत → Total Calories में ऐक्सेस चालू करें।"
+            "value" : "हो सकता है कि सेहत ऐप का डेटा अभी सिंक हो रहा हो। अगर आपने अनुमति न दें पर टैप किया था, तो सेटिंग्ज़ → गोपनीयता और सुरक्षा → सेहत → Total Calories में ऐक्सेस चालू करें।"
           }
         },
         "hr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ako ste dodirnuli Ne dopusti, uključite pristup u Postavke → Privatnost i sigurnost → Zdravlje → Total Calories."
+            "value" : "Aplikacija Zdravlje možda još sinkronizira podatke. Ako ste dodirnuli Ne dopusti, uključite pristup u Postavke → Privatnost i sigurnost → Zdravlje → Total Calories."
           }
         },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ha a Tiltás gombra koppintottál, kapcsold be a hozzáférést itt: Beállítások → Adatvédelem és biztonság → Egészség → Total Calories."
+            "value" : "Lehet, hogy az Apple Egészség még szinkronizál. Ha a Tiltás gombra koppintottál, kapcsold be a hozzáférést itt: Beállítások → Adatvédelem és biztonság → Egészség → Total Calories."
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jika Anda mengetuk Jangan Izinkan, nyalakan akses di Pengaturan → Privasi & Keamanan → Kesehatan → Total Calories."
+            "value" : "Kesehatan mungkin masih menyinkronkan data. Jika Anda mengetuk Jangan Izinkan, nyalakan akses di Pengaturan → Privasi & Keamanan → Kesehatan → Total Calories."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se hai toccato Non consentire, attiva l’accesso in Impostazioni → Privacy e sicurezza → Salute → Total Calories."
+            "value" : "La sincronizzazione di Apple Salute potrebbe essere ancora in corso. Se hai toccato Non consentire, attiva l’accesso in Impostazioni → Privacy e sicurezza → Salute → Total Calories."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "「許可しない」をタップした場合は、「設定」→「プライバシーとセキュリティ」→「ヘルスケア」→「Total Calories」でアクセスをオンにしてください。"
+            "value" : "ヘルスケアが同期中かもしれません。「許可しない」をタップした場合は、「設定」→「プライバシーとセキュリティ」→「ヘルスケア」→「Total Calories」でアクセスをオンにしてください。"
           }
         },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "თუ შეეხეთ „არ დაუშვა“-ს, ჩართეთ წვდომა: პარამეტრები → კონფიდენციალურობა და უსაფრთხოება → Health → Total Calories."
+            "value" : "შესაძლოა, Apple Health ჯერ კიდევ სინქრონიზდება. თუ შეეხეთ „არ დაუშვა“-ს, ჩართეთ წვდომა: პარამეტრები → კონფიდენციალურობა და უსაფრთხოება → Health → Total Calories."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "허용 안 함을 탭했다면 설정 → 개인정보 보호 및 보안 → 건강 → Total Calories에서 접근을 켜세요."
+            "value" : "건강 데이터가 아직 동기화 중일 수 있어요. 허용 안 함을 탭했다면 설정 → 개인정보 보호 및 보안 → 건강 → Total Calories에서 접근을 켜세요."
           }
         },
         "lt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jei bakstelėjote Neleisti, įjunkite prieigą: Nustatymai → Privatumas ir sauga → Sveikata → Total Calories."
+            "value" : "Apple Health vis dar gali sinchronizuoti duomenis. Jei bakstelėjote Neleisti, įjunkite prieigą: Nustatymai → Privatumas ir sauga → Sveikata → Total Calories."
           }
         },
         "lv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ja pieskārāties Neatļaut, ieslēdziet piekļuvi: Iestatījumi → Privātums un drošība → Veselība → Total Calories."
+            "value" : "Lietotnes Veselība dati vēl var sinhronizēties. Ja pieskārāties Neatļaut, ieslēdziet piekļuvi: Iestatījumi → Privātums un drošība → Veselība → Total Calories."
           }
         },
         "ms" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jika anda mengetik Jangan Benarkan, aktifkan akses dalam Tetapan → Privasi & Keselamatan → Kesihatan → Total Calories."
+            "value" : "App Kesihatan mungkin masih menyegerakkan data. Jika anda mengetik Jangan Benarkan, aktifkan akses dalam Tetapan → Privasi & Keselamatan → Kesihatan → Total Calories."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hvis du trykket på Ikke tillat, slår du på tilgang i Innstillinger → Personvern og sikkerhet → Helse → Total Calories."
+            "value" : "Helse synkroniserer kanskje fortsatt. Hvis du trykket på Ikke tillat, slår du på tilgang i Innstillinger → Personvern og sikkerhet → Helse → Total Calories."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heb je op Sta niet toe getikt? Zet toegang aan via Instellingen → Privacy en beveiliging → Gezondheid → Total Calories."
+            "value" : "Apple Gezondheid is mogelijk nog aan het synchroniseren. Heb je op Sta niet toe getikt? Zet toegang aan via Instellingen → Privacy en beveiliging → Gezondheid → Total Calories."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jeśli stuknięto Nie pozwalaj, włącz dostęp w Ustawienia → Prywatność i ochrona → Zdrowie → Total Calories."
+            "value" : "Aplikacja Zdrowie może jeszcze synchronizować dane. Jeśli stuknięto Nie pozwalaj, włącz dostęp w Ustawienia → Prywatność i ochrona → Zdrowie → Total Calories."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se você tocou em Não Permitir, ative o acesso em Ajustes → Privacidade e Segurança → Saúde → Total Calories."
+            "value" : "O Apple Saúde ainda pode estar sincronizando. Se você tocou em Não Permitir, ative o acesso em Ajustes → Privacidade e Segurança → Saúde → Total Calories."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se tocou em Não permitir, ative o acesso em Definições → Privacidade e segurança → Saúde → Total Calories."
+            "value" : "A Apple Saúde pode ainda estar a sincronizar. Se tocou em Não permitir, ative o acesso em Definições → Privacidade e segurança → Saúde → Total Calories."
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dacă ai apăsat Nu permite, activează accesul din Setări → Confidențialitate și securitate → Sănătate → Total Calories."
+            "value" : "Apple Sănătate poate fi încă în curs de sincronizare. Dacă ai apăsat Nu permite, activează accesul din Setări → Confidențialitate și securitate → Sănătate → Total Calories."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Если вы нажали «Не разрешать», включите доступ: Настройки → Конфиденциальность и безопасность → Здоровье → Total Calories."
+            "value" : "Возможно, данные из приложения «Здоровье» ещё синхронизируются. Если вы нажали «Не разрешать», включите доступ: Настройки → Конфиденциальность и безопасность → Здоровье → Total Calories."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ak ste klepli na Nepovoliť, zapnite prístup v Nastavenia → Súkromie a bezpečnosť → Zdravie → Total Calories."
+            "value" : "Zdravie sa možno ešte synchronizuje. Ak ste klepli na Nepovoliť, zapnite prístup v Nastavenia → Súkromie a bezpečnosť → Zdravie → Total Calories."
           }
         },
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Če ste tapnili Ne dovoli, vklopite dostop v Nastavitve → Zasebnost in varnost → Zdravje → Total Calories."
+            "value" : "Apple Health morda še sinhronizira podatke. Če ste tapnili Ne dovoli, vklopite dostop v Nastavitve → Zasebnost in varnost → Zdravje → Total Calories."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Om du tryckte på Tillåt inte slår du på åtkomst i Inställningar → Integritet och säkerhet → Hälsa → Total Calories."
+            "value" : "Apple Hälsa synkroniserar kanske fortfarande. Om du tryckte på Tillåt inte slår du på åtkomst i Inställningar → Integritet och säkerhet → Hälsa → Total Calories."
           }
         },
         "th" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "หากคุณแตะไม่อนุญาต ให้เปิดสิทธิ์เข้าถึงใน การตั้งค่า → ความเป็นส่วนตัวและความปลอดภัย → สุขภาพ → Total Calories"
+            "value" : "แอปสุขภาพอาจยังซิงค์ข้อมูลอยู่ หากคุณแตะไม่อนุญาต ให้เปิดสิทธิ์เข้าถึงใน การตั้งค่า → ความเป็นส่วนตัวและความปลอดภัย → สุขภาพ → Total Calories"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "İzin Verme'ye dokunduysanız erişimi Ayarlar → Gizlilik ve Güvenlik → Sağlık → Total Calories bölümünden açın."
+            "value" : "Apple Sağlık hâlâ eşzamanlanıyor olabilir. İzin Verme'ye dokunduysanız erişimi Ayarlar → Gizlilik ve Güvenlik → Sağlık → Total Calories bölümünden açın."
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Якщо ви торкнулися «Не дозволяти», увімкніть доступ: Параметри → Приватність і безпека → Здоров’я → Total Calories."
+            "value" : "Можливо, програма «Здоров’я» ще синхронізує дані. Якщо ви торкнулися «Не дозволяти», увімкніть доступ: Параметри → Приватність і безпека → Здоров’я → Total Calories."
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nếu bạn đã chạm vào Không cho phép, hãy bật quyền truy cập trong Cài đặt → Quyền riêng tư & Bảo mật → Sức khỏe → Total Calories."
+            "value" : "Sức khỏe có thể vẫn đang đồng bộ. Nếu bạn đã chạm vào Không cho phép, hãy bật quyền truy cập trong Cài đặt → Quyền riêng tư & Bảo mật → Sức khỏe → Total Calories."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "如果你轻点了“不允许”，请前往“设置”→“隐私与安全性”→“健康”→“Total Calories”打开访问权限。"
+            "value" : "Apple 健康可能仍在同步。如果你轻点了“不允许”，请前往“设置”→“隐私与安全性”→“健康”→“Total Calories”打开访问权限。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "如果你點了「不允許」，請前往「設定」→「隱私權與安全性」→「健康」→「Total Calories」開啟取用權限。"
+            "value" : "Apple 健康可能仍在同步。如果你點了「不允許」，請前往「設定」→「隱私權與安全性」→「健康」→「Total Calories」開啟取用權限。"
           }
         }
       }

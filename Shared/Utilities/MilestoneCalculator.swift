@@ -52,8 +52,8 @@ enum MilestoneCalculator {
     /// streak window, so a new or reinstalling customer with a long streak in
     /// Health reads it at once instead of one cached day at a time; later syncs
     /// only refresh the recent days.
-    static func historySyncDays(backfilled: Bool) -> Int {
-        backfilled ? 90 : streakHistoryDays
+    static func historySyncDays(backfilled: Bool, backfillFailedToday: Bool = false) -> Int {
+        backfilled || backfillFailedToday ? 90 : streakHistoryDays
     }
 
     /// How far back a streak walk will go before giving up. Only reached when

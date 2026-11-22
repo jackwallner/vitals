@@ -711,7 +711,8 @@ final class StoreService: NSObject, ObservableObject {
             // Apple can take the payment and RevenueCat still throw (it could not
             // post the receipt, or the product is already owned). Ask the server
             // before calling it a failure.
-            guard !wasPro, await ownsEntitlementAfterFailedPurchase(error) else { throw error }
+            guard !wasPro, !Self.isCancelledPurchase(error),
+                  await ownsEntitlementAfterFailedPurchase(error) else { throw error }
             return recordPurchase(of: product, startedTrial: startedTrial)
         }
         apply(customerInfo: result.customerInfo)
@@ -747,14 +748,32 @@ final class StoreService: NSObject, ObservableObject {
     /// After a purchase threw: re-reads customer info from the server, and for an
     /// "already purchased" error restores first, since the entitlement did not sync.
     /// Leaves `lastError` as it found it, because the caller shows its own failure copy.
+    /// Waits at most `failedPurchaseRecheckSeconds` so a slow network can't hold
+    /// the buy spinner. A re-check that finishes later still unlocks Pro.
     private func ownsEntitlementAfterFailedPurchase(_ error: Error) async -> Bool {
         let previousError = lastError
-        await updateCustomerProductStatus(fetchPolicy: .fetchCurrent)
-        if !isPro, Self.isAlreadyPurchased(error) {
-            await restorePurchases()
+        let recheck = Task { @MainActor in
+            await self.updateCustomerProductStatus(fetchPolicy: .fetchCurrent)
+            if !self.isPro, Self.isAlreadyPurchased(error) {
+                await self.restorePurchases()
+            }
+            if !self.isPro { self.lastError = previousError }
         }
-        if !isPro { lastError = previousError }
+        let finished = await FirstToFinish.race(
+            { await recheck.value },
+            timeout: Self.failedPurchaseRecheckSeconds
+        )
+        if !finished { lastError = previousError }
         return isPro
+    }
+
+    nonisolated static let failedPurchaseRecheckSeconds: Double = 8
+
+    /// RevenueCat reports a dismissed purchase sheet as a thrown error.
+    nonisolated static func isCancelledPurchase(_ error: Error) -> Bool {
+        if let code = error as? ErrorCode { return code == .purchaseCancelledError }
+        let nsError = error as NSError
+        return nsError.domain == ErrorCode.errorDomain && nsError.code == ErrorCode.purchaseCancelledError.rawValue
     }
 
     nonisolated static func isAlreadyPurchased(_ error: Error) -> Bool {

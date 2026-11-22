@@ -31,7 +31,7 @@ enum HealthNotice: Equatable {
         case .accessNeeded:
             String(localized: "Grant Apple Health access so Total Calories can load your active energy, resting energy, and steps.")
         case .noData:
-            String(localized: "If you tapped Don't Allow, turn access on in Settings → Privacy & Security → Health → Total Calories.")
+            String(localized: "Apple Health may still be syncing. If you tapped Don't Allow, turn access on in Settings → Privacy & Security → Health → Total Calories.")
         case .loadError:
             String(localized: "Try reopening the app in a moment, or check Apple Health access.")
         }

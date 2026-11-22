@@ -1,3 +1,4 @@
+import RevenueCat
 import XCTest
 
 /// Regression tests for the 2026-11-20 bug catalog fixes.
@@ -206,5 +207,33 @@ final class BugCatalogFixTests: XCTestCase {
         let cached = TodaySnapshotResolver.Stats(active: 300, resting: 900, steps: 9_400)
         let shown = try XCTUnwrap(TodaySnapshotResolver.resolve(live: live, cached: cached, protectedDataAvailable: true))
         XCTAssertEqual(shown, cached)
+    }
+
+    // MARK: - Follow-ups from the build 262 review
+
+    func testAFailedBackfillFallsBackToNinetyDaysForTheRestOfTheDay() {
+        XCTAssertEqual(MilestoneCalculator.historySyncDays(backfilled: false, backfillFailedToday: true), 90)
+        XCTAssertEqual(MilestoneCalculator.historySyncDays(backfilled: true, backfillFailedToday: true), 90)
+        XCTAssertEqual(
+            MilestoneCalculator.historySyncDays(backfilled: false, backfillFailedToday: false),
+            MilestoneCalculator.streakHistoryDays
+        )
+    }
+
+    func testADismissedPurchaseSheetSkipsTheServerRecheck() {
+        XCTAssertTrue(StoreService.isCancelledPurchase(ErrorCode.purchaseCancelledError))
+        let bridged = NSError(domain: ErrorCode.errorDomain, code: ErrorCode.purchaseCancelledError.rawValue)
+        XCTAssertTrue(StoreService.isCancelledPurchase(bridged))
+        XCTAssertFalse(StoreService.isCancelledPurchase(ErrorCode.networkError))
+        XCTAssertFalse(StoreService.isCancelledPurchase(ErrorCode.productAlreadyPurchasedError))
+    }
+
+    func testTheFailedPurchaseRecheckStopsWaitingAtItsDeadline() async {
+        let start = ContinuousClock.now
+        let finished = await FirstToFinish.race({ try? await Task.sleep(for: .seconds(5)) }, timeout: 0.2)
+        XCTAssertFalse(finished)
+        XCTAssertLessThan(ContinuousClock.now - start, .seconds(2))
+        let quick = await FirstToFinish.race({}, timeout: 5)
+        XCTAssertTrue(quick)
     }
 }
