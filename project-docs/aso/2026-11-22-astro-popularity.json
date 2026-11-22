@@ -1,0 +1,1258 @@
+{
+ "gb": [
+  {
+   "loc": "en-GB",
+   "kind": "dropped",
+   "word": "complication",
+   "term": "calories complication",
+   "pop": 5
+  },
+  {
+   "loc": "en-GB",
+   "kind": "dropped",
+   "word": "complication",
+   "term": "complication",
+   "pop": 5
+  },
+  {
+   "loc": "en-GB",
+   "kind": "dropped",
+   "word": "energy",
+   "term": "calories energy",
+   "pop": 5
+  },
+  {
+   "loc": "en-GB",
+   "kind": "dropped",
+   "word": "energy",
+   "term": "energy",
+   "pop": 36
+  },
+  {
+   "loc": "en-GB",
+   "kind": "dropped",
+   "word": "macro",
+   "term": "calories macro",
+   "pop": 5
+  },
+  {
+   "loc": "en-GB",
+   "kind": "dropped",
+   "word": "macro",
+   "term": "macro",
+   "pop": 43
+  },
+  {
+   "loc": "en-GB",
+   "kind": "dropped",
+   "word": "protein",
+   "term": "calories protein",
+   "pop": 5
+  },
+  {
+   "loc": "en-GB",
+   "kind": "dropped",
+   "word": "protein",
+   "term": "protein",
+   "pop": 35
+  },
+  {
+   "loc": "en-GB",
+   "kind": "added",
+   "word": "apple",
+   "term": "calories apple",
+   "pop": 5
+  },
+  {
+   "loc": "en-GB",
+   "kind": "added",
+   "word": "apple",
+   "term": "apple",
+   "pop": 67
+  },
+  {
+   "loc": "en-GB",
+   "kind": "added",
+   "word": "counter",
+   "term": "calories counter",
+   "pop": 26
+  },
+  {
+   "loc": "en-GB",
+   "kind": "added",
+   "word": "counter",
+   "term": "counter",
+   "pop": 52
+  },
+  {
+   "loc": "en-GB",
+   "kind": "added",
+   "word": "intake",
+   "term": "calories intake",
+   "pop": 5
+  },
+  {
+   "loc": "en-GB",
+   "kind": "added",
+   "word": "intake",
+   "term": "intake",
+   "pop": 26
+  },
+  {
+   "loc": "en-GB",
+   "kind": "added",
+   "word": "kcal",
+   "term": "calories kcal",
+   "pop": 5
+  },
+  {
+   "loc": "en-GB",
+   "kind": "added",
+   "word": "kcal",
+   "term": "kcal",
+   "pop": 26
+  },
+  {
+   "loc": "en-GB",
+   "kind": "added",
+   "word": "pedometer",
+   "term": "calories pedometer",
+   "pop": 5
+  },
+  {
+   "loc": "en-GB",
+   "kind": "added",
+   "word": "pedometer",
+   "term": "pedometer",
+   "pop": 53
+  }
+ ],
+ "ca": [
+  {
+   "loc": "en-CA",
+   "kind": "dropped",
+   "word": "complication",
+   "term": "calories complication",
+   "pop": 5
+  },
+  {
+   "loc": "en-CA",
+   "kind": "dropped",
+   "word": "complication",
+   "term": "complication",
+   "pop": 5
+  },
+  {
+   "loc": "en-CA",
+   "kind": "dropped",
+   "word": "macro",
+   "term": "calories macro",
+   "pop": 5
+  },
+  {
+   "loc": "en-CA",
+   "kind": "dropped",
+   "word": "macro",
+   "term": "macro",
+   "pop": 43
+  },
+  {
+   "loc": "en-CA",
+   "kind": "dropped",
+   "word": "protein",
+   "term": "calories protein",
+   "pop": 5
+  },
+  {
+   "loc": "en-CA",
+   "kind": "dropped",
+   "word": "protein",
+   "term": "protein",
+   "pop": 25
+  },
+  {
+   "loc": "en-CA",
+   "kind": "dropped",
+   "word": "ring",
+   "term": "calories ring",
+   "pop": 5
+  },
+  {
+   "loc": "en-CA",
+   "kind": "dropped",
+   "word": "ring",
+   "term": "ring",
+   "pop": 65
+  },
+  {
+   "loc": "en-CA",
+   "kind": "added",
+   "word": "apple",
+   "term": "calories apple",
+   "pop": 5
+  },
+  {
+   "loc": "en-CA",
+   "kind": "added",
+   "word": "apple",
+   "term": "apple",
+   "pop": 67
+  },
+  {
+   "loc": "en-CA",
+   "kind": "added",
+   "word": "counter",
+   "term": "calories counter",
+   "pop": 16
+  },
+  {
+   "loc": "en-CA",
+   "kind": "added",
+   "word": "counter",
+   "term": "counter",
+   "pop": 51
+  },
+  {
+   "loc": "en-CA",
+   "kind": "added",
+   "word": "intake",
+   "term": "calories intake",
+   "pop": 5
+  },
+  {
+   "loc": "en-CA",
+   "kind": "added",
+   "word": "intake",
+   "term": "intake",
+   "pop": 5
+  },
+  {
+   "loc": "en-CA",
+   "kind": "added",
+   "word": "kcal",
+   "term": "calories kcal",
+   "pop": 5
+  },
+  {
+   "loc": "en-CA",
+   "kind": "added",
+   "word": "kcal",
+   "term": "kcal",
+   "pop": 7
+  },
+  {
+   "loc": "en-CA",
+   "kind": "added",
+   "word": "pedometer",
+   "term": "calories pedometer",
+   "pop": 5
+  },
+  {
+   "loc": "en-CA",
+   "kind": "added",
+   "word": "pedometer",
+   "term": "pedometer",
+   "pop": 48
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "actif",
+   "term": "calories actif",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "actif",
+   "term": "actif",
+   "pop": 12
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "besoin",
+   "term": "calories besoin",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "besoin",
+   "term": "besoin",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "bmi",
+   "term": "calories bmi",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "bmi",
+   "term": "bmi",
+   "pop": 50
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "bmr",
+   "term": "calories bmr",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "bmr",
+   "term": "bmr",
+   "pop": 32
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "brûlure",
+   "term": "calories brûlure",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "brûlure",
+   "term": "brûlure",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "kcal",
+   "term": "calories kcal",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "kcal",
+   "term": "kcal",
+   "pop": 7
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "macro",
+   "term": "calories macro",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "macro",
+   "term": "macro",
+   "pop": 43
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "nettes",
+   "term": "calories nettes",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "nettes",
+   "term": "nettes",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "tdee",
+   "term": "calories tdee",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "tdee",
+   "term": "tdee",
+   "pop": 7
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "widget",
+   "term": "calories widget",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "dropped",
+   "word": "widget",
+   "term": "widget",
+   "pop": 62
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "added",
+   "word": "calculateur",
+   "term": "calories calculateur",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "added",
+   "word": "calculateur",
+   "term": "calculateur",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "added",
+   "word": "déficit",
+   "term": "calories déficit",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "added",
+   "word": "déficit",
+   "term": "déficit",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "added",
+   "word": "dépense",
+   "term": "calories dépense",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "added",
+   "word": "dépense",
+   "term": "dépense",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "added",
+   "word": "pas",
+   "term": "calories pas",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "added",
+   "word": "pas",
+   "term": "pas",
+   "pop": 31
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "added",
+   "word": "podomètre",
+   "term": "calories podomètre",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "added",
+   "word": "podomètre",
+   "term": "podomètre",
+   "pop": 33
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "added",
+   "word": "santé",
+   "term": "calories santé",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "added",
+   "word": "santé",
+   "term": "santé",
+   "pop": 37
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "added",
+   "word": "widgets",
+   "term": "calories widgets",
+   "pop": 5
+  },
+  {
+   "loc": "fr-CA",
+   "kind": "added",
+   "word": "widgets",
+   "term": "widgets",
+   "pop": 55
+  }
+ ],
+ "mx": [
+  {
+   "loc": "es-MX",
+   "kind": "dropped",
+   "word": "bmi",
+   "term": "calorías bmi",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "dropped",
+   "word": "bmi",
+   "term": "bmi",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "dropped",
+   "word": "complicación",
+   "term": "calorías complicación",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "dropped",
+   "word": "complicación",
+   "term": "complicación",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "dropped",
+   "word": "diario",
+   "term": "calorías diario",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "dropped",
+   "word": "diario",
+   "term": "diario",
+   "pop": 55
+  },
+  {
+   "loc": "es-MX",
+   "kind": "dropped",
+   "word": "gastocalórico",
+   "term": "calorías gastocalórico",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "dropped",
+   "word": "gastocalórico",
+   "term": "gastocalórico",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "dropped",
+   "word": "kcal",
+   "term": "calorías kcal",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "dropped",
+   "word": "kcal",
+   "term": "kcal",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "dropped",
+   "word": "metabolismobasal",
+   "term": "calorías metabolismobasal",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "dropped",
+   "word": "metabolismobasal",
+   "term": "metabolismobasal",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "dropped",
+   "word": "quema",
+   "term": "calorías quema",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "dropped",
+   "word": "quema",
+   "term": "quema",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "basal",
+   "term": "calorías basal",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "basal",
+   "term": "basal",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "calculadora",
+   "term": "calorías calculadora",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "calculadora",
+   "term": "calculadora",
+   "pop": 71
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "calórico",
+   "term": "calorías calórico",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "calórico",
+   "term": "calórico",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "gasto",
+   "term": "calorías gasto",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "gasto",
+   "term": "gasto",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "imc",
+   "term": "calorías imc",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "imc",
+   "term": "imc",
+   "pop": 48
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "metabolismo",
+   "term": "calorías metabolismo",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "metabolismo",
+   "term": "metabolismo",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "pasos",
+   "term": "calorías pasos",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "pasos",
+   "term": "pasos",
+   "pop": 47
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "podómetro",
+   "term": "calorías podómetro",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "podómetro",
+   "term": "podómetro",
+   "pop": 22
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "total",
+   "term": "calorías total",
+   "pop": 5
+  },
+  {
+   "loc": "es-MX",
+   "kind": "added",
+   "word": "total",
+   "term": "total",
+   "pop": 47
+  }
+ ],
+ "br": [
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "ativo",
+   "term": "calorias ativo",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "ativo",
+   "term": "ativo",
+   "pop": 42
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "bmi",
+   "term": "calorias bmi",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "bmi",
+   "term": "bmi",
+   "pop": 9
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "bmr",
+   "term": "calorias bmr",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "bmr",
+   "term": "bmr",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "caminhar",
+   "term": "calorias caminhar",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "caminhar",
+   "term": "caminhar",
+   "pop": 21
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "complicação",
+   "term": "calorias complicação",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "complicação",
+   "term": "complicação",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "diário",
+   "term": "calorias diário",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "diário",
+   "term": "diário",
+   "pop": 39
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "healthkit",
+   "term": "calorias healthkit",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "healthkit",
+   "term": "healthkit",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "kcal",
+   "term": "calorias kcal",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "kcal",
+   "term": "kcal",
+   "pop": 26
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "macros",
+   "term": "calorias macros",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "macros",
+   "term": "macros",
+   "pop": 48
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "queima",
+   "term": "calorias queima",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "queima",
+   "term": "queima",
+   "pop": 21
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "relógio",
+   "term": "calorias relógio",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "relógio",
+   "term": "relógio",
+   "pop": 61
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "ritmo",
+   "term": "calorias ritmo",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "dropped",
+   "word": "ritmo",
+   "term": "ritmo",
+   "pop": 44
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "apple",
+   "term": "calorias apple",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "apple",
+   "term": "apple",
+   "pop": 64
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "basal",
+   "term": "calorias basal",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "basal",
+   "term": "basal",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "calculadora",
+   "term": "calorias calculadora",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "calculadora",
+   "term": "calculadora",
+   "pop": 73
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "calórico",
+   "term": "calorias calórico",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "calórico",
+   "term": "calórico",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "gastas",
+   "term": "calorias gastas",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "gastas",
+   "term": "gastas",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "gasto",
+   "term": "calorias gasto",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "gasto",
+   "term": "gasto",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "imc",
+   "term": "calorias imc",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "imc",
+   "term": "imc",
+   "pop": 8
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "metabólica",
+   "term": "calorias metabólica",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "metabólica",
+   "term": "metabólica",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "no",
+   "term": "calorias no",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "no",
+   "term": "no",
+   "pop": 43
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "passos",
+   "term": "calorias passos",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "passos",
+   "term": "passos",
+   "pop": 40
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "taxa",
+   "term": "calorias taxa",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "taxa",
+   "term": "taxa",
+   "pop": 27
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "total",
+   "term": "calorias total",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "total",
+   "term": "total",
+   "pop": 51
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "watch",
+   "term": "calorias watch",
+   "pop": 5
+  },
+  {
+   "loc": "pt-BR",
+   "kind": "added",
+   "word": "watch",
+   "term": "watch",
+   "pop": 62
+  }
+ ],
+ "de": [
+  {
+   "loc": "de-DE",
+   "kind": "dropped",
+   "word": "bmr",
+   "term": "kalorien bmr",
+   "pop": 5
+  },
+  {
+   "loc": "de-DE",
+   "kind": "dropped",
+   "word": "bmr",
+   "term": "bmr",
+   "pop": 5
+  },
+  {
+   "loc": "de-DE",
+   "kind": "dropped",
+   "word": "kalorienrechner",
+   "term": "kalorienrechner",
+   "pop": 41
+  },
+  {
+   "loc": "de-DE",
+   "kind": "dropped",
+   "word": "kalorienrechner",
+   "term": "kalorienrechner",
+   "pop": 41
+  },
+  {
+   "loc": "de-DE",
+   "kind": "dropped",
+   "word": "komplikation",
+   "term": "kalorien komplikation",
+   "pop": 5
+  },
+  {
+   "loc": "de-DE",
+   "kind": "dropped",
+   "word": "komplikation",
+   "term": "komplikation",
+   "pop": 5
+  },
+  {
+   "loc": "de-DE",
+   "kind": "dropped",
+   "word": "makros",
+   "term": "kalorien makros",
+   "pop": 5
+  },
+  {
+   "loc": "de-DE",
+   "kind": "dropped",
+   "word": "makros",
+   "term": "makros",
+   "pop": 6
+  },
+  {
+   "loc": "de-DE",
+   "kind": "dropped",
+   "word": "tagestracker",
+   "term": "kalorien tagestracker",
+   "pop": 5
+  },
+  {
+   "loc": "de-DE",
+   "kind": "dropped",
+   "word": "tagestracker",
+   "term": "tagestracker",
+   "pop": 5
+  },
+  {
+   "loc": "de-DE",
+   "kind": "dropped",
+   "word": "verbrennung",
+   "term": "kalorien verbrennung",
+   "pop": 5
+  },
+  {
+   "loc": "de-DE",
+   "kind": "dropped",
+   "word": "verbrennung",
+   "term": "verbrennung",
+   "pop": 5
+  },
+  {
+   "loc": "de-DE",
+   "kind": "added",
+   "word": "apple",
+   "term": "kalorien apple",
+   "pop": 5
+  },
+  {
+   "loc": "de-DE",
+   "kind": "added",
+   "word": "apple",
+   "term": "apple",
+   "pop": 69
+  },
+  {
+   "loc": "de-DE",
+   "kind": "added",
+   "word": "auf",
+   "term": "kalorien auf",
+   "pop": 5
+  },
+  {
+   "loc": "de-DE",
+   "kind": "added",
+   "word": "auf",
+   "term": "auf",
+   "pop": 24
+  },
+  {
+   "loc": "de-DE",
+   "kind": "added",
+   "word": "kalorien",
+   "term": "kalorien",
+   "pop": 51
+  },
+  {
+   "loc": "de-DE",
+   "kind": "added",
+   "word": "kalorien",
+   "term": "kalorien",
+   "pop": 51
+  },
+  {
+   "loc": "de-DE",
+   "kind": "added",
+   "word": "kalorienverbrauch",
+   "term": "kalorienverbrauch",
+   "pop": 5
+  },
+  {
+   "loc": "de-DE",
+   "kind": "added",
+   "word": "kalorienverbrauch",
+   "term": "kalorienverbrauch",
+   "pop": 5
+  },
+  {
+   "loc": "de-DE",
+   "kind": "added",
+   "word": "schrittzähler",
+   "term": "kalorien schrittzähler",
+   "pop": 5
+  },
+  {
+   "loc": "de-DE",
+   "kind": "added",
+   "word": "schrittzähler",
+   "term": "schrittzähler",
+   "pop": 64
+  },
+  {
+   "loc": "de-DE",
+   "kind": "added",
+   "word": "tracker",
+   "term": "kalorien tracker",
+   "pop": 56
+  },
+  {
+   "loc": "de-DE",
+   "kind": "added",
+   "word": "tracker",
+   "term": "tracker",
+   "pop": 47
+  },
+  {
+   "loc": "de-DE",
+   "kind": "added",
+   "word": "watch",
+   "term": "kalorien watch",
+   "pop": 5
+  },
+  {
+   "loc": "de-DE",
+   "kind": "added",
+   "word": "watch",
+   "term": "watch",
+   "pop": 65
+  }
+ ]
+}
