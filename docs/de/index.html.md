@@ -22,7 +22,7 @@ Sieh deine aktiven und Ruhekalorien in einem übersichtlichen Ring. Tippe für d
 
 ### Trends im Zeitverlauf
 
-Zeige 7 Tage, 30 Tage, 90 Tage, ein ganzes Jahr oder einen beliebigen Zeitraum an. Jederzeit als CSV exportieren.
+Zeige 7 Tage, 30 Tage, 90 Tage oder ein ganzes Jahr an. Jederzeit als CSV exportieren.
 
 ### Fortschrittsringe
 
@@ -81,6 +81,8 @@ Ein optionales Upgrade für alle, die tiefer einsteigen wollen. Verfügbar als M
 **Tiefe Trends.** Vergleiche jeden Zeitraum mit dem davor. Sieh genau, wie sich deine Aktivität von Woche zu Woche oder von Monat zu Monat verändert, in Kalorien und Schritten.
 
 **Aufschlüsselung aktiv vs. Ruhe.** Sieh direkt im Dashboard, wie viel deines Verbrauchs aus Bewegung und wie viel aus dem Stoffwechsel stammt.
+
+**Mehr mit Vitals+.** Makros aus deiner Ernährungs-App, Prognosen für Kalorien und Schritte zum Tagesende, Ziel-Serien und ein Rückblick am Sonntag, eigene Zeiträume im Verlauf, Körperfett neben dem BMI, ausgeschlossene Tage für Krankheitstage und Tage ohne Uhr sowie eine Abenderinnerung, wenn ein Ziel noch offen ist.
 
 ### Ratgeber
 

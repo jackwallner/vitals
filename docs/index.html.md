@@ -22,7 +22,7 @@ See your active and resting calories in one clean ring. Tap for the breakdown.
 
 ### Trends over time
 
-View 7 days, 30 days, 90 days, a full year, or any custom range. Export to CSV anytime.
+View 7 days, 30 days, 90 days or a full year. Export to CSV anytime.
 
 ### Progress rings
 
@@ -81,6 +81,8 @@ An optional upgrade for people who want to go deeper. Monthly, yearly, or a one-
 **Deep Trends.** Compare any period to the one before it. See exactly how your activity is changing week-over-week or month-over-month, in calories and steps.
 
 **Active vs. Resting Breakdown.** See how much of your burn comes from movement vs. metabolism, right on the dashboard.
+
+**More with Vitals+.** Macros from your food app, end-of-day projections for calories and steps, goal streaks and a Sunday recap, custom date ranges in History, body fat next to BMI, excluded days for sick days and days off the wrist, and an evening reminder when a goal is still open.
 
 ### Guides
 

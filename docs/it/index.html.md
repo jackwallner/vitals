@@ -22,7 +22,7 @@ Vedi le calorie attive e a riposo in un unico anello pulito. Tocca per il dettag
 
 ### Andamenti nel tempo
 
-Visualizza 7 giorni, 30 giorni, 90 giorni, un anno intero o qualsiasi intervallo personalizzato. Esporta in CSV in qualsiasi momento.
+Visualizza 7 giorni, 30 giorni, 90 giorni o un anno intero. Esporta in CSV in qualsiasi momento.
 
 ### Anelli di avanzamento
 
@@ -81,6 +81,8 @@ Un upgrade opzionale per chi vuole andare più a fondo. Disponibile mensile, ann
 **Andamenti approfonditi.** Confronta qualsiasi periodo con quello precedente. Vedi esattamente come cambia la tua attività settimana su settimana o mese su mese, in calorie e passi.
 
 **Dettaglio attive e a riposo.** Vedi quanta parte del tuo consumo viene dal movimento e quanta dal metabolismo, direttamente nella dashboard.
+
+**Di più con Vitals+.** Macro dalla tua app di alimentazione, proiezioni di fine giornata per calorie e passi, serie di obiettivi e un riepilogo della domenica, intervalli personalizzati nella cronologia, grasso corporeo accanto al BMI, giorni esclusi per i giorni di malattia o senza orologio e un promemoria serale quando un obiettivo è ancora aperto.
 
 ### Guide
 

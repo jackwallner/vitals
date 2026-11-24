@@ -22,7 +22,7 @@ Veja suas calorias ativas e em repouso em um único anel limpo. Toque para ver o
 
 ### Tendências ao longo do tempo
 
-Veja 7 dias, 30 dias, 90 dias, um ano inteiro ou qualquer período personalizado. Exporte para CSV quando quiser.
+Veja 7 dias, 30 dias, 90 dias ou um ano inteiro. Exporte para CSV quando quiser.
 
 ### Anéis de progresso
 
@@ -81,6 +81,8 @@ Um upgrade opcional para quem quer ir mais fundo. Disponível mensal, anual ou c
 **Tendências detalhadas.** Compare qualquer período com o anterior. Veja exatamente como sua atividade muda de semana para semana ou de mês para mês, em calorias e passos.
 
 **Detalhamento ativas e em repouso.** Veja quanto do seu gasto vem do movimento e quanto vem do metabolismo, direto no painel.
+
+**Mais com o Vitals+.** Macros do seu app de alimentação, projeções de fim de dia para calorias e passos, sequências de metas e um resumo de domingo, períodos personalizados no histórico, gordura corporal ao lado do IMC, dias excluídos para dias de doença ou sem o relógio e um lembrete à noite quando uma meta ainda está aberta.
 
 ### Guias
 

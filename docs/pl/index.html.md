@@ -22,7 +22,7 @@ Zobacz kalorie aktywne i spoczynkowe w jednym przejrzystym pierścieniu. Stuknij
 
 ### Trendy w czasie
 
-Wyświetl 7 dni, 30 dni, 90 dni, cały rok lub dowolny zakres. Eksportuj do CSV w dowolnej chwili.
+Wyświetl 7 dni, 30 dni, 90 dni lub cały rok. Eksportuj do CSV w dowolnej chwili.
 
 ### Pierścienie postępu
 
@@ -81,6 +81,8 @@ Opcjonalne rozszerzenie dla tych, którzy chcą pójść głębiej. Dostępne mi
 **Głębokie trendy.** Porównaj dowolny okres z poprzednim. Zobacz dokładnie, jak zmienia się Twoja aktywność z tygodnia na tydzień lub z miesiąca na miesiąc, w kaloriach i krokach.
 
 **Podział na aktywne i spoczynkowe.** Zobacz, ile Twojego spalania pochodzi z ruchu, a ile z metabolizmu, od razu na pulpicie.
+
+**Więcej z Vitals+.** Makroskładniki z aplikacji żywieniowej, prognozy na koniec dnia dla kalorii i kroków, serie celów i niedzielne podsumowanie, dowolne zakresy dat w historii, tkanka tłuszczowa obok BMI, wykluczone dni na dni choroby i dni bez zegarka oraz wieczorne przypomnienie, gdy cel jest wciąż otwarty.
 
 ### Poradniki
 

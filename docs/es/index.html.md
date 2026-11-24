@@ -22,7 +22,7 @@ Mira tus calorías activas y en reposo en un solo anillo claro. Toca para ver el
 
 ### Tendencias en el tiempo
 
-Consulta 7 días, 30 días, 90 días, un año completo o cualquier rango personalizado. Exporta a CSV cuando quieras.
+Consulta 7 días, 30 días, 90 días o un año completo. Exporta a CSV cuando quieras.
 
 ### Anillos de progreso
 
@@ -81,6 +81,8 @@ Una mejora opcional para quienes quieren profundizar. Disponible mensual, anual 
 **Tendencias profundas.** Compara cualquier periodo con el anterior. Mira exactamente cómo cambia tu actividad de una semana a otra o de un mes a otro, en calorías y pasos.
 
 **Desglose activas y en reposo.** Mira cuánto de tu gasto viene del movimiento y cuánto del metabolismo, directamente en el panel.
+
+**Más con Vitals+.** Macros de tu app de comida, proyecciones de fin de día para calorías y pasos, rachas de objetivos y un resumen del domingo, rangos de fechas personalizados en el historial, grasa corporal junto al IMC, días excluidos para días de enfermedad o sin el reloj y un recordatorio por la tarde cuando un objetivo sigue abierto.
 
 ### Guías
 

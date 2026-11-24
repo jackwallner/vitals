@@ -22,7 +22,7 @@ Voyez vos calories actives et au repos dans un seul anneau clair. Touchez pour l
 
 ### Tendances dans le temps
 
-Affichez 7 jours, 30 jours, 90 jours, une année entière ou toute période personnalisée. Exportez en CSV à tout moment.
+Affichez 7 jours, 30 jours, 90 jours ou une année entière. Exportez en CSV à tout moment.
 
 ### Anneaux de progression
 
@@ -81,6 +81,8 @@ Une mise à niveau facultative pour celles et ceux qui veulent aller plus loin. 
 **Tendances détaillées.** Comparez n'importe quelle période à la précédente. Voyez exactement comment votre activité évolue d'une semaine à l'autre ou d'un mois à l'autre, en calories et en pas.
 
 **Détail actif et au repos.** Voyez quelle part de votre dépense vient du mouvement et quelle part du métabolisme, directement sur le tableau de bord.
+
+**Plus avec Vitals+.** Les macros depuis votre appli d'alimentation, des projections de fin de journée pour les calories et les pas, des séries d'objectifs et un bilan du dimanche, des périodes personnalisées dans l'historique, la masse grasse à côté de l'IMC, des jours exclus pour les jours de maladie ou sans la montre, et un rappel en soirée quand un objectif reste ouvert.
 
 ### Guides
 
