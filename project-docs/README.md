@@ -4,6 +4,7 @@ Developer notes and historical audits for this repository. The published site re
 
 ## Audits
 
+- [rollout-2026-11-24.md](audits/rollout-2026-11-24.md): Rollout 2026-11-24: star prompt only after a goal hit or streak milestone
 - [AUDIT822.md](audits/AUDIT822.md): AUDIT822: Vitals release, polish, and RevenueCat audit
 - [AUDIT823.md](audits/AUDIT823.md): AUDIT823: Activation and Trial-Start Audit
 - [ios27Vitals.md](audits/ios27Vitals.md): iOS 27 compatibility audit: Vitals
