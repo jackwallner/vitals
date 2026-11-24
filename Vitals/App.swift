@@ -589,11 +589,10 @@ struct MainTabView: View {
     /// payload renders an empty sheet — the blank white card.
     @State private var trialPitch: TrialPitchRequest?
     @Environment(\.requestReview) private var requestReview
+    @Environment(\.scenePhase) private var scenePhase
     @State private var showReviewPrompt = false
     @State private var reviewPromptAsksWhatToFix = false
     @State private var reviewPromptShownThisSession = false
-    /// One WidgetKit query per session is plenty; the moment itself is one-shot.
-    @State private var widgetMomentEvaluated = false
     /// The feature an intent tap reached for, so the trial sheet (and the plan
     /// picker it can chain into) lead with it. `nil` for passive offers.
     @State private var trialOfferFocus: PlusFeature?
@@ -882,76 +881,11 @@ struct MainTabView: View {
         }
     }
 
-    /// Positive moments that don't depend on clearing a goal: a week of actually
-    /// using the app, and a subscriber who has kept Vitals+ for a month.
-    /// Evaluated once real numbers are on screen so the ask never lands on an
-    /// empty dashboard. Each fires at most once ever.
     private func presentWeeklyRecap() {
         // Land on Today, then present the recap once no other sheet is up.
         guard trialPitch == nil, !showTrialPaywall, pendingMilestone == nil, !showReviewPrompt else { return }
         selectedTab = 0
         showWeeklyRecap = true
-    }
-
-    private func evaluateHabitMilestones() {
-        let habit = ReviewPromptTracker.recordTrackedDay()
-        // Only a confirmed lapse clears tenure, and the cached flag can be stale.
-        // A history still loading can't say when this paid run began: next launch can.
-        let subscriber = store.isPro && store.proRunStartRead && ReviewPromptTracker.recordProStatus(isPro: true)
-        evaluateWidgetInstallMoment()
-        // A moment recorded away from Today (a report generated on History, a
-        // recap read as the app went to background) has nowhere to surface at
-        // the time. Pick it up here instead of losing the ask entirely.
-        guard habit || subscriber || ReviewPromptTracker.hasPendingPositiveMoment else { return }
-        scheduleReviewPromptAfterPositiveMoment()
-    }
-
-    /// Someone who put Vitals on their Home Screen or a watch face has already
-    /// voted for it with the most contested real estate they own. That's a
-    /// stronger signal than any in-app tap, and it was going unread.
-    private func evaluateWidgetInstallMoment() {
-        guard !widgetMomentEvaluated else { return }
-        widgetMomentEvaluated = true
-        Task { @MainActor in
-            let widget = await hasInstalledWidget
-            let complication = hasComplicationOnWatchFace
-            var recorded = false
-            if widget, ReviewPromptTracker.recordOneShotPositiveMoment(key: "widget_installed") {
-                recorded = true
-            }
-            if complication, ReviewPromptTracker.recordOneShotPositiveMoment(key: "complication_on_watch_face") {
-                recorded = true
-            }
-            guard recorded else { return }
-            scheduleReviewPromptAfterPositiveMoment()
-        }
-    }
-
-    /// `WidgetCenter` only sees iPhone widgets. The watch face is where most
-    /// people use the app, and WatchConnectivity reports it from the phone.
-    /// Before activation completes this reads false; the next launch asks again.
-    private var hasComplicationOnWatchFace: Bool {
-        #if canImport(WatchConnectivity)
-        guard WCSession.isSupported() else { return false }
-        let session = WCSession.default
-        guard session.activationState == .activated, session.isPaired, session.isWatchAppInstalled else { return false }
-        return session.isComplicationEnabled
-        #else
-        return false
-        #endif
-    }
-
-    /// `getCurrentConfigurations` throws when the user has never granted the
-    /// extension a slot, which we read the same as "no widget".
-    private var hasInstalledWidget: Bool {
-        get async {
-            await withCheckedContinuation { continuation in
-                WidgetCenter.shared.getCurrentConfigurations { result in
-                    let installed = (try? result.get())?.isEmpty == false
-                    continuation.resume(returning: installed)
-                }
-            }
-        }
     }
 
     private func handlePendingDeepLink() {
@@ -983,8 +917,11 @@ struct MainTabView: View {
         showReviewPrompt = false
     }
 
-    /// Passive review ask after a positive moment (e.g. a daily goal). Waits for
-    /// the on-dashboard celebration toast to clear; never fires on cold launch.
+    /// The rating ask, called only after a good result the user just saw (a daily
+    /// goal hit, a goal-streak milestone). Waits about 3 seconds so the
+    /// celebration clears, then asks only if Today is still on screen with
+    /// nothing over it. A blocked moment is skipped and the next one asks;
+    /// it is never replayed from a launch or a view appearing.
     private func scheduleReviewPromptAfterPositiveMoment() {
         guard ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup),
               !reviewPromptShownThisSession,
@@ -992,14 +929,14 @@ struct MainTabView: View {
         else { return }
 
         Task { @MainActor in
-            // Let the goal celebration toast finish (~2.5s) before asking.
-            try? await Task.sleep(nanoseconds: 3_500_000_000)
-            // Never over a sheet or a paywall. A blocked ask keeps the moment
-            // pending in the tracker and the next positive moment asks.
+            try? await Task.sleep(nanoseconds: 3_000_000_000)
             guard isTodayClear,
                   !reviewPromptShownThisSession,
                   ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: goals.hasCompletedSetup)
-            else { return }
+            else {
+                ReviewPromptTracker.consumePendingPositiveMoment()
+                return
+            }
             askForRating()
         }
     }
@@ -1008,6 +945,7 @@ struct MainTabView: View {
     /// celebration of ours, and no Settings or onboarding from the dashboard.
     private var isTodayClear: Bool {
         selectedTab == 0
+            && scenePhase == .active
             && trialPitch == nil
             && !showTrialPaywall
             && pendingMilestone == nil
@@ -1178,7 +1116,8 @@ struct MainTabView: View {
         // whether or not there is anything to sell — subscribers never see the
         // celebration sheet below, and were losing the signal entirely.
         if case .goalStreak = event {
-            if ReviewPromptTracker.recordOneShotPositiveMoment(key: "milestone_\(event.id)") {
+            if ReviewMoment.isGood(event),
+               ReviewPromptTracker.recordOneShotPositiveMoment(key: "milestone_\(event.id)") {
                 scheduleReviewPromptAfterPositiveMoment()
             }
         }
@@ -1454,10 +1393,6 @@ struct MainTabView: View {
             // passive trial nudge is allowed to consider firing.
             dashboardShowedRealData = true
             if !maybeShowWhatsNew() { evaluateTrialOffer() }
-            Task {
-                await store.syncProRunStart()
-                evaluateHabitMilestones()
-            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .vitalsHistoryDidFinishLoading)) { _ in
             evaluateHistoryTrialOffer()
@@ -1489,7 +1424,6 @@ struct MainTabView: View {
         .onChange(of: store.lapseConfirmed, initial: true) { _, confirmed in
             guard confirmed else { return }
             recapAwaitsEntitlement = false
-            _ = ReviewPromptTracker.recordProStatus(isPro: false)
         }
         #if DEBUG
         .onReceive(NotificationCenter.default.publisher(for: .vitalsDebugShot)) { note in
@@ -1618,15 +1552,7 @@ struct MainTabView: View {
         .sheet(isPresented: $showReviewPrompt, onDismiss: { reviewPromptAsksWhatToFix = false }) {
             ReviewPromptSheet(asksWhatToFix: reviewPromptAsksWhatToFix, onFinish: handleReviewPromptFinish)
         }
-        .sheet(isPresented: $showWeeklyRecap, onDismiss: {
-            // A lapse closes the recap too, and that's nobody's good moment.
-            guard store.isPro else { return }
-            // They opened their week and read it. One of the better-disposed
-            // moments the app gets, and it was going unused.
-            if ReviewPromptTracker.recordOneShotPositiveMoment(key: "weekly_recap_read") {
-                scheduleReviewPromptAfterPositiveMoment()
-            }
-        }) {
+        .sheet(isPresented: $showWeeklyRecap) {
             WeeklyRecapView(goals: goals)
         }
     }
@@ -1999,10 +1925,6 @@ private struct PremiumFeaturesView: View {
             pdfShareText = SummaryReportShareText.make(report: report)
             tempFileToDelete = url
             pdfFile = PDFFile(url: url)
-            // Building a report of your own data is about as deliberate as this
-            // app gets, and it ends with something the user is proud enough of
-            // to share. Counts once, however many reports they make.
-            ReviewPromptTracker.recordOneShotPositiveMomentAndNotify(key: "report_generated")
         } catch {
             reportErrorMessage = String(localized: "Could not generate the PDF report. Please try again.")
         }

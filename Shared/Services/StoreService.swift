@@ -285,8 +285,6 @@ final class StoreService: NSObject, ObservableObject {
     /// it off the main actor, and an immutable String has nothing to isolate.
     nonisolated static let cachedProKey = "isProCached"
     private static let cachedProDefaults = UserDefaults(suiteName: vitalsAppGroupID)
-    private var proRunStartSynced = false
-    private(set) var proRunStartRead = false
     @Published private(set) var purchaseInFlight: Bool = false
     @Published private(set) var isLoadingProducts: Bool = false
     @Published private(set) var lastError: String?
@@ -658,31 +656,6 @@ final class StoreService: NSObject, ObservableObject {
         Purchases.shared.trackCustomPaywallImpression(
             CustomPaywallImpressionParams(paywallId: id)
         )
-    }
-
-    /// Tells the rating tenure about a lapse that happened with the app closed.
-    func syncProRunStart() async {
-        guard isPro, !proRunStartSynced else { return }
-        proRunStartSynced = true
-        Task {
-            var periods: [(start: Date, end: Date)] = []
-            for await result in StoreKit.Transaction.all {
-                guard case .verified(let transaction) = result,
-                      transaction.productType == .autoRenewable,
-                      let end = transaction.expirationDate else { continue }
-                // A refunded or replaced period still ran until it was revoked.
-                periods.append((transaction.purchaseDate, min(end, transaction.revocationDate ?? end)))
-            }
-            if let start = ReviewPromptTracker.proRunStart(periods: periods) {
-                ReviewPromptTracker.noteProRunStart(start)
-            }
-            proRunStartRead = true
-        }
-        // A stalled history must not hold up what waits on this. The read still lands.
-        let deadline = ContinuousClock.now + .seconds(3)
-        while !proRunStartRead, ContinuousClock.now < deadline {
-            try? await Task.sleep(for: .milliseconds(50))
-        }
     }
 
     /// Performs a RevenueCat package purchase and updates customer info.

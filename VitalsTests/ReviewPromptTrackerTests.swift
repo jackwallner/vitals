@@ -80,4 +80,41 @@ final class ReviewPromptTrackerTests: XCTestCase {
         ReviewPromptTracker.markShown()
         XCTAssertFalse(ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: true))
     }
+
+    // MARK: Good moments
+
+    func testCrossingEitherGoalIsAGoodMoment() {
+        XCTAssertTrue(ReviewMoment.dailyGoalHit(crossedCalories: true, crossedSteps: false))
+        XCTAssertTrue(ReviewMoment.dailyGoalHit(crossedCalories: false, crossedSteps: true))
+        XCTAssertTrue(ReviewMoment.dailyGoalHit(crossedCalories: true, crossedSteps: true))
+    }
+
+    func testNoGoalCrossedIsNotAMoment() {
+        XCTAssertFalse(ReviewMoment.dailyGoalHit(crossedCalories: false, crossedSteps: false))
+    }
+
+    func testOnlyAStreakMilestoneIsGood() {
+        XCTAssertTrue(ReviewMoment.isGood(.goalStreak(n: 7)))
+        XCTAssertFalse(ReviewMoment.isGood(.monthReview(month: "2026-10", daysWithData: 28)))
+    }
+
+    func testNothingAsksWithoutAMoment() {
+        ReviewPromptTracker.appLaunchCount = 5
+        XCTAssertTrue(ReviewPromptTracker.canRequestReview(hasCompletedSetup: true))
+        XCTAssertFalse(ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: true))
+    }
+
+    func testASkippedMomentIsDroppedNotReplayed() {
+        ReviewPromptTracker.recordPositiveMoment()
+        ReviewPromptTracker.consumePendingPositiveMoment()
+        XCTAssertFalse(ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: true))
+    }
+
+    func testTheSecondLaunchGateHoldsForAGoodMoment() {
+        ReviewPromptTracker.recordPositiveMoment()
+        ReviewPromptTracker.appLaunchCount = 1
+        XCTAssertFalse(ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: true))
+        ReviewPromptTracker.appLaunchCount = 2
+        XCTAssertTrue(ReviewPromptTracker.shouldShowAfterPositiveMoment(hasCompletedSetup: true))
+    }
 }

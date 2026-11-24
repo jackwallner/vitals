@@ -1,7 +1,7 @@
 import Foundation
 
 extension Notification.Name {
-    /// Posted when the user hits a daily goal; the host may call requestReview() after a short delay.
+    /// Posted after a good moment (a daily goal hit); the host may call requestReview() after a short delay.
     static let vitalsPositiveMomentForReview = Notification.Name("com.jackwallner.vitals.positiveMomentForReview")
 }
 
@@ -12,6 +12,22 @@ enum ReviewPromptOutcome: String, Sendable {
     case openedWriteReview
     /// Sent feedback. Recorded for the cooldown; it no longer stops asks.
     case submittedFeedback
+}
+
+/// The only results that ask for a rating: a daily goal the user just hit, or
+/// a goal-streak milestone they just reached. Launches, tab or view appearances,
+/// open counts, reports, recaps, widgets and subscriber tenure never ask.
+enum ReviewMoment {
+    /// Today's calorie or step goal was crossed.
+    static func dailyGoalHit(crossedCalories: Bool, crossedSteps: Bool) -> Bool {
+        crossedCalories || crossedSteps
+    }
+
+    /// A streak tier is a good result; a month review is a summary, not a win.
+    static func isGood(_ event: MilestoneEvent) -> Bool {
+        if case .goalStreak = event { return true }
+        return false
+    }
 }
 
 /// Persists launch counts, positive moments, and review-prompt eligibility in the app group.
@@ -25,25 +41,11 @@ enum ReviewPromptTracker {
     private static let outcomeKey = "reviewPrompt.outcome"
     private static let positiveMomentCountKey = "reviewPrompt.positiveMomentCount"
     private static let pendingPositiveMomentKey = "reviewPrompt.pendingPositiveMoment"
-    private static let softDeferKey = "reviewPrompt.softDefer"
-    private static let trackedDayCountKey = "reviewPrompt.trackedDayCount"
-    private static let lastTrackedDayKey = "reviewPrompt.lastTrackedDay"
-    private static let habitMomentFiredKey = "reviewPrompt.habitMomentFired"
-    private static let proSinceKey = "reviewPrompt.proSince"
-    private static let subscriberMomentFiredKey = "reviewPrompt.subscriberMomentFired"
 
     /// Ask early. Most installs are gone within a week, and a rating from
     /// someone who hit one goal beats no rating at all. The only tenure gate is
     /// "not the first session": a second cold start.
     static let minimumLaunchCount = 2
-    /// Distinct days the app has been opened before the habit itself counts as a
-    /// positive moment. A goal hit is the outcome; this is the behaviour, and it
-    /// catches everyone using the app happily without ever clearing a goal.
-    static let minimumTrackedDays = 7
-    /// Days a paying subscriber must have kept Vitals+ before that counts as a
-    /// positive moment. They paid, stayed, and never cancelled — the best-disposed
-    /// group the app has, and previously treated like a first-day stranger.
-    static let subscriberMomentDays = 30
     /// Days between rating asks. Apple's `requestReview()` often shows nothing
     /// (three a year per device), so this paces our calls, not the user's answers.
     static let cooldownDays = 30
@@ -131,95 +133,6 @@ enum ReviewPromptTracker {
         hasPendingPositiveMoment = true
     }
 
-    /// Distinct calendar days the app has been opened.
-    static var trackedDayCount: Int {
-        get { max(defaults.integer(forKey: trackedDayCountKey), 0) }
-        set { defaults.set(newValue, forKey: trackedDayCountKey) }
-    }
-
-    /// Records today against the tracked-day streak and reports whether this is
-    /// the launch that crossed `minimumTrackedDays`. Fires at most once ever.
-    static func recordTrackedDay(now: Date = .now) -> Bool {
-        let today = Calendar.current.startOfDay(for: now)
-        if let last = defaults.object(forKey: lastTrackedDayKey) as? Date,
-           Calendar.current.isDate(last, inSameDayAs: today) {
-            return false
-        }
-        defaults.set(today, forKey: lastTrackedDayKey)
-        trackedDayCount += 1
-        guard trackedDayCount >= minimumTrackedDays,
-              !defaults.bool(forKey: habitMomentFiredKey) else { return false }
-        defaults.set(true, forKey: habitMomentFiredKey)
-        recordPositiveMoment()
-        return true
-    }
-
-    /// A lapse with no app open in between is only visible in the purchase
-    /// history. Moves the count up to the start of the current unbroken run.
-    static func noteProRunStart(_ start: Date) {
-        guard let since = defaults.object(forKey: proSinceKey) as? Date, start > since else { return }
-        defaults.set(start, forKey: proSinceKey)
-    }
-
-    /// When the latest unbroken run of paid periods began. Billing retry can run
-    /// 16 days, and a gap that short isn't a lapse.
-    static func proRunStart(periods: [(start: Date, end: Date)]) -> Date? {
-        let sorted = periods.sorted { $0.start < $1.start }
-        guard let first = sorted.first else { return nil }
-        var runStart = first.start
-        var reach = first.end
-        for period in sorted.dropFirst() {
-            if period.start.timeIntervalSince(reach) > 16 * 86_400 { runStart = period.start }
-            reach = max(reach, period.end)
-        }
-        return runStart
-    }
-
-    /// Stamps when Vitals+ first turned on and reports whether the subscriber has
-    /// now held it for `subscriberMomentDays`. Fires at most once ever, and only
-    /// while they still have it. A lapsed subscriber is not a happy moment, and
-    /// a lapse restarts the count, so a resubscription's first day isn't "kept it".
-    static func recordProStatus(isPro: Bool, now: Date = .now) -> Bool {
-        guard isPro else {
-            defaults.removeObject(forKey: proSinceKey)
-            return false
-        }
-        guard let since = defaults.object(forKey: proSinceKey) as? Date else {
-            defaults.set(now, forKey: proSinceKey)
-            return false
-        }
-        let elapsed = now.timeIntervalSince(since)
-        guard elapsed >= TimeInterval(subscriberMomentDays) * 86_400,
-              !defaults.bool(forKey: subscriberMomentFiredKey) else { return false }
-        defaults.set(true, forKey: subscriberMomentFiredKey)
-        recordPositiveMoment()
-        return true
-    }
-
-    /// A positive moment that must only ever count once, keyed by what caused it
-    /// (`streak_30`, `report_exported`, …). Returns whether it fired.
-    ///
-    /// The repeatable moment is hitting a daily goal. Everything else here is a
-    /// milestone — counting it twice would inflate `positiveMomentCount` past
-    /// the threshold on behaviour the user only did once.
-    @discardableResult
-    static func recordOneShotPositiveMoment(key: String) -> Bool {
-        let storageKey = "reviewPrompt.oneShot.\(key)"
-        guard !defaults.bool(forKey: storageKey) else { return false }
-        defaults.set(true, forKey: storageKey)
-        recordPositiveMoment()
-        return true
-    }
-
-    /// One-shot moment recorded from somewhere that can't present the funnel
-    /// itself (a report generated on History, say). Posts so whichever host owns
-    /// the tabs can decide; if it can't ask right now the moment stays pending
-    /// and is picked up on the next visit to Today.
-    static func recordOneShotPositiveMomentAndNotify(key: String) {
-        guard recordOneShotPositiveMoment(key: key) else { return }
-        NotificationCenter.default.post(name: .vitalsPositiveMomentForReview, object: nil)
-    }
-
     static func consumePendingPositiveMoment() {
         hasPendingPositiveMoment = false
     }
@@ -251,7 +164,6 @@ enum ReviewPromptTracker {
 
     static func markShown(now: Date = .now) {
         lastShownDate = now
-        defaults.removeObject(forKey: softDeferKey)
         consumePendingPositiveMoment()
     }
 

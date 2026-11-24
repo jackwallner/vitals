@@ -1056,7 +1056,6 @@ struct HistoryView: View {
             pdfShareText = SummaryReportShareText.make(report: report)
             tempFileToDelete = url
             pdfFile = PDFFile(url: url)
-            ReviewPromptTracker.recordOneShotPositiveMomentAndNotify(key: "report_generated")
         } catch {
             pdfErrorMessage = String(localized: "Could not generate the PDF report. Please try again.")
         }
@@ -1142,7 +1141,6 @@ struct HistoryView: View {
             generatedMonthlySummaryMonth = currentMonthKey
             tempFileToDelete = url
             pdfFile = PDFFile(url: url)
-            ReviewPromptTracker.recordOneShotPositiveMomentAndNotify(key: "report_generated")
         } catch {
             pdfErrorMessage = String(localized: "Could not generate the PDF report. Please try again.")
         }

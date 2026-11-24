@@ -1977,7 +1977,9 @@ struct DashboardView: View {
 
         guard crossedCalories || crossedSteps else { return }
 
-        ReviewPromptTracker.recordPositiveMoment()
+        if ReviewMoment.dailyGoalHit(crossedCalories: crossedCalories, crossedSteps: crossedSteps) {
+            ReviewPromptTracker.recordPositiveMoment()
+        }
         Task { await followUpGoalMoment() }
 
         let generator = UINotificationFeedbackGenerator()
