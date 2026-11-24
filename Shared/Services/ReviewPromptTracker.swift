@@ -133,6 +133,17 @@ enum ReviewPromptTracker {
         hasPendingPositiveMoment = true
     }
 
+    /// A milestone moment that only ever counts once, keyed by what caused it
+    /// (`milestone_streak_30`). Returns whether it fired.
+    @discardableResult
+    static func recordOneShotPositiveMoment(key: String) -> Bool {
+        let storageKey = "reviewPrompt.oneShot.\(key)"
+        guard !defaults.bool(forKey: storageKey) else { return false }
+        defaults.set(true, forKey: storageKey)
+        recordPositiveMoment()
+        return true
+    }
+
     static func consumePendingPositiveMoment() {
         hasPendingPositiveMoment = false
     }
