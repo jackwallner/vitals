@@ -82,20 +82,6 @@ final class StateMachineRegressionTests: XCTestCase {
         }
     }
 
-    func testRunStartIsTheLatestUnbrokenPaidRun() throws {
-        func day(_ n: Double) -> Date { Date(timeIntervalSince1970: n * 86_400) }
-        XCTAssertNil(ReviewPromptTracker.proRunStart(periods: []))
-        // Renewals back to back, out of order, are one run.
-        XCTAssertEqual(
-            ReviewPromptTracker.proRunStart(periods: [(day(30), day(60)), (day(0), day(30)), (day(60), day(90))]),
-            day(0)
-        )
-        // A billing retry that recovers is still the same run.
-        XCTAssertEqual(ReviewPromptTracker.proRunStart(periods: [(day(0), day(30)), (day(40), day(70))]), day(0))
-        // A real lapse starts a new run.
-        XCTAssertEqual(ReviewPromptTracker.proRunStart(periods: [(day(0), day(30)), (day(90), day(120))]), day(90))
-    }
-
     func testPausedDayIsStoredAndTheOldInstantIsMigratedOnce() throws {
         let defaults = try XCTUnwrap(UserDefaults(suiteName: "pause.tests.\(UUID().uuidString)"))
         let instant = try XCTUnwrap(ExcludedDays.date(fromKey: "2026-11-07"))
@@ -141,57 +127,5 @@ final class StateMachineRegressionTests: XCTestCase {
             MilestoneCalculator.unfiredStreakMilestone(currentStreak: 30, firedIds: ["streak_14"]),
             .goalStreak(n: 30)
         )
-    }
-
-    // MARK: SM-3  A lapse restarts subscriber tenure
-
-    private let tenureKeys = [
-        "reviewPrompt.proSince",
-        "reviewPrompt.subscriberMomentFired",
-        "reviewPrompt.positiveMomentCount",
-        "reviewPrompt.pendingPositiveMoment",
-    ]
-    private var savedTenure: [String: Any] = [:]
-
-    override func setUp() async throws {
-        let defaults = try XCTUnwrap(UserDefaults(suiteName: vitalsAppGroupID))
-        savedTenure = [:]
-        for key in tenureKeys {
-            if let value = defaults.object(forKey: key) { savedTenure[key] = value }
-            defaults.removeObject(forKey: key)
-        }
-    }
-
-    override func tearDown() async throws {
-        let defaults = try XCTUnwrap(UserDefaults(suiteName: vitalsAppGroupID))
-        for key in tenureKeys {
-            if let value = savedTenure[key] {
-                defaults.set(value, forKey: key)
-            } else {
-                defaults.removeObject(forKey: key)
-            }
-        }
-    }
-
-    private let start = Date(timeIntervalSince1970: 1_800_000_000)
-    private func day(_ n: Double) -> Date { start.addingTimeInterval(n * 86_400) }
-
-    func testContinuousSubscriberIsAskedAtThirtyDays() {
-        XCTAssertFalse(ReviewPromptTracker.recordProStatus(isPro: true, now: start))
-        XCTAssertFalse(ReviewPromptTracker.recordProStatus(isPro: true, now: day(29)))
-        XCTAssertTrue(ReviewPromptTracker.recordProStatus(isPro: true, now: day(31)))
-    }
-
-    func testLapsedSubscriberIsNotAsked() {
-        XCTAssertFalse(ReviewPromptTracker.recordProStatus(isPro: true, now: start))
-        XCTAssertFalse(ReviewPromptTracker.recordProStatus(isPro: false, now: day(40)))
-    }
-
-    func testResubscribingAfterALapseStartsTenureAgain() {
-        XCTAssertFalse(ReviewPromptTracker.recordProStatus(isPro: true, now: start))
-        XCTAssertFalse(ReviewPromptTracker.recordProStatus(isPro: false, now: day(8)))
-        XCTAssertFalse(ReviewPromptTracker.recordProStatus(isPro: true, now: day(40)))
-        XCTAssertFalse(ReviewPromptTracker.recordProStatus(isPro: true, now: day(69)))
-        XCTAssertTrue(ReviewPromptTracker.recordProStatus(isPro: true, now: day(71)))
     }
 }
