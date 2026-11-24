@@ -37,3 +37,7 @@ Developer notes and historical audits for this repository. The published site re
 ## Releases
 
 - [RELEASE-1.8.3.md](releases/RELEASE-1.8.3.md): Vitals 1.8.3 release staging
+
+## Marketing
+
+- [new-year-event-2027](marketing/new-year-event-2027/README.md): New Year 2027 in-app event: copy, media, schedule and review status
