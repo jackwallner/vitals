@@ -14,10 +14,35 @@ enum ReviewPromptOutcome: String, Sendable {
     case submittedFeedback
 }
 
-/// The only results that ask for a rating: a daily goal the user just hit, or
-/// a goal-streak milestone they just reached. Launches, tab or view appearances,
+/// The only results that ask for a rating: a daily goal the user just hit, a
+/// goal-streak milestone they just reached, or being clearly ahead of their
+/// usual pace on Today (the green pace pill). Launches, tab or view appearances,
 /// open counts, reports, recaps, widgets and subscriber tenure never ask.
 enum ReviewMoment {
+    /// Smallest lead over "usual by now" that counts as ahead, so a few steps
+    /// early in the morning do not.
+    static let minimumStepLead = 500.0
+    static let minimumCalorieLead = 100.0
+    /// Lead as a share of the usual figure (the larger of this and the minimum applies).
+    static let minimumLeadShare = 0.1
+
+    /// Today's steps or total calories are clearly ahead of what the user usually
+    /// has by now. Both usual figures are nil when pacing is off or still building.
+    static func aheadOfUsualPace(
+        steps: Int,
+        usualSteps: Double?,
+        calories: Double,
+        usualCalories: Double?
+    ) -> Bool {
+        isAhead(Double(steps), usual: usualSteps, minimumLead: minimumStepLead)
+            || isAhead(calories, usual: usualCalories, minimumLead: minimumCalorieLead)
+    }
+
+    private static func isAhead(_ current: Double, usual: Double?, minimumLead: Double) -> Bool {
+        guard let usual, usual > 0 else { return false }
+        return current - usual >= max(minimumLead, usual * minimumLeadShare)
+    }
+
     /// Today's calorie or step goal was crossed.
     static func dailyGoalHit(crossedCalories: Bool, crossedSteps: Bool) -> Bool {
         crossedCalories || crossedSteps
@@ -41,6 +66,7 @@ enum ReviewPromptTracker {
     private static let outcomeKey = "reviewPrompt.outcome"
     private static let positiveMomentCountKey = "reviewPrompt.positiveMomentCount"
     private static let pendingPositiveMomentKey = "reviewPrompt.pendingPositiveMoment"
+    private static let paceMomentDayKey = "reviewPrompt.paceMomentDay"
 
     /// Ask early. Most installs are gone within a week, and a rating from
     /// someone who hit one goal beats no rating at all. The only tenure gate is
@@ -140,6 +166,22 @@ enum ReviewPromptTracker {
         let storageKey = "reviewPrompt.oneShot.\(key)"
         guard !defaults.bool(forKey: storageKey) else { return false }
         defaults.set(true, forKey: storageKey)
+        recordPositiveMoment()
+        return true
+    }
+
+    /// The ahead-of-pace moment, at most once a day (`dayKey` is the local day).
+    /// Counts only when an ask could follow, so a first-session or cooldown day
+    /// does not use up the day's moment. Returns whether it fired.
+    @discardableResult
+    static func recordAheadOfPaceMoment(
+        dayKey: String,
+        hasCompletedSetup: Bool,
+        now: Date = .now
+    ) -> Bool {
+        guard defaults.string(forKey: paceMomentDayKey) != dayKey else { return false }
+        guard canRequestReview(hasCompletedSetup: hasCompletedSetup, now: now) else { return false }
+        defaults.set(dayKey, forKey: paceMomentDayKey)
         recordPositiveMoment()
         return true
     }

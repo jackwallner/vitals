@@ -2326,6 +2326,8 @@ struct DashboardView: View {
             // non-zero values still keep pacing live.
             if isAllZero(displayStats) {
                 clearPacing()
+            } else {
+                recordAheadOfPaceMoment(displayStats)
             }
         } catch {
             let ns = error as NSError
@@ -2356,6 +2358,24 @@ struct DashboardView: View {
             todayMacrosFailed = false
             showLoadedStateIfNeeded()
         }
+    }
+
+    /// The pace pill reads "ahead of usual pace": a good result on screen. Asks
+    /// for a rating at most once a day, never while a goal toast or a card is up.
+    private func recordAheadOfPaceMoment(_ stats: (active: Double, resting: Double, steps: Int)) {
+        guard viewedDay == nil, celebrationMessage == nil, prompt == nil, goals.showPacing,
+              ReviewMoment.aheadOfUsualPace(
+                  steps: stats.steps,
+                  usualSteps: pacingSteps.map(Double.init),
+                  calories: stats.active + stats.resting,
+                  usualCalories: pacingCalories
+              ),
+              ReviewPromptTracker.recordAheadOfPaceMoment(
+                  dayKey: DailyHealthRecord.key(for: Date()),
+                  hasCompletedSetup: goals.hasCompletedSetup
+              )
+        else { return }
+        NotificationCenter.default.post(name: .vitalsPositiveMomentForReview, object: nil)
     }
 
     /// Detects whether the user has reached an uncelebrated goal-streak tier and,
